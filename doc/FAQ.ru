@@ -1,5 +1,5 @@
 
-		Установка FIDOGATE5 ver 0.0.9
+		Установка FIDOGATE ver 1.0
 
 Создатель Andrey Slusar 2:467/126, rusfidogate<собака>users.sourceforge.net
 
@@ -447,18 +447,14 @@ Subject: GATE-PORT
   ===
 
 -------------------------------------------------------------------------------
-6. Устанавливаем FIDOGATE5:
+6. Устанавливаем FIDOGATE:
 
-6.1.Берем исходники последнего FIDOGATE5 или с cvs(все в одну строчку):
+6.1.Берем исходники последнего FIDOGATE с cvs(все в одну строчку):
   ===
-  cvs -z3 -d:pserver:anonymous@cvs.fidogate.sourceforge.net:/cvsroot/fidogate \
-  co -r dp fidogate
+  cvs -z3 -d:pserver:anonymous@cvs.rusfidogate.sourceforge.net:/cvsroot/rusfidogate \
+  co fidogate
   ===
   
-  Или в фэхе UNIXFTN, архивы которой можно найти на FTP:
-  === 
-   ftp://fido.aha.ru/pub/fecho/UNIXFTN
-  ===
    Распаковываем исходники в папку fidogate, накладываем нужные патчи, заходим 
   в нее, смотрим ./configure --help, делаем ./configure с нужными опцими, 
   
@@ -683,13 +679,6 @@ Subject: GATE-PORT
     
   A4:Убедиться, что локдир фидогейта существует и что runinc-у хватает прав на 
      запись, чтение и запуск. 
-     Примечания: 
-     1.В существующей версии FIDOGATE5 пока задавать дирректрию с локами в конфигах 
-      невозможно - параметр LOCKDIR в fidogate.conf не работает и ключ configure
-      --with-lockdir не работает. Местоположение LOCKDIR можно узнать после компиляции
-      в файле <fidogate-src>/build/config.make.
-     2.Патч, входящий в данный FAQ исправляет данные проблемы - после его применения
-      токен LOCKDIR в fidogate.conf и опция --with-lockdir=<путь> работют корректно.     
     
   Q5:Поставил leafnode 1.x и leafnode-util от Elohin Igor, создаю группы 
      leafnode-group. groupinfo меняется, но leafnode не видит созданных групп.
