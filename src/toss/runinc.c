@@ -821,7 +821,7 @@ options:\n\
 	                        outpkt, outpkt/mail, outpkt/news\"\n\
 	  -c --config		main configuration file\n\
 	  -b --before SCRIPT	exec script before tosting (if packets need)\n\
-	  -a --after SCRIPT	exec script befor tosting (if packets need)\n\
+	  -a --after SCRIPT	exec script after tosting (if packets need)\n\
 	  -o --outpkt		process outpkt, outpkt/mail, outpkt/news dirs\n\
 	  -s --site SITE	site name for ctlinnd\n\
 	  -v --verbose                 verbose\n\

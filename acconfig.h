@@ -669,7 +669,7 @@
  */
 #define MAXADDRESS	32		/* Max. # of FTN address in CONFIG */
 
-#define AREAFIXMAXSTR   79
+#undef AREAFIXMAXSTR
 
 #define MAXMSGHEADRLEN	70		/* Max. length message field */
 

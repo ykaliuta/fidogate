@@ -911,6 +911,7 @@ Optional Packages:
   --with-ftn-charset=CHS  set default assumed charset for Fido messages cp866
   --with-rfc-charset=CHS  set default assumed charset for RFC messages if without MIME headers koi8-r
   --with-7bit-charset=CHS set default charset for RFC messages with forced 7bit encoding us-ascii
+  --with-afix-maxstr=AFS set maximum strings in areafix reports 79
   --with-desc-dir=DIR     put file descriptions into ".desc/%s.desc" file instead of files.bbs
   --with-gnu-ld           assume the C compiler uses GNU ld default=no
 
@@ -1689,6 +1690,21 @@ _ACEOF
 else
   cat >>confdefs.h <<_ACEOF
 #define CHARSET_STD7BIT "us-ascii"
+_ACEOF
+
+fi;
+
+
+# Check whether --with-afix-maxstr or --without-afix-maxstr was given.
+if test "${with_afix_maxstr+set}" = set; then
+  withval="$with_afix_maxstr"
+  cat >>confdefs.h <<_ACEOF
+#define AREAFIXMAXSTR $withval
+_ACEOF
+
+else
+  cat >>confdefs.h <<_ACEOF
+#define AREAFIXMAXSTR 79
 _ACEOF
 
 fi;
@@ -3560,7 +3576,7 @@ test x"$silent" = xyes && libtool_flags="$libtool_flags --silent"
 case "$host" in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 3563 "configure"' > conftest.$ac_ext
+  echo '#line 3579 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?

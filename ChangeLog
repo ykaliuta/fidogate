@@ -1,3 +1,8 @@
+2004-02-27  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* configure.h.in: add --with-afix-maxstr
+	* doc/README.ru: update doc
+
 2004-02-26  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/gate/ftn2rfc.c: remove OLD_COMMENT_TO
