@@ -1,5 +1,5 @@
 
-		Установка FIDOGATE ver 1.3
+    $Id$
 
 Создатель Andrey Slusar 2:467/126, vasallia at ukr.net
 
