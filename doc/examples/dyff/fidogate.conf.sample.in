@@ -575,13 +575,13 @@ BounceCCMail		postmaster
 #HostsRestricted
 
 # Newsgroup for unknown FTN areas
-FTNJunkGroup		fido.junk
+FTNJunkGroup		junk
 
 # AREAS key for FTNJunkGroup group
-FTNJunkGroup
+FTNJunkGroupKeys
 
 # Errors-To header
-Errors-To		dyff@corex.izhora.spb.ru
+Errors-To		dyff@<HOSTNAME><DOMAINNAME>
 
 
 # Translation of chars for automatic areas <-> newsgroup conversion
@@ -720,30 +720,25 @@ NewsPathTail	"fidogate!not-for-mail"
 # the address (\1 in sed, $1 in perl). POSIX *extended* regular expressions
 # are used.
 # The OS *must* support HAS_POSIX_REGEX in config.h!!!
-Regex1stLine  ^In article <?[^ ]*@[^ ]*>? on ..:..:..,? (.*) (writes|wrote)
-Regex1stLine  ^In article <?[^ ]*@[^ ]*>? on ..\...\...,? (.*) (writes|wrote)
-Regex1stLine  ^In article <?[^ ]*@[^ ]*>?,? (.*) (writes|wrote):$
-Regex1stLine  ^In <[^ ]*@[^ ]*>,? (.*) (writes|wrote):$
-Regex1stLine  ^I[nm] Artikel <?[^ ]*@[^ ]*>?,? (.*) (schreibt|schrieb)
-Regex1stLine  ^([a-z0-9_.\-]*@[a-z0-9_.\-]* \(.*\)) (writes|wrote|schreibt|schrieb)
-Regex1stLine  ^(.* <[a-z0-9_.\-]*@[a-z0-9_.\-]*>) (writes|wrote|schreibt|schrieb)
-Regex1stLine  ^(.* \([a-z0-9_.\-]*@[a-z0-9_.\-]*\)) (writes|wrote|schreibt|schrieb)
-Regex1stLine  ^([a-z0-9_.\-]*@[a-z0-9_.\-]*) (writes|wrote|schreibt|schrieb)
-Regex1stLine  ^On ..., .. ... .... ..:..:.. [+\-]...., (.*) (writes|wrote|schreibt|schrieb):$
-Regex1stLine  ^On .. ... .... ..:..:.. [+\-]...., (.*) (writes|wrote|schreibt|schrieb):$
+Regex1stLine  ^In article <?[^ ]*@[^ ]*>? on ..:..:..,? (.*) (writes|wrote|пишет)
+Regex1stLine  ^In article <?[^ ]*@[^ ]*>? on ..\...\...,? (.*) (writes|wrote|пишет)
+Regex1stLine  ^In article <?[^ ]*@[^ ]*>?,? (.*) (writes|wrote|пишет):$
+Regex1stLine  ^In <[^ ]*@[^ ]*>,? (.*) (writes|wrote|пишет):$
+Regex1stLine  ^I[nm] Artikel <?[^ ]*@[^ ]*>?,? (.*) (schreibt|schrieb|пишет)
+Regex1stLine  ^([a-z0-9_.\-]*@[a-z0-9_.\-]* \(.*\)) (writes|wrote|schreibt|schrieb|пишет)
+Regex1stLine  ^(.* <[a-z0-9_.\-]*@[a-z0-9_.\-]*>) (writes|wrote|schreibt|schrieb|пишет)
+Regex1stLine  ^(.* \([a-z0-9_.\-]*@[a-z0-9_.\-]*\)) (writes|wrote|schreibt|schrieb|пишет)
+Regex1stLine  ^([a-z0-9_.\-]*@[a-z0-9_.\-]*) (writes|wrote|schreibt|schrieb|пишет)
+Regex1stLine  ^On ..., .. ... .... ..:..:.. [+\-]...., (.*) (writes|wrote|schreibt|schrieb|пишет):$
+Regex1stLine  ^On .. ... .... ..:..:.. [+\-]...., (.*) (writes|wrote|schreibt|schrieb|пишет):$
 # This is very generic, thus it must be the last entry.
 # If this regex yields too many errors, comment it.
-Regex1stLine  ^[ 	]*([^>|].*) (writes|wrote|schreibt|schrieb):$
+Regex1stLine  ^[ 	]*([^>|].*) (writes|wrote|schreibt|schrieb|пишет):$
 
 
 # Line length for formatting long paragraphs in Fido messages
 # (replaces old MAX_LINELEN from config.h)
-MessageLineLength	92
-
-# Default newsgroup for junk messages and keys for it (see also "areas"
-# config-file)
-#
-FTNJunkGroup junk
+MessageLineLength	90
 
 # Carbon group and name for search in "To:" field to put into this newsgroup
 #
