@@ -8433,7 +8433,7 @@ echo "$as_me: error: use --with-newsbindir=DIR or --without-news option" >&2;}
    { (exit 1); exit 1; }; }
     fi
 
-    XPATHBIN="$PATHBIN:/usr/local/news/bin:/usr/lib/news:/usr/lib/news/bin:/usr/local/lib/news/bin:usr/bin"
+    XPATH="$PATHBIN:/usr/local/news/bin:/usr/lib/news:/usr/lib/news/bin:/usr/local/lib/news/bin:usr/bin"
 
     echo "$as_me:$LINENO: checking for rnews" >&5
 echo $ECHO_N "checking for rnews... $ECHO_C" >&6
@@ -8453,7 +8453,7 @@ else
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $XPATHBIN
+for as_dir in $XPATH
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
@@ -8504,7 +8504,7 @@ else
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $XPATHBIN
+for as_dir in $XPATH
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
@@ -8586,7 +8586,7 @@ echo $ECHO_N "checking for sendmail... $ECHO_C" >&6
 if test "${with_sendmail+set}" = set ;then
 	SENDMAIL="$with_sendmail"
 else
-    XPATHBIN="/usr/sbin:/usr/lib:/usr/ucblib:/usr/share"
+    XPATH="/usr/sbin:/usr/lib:/usr/ucblib:/usr/share"
     # Extract the first word of "sendmail", so it can be a program name with args.
 set dummy sendmail; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
@@ -8600,7 +8600,7 @@ else
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $XPATHBIN
+for as_dir in $XPATH
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
