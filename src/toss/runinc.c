@@ -460,10 +460,11 @@ void move(char *old_name, char *dir, char *subdir, char *filename)
 /*
  * Make data base inbound directory and runing flags
  */
-void toss_init(void)
+int toss_init(void)
 {
     char *spool = cf_p_spooldir();
     char pathbuffer[MAXPATH];
+    unsigned short i;
     
     toss[0].name = "pin";
     BUF_EXPAND(pathbuffer,cf_p_pinbound());
@@ -515,9 +516,26 @@ void toss_init(void)
     toss[6].fadir = NULL;
     toss[6].grade = "-gf";
     toss[6].flags = "-s";
-    
-    return;
 
+    for(i=0;i<2;i++)
+    {
+	BUF_COPY2(buffer, toss[i].inbound, "/tmpunpack");
+	if(check_access(buffer, CHECK_DIR) == ERROR)
+	{
+	    if(mkdir(buffer, 0750) == -1)
+	    {
+		fglog("$ERROR: can't create directory %s", buffer);
+		return;
+	    }
+	    else
+	    {
+		chmod(buffer, 0750);
+		fglog("create directory %s", buffer);
+	    }
+	}
+    }
+
+    return;
 }
 
 /*
@@ -646,7 +664,7 @@ void send_fidogate(void)
     BUF_COPY2(work, site, ".work");
     BUF_COPY2(batch, site, ".fidogate");
 
-    /* FEXME: processing lock */
+    /* FIXME: processing lock */
 
     chdir(DEFAULT_INN_BATCHDIR);
     
@@ -911,7 +929,11 @@ int main(int argc, char **argv)
     bindir = cf_p_bindir();
 
     /* Initialize tossing directory and runing flags */
-    toss_init();
+    if(toss_init() == ERROR)
+    {
+	exit_free();
+	exit(1);
+    }
 
     /* Lock it */
     if(lock_program(PROGRAM ,NOWAIT) == ERROR )
