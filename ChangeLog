@@ -1,3 +1,8 @@
+2004-06-08  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* scripts/nodelist/nl-autoupd.in: add detecting
+	    DIFFDIR, NLDIR, NLFDIR in fidogate.conf
+
 2004-06-07  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/gate/send-fidogate.in: add detecting LOGDIR

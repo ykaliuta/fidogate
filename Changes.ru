@@ -2,6 +2,13 @@
   cvs -z3 -d:pserver:anonymous@cvs.rusfidogate.sourceforge.net:/cvsroot/rusfidogate \
   co fidogate-sta
 
+Version 5.2.1ds
+~~~~~~~~~~~~~~~
+- nl-autoupd берет DIFFDIR, NLDIR, NLFDIR из основного конфига.
+- confval выводит параметры в stdout, а не в stderr и если указан ключ -p
+  с параметром, то выводится только само значение параметра.
+- send-fidogate берет параметры LOGDIR и LOCKDIR из основного конфига.
+
 Version 5.2.0ds-alpha3
 ~~~~~~~~~~~~~~~~~~~~~
 - В документацию добавлен раздел о конфигурировании masqmail для связи с

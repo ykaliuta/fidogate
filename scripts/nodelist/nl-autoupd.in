@@ -19,15 +19,14 @@ CONFIG_read($CONFIG);
 # Location nl-diff and sumcrc programs
 $BINDIR=CONFIG_get("BINDIR");
 
-##FIXME: retrieve from fareas.bbs##
 # Diff's location
-$DIFFDIR = "/home/ftp/fecho/nodediff";
+$DIFFDIR =CONFIG_get("DIFFDIR");
 # Nodelist name
 $NAME    = "nodelist";
 # Current nodelist location
-$NLDIR   = "/var/spool/bt/ndl";
+$NLDIR   =CONFIG_get("NLDIR");
 # Directory for put archiving nodelist
-$NLFDIR  = "/home/ftp/fecho/nodelist";
+$NLFDIR  =CONFIG_get("NLFDIR");
 
 $NLDIFF  = "$BINDIR/nl-diff";
 
