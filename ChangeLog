@@ -1,3 +1,8 @@
+2004-02-25  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
+
+	* src/areafix/ftnafutil.c: fix the problem with removing
+	    of nodes during unsubscribe
+
 2004-02-24  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 
 	* src/common/packet.c: fix the processing of the bad

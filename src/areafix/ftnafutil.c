@@ -262,10 +262,10 @@ int do_areasbbs(int cmd)
 		      p->area, n, state, znfp1(uplink), tm);
 		if(do_mail(uplink, p->area, "-", a) != ERROR)
 		{
-		    for ( l = lon->first->next; NULL != l; l = l->next )
+		    while((l = lon->first->next) != NULL )
 		    {
 			do_mail_notify(&l->node, p->area, "request is timed out in", tm);
-			xfree( l );
+			lon_remove(lon, &l->node);
 		    }
 		    lon->first->next = NULL;
 		    lon->last = lon->first;
@@ -310,10 +310,10 @@ int do_areasbbs(int cmd)
 		      p->area, n, state, znfp1(uplink), tm);
 		if(do_mail(uplink, p->area, "-", a) != ERROR)
 		{
-		    for (l = lon->first->next; NULL != l; l = l->next)
+		    while((l = lon->first->next) != NULL)
 		    {
 			do_mail_notify(&l->node, p->area, "no traffic for", tm);
-			xfree(l);
+			lon_remove(lon, &l->node);
 		    }
 		    lon->first->next = NULL;
 		    lon->last = lon->first;
