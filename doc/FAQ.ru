@@ -178,16 +178,15 @@ fidogate на английский язык.
 -----------------------------------------------------------------------------
 3.Установка leafnode:
   
-   Нужен leafnode последняя бета не "плюс", так как "плюс" имеет
+   Нужен leafnode2 последняя альфа или бета не "плюс", так как "плюс" имеет
   некоторые отличия в формате groupinfo и interesting.groups.
-   Для freebsd порт и готовый пакадж leafnode-2.0b8_ma9 можно взять на моем
-  сайте http://node126.narod.ru
-   Сорсы для сборки можно взять здесь:
+   Сорсы leafnode2-alpha для сборки можно взять здесь:
   
-   ftp://wpxx02.toxi.uni-wuerzburg.de/pub/leafnode-2.0b8_ma9.tar.gz
-  
-  Распаковываем tar -xzf leafnode-2.0b8_ma9.tar.gz, потом 
-  cd leafnode-2.0b8_ma9, ./configure с нужными опциями, допустим c такими:
+   http://home.pages.de/~mandree/leafnode/beta/
+
+  Распаковываем tar -xzf leafnode-2.0.0.alpha20040513a.tar.bz2, потом 
+  cd leafnode-2.0.0.alpha20040513a, ./configure с нужными опциями, допустим
+  c такими:
 
   ./configure --with-lockfile=/var/spool/leafnode/leaf.node/lock.file \
 	      --with-spooldir=/var/spool/leafnode
@@ -200,10 +199,10 @@ fidogate на английский язык.
   почитать.
   
   === config ===
-  server = localhost
   expire = 30
   ===
-  
+
+  Для inetd:
   Прописываем свой сервер в inetd.conf:
   === inetd.conf ===
   nntp stream tcp nowait news /usr/libexec/tcpd /usr/local/sbin/leafnode
@@ -214,7 +213,23 @@ fidogate на английский язык.
   ===
   Очень желательно еще почитать INSTALL в пакете с leafnode по поводу
   hosts.allow, hosts.deny и конечно man inetd.conf.
-  Потом делаем #kill -HUP `cat /var/run/inetd.pid` и проверяем отвечает ли
+
+  Для xinetd:
+  === xinetd.conf ===
+  service nntp
+  {
+    flags           = NAMEINARGS NOLIBWRAP
+    socket_type     = stream
+    protocol        = tcp
+    wait            = no
+    user            = news
+    server          = /usr/sbin/tcpd
+    server_args     = /usr/local/sbin/leafnode
+    instances       = 7
+    per_source      = 3
+  }
+  ===
+  Потом делаем #kill -HUP `cat /var/run/[x]inetd.pid` и проверяем отвечает ли
   сервер:
   
   $telnet localhost 119
@@ -226,15 +241,15 @@ fidogate на английский язык.
   
   === common.h ===
   [...]
-  #define OUTGOING "/var/spool/leafnode/out.going"
-  #define FAILED_POSTING "/var/spool/leafnode/failed.postings"
-  #define IN_COMING "/var/spool/leafnode/in.coming"
-  #define DUPE_POST "/var/spool/leafnode/dupe.post"
-  #define INTERESTING_GROUPS "/var/spool/leafnode/interesting.groups"
-  #define GROUPINFO "/var/spool/leafnode/leaf.node/groupinfo"
+  #define OUTGOING "/var/spool/leafnode2/out.going"
+  #define FAILED_POSTING "/var/spool/leafnode2/failed.postings"
+  #define IN_COMING "/var/spool/leafnode2/in.coming"
+  #define DUPE_POST "/var/spool/leafnode2/dupe.post"
+  #define INTERESTING_GROUPS "/var/spool/leafnode2/interesting.groups"
+  #define GROUPINFO "/var/spool/leafnode2/leaf.node/groupinfo"
   #define LOCAL_GROUPINFO "/usr/local/etc/leafnode/local.groups"
-  #define ACTIVE "/var/spool/leafnode/leaf.node/active"
-  #define RFC2FTN  "/usr/local/fido/libexec/rfc2ftn -n -v"
+  #define ACTIVE "/var/spool/leafnode2/leaf.node/active"
+  #define RFC2FTN  "/usr/local/fidogate/libexec/rfc2ftn -n -v"
   #define DELETE_CTRL_D  "/usr/local/fido/leafnode/ctrld"
   #define DIRLOG  "/var/log/fidogate"
   #define NEWSLOGDIR  "/var/log/leafnode"
@@ -583,14 +598,14 @@ fidogate на английский язык.
 
   === fidogate.conf ===
   [...]
-  INN_BATCHDIR  /var/spool/leafnode/out.going
+  INN_BATCHDIR  /var/spool/leafnode2/out.going
   NEWSVARDIR    /usr/local/leafnode/etc
-  NEWSLIBDIR    /usr/local/leafnode
+  NEWSLIBDIR    /usr/local/leafnode2/leaf.node
   NEWSBINDIR    /usr/local/leafnode/sbin
-  NEWSSPOOLDIR  /var/spool/leafnode
+  NEWSSPOOLDIR  /var/spool/leafnode2
   [...]
   # rnews program path
-  FTNInRnews      /usr/local/fido/leafnode/rnews -c
+  FTNInRnews      /usr/local/bin/rnews
   [...]
   # Newsserver scrips to create/renumber/remove newsgroups
   AutoCreateNewgroupCmd /usr/local/fido/leafnode/leafnode-group -M %s
