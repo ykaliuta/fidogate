@@ -15,6 +15,7 @@ alias	x-cp866		cp866
 alias	koi8-u		koi8-r
 alias	ibm-878		koi8-r
 alias	ibm-915		iso-8859-5
+alias	cp1251		cp1251
 alias	x-cp1251	cp1251
 alias	windows-1251	cp1251
 
@@ -147,11 +148,11 @@ map     \xF8    \xB7
 map     \xF9    \xA7
 map     \xFA    \x9E
 map     \xFB    \x96
-map     \xFC    \x4E
+map     \xFC    \xBF
 map     \xFD    \x9D
 map     \xFE    \x94
 map     \xFF    \x9A
-	
+
 
 # ----------------------------------------------------------------------------
 #       Channel map for translation KOI8-R codes to CP1125 codes

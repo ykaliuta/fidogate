@@ -5,6 +5,23 @@ PUSHDIVERT(-1)
 # FIDOGATE FTN mailer for sendmail V8
 #
 
+ifdef(`confFIDOGATE_LIBEXECDIR',,
+  `define(`confFIDOGATE_LIBEXECDIR', `<LIBEXECDIR>')')
+
+ifdef(`FTN_MAILER_PATH',,
+  `define(`FTN_MAILER_PATH', confFIDOGATE_LIBEXECDIR/ftnmail)')
+ifdef(`FTN_MAILER_ARGS',,
+  `define(`FTN_MAILER_ARGS', `ftnmail ifdef(`confFIDOGATE_OUTDIR',`-O confFIDOGATE_OUTDIR',`') -- $u')')
+ifdef(`FTN_MAILER_ARGSI',,
+  `define(`FTN_MAILER_ARGSI', `ftnmail ifdef(`confFIDOGATE_OUTDIR',`-O confFIDOGATE_OUTDIR',`') -i -- $u')')
+ifdef(`FTN_MAILER_ARGSA',,
+  `define(`FTN_MAILER_ARGSA', `ftnmail ifdef(`confFIDOGATE_OUTDIR',`-O confFIDOGATE_OUTDIR',`') -a $h -i -- $u')')
+ifdef(`FTN_MAILER_ARGSO',,
+  `define(`FTN_MAILER_ARGSO', `ftnmail -a $h -O outpkt/$h -i -- $u')')
+ifdef(`FTN_MAILER_FLAGS',,
+  `define(`FTN_MAILER_FLAGS', `')')
+POPDIVERT
+
 #####################################
 ###    FTN Mailer specification   ###
 #####################################

@@ -1,3 +1,21 @@
+2003-11-25  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/charset/cyrillic.map: fix cp1125 map(thanks to
+	    alex help kushnaryov)
+
+2003-11-22  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* packages/rpm/fidogate.spec: update
+	* src/charset/cyrillic.map: add alias cp1251
+
+2003-11-21  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/toss/ftntoss.c: edit spyes subject
+
+2003-11-16  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* doc/mailer/sendmail/mailer/ftn.m4.in: restore
+
 2003-11-12  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* doc/news/leafnode: update(thanks to Elohin Igor)

@@ -5,7 +5,7 @@ AC_REVISION([$Id$])
 dnl # Minimum Autoconf version required.
 AC_PREREQ(2.53)
 dnl # No comments...
-AC_INIT([fidogate],[5.1.0ds],[rusfidogate@users.sourceforge.net])
+AC_INIT([fidogate],[5.2.0ds],[rusfidogate@users.sourceforge.net])
 dnl # File to check from `configure' script
 AC_CONFIG_SRCDIR([src/common/config.c])
 dnl # Set automake and libtool scripts are in build directory
@@ -73,7 +73,7 @@ yes) AC_MSG_ERROR([--with-btbasedir requires an argument; use --with-btbasedir=D
 esac
 ])
 if ! test "${btbasedir+set}" = set; then
-    btbasedir='/var/spool/bt'
+    btbasedir='/var/spool/fido/bt'
 fi
 AC_SUBST(btbasedir)
 
@@ -525,13 +525,13 @@ AC_MSG_CHECKING(for spool directory)
 if test "${with_spooldir+set}" = set; then
 	SPOOLDIR="$with_spooldir"
 elif test -d /var/spool; then
-	SPOOLDIR=/var/spool/fidogate
+	SPOOLDIR=/var/spool/fido/gate
 elif test -d /var/data; then
-	SPOOLDIR=/var/data/fidogate
+	SPOOLDIR=/var/data/fido/gate
 elif test -d /var/db; then
-	SPOOLDIR=/var/db/fidogate
+	SPOOLDIR=/var/db/fido/gate
 else
-	SPOOLDIR=/var/data/fidogate
+	SPOOLDIR=/var/data/fido/gate
 fi
 AC_MSG_RESULT($SPOOLDIR)
 AC_SUBST(SPOOLDIR)

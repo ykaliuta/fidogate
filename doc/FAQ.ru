@@ -485,28 +485,55 @@ Subject: GATE-PORT
   Копируем этот файл в /usr/src/rpm/SRPMS, делаем: 
   
    cd /usr/src/rpm,
-   rpm -i SRPMS/fidogate5.1.0-beta1.src.rpm,
+   rpm -i SRPMS/fidogate5.1.0_ds.src.rpm,
    rpm -ba SPECS/fidogate.spec
   
   Устанавливаем fidogate:
    
-   rpm -i RPMS/i386/fidogate5.1.0-beta1.rpm;
+   rpm -i RPMS/i386/fidogate5.1.0_ds.rpm;
 
-  или воспользоватьс готовым бинарным пакетом fidogate-5.1.0-beta1.rpm:
+  или воспользоватьс готовым бинарным пакетом fidogate-5.1.0_ds.rpm:
   
-   rpm -i fidogate5.1.0-beta1.rpm.
+   rpm -i fidogate5.1.0_ds.rpm.
 
   Для Debian:
    Пакеты для Debian лучше всего брать не у меня, а на kaliuta.basnet.by/debian,
   так как я больше не собираю пакетов для Debian.
    Устанавливаем пакет:
-  dpkg -i fidogate5.1.0-beta1.deb
+  dpkg -i fidogate5.1.0_ds.deb
 
 6.3. Для freebsd можно взять пакадж с моего сайта:
-  http://node126.narod.ru/files/fg{дата последней сборки}.tgz
+  http://node126.narod.ru/files/fidogate5.1.0_ds.tgz(STABLE)
   и установить командой pkg_add.
-  Или воспользоваться моим портом fidogate5.tar.gz, положив его в 
-  /usr/ports/news/fidogate5
+  Или: 
+  Берем сорсы фидогейта с cvs, копируем их в дирректорию в соответствии
+  с version.h:
+  --8<---------------cut here---------------start------------->8---
+  /*:ts=8*/
+  /*****************************************************************************
+  * FIDOGATE --- Gateway software UNIX Mail/News <-> FIDO NetMail/EchoMail
+  *
+  * $Id$
+  *
+  * Global version number, patch level
+  *****************************************************************************/
+  
+  #define VERSION_MAJOR	5
+  #define VERSION_MINOR	2
+  #define PATCHLEVEL	0
+  #define EXTRAVERSION	"ds-alpha1"
+
+  #define STATE		"beta"
+  --8<---------------cut here---------------end--------------->8---
+  Значит дирректория fidogate5.2.0ds-alpha1, делаем с получившейся
+  дирректории файл fidogate5.2.0ds-alpha1.tar.bz2, копируем этот файл в
+  /usr/ports/distfiles, дирректорию <fidogate-src>/packages/freebsd
+  полностью копируем в дирректорию /usr/ports/news/fidogateds-devel,
+  если в version.h написано, что STATE "beta" или в fidogateds, если
+  STATE "stable". Потом делаем cd /usr/ports/news/fidogateds{-devel} и
+  там даем команду make makesum для генерации md5sum, далее делаем все,
+  что требуется от порта - make, потом make install для установки порта
+  или make package для установки и изготовления пакаджа.
 
 -------------------------------------------------------------------------------
 7.Окончательная настройка совместной работы с FIDOGATE.

@@ -1,13 +1,12 @@
 Summary: Fido-Internet Gateway and Fido Tosser
 Name: fidogate
-Version: 5.1.0ds
-Release: beta1
+Version: 5.2.0ds
+Release: alpha1
 Copyright: GPL
 Group: Fidonet/Gate
 Source0: http://node126.narod.ru/fidogate%{version}-%{release}.tar.bz2
 #Patch0: %{name}-%{version}-%{release}.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: 
 
 %description
 FIDOGATE-DS Version 5
@@ -23,7 +22,6 @@ FIDOGATE-DS Version 5
 
 ./configure --prefix=/usr \
 	    --with-sysconfdir=/etc/fido/gate \
-	    --with-newsbindir=/usr/lib/news/bin \
 	    --with-logdir=/var/log/fido/gate \
 	    --with-vardir=/var/lib/fidogate \
 	    --with-spooldir=/var/spool/fido/gate \
@@ -40,9 +38,7 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/bin
 mkdir -p $RPM_BUILD_ROOT/usr/lib
 mkdir -p $RPM_BUILD_ROOT/usr/libexec
-mkdir -p $RPM_BUILD_ROOT/etc/fidogate
-mkdir -p $RPM_BUILD_ROOT/etc/news
-mkdir -p $RPM_BUILD_ROOT/etc/postfix
+mkdir -p $RPM_BUILD_ROOT/etc/fido/gate
 mkdir -p $RPM_BUILD_ROOT/var/lib/fidogate
 mkdir -p $RPM_BUILD_ROOT/var/lib/fidogate/seq
 mkdir -p $RPM_BUILD_ROOT/var/spool/fido/bt
@@ -65,20 +61,16 @@ mkdir -p $RPM_BUILD_ROOT/var/spool/fido/gate/toss/bad
 mkdir -p $RPM_BUILD_ROOT/var/spool/fido/gate/toss/pack
 mkdir -p $RPM_BUILD_ROOT/var/spool/fido/gate/toss/route
 mkdir -p $RPM_BUILD_ROOT/var/spool/fido/gate/toss/toss
-mkdir -p $RPM_BUILD_ROOT/var/log/fidogate
+mkdir -p $RPM_BUILD_ROOT/var/log/fido/gate
 mkdir -p $RPM_BUILD_ROOT/var/lock/fidogate
 
-make DESTDIR=$RPM_BUILD_ROOT BINDIR=$RPM_BUILD_ROOT/usr/bin LIBEXECDIR=$RPM_BUILD_ROOT/usr/libexec  install
-
-install -o news -g news doc/news/inn/newsfeeds.fidogate	$RPM_BUILD_ROOT/etc/news/newsfeeds-fidogate
-install -o news -g news doc/mailer/postfix/master.cf	$RPM_BUILD_ROOT/etc/postfix/master.cf-fidogate
-install -o news -g news doc/mailer/postfix/transport	$RPM_BUILD_ROOT/etc/postfix/transport-fidogate
+make DESTDIR=$RPM_BUILD_ROOT BINDIR=$RPM_BUILD_ROOT/usr/bin LIBEXECDIR=$RPM_BUILD_ROOT/usr/libexec install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%doc COPYING TODO TODO.rus doc/README doc/README.en
+%doc COPYING TODO TODO.rus ChangeLog Changes.ru doc/README doc/FAQ.ru doc/README.ru
 
 %dir %attr(700,news,news)  /etc/fido/gate
 %dir %attr(700,news,news)  /var/log/fido/gate
@@ -90,19 +82,16 @@ rm -rf $RPM_BUILD_ROOT
 %attr(700,news,news) /var/lock/fidogate
 %attr(700,news,news) /var/spool/fido/gate
 %attr(770,news,news) /var/spool/fido/bt
-%attr(600,news,news) /etc/news/newsfeeds-fidogate
-%attr(600,news,news) /etc/postfix/master.cf-fidogate
-%attr(600,news,news) /etc/postfix/transport-fidogate
-%config(noreplace) %attr(600,news,news) /etc/fidogate/acl.sample
-%config(noreplace) %attr(600,news,news) /etc/fidogate/aliases.sample
-%config(noreplace) %attr(600,news,news) /etc/fidogate/areas.sample
-%config(noreplace) %attr(600,news,news) /etc/fidogate/fidogate.conf.sample
-%config(noreplace) %attr(600,news,news) /etc/fidogate/fidokill.sample
-%config(noreplace) %attr(600,news,news) /etc/fidogate/ftnacl.sample
-%config(noreplace) %attr(600,news,news) /etc/fidogate/hosts.sample
-%config(noreplace) %attr(600,news,news) /etc/fidogate/packing.sample
-%config(noreplace) %attr(600,news,news) /etc/fidogate/passwd.sample
-%config(noreplace) %attr(600,news,news) /etc/fidogate/routing.sample
-%config(noreplace) %attr(600,news,news) /etc/fidogate/spyes.sample
+%config(noreplace) %attr(600,news,news) /etc/fido/gate/acl.sample
+%config(noreplace) %attr(600,news,news) /etc/fido/gate/aliases.sample
+%config(noreplace) %attr(600,news,news) /etc/fido/gate/areas.sample
+%config(noreplace) %attr(600,news,news) /etc/fido/gate/fidogate.conf.sample
+%config(noreplace) %attr(600,news,news) /etc/fido/gate/fidokill.sample
+%config(noreplace) %attr(600,news,news) /etc/fido/gate/ftnacl.sample
+%config(noreplace) %attr(600,news,news) /etc/fido/gate/hosts.sample
+%config(noreplace) %attr(600,news,news) /etc/fido/gate/packing.sample
+%config(noreplace) %attr(600,news,news) /etc/fido/gate/passwd.sample
+%config(noreplace) %attr(600,news,news) /etc/fido/gate/routing.sample
+%config(noreplace) %attr(600,news,news) /etc/fido/gate/spyes.sample
 %config(noreplace) %attr(600,news,news) /var/lib/fidogate/areas.bbs.sample
 %config(noreplace) %attr(600,news,news) /var/lib/fidogate/fareas.bbs.sample

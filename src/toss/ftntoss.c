@@ -1718,7 +1718,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		if(do_netmail(pkt, &msg, &body, FALSE) == ERROR)
 		    return ERROR;
 		BUF_COPY (old_subject, msg.subject);
-		str_printf (msg.subject, MSG_MAXSUBJ, "Forwarded message from %s to %s: %s",
+		str_printf (msg.subject, MSG_MAXSUBJ, "[FWD] from %s to %s: %s",
 			    znfp1(&msg.node_from),
 			    znfp2(&msg.node_to),
 			    old_subject);
