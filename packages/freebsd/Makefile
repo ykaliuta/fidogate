@@ -5,11 +5,11 @@
 #
 
 PORTNAME=		fidogate
-PORTVERSION=		5.1.0
+PORTVERSION=		5.2.0
 PORTREVISION=		ds
 CATEGORIES=		news mail
 MASTER_SITES=		http://node126.narod.ru/files/
-DISTNAME=		fidogate5.1.0ds-alpha1
+DISTNAME=		fidogate5.2.0ds-alpha2
 
 MAINTAINER=		rusfidogate@users.sourceforge.net
 COMMENT=		Fido-Internet Gateway and Tosser
