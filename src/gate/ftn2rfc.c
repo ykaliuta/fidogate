@@ -244,7 +244,8 @@ Area *news_msg(char *line, Node *to)
 		}
 		else
 		{
-		    debug(7, "Article can't be posted in this newsgroup stat= %s", pg->flag);
+		    debug(7, "Article can't be posted in this newsgroup stat= %s",
+			  pg->flag);
 		}
 	    }
 	    else
@@ -261,7 +262,7 @@ Area *news_msg(char *line, Node *to)
 		    return pa;
 		}
 		else
-		debug(8, "config: AutoCreateNG not defuned");
+		    debug(8, "config: AutoCreateNG not defuned");
 	    }
 #else
 	    return pa;
@@ -362,7 +363,7 @@ static int msg_get_line_length(void)
 	       message_line_length > MAX_LINE_LENGTH) 
 	    {
 		fglog("WARNING: illegal MessageLineLength value %d",
-		    message_line_length);
+		      message_line_length);
 		message_line_length = DEFAULT_LINE_LENGTH;
 	    }
 	}
@@ -398,7 +399,8 @@ int msg_format_buffer(char *buffer, Textlist *tlist)
 	while(TRUE)
 	{
 	    /* Search backward for a whitespace to break line. If no
-	     * proper point is found, the line will not be split.  */
+	     * proper point is found, the line will not be split.
+	     */
 	    for(i=max_linelen-1; i>=0; i--)
 		if(is_blank(p[i]))	/* Found a white space */
 		    break;
@@ -419,7 +421,8 @@ int msg_format_buffer(char *buffer, Textlist *tlist)
 	    lines++;
 	    
 	    /* Advance buffer pointer and test length of remaining
-	     * line */
+	     * line
+	     */
 	    p = np;
 	    for(; *p && is_blank(*p); p++);	/* Skip white space */
 	    if(*p == 0)				/* The end */
@@ -549,9 +552,9 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    if(ftnacl_lookup(&msg.node_from, &msg.node_to, NULL))
 	    {
 	        debug(7, "ftnacl_lookup(): From=%s, To=%s",
-			    znfp1(&msg.node_orig), znfp2(&msg.node_to));
+		      znfp1(&msg.node_orig), znfp2(&msg.node_to));
 		fglog("BOUNCE: Postings from address `%s' to  `%s' not allowed - skipped",
-			znfp1(&msg.node_orig), znfp2(&msg.node_to));
+		      znfp1(&msg.node_orig), znfp2(&msg.node_to));
 		tl_clear(&theader);
 		tl_clear(&tbody);
 		tl_clear(&tl);
@@ -572,9 +575,9 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    if(ftnacl_lookup(&msg.node_orig, NULL, body.area))
 	    {
 	        debug(7, "ftnacl_lookup(): From=%s, echo=%s",
-			    znfp1(&msg.node_orig), body.area);
+		      znfp1(&msg.node_orig), body.area);
 		fglog("BOUNCE: Postings from address `%s' to area `%s' not allowed - skipped",
-			znfp1(&msg.node_orig), body.area);
+		      znfp1(&msg.node_orig), body.area);
 		tl_clear(&theader);
 		tl_clear(&tbody);
 		tl_clear(&tl);
@@ -589,7 +592,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
 
 	    /* Try to get address from Origin or MSGID */
 	    if (OK != msg_parse_origin(body.origin, &msg.node_orig) &&
-	        OK != msg_parse_msgid(kludge_get(&body.kludge, "MSGID", NULL),&msg.node_orig))
+	        OK != msg_parse_msgid(kludge_get(&body.kludge, "MSGID", NULL),
+				      &msg.node_orig)                         )
 	    {
 		node_invalid(&msg.node_orig);
 	    }
@@ -691,19 +695,19 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	if( !(check_8bit(&body.body)                         ||
 	      check_8bit_s(body.origin, sizeof(body.origin)) ||
 	      check_8bit_s(body.tear, sizeof(body.tear))     ||
-	      check_8bit_s(msg.subject, sizeof(msg.subject))) )
+	      check_8bit_s(msg.subject, sizeof(msg.subject)))  )
 
 	    cvt8 &= ~(AREA_QP | AREA_8BIT);
 	
 	if ( !(mime_ver = rfcheader_get(&body.rfc, "MIME-Version") ) )
 	    mime_ver = kludge_get(&body.kludge,
-			    "RFC-MIME-Version", NULL);
+				  "RFC-MIME-Version", NULL);
 	if ( !(mime_type = rfcheader_get(&body.rfc, "Content-Type") ) )
 	    mime_type = kludge_get(&body.kludge,
-			    "RFC-Content-Type", NULL);
+				   "RFC-Content-Type", NULL);
 	if ( !(mime_enc = rfcheader_get(&body.rfc, "Content-Transfer-Encoding") ) )
 	    mime_enc = kludge_get(&body.kludge,
-			    "RFC-Content-Transfer-Encoding", NULL);
+				  "RFC-Content-Transfer-Encoding", NULL);
 	strip_space(mime_enc);
 	mime = get_mime(mime_ver, mime_type, mime_enc);
 
@@ -804,7 +808,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    else
 	    {
 		msg_xlate_line(buffer, sizeof(buffer), p, cvt8 & AREA_QP,
-				ignore_soft_cr);
+			       ignore_soft_cr);
 		if(rfc_lines)
 		{
 		    tl_append(&tbody, buffer);
@@ -856,7 +860,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	 */
 	if(kill_split)
 	{
-	    /* ^A SPLIT */
+	    /* ^ASPLIT */
 	    if( (p = kludge_get(&body.kludge, "SPLIT", NULL)) )
 	    {
 		fglog("skipping split message, origin=%s", znfp1(&msg.node_orig));
@@ -877,7 +881,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    if(msgbody_rfc_from)
 	    {
 		fglog("skipping message from gateway, area %s, origin=%s",
-		    area->area, znfp1(&msg.node_orig));
+		      area->area, znfp1(&msg.node_orig));
 		tl_clear(&theader);
 		tl_clear(&tbody);
 		tl_clear(&tl);
@@ -887,10 +891,10 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	
 	    /* GIGO */
 	    if( (p = kludge_get(&body.kludge, "PID", NULL))  &&
-	       !strnicmp(p, "GIGO", 4)                         )
+		!strnicmp(p, "GIGO", 4)                        )
 	    {
 		fglog("skipping message from gateway (GIGO), area %s, origin=%s",
-		    area->area, znfp1(&msg.node_orig));
+		      area->area, znfp1(&msg.node_orig));
 		tl_clear(&theader);
 		tl_clear(&tbody);
 		tl_clear(&tl);
@@ -902,7 +906,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    if( (p = kludge_get(&body.kludge, "X-FZ-SPLIT", NULL)) )
 	    {
 		fglog("skipping message from gateway (X-FZ-SPLIT), area %s, origin=%s",
-		    area->area, znfp1(&msg.node_orig));
+		      area->area, znfp1(&msg.node_orig));
 		tl_clear(&theader);
 		tl_clear(&tbody);
 		tl_clear(&tl);
@@ -947,47 +951,49 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    debug(7, "Checking for alias: %s",
 		  s_rfcaddr_to_asc(&addr_to, TRUE));
 	    /**FIXME: why _strict()?**/
-	    debug(7,"node_to = %s, addr_to.real = %s, name = %s, %s", znfp1(&msg.node_to), addr_to.real, msg.name_to, addr_to.user);
+	    debug(7,"node_to = %s, addr_to.real = %s, name = %s, %s", znfp1(&msg.node_to),
+		  addr_to.real, msg.name_to, addr_to.user);
 	    a = alias_lookup_strict(&msg.node_to, addr_to.real);
-		if(a && !strchr(msg.name_to, '@'))
+	    if(a && !strchr(msg.name_to, '@'))
+	    {
+		if(a->userdom)
 		{
-		    if(a->userdom)
-		    {
-			debug(7, "Alias (AI2) found: %s@%s %s \"%s\"",
-			      a->username, a->userdom,
-			      znfp1(&a->node), a->fullname);
+		    debug(7, "Alias (AI2) found: %s@%s %s \"%s\"",
+			  a->username, a->userdom,
+			  znfp1(&a->node), a->fullname);
 		    /*BUF_COPY(addr_to.addr, a->userdom);*/
-			t = a->username;
-			while(t[0])
-			{
-			    if (*t == ' ')
-				*t = '_';
-			    t++;
-			}
-			BUF_COPY5(mail_to, msg.name_to, " <", a->username, "@",
-					a->userdom);
-			
-			BUF_APPEND(mail_to, ">");
-		    }
-		    else
+		    t = a->username;
+		    while(t[0])
 		    {
-			debug(7, "Alias (old) found: %s %s \"%s\"",
-			      a->username,
-		              znfp1(&a->node), a->fullname);
-			BUF_COPY(mail_to, a->username);
+			if (*t == ' ')
+			    *t = '_';
+			t++;
 		    }
+		    BUF_COPY5(mail_to, msg.name_to, " <", a->username, "@",
+			      a->userdom);
+			
+		    BUF_APPEND(mail_to, ">");
 		}
 		else
-		    BUF_COPY(mail_to, addr_to.user);
+		{
+		    debug(7, "Alias (old) found: %s %s \"%s\"",
+			  a->username,
+			  znfp1(&a->node), a->fullname);
+		    BUF_COPY(mail_to, a->username);
+		}
+	    }
+	    else
+		BUF_COPY(mail_to, addr_to.user);
 	}
 
 	/* Special handling for -t flag (insecure): Messages with To
-	 * line will be bounced */
+	 * line will be bounced
+	 */
 	if(area==NULL && t_flag && msgbody_rfc_to)
 	{
 	    debug(1, "Insecure message with To line");
 	    fglog("BOUNCE: insecure mail from %s",
-		s_rfcaddr_to_asc(&addr_from, TRUE));
+		  s_rfcaddr_to_asc(&addr_from, TRUE));
 	    bounce_mail("insecure", &addr_from, &msg, msgbody_rfc_to, &tbody);
 	    tl_clear(&theader);
 	    tl_clear(&tbody);
@@ -999,13 +1005,13 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	 * they can't handle addressing the gateway so we send mail
 	 * from "MsgTrack..." etc. to TrackerMail.  */
 	if(tracker_mail_to)
-	    if(   !strnicmp(addr_from.user, "MsgTrack", 8)
-	       || !strnicmp(addr_from.user, "Reflex_Netmail_Policeman", 24)
-	       || !strnicmp(addr_from.user, "TrackM", 6)
-	       || !strnicmp(addr_from.user, "ITrack", 6)
-	       || !strnicmp(addr_from.user, "FTrack", 6)
-	       || !strnicmp(addr_from.user, "O/T-Track", 9)
-	       /* || whatever ... */		                            )
+	    if( !strnicmp(addr_from.user, "MsgTrack", 8) ||
+		!strnicmp(addr_from.user, "Reflex_Netmail_Policeman", 24) ||
+		!strnicmp(addr_from.user, "TrackM", 6) ||
+		!strnicmp(addr_from.user, "ITrack", 6) ||
+		!strnicmp(addr_from.user, "FTrack", 6) ||
+		!strnicmp(addr_from.user, "O/T-Track", 9)
+	       /* || whatever ... */		          )
 	    {
 		debug(1, "Mail from FIDO message tracker");
 		BUF_COPY(x_orig_to, mail_to);
@@ -1020,7 +1026,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    ? s_ftn_to_inet(&msg.node_orig) : FTN_INVALID_DOMAIN;
 
 	/* Bounce mail from nodes not registered in HOSTS, but allow
-	 * mail to local users.  */
+	 * mail to local users.
+	 */
 	if(addr_is_restricted() && !ignore_hosts &&
 	   area==NULL && msgbody_rfc_to && !addr_is_domain(msgbody_rfc_to))
 	{
@@ -1033,7 +1040,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		debug(1, "Not a registered node: %s",
 		      znfp1(&msg.node_orig));
 		fglog("BOUNCE: mail from unregistered %s",
-		    s_rfcaddr_to_asc(&addr_from, TRUE));
+		      s_rfcaddr_to_asc(&addr_from, TRUE));
 		bounce_mail("restricted", &addr_from, &msg,
 			    msgbody_rfc_to, &tbody);
 		tl_clear(&theader);
@@ -1049,7 +1056,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		debug(1, "Registered node is down: %s",
 		      znfp1(&msg.node_orig));
 		fglog("BOUNCE: mail from down %s",
-		    s_rfcaddr_to_asc(&addr_from, TRUE));
+		      s_rfcaddr_to_asc(&addr_from, TRUE));
 		bounce_mail("down", &addr_from, &msg,
 			    msgbody_rfc_to, &tbody);
 		tl_clear(&theader);
@@ -1074,7 +1081,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		{
 		    debug(1, "Message with address in mail_to: %s", mail_to);
 		    fglog("BOUNCE: mail from %s with address in to field: %s",
-			s_rfcaddr_to_asc(&addr_from, TRUE), mail_to           );
+			  s_rfcaddr_to_asc(&addr_from, TRUE), mail_to           );
 		    bounce_mail("addrinto",
 				&addr_from, &msg, mail_to, &tbody);
 		    tl_clear(&theader);
@@ -1104,7 +1111,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		/* Addressed to `UUCP' or `GATEWAY', but no To: line */
 		debug(1, "Message to `UUCP' or `GATEWAY' without To line");
 		fglog("BOUNCE: mail from %s without To line",
-		    s_rfcaddr_to_asc(&addr_from, TRUE));
+		      s_rfcaddr_to_asc(&addr_from, TRUE));
 		bounce_mail("noto", &addr_from, &msg, msgbody_rfc_to, &tbody);
 		tl_clear(&theader);
 		tl_clear(&tbody);
@@ -1123,7 +1130,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	}
 
 	/* Construct string for From: header line */
-	if(msgbody_rfc_from) {
+	if(msgbody_rfc_from)
+	{
 	    RFCAddr rfc;
 	    
 	    rfc = rfcaddr_from_rfc(msgbody_rfc_from);
@@ -1138,7 +1146,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	reply_to_line = msgbody_rfc_reply_to;
 	
 	/* Construct string for To:/X-Comment-To: header line */
-	if(msgbody_rfc_to) {
+	if(msgbody_rfc_to)
+	{
 	    if(strchr(msgbody_rfc_to, '(') || strchr(msgbody_rfc_to, '<') ||
 	       !*addr_to.real || uucp_flag                                   )
 		to_line = s_printf("%s", msgbody_rfc_to);
@@ -1225,7 +1234,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	}
 	
 	if( (p = kludge_get(&body.kludge, "ORIGREF", NULL)) )
-		ref_line = s_msgid_convert_origid(p);
+	    ref_line = s_msgid_convert_origid(p);
 	else
 	{
 	    if(gate_rfc_kludge)
@@ -1234,7 +1243,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		    ref_line = p;
 	    }
 	    if( (p = kludge_get(&body.kludge, "REPLY", NULL)) )
-		    ref_line = s_msgid_fido_to_rfc(p, NULL, area!=NULL, ref_line);
+		ref_line = s_msgid_fido_to_rfc(p, NULL, area!=NULL, ref_line);
 	}
 	
 	/* ^AGATEWAY */
@@ -1246,18 +1255,19 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	 */
 
 	/* Different header for mail and news */
-	if(area==NULL) {			/* Mail */
+	if(area==NULL)
+	{			/* Mail */
 	    fglog("MAIL: %s -> %s", from_line, to_line);
 	    
 	    tl_appendf(&theader,
 		       "From %s %s\n", s_rfcaddr_to_asc(&addr_from, FALSE),
 		       date(DATE_FROM, NULL) );
 	    tl_appendf(&theader,
-		"Received: by %s (FIDOGATE %s)\n",
-		thisdomain, version_global()                            );
+		       "Received: by %s (FIDOGATE %s)\n",
+		       thisdomain, version_global()      );
 	    tl_appendf(&theader,
-		"\tid AA%05d; %s\n",
-		getpid(), date(NULL, NULL) );
+		       "\tid AA%05d; %s\n",
+		       getpid(), date(NULL, NULL) );
 	}
 	else 					/* News */
 	{
@@ -1275,8 +1285,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	/* Common header */
 	if(msg.date > time(NULL))
 	{
-		tl_appendf(&theader, "X-Original-Date: %s\n", date(NULL, &msg.date));
-		msg.date = time(NULL);
+	    tl_appendf(&theader, "X-Original-Date: %s\n", date(NULL, &msg.date));
+	    msg.date = time(NULL);
 	}
 
 	tl_appendf(&theader, "Date: %s\n", date(NULL, &msg.date));
@@ -1286,7 +1296,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	{
 	    if( (p = kludge_get(&body.kludge, "RFC-Reply-To", NULL)) )
 	    {
-		msg_xlate_line(buffer, sizeof(buffer), p, cvt8 & AREA_QP, ignore_soft_cr);
+		msg_xlate_line(buffer, sizeof(buffer), p,
+			       cvt8 & AREA_QP, ignore_soft_cr);
 		reply_to_line = buffer;
 	    }
 	}
@@ -1297,19 +1308,22 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	{
 	    if( (p = kludge_get(&body.kludge, "RFC-User-Agent", NULL)) )
 	    {
-		msg_xlate_line(buffer, sizeof(buffer), p, cvt8 & AREA_QP, ignore_soft_cr);
+		msg_xlate_line(buffer, sizeof(buffer), p,
+			       cvt8 & AREA_QP, ignore_soft_cr);
 		tl_appendf(&theader, "User-Agent: %s\n", buffer);
 	    }
 	    if( (p = kludge_get(&body.kludge, "RFC-X-NewsReader", NULL)) )
 	    {
-		msg_xlate_line(buffer, sizeof(buffer), p, cvt8 & AREA_QP, ignore_soft_cr);
+		msg_xlate_line(buffer, sizeof(buffer), p,
+			       cvt8 & AREA_QP, ignore_soft_cr);
 		tl_appendf(&theader, "X-NewsReader: %s\n", buffer);
 	    }
 	}
 	
 	if ( NULL == msgbody_rfc_subject )
 	{
-	    msg_xlate_line(buffer, sizeof(buffer), msg.subject, cvt8 & AREA_QP, ignore_soft_cr);
+	    msg_xlate_line(buffer, sizeof(buffer), msg.subject,
+			   cvt8 & AREA_QP, ignore_soft_cr);
 	    tl_appendf(&theader, "Subject: %s\n", buffer);
 	}
 	else
