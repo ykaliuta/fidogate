@@ -642,8 +642,6 @@ void lon_sort(LON *lon, short off)
     qsort((void *)&lon->sorted[off], n-off, sizeof(Node *), lon_sort_compare);
 }
 
-
-
 /*
  * Output sorted list of nodes
  */
@@ -662,6 +660,8 @@ void lon_print_sorted(LON *lon, FILE *fp, int cup)
 	old = *lon->sorted[i];
 	if(i < lon->size - 1)
 	    fputs(" ", fp);
+	while(i + 1 < lon->size && node_eq(&old, lon->sorted[i + 1]))
+	    i++;
     }
 
     xfree(lon->sorted);
