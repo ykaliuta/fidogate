@@ -1,5 +1,5 @@
 #
-# $Id: fidogate.conf.sample.in,v 5.2 2004/11/23 00:50:36 anray Exp $
+# $Id: fidogate.conf.sample.in,v 5.3 2005/02/14 19:52:58 anray Exp $
 #
 # NEW!!! (FIDOGATE 5.2.0ds) single common config file
 #
@@ -531,9 +531,6 @@ EchoMail4D
 # Don't gate messages with unknown zone in ^AMSGID (known zones are defined
 # in config.common).
 #KillUnknownMSGIDZone
-
-# Don't gate messages without a valid ^AMSGID (or similar)
-#KillNoMSGID
 
 # Don't gate split messages with a ^ASPLIT kludge
 #KillSplit
