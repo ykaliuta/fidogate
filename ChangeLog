@@ -1,5 +1,6 @@
 2003-10-15  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
+	* doc/mailer/sendmail/mailer/ftn.m4.in: delete section ftnmail
 	* configure: add sysconfdir and bugfixes
 	* packages/rpm/fidogate.spec: update
 	* doc/news/leafnode/common.h.in: delete common.h and change paths
