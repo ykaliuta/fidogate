@@ -1,0 +1,48 @@
+#!<SHELL>
+#
+# $Id$
+#
+# SH script to send batches to FIDOGATE
+#
+
+# Output to "log-news" log file
+FIDOGATE_LOGFILE="%G/log-news"
+export FIDOGATE_LOGFILE
+
+RFC2FTN=<SEND_RFC2FTN>
+PROGNAME=`basename $0`
+BATCHDIR=`<LIBEXECDIR>/confval -p INN_BATCHDIR`
+LOCK=`<LIBEXECDIR>/confval -p LOCKDIR`/LOCK.${PROGNAME}
+LOG=`<LIBEXECDIR>/confval -p LOGDIR`/${PROGNAME}.log
+
+##  Start logging.
+test ! -f ${LOG} && touch ${LOG}
+chmod 0660 ${LOG}
+exec >>${LOG} 2>&1
+echo "${PROGNAME}: [$$] begin `date`"
+cd ${BATCH}
+
+##  Anyone else there?
+trap 'rm -f ${LOCK} ; exit 1' 1 2 3 15
+if test -e ${LOCK}; then
+     pid=`cat ${LOCK}`
+     echo "lock found ${pid}"
+     if kill -0 ${pid} 2> /dev/null; then
+	echo "${PROGNAME}: [$$] locked by [`cat ${LOCK}`]"
+	exit 0
+     fi
+fi
+
+cd ${BATCHDIR}
+
+    posts="`echo '$'*`"; [ "x$posts" = 'x$*' ] && posts=
+
+    for art in ${posts}; do
+	sed -e 's/$//' -e 's/^\.//' $art | $RFC2FTN -nv
+	rm $art
+    done
+
+##  Remove the lock file.
+rm -f ${LOCK}
+
+echo "${PROGNAME}: [$$] end `date`"
