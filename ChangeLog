@@ -1,3 +1,8 @@
+2003-10-01  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* Changes.ru: add russian changes
+	* src/areafix/ftnafutil.c: add delete unsubscribe areas
+
 2003-10-01  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 
 	* src/util/confval.c: fixed the error 'Segmentation fault', added the
@@ -30,7 +35,7 @@
 	    Alexandr Dobroslavskiy)
 	* src/common/node.c: fix FTN_ACL (thanks to Alexandr Dobroslavskiy)
 	* src/gate/ftninpost.c: fix rename to bad
-	* src/gate/rfc2ftn.c: fix EchoGateAlias
+	* src/gate/rfc2ftn.c: change EchoGateAlias
 	* src/toss/ftntoss.c: fix tosting (thanks to Alexandr Dobroslavskiy)
 	* doc/FAQ.ru: add russian FAQ
 	* doc/news/leafnode: add leafnode-util (thanks to Elohin Igor)

@@ -217,9 +217,9 @@ int do_areasbbs(int cmd)
 	switch(cmd)
 	{
 	case DO_DELETE:
-	    if(!uplink)
+	    if(!uplink || areasbbs_isstate(state, 'U') )
 	    {
-		log("area %s: no uplink, deleting", p->area);
+		log("area %s: no uplink or unsubscribe, deleting", p->area);
 		if(!n_flag) 
 		{
 		    areasbbs_remove(p, pl);
