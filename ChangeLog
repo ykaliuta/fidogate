@@ -5,7 +5,7 @@
 
 2004-02-26  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 
-	* config.h.in: add the new define 'FIX_BAD_PKT_YEAR'
+	* src/common/packet.c: add the new define 'FIX_BAD_PKT_YEAR'
 	    for processing packets, contains bad year
 
 2004-02-25  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
