@@ -171,10 +171,10 @@ short int hi_write_dbc(char *rfc_msgid, char *fido_msgid, short int dont_flush)
     TIMEINFO ti;
 
     GetTimeInfo(&ti);
-    if (hi_file)
+    if(hi_file)
     {
     /* Get offset in history text file */ 
-    if( (offset = ftell(hi_file)) == ERROR) 
+     if ( (offset = ftell(hi_file)) == ERROR) 
      {
 	log("$ERROR: ftell DBC MSGID history failed");
 	return ERROR;
@@ -182,12 +182,12 @@ short int hi_write_dbc(char *rfc_msgid, char *fido_msgid, short int dont_flush)
     } 
     else 
     { 
-     log("$ERROR: can't open MSGID history file"); 
-     return ERROR; 
+	log("$ERROR: can't open MSGID history file"); 
+	return ERROR; 
     }
 
     /* Write MSGID line to history text file */
-    debug(7, "dbc history: offset=%ld: %s %s %ld", offset, fido_msgid,
+    debug(7,"dbc history: offset=%ld: %s %s %ld", offset, fido_msgid,
 		rfc_msgid, ti.time);
     ret = fprintf(hi_file, "%s\t%s\t%ld\n", fido_msgid, rfc_msgid, ti.time);
     if ( ret == ERROR || (!dont_flush && fflush(hi_file) == ERROR) )
@@ -348,7 +348,6 @@ char *hi_fetch(char *key_string, int flag)
     if(flag == 0)    
 	key_string = strchr(key_string, ' ') + 1;
     debug(7, "search key %s", key_string);
-    log("hi_fetch: search key %s", key_string);
     key.dptr  = key_string;				/* Key */
     key.dsize = strlen(key_string)+1;
     val = dbcfetch(key);
@@ -356,13 +355,11 @@ char *hi_fetch(char *key_string, int flag)
     {
 	BUF_COPY(out,xstrtok(val.dptr, " \t"));
 	debug(7, "found: %s",out);
-	log("hi_fetch: found: %s", out);
 	return out;
     }
     else
     {
     	debug(7, "not found");
-	log("hi_fetch: not found");
 	return NULL;
     }
 }
