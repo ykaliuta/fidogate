@@ -1,3 +1,8 @@
+2004-02-12  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
+
+	* src/common/node.c: fix the problem with dupes of
+	    the addresses in (F)Areas.bbs
+
 2004-02-12  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/gate/ftn2rfc.c: add GateRfcKludge(see Changes)
