@@ -200,7 +200,7 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail, char *ref_line)
     	    {
 		return ref_line;
 	    }
-#ifdef DBC_HISTORY
+#if defined(DBC_HISTORY) && defined(FIDO_STYLE_MSGID)
 	}
     }
 #endif

@@ -1,7 +1,7 @@
 
 		Установка FIDOGATE ver 1.2
 
-Создатель Andrey Slusar 2:467/126, rusfidogate at users.sourceforge.net
+Создатель Andrey Slusar 2:467/126, vasallia at ukr.net
 
 Самую свежую версию этого документа можно получить написав нетмейлом письмо:
 ===
