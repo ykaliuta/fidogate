@@ -55,9 +55,10 @@ void usage(void)
 int main(int argc, char **argv)
 {
     int c;
-    char *p;
+    int IsExist = 0;
     char *c_flag = NULL;
     char *p_flag = NULL;
+    cflist *pFirst = NULL;
 
     int option_index;
     static struct option long_options[] =
@@ -72,9 +73,6 @@ int main(int argc, char **argv)
     /* Set log and debug output */
     log_program(PROGRAM);
 
-    /* Init configuration */
-    cf_initialize();
-    
     while ((c = getopt_long(argc, argv, "vhc:p:", long_options, &option_index)) != EOF)
 	switch (c) {
 	case 'h':
@@ -94,22 +92,25 @@ int main(int argc, char **argv)
 	    break;
 	};
 
-    if(argc == 1)
-        usage();
-	    
+    /* Init configuration */
+    cf_initialize();
     cf_read_config_file(c_flag ? c_flag : CONFIG);
-
-    if ( p_flag )
+    
+    for(pFirst = config_first(); pFirst; pFirst = pFirst->next)
     {
-	int IsExist = 0;
-	for(p = cf_get_string(p_flag, TRUE); p && *p; p = cf_get_string(p_flag, FALSE))
+	if(argc == 1)
+	    fprintf(stderr, "fidogate_%s=\"%s\"\n", pFirst->key, pFirst->string);
+	else if( p_flag )
 	{
-	    IsExist = 1;
-	    fprintf(stderr, "fidogate_%s=\"%s\"\n", p_flag, p);
+	    if(!stricmp(p_flag, pFirst->key))
+	    {
+		IsExist = 1;
+		fprintf(stderr, "fidogate_%s=\"%s\"\n", p_flag, pFirst->string);
+	    }
 	}
-	if(!IsExist)
-	    fprintf(stderr, "variable %s does not specifed\n", p_flag);
     }
+    if(!IsExist && p_flag)
+        fprintf(stderr, "variable %s does not specifed\n", p_flag);
     exit_free();
     exit(0);
 }
