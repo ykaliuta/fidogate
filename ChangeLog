@@ -1,3 +1,8 @@
+2004-03-04  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/common/msgid.c: fix trap ftn2rfc if bad 
+	    REPLY and use dbc_history
+
 2004-03-02  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/common/msgid.c: add ref_line

@@ -182,7 +182,7 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail, char *ref_line)
     
 #if defined(DBC_HISTORY) && defined(FIDO_STYLE_MSGID)
     /***** Parse dbc for msgid ******/
-    if (!pzone && mail)
+    if(!pzone && mail && strchr(msgid, ' '))
     {
 	if(lock_program(cf_p_lock_history(), FALSE) == ERROR)
 	    return NULL;
