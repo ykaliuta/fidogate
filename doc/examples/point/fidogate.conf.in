@@ -295,7 +295,7 @@ TickDontSetTime
 #
 # Directory for old files replaced by ftntick with new versions
 #
-TickReplacedDir	"%G/oldfiles"
+TickReplacedDir	%G/oldfiles
 
 # Ignore replase old files
 TickReplacedIgnore
