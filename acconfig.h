@@ -183,6 +183,11 @@
  */
 #undef PASSTHRU_ECHOMAIL
 
+/** Support newsserver SN ***************************************************/
+/*
+ * Enable SN-style active_lookup
+ */
+#undef SN
 
 /***** AI patches configuration (see README.ai) *****************************/
 /*

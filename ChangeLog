@@ -1,3 +1,7 @@
+2004-07-20  Andrey Slusar <anray@users.sourceforge.net>
+
+	* configure.in: change innconfval -s parsing
+
 2004-07-15  Andrey Slusar <anray@users.sourceforge.net>
 
 	* src/gate/ftn2rfc.c: fix SingleArticles
