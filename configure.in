@@ -1,13 +1,11 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl
-dnl $Id$
-dnl
 dnl # Copy revision into the `configure' script
-AC_REVISION([$CVSid$])
+AC_REVISION([$Id$])
 dnl # Minimum Autoconf version required.
 AC_PREREQ(2.53)
 dnl # No comments...
-AC_INIT([fidogate],[5.1],[rusfidogate@users.sourceforge.net])
+AC_INIT([fidogate],[5.1.0ds],[rusfidogate@users.sourceforge.net])
 dnl # File to check from `configure' script
 AC_CONFIG_SRCDIR([src/common/config.c])
 dnl # Set automake and libtool scripts are in build directory
@@ -41,17 +39,6 @@ yes) AC_MSG_ERROR([--with-vardir requires an argument; use --with-vardir=DIR]) ;
 esac
 ])
 
-# Check for a --with-sysconfdir argument 
-AC_ARG_WITH(sysconfdir, dnl 
-  --with-sysconfdir=DIR     set fidogate config DIR,
-            [dnl 
-case "$with_sysconfdir" in
-yes) AC_MSG_ERROR([--with-sysconfdir requires an argument; use --with-sysconfdir=DIR]) ;;
-''|no) ;;
-*) sysconfdir="$withval" ;;
-esac
-])
-
 # Check for a --with-spooldir argument
 AC_ARG_WITH(spooldir, dnl
   --with-spooldir=DIR	  set fidogate spool DIR,
@@ -61,6 +48,17 @@ yes) AC_MSG_ERROR([--with-spooldir requires an argument; use --with-spooldir=DIR
 ''|no) ;;
 *) spooldir="$withval" ;;
 esac
+])
+
+# Check for a --with-sysconfdir argument
+AC_ARG_WITH(sysconfdir, dnl
+  --with-sysconfdir=DIR     set fidogate config DIR,
+            [dnl
+case "$with_sysconfdir" in
+yes) AC_MSG_ERROR([--with-sysconfdir requires an argument; use --with-sysconfdir=DIR]) ;;
+''|no) ;;
+*) sysconfdir="$withval" ;;
+esac 
 ])
 
 # Check for a --with-btbasedir argument
@@ -137,10 +135,10 @@ AC_ARG_WITH(owner, dnl
             [dnl
 case "$with_owner" in
 ''|news|no)
-    AM_CONDITIONAL(ftnnews,FALSE);;
+    AM_CONDITIONAL(ftnnews,false);;
 *) 
     OWNER="$withval" 
-    AM_CONDITIONAL(ftnnews,TRUE)
+    AM_CONDITIONAL(ftnnews,true)
     SRFC2FTN="ftnnews";;
 esac
 ])
@@ -406,7 +404,7 @@ AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsb
 
     AC_MSG_CHECKING(for rnews)
     if ! test "${with_rnews+set}" = set ;then
-	AC_PATH_PROG(RNEWS, rnews, no)
+	AC_PATH_PROG(RNEWS, rnews,, /usr/local/news/bin:/usr/lib/news:/usr/lib/news/bin:/usr/local/lib/news/bin:usr/bin)
 	if test "$RNEWS" = no; then
 	    RNEWS="$PATHBIN/rnews"
 	fi
@@ -431,7 +429,7 @@ AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsb
 
     AC_MSG_CHECKING(for inews)
     if ! test "${with_inews+set}" = set ;then
-	AC_PATH_PROG(INEWS, inews, no)
+	AC_PATH_PROG(INEWS, inews,, /usr/local/news/bin:/usr/lib/news:/usr/lib/news/bin:/usr/local/lib/news/bin:usr/bin)
 	if test "$INEWS" = no; then
 	    INEWS="$PATHBIN/inews"
         fi
@@ -484,8 +482,7 @@ if test "${with_sendmail+set}" = set ;then
 else
     AC_PATH_PROG(SENDMAIL, sendmail)
     if ! test -x "$SENDMAIL" ; then
-        AC_PATH_PROG(SENDMAIL, sendmail, ,
-            $PATH:/usr/sbin:/usr/lib:/usr/ucblib:/usr/share)
+        AC_PATH_PROG(SENDMAIL, sendmail,, /usr/sbin:/usr/lib:/usr/ucblib:/usr/share)
 	if ! test -x "$SENDMAIL" ; then
     	    AC_MSG_ERROR([sendmail not found, re-run with valid --with-sendmail])
 	fi

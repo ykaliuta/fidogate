@@ -1314,4 +1314,4 @@ table	x-mac		x-mac
 
 
 # ----------------------------------------------------------------------------
-include russian.map
+include cyrillic.map

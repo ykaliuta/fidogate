@@ -348,7 +348,6 @@
  * Disable tosting netmail and set directory for incoming and outgoing pkt's
  */
 #undef DO_NOT_TOSS_NETMAIL 
-#undef DEFAULT_OUTNETMAIL
 
 /*
  * Ignore `From:' field if REPLYTO or REPLYADDR was found

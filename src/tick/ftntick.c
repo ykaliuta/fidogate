@@ -312,7 +312,7 @@ int process_tic(Tick *tic)
 #endif /* FECHO_PASSTHROUGHT */
     char tmp [30];
     short create_flag = FALSE;
-    char *s1, *s2;
+    char *s1;
     int errlvl;
 
     AreaUplink *a;

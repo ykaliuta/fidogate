@@ -585,7 +585,12 @@ Errors-To		dyff@corex.izhora.spb.ru
 #
 #                       area chars	newsgroup chars
 #			----------	---------------
-#AreasXlate		_		-
+AreasXlate              &               -
+AreasXlate              $               -
+AreasXlate              '               -
+AreasXlate              _               -
+AreasXlate              /               -
+AreasXlate              |               -
 
 # NOTE 1: real gateways should *not* disable FSC0035/47 kludges, the
 #         From: line is obsoleted by both ^ARFC-Xxxx kludges and

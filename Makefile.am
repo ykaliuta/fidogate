@@ -5,14 +5,14 @@
 # Makefile FIDOGATE TOPDIR
 #
 
-AUTOMAKE_OPTIONS=foreign
+AUTOMAKE_OPTIONS=foreign dist-bzip2 1.5
 
 include $(top_builddir)/build/config.make
 
 
 TOPDIR		= .
 
-SUBDIRS		= src scripts doc test
+SUBDIRS		= src scripts doc
 
 FDESTDIR	= $(DEFAULT_V_CONFIGDIR) \
 		  $(DEFAULT_V_LOGDIR) \

@@ -1,3 +1,18 @@
+2003-10-27  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* configure: fix compile ftnnews(thanks to Zhenja Kaluta)
+	* config.h.in: remove DEFAULT_OUTNETMAIL
+	* src/toss/ftntoss.c: fix DO_NOT_TOSS_NETMAIL
+
+2003-10-26  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/tick/ftntick.c: fix *s2
+
+2003-10-22  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* configure: fix sendmail, rnews, inews path
+	* src/charset/cyrillic.map: add cp1125 to default map
+
 2003-10-20  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* doc/FAQ.ru: update
