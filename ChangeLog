@@ -1,3 +1,12 @@
+2003-12-29  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/areafix/areafix.c: fix forward requests(thanks
+	    to Zhenja Kaluta)
+
+2003-12-28  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* configure.in: fix warning message
+
 2003-12-07  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/charset/cyrillic.map: update

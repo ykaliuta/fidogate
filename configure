@@ -4845,8 +4845,8 @@ echo "$as_me: error: rnews not found; use --with-rnews=DIR" >&2;}
 
 
     if ! test "${PATHOUTGOING+set}"   = set; then
-    { { echo "$as_me:$LINENO: error: set path to INN lib directory with --with-newslibdir=PATH option" >&5
-echo "$as_me: error: set path to INN lib directory with --with-newslibdir=PATH option" >&2;}
+    { { echo "$as_me:$LINENO: error: use --with-newsbindir=DIR or --without-news option" >&5
+echo "$as_me: error: use --with-newsbindir=DIR or --without-news option" >&2;}
    { (exit 1); exit 1; }; }
     fi
     if $NEWSLIBDIR/bin/innconfval -v 2>&1 </dev/null | egrep 2\.\3\|4 > /dev/null; then

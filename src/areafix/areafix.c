@@ -822,9 +822,9 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
     int i, ignore_prl = FALSE;
     char *autocreate_fecho_path=NULL;
 
-    if(!authorized_new || !authorized)
+    if(! (authorized_new || (authorized_fwd && inter))|| !authorized)
     {
-	areafix_printf("Command NEW: not authorized.");
+	areafix_printf("Command not authorized.");
 	return OK;
     }
 

@@ -408,7 +408,7 @@ AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsb
 
 
     if ! test "${PATHOUTGOING+set}"   = set; then
-    AC_MSG_ERROR([set path to INN lib directory with --with-newslibdir=PATH option])
+    AC_MSG_ERROR([use --with-newsbindir=DIR or --without-news option])
     fi
     if $NEWSLIBDIR/bin/innconfval -v 2>&1 </dev/null | egrep 2\.\[3\|4] > /dev/null; then
 	AC_DEFINE(OLD_BATCHER)

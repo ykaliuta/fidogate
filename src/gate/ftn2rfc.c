@@ -1163,7 +1163,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 
 	if( (p = kludge_get(&body.kludge, "ORIGID", NULL)) )
 	    id_line = s_msgid_convert_origid(p);
-	else if( (p = kludge_get(&body.kludge, "Message-Id", NULL)) )
+	else if( (p = kludge_get(&body.kludge, "Message-ID", NULL)) )
 	    id_line = s_msgid_convert_origid(p);
 	else if( (p = kludge_get(&body.kludge, "RFC-Message-ID", NULL)) )
 	    id_line = s_msgid_convert_origid(p);
