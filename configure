@@ -4759,6 +4759,8 @@ echo $ECHO_N "checking for news-library path... $ECHO_C" >&6
 	    newsbindir=/usr/local/lib/news/bin
 	elif test -x /usr/local/news/innconfval ; then
 	    newsbindir=/usr/local/news
+	elif test -x /usr/bin/innconfval ; then
+	    newsbindir=/usr/bin
 	else
 { { echo "$as_me:$LINENO: error: PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsbindir=DIR or --without-news" >&5
 echo "$as_me: error: PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsbindir=DIR or --without-news" >&2;}
@@ -4767,9 +4769,12 @@ echo "$as_me: error: PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --wit
 	fi
     fi
 
-    eval `$newsbindir/innconfval -s`
-    NEWSLIBDIR=${PATHNEWS}
-
+    if $newsbindir/innconfval -v 2>&1 </dev/null | egrep 2\.\3\|4 > /dev/null; then
+      eval `$newsbindir/innconfval -s`
+      NEWSLIBDIR=${PATHNEWS}
+    else
+      NEWSLIBDIR=$newsbindir
+    fi
 
     echo "$as_me:$LINENO: result: $NEWSLIBDIR" >&5
 echo "${ECHO_T}$NEWSLIBDIR" >&6

@@ -377,16 +377,21 @@ if test "$with_news" != no ;then
 	    newsbindir=/usr/local/lib/news/bin
 	elif test -x /usr/local/news/innconfval ; then
 	    newsbindir=/usr/local/news
+	elif test -x /usr/bin/innconfval ; then
+	    newsbindir=/usr/bin
 	else
 AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsbindir=DIR or --without-news])
 	    exit 1;
 	fi
     fi
-
-    eval `$newsbindir/innconfval -s`
-    NEWSLIBDIR=${PATHNEWS}
-
-
+    
+    if $newsbindir/innconfval -v 2>&1 </dev/null | egrep 2\.\[3\|4] > /dev/null; then
+      eval `$newsbindir/innconfval -s`
+      NEWSLIBDIR=${PATHNEWS}
+    else
+      NEWSLIBDIR=$newsbindir
+    fi
+    
     AC_MSG_RESULT($NEWSLIBDIR)
 
     AC_MSG_CHECKING(for rnews)
