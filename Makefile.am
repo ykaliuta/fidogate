@@ -40,6 +40,9 @@ FDESTDIR	= $(DEFAULT_V_CONFIGDIR) \
 		  $(DEFAULT_V_PINBOUND)/bad \
 		  $(DEFAULT_V_PINBOUND)/tmpunpack
 
+OWNER = @OWNER@
+GROUP = @GROUP@
+
 install-am: installdirs
 
 installdirs:
@@ -48,7 +51,13 @@ installdirs:
 	$(mkinstalldirs) $(DESTDIR)$$d || exit 1;\
 	echo "create directory $(DESTDIR)$$d"; \
 	fi; \
-	done
+	done; \
+	if test `id -u` -eq 0 && test -n "${OWNER}" && test -n "${GROUP}"; then \
+	for d in $(FDESTDIR); do\
+	chown ${OWNER}:${GROUP} $(DESTDIR)$$d || exit 1;\
+	echo "chown ${OWNER}:${GROUP} $(DESTDIR)$$d"; \
+	done; \
+	fi
 
 install-config: install-dirs
 	if [ -f doc/Makefile ]; then $(MAKE) -C doc $@ || exit 1; fi

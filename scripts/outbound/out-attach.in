@@ -25,6 +25,6 @@ $< = $>;
 
 system "cp $file $outpath/$file";
 system "$binpath/ftnfattach -F$fl $node $outpath/$file";
-system "chown <OWNER>.<GROUP> $outpath/$file";
+system "chown <OWNER>:<GROUP> $outpath/$file";
 
 exit 0;

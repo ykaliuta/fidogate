@@ -75,7 +75,6 @@ DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DOMAINNAME = @DOMAINNAME@
 EXEEXT = @EXEEXT@
-GROUP = @GROUP@
 HOSTNAME = @HOSTNAME@
 INEWS = @INEWS@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
@@ -92,7 +91,6 @@ NEWSLIBDIR = @NEWSLIBDIR@
 NM = @NM@
 OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
-OWNER = @OWNER@
 PACKAGE = @PACKAGE@
 PATHARTICLES = @PATHARTICLES@
 PATHBIN = @PATHBIN@
@@ -120,6 +118,9 @@ btbasedir = @btbasedir@
 install_sh = @install_sh@
 netmaildir = @netmaildir@
 vardir = @vardir@
+GROUP = @GROUP@
+
+OWNER = @OWNER@
 
 AUTOMAKE_OPTIONS = foreign dist-bzip2 1.5
 
@@ -499,7 +500,13 @@ installdirs:
 	$(mkinstalldirs) $(DESTDIR)$$d || exit 1;\
 	echo "create directory $(DESTDIR)$$d"; \
 	fi; \
-	done
+	done; \
+	if test `id -u` -eq 0 && test -n "${OWNER}" && test -n "${GROUP}"; then \
+	for d in $(FDESTDIR); do\
+	chown ${OWNER}:${GROUP} $(DESTDIR)$$d || exit 1;\
+	echo "chown ${OWNER}:${GROUP} $(DESTDIR)$$d"; \
+	done; \
+	fi
 
 install-config: install-dirs
 	if [ -f doc/Makefile ]; then $(MAKE) -C doc $@ || exit 1; fi

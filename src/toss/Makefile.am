@@ -34,5 +34,7 @@ clean-am:
 	rm -f report_traffic
 
 install-exec-am:
-	chown news $(DESTDIR)$(bindir)/ngoper
+	if test `id -u` -eq 0; then \
+	chown news $(DESTDIR)$(bindir)/ngoper; \
+	fi
 	chmod 4550 $(DESTDIR)$(bindir)/ngoper

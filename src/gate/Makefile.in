@@ -486,8 +486,10 @@ install-exec-am:
 	@if test -e $(srcdir)/ftnnews$(EXEEXT); then \
 	chmod 4750 $(DESTDIR)$(libexecdir)/ftnnews$(EXEEXT); \
 	echo " chmod 4750 $(DESTDIR)$(libexecdir)/ftnnews$(EXEEXT)"; \
+	if test `id -u` -eq 0; then \
 	chown news $(DESTDIR)$(libexecdir)/ftnnews$(EXEEXT); \
 	echo " chown news $(DESTDIR)$(libexecdir)/ftnnews$(EXEEXT)"; \
+	fi; \
 	fi
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

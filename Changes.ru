@@ -4,10 +4,13 @@
 
 Version 5.2.0ds-alpha3
 ~~~~~~~~~~~~~~~~~~~~~
+- Новая опция в конфиге - NoRewrite. Работает только, если собирать с
+  DO_NOT_TOSS_NETMAIL. Служит для отключения ремапов в packing.
 - NoRfcKludge опять работает по старому - убирает клудж RFC:
 - Новый токен в конфиге - GateRfcKludge. Пока декодирует при гейтовании
   FTN->RFC кладжи RFC-Message-ID, RFC-References, RFC-Reply-To,
-  RFC-Organization в соответствующие им ньюсовые.
+  RFC-Organization, RFC-User-Agent, RFC-X-NewsReader в соответствующие
+  им ньюсовые.
 - Удален дефайн REPLY_IF_X_FLAGS_M. Теперь он всегда включен.
 - Теперь при гейтовании ftn2rfc, при выборе перекодировочных таблиц, в
   1-ю очередь смотрим в конфиг, а лишь потом на дефайны, заданные при
@@ -51,8 +54,9 @@ Version 5.1.0ds-beta2
 
 Version 5.1.0ds-beta1
 ~~~~~~~~~~~~~~~~~~~~~
-- При EchoGateAlias адрес в MSGID проставляется не гейта, а берется из
-  aliases.
+- При включенном в конфиге EchoGateAlias и при компиляции с включенной опцией
+  FIDO_STYLE_MSGID(по умолчанию включена), адрес в MSGID проставляется не
+  гейта, а берется из aliases.
 - ftnafutil delete удаляет не только эхи без линков, но еще и имеющие
   статус 'U'.
 - Добавлены leafnode-util от Elohin Igor

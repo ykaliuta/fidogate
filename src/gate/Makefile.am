@@ -36,6 +36,8 @@ install-exec-am:
 	@if test -e $(srcdir)/ftnnews$(EXEEXT); then \
 	chmod 4750 $(DESTDIR)$(libexecdir)/ftnnews$(EXEEXT); \
 	echo " chmod 4750 $(DESTDIR)$(libexecdir)/ftnnews$(EXEEXT)"; \
+	if test `id -u` -eq 0; then \
 	chown news $(DESTDIR)$(libexecdir)/ftnnews$(EXEEXT); \
 	echo " chown news $(DESTDIR)$(libexecdir)/ftnnews$(EXEEXT)"; \
+	fi; \
 	fi
