@@ -410,7 +410,7 @@ AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsb
     fi
     
     if $newsbindir/innconfval -v 2>&1 </dev/null | egrep 2\.\[3\|4] > /dev/null; then
-      eval `$newsbindir/innconfval -s|grep -e PATHNEWS -e PATHBIN`
+      eval `$newsbindir/innconfval -s|grep -e PATHNEWS -e PATHBIN -e PATHOUTGOING`
       NEWSLIBDIR=${PATHNEWS}
     else
       NEWSLIBDIR=$newsbindir
