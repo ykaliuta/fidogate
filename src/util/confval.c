@@ -44,11 +44,10 @@ void usage(void)
     
     fprintf(stderr, "usage:   %s [-options] \n\n", PROGRAM);
     fprintf(stderr, "\
-	  -p --param VARIABLE          this help\n\
+	  -p --param VARIABLE          value of read param\n\
           -v --verbose                 more verbose\n\
 	  -h --help                    this help\n\
           -c --config name             read config file (\"\" = none)\n");
-    
     exit(0);
 }
 
@@ -66,12 +65,17 @@ int main(int argc, char **argv)
 	{ "verbose",      0, 0, 'v'},	/* More verbose */
 	{ "help",         0, 0, 'h'},	/* Help */
 	{ "config",       1, 0, 'c'},	/* Config file */
-	{ "param",        1, 0, 'c'},
+	{ "param",        1, 0, 'p'},
 	{ 0,              0, 0, 0  }
     };
+	
+    /* Set log and debug output */
+    log_program(PROGRAM);
 
-    while ((c = getopt_long(argc, argv, "hvp:c:",
-			    long_options, &option_index     )) != EOF)
+    /* Init configuration */
+    cf_initialize();
+    
+    while ((c = getopt_long(argc, argv, "vhc:p:", long_options, &option_index)) != EOF)
 	switch (c) {
 	case 'h':
 	    usage();
@@ -87,21 +91,25 @@ int main(int argc, char **argv)
 	    break;
 	default:
 	    usage();
-	    exit(EX_USAGE);
 	    break;
-	}
+	};
 
-    debug(0, "%s", c_flag);
-    cf_initialize();
+    if(argc == 1)
+        usage();
+	    
     cf_read_config_file(c_flag ? c_flag : CONFIG);
 
-    if( (p = cf_get_string(p_flag, TRUE)) )
+    if ( p_flag )
     {
-	fprintf(stderr, "fidogate_%s=\"%s\"; export %s\n", p_flag, p, p_flag);
+	int IsExist = 0;
+	for(p = cf_get_string(p_flag, TRUE); p && *p; p = cf_get_string(p_flag, FALSE))
+	{
+	    IsExist = 1;
+	    fprintf(stderr, "fidogate_%s=\"%s\"\n", p_flag, p);
+	}
+	if(!IsExist)
+	    fprintf(stderr, "variable %s does not specifed\n", p_flag);
     }
-    else
-	debug(4, "variable %s does not specifed\n", p_flag);
-    
     exit_free();
     exit(0);
 }
