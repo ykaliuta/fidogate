@@ -198,7 +198,7 @@ int do_tic(int w_flag)
 	 hi_init_tic_history();
 	 sprintf(buffer,"%s %s %s %lx",tic.area ,znfp1(&tic.origin), tic.file,
 	             tic.crc);
-	 if (hi_test(buffer) && (!tic.replaces || !stricmp(tic.file, tic.replaces)))
+	 if (hi_test(buffer) && (!tic.replaces || stricmp(tic.file,tic.replaces)!=0))
 	 {
 	     hi_close();
 	     unlock_program(cf_p_lock_history());

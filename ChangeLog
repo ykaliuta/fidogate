@@ -1,3 +1,8 @@
+2003-10-02  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/tick/ftntick.c: fix tic.replaces(thanks to Andrey Zhuravlev)
+	* packages/freebsd/Makefile: update freebsd port
+
 2003-10-01  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* Changes.ru: add russian changes

@@ -5,10 +5,10 @@
 #
 
 PORTNAME=		fidogate
-PORTVERSION=		5.1.0ds-beta1
+PORTVERSION=		5.1.0ds-b1
 CATEGORIES=		news mail
 MASTER_SITES=		http://node126.narod.ru/files/
-DISTNAME=		fidogate-5.1.0ds-beta1
+DISTNAME=		fidogate5.1.0ds-beta1
 
 MAINTAINER=		rusfidogate@users.sourceforge.net
 COMMENT=		Fido-Internet Gateway and Tosser
@@ -64,8 +64,10 @@ do-install:
 
 .if !defined(NOPORTDOCS)
 	${MKDIR} ${PREFIX}/share/doc/fidogate5
-	${INSTALL_DATA} ${WRKSRC}/doc/README ${PREFIX}/share/doc/fidogate5/README.ru
-	${INSTALL_DATA} ${WRKSRC}/doc/README.en ${PREFIX}/share/doc/fidogate5/README
+	${INSTALL_DATA} ${WRKSRC}/doc/README.ru ${PREFIX}/share/doc/fidogate5/README.ru
+	${INSTALL_DATA} ${WRKSRC}/doc/README ${PREFIX}/share/doc/fidogate5/README
+	${INSTALL_DATA} ${WRKSRC}/Changes.ru ${PREFIX}/share/doc/fidogate5/Changes.ru
+	${INSTALL_DATA} ${WRKSRC}/ChangeLog ${PREFIX}/share/doc/fidogate5/ChangeLog
 	${MKDIR} ${PREFIX}/share/doc/fidogate5/examples
 	${MKDIR} ${PREFIX}/share/examples/fidogate5/dyff
 	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/acl.sample ${PREFIX}/share/examples/fidogate5/dyff/acl.sample

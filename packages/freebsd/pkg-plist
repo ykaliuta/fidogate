@@ -79,6 +79,8 @@ var/fidogate/areas.bbs.sample
 var/fidogate/fareas.bbs.sample
 %%PORTDOCS%%share/doc/fidogate5/README.ru
 %%PORTDOCS%%share/doc/fidogate5/README
+%%PORTDOCS%%share/doc/fidogate5/ChangeLog
+%%PORTDOCS%%share/doc/fidogate5/Changes.ru
 %%PORTDOCS%%share/examples/fidogate5/dyff/acl.sample
 %%PORTDOCS%%share/examples/fidogate5/dyff/aliases.sample
 %%PORTDOCS%%share/examples/fidogate5/dyff/areafix.help.rus
