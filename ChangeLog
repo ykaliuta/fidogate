@@ -1,3 +1,8 @@
+2004-02-13  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: add gate RFC-Organization if
+	    enable option GateRfcKludge
+
 2004-02-12  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 
 	* src/common/node.c: fix the problem with dupes of

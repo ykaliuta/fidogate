@@ -6,8 +6,8 @@ Version 5.2.0ds-alpha3
 ~~~~~~~~~~~~~~~~~~~~~
 - NoRfcKludge опять работает по старому - убирает клудж RFC:
 - Новый токен в конфиге - GateRfcKludge. Пока декодирует при гейтовании
-  FTN->RFC кладжи RFC-Message-ID, RFC-References, RFC-Reply-To в
-  соответствующие ньюсовые.
+  FTN->RFC кладжи RFC-Message-ID, RFC-References, RFC-Reply-To,
+  RFC-Organization в соответствующие им ньюсовые.
 - Удален дефайн REPLY_IF_X_FLAGS_M. Теперь он всегда включен.
 - Теперь при гейтовании ftn2rfc при выборе перекодировочных таблиц, в
   1-ю очередь смотрим в конфиг, а лишь потом на дефайны, заданные при
