@@ -1,3 +1,7 @@
+2004-02-22  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/all: rename OLD_TMP to OLD_TOSS, fix warnings
+
 2004-02-20  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/common/msgid.c: not write mail to msgid

@@ -398,7 +398,7 @@
 #undef USE_SYSLOG
 
 /*
- * Enable if you toss old format pkts.
+ * Enable old style tosting
  */
 #undef OLD_TOSS
 

@@ -1244,7 +1244,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    else
 	    {
 		if( (p = kludge_get(&body.kludge, "REPLY", NULL)) )
-		    ref_line = s_msgid_fido_to_rfc(p, NULL, area);
+		    ref_line = s_msgid_fido_to_rfc(p, NULL, area!=NULL);
 	    }
 	}
 	
