@@ -1,3 +1,10 @@
+2004-11-21  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* doc/README.ru: add description for HAS_POSIX_REGEX
+	option
+	* configure.in: add HAS_POSIX_REGEX(--enable-posix-regex).
+	See docs for details
+
 2004-11-20  Andrey Slusar  <anray@users.sourceforge.net>
 
 	* doc/README.ru: update
@@ -8,9 +15,9 @@
 
 2004-11-07  Andrey Slusar  <anray@users.sourceforge.net>
 
-	* src/gate/rfc2ftn.c: now default rfc charset
-	    is getting from DefaultCharset option, fix
-	    build with defined HAVE_REGEX_H
+	* src/gate/rfc2ftn.c: now default rfc charset is
+	getting from DefaultCharset option, fix build with
+	defined HAVE_REGEX_H
 	* src/gate/send-fidogate.snews: fine working
 
 2004-11-02  Andrey Slusar  <anray@users.sourceforge.net>

@@ -409,6 +409,9 @@ AC_ARG_ENABLE(recode-allrfc,
 [  --disable-recode-allrfc recoding some RFC header],
     ,AC_DEFINE(RECODE_ALL_RFC))
 
+AC_ARG_ENABLE(posix-regex,
+[  --enable-posix-regex    compile with posix regex support],
+    AC_DEFINE(HAS_POSIX_REGEX), )
 
 if test "$with_news" != no ;then
 {
