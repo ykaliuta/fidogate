@@ -1,3 +1,11 @@
+2004-08-07  Andrey Slusar <anray@users.sourceforge.net>
+
+	* configure.in: fix default prefix
+	* src/gate/Makefile.am: fix build with not default
+	    owner and group(thanks to Max Boyarov)
+	* doc/news/leafnode/Makefile.am: change leafnode
+	    config from common.h to config.h
+
 2004-08-01  Andrey Slusar <anray@users.sourceforge.net>
 
 	* src/toss/ftnexpire.c: fix format warnings

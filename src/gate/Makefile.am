@@ -37,7 +37,7 @@ install-exec-am:
 	chmod 4750 $(DESTDIR)$(libexecdir)/ftnnews$(EXEEXT); \
 	echo " chmod 4750 $(DESTDIR)$(libexecdir)/ftnnews$(EXEEXT)"; \
 	if test `id -u` -eq 0; then \
-	chown news $(DESTDIR)$(libexecdir)/ftnnews$(EXEEXT); \
-	echo " chown news $(DESTDIR)$(libexecdir)/ftnnews$(EXEEXT)"; \
+	chown news $(DESTDIR)$(libexecdir)/send-fidogate; \
+	echo " chown news $(DESTDIR)$(libexecdir)/send-fidogate"; \
 	fi; \
 	fi

@@ -28,7 +28,7 @@ dist_sysconf_DATA = examples/bounce/bounce.acl \
 
 configs  =  mailer/postfix/master.cf \
 	    mailer/sendmail/mailer/ftn.m4 \
-	    news/leafnode/common.h \
+	    news/leafnode/config.h \
 	    news/leafnode/Makefile \
 	    examples/dyff/fidogate.conf.sample \
 	    examples/point/fidogate.conf \

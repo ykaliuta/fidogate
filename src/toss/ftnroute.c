@@ -214,7 +214,7 @@ int nodelist_read(void)
 
 	if( (stat(nl_file, &statnl)) != 0 )
 	{
-	    fglog("$ERROR: can't stat file %s", nl_file);
+	    fglog("$ERROR: can't stat file %s, %s", nl_file, strerror(errno));
 	    continue;
 	}
 	if( ( stat(cf_p_hubroutedb(), &statdb)) == 0 )
