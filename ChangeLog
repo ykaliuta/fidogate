@@ -1,3 +1,8 @@
+2004-07-22  Andrey Slusar <anray@users.sourceforge.net>
+
+	* src/gate/ftninpost.c: change system() to
+	    portable run_system()
+
 2004-07-20  Andrey Slusar <anray@users.sourceforge.net>
 
 	* configure.in: change innconfval -s parsing

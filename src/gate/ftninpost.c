@@ -265,7 +265,7 @@ int do_dir(char *cdir, int mode)
 	    {
 		debug( 8, "exec: %s", p );
 		freopen( rfc_file, R_MODE, stdin );
-		ret = system( p );
+		ret = run_system( p );
 		fclose( stdin );
 		if(ret)
 		{

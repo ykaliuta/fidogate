@@ -144,7 +144,7 @@ void rm_group(char *area, Node *uplink)
 	    debug(7, "Found: %s stat = %s, have %d article", p->group, p->flag,
 		    p->art_h-p->art_l);
 #else
-	    debug(7, "Found: %s stat = %s, have %d article", p->group, p->flag);
+	    debug(7, "Found: %s stat = %s", p->group, p->flag);
 #endif
 	    if ( cf_get_string("AutoRemoveNG", TRUE) )
 	    {
