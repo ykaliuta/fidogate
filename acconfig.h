@@ -396,6 +396,11 @@
  */
 #undef OLD_TOSS
 
+/*
+ * Fix bad year in pkt's
+ */
+#undef FIX_BAD_PKT_YEAR
+
 /***** System dependend configuration ***************************************
  *
  *   HAVE_FCNTL_LOCK		Do you have file locking with fcntl()
