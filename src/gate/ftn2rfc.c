@@ -1386,7 +1386,7 @@ carbon:
 	    while(is_blank(*p))
 		p++;
         if (strlen(p) == 0)
-#ifndef NOINSERT_ORGANIZATION 
+#ifdef NOINSERT_ORGANIZATION 
             tl_appendf(&theader, "Organization: %s\n", "(none)" );
 #else /* NOINSERT_ORGANIZATION */ 
             tl_appendf(&theader, "Organization: %s\n", cf_p_organization() );
