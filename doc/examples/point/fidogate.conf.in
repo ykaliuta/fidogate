@@ -196,7 +196,7 @@ KillEmpty
 LogNetMail
 
 # Check ^APATH for our own address
-CheckPath
+#CheckPath
 
 # Kill EchoMail with circular ^APATH (looking for our own AKA),
 # if CheckPath is enabled
