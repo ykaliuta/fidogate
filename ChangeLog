@@ -1,3 +1,7 @@
+2004-02-12  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: add GateRfcKludge(see Changes)
+
 2004-02-11  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/gate/ftn2rfc.c: add preferred cs_out

@@ -54,7 +54,7 @@ char   *get_subject		(Textlist *);
 Area   *news_msg		(char *, Node *);
 int	msg_format_buffer	(char *, Textlist *);
 static int msg_get_line_length	(void);
-static int no_rfc_kludge = FALSE;	/* NoRfcKludge          */
+static int gate_rfc_kludge = FALSE;	/* GateRfcKludge          */
 int	unpack			(FILE *, Packet *);
 int	unpack_file		(char *);
 
@@ -1171,14 +1171,13 @@ int unpack(FILE *pkt_file, Packet *pkt)
 
 	if( (p = kludge_get(&body.kludge, "ORIGID", NULL)) )
 	    id_line = s_msgid_convert_origid(p);
-	else if(!no_rfc_kludge)
+	else if( (p = kludge_get(&body.kludge, "Message-ID", NULL)) )
+	    id_line = s_msgid_convert_origid(p);
+	
+	if(gate_rfc_kludge && !id_line)
 	{
-	 if( (p = kludge_get(&body.kludge, "Message-ID", NULL)) )
-	    id_line = s_msgid_convert_origid(p);
-	 else if( (p = kludge_get(&body.kludge, "RFC-Message-ID", NULL)) )
-	    id_line = s_msgid_convert_origid(p);
-	if( (p = kludge_get(&body.kludge, "RFC-References", NULL)) )
-	    ref_line = p;
+	    if( (p = kludge_get(&body.kludge, "RFC-Message-ID", NULL)) )
+		id_line = s_msgid_convert_origid(p);
 	}
 
 	if(!id_line)
@@ -1235,9 +1234,20 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	
 	if( (p = kludge_get(&body.kludge, "ORIGREF", NULL)) )
 	    ref_line = s_msgid_convert_origid(p);
+	
 	if(!ref_line)
-	    if( (p = kludge_get(&body.kludge, "REPLY", NULL)) )
-		ref_line = s_msgid_fido_to_rfc(p, NULL, area==NULL);
+	{
+	    if(gate_rfc_kludge)
+	    {
+		if( (p = kludge_get(&body.kludge, "RFC-References", NULL)) )
+		    ref_line = p;
+	    }
+	    else
+	    {
+		if( (p = kludge_get(&body.kludge, "REPLY", NULL)) )
+		    ref_line = s_msgid_fido_to_rfc(p, NULL, area==NULL);
+	    }
+	}
 	/* ^AGATEWAY */
 	gateway = kludge_get(&body.kludge, "GATEWAY", NULL);
 
@@ -1282,6 +1292,11 @@ int unpack(FILE *pkt_file, Packet *pkt)
 
 	tl_appendf(&theader, "Date: %s\n", date(NULL, &msg.date));
 	tl_appendf(&theader, "From: %s\n", from_line);
+	if(!reply_to_line && gate_rfc_kludge)
+	{
+	    if( (p = kludge_get(&body.kludge, "RFC-Reply-To", NULL)) )
+		reply_to_line = p;
+	}
 	if(reply_to_line)
 	    tl_appendf(&theader, "Reply-To: %s\n", reply_to_line);
 	if ( NULL == msgbody_rfc_subject )
@@ -1993,10 +2008,10 @@ int main(int argc, char **argv)
 	debug(8, "config: DontIgnore0x8d");
 	ignore_soft_cr = FALSE;
     }
-    if(cf_get_string("NoRfcKludge", TRUE))
+    if(cf_get_string("GateRfcKludge", TRUE))
     {
-	debug(8, "config: NoRfcKludge");
-	no_rfc_kludge = TRUE;
+	debug(8, "config: GateRfcKludge");
+	gate_rfc_kludge = TRUE;
     }
 
     /* Init various modules */
