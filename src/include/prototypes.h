@@ -318,7 +318,7 @@ extern int verbose;
 extern int no_debug;
 
 char   *strerror		(int);
-void	log			(const char *, ...)
+void	log_fg			(const char *, ...)
     __attribute__ ((format (printf, 1, 2)));
 void	debug			(int, const char *, ...)
     __attribute__ ((format (printf, 2, 3)));
