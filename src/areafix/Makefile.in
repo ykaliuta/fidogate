@@ -125,7 +125,7 @@ INCLUDES = -I$(top_srcdir)/src/include
 @enable_static_TRUE@LDADD = $(top_srcdir)/src/common/libfidogate.a
 @enable_static_FALSE@LDADD = $(top_srcdir)/src/common/libfidogate.la
 
-CFLAGS = -Wall
+AM_CFLAGS = -Wall
 
 bin_PROGRAMS = ftnaf ftnafutil pkttmpl
 libexec_PROGRAMS = ftnafpkt ftnafmail
@@ -200,6 +200,7 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+CFLAGS = @CFLAGS@
 DIST_SOURCES = $(ftnaf_SOURCES) $(ftnafmail_SOURCES) $(ftnafpkt_SOURCES) \
 	$(ftnafutil_SOURCES) pkttmpl.c
 DIST_COMMON = Makefile.am Makefile.in

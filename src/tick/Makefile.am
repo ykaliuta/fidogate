@@ -13,7 +13,7 @@ else
 LDADD			= $(top_srcdir)/src/common/libfidogate.la
 endif
 
-CFLAGS			= -Wall
+AM_CFLAGS		= -Wall
 
 bin_PROGRAMS		= ftnhatch
 libexec_PROGRAMS	= ftntick

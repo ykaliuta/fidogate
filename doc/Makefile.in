@@ -146,6 +146,7 @@ configs = mailer/postfix/master.cf \
 	    news/leafnode/common.h \
 	    news/leafnode/Makefile \
 	    examples/dyff/fidogate.conf.sample \
+	    examples/point/fidogate.conf \
 	    examples/dyff/packing.sample
 
 

@@ -13,7 +13,7 @@ else
 LDADD			= $(top_srcdir)/src/common/libfidogate.la
 endif
 
-CFLAGS			= -Wall
+AM_CFLAGS		= -Wall
 
 libexec_SCRIPTS		= ftninrecomb send-fidogate
 

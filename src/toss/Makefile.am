@@ -13,7 +13,7 @@ else
 LDADD			= $(top_srcdir)/src/common/libfidogate.la
 endif
 
-CFLAGS			= -Wall
+AM_CFLAGS		= -Wall
 
 runinc_CFLAGS		= -g -O3
 
