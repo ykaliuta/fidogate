@@ -9,7 +9,7 @@ PORTVERSION=		5.2.0
 PORTREVISION=		ds
 CATEGORIES=		news mail
 MASTER_SITES=		http://node126.narod.ru/files/
-DISTNAME=		fidogate5.2.0ds-alpha2
+DISTNAME=		fidogate5.2.0ds-alpha1
 
 MAINTAINER=		rusfidogate@users.sourceforge.net
 COMMENT=		Fido-Internet Gateway and Tosser
@@ -42,7 +42,7 @@ CONFIGURE_ARGS+=	--disable-desc-dir
 .if !defined(WITHOUT_ALIASES)
 CONFIGURE_ARGS+=	--enable-aliases-local
 .endif
-.if defined(WITH_DBC)
+.if !defined(WITHOUT_DBC)
 CONFIGURE_ARGS+=	--enable-dbc-history
 .endif
 .if defined(DNT_NETMAIL)
@@ -67,35 +67,44 @@ do-install:
 	${CHOWN} news:news ${PREFIX}/libexec/fidogate
 
 .if !defined(NOPORTDOCS)
-	${MKDIR} ${PREFIX}/share/doc/fidogate5
-	${INSTALL_DATA} ${WRKSRC}/doc/README.ru ${PREFIX}/share/doc/fidogate5/README.ru
-	${INSTALL_DATA} ${WRKSRC}/doc/README ${PREFIX}/share/doc/fidogate5/README
-	${INSTALL_DATA} ${WRKSRC}/ChangeLog ${PREFIX}/share/doc/fidogate5/ChangeLog
-	${MKDIR} ${PREFIX}/share/doc/fidogate5/examples
-	${MKDIR} ${PREFIX}/share/examples/fidogate5/dyff
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/acl.sample ${PREFIX}/share/examples/fidogate5/dyff/acl.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/aliases.sample ${PREFIX}/share/examples/fidogate5/dyff/aliases.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/areafix.help.rus ${PREFIX}/share/examples/fidogate5/dyff/areafix.help.rus
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/areafix.help.sample ${PREFIX}/share/examples/fidogate5/dyff/areafix.help.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/areas.bbs.sample ${PREFIX}/share/examples/fidogate5/dyff/areas.bbs.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/areas.sample ${PREFIX}/share/examples/fidogate5/dyff/areas.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/fareas.bbs.sample ${PREFIX}/share/examples/fidogate5/dyff/fareas.bbs.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/fidogate.conf.sample ${PREFIX}/share/examples/fidogate5/dyff/fidogate.conf.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/fidokill.sample ${PREFIX}/share/examples/fidogate5/dyff/fidokill.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/ftnacl.sample ${PREFIX}/share/examples/fidogate5/dyff/ftnacl.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/hosts.sample ${PREFIX}/share/examples/fidogate5/dyff/hosts.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/packing.sample ${PREFIX}/share/examples/fidogate5/dyff/packing.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/passwd.sample ${PREFIX}/share/examples/fidogate5/dyff/passwd.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/routing.sample ${PREFIX}/share/examples/fidogate5/dyff/routing.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/spyes.sample ${PREFIX}/share/examples/fidogate5/dyff/spyes.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/uplinks.sample ${PREFIX}/share/examples/fidogate5/dyff/uplinks.sample
-	${MKDIR} ${PREFIX}/share/examples/fidogate5/point
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/areas ${PREFIX}/share/examples/fidogate5/point/areas
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/areas.bbs ${PREFIX}/share/examples/fidogate5/point/areas.bbs
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/fidogate.conf ${PREFIX}/share/examples/fidogate5/point/fidogate.conf
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/newsfeeds ${PREFIX}/share/examples/fidogate5/point/newsfeeds
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/packing ${PREFIX}/share/examples/fidogate5/point/packing
-	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/routing ${PREFIX}/share/examples/fidogate5/point/routing
+	${MKDIR} ${PREFIX}/share/doc/fidogateds
+	${INSTALL_DATA} ${WRKSRC}/doc/README.ru ${PREFIX}/share/doc/fidogateds/README.ru
+	${INSTALL_DATA} ${WRKSRC}/doc/README ${PREFIX}/share/doc/fidogateds/README
+	${INSTALL_DATA} ${WRKSRC}/doc/FAQ.ru ${PREFIX}/share/doc/fidogateds/FAQ.ru
+	${INSTALL_DATA} ${WRKSRC}/ChangeLog ${PREFIX}/share/doc/fidogateds/ChangeLog
+	${MKDIR} ${PREFIX}/share/examples/fidogateds/mailer/postfix
+	${INSTALL_DATA} ${WRKSRC}/doc/mailer/postfix/master.cf ${PREFIX}/share/examples/fidogateds/mailer/postfix/master.cf
+	${INSTALL_DATA} ${WRKSRC}/doc/mailer/postfix/transport ${PREFIX}/share/examples/fidogateds/mailer/postfix/transport
+	${MKDIR} ${PREFIX}/share/examples/fidogateds/mailer/sendmail
+	${INSTALL_DATA} ${WRKSRC}/doc/mailer/sendmail/README.FIDOGATE ${PREFIX}/share/examples/fidogateds/mailer/sendmail/README.FIDOGATE
+	${INSTALL_DATA} ${WRKSRC}/doc/mailer/sendmail/mkclean ${PREFIX}/share/examples/fidogateds/mailer/sendmail/mkclean
+	${INSTALL_DATA} ${WRKSRC}/doc/mailer/sendmail/mklinks ${PREFIX}/share/examples/fidogateds/mailer/sendmail/mklinks
+	${MKDIR} ${PREFIX}/share/examples/fidogateds/mailer/sendmail/mailer
+	${INSTALL_DATA} ${WRKSRC}/doc/mailer/sendmail/mailer/ftn.m4  ${PREFIX}/share/examples/fidogateds/mailer/sendmail/mailer/ftn.m4
+	${MKDIR} ${PREFIX}/share/examples/fidogateds/dyff
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/acl.sample ${PREFIX}/share/examples/fidogateds/dyff/acl.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/aliases.sample ${PREFIX}/share/examples/fidogateds/dyff/aliases.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/areafix.help.rus ${PREFIX}/share/examples/fidogateds/dyff/areafix.help.rus
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/areafix.help.sample ${PREFIX}/share/examples/fidogateds/dyff/areafix.help.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/areas.bbs.sample ${PREFIX}/share/examples/fidogateds/dyff/areas.bbs.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/areas.sample ${PREFIX}/share/examples/fidogateds/dyff/areas.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/fareas.bbs.sample ${PREFIX}/share/examples/fidogateds/dyff/fareas.bbs.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/fidogate.conf.sample ${PREFIX}/share/examples/fidogateds/dyff/fidogate.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/fidokill.sample ${PREFIX}/share/examples/fidogateds/dyff/fidokill.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/ftnacl.sample ${PREFIX}/share/examples/fidogateds/dyff/ftnacl.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/hosts.sample ${PREFIX}/share/examples/fidogateds/dyff/hosts.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/packing.sample ${PREFIX}/share/examples/fidogateds/dyff/packing.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/passwd.sample ${PREFIX}/share/examples/fidogateds/dyff/passwd.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/routing.sample ${PREFIX}/share/examples/fidogateds/dyff/routing.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/spyes.sample ${PREFIX}/share/examples/fidogateds/dyff/spyes.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/uplinks.sample ${PREFIX}/share/examples/fidogateds/dyff/uplinks.sample
+	${MKDIR} ${PREFIX}/share/examples/fidogateds/point
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/areas ${PREFIX}/share/examples/fidogateds/point/areas
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/areas.bbs ${PREFIX}/share/examples/fidogateds/point/areas.bbs
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/fidogate.conf ${PREFIX}/share/examples/fidogateds/point/fidogate.conf
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/newsfeeds ${PREFIX}/share/examples/fidogateds/point/newsfeeds
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/packing ${PREFIX}/share/examples/fidogateds/point/packing
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/routing ${PREFIX}/share/examples/fidogateds/point/routing
 .endif
 
 post-install:

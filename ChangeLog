@@ -1,3 +1,8 @@
+2003-12-07  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/charset/cyrillic.map: update
+	* packages/freebsd: update
+
 2003-12-06  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/common/message.c: add INSERT_ORIGIN
