@@ -474,7 +474,7 @@ AreasXlate		$		_
 #     1  -  ^ARFC-Xxxx kludges for some headers (config.h, RFC_LVL_1_HEADERS)
 #     2  -  ^ARFC-Xxxx kludges for all headers
 #     3  -  ^ARFC-Xxxx kludges for all headers and MIME headers
-RFCLevel		3
+RFCLevel		0
 
 # Don't generate From: line at beginning of text body.
 NoFromLine
