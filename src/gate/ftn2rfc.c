@@ -1456,13 +1456,18 @@ carbon:
 	}
 #endif /* X_FTN_FROM_ECHOMAIL */
 	
-	if(x_ftn_T  &&  body.tear && !strncmp(body.tear, "--- ", 4))
+	if(x_ftn_T  &&  body.tear)
 	{
+	 if (strncmp(body.tear, "--- ", 4))
+	    tl_appendf(&theader, "X-FTN-Tearline: %s\n", "(none)");
+	 else
+	  {
 	    strip_crlf(body.tear);
 	    msg_xlate_line(buffer, sizeof(buffer), body.tear, cvt8 & AREA_QP,
 			    ignore_soft_cr);
 
 	    tl_appendf(&theader, "X-FTN-Tearline: %s\n", buffer+4);
+	  }
 	}
 	if(!use_origin_for_organization  &&  x_ftn_O  &&  body.origin)
 	{
