@@ -1,7 +1,7 @@
 2004-01-30  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* configure.in: add --with-lockdir, change default
-	    netmaildir(thanks to Andrew Zhuravlev
+	    netmaildir(thanks to Andrew Zhuravlev)
 
 2004-01-29  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
