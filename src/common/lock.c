@@ -299,13 +299,13 @@ int lock_lockfile_id(char *name, int wait, char *id)
 	res = stat(name, &statbuf);
 	if(!res)
 	{
-	     if(check_stale_lock(name) != -1)
-	     {
-		  debug(7, "Lock exists.");
-		  exists_lock = TRUE;
-	     }
-	     else
-		  unlink(name);
+	    if((!id) || (!check_stale_lock(name)))
+	    {
+		debug(7, "Lock exists.");
+		exists_lock = TRUE;
+	    }
+	    else
+		unlink(name);
 	}
 	if(!exists_lock)
 	{

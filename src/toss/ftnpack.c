@@ -905,7 +905,7 @@ int do_pack(PktDesc *desc, char *name, FILE *file, Packing *pack)
     set_zero(&flonode);
     
 
-    if(!node_eq(&arcnode, &flonode) &&
+    if(node_eq(&arcnode, &flonode) &&
        bink_bsy_create(&flonode, NOWAIT) == ERROR)
     {
 	debug(1, "%s busy, skipping", znfp1(&flonode));
