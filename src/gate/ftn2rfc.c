@@ -1237,9 +1237,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	
 	if(!ref_line)
 	{
-	    if(gate_rfc_kludge)
+	    if(gate_rfc_kludge && (p = kludge_get(&body.kludge, "RFC-References", NULL)) )
 	    {
-		if( (p = kludge_get(&body.kludge, "RFC-References", NULL)) )
 		    ref_line = p;
 	    }
 	    else
@@ -1248,6 +1247,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		    ref_line = s_msgid_fido_to_rfc(p, NULL, area==NULL);
 	    }
 	}
+	
 	/* ^AGATEWAY */
 	gateway = kludge_get(&body.kludge, "GATEWAY", NULL);
 
