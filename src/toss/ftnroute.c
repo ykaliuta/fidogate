@@ -1146,7 +1146,7 @@ int main(int argc, char **argv)
 			break;
 		    }
 	    	}
-		dir_close(buf);
+		dir_close();
 		if(ret == EXIT_ERROR)
 		    break;
 	    }

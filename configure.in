@@ -1,19 +1,79 @@
-dnl Process this file with autoconf to produce a configure script.
+dnl $Id$
 dnl
-dnl # Copy revision into the `configure' script
-AC_REVISION([$Id$])
-dnl # Minimum Autoconf version required.
+dnl Copyright (c) 2003-2004 Andrey Slusar <anray@users.sourceforge.net>
+dnl Copyright (c) 2003-2004 Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
+dnl
+AC_REVISION([$Revision$])
 AC_PREREQ(2.53)
-dnl # No comments...
 AC_INIT([fidogate],[5.2.1ds],[anray@users.sourceforge.net])
-dnl # File to check from `configure' script
+AM_CONFIG_HEADER([config.h])
 AC_CONFIG_SRCDIR([src/common/config.c])
-dnl # Set automake and libtool scripts are in build directory
-AC_CONFIG_AUX_DIR(build)
-dnl # Default installation prefix
-AC_PREFIX_DEFAULT(/usr/local/fido)
-dnl # config.h files as output
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_AUX_DIR([build])
+AM_INIT_AUTOMAKE(fidogate, 5.2.1ds, nodefine)
+AM_MAINTAINER_MODE
+AC_CANONICAL_HOST
+
+dnl Check for programs.
+AC_PROG_CXX
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
+AC_PROG_AWK
+AC_PROG_YACC
+
+dnl Checks for header files.
+AC_FUNC_ALLOCA
+AC_HEADER_DIRENT
+AC_HEADER_STDC
+AC_HEADER_SYS_WAIT
+AC_CHECK_HEADERS(fcntl.h limits.h stddef.h sys/mount.h sys/param.h sys/statfs.h)
+AC_CHECK_HEADERS(sys/statvfs.h sys/time.h sys/vfs.h syslog.h utime.h time.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_MODE_T
+AC_TYPE_OFF_T
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+AC_STRUCT_TM
+AC_STRUCT_TIMEZONE
+
+dnl Checks for library functions.
+AC_FUNC_CLOSEDIR_VOID
+AC_FUNC_MALLOC
+AC_FUNC_MEMCMP
+AC_FUNC_MKTIME
+dnl for future AC_FUNC_REALLOC
+AC_FUNC_SETVBUF_REVERSED
+AC_TYPE_SIGNAL
+AC_FUNC_STAT
+AC_FUNC_STRFTIME
+AC_FUNC_UTIME_NULL
+AC_FUNC_VPRINTF
+AC_CHECK_FUNCS(gettimeofday memchr memset mkdir regcomp strcasecmp strchr)
+AC_CHECK_FUNCS(strerror strncasecmp strpbrk strrchr strspn strstr utime)
+
+dnl Redefine install scripts
+AM_PROG_LIBTOOL
+AC_SUBST(LIBTOOL_DEPS)
+INSTALL_PROGRAM='${INSTALL} -g ${GROUP} -o ${OWNER} -m 755'
+INSTALL_SCRIPT='${INSTALL} -g ${GROUP} -o ${OWNER} -m 755'
+INSTALL_DATA='${INSTALL} -g ${GROUP} -o ${OWNER} -m 640'
+
+dnl Paths to major progs
+AC_HEADER_MAJOR
+AC_PATH_PROG(PERL, perl, no)
+AC_PATH_PROG(PERL5, perl5, $PERL)
+AC_PATH_PROG(ZIP, zip, no)
+AC_PATH_PROG(RAR, rar, no)
+AC_PATH_PROG(UNZIP, unzip, no)
+AC_PATH_PROG(ARC, arc, no)
+AC_PATH_PROG(LHA, lzh, no)
+AC_PATH_PROG(UUDECODE, uudecode, no)
 
 
 config_vars=
@@ -353,38 +413,6 @@ AC_ARG_ENABLE(recode-allrfc,
     ,AC_DEFINE(RECODE_ALL_RFC))
 
 
-dnl ###########################################################################
-
-ver0=`cat version.h |grep VERSION_MAJOR|cut -c 23-23`
-ver1=`cat version.h |grep VERSION_MINOR|cut -c 23-23`
-ver2=`cat version.h |grep PATCHLEVEL|cut -c 20-20`
-FVERSION="${ver0}.${ver1}.${ver2}"
-
-AM_INIT_AUTOMAKE(fidogate, ${FVERSION}, nodefine)
-AC_CANONICAL_HOST
-AM_PROG_LIBTOOL
-AC_SUBST(LIBTOOL_DEPS)
-dnl # rebuil Makefiles
-AM_MAINTAINER_MODE
-INSTALL_PROGRAM='${INSTALL} -g ${GROUP} -o ${OWNER} -m 755'
-INSTALL_SCRIPT='${INSTALL} -g ${GROUP} -o ${OWNER} -m 755'
-INSTALL_DATA='${INSTALL} -g ${GROUP} -o ${OWNER} -m 640'
-
-dnl ############################################################################
-
-AC_HEADER_MAJOR
-
-AC_PATH_PROG(PERL, perl, no)
-AC_PATH_PROG(PERL5, perl5, $PERL)
-
-AC_PATH_PROG(ZIP, zip, no)
-AC_PATH_PROG(RAR, rar, no)
-AC_PATH_PROG(UNZIP, unzip, no)
-AC_PATH_PROG(ARC, arc, no)
-AC_PATH_PROG(LHA, lzh, no)
-AC_PATH_PROG(UUDECODE, uudecode, no)
-dnl ###################### Checks paths ########################################
-
 if test "$with_news" != no ;then
 {
     AC_MSG_CHECKING(for news-library path)
@@ -408,53 +436,45 @@ AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsb
 	    exit 1;
 	fi
     fi
-    
     if $newsbindir/innconfval -v 2>&1 </dev/null | egrep 2\.\[3\|4] > /dev/null; then
-      eval `$newsbindir/innconfval -s|grep -e PATHNEWS -e PATHBIN -e PATHOUTGOING`
+      eval `$newsbindir/innconfval -s|grep -e 'PATHNEWS\|PATHBIN\|PATHOUTGOING'`
       NEWSLIBDIR=${PATHNEWS}
     else
-      NEWSLIBDIR=$newsbindir
+      NEWSLIBDIR="$newsbindir"
     fi
-    
     AC_MSG_RESULT($NEWSLIBDIR)
 
+    if test "x${PATHOUTGOING}" = "x"; then
+	AC_MSG_ERROR([use --with-newsbindir=DIR or --without-news option])
+    fi
+
+    PATHBIN="$PATHBIN:/usr/local/news/bin:/usr/lib/news:/usr/lib/news/bin:/usr/local/lib/news/bin:usr/bin"
+
     AC_MSG_CHECKING(for rnews)
-    if ! test "${with_rnews+set}" = set ;then
-	AC_PATH_PROG(RNEWS, rnews,, /usr/local/news/bin:/usr/lib/news:/usr/lib/news/bin:/usr/local/lib/news/bin:usr/bin)
-	if test "$RNEWS" = no; then
-	    RNEWS="$PATHBIN/rnews"
-	fi
-    else
+    if test "${with_rnews+set}" = set ;then
 	RNEWS="$with_rnews"
+    else
+	AC_PATH_PROG(RNEWS, rnews,, $PATHBIN)
+	if test "x$RNEWS" = "x"; then
+	    AC_MSG_ERROR([rnews not found, re-run with valid --with-rnews=DIR])
+	fi
     fi
 
-    if ! test -x $RNEWS; then
-	AC_MSG_ERROR([rnews not found; use --with-rnews=DIR])
+    AC_MSG_CHECKING(for inews)
+    if test "${with_inews+set}" = set ;then
+	INEWS="$with_inews"
+    else
+	AC_PATH_PROG(INEWS, inews,, $PATHBIN)
+	if test "x$INEWS" = "x"; then
+	    AC_MSG_ERROR([inews not found, re-run with valid --with-inews=DIR])
+	fi
     fi
 
-
-    if ! test "${PATHOUTGOING+set}"   = set; then
-    AC_MSG_ERROR([use --with-newsbindir=DIR or --without-news option])
-    fi
     if $NEWSLIBDIR/bin/innconfval -v 2>&1 </dev/null | egrep 2\.\[3\|4] > /dev/null; then
 	AC_DEFINE(OLD_BATCHER)
 	BATCHER='time $PATHBIN/batcher -N $QUEUEJOBS -b500000 -p"$RFC2FTN -b -n" $SITE $BATCHFILE'
     else
 	BATCHER='time $RFC2FTN -f $BATCHFILE -m 500'
-    fi
-
-    AC_MSG_CHECKING(for inews)
-    if ! test "${with_inews+set}" = set ;then
-	AC_PATH_PROG(INEWS, inews,, /usr/local/news/bin:/usr/lib/news:/usr/lib/news/bin:/usr/local/lib/news/bin:usr/bin)
-	if test "$INEWS" = no; then
-	    INEWS="$PATHBIN/inews"
-        fi
-    else
-        INEWS="$with_inews"
-    fi
-                       
-    if ! test -x $INEWS; then
-        AC_MSG_ERROR([inews not found; use --with-inews=DIR])
     fi
 
     if test "$with_news" != no ;then
@@ -488,18 +508,14 @@ AC_SUBST(PATHDB)
 AC_SUBST(INEWS)
 
 # Checking sendmail
+AC_MSG_CHECKING(for sendmail)
 if test "${with_sendmail+set}" = set ;then
-    AC_MSG_CHECKING(for sendmail)
-    if test "$SENDMAIL" = no; then
-	SENDMAIL = "/usr/sbin/sendmail"
-    fi
+	SENDMAIL="$with_sendmail"
 else
-    AC_PATH_PROG(SENDMAIL, sendmail)
-    if ! test -x "$SENDMAIL" ; then
-        AC_PATH_PROG(SENDMAIL, sendmail,, /usr/sbin:/usr/lib:/usr/ucblib:/usr/share)
-	if ! test -x "$SENDMAIL" ; then
-    	    AC_MSG_ERROR([sendmail not found, re-run with valid --with-sendmail])
-	fi
+    PATHBIN="/usr/sbin:/usr/lib:/usr/ucblib:/usr/share"
+    AC_PATH_PROG(SENDMAIL, sendmail,, $PATHBIN)
+    if test "x$SENDMAIL" = "x"; then
+	AC_MSG_ERROR([sendmail not found, re-run with valid --with-sendmail=DIR])
     fi
 fi
 AC_SUBST(SENDMAIL)
@@ -566,48 +582,6 @@ M4MAKE='$(M4) $(M4OPTIONS)'
 AC_SUBST(SUBSTCMD)
 AC_SUBST(M4MAKE)
 
-dnl ####################### Check C dependens ###################################
-
-dnl # Check for programs
-AC_PROG_CXX
-AC_PROG_CC
-AC_PROG_INSTALL
-AC_PROG_LN_S
-AC_PROG_MAKE_SET
-AC_PROG_RANLIB
-AC_PROG_AWK
-AC_PROG_YACC
-
-dnl # Check for header files
-AC_FUNC_ALLOCA
-AC_HEADER_DIRENT
-AC_HEADER_STDC
-AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS(fcntl.h limits.h stddef.h sys/mount.h sys/param.h sys/statfs.h)
-AC_CHECK_HEADERS(sys/statvfs.h sys/time.h sys/vfs.h syslog.h utime.h time.h)
-
-dnl # Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
-AC_TYPE_MODE_T
-AC_TYPE_OFF_T
-AC_TYPE_PID_T
-AC_TYPE_SIZE_T
-AC_HEADER_TIME
-AC_STRUCT_TM
-AC_STRUCT_TIMEZONE
-
-dnl # Checks for library functions.
-AC_FUNC_MALLOC
-AC_FUNC_MEMCMP
-dnl #AC_FUNC_MKTIME
-AC_FUNC_SETVBUF_REVERSED
-AC_TYPE_SIGNAL
-AC_FUNC_STAT
-AC_FUNC_STRFTIME
-AC_FUNC_UTIME_NULL
-AC_FUNC_VPRINTF
-AC_CHECK_FUNCS(gettimeofday memchr memset mkdir regcomp strcasecmp strchr)
-AC_CHECK_FUNCS(strerror strncasecmp strpbrk strrchr strspn strstr utime)
 
 HOSTNAME=`hostname -s`
 DOMAINNAME=`hostname|sed -e "s/$HOSTNAME//"`
