@@ -19,11 +19,11 @@ USE_PERL5=      	yes
 
 INSTALL_SHLIB=  	yes
 
-SPOOLDIR?=		/var/spool/fido/gate
-BTBASEDIR?=		/var/spool/fido/bt
-LOCKDIR?=		/var/run/fidogate
-LOGDIR?=		/var/log/fido/gate
-VARDIR?=		${PREFIX}/var/fidogate
+SPOOLDIR?=/var/spool/fido/gate
+BTBASEDIR?=/var/spool/fido/bt
+LOCKDIR?=/var/run/fidogate
+LOGDIR?=/var/log/fido/gate
+VARDIR?=${PREFIX}/var/fidogate
 
 PLIST_SUB+=		SPOOLDIR=${SPOOLDIR} \
 			BTBASEDIR=${BTBASEDIR} \
@@ -67,12 +67,6 @@ CONFIGURE_ARGS+=	--libexec=${PREFIX}/libexec/fidogate \
 
 do-install:
 	(cd ${WRKSRC}; ${MAKE} -f ${MAKEFILE} ${MAKE_ARGS} install)
-	${MKDIR} ${VARDIR}/seq
-	${CHOWN} news:news ${VARDIR}
-	${CHOWN} news:news ${VARDIR}/seq
-	${CHOWN} news:news ${PREFIX}/etc/fido/gate
-	${CHOWN} news:news ${PREFIX}/lib/fidogate
-	${CHOWN} news:news ${PREFIX}/libexec/fidogate
 
 .if !defined(NOPORTDOCS)
 	${MKDIR} ${PREFIX}/share/doc/fidogateds/old

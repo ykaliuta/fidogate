@@ -28,10 +28,6 @@ POST-INSTALL)
 	mkdir -p $SPOOLDIR/toss/route
 	mkdir -p $SPOOLDIR/toss/toss
 	mkdir -p $VARDIR/seq
-	chown -R news:news $LOCKDIR
-	chown -R news:news $SPOOLDIR
-	chown -R news:news $BTBASEDIR
-	chown -R news:news $LOGDIR
 	;;
 *)
 	echo >&2 "Unknown argument in $0 $@"
