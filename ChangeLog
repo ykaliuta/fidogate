@@ -1,17 +1,17 @@
 2003-09-27  Andrey Slusar <rusfidogate@users.sourceforge.net>
 	
-	* src/common/histdb.c: fix hi_file (thanks to Alex Soukhotine)
+	* src/common/histdb.c: add check hi_file (thanks to Alex Soukhotine)
 	* build/config.make.in: add ARC_RAR
-	* configure: add RAR, checking version inn
+	* configure: add RAR, fix checking version inn, fix DOMAINNAME
+	* scripts/nodelist/nl-autoupd: fix path to sumcrc, name of nodelist
 
 2003-09-26  Andrey Slusar <rusfidogate@users.sourceforge.net>
 	
 	* src/common/lock.c: fix remove [f]areas.bbs (thanks to
 	    Zhenya Kaluta)
 	* src/toss/runinc.c: add reading fidogate.conf, fix DiskFree*
-	    (thanks to Zhenya Kaluta), fix getopt and
-	    usage (thanks to Alexandr Dobroslavskiy), fix path to
-	    ftntickpost
+	    (thanks to Zhenya Kaluta), fix getopt and usage (thanks to
+	    Alexandr Dobroslavskiy), fix path to ftntickpost
 	* configure: add inn2.4, fix path to inews, sendmail, rnews
 	* scripts/maintenance/logdaily.in: fix paths to scripts
 	* scripts/outbound/out-ls.in: change die to next

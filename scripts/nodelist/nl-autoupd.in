@@ -23,7 +23,7 @@ $BINDIR=CONFIG_get("BINDIR");
 # Diff's location
 $DIFFDIR = "/home/ftp/fecho/nodediff";
 # Nodelist name
-$NAME    = "NODELIST";
+$NAME    = "nodelist";
 # Current nodelist location
 $NLDIR   = "/var/spool/bt/ndl";
 # Directory for put archiving nodelist
@@ -206,15 +206,15 @@ while(1) {
     &run(@nldiff);
     unlink $file;
 
-    open(F,"$name") || die "nl-check: can't open $name\n";
+    open(F,"$name.$ddd") || die "nl-check: can't open $name.$ddd\n";
     $_ = <F>;
 
     # CRC check
     if( /Day number \d+ : (\d+)/ ) {
-	$old = $1;
-	print "CRC from 1st line of $f: $old\n" if($opt_v);
-	print "CRC check for nodelist $f ... " if($opt_v);
-	$new = `$LIBEXECDIR/sumcrc -1z $f`;
+	$old = $_;
+	print "CRC from 1st line of $name.$ddd: $old\n" if($opt_v);
+	print "CRC check for $name.$ddd ... " if($opt_v);
+	$new = `$BINDIR/sumcrc -1z $name.$ddd`;
 	chop $new;
 	if( $old == $new ) {
 	    print "OK\n" if($opt_v);

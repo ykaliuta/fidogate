@@ -114,7 +114,7 @@ FAreasBBS	%V/fareas.bbs
 Hostname	HOSTNAME
 Domain		DOMAINNAME
 # optional domain name for entries in HOSTS file
-HostsDomain	DOMAINNAME
+#HostsDomain	HOSTNAME.DOMAINNAME
 
 #AddressIsLocalForXPost  *[@.]vsu.ru,*[@.]f8.n5025.z2.fidonet.org
 #AddressIsLocalForXPost	*@corex.izhora.spb.ru,*@f1229.n5030.z2.fidonet.org
@@ -139,7 +139,7 @@ Address		2:5030/1229.1
 #	----	---------------		----------	--------
 Zone	default	.ftn.org		ftn		-
 Zone	1	.fidonet.org		fidonet		out.001
-Zone	2	.fidonet.org		fidonet		amiga.out
+Zone	2	.fidonet.org		fidonet		out
 Zone	3	.fidonet.org		fidonet		out.003
 Zone	4	.fidonet.org		fidonet		out.004
 Zone	5	.fidonet.org		fidonet		out.005

@@ -589,8 +589,9 @@ AC_CHECK_FUNCS(gettimeofday memchr memset mkdir regcomp strcasecmp strchr)
 AC_CHECK_FUNCS(strerror strncasecmp strpbrk strrchr strspn strstr utime)
 
 HOSTNAME=`hostname -s`
-DOMAINNAME=`hostname|sed -e 's/$HOSTNAME//'`
+DOMAINNAME=`hostname|sed -e "s/$HOSTNAME//"`
 AC_SUBST(HOSTNAME)
+AC_SUBST(DOMAINNAME)
 
 AC_CONFIG_COMMANDS([build_headers],[build/subst.pl -h])
 
