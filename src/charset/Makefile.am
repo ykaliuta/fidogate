@@ -15,7 +15,7 @@ endif
 
 AM_CFLAGS		= -Wall
 
-noinst_PROGRAMS		= charsetc
+libexec_PROGRAMS	= charsetc
 libexec_DATA		= charset.bin
 
 charset.bin:

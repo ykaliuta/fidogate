@@ -1,3 +1,8 @@
+2004-10-15  Andrey Slusar <anray@users.sourceforge.net>
+
+	* scripts/www/gate.cgi.in: fix working(thanks to
+	    Evgeniy Kozhuhovskiy)
+
 2004-09-10  Andrey Slusar <anray@users.sourceforge.net>
 
 	* src/areafix/areafix.c: added option

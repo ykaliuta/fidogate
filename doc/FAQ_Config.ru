@@ -269,7 +269,7 @@ Subject: FIDOGATE
    Компилируем, налаживаем патчи, если у вас inetd, то прописываем s-news в
   inetd.conf:
   ===
-  nntp stream tcp nowaitnews:news /usr/local/sbin/nntpd nntpd
+  nntp stream tcp nowait news:news /usr/local/sbin/nntpd nntpd
   ===
   В services должен быть сервис nntp:
   ===
@@ -351,7 +351,8 @@ Subject: FIDOGATE
 
   Для Debian:
    Пакеты для Debian лучше всего брать не у меня, а на
-  kaliuta.basnet.by/debian, так как я больше не собираю пакетов для Debian.
+  http://kaliuta.basnet.by/debian, так как я больше не собираю пакетов для
+  Debian.
    Устанавливаем пакет:
   dpkg -i fidogate5.1.0_ds.deb
 
@@ -930,11 +931,11 @@ Subject: FIDOGATE
       Оно же для freebsd порта WITHOUT_FMSGID=yes. Тогда fidogate будет писать
       в MSGID полный фидошный Message-ID. Еще рекомендую для совместимости с
       ifmail гейтами в fidogate.conf прописать опцию GateRfcKludge и RFCLevel 2.
-      Это - оптимальные параметры. Категорически не рекомендую собирать fidogate
-      для крупного гейта без опции --disable-fs-msgid, иначе будут возникать
-      ломанные фидошные REPLY и с интернет-стороны невозможно будет пользоваться
-      скорингом. Если скоринг еще можно починить пользуясь dbc-history, то
-      ломанные REPLY будут постоянно.
+      Это - оптимальные параметры. Категорически не рекомендую собирать
+      fidogate для крупного гейта без опции --disable-fs-msgid, иначе будут
+      возникать ломанные фидошные REPLY и с интернет-стороны невозможно будет
+      пользоваться скорингом. Если скоринг еще можно починить пользуясь
+      dbc-history, то ломанные REPLY будут постоянно.
 
 ================================================================================
  

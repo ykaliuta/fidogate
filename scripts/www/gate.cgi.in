@@ -5,8 +5,6 @@ use strict;
 use CGI;
 use CGI::Carp;
 
-<INCLUDE config.pl>
-
 $ENV{"PATH"} = "/bin:/usr/bin";
 $ENV{"CDPATH"} = "";
 
@@ -48,10 +46,10 @@ my $font = 'n';
 
 print
   $q->header,
-  $q->start_html(-title   => "morannon.fido.de Gateway Status",
-		 -author  => 'mj@fido.de',
+  $q->start_html(-title   => "Global Fidonet Gateway Status",
+		 -author  => 'anray@users.sourceforge.net',
 		 -bgcolor => '#ffffff'    ), "\n\n",
-  $q->h1("morannon.fido.de Gateway Status"), "\n",
+  $q->h1("Global Fidonet Gateway Status"), "\n",
   $q->b("Date: " . localtime(time)), $q->br, $q->br, $q->br,
   $q->hr, "\n";
 
@@ -152,8 +150,8 @@ print
   $q->hr, "\n",
   $q->p, "\n",
   '<font size=-2>FIDOGATE $Id$ <br>',
-  '&copy; Copyright 1990-2000 ',
-  '<a href="mailto:mj@fido.de">Martin Junius</a></font>',
+  '&copy; Copyright 1994-2004',
+  '<a href="mailto:anray@users.sourceforge.net">Andrey Slusar</a></font>',
   $q->end_html, "\n";
 
 exit 0;
@@ -207,7 +205,8 @@ sub my_ps_news {
 #  news     (  580  0.0  0.2  5604  136 )?        S    10:18   0:01 /usr/bin/innd -p5
 #  news     (  584  0.0  0.1  2536  100 )?        S    10:18   0:00 /usr/bin/actived
 #/^.........(...........................)......*?([A-Z].*\d )( *\d+:\d\d).(.+)$/ );
-	next if(! /^.........(...........................)......*?([A-Z].*\d )( *\d+:\d\d).(.+)$/ );
+	next if(! /^.........(...........................)......*?([A-Z].*\d )(
+*\d+:\d\d).(.+)$/ );
 	$x  = "$1 $2";
 	$x1 = $3;
 	$x2 = $4;

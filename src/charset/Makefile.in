@@ -129,14 +129,14 @@ INCLUDES = -I$(top_srcdir)/src/include
 
 AM_CFLAGS = -Wall
 
-noinst_PROGRAMS = charsetc
+libexec_PROGRAMS = charsetc
 libexec_DATA = charset.bin
 subdir = src/charset
 mkinstalldirs = $(SHELL) $(top_srcdir)/build/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
-noinst_PROGRAMS = charsetc$(EXEEXT)
-PROGRAMS = $(noinst_PROGRAMS)
+libexec_PROGRAMS = charsetc$(EXEEXT)
+PROGRAMS = $(libexec_PROGRAMS)
 
 charsetc_SOURCES = charsetc.c
 charsetc_OBJECTS = charsetc.$(OBJEXT)
@@ -188,9 +188,30 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+install-libexecPROGRAMS: $(libexec_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libexecdir)
+	@list='$(libexec_PROGRAMS)'; for p in $$list; do \
+	  p1=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
+	  if test -f $$p \
+	     || test -f $$p1 \
+	  ; then \
+	    f=`echo $$p1|sed '$(transform);s/$$/$(EXEEXT)/'`; \
+	   echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(INSTALL_PROGRAM) $$p $(DESTDIR)$(libexecdir)/$$f"; \
+	   $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(INSTALL_PROGRAM) $$p $(DESTDIR)$(libexecdir)/$$f; \
+	  else :; fi; \
+	done
 
-clean-noinstPROGRAMS:
-	-test -z "$(noinst_PROGRAMS)" || rm -f $(noinst_PROGRAMS)
+uninstall-libexecPROGRAMS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libexec_PROGRAMS)'; for p in $$list; do \
+	  f=`echo $$p|sed 's/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/'`; \
+	  echo " rm -f $(DESTDIR)$(libexecdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libexecdir)/$$f; \
+	done
+
+clean-libexecPROGRAMS:
+	-test -z "$(libexec_PROGRAMS)" || rm -f $(libexec_PROGRAMS)
 charsetc$(EXEEXT): $(charsetc_OBJECTS) $(charsetc_DEPENDENCIES) 
 	@rm -f charsetc$(EXEEXT)
 	$(LINK) $(charsetc_LDFLAGS) $(charsetc_OBJECTS) $(charsetc_LDADD) $(LIBS)
@@ -301,7 +322,7 @@ check: check-am
 all-am: Makefile $(PROGRAMS) $(DATA)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(libexecdir)
+	$(mkinstalldirs) $(DESTDIR)$(libexecdir) $(DESTDIR)$(libexecdir)
 
 install: install-am
 install-exec: install-exec-am
@@ -328,7 +349,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-libtool clean-noinstPROGRAMS \
+clean-am: clean-generic clean-libexecPROGRAMS clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
@@ -346,7 +367,7 @@ info-am:
 
 install-data-am:
 
-install-exec-am: install-libexecDATA
+install-exec-am: install-libexecDATA install-libexecPROGRAMS
 
 install-info: install-info-am
 
@@ -363,19 +384,21 @@ mostlyclean: mostlyclean-am
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
-uninstall-am: uninstall-info-am uninstall-libexecDATA
+uninstall-am: uninstall-info-am uninstall-libexecDATA \
+	uninstall-libexecPROGRAMS
 
 .PHONY: GTAGS all all-am check check-am clean clean-generic \
-	clean-libtool clean-noinstPROGRAMS distclean distclean-compile \
+	clean-libexecPROGRAMS clean-libtool distclean distclean-compile \
 	distclean-depend distclean-generic distclean-libtool \
 	distclean-tags distdir dvi dvi-am info info-am install \
 	install-am install-data install-data-am install-exec \
 	install-exec-am install-info install-info-am \
-	install-libexecDATA install-man install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool tags uninstall \
-	uninstall-am uninstall-info-am uninstall-libexecDATA
+	install-libexecDATA install-libexecPROGRAMS install-man \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	tags uninstall uninstall-am uninstall-info-am \
+	uninstall-libexecDATA uninstall-libexecPROGRAMS
 
 
 charset.bin:
