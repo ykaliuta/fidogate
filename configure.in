@@ -437,7 +437,7 @@ AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsb
 	fi
     fi
     if $newsbindir/innconfval -v 2>&1 </dev/null | egrep 2\.\[3\|4] > /dev/null; then
-      eval `$newsbindir/innconfval -s|grep -e 'PATHNEWS\|PATHBIN\|PATHOUTGOING'`
+      eval `$newsbindir/innconfval -s|grep -e 'PATHNEWS\|PATHBIN\|PATHOUTGOING\|PATHDB\|PATHARTICLES\|PATHETC'`
       NEWSLIBDIR=${PATHNEWS}
     else
       NEWSLIBDIR="$newsbindir"
@@ -448,13 +448,13 @@ AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsb
 	AC_MSG_ERROR([use --with-newsbindir=DIR or --without-news option])
     fi
 
-    PATHBIN="$PATHBIN:/usr/local/news/bin:/usr/lib/news:/usr/lib/news/bin:/usr/local/lib/news/bin:usr/bin"
+    XPATHBIN="$PATHBIN:/usr/local/news/bin:/usr/lib/news:/usr/lib/news/bin:/usr/local/lib/news/bin:usr/bin"
 
     AC_MSG_CHECKING(for rnews)
     if test "${with_rnews+set}" = set ;then
 	RNEWS="$with_rnews"
     else
-	AC_PATH_PROG(RNEWS, rnews,, $PATHBIN)
+	AC_PATH_PROG(RNEWS, rnews,, $XPATHBIN)
 	if test "x$RNEWS" = "x"; then
 	    AC_MSG_ERROR([rnews not found, re-run with valid --with-rnews=DIR])
 	fi
@@ -464,7 +464,7 @@ AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsb
     if test "${with_inews+set}" = set ;then
 	INEWS="$with_inews"
     else
-	AC_PATH_PROG(INEWS, inews,, $PATHBIN)
+	AC_PATH_PROG(INEWS, inews,, $XPATHBIN)
 	if test "x$INEWS" = "x"; then
 	    AC_MSG_ERROR([inews not found, re-run with valid --with-inews=DIR])
 	fi
@@ -512,8 +512,8 @@ AC_MSG_CHECKING(for sendmail)
 if test "${with_sendmail+set}" = set ;then
 	SENDMAIL="$with_sendmail"
 else
-    PATHBIN="/usr/sbin:/usr/lib:/usr/ucblib:/usr/share"
-    AC_PATH_PROG(SENDMAIL, sendmail,, $PATHBIN)
+    XPATHBIN="/usr/sbin:/usr/lib:/usr/ucblib:/usr/share"
+    AC_PATH_PROG(SENDMAIL, sendmail,, $XPATHBIN)
     if test "x$SENDMAIL" = "x"; then
 	AC_MSG_ERROR([sendmail not found, re-run with valid --with-sendmail=DIR])
     fi

@@ -1,3 +1,7 @@
+2004-08-01  Andrey Slusar <anray@users.sourceforge.net>
+
+        * configure.h.in: fix INN detecting
+
 2004-07-29  Andrey Slusar <anray@users.sourceforge.net>
 
 	* src/gate/send-fidogate.snews: add s-news
