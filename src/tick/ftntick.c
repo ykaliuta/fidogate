@@ -82,7 +82,7 @@ void	short_usage		(void);
 void	usage			(void);
 short	check_pass		(Tick *, short);
 int	filefix_check_forbidden_area(char *);
-int	cmd_new_int			(Node *, char *, char *);
+int	cmd_new_int		(Node *, char *, char *);
 void	areafix_init		(int);
 int	areafix_auth_check	(Node *, char *, char);
 char	*areafix_name		(void);

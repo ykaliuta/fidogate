@@ -1,6 +1,11 @@
+2004-02-11  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
+
+	* src/areafix/areafix.c: fix the problem of similar path
+	    to autocreate fechos in FAreas.bbs
+
 2004-02-10  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 
-	* stc/tick/ftntick.c: fix the AutoCreateFileechoLine problem
+	* src/tick/ftntick.c: fix the AutoCreateFileechoLine problem
 
 2004-02-07  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
