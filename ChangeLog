@@ -1,3 +1,7 @@
+2004-01-18  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/areafix/areafix.c: fix disable AF_AVAIL
+
 2004-01-12  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* doc/examples: fixes

@@ -1409,8 +1409,10 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
     areafix_printf("");
     
     /* Check for unscribed areas & define echolist in config file */
+#ifdef AF_AVAIL
     if (flag == TRUE || !(s = cf_get_string("AvailFile", TRUE)))
     {
+#endif
 	char *mark;
 #ifdef FTN_ACL
 	char *mark_r, *mark_m;
