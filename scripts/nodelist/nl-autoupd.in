@@ -35,7 +35,6 @@ $NLDIFF  = "$BINDIR/nl-diff";
 @LHAX    = ("<ARC_LHA>",   "xf");
 @ZIPX    = ("<ARC_ZIP>",   "-9");
 @UNZIPX  = ("<ARC_UNZIP>", "-joL");
-@IFINDEX = ("/usr/local/lib/ifmail/ifindex");
 @CPNL    = ("cp");
 
 require "getopts.pl";
@@ -78,8 +77,6 @@ sub run {
 
 ##### Index and save new nodelist #####
 sub after {
-    print "Indexed new nodelist\n" if($opt_v);
-    &run(@IFINDEX);
     print "Archiving new nodelist\n" if($opt_v);
     push @ZIPX, $name;
     if($cddd < 10)

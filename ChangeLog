@@ -1,3 +1,7 @@
+2004-04-15  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* scripts/nodelist/nl-autoupd.in: remove $IFINDEX
+
 2004-03-30  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/common/rfcheader.c: fix RECODE_ALL_RFC
