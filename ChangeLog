@@ -1,5 +1,7 @@
 2004-01-30  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
+	* doc/old/FIDOGATE_ftrack: add ftrack FAQ(thanks
+	    to Andrew Zhuravlev)
 	* configure.in: add --with-lockdir, change default
 	    netmaildir(thanks to Andrew Zhuravlev)
 
