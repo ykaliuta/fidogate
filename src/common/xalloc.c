@@ -43,26 +43,28 @@ char buffer[BUFFERSIZE];
 /*
  * xmalloc(), xrealloc()  ---  safe versions of malloc() and realloc()
  */
-void *xmalloc(int size) {
+void *xmalloc(int size)
+{
     char *p;
 
-    if( ( p = malloc( size ) ) )
-	return(p);
-    fprintf( stderr, "Memory exhausted." );
-    exit( EX_OSERR );
+    if( (p = malloc(size)) )
+	return p;
+    fprintf(stderr, "Memory exhausted.");
+    exit(EX_OSERR);
 
     /**NOT REACHED**/
     return NULL;
 }
 
 
-void *xrealloc( void *ptr, int size ) {
+void *xrealloc(void *ptr, int size)
+{
     char *p;
 
-    if( ( p = realloc( ptr, size ) ) )
-	return( p );
-    fprintf( stderr, "Memory exhausted." );
-    exit( EX_OSERR );
+    if( (p = realloc(ptr, size)) )
+	return p;
+    fprintf(stderr, "Memory exhausted.");
+    exit(EX_OSERR);
 
     /**NOT REACHED**/
     return NULL;
@@ -83,14 +85,16 @@ void xfree(void *p)
 /*
  * strsave()  ---  make a copy of a string
  */
-char *strsave( char *s ) {
+char *strsave(char *s)
+{
     char *p = NULL;
     size_t len;
 
-    if( s ) {
-        len = strlen( s ) + 1;
-        p = xmalloc( len );
-        str_copy( p, len, s );
+    if(s)
+    {
+        len = strlen(s) + 1;
+        p = xmalloc(len);
+        str_copy(p, len, s);
     }
     return p;
 }

@@ -302,7 +302,7 @@ AC_ARG_ENABLE(aliases-local,
     AC_DEFINE(ALIASES_ARE_LOCAL),)dnl'
 
 AC_ARG_ENABLE(ai1,
-[  --enable-ai1		Add -a option to HOSTS entries, useful only with PASSTHRU_NET/ECHOMAIL],
+[  --enable-ai1		Add -a option to HOSTS entries, useful only with PASSTHRU NET/ECHOMAIL],
     AC_DEFINE(ALIASES_ARE_LOCAL),)
 
 AC_ARG_ENABLE(best-aka,
@@ -311,7 +311,7 @@ AC_ARG_ENABLE(best-aka,
 
 AC_ARG_ENABLE(ftnacl,
 [  --disable-ftnacl        do'nt use ACL for FTN links ],
-    ,AC_DEFINE(FTN_ACL))dnl'
+    ,AC_DEFINE(FTN_ACL))
 
 AC_ARG_WITH(desc-dir,
 [  --with-desc-dir=DIR     put file descriptions into ".desc/%s.desc" file instead of files.bbs],
@@ -330,7 +330,7 @@ AC_ARG_ENABLE(af-avail,
     ,AC_DEFINE(AF_AVAIL))
 
 AC_ARG_ENABLE(xff-echomail,
-[  --disable-xff-echomail  add X-FTN-From header in gated echomail],
+[  --disable-xff-echomail  add X-FTN-From header to gated echomail],
     ,AC_DEFINE(X_FTN_FROM_ECHOMAIL))
 
 AC_ARG_ENABLE(spyes,
@@ -340,10 +340,6 @@ AC_ARG_ENABLE(spyes,
 AC_ARG_ENABLE(aflr,
 [  --disable-aflr          restricted access to areafix command %listall],
     ,AC_DEFINE(AF_LISTALL_RESTRICTED))
-
-AC_ARG_ENABLE(recode-fd,
-[  --disable-recode-fd     recode file descriptor],
-    ,AC_DEFINE(RECODE_FILE_DESC))
 
 AC_ARG_ENABLE(fecho-pass,
 [  --disable-fecho-pass    use passthrought filearea],

@@ -1,3 +1,7 @@
+2004-11-08  Andrey Slusar <anray@users.sourceforge.net>
+
+	* src/tick/ftnhatch.c: add replaces option
+
 2004-11-07  Andrey Slusar <anray@users.sourceforge.net>
 
 	* src/gate/rfc2ftn.c: now default rfc charset

@@ -531,7 +531,7 @@ char *read_line			(char *, int, FILE *);
 long  read_rnews_size		(FILE *);
 
 /* rematch.c */
-#ifdef HAVE_REGEX_H
+#ifdef HAS_POSIX_REGEX
 int	regex_match		(const char *);
 char   *str_regex_match_sub	(char *, size_t, int, const char *);
 void	regex_init		(void);

@@ -33,7 +33,7 @@
 #include "fidogate.h"
 
 
-#ifdef HAVE_REGEX_H /*********************************************************/
+#ifdef HAS_POSIX_REGEX /*******************************************************/
 
 #include <regex.h>
 
@@ -192,7 +192,7 @@ void regex_init(void)
 }
 
 
-#endif /** HAVE_POSIX_H ******************************************************/
+#endif /** HAS_POSIX_REGEX ****************************************************/
 
     
 
@@ -201,7 +201,7 @@ void regex_init(void)
 
 #ifdef TEST
 
-#ifdef HAVE_REGEX_H
+#ifdef HAS_POSIX_REGEX
 void debug_subs(void)
 {
     int i;
@@ -220,7 +220,7 @@ void debug_subs(void)
  */
 int main(int argc, char *argv[])
 {
-#ifdef HAVE_REGEX_H
+#ifdef HAS_POSIX_REGEX
     char buf[MAXINETADDR];
     
     regex_init();

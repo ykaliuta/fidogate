@@ -149,7 +149,7 @@ Textlist body = { NULL, NULL };
 char *get_name_from_body(void)
 {
     static char line1[2*MAXINETADDR];
-#ifdef HAVE_REGEX_H
+#ifdef HAS_POSIX_REGEX
     static char buf[MAXINETADDR];
 #endif
     Textline *tl;
@@ -253,7 +253,7 @@ char *get_name_from_body(void)
     }
 #endif
 
-#ifdef HAVE_REGEX_H
+#ifdef HAS_POSIX_REGEX
     if(regex_match(line1))
     {
 	str_regex_match_sub(buf, sizeof(buf), 1, line1);
@@ -2395,7 +2395,7 @@ int main(int argc, char **argv)
 	areasbbs_init(areas_bbs);
     acl_init();
     charset_init();
-#ifdef HAVE_REGEX_H
+#ifdef HAS_POSIX_REGEX
     regex_init();
 #endif
 

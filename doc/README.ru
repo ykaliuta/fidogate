@@ -9,11 +9,9 @@
 
 ===============================================================================
 
-Свежую версию fidogate можно найти на:
+Свежую версию fidogate-ds можно найти на:
 
-	http://fidogate.spb.ru/download
-	ftp://dig.pp.ru/archive/tools/ftn
-        http://sourceforge.net/projects/rusfidogate
+	http://sourceforge.net/projects/rusfidogate
 	
     или взять с CVS:
 
@@ -97,7 +95,7 @@
     Последнюю версию fidogate можно взять из cvs на sourceforge.net для этого
 необходимо наличие установленной программы cvs. Выполнить команду:
 
-для оригинальной fidogate5:
+для оригинальной версии fidogate5:
 
 cvs -z3 -d:pserver:anonymous@cvs.fidogate.sourceforge.net:/cvsroot/fidogate 
 co -r dp fidogate
@@ -112,7 +110,6 @@ cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/rusfidogate co fidogat
 
     Также последнюю официальную версию fidogate можно взять на сайтах:
 	http://sourceforge.net/projects/fidogate
-	http://www.fidogate.spb.ru
 
     Версию fidogate-ds можно взять на сайтах:
 	http://sourceforge.net/projects/rusfidogate
@@ -125,122 +122,127 @@ cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/rusfidogate co fidogat
 fidogate до процесса компиляции (после компиляции указанные в нем параметры из
 менить будет нельзя).
     Генерацией данного файла в большинстве случаев можно управлять через
-configure скрипт. В исключительных случаях требуется его непосредственное
-изменение.
-    Итак параметры:
+configure скрипт. В исключительных случаях требуется непосредственное изменение
+config.h.in, после чего можно запускать configure с нужными параметрами.
 
-`LOCAL_FTN_ADDRESSES'
+    Итак параметры config.h(в скобках будет указаны соответствующие им опции
+configure, если они есть):
+
+`LOCAL_FTN_ADDRESSES'(--enable-local-ftn-addr)
     Генерировать "локальные" FTN адреса вида "User_Name%p.f.n.z@hostname.domain"
     вместо "User_name@p.f.n.z.domain".
     
-`DO_BSY_FILES'
+`DO_BSY_FILES'(--disable-dobsy-files)
     Создавать Binkley-style .bsy флаги во время обработки почты на конкретного
-    линка.
+    линка. По умолчанию включено.
     
-`NFS_SAFE_LOCK_FILES '
-    Создавать лок/bsy файлы в NFS-safe way (см. man 2 open)
+`NFS_SAFE_LOCK_FILES '(--enable-nfs-safe-lock)
+    Создавать лок/bsy файлы в NFS-safe way (см. man 2 open).
 
-`AMIGADOS_4D_OUTBOUND'
+`AMIGADOS_4D_OUTBOUND'(--enable-amiga-out)
     Использовать Amiga-style аутбоунд.
     
-`MAXMSGSIZE'
+`MAXMSGSIZE'(--with-maxmsg-size=SIZE)
     Максимальный размер FIDO письма, гинерируемого rfc2ftn. Письма большего
     размера режутся на части. Значение должно быть более 16K.
 
-`FTN_INVALID_DOMAIN'
+`FTN_INVALID_DOMAIN'(--with-ftn-invalid-domain=DOM)
     Доменный адрес, для использования для невалидных FTN адресов.
 
-`FACILITY'
+`FACILITY'(--with-syslog-facility=FAC)
     Syslog facility, используемое если `Logfile' установлен в "syslog".
 
-`CHARSET_STDFTN'
+`CHARSET_STDFTN'(--with-ftn-charset=CHS)
     Дефолтная кодировка для FTN сообщений.
 
-`CHARSET_STDRFC'
+`CHARSET_STDRFC'(--with-rfc-charset=CHS)
     Дефолтная допустимая кодировка для RFC сообщений если оно не содержт MIME
-    заголовков.
+    заголовков с указанием чарсета.
     
-`CHARSET_STD7BIT'
+`CHARSET_STD7BIT'(--with-7bit-charset=CHS)
     Дефолтная 7-ми битная кодировка для RFC сообщений.
     
-`ALIASES_ARE_LOCAL'
-    Адреса найденные в `aliases' конфиге при гейтовании ftn2rfc заменять на свой
-    domain.host.
+`AREAFIXMAXSTR'(--with-afix-maxstr=AFS)
+    Задает максимальное число строк писем - ответов ареафикса.
 
-`PASSTHRU_NETMAIL'
-    Транзитный режим для нетмейла т.е. если адрес отпровителя является FTN
-    адресом, то результирующим адрес будет данный, иначе наш aka.
+`ALIASES_ARE_LOCAL'(--enable-aliases-local)
+    Адреса найденные в `aliases' конфиге при гейтовании ftn2rfc менять в
+    соответствии с правилами, указанными в aliases-конфиге(см. описание aliases).
 
-`PASSTHRU_ECHOMAIL'
-    Транзитный режим для эхомейла т.е. заголовки X-FTN-Tearline, X-FTN-Origin,
-    X-FTN-Seen-By, X-FTN-Path использовать для кладжей tearline, * Origin,
-    SEEN-BY, ^APATH соответственно, при гейтовании RFC->FTN.
-
-`AI_1'
+`AI_1'(--enable-ai1)
     Добавить ключ `-a' в HOSTS конфиг. Данный ключ позволяет указывать в полях
     ^AREPLYTO и Origin адрес, указанный в соответствующей записи HOSTS для
     данного отправителя. Генерация ^MSGID также использует адрес в записи HOSTS.
     Используется только вместе с одной из директив 'PASSTHRU_NET/ECHOMAIL'.
 
-`BEST_AKA'
-    Изменяет алгоритм выбора aka вставляемой в заголовок .pkt и в ответы
-    areafix'а и filefix'а. С отключенной директивой используется первый найден-
-    ный aka, а при включеной ведется поиск наиболее подходящего при сравнении с
-    адресом получателя.
+`BEST_AKA'(--disable-best-aka)
+    Изменяет алгоритм выбора AKA вставляемый в заголовок .pkt и в ответы
+    areafix'а и filefix'а. С отключенной директивой используется первый найденный
+    AKA, а при включенной ведется поиск наиболее подходящего при сравнении с
+    адресом получателя. По умолчанию включено.
 
-`FTN_ACL'
-    Включить обработку ftnacl конфига.
+`PASSTHRU_NETMAIL'(none)
+    Транзитный режим для нетмейла т.е. если адрес отпровителя является FTN
+    адресом, то результирующим адрес будет данный, иначе наш AKA.
 
-`DESC_DIR'
+`PASSTHRU_ECHOMAIL'(none)
+    Транзитный режим для эхомейла т.е. заголовки X-FTN-Tearline, X-FTN-Origin,
+    X-FTN-Seen-By, X-FTN-Path использовать для кладжей tearline, * Origin,
+    SEEN-BY, ^APATH соответственно, при гейтовании RFC->FTN.
+
+`FTN_ACL'(--disable-ftnacl)
+    Включить обработку ftnacl конфига. По умолчанию включено.
+
+`DESC_DIR'(--with-desc-dir=DIR и --disable-desc-dir)
     Режим ведения файла(ов) описания файлэхоконференций. Используется в формате:
     #define DESC_DIR	"dir"
     dir при этом указывает подкаталог каталога файлэхи, где будут размещатся
     файлы описания в формате "<filename>.desc". Если директива закоментирована,
-    то используется режим "files.bbs".
-    
-`X_FTN_FROM_ECHOMAIL'
-    Добавлять RFC заголовок `X-FTN-From:' в сгейтованный эхомейл, при гейтовании
-    FTN->RFC.
+    то используется режим "files.bbs". По умолчанию включено.
 
-`SPYES'
-    Включить обработку spyes конфига.
-
-`AF_LISTALL_RESTRICTED'
-    Разрешить ограничение линка к команде areafix `%listall'. При включенной
-    директиве для разрешения данной команды линку в конфиге passwd во втором поле
-    третьего поле параметра следует добавить ключ `%'.
-
-`RECODE_FILE_DESC'
+`RECODE_FILE_DESC'(--disable-recode-file-desc)
     Перекодировка описаний файлов из .tic в соответствии со значением параметра
-    DefaultCharset в fidogate.conf.
+    DefaultCharset в fidogate.conf. По умолчанию включено.
 
-`AF_AVAIL'
+`AF_AVAIL'(--disable-af-avail)
     Включение разделения команд `%list' и `%avail' areafix'а. При команде %list
     будет выводится cписок конференций, имеющих статус `S', `W' или `F', а при
     команде %avail будет выводится список конференций, имеющих отличный от
     вышеприведенных статус, либо всех, если определен параметр 
     `AreaFixAvailPrintsAllAreas' в fidogate.conf. При отключении этой опции
-    %avail действует так-же, как и %listall
+    %avail действует так-же, как и %listall. По умолчанию включено.
 
-`CREATE_FECHO_PASSTHROUGHT'
-    Создавать пасрушные файлэхи. При этом если имеется в uplinks ключ '-#' на
-    линка, с которого создается файлэха или отсутствует переменная
-    AutoCreateFechoPath с соответствующим значением, то файлэха создается
-    транзитной.
+`X_FTN_FROM_ECHOMAIL'(--disable-xff-echomail)
+    Добавлять RFC заголовок `X-FTN-From:' в сгейтованный эхомейл, при гейтовании
+    FTN->RFC. По умолчанию включено.
 
-`USE_FILEBOX'
-    Не использовать Bink style outbound для отправки файлэх. Если данная
-    директива закомментирована, то используется файлаттачинг файлов, иначе нет.
+`SPYES'(--disable-spyes)
+    Включить обработку spyes конфига. По умолчанию включено.
 
-`FTNTICK_NOCRC'
-    Отключить проверку CRC tick файлов с соответствующими CRC файлов.
+`AF_LISTALL_RESTRICTED'(--disable-aflr)
+    Разрешить ограничение линка к команде areafix `%listall'. При включенной
+    директиве для разрешения данной команды линку в конфиге passwd во втором поле
+    третьего параметра следует добавить ключ `%'. По умолчанию включено.
 
-`NOINSERT_ORGANIZATION'
+`FECHO_PASSTHROUGHT'(--disable-fecho-pass)
+    Создавать пасрушные файлэхи. По умолчанию включено.
+
+`USE_FILEBOX'(--disable-use-filebox)
+    Использовать unix-файлбоксы(холдовые) для отправки файлэх. Если данная
+    директива закомментирована, то используется файлаттачинг файлов. По умолчанию
+    включено.
+
+`FTNTICK_NOCRC'(--disable-tick-crc)
+    Сверять CRC-суммы, указанные в .tic-файлах с соответствующими CRC файлов.
+    По умолчанию включено.
+
+`NOINSERT_ORGANIZATION'(--enable-no-organization)
     При гейтовании FTN->RFC если в FTN сообщении не было Origin'а, не ставить
-    значение параметра Organization в fidogate.conf
+    значение параметра Organization, которое указано в основном конфиге гейта.
 
-`INSECURE_DONT_PUT_INTO_DUPE_DB'
-    Не добавлять в дупобазу информацию о `плохих' сообщениях.
+`INSECURE_DONT_PUT_INTO_DUPE_DB'(--disable-insecure-not-db)
+    Не добавлять в дупобазу информацию о `плохих' сообщениях. По умолчанию
+    включено.
     
 `SECURITY'
     Включение проверки некоторых параметров сообщений в процессе тостинга, таких
@@ -254,7 +256,7 @@ configure скрипт. В исключительных случаях требуется его непосредственное
     Смена формата кладжа ^AVia на FTS совместимый т.е. с:
        ^AVia FIDOGATE/ftntoss 2:5030/1229.0, 20010405.164323.MSK
     на:
-        ^AVia 2:5030/1229.0 @20010405.164323.MSK FIDOGATE/ftntoss
+       ^AVia 2:5030/1229.0 @20010405.164323.MSK FIDOGATE/ftntoss
 
 `ANSWER_OK'
     При создании эхоконференции отвечаем "Ok", вместо "subscribe".
@@ -348,9 +350,6 @@ configure скрипт. В исключительных случаях требуется его непосредственное
 
 `FIX_BAD_PKT_YEAR'
     Не ложить в беды пакеты с годом менее 1900 и более 2099, а менять на текущий.
-
-`AREAFIXMAXSTR'
-    Задает максимальное число строк писем - ответов ареафикса.
 
 P.S.: Использование ненужных Вам директив приводит к снижению производительности
     конкретных программ и fidogate вцелом.

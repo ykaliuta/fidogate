@@ -44,24 +44,25 @@ static Acl *acl_parse_line( char *buf ) {
     if( f == NULL )
 	return NULL;
 
-    if( !stricmp( f, "netmail" ) )
+    if( !stricmp(f, "netmail") )
 	acl_type = TYPE_NETMAIL;
-    else if( !stricmp( f, "rfc2ftn" ) )
+    else if( !stricmp(f, "rfc2ftn") )
 	gate_type = RFC2FTN;
-    else if( !stricmp( f, "ftn2rfc" ) )
+    else if( !stricmp(f, "ftn2rfc") )
 	gate_type = FTN2RFC;
-    else if( !stricmp( f, "echomail") )
+    else if( !stricmp(f, "echomail") )
 	acl_type = TYPE_ECHOMAIL;
-    else {
+    else
+    {
         n = strtok( NULL, " \t" );	/* Newsgroup pattern */
     
         if( n == NULL );
-	else if( strieq( f, "include" ) )
-	    acl_do_file( n );
-        else if( strieq( f, "PostingNotAllowedNotify") )
-	    pna_notify_init( n );
+	else if( strieq(f, "include") )
+	    acl_do_file(n);
+        else if( strieq(f, "PostingNotAllowedNotify") )
+	    pna_notify_init(n);
         else {    
-            p = ( Acl * )xmalloc( sizeof( Acl ) );
+            p = (Acl*)xmalloc(sizeof(Acl));
             p->next      = NULL;
             p->type      = acl_type;
             p->email_pat = strsave( f );
@@ -69,7 +70,7 @@ static Acl *acl_parse_line( char *buf ) {
             p->gate	 = gate_type;
 
             debug(15, "acl: %s, %s       %s",
-	          ( p->type == TYPE_NETMAIL ) ? "netmail" : "echomail",
+	          (p->type == TYPE_NETMAIL) ? "netmail" : "echomail",
 	          p->email_pat, p->ngrp_pat);
         }
     }

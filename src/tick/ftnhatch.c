@@ -54,7 +54,7 @@
 static  mode_t			tick_mode = 0600;
 static  char    		pass_path[MAXPATH];
 
-int	hatch			(char *, char *, char *);
+int	hatch			(char *, char *, char *, char *);
 void	short_usage		(void);
 void	usage			(void);
 
@@ -63,7 +63,7 @@ void	usage			(void);
 /*
  * Hatch file
  */
-int hatch(char *area, char *file, char *desc)
+int hatch(char *area, char *file, char *desc, char *replaces)
 {
     char file_name[MAXPATH];
     AreasBBS *bbs;
@@ -117,21 +117,22 @@ int hatch(char *area, char *file, char *desc)
 
     now = time(NULL);
     
-    tic.origin  = cf_n_addr();
-    tic.from    = cf_n_addr();
+    tic.origin	 = cf_n_addr();
+    tic.from	 = cf_n_addr();
     /* tic.to set by hatch_one() */
-    tic.area    = area;
-    tic.file    = file;
+    tic.area	 = area;
+    tic.file	 = file;
+    tic.replaces = replaces;
     tl_append( &tic.desc, xlat_s( desc, NULL ) );
-    tic.crc     = file_crc;
-    tic.created = CREATOR;
-    tic.size    = file_size;
+    tic.crc	 = file_crc;
+    tic.created	 = CREATOR;
+    tic.size	 = file_size;
     tl_appendf(&tic.path, "%s %ld %s",
 	       znf1(cf_addr()), (long)now, date(NULL, &now) );
     lon_add(&tic.seenby, cf_addr());
     lon_join(&tic.seenby, &bbs->nodes);
     /* tic.pw set by hatch_one() */
-    tic.date    = file_time;
+    tic.date	 = file_time;
 
     /*
      * Send to all nodes
@@ -180,6 +181,7 @@ void usage(void)
 	    PROGRAM);
     fprintf(stderr, "\
 options: -b --fareas-bbs NAME         use alternate FAREAS.BBS\n\
+         -r --replaces FILES          add Replaces entry\n\
 \n\
          -v --verbose                 more verbose\n\
 	 -h --help                    this help\n\
@@ -195,6 +197,7 @@ options: -b --fareas-bbs NAME         use alternate FAREAS.BBS\n\
 int main(int argc, char **argv)
 {
     char *areas_bbs = NULL;
+    char *r_flag=NULL;
     int c;
     char *c_flag=NULL;
     char *a_flag=NULL, *u_flag=NULL;
@@ -204,16 +207,17 @@ int main(int argc, char **argv)
     
     int option_index;
     static struct option long_options[] =
-    {
-        { "fareas-bbs",	  1, 0, 'b'},
-
-	{ "verbose",      0, 0, 'v'},	/* More verbose */
-	{ "help",         0, 0, 'h'},	/* Help */
-	{ "config",       1, 0, 'c'},	/* Config file */
-	{ "addr",         1, 0, 'a'},	/* Set FIDO address */
-	{ "uplink-addr",  1, 0, 'u'},	/* Set FIDO uplink address */
-	{ 0,              0, 0, 0  }
-    };
+	{
+	    { "fareas-bbs",   1, 0, 'b'},
+	    { "replaces",     1, 0, 'r'},
+	    
+	    { "verbose",      0, 0, 'v'},	/* More verbose */
+	    { "help",         0, 0, 'h'},	/* Help */
+	    { "config",       1, 0, 'c'},	/* Config file */
+	    { "addr",         1, 0, 'a'},	/* Set FIDO address */
+	    { "uplink-addr",  1, 0, 'u'},	/* Set FIDO uplink address */
+	    { 0,              0, 0, 0  }
+	};
 
     log_program(PROGRAM);
     
@@ -221,15 +225,19 @@ int main(int argc, char **argv)
     cf_initialize();
 
 
-    while ((c = getopt_long(argc, argv, "b:vhc:a:u:",
+    while ((c = getopt_long(argc, argv, "b:r:vhc:a:u:",
 			    long_options, &option_index     )) != EOF)
-	switch (c) {
-	/***** ftnhatch options *****/
+	switch (c)
+	{
+	    /***** ftnhatch options *****/
 	case 'b':
 	    areas_bbs = optarg;
 	    break;
+	case 'r':
+	    r_flag = optarg;
+	    break;
 	    
-	/***** Common options *****/
+	    /***** Common options *****/
 	case 'v':
 	    verbose++;
 	    break;
@@ -308,7 +316,8 @@ int main(int argc, char **argv)
 	BUF_EXPAND(pass_path, p);
     }
 #endif /* USE_FILEBOX || FECHO_PASSTHROUGHT */
-    if( ( p = cf_get_string( "DefaultCharset", TRUE ) ) ) {
+    if( ( p = cf_get_string( "DefaultCharset", TRUE ) ) )
+    {
 	debug( 8, "config: DefaultCharset %s", p);
 	cs_out = xstrtok( p, ":" );
 	xstrtok( NULL, ":" );
@@ -327,7 +336,7 @@ int main(int argc, char **argv)
     }
     
     /* Hatch it! */
-    ret = hatch(area, file, desc);
+    ret = hatch(area, file, desc, r_flag);
     tmps_freeall();
 
     exit_free();
