@@ -264,12 +264,18 @@ int do_dir(char *cdir, int mode)
 		freopen( rfc_file, R_MODE, stdin );
 		ret = system( p );
 		fclose( stdin );
-		if( ret != 0 ) {
+		if( ret != 0 )
+		{
+		    char bad[MAXPATH];
 		    log( "$WARNING: %s returned non-zero status", p );
-		    return ERROR;
-		} else {
-		    unlink( rfc_file );
+		    str_change_ext(bad, sizeof(bad), rfc_file, ".bad");
+		    log("ERROR: bad rfcbatch renamed to %s", bad);
+			if(rename(rfc_file, bad) == ERROR)
+			{
+			    log("$ERROR: can't rename %s -> %s", rfc_file, bad);
+			}
 		}
+		unlink( rfc_file );
 	    }
 	}
     }

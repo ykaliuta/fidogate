@@ -8,8 +8,8 @@
  *****************************************************************************/
 
 #define VERSION_MAJOR	5
-#define VERSION_MINOR	0
+#define VERSION_MINOR	1
 #define PATCHLEVEL	0
-#define EXTRAVERSION	"-beta7"
+#define EXTRAVERSION	"-ds"
 
 #define STATE		"stable"
