@@ -10,6 +10,6 @@
 #define VERSION_MAJOR	5
 #define VERSION_MINOR	1
 #define PATCHLEVEL	0
-#define EXTRAVERSION	"-ds"
+#define EXTRAVERSION	"ds-beta1"
 
 #define STATE		"stable"
