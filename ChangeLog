@@ -1,3 +1,600 @@
+2004-11-23  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* configure.in: add HAS_POSIX_REGEX autodetecting.
+	When system is supporting regcomp() this option is
+	enabled automaticaly.
+	* src/common/rematch.c: add HAVE_RX
+
+2004-11-21  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* doc/README.ru: add description for HAS_POSIX_REGEX
+	option
+	* configure.in: add HAS_POSIX_REGEX(--enable-posix-regex).
+	See docs for details
+
+2004-11-20  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* doc/README.ru: update
+
+2004-11-08  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/tick/ftnhatch.c: add replaces option
+
+2004-11-07  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/gate/rfc2ftn.c: now default rfc charset is
+	getting from DefaultCharset option, fix build with
+	defined HAVE_REGEX_H
+	* src/gate/send-fidogate.snews: fine working
+
+2004-11-02  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/gate/rfc2ftn.c: add tearline mime_deheader,
+	Origin mime_deheader when UseOrganizationForOrigin
+	is enabled
+
+2004-10-29  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* scripts/www/gate.cgi.in: correct working
+
+2004-10-15  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/charset/Makefile.am: add charsetc to
+	    installed libexec programs
+	* scripts/www/gate.cgi.in: fix working(thanks to
+	    Evgeniy Kozhuhovskiy)
+
+2004-09-10  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/areafix/areafix.c: added option
+	    AllowEmptyPwd(see Changes)
+
+2004-08-29  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* doc/FAQ_Config.ru: added full fidogate russian
+	    configuration FAQ
+	* doc/FAQ.ru: now this is a confiuration mini FAQ
+	    (part 10 of FAQ_Config.ru)
+
+2004-08-26  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* doc/FAQ.ru: add s-news configure
+
+2004-08-21  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/common/log.c: remove getenv()s, create
+	    security risk for setuid news programs
+
+2004-08-10  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/gate/send-fidogate.snews: fix errors
+
+2004-08-07  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* configure.in: fix default prefix
+	* src/gate/Makefile.am: fix build with not default
+	    owner and group(thanks to Max Boyarov)
+	* doc/news/leafnode/Makefile.am: change leafnode
+	    config from common.h to config.h
+
+2004-08-01  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/toss/ftnexpire.c: fix format warnings
+	* src/toss/ftntoss.c: fix format warnings
+	* src/tick/ftnhatch.c: fix format warnings
+	* src/tick/ftntick.c: fix format warnings
+	* src/common/histdb.c: fix format warnings
+	* src/common/log.c: fix incompatible type warning
+	* src/common/tick.c: fix format warnings
+
+2004-08-01  Andrey Slusar <anray@users.sourceforge.net>
+
+        * configure.h.in: fix INN detecting
+
+2004-07-29  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/gate/send-fidogate.snews: add s-news
+	    style send-fidogate
+	* src/gate/send-fidogate.sn: add sn style
+	    send-fidogate
+	* configure.h.in: rewrite and fix more bugs
+
+2004-07-23  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/toss/ftnroute.c: change opendir() to
+	    dir_open(), readdir() to dir_get()
+
+2004-07-22  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/areafix/areafix.c: change opendir() to
+	    dir_open(), readdir() to dir_get()
+	* src/gate/ftninpost.c: change system() to
+	    run_system(), opendir() to dir_open(),
+	    readdir() to dir_get()
+
+2004-07-20  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* configure.in: change innconfval -s parsing
+
+2004-07-15  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: fix SingleArticles
+	* src/gate/ftninpost.c: if SingleArticles defined,
+	    not using FTNInRecombine
+
+2004-07-13  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/gate/rfc2ftn.c: fix FTS_VIA(thanks to
+	    Alex Soukhotine)
+
+2004-07-10  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* doc/news/leafnode: update leafnode-utils to
+	    new version 0.6.2
+	* config.h.in: added SN option
+	* src/common/active.c: added SN active_lookup()
+	* src/areafix/ftnafutil.c: added SN option
+	* src/gate/ftn2rfc.c: added SN
+	* src/include/prototypes.h: added SN
+	* src/include/structs.h: added SN
+	* src/toss/ngoper.c: if AutoCreateRenumberCmd is not
+	    defined, this is silently skipped
+
+2004-07-05  Andrey Slusar <anray@users.sourceforge.net>
+
+	* doc/README.ru: update
+	* doc/FAQ.ru: update
+	* src/gate/ftn2rfc.c: fix SingleArticles
+
+2004-06-30  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/common/binkley.c: if enable AMIGADOS_4D_OUTBOUND,
+	    then using outbound for default zone
+	* src/toss/ftnpack.c: if enable AMIGADOS_4D_OUTBOUND,
+	    then using outbound for default zone
+	* src/toss/ftnroute.c: if enable AMIGADOS_4D_OUTBOUND,
+	    then using outbound for default zone
+
+2004-06-23  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: add coding some headers
+
+2004-06-15  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/toss/runinc.c: add -c option, if tmpunpack
+	    dirs not extist, create it
+	* src/areafix/areafix.c: fix traping cmd_listall
+
+2004-06-11  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/common/packet.c: change checking pkt date
+	    format
+
+2004-06-08  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* scripts/nodelist/nl-autoupd.in: add detecting
+	    DIFFDIR, NLDIR, NLFDIR in fidogate.conf
+
+2004-06-07  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/send-fidogate.in: add detecting LOGDIR
+	    and LOCKDIR in fidogate.conf
+	* src/util/confval.c: change sterr to stdout if
+	    variable exist
+	* src/util/pktdebug.c: add OLD_TOSS
+
+2004-06-06  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* version.h: update version number to 5.2.1ds
+	* src/common/getopt.c: fix args
+	* src/common/misc.c: fix and rewrite str_append()
+
+2004-05-08  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* doc/README.ru: update, add masqmail configuration
+	* doc/FAQ.ru: update
+
+2004-04-15  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* scripts/nodelist/nl-autoupd.in: remove $IFINDEX
+
+2004-03-30  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/common/rfcheader.c: fix RECODE_ALL_RFC
+
+2004-03-29  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/arafix/areafix.c: fix crashing ftnafutil if
+	    rulesfile is broken
+
+2004-03-24  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/common/getopt.c: fix warnings
+	* src/common/log.c: fix warnings
+	* src/gate/ftninpost.c: fix warnings
+	* src/tick/ftntick.c: fix warnings
+	* src/areafix.c: remove unnecessary '\n' if
+	    enable AFSEND_ECHO_STATUS
+
+2004-03-10  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: fix gate_rfc_kludge
+	* src/areafix/areafix.c: fix cmd_listall finding
+	    dupe lines in lists (thanks to Anton Leer)
+	* TODO.rus: update
+
+2004-03-04  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/common/msgid.c: fix trap ftn2rfc if bad 
+	    REPLY and use dbc_history
+
+2004-03-02  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/common/msgid.c: add ref_line
+	* src/ftn2rfc.c: modify GateRfcKludge
+
+2004-03-01  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/ftn2rfc.c: remove define CHECK_FTN2RFC_TO
+	* src/all: change log() to fglog()
+
+2004-02-27  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* configure.h.in: add --with-afix-maxstr
+	* doc/README.ru: update doc
+
+2004-02-26  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: remove OLD_COMMENT_TO
+	* src/common/histdb.c: fix writing fido_msgid
+
+2004-02-26  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
+
+	* src/common/packet.c: add the new define 'FIX_BAD_PKT_YEAR'
+	    for processing packets, contains bad year
+
+2004-02-25  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
+
+	* src/areafix/ftnafutil.c: fix the problem with removing
+	    of nodes during unsubscribe
+
+2004-02-24  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
+
+	* src/common/packet.c: fix the processing of the bad
+	    packets
+	* src/common/rfcheader.c: remove the unnecessary space
+	    in RFC header
+
+2004-02-23  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* configure.in: modify detect sendmail
+
+2004-02-22  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/all: rename OLD_TMP to OLD_TOSS, fix warnings
+
+2004-02-20  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/common/msgid.c: not write mail to msgid
+	    history
+
+2004-02-19  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* all: fix Makefiles
+
+2004-02-18  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* build/config.make.in: add UUINBOUND, FTPINBOUND
+
+2004-02-17  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: add gate RFC-User-Agent,
+	    RFC-X-NewsReader
+	* src/gate/ftn2rfc.c: fix area-flag
+	* src/common/msgid.c: fix DBC_HISTORY
+
+2004-02-13  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/toss/ftntoss.c: add NoRewrite and modify
+	    DO_NOT_TOSS_NETMAIL(thanks to Andrew Zhuravlev)
+	* src/gate/ftn2rfc.c: add gate RFC-Organization if
+	    enable option GateRfcKludge
+
+2004-02-12  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
+
+	* src/common/node.c: fix the problem with dupes of
+	    the addresses in (F)Areas.bbs
+
+2004-02-12  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: add GateRfcKludge(see Changes)
+
+2004-02-11  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: add preferred cs_out
+
+2004-02-11  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
+
+	* src/areafix/areafix.c: fix the problem of similar path
+	    to autocreate fechos in FAreas.bbs
+
+2004-02-10  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
+
+	* src/tick/ftntick.c: fix the AutoCreateFileechoLine problem
+
+2004-02-07  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* version.h: new EXTRAVERSION alpha3
+	* packages/freebsd: update version number
+	* doc/README.ru: update documentation
+	* acconfig.h: remove define REPLY_IF_X_FLAGS_M
+	* src/common/msgid.c: correct x_flags_m
+	* src/gate/rfc2ftn.c: correct x_flags_m, remove
+	    define REPLY_IF_X_FLAGS_M
+
+2004-02-06  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/areafix/areafix.c: fix support gcc<3.0
+
+2004-02-02  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* acconfig.h: change rfc_lvl_1
+	* src/toss/runinc.c: add ftpin, uuin support
+	    (thanks to Andrew Zhuravlev)
+
+2004-01-31  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/toss/ftnpack.c: add DO_NOT_TOSS_NETMAIL
+	    (thanks to Andrew Zhuravlev)
+	* src/toss/ftntoss.c: change DO_NOT_TOSS_NETMAIL
+	    (thanks to Andrew Zhuravlev)
+	* packages/freebsd: update freebsd port
+
+2004-01-30  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* doc/old/FIDOGATE_ftrack: add ftrack FAQ(thanks
+	    to Andrew Zhuravlev)
+	* configure.in: add --with-lockdir, change default
+	    netmaildir(thanks to Andrew Zhuravlev)
+
+2004-01-29  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/common/rfcheader.c: fix rfc_lvl_3
+
+2004-01-28  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* doc/old/FAQ_Fidogate: add old fidogate FAQ
+
+2004-01-27  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/tick/ftntick.c: fix logging TickFileAction
+	* config.h.in: change FTN_RFC_HEADERS,
+	    RFC_LVL_1_HEADERS, RFC_LVL_3_HEADERS, change
+	    NEW_COMMENT_TO to OLD_COMMENT_TO
+	* src/gate/ftn2rfc.c: add RECODE_ALL_RFC, change
+	    NEW_COMMENT_TO to OLD_COMMENT_TO
+	* src/gate/rfc2ftn.c: fix generate MSGID
+
+2004-01-26  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/rfc2ftn.c: fix disable FIDO_STYLE_MSGID
+	* configure.in: add option --with-netmaildir
+	* src/toss/ftntoss.c: change DO_NOT_TOSS_NETMAIL
+	* build/config.make.in: add NETMAILDIR
+	* doc/examples/dyff: add NETMAILDIR
+
+2004-01-25  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/areafix/areafix.c: change disable AF_AVAIL
+
+2004-01-23  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: add NoRfcKludge
+
+2004-01-20  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/rfc2ftn.c: fix disable FIDO_STYLE_MSGID
+	* src/include/prototypes.h: fix disable FIDO_STYLE_MSGID
+	* src/common/msgid.c: fix disable FIDO_STYLE_MSGID
+
+2004-01-19  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: add NEW_COMMENT_TO
+	* config.h.in: add NEW_COMMENT_TO
+	* src/gate/rfc2ftn.c: fix disable FIDO_STYLE_MSGID
+	* src/areafix/areafix.c: fix AF_AVAIL
+
+2004-01-18  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/areafix/areafix.c: fix disable AF_AVAIL
+
+2004-01-12  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* doc/examples: fixes
+
+2004-01-09  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* doc/FAQ.ru: update
+
+2003-12-29  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/areafix/areafix.c: fix forward requests(thanks
+	    to Zhenja Kaluta)
+
+2003-12-28  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* configure.in: fix warning message
+
+2003-12-07  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/charset/cyrillic.map: update
+	* packages/freebsd: update
+
+2003-12-06  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/common/message.c: add INSERT_ORIGIN
+	* acconfig.h: add INSERT_ORIGIN
+	* config.h.in: add INSERT_ORIGIN
+
+2003-12-03  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/charset/cyrillic.map: add belarussian(thanks to
+	    Serge Serebro)
+
+2003-12-01  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: fix UseOriginForOrganization
+	    (thanks to Anton Leer)
+	* package/freebsd: update
+	* config.h.in: SNPRINTF change to SPRINTF
+	* acconfig.h: SNPRINTF change to SPRINTF
+	* src/areafix/areafix.c: SNPRINTF change to SPRINTF
+	* src/common/misc.c: SNPRINTF change to SPRINTF
+	* src/common/textlist.c: SNPRINTF change to SPRINTF
+	* src/common/tmps.c: SNPRINTF change to SPRINTF
+
+2003-11-25  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/charset/cyrillic.map: fix cp1125 map(thanks to
+	    alex help kushnaryov)
+
+2003-11-22  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* packages/rpm/fidogate.spec: update
+	* src/charset/cyrillic.map: add alias cp1251
+
+2003-11-21  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/toss/ftntoss.c: edit spyes subject
+
+2003-11-16  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* doc/mailer/sendmail/mailer/ftn.m4.in: restore
+
+2003-11-12  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* doc/news/leafnode: update(thanks to Elohin Igor)
+
+2003-11-08  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: add '(none)' to X-FTN-Tearline
+
+2003-11-05  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* version.h: new development version
+	* src/toss/runinc.c: add key -c to runinc(thanks to
+	    Zhenja Kaluta)
+	* src/areafix/areafix.c: add key for NEW command(thanks
+	    to Zhenja Kaluta)
+	* Changes.ru: update
+	* doc/README.ru: update
+	* packages/freebsd: update
+	* doc/examples/dyff: update
+
+2003-11-01  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: fix NOINSERT_ORGANIZATION(thanks
+	    to Anton Leer)
+	* doc/FAQ.ru: update
+	* packages/freebsd: update freebsd port
+	* src/tick/ftntick.c: fix TickFileAction
+
+2003-10-30  Andrey Slusar <rusfidogate@users.sourceforge.net> 
+
+	* cvsexp: update
+	* src/common/address.c: fix AI_1
+	* doc/README.ru: update
+
+2003-10-28  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: fix UseOriginForOrganization(thanks
+	    to Alex Kotikov)
+
+2003-10-27  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* configure: fix compile ftnnews(thanks to Zhenja Kaluta)
+	* config.h.in: remove DEFAULT_OUTNETMAIL
+	* src/toss/ftntoss.c: fix DO_NOT_TOSS_NETMAIL
+
+2003-10-26  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/tick/ftntick.c: remove unused *s2
+
+2003-10-22  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* configure: fix sendmail, rnews, inews path
+	* src/charset/cyrillic.map: add cp1125 to default map
+
+2003-10-20  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* doc/FAQ.ru: update
+	* doc/README.ru: update
+
+2003-10-18  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* doc/news/leafnode: update, fix errors(thanks to Elohin Igor)
+
+2003-10-15  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* doc/mailer/sendmail/mailer/ftn.m4.in: delete section ftnmail
+	* configure: add sysconfdir and bugfixes
+	* packages/rpm/fidogate.spec: update
+	* doc/news/leafnode/common.h.in: delete common.h and change paths
+	* doc/mailer/exim: add exim configs
+	* doc/FAQ.ru: update
+	* autogen.sh: add
+	* doc/examples/point: update to current version
+
+2003-10-02  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/tick/ftntick.c: fix tic.replaces(thanks to Andrey Zhuravlev)
+	* packages/freebsd/Makefile: update freebsd port
+
+2003-10-01  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* Changes.ru: add russian changes
+	* src/areafix/ftnafutil.c: add delete unsubscribe areas
+
+2003-10-01  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
+
+	* src/util/confval.c: fixed the error 'Segmentation fault', added the
+	    new action: if it runs without flags then print all varables of
+	    fidogate.conf
+	* src/tick/ftntick.c: fixed TickFileAction
+
+2003-09-27  Andrey Slusar <rusfidogate@users.sourceforge.net>
+	
+	* src/common/histdb.c: add check hi_file (thanks to Alex Soukhotine)
+	* build/config.make.in: add ARC_RAR
+	* configure: add RAR, fix checking version inn, fix DOMAINNAME
+	* scripts/nodelist/nl-autoupd: fix path to sumcrc, name of nodelist
+	    and many bugfixes
+
+2003-09-26  Andrey Slusar <rusfidogate@users.sourceforge.net>
+	
+	* src/common/lock.c: fix remove [f]areas.bbs (thanks to
+	    Zhenya Kaluta)
+	* src/toss/runinc.c: add reading fidogate.conf, fix DiskFree*
+	    (thanks to Zhenya Kaluta), fix getopt and usage (thanks to
+	    Alexandr Dobroslavskiy), fix path to ftntickpost
+	* configure: add inn2.4, fix path to inews, sendmail, rnews
+	* scripts/maintenance/logdaily.in: fix paths to scripts
+	* scripts/outbound/out-ls.in: change die to next
+	* scripts/outbound/outb-kill.in: change paths to scripts
+	* scripts/outbound/outb.in: change paths to scripts
+	* src/areafix/areafix.c: fix AutoCreateSubscribeNodes and
+	    AutoCreateSubscribeFileechoNodes, fix unsubscribe (thanks to
+	    Alexandr Dobroslavskiy)
+	* src/common/node.c: fix FTN_ACL (thanks to Alexandr Dobroslavskiy)
+	* src/gate/ftninpost.c: fix rename to bad
+	* src/gate/rfc2ftn.c: change EchoGateAlias
+	* src/toss/ftntoss.c: fix tosting (thanks to Alexandr Dobroslavskiy)
+	* doc/FAQ.ru: add russian FAQ
+	* doc/news/leafnode: add leafnode-util (thanks to Elohin Igor)
+	* doc/README.en: rename to README
+	* doc/README: rename to README.ru
+	* packages/freebsd: update freebsd-port
+
 2003-03-16  Dmitry Fedotov <dyff@users.sourceforge.net>
 
 	* configure: default sysconfdir set to '<prefix>/etc'

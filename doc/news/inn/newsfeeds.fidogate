@@ -1,0 +1,20 @@
+#
+# Example configuration for FIDOGATE to be included in
+# INN's /etc/news/newsfeeds
+#
+
+# FIDOGATE gateway feed
+fidogate\
+	:!*,fido.*\
+	:Tf,Wnb:fidogate
+
+# WARNING!!!
+# If you don't put
+#
+#     NewsPathTail	"fidogate!not-for-mail"
+#
+# in fidogate.conf, you *must* add a proper exclude path to the
+# newsfeeds entry, e.g.
+#
+#     fidogate/p1.f999.n2499.z2.fidonet.org\
+#             ...

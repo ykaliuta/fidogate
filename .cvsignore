@@ -1,0 +1,14 @@
+Makefile
+autogen.sh
+autom4te.cache
+config.cache
+config.h
+config.log
+config.status
+stamp-h
+stamp-h1
+install-sh
+mkinstalldirs
+missing
+depcomp
+x

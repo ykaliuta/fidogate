@@ -8,346 +8,96 @@
 
 #undef DEFAULT_MAILER
 
-/* Define if using alloca.c.  */
-#undef C_ALLOCA
-
-/* Define to empty if the keyword does not work.  */
-#undef const
-
-/* Define to one of _getb67, GETB67, getb67 for Cray-2 and Cray-YMP systems.
-   This function is required for alloca.c support on those systems.  */
-#undef CRAY_STACKSEG_END
-
-/* Define if you have alloca, as a function or macro.  */
-#undef HAVE_ALLOCA
-
-/* Define if you have <alloca.h> and it should be used (not on Ultrix).  */
-#undef HAVE_ALLOCA_H
-
-/* Define if you don't have vprintf but do have _doprnt.  */
-#undef HAVE_DOPRNT
-
-/* Define if you have the strftime function.  */
-#undef HAVE_STRFTIME
-
-/* Define if you have <sys/wait.h> that is POSIX.1 compatible.  */
-#undef HAVE_SYS_WAIT_H
-
-/* Define if your struct tm has tm_zone.  */
-#undef HAVE_TM_ZONE
-
-/* Define if you don't have tm_zone but do have the external array
-   tzname.  */
-#undef HAVE_TZNAME
-
-/* Define if utime(file, NULL) sets file's timestamp to the present.  */
-#undef HAVE_UTIME_NULL
-
-/* Define if you have the vprintf function.  */
-#undef HAVE_VPRINTF
-
-/* Define if your C compiler doesn't accept -c and -o together.  */
-#undef NO_MINUS_C_MINUS_O
-
-/* Define as the return type of signal handlers (int or void).  */
-#undef RETSIGTYPE
-
-/* If using the C implementation of alloca, define if you know the
-   direction of stack growth for your system; otherwise it will be
-   automatically deduced at run-time.
- STACK_DIRECTION > 0 => grows toward higher addresses
- STACK_DIRECTION < 0 => grows toward lower addresses
- STACK_DIRECTION = 0 => direction of growth unknown
- */
-#undef STACK_DIRECTION
-
-/* Define if you have the ANSI C header files.  */
-#undef STDC_HEADERS
-
-/* Define if you can safely include both <sys/time.h> and <time.h>.  */
-#undef TIME_WITH_SYS_TIME
-
-/* Define if your <sys/time.h> declares struct tm.  */
-#undef TM_IN_SYS_TIME
-
-#undef DEFAULT_MAILER
-
-#undef HAVE_DLD
-
-#undef HAVE_LIBDL
-
-#undef HAVE_SHL_LOAD
-
-/* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
-   systems. This function is required for `alloca.c' support on those systems.
-   */
-#undef CRAY_STACKSEG_END
-
-/* Define to 1 if using `alloca.c'. */
-#undef C_ALLOCA
-
-/* Define to 1 if you have the `alarm' function. */
-#undef HAVE_ALARM
-
-/* Define to 1 if you have `alloca', as a function or macro. */
-#undef HAVE_ALLOCA
-
-/* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
-   */
-#undef HAVE_ALLOCA_H
-
-/* Define to 1 if you have the <dirent.h> header file, and it defines `DIR'.
-   */
-#undef HAVE_DIRENT_H
-
-/* Define to 1 if you have the `dlerror' function. */
-#undef HAVE_DLERROR
-
-/* Define to 1 if you don't have `vprintf' but do have `_doprnt.' */
-#undef HAVE_DOPRNT
-
-/* Define to 1 if you have the <fcntl.h> header file. */
-#undef HAVE_FCNTL_H
-
-/* Define to 1 if you have the `gettimeofday' function. */
+/* Define if you have the gettimeofday function.  */
 #undef HAVE_GETTIMEOFDAY
-
-/* Define to 1 if you have the <inttypes.h> header file. */
-#undef HAVE_INTTYPES_H
-
-/* Define to 1 if you have the <limits.h> header file. */
-#undef HAVE_LIMITS_H
 
 /* Define if you have the link function.  */
 #undef HAVE_LINK
 
-/* Define to 1 if your system has a working `malloc' function. */
-#undef HAVE_MALLOC
-
-/* Define if you have the <malloc.h> header file.  */
-#undef HAVE_MALLOC_H
-
-/* Define to 1 if you have the `memchr' function. */
-#undef HAVE_MEMCHR
-
-/* Define to 1 if you have the <memory.h> header file. */
-#undef HAVE_MEMORY_H
-
-/* Define to 1 if you have the `memset' function. */
-#undef HAVE_MEMSET
-
-/* Define to 1 if you have the `mkdir' function. */
+/* Define if you have the mkdir function.  */
 #undef HAVE_MKDIR
 
 /* Define if you have the mktime function.  */
 #undef HAVE_MKTIME
 
-/* Define to 1 if you have the <ndir.h> header file, and it defines `DIR'. */
-#undef HAVE_NDIR_H
-
-/* Define if libtool can extract symbol lists from object files. */
-#undef HAVE_PRELOADED_SYMBOLS
-
-/* Define if you have the <regex.h> header file.  */
-#undef HAVE_REGEX_H
-
-/* Define to 1 if you have the `regcomp' function. */
+/* Define if you have the regcomp function.  */
 #undef HAVE_REGCOMP
 
-/* Define if you have the snprintf function.  */
-#undef HAVE_SNPRINTF
-
-/* Define to 1 if `stat' has the bug that it succeeds when given the
-   zero-length file name argument. */
-#undef HAVE_STAT_EMPTY_STRING_BUG
+/* Define if you have the sprintf function.  */
+#undef HAVE_SPRINTF
 
 /* Define if you have the statfs function.  */
 #undef HAVE_STATFS
 
-/* Define to 1 if you have the <stddef.h> header file. */
-#undef HAVE_STDDEF_H
-
-/* Define to 1 if you have the <stdint.h> header file. */
-#undef HAVE_STDINT_H
-
-/* Define to 1 if you have the <stdlib.h> header file. */
-#undef HAVE_STDLIB_H
-
-/* Define to 1 if you have the `strcasecmp' function. */
+/* Define if you have the strcasecmp function.  */
 #undef HAVE_STRCASECMP
 
-/* Define to 1 if you have the `strchr' function. */
-#undef HAVE_STRCHR
-
-/* Define to 1 if you have the `strerror' function. */
+/* Define if you have the strerror function.  */
 #undef HAVE_STRERROR
-
-/* Define to 1 if you have the `strftime' function. */
-#undef HAVE_STRFTIME
 
 /* Define if you have the stricmp function.  */
 #undef HAVE_STRICMP
 
-/* Define to 1 if you have the <strings.h> header file. */
-#undef HAVE_STRINGS_H
-
-/* Define to 1 if you have the <string.h> header file. */
-#undef HAVE_STRING_H
-
-/* Define to 1 if you have the `strncasecmp' function. */
-#undef HAVE_STRNCASECMP
-
-/* Define to 1 if you have the `strpbrk' function. */
-#undef HAVE_STRPBRK
-
-/* Define to 1 if you have the `strrchr' function. */
-#undef HAVE_STRRCHR
-
 /* Define if you have the strspn function.  */
 #undef HAVE_STRSPN
 
-/* Define to 1 if you have the `strstr' function. */
+/* Define if you have the strstr function.  */
 #undef HAVE_STRSTR
-
-/* Define to 1 if `tm_zone' is member of `struct tm'. */
-#undef HAVE_STRUCT_TM_TM_ZONE
 
 /* Define if you have the syslog function.  */
 #undef HAVE_SYSLOG
 
-/* Define to 1 if you have the <syslog.h> header file. */
-#undef HAVE_SYSLOG_H
+/* Define if you have the <dirent.h> header file.  */
+#undef HAVE_DIRENT_H
 
-/* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'.
-   */
+/* Define if you have the <fcntl.h> header file.  */
+#undef HAVE_FCNTL_H
+
+/* Define if you have the <limits.h> header file.  */
+#undef HAVE_LIMITS_H
+
+/* Define if you have the <malloc.h> header file.  */
+#undef HAVE_MALLOC_H
+
+/* Define if you have the <ndir.h> header file.  */
+#undef HAVE_NDIR_H
+
+/* Define if you have the <sys/dir.h> header file.  */
 #undef HAVE_SYS_DIR_H
+
+/* Define if you have the <sys/mount.h> header file.  */
+#undef HAVE_SYS_MOUNT_H
+
+/* Define if you have the <sys/ndir.h> header file.  */
+#undef HAVE_SYS_NDIR_H
+
+/* Define if you have the <sys/param.h> header file.  */
+#undef HAVE_SYS_PARAM_H
+
+/* Define if you have the <sys/statfs.h> header file.  */
+#undef HAVE_SYS_STATFS_H
+
+/* Define if you have the <sys/statvfs.h> header file.  */
+#undef HAVE_SYS_STATVFS_H
+
+/* Define if you have the <sys/time.h> header file.  */
+#undef HAVE_SYS_TIME_H
+
+/* Define if you have the <sys/vfs.h> header file.  */
+#undef HAVE_SYS_VFS_H
 
 /* Define if you have the <sysexits.h> header file.  */
 #undef HAVE_SYSEXITS_H
 
-/* Define to 1 if you have the <sys/mount.h> header file. */
-#undef HAVE_SYS_MOUNT_H
-
-/* Define to 1 if you have the <sys/ndir.h> header file, and it defines `DIR'.
-   */
-#undef HAVE_SYS_NDIR_H
-
-/* Define to 1 if you have the <sys/param.h> header file. */
-#undef HAVE_SYS_PARAM_H
-
-/* Define to 1 if you have the <sys/statfs.h> header file. */
-#undef HAVE_SYS_STATFS_H
-
-/* Define to 1 if you have the <sys/statvfs.h> header file. */
-#undef HAVE_SYS_STATVFS_H
-
-/* Define to 1 if you have the <sys/stat.h> header file. */
-#undef HAVE_SYS_STAT_H
-
-/* Define to 1 if you have the <sys/time.h> header file. */
-#undef HAVE_SYS_TIME_H
-
-/* Define to 1 if you have the <sys/types.h> header file. */
-#undef HAVE_SYS_TYPES_H
-
-/* Define to 1 if you have the <sys/vfs.h> header file. */
-#undef HAVE_SYS_VFS_H
-
-/* Define to 1 if you have <sys/wait.h> that is POSIX.1 compatible. */
-#undef HAVE_SYS_WAIT_H
+/* Define if you have the <syslog.h> header file.  */
+#undef HAVE_SYSLOG_H
 
 /* Define if you have the <time.h> header file.  */
 #undef HAVE_TIME_H
 
-/* Define to 1 if your `struct tm' has `tm_zone'. Deprecated, use
-   `HAVE_STRUCT_TM_TM_ZONE' instead. */
-#undef HAVE_TM_ZONE
-
-/* Define to 1 if you don't have `tm_zone' but do have the external array
-   `tzname'. */
-#undef HAVE_TZNAME
-
-/* Define to 1 if you have the <unistd.h> header file. */
+/* Define if you have the <unistd.h> header file.  */
 #undef HAVE_UNISTD_H
 
-/* Define to 1 if you have the `utime' function. */
-#undef HAVE_UTIME
-
-/* Define to 1 if you have the <utime.h> header file. */
-#undef HAVE_UTIME_H
-
-/* Define to 1 if `utime(file, NULL)' sets file's timestamp to the present. */
-#undef HAVE_UTIME_NULL
-
-/* Define to 1 if you have the `vprintf' function. */
-#undef HAVE_VPRINTF
-
-/* Define to 1 if `lstat' dereferences a symlink specified with a trailing
-   slash. */
-#undef LSTAT_FOLLOWS_SLASHED_SYMLINK
-
-/* Define to 1 if `major', `minor', and `makedev' are declared in <mkdev.h>.
-   */
-#undef MAJOR_IN_MKDEV
-
-/* Define to 1 if `major', `minor', and `makedev' are declared in
-   <sysmacros.h>. */
-#undef MAJOR_IN_SYSMACROS
-
-/* Define to the address where bug reports for this package should be sent. */
-#undef PACKAGE_BUGREPORT
-
-/* Define to the full name of this package. */
-#undef PACKAGE_NAME
-
-/* Define to the full name and version of this package. */
-#undef PACKAGE_STRING
-
-/* Define to the one symbol short name of this package. */
-#undef PACKAGE_TARNAME
-
-/* Define to the version of this package. */
-#undef PACKAGE_VERSION
-
-/* Define as the return type of signal handlers (`int' or `void'). */
-#undef RETSIGTYPE
-
-/* Define to 1 if the `setvbuf' function takes the buffering type as its
-   second argument and the buffer pointer as the third, as on System V before
-   release 3. */
-#undef SETVBUF_REVERSED
-
-/* If using the C implementation of alloca, define if you know the
-   direction of stack growth for your system; otherwise it will be
-   automatically deduced at run-time.
-        STACK_DIRECTION > 0 => grows toward higher addresses
-        STACK_DIRECTION < 0 => grows toward lower addresses
-        STACK_DIRECTION = 0 => direction of growth unknown */
-#undef STACK_DIRECTION
-
-/* Define to 1 if you have the ANSI C header files. */
-#undef STDC_HEADERS
-
-/* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
-#undef TIME_WITH_SYS_TIME
-
-/* Define to 1 if your <sys/time.h> declares `struct tm'. */
-#undef TM_IN_SYS_TIME
-
-/* Define to empty if `const' does not conform to ANSI C. */
-#undef const
-
-/* Define to `int' if <sys/types.h> does not define. */
-#undef mode_t
-
-/* Define to `long' if <sys/types.h> does not define. */
-#undef off_t
-
-/* Define to `int' if <sys/types.h> does not define. */
-#undef pid_t
-
-/* Define to `unsigned' if <sys/types.h> does not define. */
-#undef size_t
 
 /***** General configuration *************************************************/
 
@@ -421,8 +171,6 @@
  */
 #undef ALIASES_ARE_LOCAL
 
-
-
 /***** rfc2ftn configuration ************************************************/
 
 /** Passthru operation for NetMail: FIDO->Internet->FIDO **/
@@ -433,6 +181,11 @@
  */
 #undef PASSTHRU_ECHOMAIL
 
+/** Support newsserver SN ***************************************************/
+/*
+ * Enable SN-style active_lookup
+ */
+#undef SN
 
 /***** AI patches configuration (see README.ai) *****************************/
 /*
@@ -449,11 +202,6 @@
  * Enable ACL for FTN links
  */
 #undef FTN_ACL
-
-/*
- * Add ^aREPLY kludge if RFC header `X-Flags' contains `m' parameter
- */
-#undef REPLY_IF_X_FLAGS_M
 
 /*
  * Put file descriptions into `.desc/%s.desc' file instead of files.bbs
@@ -512,6 +260,11 @@
 #undef NOINSERT_ORGANIZATION
 
 /*
+ * If Origin line is not present, include link address
+ */
+#undef INSERT_ORIGIN
+
+/*
  * Don't put insecure mail into dupe database
  */
 #undef INSECURE_DONT_PUT_INTO_DUPE_DB
@@ -541,14 +294,6 @@
  * Change areafix answer when subscibing to area from `subscribe' to `ok'.
  */
 #undef ANSWER_OK
-
-/*
- * When gate FTN->RFC change format `From:' field from:
- *	Dimm Agabekov (BeXEL)' @ 2:5023/10
- * to:
- *	Dimm Agabekov (BeXEL) <"Dimm_Agabekov_(BeXEL)"@f10.n5023.z2.fidonet.org>
- */
-#define CHECK_FTN2RFC_TO 
 
 /*
  * Set fido-style msgid
@@ -595,7 +340,6 @@
  * Disable tosting netmail and set directory for incoming and outgoing pkt's
  */
 #undef DO_NOT_TOSS_NETMAIL 
-#undef DEFAULT_OUTNETMAIL
 
 /*
  * Ignore `From:' field if REPLYTO or REPLYADDR was found
@@ -642,17 +386,39 @@
  */
 #undef USE_SYSLOG
 
+/*
+ * Enable old style tosting
+ */
+#undef OLD_TOSS
+
+/*
+ * Fix bad year in pkt's
+ */
+#undef FIX_BAD_PKT_YEAR
+
 /***** System dependend configuration ***************************************
  *
  *   HAVE_FCNTL_LOCK		Do you have file locking with fcntl()
  *
+ *   HAVE_GETTIMEOFDAY	        Do you have gettimeofday()?
+ *
  *   HAVE_TM_GMTOFF		Does your (struct tm) have a tm_gmtoff field?
+ *
+ *   HAVE_SYSEXITS_H             Do you have sysexits.h?
  *
  *   HAVE_TM_ZONE		Does your (struct tm) have a tm_zone field?
  *
  *   HAVE_STRFTIME		Do you have strftime()?
  *
  *   HAVE_TZNAME			Do you have extern char *tzname[2]?
+ *
+ *   HAVE_STRCASECMP		Do you have strcasecmp(), strncasecmp()?
+ *
+ *   HAVE_STRICMP		Do you have stricmp(), strnicmp()?
+ *
+ *
+ *   HAVE_STRERROR               Do you have strerror()?
+ *
  *
  *   DO_BINARY			Open files in binary mode
  *
@@ -664,11 +430,32 @@
  *				generates something like
  *				"Received: by NeXT.Mailer"
  *
+ *   HAVE_SPRINTF               sprintf(), vsprintf() supported
+ *
+ *   HAVE_SYSLOG		syslogd, syslog(), vsyslog() supported
+ *
  *   HAVE_HARDLINKS		hardlinks supported by link() and filesystem
+ *
+ *   HAS_POSIX_REGEX		POSIX regcomp(), regexec() etc. supported
+ *
+ *   HAVE_SYS_VFS_H		Do you have statfs() in sys/vfs.h
+ *
+ *   HAVE_SYS_STATFS_H		Do you have statfs() in sys/statfs.h
+ *
+ *   HAVE_SYS_STATVFS_H		Do you have statfs() in sys/statvfs.h
+ *
+ *   HAVE_SYS_MOUNT_H		Do you have statfs() in sys/mount.h
  */
 
 /***** Unix and derivates ***************************************************/
 
+# undef  HAVE_FCNTL_H
+# undef  HAVE_GETTIMEOFDAY
+# undef  HAVE_SYSEXITS_H
+# undef  HAVE_STRCASECMP
+# undef  HAVE_STRICMP
+# undef  HAVE_STRERROR
+# undef  HAVE_SPRINTF
 # undef  HAVE_TM_GMTOFF
 # undef  HAVE_STRFTIME
 # undef  HAVE_TM_ZONE
@@ -676,11 +463,18 @@
 #ifdef USE_SYSLOG
 # undef  HAVE_SYSLOG
 #endif
+# undef  HAVE_SYS_MOUNT_H
+# undef  HAVE_SYS_PARAM_H
 #if !defined(HAVE_SYS_MOUNT_H) && !defined(HAVE_SYS_PARAM_H)
 # undef  HAVE_SYS_VFS_H
 # undef  HAVE_SYS_STATFS_H
 # undef  HAVE_SYS_STATVFS_H
 #endif
+# undef  HAVE_TIME_H
+# undef  HAVE_SYS_TIME_H
+
+/* Standard config: POSIX UNIX */
+# undef HAVE_LINK
 
 /***** (MSDOS, OS/2, Windows) ************************************************/
 #ifdef MSDOS			/* MSDOS, DJGPP GNU gcc */
@@ -736,15 +530,14 @@
 #define FTN_RFC_HEADERS \
     "From:", "Reply-To:", "UUCPFROM:", "To:", "Cc:", "Bcc:", \
     "Newsgroups:", "Sender:", "Content-Transfer-Encoding:", \
-    "Header-To:", "Header-Cc:", "Subject:"
+    "Header-To:", "Header-Cc:", "Subject:", "User-Agent:", \
+    "X-Mailer:", "X-Newsreader:", "In-Reply-To:", "References:"
 
 /*
  * RFC headers output for ^ARFC level 1 (partial RFC headers)
  */
 #define RFC_LVL_1_HEADERS \
-    "From", "Reply-To", "To", "Cc", "Newsgroups", "Date", \
-    "Sender", "Resent-From", "Return-Path", \
-    "Next-Attachment"
+    "Reply-To", "Message-ID", "References"
 
 /*
  * RFC headers output for ^ARFC level 3 (all RFC headers, excluding some)
@@ -870,7 +663,7 @@
  */
 #define MAXADDRESS	32		/* Max. # of FTN address in CONFIG */
 
-#define AREAFIXMAXSTR   79
+#undef AREAFIXMAXSTR
 
 #define MAXMSGHEADRLEN	70		/* Max. length message field */
 
@@ -890,3 +683,329 @@
 					 * systems, it can be incremented with
 					 * ftntoss/ftnroute's -M option */
 
+
+/* Define if using alloca.c.  */
+#undef C_ALLOCA
+
+/* Define to empty if the keyword does not work.  */
+#undef const
+
+/* Define to one of _getb67, GETB67, getb67 for Cray-2 and Cray-YMP systems.
+   This function is required for alloca.c support on those systems.  */
+#undef CRAY_STACKSEG_END
+
+/* Define if you have alloca, as a function or macro.  */
+#undef HAVE_ALLOCA
+
+/* Define if you have <alloca.h> and it should be used (not on Ultrix).  */
+#undef HAVE_ALLOCA_H
+
+/* Define if you don't have vprintf but do have _doprnt.  */
+#undef HAVE_DOPRNT
+
+/* Define if you have the strftime function.  */
+#undef HAVE_STRFTIME
+
+/* Define if you have <sys/wait.h> that is POSIX.1 compatible.  */
+#undef HAVE_SYS_WAIT_H
+
+/* Define if your struct tm has tm_zone.  */
+#undef HAVE_TM_ZONE
+
+/* Define if you don't have tm_zone but do have the external array
+   tzname.  */
+#undef HAVE_TZNAME
+
+/* Define if utime(file, NULL) sets file's timestamp to the present.  */
+#undef HAVE_UTIME_NULL
+
+/* Define if you have the vprintf function.  */
+#undef HAVE_VPRINTF
+
+/* Define if your C compiler doesn't accept -c and -o together.  */
+#undef NO_MINUS_C_MINUS_O
+
+/* Define to `long' if <sys/types.h> doesn't define.  */
+#undef off_t
+
+/* Define to `int' if <sys/types.h> doesn't define.  */
+#undef pid_t
+
+/* Define as the return type of signal handlers (int or void).  */
+#undef RETSIGTYPE
+
+/* Define to `unsigned' if <sys/types.h> doesn't define.  */
+#undef size_t
+
+/* If using the C implementation of alloca, define if you know the
+   direction of stack growth for your system; otherwise it will be
+   automatically deduced at run-time.
+ STACK_DIRECTION > 0 => grows toward higher addresses
+ STACK_DIRECTION < 0 => grows toward lower addresses
+ STACK_DIRECTION = 0 => direction of growth unknown
+ */
+#undef STACK_DIRECTION
+
+/* Define if you have the ANSI C header files.  */
+#undef STDC_HEADERS
+
+/* Define if you can safely include both <sys/time.h> and <time.h>.  */
+#undef TIME_WITH_SYS_TIME
+
+/* Define if your <sys/time.h> declares struct tm.  */
+#undef TM_IN_SYS_TIME
+
+#undef DEFAULT_MAILER
+
+#undef HAVE_DLD
+
+#undef HAVE_LIBDL
+
+#undef HAVE_SHL_LOAD
+
+/* Define to 1 if the `closedir' function returns void instead of `int'. */
+#undef CLOSEDIR_VOID
+
+/* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
+   systems. This function is required for `alloca.c' support on those systems.
+   */
+#undef CRAY_STACKSEG_END
+
+/* Define to 1 if using `alloca.c'. */
+#undef C_ALLOCA
+
+/* Do we have a decent regex library? */
+#undef HAS_POSIX_REGEX
+
+/* Define to 1 if you have the `alarm' function. */
+#undef HAVE_ALARM
+
+/* Define to 1 if you have `alloca', as a function or macro. */
+#undef HAVE_ALLOCA
+
+/* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
+   */
+#undef HAVE_ALLOCA_H
+
+/* Define to 1 if you have the <dirent.h> header file, and it defines `DIR'.
+   */
+#undef HAVE_DIRENT_H
+
+/* Define to 1 if you don't have `vprintf' but do have `_doprnt.' */
+#undef HAVE_DOPRNT
+
+/* Define to 1 if you have the <fcntl.h> header file. */
+#undef HAVE_FCNTL_H
+
+/* Define to 1 if you have the `gettimeofday' function. */
+#undef HAVE_GETTIMEOFDAY
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the <limits.h> header file. */
+#undef HAVE_LIMITS_H
+
+/* Define to 1 if your system has a working `malloc' function. */
+#undef HAVE_MALLOC
+
+/* Define to 1 if you have the `memchr' function. */
+#undef HAVE_MEMCHR
+
+/* Define to 1 if you have the <memory.h> header file. */
+#undef HAVE_MEMORY_H
+
+/* Define to 1 if you have the `memset' function. */
+#undef HAVE_MEMSET
+
+/* Define to 1 if you have the `mkdir' function. */
+#undef HAVE_MKDIR
+
+/* Define to 1 if you have the <ndir.h> header file, and it defines `DIR'. */
+#undef HAVE_NDIR_H
+
+/* Define to 1 if you have the `regcomp' function. */
+#undef HAVE_REGCOMP
+
+/* Do we have rxposix.h? */
+#undef HAVE_RX
+
+/* Define to 1 if `stat' has the bug that it succeeds when given the
+   zero-length file name argument. */
+#undef HAVE_STAT_EMPTY_STRING_BUG
+
+/* Define to 1 if you have the <stddef.h> header file. */
+#undef HAVE_STDDEF_H
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
+
+/* Define to 1 if you have the `strcasecmp' function. */
+#undef HAVE_STRCASECMP
+
+/* Define to 1 if you have the `strchr' function. */
+#undef HAVE_STRCHR
+
+/* Define to 1 if you have the `strerror' function. */
+#undef HAVE_STRERROR
+
+/* Define to 1 if you have the `strftime' function. */
+#undef HAVE_STRFTIME
+
+/* Define to 1 if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define to 1 if you have the `strncasecmp' function. */
+#undef HAVE_STRNCASECMP
+
+/* Define to 1 if you have the `strpbrk' function. */
+#undef HAVE_STRPBRK
+
+/* Define to 1 if you have the `strrchr' function. */
+#undef HAVE_STRRCHR
+
+/* Define to 1 if you have the `strspn' function. */
+#undef HAVE_STRSPN
+
+/* Define to 1 if you have the `strstr' function. */
+#undef HAVE_STRSTR
+
+/* Define to 1 if `tm_zone' is member of `struct tm'. */
+#undef HAVE_STRUCT_TM_TM_ZONE
+
+/* Define to 1 if you have the <syslog.h> header file. */
+#undef HAVE_SYSLOG_H
+
+/* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'.
+   */
+#undef HAVE_SYS_DIR_H
+
+/* Define to 1 if you have the <sys/mount.h> header file. */
+#undef HAVE_SYS_MOUNT_H
+
+/* Define to 1 if you have the <sys/ndir.h> header file, and it defines `DIR'.
+   */
+#undef HAVE_SYS_NDIR_H
+
+/* Define to 1 if you have the <sys/param.h> header file. */
+#undef HAVE_SYS_PARAM_H
+
+/* Define to 1 if you have the <sys/statfs.h> header file. */
+#undef HAVE_SYS_STATFS_H
+
+/* Define to 1 if you have the <sys/statvfs.h> header file. */
+#undef HAVE_SYS_STATVFS_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/time.h> header file. */
+#undef HAVE_SYS_TIME_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <sys/vfs.h> header file. */
+#undef HAVE_SYS_VFS_H
+
+/* Define to 1 if you have <sys/wait.h> that is POSIX.1 compatible. */
+#undef HAVE_SYS_WAIT_H
+
+/* Define to 1 if you have the <time.h> header file. */
+#undef HAVE_TIME_H
+
+/* Define to 1 if your `struct tm' has `tm_zone'. Deprecated, use
+   `HAVE_STRUCT_TM_TM_ZONE' instead. */
+#undef HAVE_TM_ZONE
+
+/* Define to 1 if you don't have `tm_zone' but do have the external array
+   `tzname'. */
+#undef HAVE_TZNAME
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the `utime' function. */
+#undef HAVE_UTIME
+
+/* Define to 1 if you have the <utime.h> header file. */
+#undef HAVE_UTIME_H
+
+/* Define to 1 if `utime(file, NULL)' sets file's timestamp to the present. */
+#undef HAVE_UTIME_NULL
+
+/* Define to 1 if you have the `vprintf' function. */
+#undef HAVE_VPRINTF
+
+/* Define to 1 if `lstat' dereferences a symlink specified with a trailing
+   slash. */
+#undef LSTAT_FOLLOWS_SLASHED_SYMLINK
+
+/* Define to 1 if `major', `minor', and `makedev' are declared in <mkdev.h>.
+   */
+#undef MAJOR_IN_MKDEV
+
+/* Define to 1 if `major', `minor', and `makedev' are declared in
+   <sysmacros.h>. */
+#undef MAJOR_IN_SYSMACROS
+
+/* Define to the address where bug reports for this package should be sent. */
+#undef PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#undef PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#undef PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
+
+/* Define to the version of this package. */
+#undef PACKAGE_VERSION
+
+/* Define as the return type of signal handlers (`int' or `void'). */
+#undef RETSIGTYPE
+
+/* Define to 1 if the `setvbuf' function takes the buffering type as its
+   second argument and the buffer pointer as the third, as on System V before
+   release 3. */
+#undef SETVBUF_REVERSED
+
+/* If using the C implementation of alloca, define if you know the
+   direction of stack growth for your system; otherwise it will be
+   automatically deduced at run-time.
+        STACK_DIRECTION > 0 => grows toward higher addresses
+        STACK_DIRECTION < 0 => grows toward lower addresses
+        STACK_DIRECTION = 0 => direction of growth unknown */
+#undef STACK_DIRECTION
+
+/* Define to 1 if you have the ANSI C header files. */
+#undef STDC_HEADERS
+
+/* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
+#undef TIME_WITH_SYS_TIME
+
+/* Define to 1 if your <sys/time.h> declares `struct tm'. */
+#undef TM_IN_SYS_TIME
+
+/* Define to empty if `const' does not conform to ANSI C. */
+#undef const
+
+/* Define to `int' if <sys/types.h> does not define. */
+#undef mode_t
+
+/* Define to `long' if <sys/types.h> does not define. */
+#undef off_t
+
+/* Define to `int' if <sys/types.h> does not define. */
+#undef pid_t
+
+/* Define to `unsigned' if <sys/types.h> does not define. */
+#undef size_t

@@ -14,7 +14,7 @@
 @SET_MAKE@
 
 #
-# $Id: Makefile.in,v 1.1.1.1 2003/09/23 17:31:42 rusfidogate Exp $
+# $Id: Makefile.in,v 5.2 2004/11/23 00:50:36 anray Exp $
 #
 # Makefile.am FIDOGATE doc/
 #
@@ -69,9 +69,11 @@ AS = @AS@
 AWK = @AWK@
 BATCHER = @BATCHER@
 CC = @CC@
+CPP = @CPP@
 CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
+DOMAINNAME = @DOMAINNAME@
 EXEEXT = @EXEEXT@
 GROUP = @GROUP@
 HOSTNAME = @HOSTNAME@
@@ -101,6 +103,7 @@ PATHOUTGOING = @PATHOUTGOING@
 PERL = @PERL@
 PERL5 = @PERL5@
 RANLIB = @RANLIB@
+RAR = @RAR@
 RNEWS = @RNEWS@
 SENDMAIL = @SENDMAIL@
 SPOOLDIR = @SPOOLDIR@
@@ -115,6 +118,7 @@ am__include = @am__include@
 am__quote = @am__quote@
 btbasedir = @btbasedir@
 install_sh = @install_sh@
+netmaildir = @netmaildir@
 vardir = @vardir@
 
 dist_sysconf_DATA = examples/bounce/bounce.acl \
@@ -141,7 +145,10 @@ dist_sysconf_DATA = examples/bounce/bounce.acl \
 
 configs = mailer/postfix/master.cf \
 	    mailer/sendmail/mailer/ftn.m4 \
+	    news/leafnode/config.h \
+	    news/leafnode/Makefile \
 	    examples/dyff/fidogate.conf.sample \
+	    examples/point/fidogate.conf \
 	    examples/dyff/packing.sample
 
 

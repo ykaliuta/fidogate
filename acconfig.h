@@ -19,11 +19,8 @@
 /* Define if you have the mktime function.  */
 #undef HAVE_MKTIME
 
-/* Define if you have the regcomp function.  */
-#undef HAVE_REGCOMP
-
-/* Define if you have the snprintf function.  */
-#undef HAVE_SNPRINTF
+/* Define if you have the sprintf function.  */
+#undef HAVE_SPRINTF
 
 /* Define if you have the statfs function.  */
 #undef HAVE_STATFS
@@ -60,9 +57,6 @@
 
 /* Define if you have the <ndir.h> header file.  */
 #undef HAVE_NDIR_H
-
-/* Define if you have the <regex.h> header file.  */
-#undef HAVE_REGEX_H
 
 /* Define if you have the <sys/dir.h> header file.  */
 #undef HAVE_SYS_DIR_H
@@ -173,8 +167,6 @@
  */
 #undef ALIASES_ARE_LOCAL
 
-
-
 /***** rfc2ftn configuration ************************************************/
 
 /** Passthru operation for NetMail: FIDO->Internet->FIDO **/
@@ -185,6 +177,11 @@
  */
 #undef PASSTHRU_ECHOMAIL
 
+/** Support newsserver SN ***************************************************/
+/*
+ * Enable SN-style active_lookup
+ */
+#undef SN
 
 /***** AI patches configuration (see README.ai) *****************************/
 /*
@@ -201,11 +198,6 @@
  * Enable ACL for FTN links
  */
 #undef FTN_ACL
-
-/*
- * Add ^aREPLY kludge if RFC header `X-Flags' contains `m' parameter
- */
-#undef REPLY_IF_X_FLAGS_M
 
 /*
  * Put file descriptions into `.desc/%s.desc' file instead of files.bbs
@@ -264,6 +256,11 @@
 #undef NOINSERT_ORGANIZATION
 
 /*
+ * If Origin line is not present, include link address
+ */
+#undef INSERT_ORIGIN
+
+/*
  * Don't put insecure mail into dupe database
  */
 #undef INSECURE_DONT_PUT_INTO_DUPE_DB
@@ -293,14 +290,6 @@
  * Change areafix answer when subscibing to area from `subscribe' to `ok'.
  */
 #undef ANSWER_OK
-
-/*
- * When gate FTN->RFC change format `From:' field from:
- *	Dimm Agabekov (BeXEL)' @ 2:5023/10
- * to:
- *	Dimm Agabekov (BeXEL) <"Dimm_Agabekov_(BeXEL)"@f10.n5023.z2.fidonet.org>
- */
-#define CHECK_FTN2RFC_TO 
 
 /*
  * Set fido-style msgid
@@ -347,7 +336,6 @@
  * Disable tosting netmail and set directory for incoming and outgoing pkt's
  */
 #undef DO_NOT_TOSS_NETMAIL 
-#undef DEFAULT_OUTNETMAIL
 
 /*
  * Ignore `From:' field if REPLYTO or REPLYADDR was found
@@ -394,6 +382,16 @@
  */
 #undef USE_SYSLOG
 
+/*
+ * Enable old style tosting
+ */
+#undef OLD_TOSS
+
+/*
+ * Fix bad year in pkt's
+ */
+#undef FIX_BAD_PKT_YEAR
+
 /***** System dependend configuration ***************************************
  *
  *   HAVE_FCNTL_LOCK		Do you have file locking with fcntl()
@@ -428,13 +426,13 @@
  *				generates something like
  *				"Received: by NeXT.Mailer"
  *
- *   HAVE_SNPRINTF              snprintf(), vsnprintf() supported
+ *   HAVE_SPRINTF               sprintf(), vsprintf() supported
  *
  *   HAVE_SYSLOG		syslogd, syslog(), vsyslog() supported
  *
  *   HAVE_HARDLINKS		hardlinks supported by link() and filesystem
  *
- *   HAVE_REGEX_H		POSIX regcomp(), regexec() etc. supported
+ *   HAS_POSIX_REGEX		POSIX regcomp(), regexec() etc. supported
  *
  *   HAVE_SYS_VFS_H		Do you have statfs() in sys/vfs.h
  *
@@ -453,7 +451,7 @@
 # undef  HAVE_STRCASECMP
 # undef  HAVE_STRICMP
 # undef  HAVE_STRERROR
-# undef  HAVE_SNPRINTF
+# undef  HAVE_SPRINTF
 # undef  HAVE_TM_GMTOFF
 # undef  HAVE_STRFTIME
 # undef  HAVE_TM_ZONE
@@ -473,7 +471,6 @@
 
 /* Standard config: POSIX UNIX */
 # undef HAVE_LINK
-# undef HAVE_REGEX_H
 
 /***** (MSDOS, OS/2, Windows) ************************************************/
 #ifdef MSDOS			/* MSDOS, DJGPP GNU gcc */
@@ -529,15 +526,14 @@
 #define FTN_RFC_HEADERS \
     "From:", "Reply-To:", "UUCPFROM:", "To:", "Cc:", "Bcc:", \
     "Newsgroups:", "Sender:", "Content-Transfer-Encoding:", \
-    "Header-To:", "Header-Cc:", "Subject:"
+    "Header-To:", "Header-Cc:", "Subject:", "User-Agent:", \
+    "X-Mailer:", "X-Newsreader:", "In-Reply-To:", "References:"
 
 /*
  * RFC headers output for ^ARFC level 1 (partial RFC headers)
  */
 #define RFC_LVL_1_HEADERS \
-    "From", "Reply-To", "To", "Cc", "Newsgroups", "Date", \
-    "Sender", "Resent-From", "Return-Path", \
-    "Next-Attachment"
+    "Reply-To", "Message-ID", "References"
 
 /*
  * RFC headers output for ^ARFC level 3 (all RFC headers, excluding some)
@@ -663,7 +659,7 @@
  */
 #define MAXADDRESS	32		/* Max. # of FTN address in CONFIG */
 
-#define AREAFIXMAXSTR   79
+#undef AREAFIXMAXSTR
 
 #define MAXMSGHEADRLEN	70		/* Max. length message field */
 

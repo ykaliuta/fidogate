@@ -1,0 +1,292 @@
+#!<PERL5>
+#
+# Copyright (C) 2000 Serge N. Pokhodyaev
+#
+# E-mail: snp@ru.ru
+# FIDO:   2:5020/1838
+#
+# Distributed under GNU GPL
+#
+# Updated by Dmitry Fedotov
+#
+# FIDO:	  2:5030/1229
+#
+# $Id: report_traffic.in,v 5.2 2004/11/23 00:50:41 anray Exp $
+#
+
+require 5.000;
+
+use strict;
+
+my $VERSION = '$Revision: 5.2 $ ';
+my $PROGRAM = "report_traffic";
+
+use POSIX qw(strftime);
+
+use locale;
+use POSIX qw(locale_h);
+setlocale(LC_TIME, 'C');
+
+<INCLUDE config.pl>
+
+# read config
+my $CONFIG = "<CONFIG_MAIN>";
+CONFIG_read($CONFIG);
+
+
+# Configurable part ##########################################################
+
+my $msgfrom = "\"Stat daemon\" <news\@<HOSTNAME><DOMAINNAME>>";
+my $msgnewsgroup = "junk";
+my $msgnode = "2:5030/1229.0";
+
+##############################################################################
+
+# Common configuration for perl scripts
+#<INCLUDE config.pl>
+
+my $logdir = CONFIG_get("LOGDIR");
+my $log;
+my $logtime = time;
+# - 86400;
+my $logdate1 = strftime("%b %e", localtime($logtime));
+my $logdate2 = strftime("%b %d", localtime($logtime));
+my $repdate = strftime("%a, %e %b %Y", localtime($logtime));
+
+my %traffic;
+my @areas;
+my $area;
+
+my $total;
+my $total_size;
+my $flag;
+
+my %f;
+
+my $i;
+my $p;
+
+
+
+format HEADER =
+^||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+$f{msg}
+.
+
+
+format HEADER_summary =
+               ¢†††††††††††††††††††††††††††††††††††∂††††††††††††††††††††††¶
+               Å             Area name             Å Messages Å    Size   Å
+               Ø†††††††††††††††††††††††††††††††††††º††††††††††††††††††††††≤
+.
+
+format LINE_summary =
+               Å ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Å ^>>>>>>> Å ^>>>> ^>> Å
+                 $f{area},                           $f{traf},  $f{size} $f{l}
+.
+
+format FOOTER_summary =
+               ÜÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄäÄÄÄÄÄÄÄÄÄÄäÄÄÄÄÄÄÄÄÄÄÄá
+               Å               TOTAL               Å ^>>>>>>> Å ^>>>>> Kb Å
+                                                     $f{traf}, $f{size}
+               ©†††††††††††††††††††††††††††††††††††††††††††π††††††††††††††¨
+.
+
+
+format HEADER_killed =
+    ¢††††††††††††††††††††††††††††††††††††∂†††††††††††††††††††††††††††††¶
+    Å             Area name              Å           Messages          Å
+    Å                                    Å  r  Å  i  Å  d  Å  c  Å r/o Å
+    Ø††††††††††††††††††††††††††††††††††††º†††††º†††††º†††††º†††††º†††††≤
+.
+
+format LINE_killed =
+    Å ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Å ^>> Å ^>> Å ^>> Å ^>> Å ^>> Å
+      $f{area}, $f{traf_r}, $f{traf_i}, $f{traf_d}, $f{traf_c}, $f{traf_ro}
+.
+
+format FOOTER_killed =
+    ÜÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄäÄÄÄÄÄäÄÄÄÄÄäÄÄÄÄÄäÄÄÄÄÄäÄÄÄÄÄá
+    Å               TOTAL                Å ^>> Å ^>> Å ^>> Å ^>> Å ^>> Å
+    $f{traf_r}, $f{traf_i}, $f{traf_d}, $f{traf_c}, $f{traf_ro}
+    ©††††††††††††††††††††††††††††††††††††π†††††π†††††π†††††π†††††π†††††¨
+    r   == routed
+    i   == insecure
+    d   == dupes
+    c   == circular path
+    r/o == from read only links
+.
+
+
+
+  foreach $log ("$logdir/log-in.1.gz","$logdir/log-in.1","$logdir/log",
+                "$logdir/log-news.1.gz","$logdir/log-news.1","$logdir/log-news")
+  {
+
+    # Check if logfile is readable
+    #
+    if (!(-r $log))
+      {
+	next;
+      }
+
+    # Try to open logfile
+    #
+    if ($log =~ /\.gz$/)
+      {
+	open(LOG, "gunzip -c $log |") || next;
+      }
+    else
+      {
+	open(LOG, "< $log") || next;
+      }
+
+
+    # Read logfile
+    #
+    while (<LOG>)
+      {
+	if (!($_ =~ ("^" . $logdate1)) && !($_ =~ ("^" . $logdate2)))
+	  {
+#	    next;
+	  }
+
+	if ($_ =~ m( ftntoss area ([^ ]+) *: msgs in: ([0-9]+) *out: ([0-9]+) *size: ([0-9]+) *killed: ([0-9]+)/([0-9]+)/([0-9]+)/([0-9]+)/([0-9]+)))
+	  {
+	    $area = uc($1);
+	    $traffic{$area}{'in'}       += $2;
+	    $traffic{$area}{'out'}      += $3;
+	    $traffic{$area}{'size'}     += $4;
+	    $traffic{$area}{'routed'}   += $5;
+	    $traffic{$area}{'insecure'} += $6;
+	    $traffic{$area}{'dupes'}    += $7;
+	    $traffic{$area}{'circular'} += $8;
+	    $traffic{$area}{'ro'}       += $9;
+	  }
+	elsif ($_ =~ m( ftntoss area ([^ ]+) *: msgs in: ([0-9]+) *out: ([0-9]+) *size: ([0-9]+) *killed: ([0-9]+)/([0-9]+)/([0-9]+)/([0-9]+)))
+	  {
+	    $area = uc($1);
+	    $traffic{$area}{'in'}       += $2;
+	    $traffic{$area}{'out'}      += $3;
+	    $traffic{$area}{'size'}     += $4;
+	    $traffic{$area}{'routed'}   += $5;
+	    $traffic{$area}{'insecure'} += $6;
+	    $traffic{$area}{'dupes'}    += $7;
+	    $traffic{$area}{'circular'} += $8;
+	  }
+	elsif ($_ =~ m( ftntoss area ([^ ]+) *: msgs in: ([0-9]+) *out: ([0-9]+) *size: ([0-9]+)))
+	  {
+	    $area = uc($1);
+	    $traffic{$area}{'in'}      += $2;
+	    $traffic{$area}{'out'}     += $3;
+	    $traffic{$area}{'size'}    += $4;
+	  }
+      }
+    
+    close(LOG);
+  }
+
+@areas = sort(keys(%traffic));
+
+open(STDOUT, "| inews -h -O -S -R") || die("can't pipe report to inews");
+#open(STDOUT, "| cat") || die("can't pipe report to cat");
+
+# Print RFC headers
+#
+print "From: ", $msgfrom, "\n";
+print "Newsgroups: ", $msgnewsgroup, "\n";
+print "Subject: Traffic statistics for ", $repdate, "\n";
+print "\n";
+
+# Print date info
+#
+$~ = "HEADER";
+$f{msg} = "Traffic statistics at node " . $msgnode . " for yesterday (" . $repdate . ")";
+write;
+print "\n";
+
+# Print total message statistics #############################################
+#
+$~ = "HEADER_summary";
+write;
+
+$~ = "LINE_summary";
+
+$total = 0;
+$total_size = 0;
+foreach $i (@areas)
+  {
+    $f{area} = $i;
+    $f{traf} = $traffic{$i}{'in'};
+    $p = $traffic{$i}{'size'};
+    if ($p < 10240)
+    {
+	$f{size} = "$p";
+    }
+    else
+    {$f{size} = $p/1024;
+     $f{l} = "Kb";  }
+    write;
+#    write;
+#    print STDOUT "$f{size}\n";
+    $total += $traffic{$i}{'in'};
+    $total_size += $traffic{$i}{'size'};
+  }
+
+$~ = "FOOTER_summary";
+$f{traf} = $total;
+$f{size} = $total_size/1024;
+write;
+
+
+# Print detailed message statistics ##########################################
+#
+$flag = 0;
+$total = 0;
+$f{traf_r} = 0;
+$f{traf_i} = 0;
+$f{traf_d} = 0;
+$f{traf_c} = 0;
+$f{traf_ro} = 0;
+foreach $i (@areas)
+  {
+    if ($traffic{$i}{'routed'}   != 0 ||
+	$traffic{$i}{'insecure'} != 0 ||
+	$traffic{$i}{'dupes'}    != 0 ||
+	$traffic{$i}{'circular'} != 0 ||
+	$traffic{$i}{'ro'}       != 0)
+      {
+	if ($flag == 0)
+	  {
+	    print "\n";
+	    $~ = "HEADER_killed";
+	    write;
+	    $~ = "LINE_killed";
+	    $flag = 1;
+	  }
+	$f{area} = $i;
+	$f{r}  = $traffic{$i}{'routed'};   $f{traf_r}  += $traffic{$i}{'routed'};
+	$f{i}  = $traffic{$i}{'insecure'}; $f{traf_i}  += $traffic{$i}{'insecure'};
+	$f{d}  = $traffic{$i}{'dupes'};    $f{traf_d}  += $traffic{$i}{'dupes'};
+	$f{c}  = $traffic{$i}{'circular'}; $f{traf_c}  += $traffic{$i}{'circular'};
+	$f{ro} = $traffic{$i}{'ro'};       $f{traf_ro} += $traffic{$i}{'ro'};
+	write;
+      }
+  }
+
+if ($flag == 1)
+  {
+    $~ = "FOOTER_killed";
+    $f{r}  = $f{traf_r};
+    $f{i}  = $f{traf_i};
+    $f{d}  = $f{traf_d};
+    $f{c}  = $f{traf_c};
+    $f{ro} = $f{traf_ro};
+    write;
+  }
+
+##############################################################################
+
+close(STDOUT);
+
+exit(0);

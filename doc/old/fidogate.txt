@@ -1,0 +1,3814 @@
+This is fidogate.info, produced by Makeinfo version 3.12h from
+fidogate.texi.
+
+   This file documents the installation and usage of FIDOGATE version
+4.4
+
+   Copyright (C) 1994-2000, Martin Junius
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided that the
+entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+   Permission is granted to copy and distribute translations of this
+manual into other languages, under the above conditions for modified
+versions.
+
+
+Introduction
+************
+
+This manual documents how to install and use FIDOGATE. It is the first
+step toward a concise documentation. Alas, writing documentation is a
+somewhat tedious business, so this manual is far from complete.
+
+
+* Introduction::Introduction to FIDOGATE
+* Installation::Compiling and installing FIDOGATE
+* Programs::    FIDOGATE programs and scripts
+* Config files::FIDOGATE config files
+* Basic::       Basic configuration
+* Usage::       FIDOGATE usage
+
+* Index::       Index
+
+ --- The Detailed Node Listing ---
+
+Compiling and installing FIDOGATE
+
+* config.h::    The config.h header file
+* config.make:: The config.make Makefile configuration
+* Compiling::   Compiling and installing FIDOGATE
+* Integration:: Integrating FIDOGATE and the mail/news system
+* Testing::     Testing FIDOGATE operation
+* Connecting::  Connecting to FIDONET
+
+Utilities
+
+* ftnaf::       Areafix mail processor
+* ftnafmail::   Areafix mail setuid frontend
+* ftnafpkt::    Areafix packet processor
+* ftnafutil::   Areafix utility
+
+Character set translation table compiler:
+* charsetc::    Character set translation table compiler
+
+FFX programs and scripts:
+* ffx::         Remote execution via Fido mailer
+* ffxmail::     `ffx' frontend for sending mail
+* ffxnews::     `ffx' frontend for sending news
+* ffxqt::       Execute `ffx' requests
+* ffxrmail::    `rmail' command for `ffxqt'
+* runffx::      Script for running FFX programs
+* send-ffx::    Script for processing news via FFX
+
+Gateway programs and scripts:
+* ftn2rfc::     Fido-Internet gateway program
+* ftnin::       Frontend for `ftn2rfc'
+* ftninpost::   `ftnin' post-processing script
+* ftninrecomb:: `ftnin' recombining script
+* ftnmail::     `rfc2ftn' setuid frontend
+* rfc2ftn::     Internet-Fido gateway program
+* rungate::     Script for running gateway programs
+* send-fidogate::Script for processing news via FIDOGATE
+
+Ticker programs:
+* ftnhatch::    Hatch new file into file area
+* ftntick::     Process incoming TIC files
+* ftntickpost:: `ftntick' post-processing script
+
+Tosser programs and scripts:
+* ftn2ftn::     FTN-FTN NetMail gateway
+* ftnexpire::   Utility to expire MSGID history database
+* ftnpack::     Pack (ArcMail) Fido mail packets
+* ftnroute::    Route Fido mail packets
+* ftntoss::     Toss/remap/rewrite Fido mail packets
+* runin::       Script for processing inbound packets
+* runmail::     Script for processing gateway mail output packets
+* runnews::     Script for processing gateway news output packets
+* runout::      Script for processing miscellaneous output packets
+* runtoss::     Script for running the tosser programs
+* rununpack::   Script for unpacking inbound arcmail archives
+
+Utilties:
+* ftnbsy::      Create/delete Binkley busy files
+* ftnconfig::   Retrieve information from FIDOGATE config files
+* ftnfattach::  Binkley outbound file attach utility
+* ftnflo::      Process Binkley outbound FLO files and attachments
+* ftnlock::     Create/delete lock files
+* ftnlog::      Write message to log file
+* ftnoutpkt::   Create output Fido message packets
+* ftnseq::      Access sequencer file
+* pktdebug::    FTN mail packet debugger
+* pktmore::     Pager frontend for `pktdebug'
+* sumcrc::      CRC checksum utility
+
+FIDOGATE Config Files
+
+* Config::      Main configuration file
+* Hosts::       hosts FTN address to host name conversion
+* Aliases::     aliases user aliases
+* Areas::       areas FTN area to newsgroup conversion
+* Bounce::      Bounce messages of `ftn2rfc'
+* Passwd::      passwd password config file
+* Routing::     routing file for `ftntoss' and `ftnroute'
+* Packing::     packing file for `ftnpack'
+* Areas.bbs::   areas.bbs EchoMail distribution
+
+Basic Configuration
+
+* Sendmail::	       Sendmail configuration
+* Example Point::      Example point configuration
+* Example Point 2::    Example configuration with 2 point addresses
+* Example Node::       Example leaf node configuration
+
+FIDOGATE Usage
+
+* RFC Headers:: RFC Headers in FTN Messages
+* X Headers::   X Headers in RFC Messages
+
+
+Introduction to FIDOGATE
+************************
+
+FIDOGATE is a Fido-Internet gateway and a Fido tosser.  It is placed
+under the GNU General Public License, see COPYING for details.
+
+   The gateway converts between the worlds of Fido NetMail/EchoMail (or
+FTNs, Fido Technology Networks in general) and the UNIX mail/news
+system. FIDOGATE will convert Fido mail packets to RFC822/1036-style
+messages and vice versa.
+
+   FIDOGATE also includes a complete FIDO mail processor
+(NetMail/EchoMail tosser), an FTN-FTN gateway (NetMail only), a file
+processor (TIC file areas) and an Areafix/Filefix.
+
+How to Get FIDOGATE
+===================
+
+The latest version of FIDOGATE is available at the locations.
+
+Internet WWW FIDOGATE home page:
+     http://www.fido.de/fidogate/
+
+Internet anonymous ftp:
+     ftp://ftp.fido.de/pub/fidogate/
+
+BBS and FIDO frequest:
+     2:2452/110 111  242:1000/1 2  +49-241-876604  (V.34, ISDN V.110, X.75)
+     Magic name FIDOGATE
+
+Requirements for FIDOGATE:
+==========================
+
+   * Something that gets you FIDONET mail. If you want a Unix-based Fido
+     mailer, I recommend using ifcico or BinkD.
+
+   * Installed news system (INN prefered)
+
+   * Mail transport agent (sendmail prefered)
+
+   * Perl (version 5 strictly required)
+
+   * M4 for compiling the sendmail config files
+
+
+FIDOGATE Mailing List
+=====================
+
+There is a NEW mailing list for FIDOGATE discussions and announcements:
+
+     fidogate@fido.de
+
+   To subscribe to this mailing list, send a message to
+
+     majordomo@fido.de
+
+with the command
+
+     subscribe fidogate
+
+in the message body (not subject!). This will not immediately put your
+email address into the mailing list. A confirmation mail with an
+authentication code will be send to you, which must be returned to
+majordomo to finally enable your subscription.
+
+   To unsubscribe from this mailing list, send the command
+
+     unsubscribe fidogate
+
+Credits
+=======
+
+   Most C code has been solely hacked by me, but there are also some
+source files taken from other free software packages (GNU, INN). See the
+various source files for details. In addition, many FIDOGATE users
+provided bug fixes and patches, which found their way into the
+distribution.
+
+   The ancestor of both FIDOGATE and ifmail was a Usenet posting to
+alt.sources called `rfmail' ages ago. None of this original code
+survived the massive rewrite and new code which makes FIDOGATE.
+
+
+Compiling and installing FIDOGATE
+*********************************
+
+
+* config.h::    The config.h header file
+* config.make:: The config.make Makefile configuration
+* Compiling::   Compiling and installing FIDOGATE
+* Integration:: Integrating FIDOGATE and the mail/news system
+* Testing::     Testing FIDOGATE operation
+* Connecting::  Connecting to FIDONET
+
+This chapter describes the FIDOGATE configuration and installation.  You
+must also create and edit the config files to be installed in the
+CONFIGDIR directory, `fidogate.conf', `areas', `hosts', `passwd',
+`routing', `packing', `aliases' according to your setup (see the
+examples subdirectory).
+
+   The chapter on config files describes them in detail.
+
+
+The `config.h' Header File
+==========================
+
+Normally, if you want to compile a standard version of FIDOGATE on one
+of the supported platforms, it is not necessary to change anything in
+this file. Most things can be configured or overridden in `config.make'
+(compile-time) or `fidogate.conf' (run-time).
+
+If you really want to edit `config.h', here are the gory details:
+
+`LOCAL_FTN_ADDRESSES'
+     Generate "local" FTN addresses: User_Name%p.f.n.z@hostname.domain
+     instead of User_name@p.f.n.z.domain.
+
+`DO_BSY_FILES'
+     Create Binkley-style busy files while accessing the Binkley
+     outbound.
+
+`NFS_SAFE_LOCK_FILES'
+     Create lock / bsy files in an NFS-safe way.
+
+`AMIGADOS_4D_OUTBOUND'
+     Use AmigaDOS-style outbound file names.
+
+`MAXMSGSIZE'
+     Maximum size of FIDO messages generated by `rfc2ftn', larger
+     messages will be split. Alas, less than 16K seems to be the only
+     safe setting. This is the default value.
+
+`FTN_INVALID_DOMAIN'
+     Domain address to be used for invalid FTN addresses.
+
+`FACILITY'
+     syslog facility used if `Logfile' is set to "syslog".
+
+`CHARSET_STDFTN'
+     Default charset for Fido messages.
+
+`CHARSET_STD7BIT'
+     Default charset for RFC messages with 7bit encoding.
+
+`ALIASES_ARE_LOCAL'
+     Addresses found in the `aliases' config file are rewritten so that
+     the sender's address is the gateway.
+
+`PASSTHRU_NETMAIL'
+     Passthru operation for NetMail: if the sender of the message is an
+     FTN address, the origin address of the resulting FTN message will
+     be that FTN address. WARNING: enabled only if you really know what
+     you're doing!
+
+`PASSTHRU_ECHOMAIL'
+     Passthru operation for EchoMail: X-FTN-Tearline, X-FTN-Origin,
+     X-FTN-Seen-By, X-FTN-Path headers will be used for tear line, *
+     Origin, SEEN-BY, ^APATH, when gating from Internet to FTN.
+     WARNING: enabled only if you really know what you're doing!
+
+`AI_1'
+
+`AI_3'
+
+`AI_5'
+
+`AI_6'
+
+`AI_8'
+     Configuration for Andy Igoshin's patches, see
+     `contrib/fidogate-4.3a3-ai-pl9.1/README.ai' for details.
+     `AI_2,4,7' are now fully integrated.
+
+System dependent configuration:
+
+   This configuration contains several groups of #define/#undef. First,
+the definitions for a standard POSIX UNIX, followed by #ifdef'ed
+definitions for SunOS, Linux, FreeBSD, Interactive UNIX, MSDOS DJGPP,
+NextStep, GNU-WIN32.
+
+   If you want to port FIDOGATE to a new system, please add a #ifdef'ed
+section similar to the already existing ones.
+
+   The gory details:
+
+`HAS_FCNTL_LOCK'
+     Define, if the system support fcntl() file locking.
+
+`HAS_GETTIMEOFDAY'
+     Define, if the system has the gettimeofday() function.
+
+`HAS_TM_GMTOFF'
+     Define, if the system has a tm_gmtoff field in struct tm.
+
+`HAS_SYSEXITS_H'
+     Define, if the system support the `sysexits.h' header file.
+
+`HAS_TM_ZONE'
+     Define, if the system has a tm_zone field in struct tm.
+
+`HAS_STRFTIME'
+     Define, if the system has the Standard-C strftime() function.
+
+`HAS_TZNAME'
+     Define, if the system has `extern char *tzname[2]'.
+
+`HAS_STRCASECMP'
+     Define, if the system has the `strcasecmp()' and `strncasecmp()'
+     functions.
+
+`HAS_STRICMP'
+     Define, if the system has the `stricmp()' and `strnicmp()'
+     functions.
+
+`HAS_STERROR'
+     Define, if the system has the `strerror()' function.
+
+`DO_BINARY'
+     Define, if files must be opened in binary mode.
+
+`DO_DOSIFY'
+     Define, if filenames must be converted to DOS, OS2-style `\'.
+
+`RECEIVED_BY_MAILER'
+     Define, if extra Received lines are inserted by the mail system,
+     currently only used for NeXT.
+
+`HAS_SYSLOG'
+     Define, if syslogd and the library function `syslog()',
+     `vsyslog()' are suppored.
+
+`HAS_SNPRINTF'
+     Define, if `snprintf()' and `vsnprintf()' are supported.
+
+`HAS_HARDLINKS'
+     Define, if the system supports file systems with hard links and the
+     library function `link()'.
+
+`HAS_POSIX_REGEX'
+     Define, if the system supports the POSIX regex functions regcomp(),
+     regexec() etc.
+
+   Define only one of `HAS_TM_ZONE', `HAS_STRFTIME', `HAS_TZNAME', and
+also only one of `HAS_STRCASECMP', `HAS_STRICMP'.
+
+THE FOLLOWING DEFINES SHOULD REALLY BE LEFT AS IS!!!
+
+`MSGID_FIDONET_DOMAIN'
+     Default domain for standard FIDO addresses (zone 1-6). Used for
+     Message-IDs only, so DO NOT CHANGE.
+
+`PACKET_MODE'
+
+`BSY_MODE'
+
+`FLO_MODE'
+
+`DATA_MODE'
+
+`DIR_MODE'
+
+`CONF_MODE'
+     Permissions for files processed by FIDOGATE.
+
+`FTN_RFC_HEADERS'
+     RFC headers recognized at the beginning of FTN messages.
+
+`RFC_LVL_1_HEADERS'
+     RFC headers put into FTN messages for RFC level 1.
+
+`R_MODE'
+
+`W_MODE'
+
+`A_MODE'
+
+`RP_MODE'
+
+`WP_MODE'
+
+`AP_MODE'
+     Modes (`fopen()') for opening files.
+
+`DATE_LOG'
+
+`DATE_DEFAULT'
+
+`DATE_NEWS'
+
+`DATE_MAIL'
+
+`DATE_FROM'
+
+`DATE_FTS_0002'
+
+`DATE_TICK_PATH'
+
+`DATE_VIA'
+
+`DATE_SPLIT'
+     Date format strings.
+
+`PRODUCT_CODE'
+     FIDO product code used by `rfc2ftn'.
+
+`MAXADDRESS'
+     Maximum number of `Address' and `Zone' statements in `config' file.
+
+`MAXDOSDRIVE'
+     Maximum number of `DosDrive' statements in `config' file.
+
+`MAXPATH'
+     Maximum length of a pathname in FIDOGATE.
+
+`MAXINETADDR'
+     Maximum length of the address part of an Internet address in
+     FIDOGATE.
+
+`MAXUSERNAME'
+     Maximum length of the user name part of an Internet address in
+     FIDOGATE.
+
+`MAXOPENFILES'
+     Maximum number of packet files concurrently opened by tosser
+     programs. The maximum possible value is operating system and
+     configuration dependent, see UNIX ulimits.
+
+
+The `config.make' Makefile Configuration
+========================================
+
+This file is included in all FIDOGATE Makefiles.
+
+   A special convention is used for defining FIDOGATE configuration
+macros: macro name starting with `DEFAULT_' are used by the compilation
+process to automatically generate C code.
+
+`DEFAULT_V_option'
+     Creates a Makefile macro definition, substitutes <option> in shell
+     and perl scripts, creates a compile-time C `#define
+     DEFAULT_'option in `paths.h', a run-time configuration option
+     option in `fidogate.conf', and makes FIDOGATE evaluate the
+     environment variable `FIDOGATE_'option.
+
+`DEFAULT_F_option'
+     Creates a Makefile macro definition, substitutes <option> in shell
+     and perl scripts, creates a compile-time C `#define
+     DEFAULT_'option in `paths.h'. No run-time override!
+
+`DEFAULT_A_option'
+     Creates a %X abbreviation (can be used at the start of file names)
+     for option.
+
+   Be very carefull not to remove any of the FIDOGATE standard macros
+and don't touch the standard abbreviations in this file!!!
+
+`DEFAULT_V_CONFIGDIR'
+     Directory for config files.
+
+`DEFAULT_V_LIBDIR'
+     Directory for FIDOGATE's internal programs.
+
+`DEFAULT_V_BINDIR'
+     Directory for user programs and scripts.
+
+`DEFAULT_V_LOGDIR'
+     Directory for log files.
+
+`DEFAULT_V_VARDIR'
+     Directory for `areas.bbs', `history'.
+
+`DEFAULT_V_LOCKDIR'
+     Directory for lock files.
+
+`DEFAULT_V_SPOOLDIR'
+     Internal spool directory (temporary files).
+
+`DEFAULT_V_BTBASEDIR'
+     BinkleyTerm-style outbound base directory. This is the base
+     directory, not the actual zone outbound directory.
+
+`DEFAULT_V_INBOUND'
+     BinkleyTerm-style inbound directory.
+
+`DEFAULT_V_PINBOUND'
+     BinkleyTerm-style protected inbound directory.
+
+`DEFAULT_V_UUINBOUND'
+     BinkleyTerm-style inbound directory for the `recvuu' script.
+
+`DEFAULT_V_FTPINBOUND'
+     BinkleyTerm-style FTP inbound directory.
+
+`DEFAULT_V_ACL'
+     Access control list for AI patches (not used for standard FIDOGATE
+     distribution).
+
+`DEFAULT_V_ALIASES'
+     Configuration file for aliases.
+
+`DEFAULT_V_AREAS'
+     Configuration file for areas/newsgroups gateway.
+
+`DEFAULT_V_HOSTS'
+     Configuration file for registered hosts.
+
+`DEFAULT_V_PASSWD'
+     Configuration file for passwords.
+
+`DEFAULT_V_PACKING'
+     Configuration file for ArcMail packer (`ftnpack').
+
+`DEFAULT_V_ROUTING'
+     Configuration file for NetMail/EchoMail routing (`ftntoss',
+     `ftnroute').
+
+`DEFAULT_V_HISTORY'
+     MSGID history file for dupe check.
+
+`DEFAULT_V_LOGFILE'
+     Default log file.
+
+`DEFAULT_V_CHARSETMAP'
+     Character set mapping table.
+
+`DEFAULT_F_NEWSETCDIR'
+     INN directory: config files
+
+`DEFAULT_F_NEWSVARDIR'
+     INN directory: active, history files.
+
+`DEFAULT_F_NEWSLIBDIR'
+     INN directory: scripts.
+
+`DEFAULT_F_NEWSSPOOLDIR'
+     INN directory: news spool.
+
+`DEFAULT_F_IFMAILDIR'
+     Ifcico/ifmail directory.
+
+`DEFAULT_F_CONFIG_GATE'
+
+`DEFAULT_F_CONFIG_MAIN'
+
+`DEFAULT_F_CONFIG_FFX'
+     FIDOGATE main configuration file `fidogate.conf'.
+
+`DEFAULT_F_SEQ_MAIL'
+
+`DEFAULT_F_SEQ_NEWS'
+
+`DEFAULT_F_SEQ_MSGID'
+
+`DEFAULT_F_SEQ_PKT'
+
+`DEFAULT_F_SEQ_SPLIT'
+
+`DEFAULT_F_SEQ_FF'
+
+`DEFAULT_F_SEQ_TOSS'
+
+`DEFAULT_F_SEQ_PACK'
+
+`DEFAULT_F_SEQ_TICK'
+     Sequencer files.
+
+`DEFAULT_F_LOCK_HISTORY'
+     Lock file for history access.
+
+`DEFAULT_F_OUTRFC_MAIL'
+
+`DEFAULT_F_OUTRFC_NEWS'
+
+`DEFAULT_F_OUTPKT'
+
+`DEFAULT_F_OUTPKT_MAIL'
+
+`DEFAULT_F_TOSS_TOSS'
+
+`DEFAULT_F_TOSS_ROUTE'
+
+`DEFAULT_F_TOSS_PACK'
+
+`DEFAULT_F_TOSS_BAD'
+
+`DEFAULT_F_OUTPKT_NEWS'
+     Internal spool directories (temporary files).  If these
+     directories are different from the default ones, the commands for
+     the `install-dirs' target of `Makefile' must be changed as well.
+
+`DEFAULT_F_TICK_HOLD	= %B/tick'
+     Outbound hold directory for TIC files.
+
+`DEFAULT_A_CONFIGDIR'
+
+`DEFAULT_A_LIBDIR'
+
+`DEFAULT_A_BINDIR'
+
+`DEFAULT_A_LOGDIR'
+
+`DEFAULT_A_VARDIR'
+
+`DEFAULT_A_LOCKDIR'
+
+`DEFAULT_A_SPOOLDIR'
+
+`DEFAULT_A_BTBASEDIR'
+
+`DEFAULT_A_INBOUND'
+
+`DEFAULT_A_PINBOUND'
+
+`DEFAULT_A_UUINBOUND'
+     Abbreviations for configured directories.
+
+`PERL'
+     Full path name of perl executable.
+
+`SENDMAIL_CF_DIR'
+     Directory where the sendmail m4 configuration files are installed
+     (`/usr/lib/sendmail-cf' on RedHat Linux systems).
+
+`INFODIR'
+     Directory for installing info documentation files.
+
+`HTMLDIR'
+     Directory for installing HTML documentation files.
+
+`HTMLLOGDIR'
+     Directory for installing CGI files.
+
+`M4'
+     m4 macro processor (for compiling sendmail cf files).
+
+`OWNER'
+     Owner of FIDOGATE files.
+
+`GROUP'
+     Group of FIDOGATE files.
+
+`PERM_PROG'
+     Permissions for installing programs.
+
+`PERM_DATA'
+     Permissions for installing data files.
+
+`PERM_SETUID'
+     Permissions for installing setuid `OWNER' programs.
+
+`PERM_DIR'
+     Permissions for installing directories.
+
+`CC'
+     C compiler.
+
+`YACC'
+     `yacc' or a clone like `bison -y'.
+
+`AR'
+     `ar' monkey ... (@!#$%&... ouch!) ... librarian.
+
+`RANLIB'
+     Library utitility, if needed.
+
+`DEBUG'
+     Optimize or debugging flags for compiling.
+
+`INCLUDE'
+     C include (-I) options.
+
+`CFLAGS'
+     Flags for compiling FIDOGATE.
+
+`LFLAGS'
+     Flags for linking FIDOGATE.
+
+`LIBS'
+     Libraries for linking FIDOGATE, including the FIDOGATE library
+     `libfidogate.a'.
+
+`INSTALL'
+     Install program.
+
+`'
+     Set to `.exe' for MSDOS, OS2, Win32.
+
+`INSTALL_PROG'
+     Install command for installing programs.
+
+`INSTALL_DATA'
+     Install command for installing data files.
+
+`INSTALL_SETUID'
+     Install command for installing setuid programs.
+
+`INSTALL_DIR'
+     Install command for installing directories.
+
+`PREFIX'
+     Extra prefix directory for `make install'.
+
+`LIB'
+     Name of the FIDOGATE library.
+
+
+Compiling and Installing FIDOGATE
+=================================
+
+Compile the beast by entering
+     make depend
+     make
+
+   Alternatively an optimized version can be compiled with
+     make DEBUG=-O2
+
+   If everything works, you must create the necessary directories:
+     make install-dirs
+   Then install all FIDOGATE programs:
+     make install
+
+   Next you must create the configuration files in (default)
+`/etc/fidogate'. Have a look at the various configuration in directory
+`examples/' and use them to build your own configuration.
+
+
+Integrating FIDOGATE and the Mail/News System
+=============================================
+
+`scripts/inn'
+     Scripts for INN.
+
+`scripts/cnews'
+     Scripts for CNews.
+
+`sendmail/cf'
+     Sendmail V8 configuration files (m4) and example .mc files for
+     FIDOGATE: Fido.DE domain gateway morannon, orodruin, point setup.
+
+   Much more concise instructions should be here!!! ;-)
+
+
+Testing the FIDOGATE Installation
+=================================
+
+`Tosser'
+--------
+
+   ...
+
+`Gateway'
+---------
+
+   ...
+
+
+Connecting to FIDONET
+=====================
+
+FIDOGATE does NOT include a FIDO mailer, so you have to transfer FIDO
+mail to and from the UNIX system by some other means.
+
+   If you want everything running on the UNIX system, you need a FIDO
+mailer for UNIX. Currently, this choice is limited to
+   * BinkleyTerm
+
+   * ifcico
+
+   * BinkD
+
+   I don't know what the current state of BinkleyTerm for Unix/Linux is,
+but ifcico and BinkD are working very well for me. See the FIDOGATE home
+page at `http://www.fido.de/fidogate/' for links.
+
+   Another solution is a separate PC running DOS or OS/2 and
+BinkleyTerm as a mailer. The Fido.DE gateway currently comprises a
+LINUX PC for the gateway/tosser and Samba server, and an OS/2 PC
+running BinkleyTerm for the analog phone and ISDN lines. The
+BinkleyTerm outbound is kept on the LINUX server, so the OS/2 PC and
+the gateway have access to it.
+
+
+FIDOGATE Programs
+*****************
+
+
+Areafix programs and scripts:
+* ftnaf::       Areafix mail processor
+* ftnafmail::   Areafix mail setuid frontend
+* ftnafpkt::    Areafix packet processor
+* ftnafutil::   Areafix utility
+
+Character set translation table compiler:
+* charsetc::    Character set translation table compiler
+
+FFX programs and scripts:
+* ffx::         Remote execution via Fido mailer
+* ffxmail::     `ffx' frontend for sending mail
+* ffxnews::     `ffx' frontend for sending news
+* ffxqt::       Execute `ffx' requests
+* ffxrmail::    `rmail' command for `ffxqt'
+* runffx::      Script for running FFX programs
+* send-ffx::    Script for processing news via FFX
+
+Gateway programs and scripts:
+* ftn2rfc::     Fido-Internet gateway program
+* ftnin::       Frontend for `ftn2rfc'
+* ftninpost::   `ftnin' post-processing script
+* ftninrecomb:: `ftnin' recombining script
+* ftnmail::     `rfc2ftn' setuid frontend
+* rfc2ftn::     Internet-Fido gateway program
+* rungate::     Script for running gateway programs
+* send-fidogate::Script for processing news via FIDOGATE
+
+Ticker programs:
+* ftnhatch::    Hatch new file into file area
+* ftntick::     Process incoming TIC files
+* ftntickpost:: `ftntick' post-processing script
+
+Tosser programs and scripts:
+* ftn2ftn::     FTN-FTN NetMail gateway
+* ftnexpire::   Utility to expire MSGID history database
+* ftnpack::     Pack (ArcMail) Fido mail packets
+* ftnroute::    Route Fido mail packets
+* ftntoss::     Toss/remap/rewrite Fido mail packets
+* runin::       Script for processing inbound packets
+* runmail::     Script for processing gateway mail output packets
+* runnews::     Script for processing gateway news output packets
+* runout::      Script for processing miscellaneous output packets
+* runtoss::     Script for running the tosser programs
+* rununpack::   Script for unpacking inbound arcmail archives
+
+Utilties:
+* ftnbsy::      Create/delete Binkley busy files
+* ftnconfig::   Retrieve information from FIDOGATE config files
+* ftnfattach::  Binkley outbound file attach utility
+* ftnflo::      Process Binkley outbound FLO files and attachments
+* ftnlock::     Create/delete lock files
+* ftnlog::      Write message to log file
+* ftnoutpkt::   Create output Fido message packets
+* ftnseq::      Access sequencer file
+* pktdebug::    FTN mail packet debugger
+* pktmore::     Pager frontend for `pktdebug'
+* sumcrc::      CRC checksum utility
+
+   Almost all FIDOGATE programs support the following standard options,
+which therefore aren't listed in the sections describing the individual
+programs:
+
+`-v --verbose'
+     Increase the verbosity/debug level.
+
+`-h --help'
+     Help on usage and options.
+
+`-c --config name'
+     Read an alternate config file. `""' means none. name may start
+     with %X/, see below.
+
+`-a --addr Z:N/F.P'
+     Set the main address of this program.
+
+`-u --uplink-addr Z:N/F.P'
+     Set the uplink address (boss node) of this program (only useful for
+     gateway programs).
+
+   The option `-a' and `-u' also support Internet-style FTN addresses,
+e.g. `p10.f110.n2452.z2'. If any of these options is specified, all
+addresses from the config file are disabled.
+
+   All options and config statements which take file or directory names
+accept the following `%' abbreviations:
+
+`%C'
+     CONFIGDIR
+
+`%L'
+     LIBDIR
+
+`%N'
+     BINDIR
+
+`%G'
+     LOGDIR
+
+`%V'
+     VARDIR
+
+`%K'
+     LOCKDIR
+
+`%S'
+     SPOOLDIR
+
+`%B'
+     BTBASEDIR
+
+`%I'
+     INBOUND
+
+`%P'
+     PINBOUND
+
+`%U'
+     UUINBOUND
+
+
+ftnaf -- Areafix
+================
+
+Usage:
+
+     ftnaf  [-options]  [Z:N/F.P  command ]
+
+Options:
+
+`-m --mail'
+     Process Areafix mail message (RFC) on stdin.
+
+`-r --no-reply'
+     Don't send reply via mail, write to stdout.
+
+`-n --no-rewrite'
+     Don't rewrite AREAS.BBS.
+
+`-b --areas-bbs NAME'
+     Use alternate AREAS.BBS.
+
+`-F --filefix'
+     Run as Filefix program, using FAREAS.BBS.
+
+Commands:
+
+     listall                      list all available areas   list
+                      list areas available to node   query
+               list subscribed areas   unlinked
+     list unsubscribed areas   from Z:N/F.P PASSWORD        set address
+     and password   passwd Z:N/F.P PASSWORD   password Z:N/F.P PASSWORD
+      +AREA                        subscribe to AREA   AREA
+     subscribe AREA   sub AREA   -AREA
+     unsubscribe from AREA   unsubscribe AREA   unsub AREA   vacation
+     AREA                set vacation flag for AREA   &AREA [-options]
+               create new AREA   new AREA [-options]   create AREA
+     [-options]   ~AREA                        delete AREA   delete AREA
+      comment TEXT                 arbitrary comment (ignored)   help
+                           this help
+
+     AREA names are not case-sensitive and support shell-style wildcards
+      * ? [a-z] [abc], e.g. COMP.OS.*, [A-D]*.GER
+
+`listall'
+     List all areas.
+
+`list'
+     List areas available to node.
+
+`query'
+     List subscribed areas.
+
+`unlinked'
+     List unsubscribed areas available to node.
+
+`from Z:N/F.P PASSWORD'
+
+`passwd Z:N/F.P PASSWORD'
+
+`password Z:N/F.P PASSWORD'
+     Set address and password.
+
+`+AREA'
+
+`AREA'
+
+`subscribe AREA'
+
+`sub AREA'
+     Subscribe to AREA.
+
+`-AREA'
+
+`unsubscribe AREA'
+
+`unsub AREA'
+     Unsubscribe from AREA.
+
+`vacation AREA'
+     Set vacation flag for AREA. NOT YET IMPLEMENTED!!!
+
+`&AREA  [-options ]'
+
+`new AREA  [-options ]'
+
+`create AREA  [-options ]'
+     Create new area. Nodes allowed to create an area must have the `&'
+     key in their `passwd' entry. Allowed `areas.bbs' options: `-#',
+     `-p', `-r', `-l 'lvl, `-k 'key, `-d 'desc, and `-z 'zone.
+
+`~AREA'
+
+`delete AREA'
+     Delete AREA. Nodes allowed to deleted an area must have the `~'
+     key in their `passwd' entry.
+
+`comment  text'
+     Arbitrary comment, completely ignored.
+
+`help'
+     Help on Areafix commands.
+
+   All command keywords may be prefixed by `%'. `ftnaf' also recognizes
+the `-q' (= query) and `-l' (= list) options following the password in
+the subject header.
+
+   For proper operation `ftnaf' requires the `X-FTN-From' header
+generated by `ftn2rfc', thus the `X-FTN' configuration must include the
+`f' flag.
+
+
+ftnafmail -- Areafix Mail Frontend
+==================================
+
+Usage:
+
+     ftnafmail  [-options]
+
+Options:
+
+`-F --filefix'
+     Run `ftnaf' as Filefix program.
+
+   This is the setuid mail frontend for `ftnaf' to be run from the
+sendmail aliases. DO NOT use `ftnaf' directly, as this will result in
+security problems.
+
+     # Areafix/Filefix - FIDOGATE ftnaf
+     areafix: "|/usr/lib/fidogate/ftnafmail"
+     areamgr: areafix
+     filefix: "|/usr/lib/fidogate/ftnafmail -F"
+     filemgr: filefix
+
+
+ftnafpkt -- Areafix packet processor
+====================================
+
+Usage:
+
+     ftnafpkt  [-options]  [packet ... ]
+
+Options:
+
+`-I --in-dir name'
+     Set input directory. Default: PINBOUND
+
+`-O --out-dir name'
+     Set output directory. Default: SPOOLDIR/outpkt
+
+`-l --lock-file'
+     Create lock file while processing.
+
+`-r --no-reply'
+     Don't send reply via NetMail.
+
+`-n --no-rewrite'
+     Don't rewrite AREAS.BBS.
+
+`-b --areas-bbs NAME'
+     Use alternate AREAS.BBS.
+
+`-F --filefix'
+     Run as Filefix program, using FAREAS.BBS.
+
+   This is the packet processor frontend for the FIDOGATE Areafix, which
+doesn't require the Unix mail system for Areafix operation. The best way
+to use `ftnafpkt' is via the tosser.
+
+   `routing' example:
+     Remap  2:2499/999.*  2:2499/999.101  "Area*"
+     #      ^^^^^^^^^^^^  ^^^^^^^^^^^^^^
+     #      node addr     pseudo point
+     #                    for Areafix
+     
+     NetMail
+     Send  hold  2:2499/999.*
+
+   `packing' example:
+
+     progn  areafix  "/usr/lib/fidogate/ftnafpkt %s"
+     pack   areaifx  2:2499/999.101
+
+   `runout' must be run regularly to process messages generated by
+`ftnafpkt'.
+
+
+ftnafutil -- Areafix utility
+============================
+
+Usage:
+
+     ftnafutil  [-options]  [command ... ]
+
+Options:
+
+`-n --no-rewrite'
+     Don't rewrite AREAS.BBS.
+
+`-b --areas-bbs NAME'
+     Use alternate AREAS.BBS.
+
+`-F --filefix'
+     Run as Filefix program, using FAREAS.BBS.
+
+`-O --out-dir name'
+     Set output directory. Default: SPOOLDIR/outpkt
+
+Commands:
+
+`delete'
+     Delete dead areas from `areas.bbs' (no uplink and no downlinks).
+
+`subscribe'
+     Subscribe to area at uplink, if at least one downlink has
+     subscribed to this area (uses the `-s S/U' option in `areas.bbs').
+
+`unsubscribe'
+     Unsubscribe from area at uplink, if no more downlinks are
+     subscribed to this area (uses the `-s S/U' option in `areas.bbs').
+
+   Auto-subscribe/unsubscribe will only be used for areas marked with
+the state option. State `-s U' means that the area is not currently
+subscribed at the uplink, `-s S' means that the are is subscribed at
+the uplink.
+
+
+charsetc -- Character set translation table compiler
+====================================================
+
+Usage:
+
+     charsetc  [-options]  charset.map  charset.bin
+
+
+ffx -- Remote Execution via Fido Mailer
+=======================================
+
+Usage:
+
+     ffx  [-options]  Z:N/F.P  command
+
+Options:
+
+`-b --batch-dir dir'
+     Operate in batch mode, using dir. Control and data files are not
+     immediately appended to the node's FLO file, but rather written to
+     a separate batch directory SPOOLDIR/out.ZZZ/dir. Implies `-n'.
+
+`-B --binkley name'
+     Set Binkley outbound directory.
+
+`-F --flavor flavor'
+     Set flavor of outbound FLO file: `Hold', `Normal', `Direct', or
+     `Crash'.
+
+`-g --grade grade'
+     Set grade of control and data files to grade (single letter
+     [a-z0-9]).
+
+`-n --nocompression'
+     Don't compress data files.
+
+
+ffxmail -- ffx Frontend for Sending Mail
+========================================
+
+Usage:
+
+     ffxmail  Z:N/F.P  address ...
+
+No options.
+
+   `ffxmail' calls `ffx' in batch mode (`-b'), selecting the batch
+directory for the node address. Modify the script
+(`src/ffx/ffxmail.sh') for other addresses/batch directories.
+
+
+ffxnews -- ffx Frontend for Sending News
+========================================
+
+Usage:
+
+     ffxnews  Z:N/F.P
+
+No options.
+
+   `ffxnews' calls `ffx' in batch mode (`-b'), selecting the batch
+directory for the node address. Modify the script
+(`src/ffx/ffxnews.sh') for other addresses/batch directories.
+
+
+ffxqt -- Execute ffx Requests
+=============================
+
+Usage:
+
+     ffxqt  [-options]
+
+Options:
+
+`-g  --grade grade'
+     Process ffx jobs with grade only. grade must be a single letter.
+
+`-I --inbound name'
+     Select the input directory where the `f???????.ffx' control files
+     are read from. Default: PINBOUND
+
+`-t --insecure'
+     Process ffx files without password. Default: ffx file must contain
+     a password.
+
+
+ffxrmail -- Rmail Command for FFX
+=================================
+
+Usage:
+
+     ffxrmail  address ...
+
+   Perl script to be called by `ffxqt' for `rmail' commands to receive
+Internet mail. This replaces `/bin/rmail' (UUCP), calling
+`/usr/lib/sendmail' directly with appropiate options.
+
+
+runffx -- Script for Running FFX Programs
+=========================================
+
+Usage:
+
+     runffx
+
+
+send-ffx -- Script for Processing News via FFX
+==============================================
+
+Usage:
+
+     ffxqt  [hostname]
+
+   Processes INN news batch file `/var/spool/news/out.going/'hostname.
+
+
+ftn2rfc -- FTN-Internet Gateway Program
+=======================================
+
+Usage:
+
+     ftn2rfc  [-options]  [packet ... ]
+
+Options:
+
+`-1 --single-articles'
+     Write single articles to output files (in `tmpnews'), not news
+     batches containing several articles (batch is default).
+
+`-I --inbound-dir NAME'
+     Set the input directory for FTN packets. Default: PINBOUND
+
+`-i --ignore-hosts'
+     Don't bounce unknown hosts (unknown = not registered in `hosts')
+
+`-l --lock-file'
+     Create lock file while processing.
+
+`-n --no-remove'
+     Don't remove or rename input packet files, return exit code 1 if
+     processing fails.
+
+`-t --insecure'
+     Operate in insecure mode. All messages containing a To line for
+     gateway addressing will be bounced.
+
+`-x --exec-program SCRIPT'
+     Run SCRIPT after processing all FTN packets. Typically this is
+     `%L/ftninpost'.
+
+   `ftn2rfc' reads packet files from the input directory or the command
+line and converts the FTN packets to Internet RFC mail and news,
+written as mail and news RFC message files to the directories
+SPOOLDIR/outrfc/mail and SPOOLDIR/outrfc/news, respectively.
+
+
+ftnin -- Frontend for `ftn2rfc'
+===============================
+
+Usage:
+
+     ftnin  [-options]
+
+Options:
+
+`-n --no-toss'
+     Don't call `ftn2rfc' for processing.
+
+`-x --exec-program SCRIPT'
+     Execute SCRIPT after `ftn2rfc' processing, typically
+     `%L/ftninpost'.
+
+   All standard options are passed to the called `ftn2rfc'.
+
+   `ftnin' looks for mail packets addressed to the gateway addresses
+(all `Address'/`GateAddress' statements in `fidogate.conf') and calls
+`ftn2rfc' for each packet.
+
+
+ftninpost -- `ftnin' Post-processing Script
+===========================================
+
+Usage:
+
+     ftninpost  [-options]
+
+   This script is run by `ftn2rfc' or `ftnin', feeding the output in
+SPOOLDIR/outrfc/mail and SPOOLDIR/outrfc/news to `sendmail' and
+`rnews', respectively.
+
+
+ftninrecomb -- `ftnin' Recombining Script
+=========================================
+
+Usage:
+
+     ftninrecomb  [-options]
+
+   If `FTNInRecombine' is enabled in `fidogate.conf', this script wil
+be run by `ftninpost' to recombine split messages. NOT TESTED FOR
+RELEASE 4.4!!!
+
+
+ftnmail -- `rfc2ftn' Setuid Frontend
+====================================
+
+Usage:
+
+     ftnmail  [-options]  [address ...]
+
+   Setuid frontend for `rfc2ftn', passes the options
+
+`-a --addr ADDR'
+     Passed to `rfc2ftn' as `-a ADDR -u ADDR'.
+
+`-i --ignore-hosts'
+     Passed to `rfc2ftn' as `-i'.
+
+`-O --out-dir DIR'
+     Passed to `rfc2ftn' as `-O %S/DIR'.
+
+   `ftnmail' should be used for sendmail mailers. DO NOT use `rfc2ftn'
+directly to avoid security problems.
+
+
+rfc2ftn -- Internet-Fido Gateway Program
+========================================
+
+Usage:
+
+     rfc2ftn  [-options]  [address ...]
+
+Options:
+
+`-b --news-batch'
+     Process news batch (implies `-n').
+
+`-B --binkley name'
+     Set Binkley outbound directory.
+
+`-i --ignore-registration'
+     Do not bounce mail to nodes not registered in HOSTS (if
+     `HostsRestricted' in `fidogate.conf' is enabled).
+
+`-m --max-msg  n'
+     Create new output packet after n messages.
+
+`-n --news-mode'
+     Process news message in stdin. Default: mail
+
+`-o --out-packet-file  name'
+     Write output to FTN packet file name.
+
+`-O --out-packet-dir  name'
+     Set output directory for FTN packets. Default:
+     SPOOLDIR/outpkt/mail or .../news
+
+`-t --to'
+     Get recipient addresses from To, Cc, Bcc headers instead of
+     command line.
+
+`-w --write-outbound  flav'
+     Write output directly to Binkley .?UT packets in outbound.
+
+`-W --write-crash'
+     Write only crash mail directly to Binkley .CUT file.
+
+
+rungate -- Script for Running Gateway Programs
+==============================================
+
+Usage:
+
+     rungate
+
+
+send-fidogate -- Script for Processing News via FIDOGATE
+========================================================
+
+Usage:
+
+     send-fidogate  [hostname]
+
+   Processes INN news batch file `/var/spool/news/out.going/'hostname.
+If hostname is omitted the default `fidogate' is used.
+
+
+ftnhatch -- Hatch new file into file area
+=========================================
+
+Usage:
+
+     ftnhatch  [-options]  area  file  "description"
+
+Options:
+
+`-b --fareas-bbs NAME'
+     Use alternate FAREAS.BBS.
+
+   Please note that the file must already reside in the directory for
+the file area. Copying and hatching a new file to a file area is not
+yet implemented.
+
+
+ftntick -- Process incoming TIC files
+=====================================
+
+Usage:
+
+     ftntick  [-options]
+
+Options:
+
+`-b --fareas-bbs file'
+     Use alternate FAREAS.BBS.
+
+`-I --inbound dir'
+     Use alternate inbound directory.
+
+`-t --insecure'
+     Insecure processing, allow TIC files without password.
+
+`-x --exec script'
+     Run script after sucessfully processing the TIC file. The one and
+     only argument to script is the full path name of the TIC file.
+
+
+ftntickpost -- ftntick Post-processing Script
+=============================================
+
+Usage:
+
+     ftntickpost  [-options]  file.tic
+
+Options:
+
+   NOT YET COMPLETELY IMPLEMENTED! Currently the script is only a
+skeleton with features such as announcement postings and mails to be
+added in the future.
+
+
+ftn2ftn -- FTN-FTN NetMail Gateway Program
+==========================================
+
+Usage:
+
+     ftn2ftn  [-options]  [packet ... ]
+
+Options:
+
+`-A --address-a Z:N/F.P'
+     Set FTN address in network A.
+
+`-B --address-b Z:N/F.P'
+     Set FTN address in network B.
+
+`-o --out-packet-file NAME'
+     Set output packet file name.
+
+`-O --out-packet-dir NAME'
+     Set output packet directory.
+
+   This program provides a NetMail gateway between different FTNs, using
+the (somewhat) standard "User Name%Z:N/F.P" addressing in the FTN from
+and to fields.
+
+   If no packet is given on the command line, `ftn2ftn' looks for
+packets addressed to the gateway addresses (A and B) in the Binkley
+outbound. Both gateway addresses must be specified with the `-A' and
+`-B' options.
+
+   If a packet name is passed on the command line, `ftn2ftn' will gate
+this to the other network A. The gateway address (sender of the mails
+in network A) is set with `-A' option.
+
+
+ftnexpire -- Utility for expiring MSGID history database
+========================================================
+
+Usage:
+
+     ftnexpire  [-options]
+
+Options:
+
+`-m --maxhistory days'
+     Set the maximum number of days for entries in the history
+     database. The days argument supports decimal fractions.
+
+`-w --wait'
+     Wait for history database lock file to be released. Default: exit,
+     if history database is locked.
+
+   This utility expires and rebuilds the MSGID history database,
+similar to expire for the INN news system.
+
+   If the MSGID history database dupe check is used, `ftnexpire' must
+be run regularly to keep the history database optimized (if not,
+accessing the history database will become very slow!). A daily cron
+job is just the right thing.
+
+
+ftnpack -- Pack Fido ArcMail Packets
+====================================
+
+Usage:
+
+     ftnpack  [-options]  [packet ... ]
+
+Options:
+
+`-B --binkley dir'
+     Set Binkley outbound directory.
+
+`-f --ffx Z:N/F.P'
+     Pack ffx control and data files for FTN address Z:N/F.P. You must
+     also set the appropiate input directory with the `-I' option.
+
+`-F --file-dir dir'
+     Set directory where `ftnpack' looks for file attachments. Should
+     be the appropiate inbound directory, see also the `runtoss'
+     script. If this option is not specified, no file attachments are
+     processed.
+
+     If `-F /' is specified, `ftnpack' accepts a complete path name in
+     the subject and doesn't search the directory. Warning: this option
+     compromises security to some degree, because it allows any user to
+     send any file readable by the user id running the tosser and
+     mailer!!!
+
+`-g --grade grade'
+     Only process packets with grade (single letter).
+
+`-I --in-dir dir'
+     Set input directory. Default: %S/toss/route
+
+`-O --out-dir dir'
+     Set directory for temporary packets. Default: %S/toss/pack. This
+     is the directory, where packets to be put into arcmail archives
+     will be created.
+
+`-l --lock-file'
+     Create lock file while processing.
+
+`-m --maxarc size'
+     Set maximum size of an archive to size KByte. If an existing
+     ArcMail archive exceeds this size, `ftnpack' creates a new one.
+
+`-p --packing-file name'
+     Read alternate `packing' config file. Default: %C/packing
+
+`-P --pkt'
+     Process *.pkt files in the input directory. Default: output files
+     of `ftnroute'.
+
+
+ftnroute -- Route Fido Mail Packets
+===================================
+
+Usage:
+
+     ftnroute  [-options]  [packet ... ]
+
+Options:
+
+`-g --grade grade'
+     Only process packets with grade (single letter).
+
+`-I --in-dir name'
+     Set input directory. Default: %S/toss/toss
+
+`-O --out-dir name'
+     Set output directory. Default: %S/toss/route
+
+`-l --lock-file'
+     Create lock file while processing.
+
+`-r --routing-file name'
+     Read alternate `routing' config file. Default: %C/routing
+
+`-M --maxopen n'
+     Set maximum number of concurrently open packet filess to n.
+     Default: `MaxOpenFiles' config
+
+
+ftntoss -- Toss Fido Mail Packets
+=================================
+
+Usage:
+
+     ftntoss  [-options]  [packet ... ]
+
+Options:
+
+`-d --no-dupecheck'
+     Disabled dupe check (if `DupeCheck' is enabled in `config.main').
+
+`-g --grade grade'
+     Only process packets with grade (single letter).
+
+`-I --in-dir name'
+     Set input directory. Default: PINBOUND
+
+`-O --out-dir name'
+     Set output directory. Default: %S/toss/toss
+
+`-l --lock-file'
+     Create lock file while processing.
+
+`-t --insecure'
+     Insecure EchoMail tossing, don't check sender against nodes listed
+     in AREAS.BBS.
+
+`-n --toss-all'
+     Toss all EchoMail, even messages not addressed to one of our own
+     AKAs (most probably routed EchoMail).
+
+`-p --passthru'
+     Make all areas passthru (see also `#' in areas.bbs).
+
+`-r --routing-file name'
+     Read alternate `routing' config file. Default: %C/routing
+
+`-s --strip-attribute'
+     Strip Hold and Crash attribute from incoming NetMails.
+
+`-m --maxmsg n'
+     Flush/close all output packet files after reading n messages.
+
+`-x --maxmsg-exit n'
+     Flush/close all output packet files after reading n messages and
+     processing the current input packet, then exit.
+
+`-M --maxopen n'
+     Set maximum number of concurrently open packet filess to n.
+     Default: `MaxOpenFiles' config
+
+`-b --fareas-bbs file'
+     Use alternate areas.bbs.
+
+
+runin -- Script for Processing Inbound Packets
+==============================================
+
+Usage:
+
+     runin
+
+No options.
+
+   Runs the tosser (unpack, toss, tick) for the inbound directories:
+
+   * Insecure inbound
+
+   * Secure inbound
+
+   * UUEncoded mail inbound
+
+   * FTP inbound
+
+
+   All log messages are written to %G/log-in.
+
+   Edit the script `src/toss/runin.sh' to meet your local requirements.
+
+
+runmail -- Script for Processing Gateway Mail Output Packets
+============================================================
+
+Usage:
+
+     runmail
+
+No options.
+
+   Runs the tosser for the gateway mail output directory %S/outpkt/mail,
+all log messages are written to %G/log-out.
+
+   Edit the script `src/toss/runmail.sh' to meet your local
+requirements.
+
+
+runnews -- Script for Processing Gateway News Output Packets
+============================================================
+
+Usage:
+
+     runnews
+
+No options.
+
+   Runs the tosser for the gateway news output directory %S/outpkt/news,
+all log messages are written to %G/log-out.
+
+   Edit the script `src/toss/runout.sh' to meet your local requirements.
+
+
+runout -- Script for Processing Miscellaneous Output Packets
+============================================================
+
+Usage:
+
+     runout
+
+No options.
+
+   Runs the tosser for the miscellaneous (ftnafpkt, ftnafutil,
+ftnoutpkt) output directory %S/outpkt, all log messages are written to
+%G/log-out.
+
+   Edit the script `src/toss/runout.sh' to meet your local requirements.
+
+
+runtoss -- Script for Running the Tosser Programs
+=================================================
+
+Usage:
+
+     runtoss  type
+
+No options.
+
+Types:
+
+   Please the the script source code `src/toss/runtoss.sh' for
+available type parameters and feel free to adapt it to your
+requirements.
+
+
+rununpack -- Script for Unpacking Inbound ArcMail Archives
+==========================================================
+
+Usage:
+
+     rununpack  type
+
+No options.
+
+Types:
+
+   Please see the script source code `src/toss/rununpack.sh' for
+available type parameters and feel free to adapt it to your
+requirements.
+
+   Edit the script if necessary to change unpacker program names. The
+required programs are `unzip', `unarj', `lha', `zoo', `arc', `rar'.
+
+
+ftnbsy -- Create/delete Binkley Busy Filess
+===========================================
+
+Usage:
+
+     ftnbsy  [-options]  Z:N/F.P ...
+
+Options:
+
+`-t --test'
+     Test for existing busy file.
+
+`-l --lock'
+     Create busy file, fail if it already exists.
+
+`-u --unlock'
+     Remove busy file.
+
+`-w --wait'
+     Wait for busy file to be released (when `-l' option is given).
+
+
+ftnconfig -- Retrieve information from FIDOGATE config files
+============================================================
+
+Usage:
+
+     ftnconfig  [-options]  parameter
+
+Options:
+
+`-l --no-newline'
+     No output of newline after the parameter value.
+
+`-n --no-output'
+     No output, exit code only.
+
+`-t --test-only'
+     Output `1' if the parameter is present, `0' if not.
+
+Special parameters:
+
+`=fqdn'
+     Fully qualified domain name.
+
+`=hostname'
+     Hostname.
+
+`=domainname'
+     Domainname.
+
+`=hostsdomain'
+     Domain for entries in `hosts' config files.
+
+This is fidogate.info, produced by Makeinfo version 3.12h from
+fidogate.texi.
+
+   This file documents the installation and usage of FIDOGATE version
+4.4
+
+   Copyright (C) 1994-2000, Martin Junius
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided that the
+entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+   Permission is granted to copy and distribute translations of this
+manual into other languages, under the above conditions for modified
+versions.
+
+
+ftnfattach -- Outbound file attaches
+====================================
+
+Usage:
+
+     ftnfattach  [-options]  Z:N/F.P  file ...
+
+Options:
+
+`-B --binkley name'
+     Set Binkley outbound directory.
+
+`-F --flavor name'
+     Set flavor of outbound FLO file to name: `Hold', `Normal',
+     `Direct', or `Crash'.
+
+   The file name may start with `^' or `#', indicating that the file
+should be deleted or truncated, respectively, after sending.
+
+
+ftnflo -- Process Binkley Outbound FLO Files and Attachments
+============================================================
+
+Usage:
+
+     ftnflo  [-options]  Z:N/F.P  ...
+
+Options:
+
+`-B --binkley name'
+     Set Binkley outbound directory.
+
+`-l --list'
+     List entries in FLO file.
+
+`-n --no-delete'
+     Don't delete FLO entries after processing.
+
+`-x --exec command'
+     Execute command for every FLO entry, delete entry after successful
+     processing. `%s' in command is replaced with the filename of the
+     FLO entry.
+
+   The file name may start with `^' or `#', indicating that the file
+should be deleted or truncated, respectively, after sending.
+
+
+ftnlock -- Create/Remove Lock Files
+===================================
+
+Usage:
+
+     ftnlock  [-options]  [NAME]  [ID]
+
+Options:
+
+`-l --lock'
+     Create lock file NAME, fail if it already exists (exit code=2). If
+     NAME is not specified, the default `ftnlock' is used. The optional
+     parameter ID specifies the contents of the lock file, the default
+     is `-none-'.
+
+`-u --unlock'
+     Remove lock file NAME.
+
+`-w --wait'
+     Wait while creating lock file. Default: immediately return, if the
+     lock file can't be created because it already exists.
+
+   Lock files are created as %K/NAME.
+
+
+ftnlog -- Write Message to Log File
+===================================
+
+Usage:
+
+     ftnlog  [-options]  message text
+
+Options:
+
+`-p --program NAME'
+     Set program name for logging.
+
+   This program is used to write a log message from a shell script. The
+log file name may be specified with the `FIDOGATE_LOGFILE' environment
+variable.
+
+
+ftnoutpkt -- Create Fido Message Packets
+========================================
+
+Usage:
+
+     ftnoutpkt  [-options]  "user name @ z:n/f.p"  "..."
+
+Options:
+
+`-f --from "user name @ z:n/f.p"'
+     Set sender Fido address.
+
+`-s --subject "subject"'
+     Set message subject.
+
+`-O --out-dir dir'
+     Set output directory. Default: %S/outpkt
+
+   This utility can be used to create native Fido messages. The message
+body text is read from stdin.
+
+
+ftnseq -- Command Line Interface to Sequencer Files
+===================================================
+
+Usage:
+
+     ftnseq  [-options]  sequencer
+
+   This utilitity increments the named sequencer file and prints the
+resulting value to stdout. Useful for accessing FIDOGATE sequencer files
+from perl and shell scripts.
+
+
+pktdebug -- FTN mail packet debugger
+====================================
+
+Usage:
+
+     pktdebug  [-options]  file ...
+
+Options (standard options not supported):
+
+`-m --msg-header'
+     Print message header.
+
+`-t --msg-text'
+     Print message text. Implies `-m'.
+
+`-s --short'
+     Print contents in short format: packet from/to address and number
+     of NetMail and EchoMail messages.
+
+`-v --verbose'
+     Increase verbose/debug level.
+
+`-h --help'
+     Help on `pktdebug' usage.
+
+   This utility displays the packet header and optionally the message
+header and message body contents.
+
+   See also the `util/pktmore' utitility, which pipes the output of
+`pktdebug' to `$PAGER'.
+
+
+pktmore -- Pager frontend for `pktdebug'
+========================================
+
+Usage:
+
+     pktmore  file ...
+
+   `pktmore' uses the environment variable `PAGER' for the pager
+program. Default: `more'
+
+
+sumcrc -- CRC Checksum Utility
+==============================
+
+Usage:
+
+     sumcrc  [-options]  file ...
+
+Options (standard options not supported):
+
+`-1 --skip-first-line'
+     Skip first line in file. Useful for computing nodelist CRC.
+
+`-3 --crc32'
+     Compute 32 bit CRC checksum, using the standard 32 bit polynomial
+     (same as in ZModem, ZIP). Default: 16 bit CRC CCITT polynomial.
+
+`-6 --crc16'
+     Use alternate 16 bit CRC16 polynomial.
+
+`-x --hex'
+     Output CRC value in hex. Default: decimal
+
+`-z --eof-at-ctrl-z'
+     The Ctrl-Z character (`^Z') indicates end-of-file (MSDOS kludge).
+
+`-v --verbose'
+     Increase verbose/debug level.
+
+`-h --help'
+     Help on `sumcrc' usage.
+
+   Use `sumcrc -1z' to compute the checksum for a standard Fido
+nodelist. See also the nodelist processing scripts in
+`scripts/nodelist/nl-*'.
+
+
+FIDOGATE Config Files
+*********************
+
+FIDOGATE uses the following config files:
+
+
+* Config::      Main configuration file
+* Hosts::       hosts FTN address to host name conversion
+* Aliases::     aliases user aliases
+* Areas::       areas FTN area to newsgroup conversion
+* Bounce::      Bounce messages of `ftn2rfc'
+* Passwd::      passwd password config file
+* Routing::     routing file for `ftntoss' and `ftnroute'
+* Packing::     packing file for `ftnpack'
+* Areas.bbs::   areas.bbs EchoMail distribution
+
+   For all config files, a line starting with (some white space and)
+`#' character is a comment and as well as an empty line completely
+ignored.
+
+   All config files (with the execption of `areas.bbs' support an
+`include' command for reading in other config files. `include' must be
+the first keyword on the line, the filename is the next argument.
+
+   All options and config statements which take file or directory names
+as arguments accept the following `%' abbreviations:
+
+`%C'
+     CONFIGDIR
+
+`%L'
+     LIBDIR
+
+`%N'
+     BINDIR
+
+`%G'
+     LOGDIR
+
+`%V'
+     VARDIR
+
+`%K'
+     LOCKDIR
+
+`%S'
+     SPOOLDIR
+
+`%B'
+     BTBASEDIR
+
+`%I'
+     INBOUND
+
+`%P'
+     PINBOUND
+
+`%U'
+     UUINBOUND
+
+
+Main Configuration File
+=======================
+
+`fidogate.conf' is the main configuration file for all FIDOGATE
+programs.
+
+   NOTE: the new single configuration file replaces the different
+configuration files `config.*' and `*.conf' of versions prior to 4.3.0.
+
+   The format of `fidogate.conf' is:
+
+     keyword [ arg ... ]
+
+   Keywords and arguments may be quoted in `""', keywords are
+case-insensitive.
+
+   See `examples/orodruin/fidogate.conf' for an up-to-date commented
+version of the new config file.
+
+Common configuration:
+
+`include file'
+     Include another config file, may be nested.
+
+`ConfigDir directory'
+     Directory for configuration files (default specified in
+     `config.make').
+
+`LibDir directory'
+     Directory for FIDOGATE-internal binaries and support files (default
+     specified in `config.make').
+
+`BinDir directory'
+     Directory for FIDOGATE user binaries and scripts (default
+     specified in `config.make').
+
+`LogDir directory'
+     Directory for log files (default specified in `config.make').
+
+`VarDir directory'
+     Directory for variable state files such as `areas.bbs',
+     `fareas.bbs', `history' (default specified in `config.make').
+
+`LockDir directory'
+     Directory for lock files (default specified in `config.make').
+
+`SpoolDir directory'
+     Internal spool directory for temporary files (default specified in
+     `config.make').
+
+`BTBaseDir directory'
+     The BinkleyTerm-style outbound base directory, to be specified
+     without the actual `out.'nnn zone directories (default specified
+     in `config.make').
+
+`Inbound directory'
+     The BinkleyTerm-style unprotected inbound directory (default
+     specified in `config.make').
+
+`PInbound directory'
+     The BinkleyTerm-style protected inbound directory (default
+     specified in `config.make').
+
+`UUInbound directory'
+     The BinkleyTerm-style inbound directory for UUENCODEd packets
+     (default specified in `config.make').
+
+`FTPInbound directory'
+     The BinkleyTerm-style inbound directory for FTP'ed packets (default
+     specified in `config.make').
+
+`Aliases file'
+     Aliases configuration file (default specified in `config.make').
+
+`Areas file'
+     Areas configuration file (default specified in `config.make').
+
+`Hosts file'
+     Registered hosts configuration file (default specified in
+     `config.make').
+
+`Passwd file'
+     Password configuration file (default specified in `config.make').
+
+`Packing file'
+     Packing configuration file (default specified in `config.make').
+
+`Routing file'
+     Routing configuration file (default specified in `config.make').
+
+`History file'
+     Dupe check history database file (default specified in
+     `config.make').
+
+`Logfile file'
+     Standard log file (default specified in `config.make').
+
+`CharsetMap file'
+     Charset mapping table file (default specified in `config.make').
+
+`LogFacility facility'
+
+`LogLevel level'
+     Facility and level when using syslog for logging (`LogFile
+     syslog'). NOT YET SUPPORTED: C programs use definition from
+     `config.h', syslog support in Perl scripts (which use these
+     settings) is currently commented out.
+
+`DosDrive drive directory'
+     OPTIONAL: specify translation of a DOS drive (e.g. `H:') to a
+     directory. This is useful, if you keep your outbound on a UNIX
+     server and run BinkleyTerm on a DOS client. If one or more
+     `DosDrive' statements are specified, FIDOGATE will automatically
+     translate file attaches to the file names seen by the DOS client.
+     Up to 16 `DosDrive' entries may be specified (`MAXDOSDRIVE' from
+     `config.h').
+
+`AreasBBS name'
+     Specifies the `areas.bbs' EchoMail distribution file.
+
+`FAreasBBS name'
+     Specifies the `fareas.bbs' file echo distribution file.
+
+Internet address configuration:
+
+`Hostname name'
+     The host name part of your Internet address.
+
+`Domain name'
+     The domain part of your Internet address.
+
+`HostsDomain name'
+     The domain used for entries in the `hosts' config file. Default is
+     the same as `Domain'.
+
+Fidonet address configuration:
+
+`Address node'
+     The main Fidonet/FTN address (Z:N/F.P). There may be up to 32
+     `Address' statements (`MAXADDRESS' from `config.h').
+
+`GateAddress node'
+     OPTIONAL: the Fidonet/FTN address of your gate, must be in the same
+     order as the corresponding `Address' statements. There may be up to
+     32 `GateAddress' statements.
+
+     If you're operating a Fido node, you may want to use a point
+     addresse for your gateway to avoid name problems with local users
+     and the gateway. If you're operating an official gateway in
+     Fidonet or an Othernet, you normally have a separate node address
+     for the gateway.
+
+`Zone zone domain ftndomain out'
+     Specifies Internet domain domain, FTN domain ftndomain, and
+     outbound directory out (relative to `BTBaseDir') for the FTN zone
+     zone. zone may be `default', then this is the default entry for
+     not explicitely specified zones. Up to 32 `Zone' entries may be
+     specified (`MAXADDRESS' from `config.h').
+
+     The gateway will only process mails from/to zones which are
+     explicitly specified here.
+
+Areafix configuration:
+
+`AreaFixMailer command'
+     Mailer program used by `ftnaf' to send replies.
+
+`AreaFixCC user@domain'
+     CC address added to replies sent by `ftnaf'.
+
+`AreaFixHelp file'
+     Help file for Areafix programs (`%help') command.
+
+Tosser configuration:
+
+`MaxMsg n'
+     Set maximum number of messages in output files to n, restricting
+     the maximum size of packets. See also `-m' option.
+
+`MaxOpenFiles n'
+     Set maximum number of concurrently open packet files to n.
+     Default: 10 (`MAXOPENFILES' from `config.h'), see also `-M' option.
+
+`MaxArc Kbyte'
+     Maximum size of ArcMail archives created by `ftnpack'. See also
+     `-m' option.
+
+`MinDiskFree Kbyte'
+     Minimum free disk space required by the `runtoss' script.
+     `runtoss' will terminate if there is less than Kbyte free disk
+     space in SPOOLDIR.
+
+`DiskFreeMethod text'
+     Method to determine free disk space: `prog' uses program specified
+     with `DiskFreeProg', `none' doesn't do any disk space checking.
+
+`DiskFreeProg command'
+     Command to determine free disk space, parameter `%p' is replace
+     with path name of the directory to be checked.
+
+`KillEmpty'
+
+`KillBlank'
+     Kill empty (blank) messages addressed to one of our AKAs. These are
+     typically file attach and file request messages.
+
+`KillUnknown'
+     Kill messages for unknown EchoMail areas (not listed in areas.bbs).
+
+`KillRouted'
+     Kill routed EchoMail messages (not addressed to one of our AKAs).
+
+`KillInsecure'
+     Kill insecure EchoMail messages (sender not listed in `areas.bbs').
+
+`LogNetMail'
+
+`Track'
+     Log all NetMail messages in log file.
+
+`CheckPath'
+     Enable EchoMail circular path check (see `KillCircular').
+
+`KillCircular'
+     Kill EchoMail with circular path (own address already in `^APATH').
+
+`DupeCheck'
+     Enable dupe check (using `History' database).
+
+`MaxHistory days'
+     Maximum length of history database. Keep entries for days days
+     (decimal fraction allowed).
+
+`KillOld'
+     Kill messages with date < now - `MaxHistory', i.e. treat as dupes.
+
+`KillDupe'
+
+`KillDupes'
+     Kill duplicate EchoMail messages if `DupeCheck' is enabled.
+
+`KillNoMSGID'
+     Kill EchoMail messages without a `^AMSGID', i.e. treat as dupes.
+
+`ZoneGate node seenby'
+     Zone gate operation: strip SEEN-BYs for EchoMail addressed to node
+     and replace with listed seenby nodes. seenby must include both the
+     link's and our address. Example:
+
+          ZoneGate  1:105/42  105/42 2452/110
+
+`AddToSeenBy area nodes'
+     Add the listed nodes to the SEEN-BYs for EchoMail tossed in area.
+     area may be specified using shell-style wildcards `*?[a-z]'.
+
+`TossEchoMail4D'
+     Generate 4D EchoMail control lines, i.e. SEEN-BY and PATH will
+     include point addresses.
+
+`NoEmptyPath'
+     Do not generate an empty PATH line.
+
+Ticker configuration:
+
+`TickFlav flavour'
+     Flavour of file attaches generated by `ftntick'.
+
+`FAttachFlav flavour'
+     Flavour of file attaches generated by `ftnfattach'.
+
+`TickReplacedDir directory'
+     Directory for old files replaced by `ftntick'.
+
+`UnknownTickArea area'
+     File area to be used to TIC files with an unknown area. Incoming
+     files with an unknown area will be moved to this unknown area's
+     directory.
+
+Gateway configuration:
+
+`Origin text'
+     FTN default EchoMail origin line, the text used for the origins
+     line generated by `rfc2ftn'. Quote text in `""' if it contains
+     spaces. Individual origin lines may be specified in the `areas'
+     file using the `-o' option.
+
+`Organization text'
+     Organization header for mail and news generated by `ftn2rfc'.
+     Quote text in `""' if it contains spaces.
+
+`UseOriginForOrganization'
+     Put the text from the * Origin line (excluding the (z:n/f.p)
+     address) into the Organization header.
+
+`UseOrganizationForOrigin'
+     Put the text from the Organization header into the * Origin line.
+
+`UseXHeaderForTearline'
+     Use text from `X-FTN-Tearline', `X-Mailer', `User-Agent', or
+     `X-Newsreader' for the -- tearline.
+
+`UseFTNToAddress'
+     Use FTN to address for mail addressed to the gateway without a To
+     line, e.g. mail to
+          Max Mueller  2:2452/110.2
+     with a HOSTS entry
+          2:2452/110.2  orodruin-ftn.fido.de
+     is converted to
+          To: Max_Mueller@orodruin-ftn.fido.de
+     Without this option the standard local HOST.DOMAIN is used, e.g.
+          To: Max_Mueller@orodruin.fido.de
+
+`EchoMail4D'
+     Generate 4D EchoMail control lines, when the gateway operates at a
+     point address. This is required when using the gateway and the
+     tosser for a Fido point!
+
+`Gateway node'
+     Specifies an FTN-Internet gateway for routing Internet mail to. If
+     enabled, FIDOGATE can be used as the default delivery agent for all
+     Internet mail.
+
+`DotNames'
+     Generate User.Name@host.do.main instead of User_Name@host.do.main.
+     `rfc2ftn' recognizes both address types.
+
+`KillUnknownMSGIDZone'
+     Kill messages that contain a `^AMSGID' from an unknown zone (not
+     listed in `Zone' statements).
+
+`KillNoMSGID'
+     Kill messages that don't contain a `^AMSGID' kludge.
+
+`KillSplit'
+     Kill messages that contain a `^ASPLIT' kludge.
+
+`X-FTN header'
+     Include the various X-FTN header in the output of `ftn2rfc':
+    `f'
+          `X-FTN-From'
+
+    `t'
+          `X-FTN-To'
+
+    `T'
+          `X-FTN-Tearline'
+
+    `O'
+          `X-FTN-Origin'
+
+    `V'
+          `X-FTN-Via'
+
+    `D'
+          `X-FTN-Domain'
+
+    `S'
+          `X-FTN-Seen-By'
+
+    `P'
+          `X-FTN-Path' `X-FTN-From' is required for the proper
+     operation of `ftnaf'.
+
+`MaxMsgSize bytes'
+     Maximum size of FTN messages (default value), larger messages will
+     be split.
+
+`LimitMsgSize bytes'
+     Maximum limit for messages (default value), larger messages will be
+     bounced (mail) and simply not gated (news).
+
+`NoAddressInToField'
+     Do not allow `@ ! %' chars in the FTN to field, thus preventing
+     users from putting Internet addresses in the to field.
+
+`BounceCCMail user@do.main'
+     Send CC of bounced messages to this address.
+
+`TrackerMail user@do.main'
+     Forward mail from message trackers to this address.
+
+`HostsRestricted'
+     Restrict usage of the gateway to FTN addresses listed in `hosts'.
+
+`FTNJunkGroup name'
+     name of the FTN junk newsgroup (newsgroup for unknown FTN areas).
+
+`ErrorsTo user@do.main'
+     Insert additional Errors-To header into Internet mails, sending
+     bounced mails from gateway users to user@do.main.
+
+`AreasXlate area-chars newsgroup-chars'
+     Automatic translation (-H option in `areas' file) of characters for
+     Fido area <-> Internet newsgroup name conversion.
+
+`RFCLevel n'
+     Set the default RFC level. See also `-R' option in `areas'.
+
+`NoFromLine'
+     Don't generate `From:' header and FSC-0035 kludges. Must be set for
+     a non-gateway, point FIDOGATE configuration.
+
+`NoFSC0035'
+     Don't generate FSC-0035 `^AREPLYADDR', `^AREPLYTO'.
+
+`NoFSC0047'
+     Don't generate FSC-0047 `^ASPLIT', use old ` * Large message split
+     by ' ... text line.
+
+`FTNInSendmail command ...'
+     Sendmail program to be run by `ftninpost' with options. The option
+     `-fsender' will be automatically added by `ftninpost'. For
+     compatibility with old FIDOGATE configurations, any `-f%s' option
+     will be removed.
+
+`FTNInRnews command ...'
+     Rnews program to be run by `ftninpost'.
+
+`FTNInRecombine'
+     Automatically run `ftninrecomb' to recombine split messages.
+
+`NetMail8bit'
+     Use the ISO-8859-1 MIME 8BIT character set when gating Fido
+     NetMail.
+
+`NetMailQuotedPrintable'
+
+`NetMailQP'
+     Use the ISO-8859-1 MIME QUOTED-PRINTABLE character set when gating
+     Fido NetMail. `NetMailQuotedPrintable' overrides `NetMail8bit' if
+     both are specified.
+
+`XFlagsPolicy'
+     Controls policy for X-Flags processing (default is 0, no
+     processing):
+    `n   N   0'
+          No X-Flags processing at all.
+
+    `s   S   1'
+          X-Flags processing for local sender (check From and Received
+          headers). This is not really secure!!! If your system is
+          directly connected to the Internet and runs an SMTP daemon
+          such as sendmail, mail can easily be faked to look like
+          local!!!
+
+    `a   A   2'
+          X-Flags processing for all. Totally open, totally insecure!!!
+
+`DontUseReplyTo'
+     Don't try to get real name from Reply-To header. Particularly
+     useful for mailing lists which set the Reply-To header to the
+     mailing list.
+
+`RFCAddrMode mode'
+     Mode for RFC address generated by FIDOGATE:
+    `()  p  0'
+          user@do.main (Real Name)-type addresses
+
+    `<>  a  1'
+          Real Name <user@do.main>-type addresses
+
+`ReplyAddrIfMailTX'
+     Force `^AREPLYADDR' (if `FSC0035' is enabled) to only contains
+     `^AREPLYADDR <user@do.main>' for compatibility with ifmail-TX.
+
+`CheckAreasBBS'
+     Check `areas.bbs' when gating newsgroups, message for areas without
+     downlinks will be skipped.
+
+`DefaultCharset default:ftn:rfc'
+     Default character set mapping for the gateway: default is the
+     charset assumed for FTN messages, if no `^ACHRS' kludge is present
+     in the message. ftn is the charset to be used in the FTN messages
+     when gating from RFC to FTN (use FSC-0054 names here), rfc likewise
+     when gating from FTN to RFC (use RFC 2045 names here). See also the
+     `-C' option in the `areas' config file.
+
+`NetMailCharset default:ftn:rfc'
+     Like `DefaultCharset', but only for NetMail (mail) messages.
+
+`NetMailCharsetUse1st'
+     If set and no matching in/out character set is found, `ftn2rfc'
+     will use the first character set translation pair from
+     `charset.map' with in charset = Fido `^ACHRS' and set the output
+     character set accordingly. NOT YET IMPLEMENTED.
+
+`NewsPathTail string'
+     String added to news Path header generated by `ftn2rfc', the
+     de-facto standard is `not-for-mail'. Alternatively you can set this
+     to `fidogate!not-for-mail' making the INN `newsfeeds' much easier
+     and less error-prone, particularly for point systems.
+
+`SingleArticles'
+     Write single articles to output RFC files generated by `ftn2rfc',
+     not news batches containing several articles (batch is default).
+
+`Regex1stLine pattern'
+     Regular expression patterns for finding addresses in the first
+     line of the messages body. The first (...) sub-expression will be
+     used for the address (like \1 in sed, $1 in perl). POSIX
+     *extended* regular expressions are used.  The OS must support
+     `HAS_POSIX_REGEX' in `config.h'!
+
+     As of FIDOGATE 4.3.4, the compiled-in pattern matching code is no
+     longer availabe. See `examples/orodruin/fidogate.conf' for a
+     suitable list of regular expressions.
+
+`MessageLineLength number'
+     Line length for formatting long paragraphs (no explicit line
+     break) from Fido messages. This replaces the old `MAX_LINELEN' from
+     `config.h'. The default value is 72.
+
+FFX configuration:
+
+   (FFX is a part of FIDOGATE, an uux-like mechanism for remote
+execution, using a Fido mailer instead of UUCP for transport. This is a
+special hack for my own purposes, most likely you don't want to know
+anything about it. Simply ignore or remove this section from the config
+file.)
+
+`FFXDataFlav flavour'
+     Flavour to be used for file attachments created by the `ffx'
+     program.
+
+`FFXDataCompr command ...'
+     Program to be used for creating compressed `ffx' data files.
+
+`FFXDataExt parameter'
+     File name extension to be used for compressed `ffx' data files.
+
+`FFXDataDecompr parameter'
+     Uncompressor name for compressed `ffx' data files (will be run by
+     `ffxqt').
+
+`FFXDataComprN parameter'
+     Program to be used for creating uncompress `ffx' data files (option
+     `-n').
+
+`FFXDataExtN parameter'
+     File name extension to be used for uncompressed `ffx' data files
+     (option `-n').
+
+`FFXDataDecomprN parameter'
+     Uncompressor name for uncompressed `ffx' data files (option `-n',
+     will be run by `ffxqt').
+
+`FFXCommand name command ...'
+     List of command names and corresponding commands to be used by
+     `ffxqt'. Only the commands listed can be executed. This replaces
+     the old LIBDIR/ffxqt-dir/name structure of previous FIDOGATE
+     versions.
+
+`FFXUncompress name command ...'
+     List of uncompressor names and corresponding commands to be used by
+     `ffxqt'.
+
+
+`hosts' FTN Address to Host Name Conversion
+===========================================
+
+This file contains the FTN addresses and host names for registered FTN
+nodes. If `HostsRestricted' is defined in `config.gate', this file
+controls the access to the gateway.
+
+The format of this file is
+
+     node  hostname  [ options ]
+
+Fields:
+
+node
+     FTN address. An address for a node will match all points of this
+     node, see example below.
+
+hostname
+     Host name, one of
+
+    local host name
+          A name without a trailing `.' is a hostname in the local
+          domain (specified by `HostsDomain' or default `Domain' in
+          `config').
+
+    fully qualified domain name
+          A name with a trailing `.' is a fully qualified domain name
+          for this node.
+
+    `-'
+          A `-' specifies a listed node, but without a host name
+          translation, using the standard p.f.n.z address.
+
+options
+
+    `-p'
+          Generate addresses with point part, e.g. `p99.hippo.fido.de'.
+          Default is omitting the point part.
+
+    `-d'
+          Mark the node as down, mail to this address will be bounced
+          with an appropiate error message.
+
+   The `hosts' file is read into memory during startup of FIDOGATE.
+The first entry found matches, so a host name for a point must be
+specified before the boss node, if there are entries for both.
+
+   Example:
+
+`config':
+
+     HostsDomain   .Fido.DE
+
+`hosts':
+
+     2:2452/110    hippo
+     2:2452/990    test     -p
+     2:2452/991    test.wusel.org.
+     2:2452/999    -
+
+Resulting data base read into memory:
+
+     Node:     2:2452/110.0
+     Hostname: hippo.Fido.DE
+     Flags:
+     
+     Node:     2:2452/990.0
+     Hostname: test.Fido.DE
+     Flags:    POINT
+     
+     Node:     2:2452/991.0
+     Hostname: test.wusel.org
+     Flags:
+     
+     Node:     2:2452/999.0
+     Hostname:
+     Flags:
+
+This results in the following conversion of addresses from FTN to
+Internet:
+
+     2:2452/110     ->  hippo.Fido.DE
+     2:2452/110.99  ->  hippo.Fido.DE
+     2:2452/990.99  ->  p99.test.Fido.DE
+     2:2452/991.1   ->  test.wusel.org
+     2:2452/999.2   ->  p2.f999.n2452.z2.Fido.DE
+
+
+`aliases' User Aliases
+======================
+
+This file contains user aliases, the FTN address, and the full name of
+the user.
+
+The format of this file is
+
+     alias  node  "full name"
+
+Fields:
+
+alias
+     Alias for the user, can be a local `user' or a complete Internet
+     address `user@do.main'.
+
+node
+     FTN address of the user.
+
+full name
+     Full name of the user.
+
+   The FTN address node may be a point address. In this case mail
+addressed to the user at the boss node address will be readdressed to
+this point, see example below.
+
+   Example:
+
+`aliases':
+
+     mvr         2:2452/110.6    "Marc van.Rey"
+
+   Using the definitions from the section on `hosts', this results in
+the following address conversion:
+
+     Marc van.Rey @ 2:2452/110.6  <->  mvr@hippo.Fido.DE
+
+
+`areas' FTN Area to Newsgroup Conversion
+========================================
+
+This file contains FTN areas with corresponding newsgroups and options.
+
+The format of this file is
+
+     area  newsgroup  [ options ]
+
+Fields:
+
+area
+     FTN area.
+
+newsgroup
+     Usenet newsgroup.
+
+options
+     IMPORTANT: there must be spaces between the option and its
+     argument!
+
+    `-a address'
+          Select alternate FTN address for this area/newsgroup.
+
+    `-z zone'
+          Select zone AKA zone for this area/newsgroup.
+
+    `-d distribution'
+          Use Usenet `distribution' for this newsgroup when gating from
+          FTN to Internet.
+
+    `-o "origin"'
+          Use an alternate origin line for this area when gating from
+          Internet to FTN.  (Default specified in `config'.)
+
+    `-g'
+          Don't send messages from another SomeNet-FTN gateway across
+          the gateway.
+
+    `-l'
+          Only local crosspostings are allowed in this newsgroup/area.
+
+    `-x'
+          No crosspostings are allowed in this newsgroup/area.
+
+    `-8'
+          Use the ISO-8859-1 MIME 8BIT character set when gating to this
+          newsgroup.
+
+    `-Q'
+          Use the ISO-8859-1 MIME quoted-printable character set when
+          gating to this newsgroup.
+
+    `-H'
+          Area/newsgroup matches entire hierarchy. Names are converted
+          automatically, using upper case for area names and lower case
+          for newsgroups.
+
+          Example:
+               GNU.    gnu.    -z 242  -H
+          `gnu.announce' will be converted to `GNU.ANNOUNCE',
+          `gnu.bug.gcc' to `GNU.BUG.GCC', similar for all other.
+
+    `-!'
+          Don't gate this area/newsgroup or hierarchy (if combined with
+          `-H'). Usefull to exclude certain newsgroups from a hierarchy
+          for gating.
+
+          Example:
+               ALT.BINARIES.    alt.binaries.    -z 242  -H -!
+               ALT.             alt.             -z 242  -H
+          This is roughly equivalent to INN's `alt.*,!alt.binaries.*'.
+          Please note that the first `areas' entry matches, so any `-!'
+          must be placed before the `-H' hierarchy definition.
+
+    `-R level'
+          Select level of `^ARFC-'Header put into FIDO messages for this
+          area. Level:
+         0
+               No `^ARFC-'header at all.
+
+         1
+               Only important `^ARFC-'header.
+
+         2
+               All `^ARFC-'header.
+
+    `-m bytes'
+          Sets `MaxMsgSize' for this area (0 = no limit).
+
+    `-M bytes'
+          Sets `LimitMsgSize' for this area (0 = no limit).
+
+    `-X "RFC-Header: text"'
+          Add extra RFC header to output of `ftn2rfc'. Multiple `-X'
+          options are possible.
+
+    `-C default:ftn:rfc'
+          Set character set mapping table for this area, see
+          `DefaultCharset' config option for details.
+
+   Only newsgroups listed in this file will be gated from Internet to
+FTN.  FTN area not listed in this file will be gated into the
+`FTNJunkGroup' newsgroup specified in `fidogate.conf'.
+
+
+Bounce Messages of `ftn2rfc'
+============================
+
+`ftn2rfc' uses the following files for messages sent to the FTN user
+when bouncing mail for some reason:
+
+`bounce.noto'
+     Message addressed to user `UUCP' or `GATEWAY' without a `To' line
+     at the very beginning of the message.
+
+`bounce.down'
+     Message addressed from/to node currently marked as down in `hosts'
+     (`-d' flag).
+
+`bounce.restricted'
+     Messages from nodes not listed in `hosts', gateway running in
+     restricted mode.
+
+`bounce.insecure'
+     Messages came via an insecure (i.e. not password protected) link
+     and contain a `To' line. This requires the `-t' option to
+     `ftn2rfc'.
+
+   Within a bounce message, the following substitutions can be used:
+
+`%F'
+     FTN address of message sender.
+
+`%T'
+     FTN address of message recipient (the gateway, that is).
+
+`%O'
+     FTN address of message origin.
+
+`%d'
+     Date/time of message.
+
+`%t'
+     Name of message recipient.
+
+`%f'
+     Name of message sender.
+
+`%s'
+     Message subject.
+
+`%R'
+     `To' line, Internet address.
+
+`%M'
+     The entire message body.
+
+
+`passwd' Password Config File
+=============================
+
+This file contains passwords used by `ftnaf', `ffx', and the tosser
+programs.
+
+The format of this file is:
+
+     context  node  password  options
+
+Contexts:
+
+`packet'
+     FTN packet passwords, checked by `ftntoss', inserted by all
+     FIDOGATE programs which create FTN packets. Password checking for
+     incoming packets is NOT YET IMPLEMENTED.
+
+`af'
+     Areafix passwords for requests.
+
+`ff'
+     Filefix passwords for requests and password for sending/receiving
+     TIC files.
+
+`ffx'
+     `ffx' command passwords, checked by `ffxqt', inserted by `ffx'
+     into the `.ffx' command files.
+
+`uplink'
+     Passwords for forwarding areafix/filefix request to uplink.
+
+   Optional stuff (options) is used for `af' and `ff' permission
+settings:
+
+     lvl  key  "Sysop Name"
+
+   lvl is the access level, which must be greater or equal than the one
+in `areas.bbs'. key is the access key, which must be a super set of the
+one in `areas.bbs'.
+
+   Optional stuff (options) is used for `uplink':
+
+     "name"
+
+   name is the user name (normally `Areafix' or `Areamgr') at node
+address, where areafix requests must be forwarded to. Used by
+`ftnafutil'.
+
+   Example:
+
+     uplink      2:2499/99       XXXXXXXX    AreaMgr
+     packet      2:1234/5678     WUERG
+     ffx         242:1111/99     BLAHBLUB
+     af          2:1234/5678     WUSEL       1   F     "Test Sysop"
+     ff          242:1234/5678   WUSEL       4   UQ    "Yet Another Sysop"
+
+
+`routing' Config File
+=====================
+
+This file contains the routing commands performed by `ftntoss'
+(commands `remap' and `rewrite') and `ftnroute' (everything else). The
+first routing command found matches.
+
+   The syntax of the `routing' commands is very similar to the routing
+file used by the well-known FIDO tossers QMail and SQUISH.
+
+The format of this file is:
+
+     remap      src-node  dest-node  name
+     remapto    src-node  dest-node  name
+     remapx     src-node  prog       name
+     remapfrom  src-node  dest-node  name
+     rewrite    src-node  dest-node
+     
+     echomail
+     netmail
+     
+     send       flavor    nodes
+     route      flavor    dest-node nodes
+     hostroute  flavor    nodes
+     hubroute   flavor    nodes
+     xroute     flavor    dest-node from-node to-node
+     bossroute  flavor    nodes
+     
+     change     old-flavor  new-flavor  nodes
+     
+     sendmove   flavor    nodes
+
+Commands:
+
+`remap'
+
+`remapto'
+     Remaps NetMail addressed to name at src-node to the new address
+     dest-node. Most useful for remapping to points based on their name.
+     name supports shell-style wildcard patterns. Remapping to 0:0/0.0
+     means killing the message.
+
+`remapx'
+     Remaps NetMail addressed to name at src-node to special processing
+     with prog (actually writing it to a packet in `%S/remapx/'prog.
+     Most useful for processing areafix messages. name supports
+     shell-style wildcard patterns.  NOT YET IMPLEMENTED.
+
+`remapfrom'
+     Remaps NetMail from name at src-node to the new address dest-node.
+     name supports shell-style wildcard patterns. Remapping to 0:0/0.0
+     means killing the message.
+
+`rewrite'
+     Rewrites NetMail from and to addresses. A node address matching
+     src-node will be changed to dest-node.
+
+`echomail'
+     Starts routing commands for EchoMail.
+
+`netmail'
+     Starts routing commands for NetMail.
+
+`allmail'
+     Starts routing commands for both EchoMail and NetMail. NOT YET
+     IMPLEMENTED.
+
+`send'
+     Send normal mail addressed to nodes with flavor.
+
+     WARNING: e.g. `send hold 2:2452/110' actually is the same as
+     `route hold 2:2452/110.0 2452/110.*'. So `send hold 2:2452/110
+     110.*' will not have the desired effect, use `send hold
+     2:2452/110.*' only instead!!!
+
+`route'
+     Route normal mail addressed to nodes via dest-node, using flavor.
+
+`hostroute'
+     Route normal mail addressed to nodes via their host (i.e. Z:N/0),
+     using flavor.
+
+`hubroute'
+     Route normal mail addressed to nodes via their hub, using flavor.
+     NOT YET IMPLEMENTED.
+
+`xroute'
+     Route normal mail from from-node to to-node via dest-node, using
+     flavor. NOT YET IMPLEMENTED.
+
+`bossroute'
+     Route flavor mail addressed to nodes via their boss node, not
+     changing the flavor.
+
+`change'
+     Change flavor of mail packet from old-flavor to new-flavor.
+
+`sendmove'
+     Like `send', but `ftnroute' doesn't copy the mail packets, they
+     are moved instead. This requires that SPOOLDIR/toss/tmp and
+     SPOOLDIR/toss/out are on the same file system/disk drive.
+
+   Node addresses nodes, src-node, dest-node support wildcards using
+`*' and `all', which can be used for the zone, net, node, and point
+component of an address. `*' alone matches all addresses. `rewrite'
+wildcards in the destination address are replaced with the
+corresponding component of the source address.
+
+The outbound flavor string flavor can be any of `normal', `hold',
+`crash', `direct', `out', `hut', `cut', `dut'.
+
+   Example:
+
+     Remap     2:2452/110.0 2:2452/110.7  "Martin Koser"
+     Rewrite   242:241/*    2:241/*
+     
+     NetMail
+     send      hold         242:1000/1.all
+     change    crash  hold  242:1000/1.all 2.all
+     send      hold         242:1000/3
+     route     hold         242:1000/50 51 52 53 54 55 56 57 58 59
+
+
+`packing' Config File
+=====================
+
+This file contains the packer (archiver) definitions and packing
+commands for `ftnpack'.
+
+The format of this file is:
+
+     arc        name  `"'archiver`"'
+     prog       name  `"'program`"'
+     progn      name  `"'program`"'
+     
+     pack       name  nodes
+     rpack      name  dest-node  nodes
+     fpack      name  dest-node  nodes
+     dirpack    dir  name  nodes
+
+Packer/program definitions:
+
+`arc'
+     Defines the archiver name as program archiver. The archiver string
+     must contain two `%s', the first one is replaced with the archive
+     name, the second one with the packet name.
+
+`prog'
+
+`progn'
+     Defines the program name as program. The program string must
+     contain a `%s', which is replaced with the name of the packet to be
+     processed. `prog' deletes the packet after successfully running
+     `program', `progn' doesn't.
+
+Packing definitions:
+
+`pack'
+     Pack all mail addressed to nodes using the archiver defined as
+     name. The archiver name `noarc' indicates that the mail packet
+     should not be packed, but copied to the OUT file of the node.
+
+`rpack'
+     Same as `pack', but pack all mail addressed to nodes to the
+     archive for dest-node.
+
+`fpack'
+     Similar to `rpack', but the packet is archived for the normal
+     arcmail packet for each node. This archive is then attached to the
+     FLO file of dest-node.
+
+`dirpack'
+     Archive packets for nodes in special directory dir, not the
+     standard outbound.
+
+   Example:
+
+     arc     zip     "/usr/local/bin/zip -gkj %s %s"
+     progn   gate    "/usr/lib/fidogate/ftn2rfc %s"
+     progn   areafix "/usr/lib/fidogate/ftnafpkt %s"
+     
+     rpack   zip     2:242/41 2:242/42 242:2000/* 254:*/*
+     pack    noarc   2:2452/110.1 242:4900/99 254:2410/6.1
+     pack    zip     *
+
+
+`areas.bbs' EchoMail Distribution
+=================================
+
+This file contains the EchoMail areas and linked nodes. The file
+`fareas.bbs' is used for file echos.
+
+   The format of this file is as follows, the first line being ignored
+for compatibility with the standard DOS AREAS.BBS. Individual fields
+can be enclosed in "..." to allow spaces, in particular for the area
+description.
+
+     [#]directory  area  [options]  nodes
+
+#
+     Marks area as pass-through, i.e. no packets for the own address
+     (zone AKA or set by `-a') will be created.
+
+directory
+     The directory where the message base/file base for this area is
+     located.  Currently FIDOGATE uses the directory for file areas
+     only.
+
+area
+     The area name.
+
+options
+     Options for this area:
+    `-a address'
+          Set alternate FTN AKA for this area.
+
+    `-z zone'
+          Set alternate zone AKA for  this area. If not  set, the zone
+          information is taken from  the first node in the  nodes list.
+          `ftnaf' will automatically rewrite `areas.bbs', inserting
+          the `-z' option.
+
+    `-l lvl'
+          Set Areafix/Filefix access level for this area.
+
+    `-k key'
+          Set Areafix/Filefix access key for this area.
+
+    `-d "description"'
+          Description for this area. Enclose in `"..."' to allow spaces
+          in description text.
+
+    `-#'
+          Set pass-through flag for this area (same as directory
+          starting with `#').
+
+    `-r'
+          Set read-only flag for this area. New downlink will have a
+          read-only status. NOT YET IMPLEMENTED.
+
+nodes
+     The list of downlink nodes. This is a sorted short list of nodes
+     as in FIDO EchoMail SEEN-BYs and PATH. The first node in nodes is
+     the uplink and stays at this place, though. Do not put your own
+     main address into the nodes list. (If the gateway has a different
+     address, then it must be included in `nodes'!)
+
+
+Basic Configuration
+*******************
+
+   There seems to be some confusion about the basic configuration of the
+mail/news system, the gateway, and the tosser, so I added this chapter.
+Hopefully this will help ...
+
+
+* Sendmail::	       Sendmail configuration
+* Example Point::      Example point configuration
+* Example Point 2::    Example configuration with 2 point addresses
+* Example Node::       Example leaf node configuration
+
+
+Sendmail Configuration
+======================
+
+This section describes the FIDOGATE additions to the sendmail V8 m4
+configuration.
+
+   FIDOGATE adds two new mailer files, `ftn.m4' and `ffx.m4'. Use
+`MAILER(ftn)' and/or `Mailer(ffx)' to include these mailer definitions.
+(See the comment above for what ffx is good for. Most likely you won't
+need it.)
+
+   Please note that the new FIDOGATE mailers are based on the SMTP
+mailer sender/recipient rewrite rules, so including `MAILER(smtp)' is
+mandatory!
+
+FIDOGATE ftn mailers (using the `ftnmail' wrapper for `rfc2ftn'):
+
+`ftn'
+     Mailer for sending to systems registered in the `hosts' config
+     file. `ftn' will bounce mails if the receiving host is not
+     registered or marked as down.
+
+`ftni'
+     Mailer for sending to a typical p.f.n.z domain, e.g.
+     `.fidonet.org'. `ftni' will send the mail to any system,
+     regardless of the registration in `hosts'.
+
+`ftna'
+     Like `ftni', but the `ftna' mailer also sets the address and
+     uplink of the gateway to the relay host passed to this mailer.
+
+`ftno'
+     Like `ftna'. In addition, this mailer sets the directory for
+     packets created by `rfc2ftn' to SPOOLDIR/outpkt/relayhost.
+
+FIDOGATE ffx mailer (using the `ffxmail' utitility):
+
+`ffx'
+     Mailer for sending via the FIDOGATE ffx sub-system.
+
+
+Example Point Configuration
+===========================
+
+Please note that this point configuration uses the FIDOGATE tosser.
+Thus, it's different from the point configuration described in Roland
+Rosenfeld's old Point HOWTO!!! The Point HOWTO configuration will
+definitely NOT work with FIDOGATE version 4!!!
+
+   Actually, this point configuration is very similar to the node
+configuration described in the next section.
+
+   Let's assume the following addresses:
+
+   Fido point address 2:2499/999.9
+
+   Boss node (NetMail and EchoMail) 2:2499/999
+
+Address configuration `fidogate.conf' (gateway and point address are
+the same!), gateway configuration `EchoMail4D' is stricly reqired:
+
+     ...
+     Address 2:2499/999.9
+     ...
+     EchoMail4D
+     ...
+
+Routing configuration `routing': mail for the local address on hold,
+everything else is send to the boss node.
+
+     NetMail
+     route    hold   2:2499/999.9
+     route    normal 2:2499/999 1:* 2:* 3:* 4:* 5:* 6:*
+     
+     EchoMail
+     sendmove hold   2:2499/999.9
+     sendmove normal *
+
+Packer configuration `packing': no packing (noarc, this is very
+important) for own address, `zip' is the default archiver for
+everything else.
+
+     arc  zip    "/usr/bin/zip -9gkjq %s %s"
+     
+     pack noarc  2:2499/999.9
+     pack zip    *
+
+Next, the EchoMail areas must be listed in the `areas.bbs' file. Do not
+put your point address into `areas.bbs'! Example with two areas (the
+directory `X' is not used for EchoMail areas), which must be
+non-passthrough:
+
+     Example Point!User Name
+     X LINUX.GER 2:2499/999
+     X UNIX.GER  2:2499/999
+
+   In the gateway configuration, these areas must be listed in the
+`areas' config file:
+
+     LINUX.GER fido.ger.linux -8
+     UNIX.GER  fido.ger.unix  -8
+
+   The example configuration files for this configuration can be found
+in `examples/point/'. See also `scripts/run/runpoll' for a suitable
+poll script, which does everything necessary for a FIDOGATE point.
+
+
+Example Configuration with 2 Point Addresses
+============================================
+
+This section describes a point setup with 2 different point addresses
+and 2 different boss nodes. Thanks to Stephan Zellerhoff
+<stephan@poi.westfalen.de> for contributing some stuff.
+
+   Let's assume the following addresses:
+
+   Primary point address 2:2499/999.9, boss node 2:2499/999
+
+   Secondary point address 2:2498/888.8, boss node 2:2498/888
+
+Setup with FIDOGATE:
+
+Addresses
+     Put the following address statements in `fidogate.conf'
+          Address 2:2499/999.9
+          Address 2:2498/888.8
+     Please note that the primary point address must be the first entry!
+
+Sendmail
+     Use the sendmail `mailertable' feature and create the following
+     entries for routing Fidonet mail:
+          # Mail to 2:2498/*, secondary address
+          .n2498.z2.fidonet.org    ftna:p8.f888.n2498.z2.fidonet.org
+          # Everything else 2:*/*, primary address
+          .z2.fidonet.org          ftna:p9.f999.n2499.z2.fidonet.org
+     Please note that in this setup, the relay host specified with the
+     `ftna' mailer is your own address, not your boss node!!!
+
+Areas
+     Areas send to the primary boss don't require anything special in
+     the `areas' config file, areas send to the secondary boss must
+     have the `-a 2:2498/888.8' option, e.g.
+          LINUX.GER    fido.ger.linux    -a 2:2498/888.8 -8
+
+Areas.BBS
+     Likewise, areas send to the secondary boss must have the `-a
+     2:2498/888.8' option in `areas.bbs' and the secondary boss as the
+     uplink, e.g.
+          X LINUX.GER    -a 2:2498/888.8    2:2498/888
+
+Routing
+     The netmail routing must be adapted to send mail to the secondary
+     boss, e.g. everything for net 2498:
+          NetMail
+          route    hold     2:2499/999.9
+          route    hold     2:2498/888.8
+          
+          route    normal   2:2498/888 2:2498/*.*
+          route    normal   2:2499/999 2:*
+          
+          EchoMail
+          sendmove hold     2:2499/999.9 2498/888.8
+          sendmove normal   *
+
+Packing
+     Packer configuration `packing': no packing (noarc, this is very
+     important) for all of our own addressess, `zip' is the default
+     archiver for everything else.
+
+          arc  zip    "/usr/bin/zip -9gkjq %s %s"
+          
+          pack noarc  2:2499/999.9 2498/888.8
+          pack zip    *
+
+   Otherwise see the standard point configuration with a single address.
+
+This is fidogate.info, produced by Makeinfo version 3.12h from
+fidogate.texi.
+
+   This file documents the installation and usage of FIDOGATE version
+4.4
+
+   Copyright (C) 1994-2000, Martin Junius
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided that the
+entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+   Permission is granted to copy and distribute translations of this
+manual into other languages, under the above conditions for modified
+versions.
+
+
+Example Leaf Node configuration
+===============================
+
+Let's assume the following addresses:
+
+   Fido main address 2:2499/999
+
+   Uplink (NetMail and EchoMail) 2:2499/900
+
+   Gateway point address 2:2499/999.1
+
+   Two points, Max Mueller @ 2:2499/999.10, Sabine Meier @ 2:2499/999.11
+
+Address configuration `fidogate.conf':
+
+     Address     2:2499/999
+     GateAddress 2:2499/999.1
+
+Routing configuration `routing': NetMail for the two points will be
+remapped to their point addresses, everything else to the gateway (where
+you will be reading your mail). NetMail for all points is `send' onto
+hold, everything else `route'd to your uplink. EchoMail is alway put
+onto hold.
+
+     remap    2:2499/999.0 2:2499/999.10 "Max Mueller"
+     remap    2:2499/999.0 2:2499/999.11 "Sabine Meier"
+     remap    2:2499/999.0 2:2499/999.1  "*"
+     
+     NetMail
+     send     hold   2:2499/999.*
+     route    normal 2:2499/900 1:* 2:* 3:* 4:* 5:* 6:*
+     
+     EchoMail
+     sendmove hold   2:2499/999.*
+     sendmove normal *
+
+Packer configuration `packing': `noarc' packing for the gateway
+address, `zip' is the default archiver for everything else.
+
+     arc      zip    "/usr/bin/zip -9gkjq %s %s"
+     
+     pack     noarc  2:2499/999.1
+     pack     zip    *
+
+Next, the EchoMail areas must be listed in the `areas.bbs' file. Do not
+put your node address into `areas.bbs'! Example with two areas, both
+subscribed by the gateway and your points (the directory `X' is not
+used for EchoMail areas):
+
+     Your system name!sysop name
+     #X LINUX.GER 2:2499/900 999.1 .10 .11
+     #X UNIX.GER  2:2499/900 999.1 .11
+
+   `#' denotes a passthrough area, i.e. no packets for the own address
+(2:2499/999) are created. All EchoMail will be send to the gateway (.1).
+
+   In the gateway configuration, these areas must be listed in the
+`areas' config file:
+
+     LINUX.GER fido.ger.linux -8
+     UNIX.GER  fido.ger.unix  -8
+
+   For regular processing, the following scripts should be run from cron
+every 20 min or so:
+`rungate'
+     Inbound gateway (Fido -> Internet and FTN -> FTN) processing
+
+`runin'
+     Inbound tosser and ticker processing
+
+`runmail'
+     Outbound gateway for mail (Internet -> Fido) processing.
+
+`runnews'
+     Outbound gateway for news (Internet -> Fido) processing.
+
+`runout'
+     Outbound packet processing (various sources).
+
+   To use the areafix, the gateway and the mail system must be working.
+You can then install suitable aliases in `/etc/aliases':
+
+     # Areafix/Filefix - FIDOGATE ftnaf
+     areafix: "|/usr/lib/fidogate/ftnafmail"
+     areamgr: areafix
+     filefix: "|/usr/lib/fidogate/ftnafmail -F"
+     filemgr: filefix
+
+   That's it. I hope that this short chapter on basic configuration
+clarifies some of the darker point of the FIDOGATE configuration.
+Anyway, please help to improve the FIDOGATE documentation.
+
+
+FIDOGATE Usage
+**************
+
+
+* RFC Headers:: RFC Headers in FTN Messages
+* X Headers::   X Headers in RFC Messages
+
+
+RFC Headers in FTN Messages
+===========================
+
+FIDOGATE's `ftn2rfc' supports the following RFC headers at the start of
+an FTN message. RFC headers must be the first text lines, max. 3 empty
+lines before the RFC headers are allowed. Only one header line of each
+type is allowed.
+
+`From: address'
+     Sets From header line. If set and the `areas' flag `-g' is on,
+     messages will not be gated, because they are considered comming
+     from another FTN-RFC gateway.
+
+`Reply-To: address'
+     Sets Reply-To header line.
+
+`To: address'
+     Sets To header line.
+
+`Cc: address'
+     Sets Cc header line.
+
+`Bcc: address'
+     Sets Bcc header line.
+
+`Newsgroups: groups'
+     Sets Newsgroups header line. NOT YET IMPLEMENTED.
+
+`Sender: address'
+     Sets Sender header line. NOT YET IMPLEMENTED.
+
+`Content-Transfer-Encoding: 7bit | 8bit | quoted-printable'
+     Sets content encoding type, overriding the default configured in
+     `fidogate.conf' (`NetMail8bit', `NetMailQuotedPrintable') or
+     `areas' (`-8', `-Q').
+
+   `ftn2rfc' sends mail to all addresses listed in To, Cc, and Bcc. It
+support the RFC1036 standard address formats:
+
+     user@do.main
+     user@do.main (Real Name)
+     Real Name <user@do.main>
+
+   Multiple addresses can be separated by a `,'.
+
+
+X Headers in RFC Messages
+=========================
+
+FIDOGATE's `rfc2ftn' supports the following X headers in RFC messages:
+
+`X-Comment-To: name'
+     Use for the recipient's name in news articles.
+
+`X-Flags: flags'
+
+    `c'
+          Message is crash.
+
+    `p'
+          Message is private (default for mail).
+
+    `h'
+          Message is hold.
+
+    `f'
+          Subject contains file attachment name.
+
+    `r'
+          Sets return receipt request.
+
+    `m'
+          Generates a FTN style `^MSGID', i.e. `^AMSGID: 'Z:N/F.P
+          1234abcd. In addition, no `^AREPLY' kludge is generated. THIS
+          FLAG IS NOT RECOMMENDED FOR NORMAL OPERATION!!!
+
+    `n'
+          Do not generate a From line, and the `^AREPLYADDR', `REPLYTO'
+          kludges.
+
+
+Index
+*****
+
+
+* Aliases:                               Aliases.
+* ArcMail:                               ftnpack.
+* Areafix <1>:                           ftnafmail.
+* Areafix:                               ftnaf.
+* Areas:                                 Areas.
+* Bounce messages:                       Bounce.
+* Busy files:                            ftnbsy.
+* CRC:                                   sumcrc.
+* Checksum:                              sumcrc.
+* Compiling:                             Compiling.
+* Config <1>:                            Config.
+* Config:                                ftnconfig.
+* Config files:                          Config files.
+* Configuration <1>:                     Example Node.
+* Configuration <2>:                     Example Point 2.
+* Configuration <3>:                     Example Point.
+* Configuration <4>:                     Sendmail.
+* Configuration:                         Basic.
+* Connecting:                            Connecting.
+* EchoMail:                              Areas.bbs.
+* Example <1>:                           Example Node.
+* Example <2>:                           Example Point 2.
+* Example:                               Example Point.
+* FIDONET:                               Connecting.
+* File attach:                           ftnfattach.
+* Gateway <1>:                           ftn2ftn.
+* Gateway <2>:                           rfc2ftn.
+* Gateway:                               ftn2rfc.
+* Header <1>:                            X Headers.
+* Header:                                RFC Headers.
+* Hosts:                                 Hosts.
+* Installation <1>:                      Compiling.
+* Installation:                          Installation.
+* Integration:                           Integration.
+* Introduction <1>:                      Introduction.
+* Introduction:                          Top.
+* Lock files:                            ftnlock.
+* Log file:                              ftnlog.
+* Logging:                               ftnlog.
+* Mail <1>:                              ffxnews.
+* Mail:                                  ffxmail.
+* Node:                                  Example Node.
+* Packing:                               Packing.
+* Password:                              Passwd.
+* Point <1>:                             Example Point 2.
+* Point:                                 Example Point.
+* Programs:                              Programs.
+* RFC header:                            RFC Headers.
+* Remote Execution:                      ffxqt.
+* Remote execution:                      ffx.
+* Routing <1>:                           Routing.
+* Routing:                               ftnroute.
+* Testing:                               Testing.
+* Tossing <1>:                           rununpack.
+* Tossing <2>:                           runtoss.
+* Tossing <3>:                           runout.
+* Tossing <4>:                           runnews.
+* Tossing <5>:                           runmail.
+* Tossing <6>:                           runin.
+* Tossing:                               ftntoss.
+* Usage:                                 Usage.
+* X header:                              X Headers.
+* areas.bbs:                             Areas.bbs.
+* ffx:                                   ffx.
+* ffxmail <1>:                           ffxnews.
+* ffxmail:                               ffxmail.
+* ffxqt <1>:                             runffx.
+* ffxqt <2>:                             ffxrmail.
+* ffxqt:                                 ffxqt.
+* ffxrmail:                              ffxrmail.
+* fidogate.conf:                         Config.
+* ftn2ftn:                               ftn2ftn.
+* ftn2rfc <1>:                           ftnin.
+* ftn2rfc:                               ftn2rfc.
+* ftnaf <1>:                             ftnafmail.
+* ftnaf:                                 ftnaf.
+* ftnafpkt:                              ftnafpkt.
+* ftnafutil:                             ftnafutil.
+* ftnbsy:                                ftnbsy.
+* ftnconfig:                             ftnconfig.
+* ftnexpire:                             ftnexpire.
+* ftnfattach:                            ftnfattach.
+* ftnflo:                                ftnflo.
+* ftnhatch:                              ftnhatch.
+* ftnin:                                 ftnin.
+* ftninpost:                             ftninpost.
+* ftninrecomb:                           ftninrecomb.
+* ftnlock:                               ftnlock.
+* ftnlog:                                ftnlog.
+* ftnmail:                               ftnmail.
+* ftnoutpkt:                             ftnoutpkt.
+* ftnpack:                               ftnpack.
+* ftnroute:                              ftnroute.
+* ftnseq:                                ftnseq.
+* ftntick:                               ftntick.
+* ftntickpost:                           ftntickpost.
+* ftntoss:                               ftntoss.
+* pktdebug:                              pktdebug.
+* pktmore:                               pktmore.
+* rfc2ftn:                               rfc2ftn.
+* runffx:                                runffx.
+* rungate:                               rungate.
+* runin:                                 runin.
+* runmail:                               runmail.
+* runnews:                               runnews.
+* runout:                                runout.
+* runtoss:                               runtoss.
+* rununpack:                             rununpack.
+* send-ffx:                              send-ffx.
+* send-fidogate:                         send-fidogate.
+* sendmail:                              Sendmail.
+* sumcrc:                                sumcrc.
+
+

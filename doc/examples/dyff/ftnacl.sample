@@ -1,5 +1,5 @@
 #
-# $Id: ftnacl.sample,v 1.1.1.1 2003/09/23 17:32:21 rusfidogate Exp $
+# $Id: ftnacl.sample,v 5.2 2004/11/23 00:50:36 anray Exp $
 #
 
 Echo
@@ -16,5 +16,6 @@ Readonly
 2:5030/1229.8	RU.HACKER
 2:5030/1229.7	*
 
+Echo
 Mandatory
 *		CORE.LOCAL

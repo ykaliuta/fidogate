@@ -1,0 +1,65 @@
+#
+# FIDOGATE ftntoss/ftnroute routing/remap/rewrite config file
+#
+# REMAP and REWRITE are performed by ftntoss, all other command by ftnroute
+#
+# Commands:
+#
+#     remap     SOURCEPAT TARGETPAT NAMEPAT
+#     remapto   SOURCEPAT TARGETPAT NAMEPAT
+#     remapfrom SOURCEPAT TARGETPAT NAMEPAT
+#     rewrite   SOURCEPAT TARGETPAT
+#
+#     send      FLAVOR NODES
+#     sendmove  FLAVOR NODES
+#     route     FLAVOR TARGET NODES
+#     xroute    FLAVOR TARGET FROMNODE TONODE
+#     bossroute FLAVOR NODES
+#     hostroute FLAVOR NODES
+#     hubroute  FLAVOR NODES
+#     change    FLAVOLD FLAVNEW NODES
+#
+# `sendmove' requires that SPOOLDIR/toss/tmp and .../out are on the
+# same file system / disk drive!!!
+#
+
+######## N E T M A I L #######################################################
+NetMail
+
+# Points (if exist)
+send	hold	2:5020/1838.*
+
+# Me
+send	hold	2:5020/1838.0
+send	hold	2:5020/1354.500
+
+# My links
+route	normal	2:5020/278.0	2:5020/278.*
+route	normal	2:5020/1354.0	2:5020/1354.*
+route	normal	2:5020/1124.0	2:5020/1124.*
+route	hold	2:5020/1713.0	2:5020/1713.*
+
+# Default
+route	normal	2:5020/278.0	2:* 1:* 3:* 4:* 5:* 6:*
+
+######## E C H O M A I L #####################################################
+EchoMail
+
+# Points (if exist)
+sendmove	hold	2:5020/1838.*
+
+# Me
+sendmove	hold	2:5020/1838.0
+sendmove	hold	2:5020/1354.500
+
+# My links
+sendmove	hold	2:5020/1713.0
+
+# Other
+sendmove	normal	*
+
+######## F I L E E C H O E S #################################################
+Tick
+
+send	hold	2:5020/1713.0
+send	normal	2:5020/2091.0

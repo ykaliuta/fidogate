@@ -1,0 +1,40 @@
+             Как подружить fidogate и leafnode
+
+Q: Где взять rnews для leafnode ?
+A: В leafnode rnews не предусмотрен. Но можно взять его на моем сайте
+ http://maint.unona.ru/soft/rnews.shtml
+
+Q: send-fidogate не отправляет файлы из leafnode
+A: его нужно заменить на send-fidogate из моего пакета util-leafnode
+
+Q: Какие изменения нужно внести в fidogate.conf для работы ?
+A: Собственно не очень много.
+ INN_BATCHDIR /var/spool/news/out.going вместо INN outgoing и путь к новому
+ leafnode-rnews. leafnode-rnews рекомендую запускать с флагом '-c'.
+ 
+Q: Как заводит новые news-группы ?
+A: Специального инструмента в leafnode нет, поэтому руками или опять же
+ моими утилитами. 
+ 1). Руками: В файле /var/spool/news/leaf.node/groupinfo и 
+    /etc/leafnode/local.group (для leafnode-2). В документации формат файлов 
+    описан достаточно хорошо. Есть разница между форматами этого файла 
+    leafnode 1.x и 2.x. Рекомендую брать leafnode-2, так-как он еще поддерживает 
+    локальные группы. Он хоть и бета, но хорошая бета ;-)
+ 
+ 2). Моими утилитами - утилита leafnode-group. Там все прозрачно. Заменить в
+     fidogate.conf управление группами:
+      'ctlinnd newgroup %s' на 'leafnode-group -M %s'
+      'ctlinnd renumber %s' на 'leafnode-group -L %s' (создается файл active)
+      'ctlinnd rmgroup %s' на 'leafnode-group -r %s'
+
+Q: Эхи приходят, но не попадают в news группы, в чем дело ?
+A: Leafnode обрабатывает только те news'ы, на которые хоть кто-то подписан.
+ В противном случае он их игнорирует. Список групп находится в каталоге
+ /var/spool/news/interesting.groups.
+
+Q: Куда поместить файл active, если нет inn
+A: Я поместил в /var/spool/news и поправить NEWSVARDIR 
+
+ Елохин И.Ю.             URL://http:maint.unona.ru 
+ E-Mail: maint@unona.ru  fido: 2:5070/222.52
+ 

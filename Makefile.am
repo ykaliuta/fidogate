@@ -1,18 +1,18 @@
 #
 #
-# $Id: Makefile.am,v 1.1.1.1 2003/09/23 17:26:56 rusfidogate Exp $
+# $Id: Makefile.am,v 5.2 2004/11/23 00:50:35 anray Exp $
 #
 # Makefile FIDOGATE TOPDIR
 #
 
-AUTOMAKE_OPTIONS=foreign
+AUTOMAKE_OPTIONS=foreign dist-bzip2 1.5
 
 include $(top_builddir)/build/config.make
 
 
 TOPDIR		= .
 
-SUBDIRS		= src scripts doc test
+SUBDIRS		= src scripts doc
 
 FDESTDIR	= $(DEFAULT_V_CONFIGDIR) \
 		  $(DEFAULT_V_LOGDIR) \
@@ -38,7 +38,10 @@ FDESTDIR	= $(DEFAULT_V_CONFIGDIR) \
 		  $(DEFAULT_V_INBOUND)/tmpunpack \
 		  $(DEFAULT_V_PINBOUND) \
 		  $(DEFAULT_V_PINBOUND)/bad \
-		  $(DEFAULT_V_PINBOUND)/tmpunpack 
+		  $(DEFAULT_V_PINBOUND)/tmpunpack
+
+OWNER = @OWNER@
+GROUP = @GROUP@
 
 install-am: installdirs
 
@@ -48,7 +51,13 @@ installdirs:
 	$(mkinstalldirs) $(DESTDIR)$$d || exit 1;\
 	echo "create directory $(DESTDIR)$$d"; \
 	fi; \
-	done
+	done; \
+	if test `id -u` -eq 0 && test -n "${OWNER}" && test -n "${GROUP}"; then \
+	for d in $(FDESTDIR); do\
+	chown ${OWNER}:${GROUP} $(DESTDIR)$$d || exit 1;\
+	echo "chown ${OWNER}:${GROUP} $(DESTDIR)$$d"; \
+	done; \
+	fi
 
 install-config: install-dirs
 	if [ -f doc/Makefile ]; then $(MAKE) -C doc $@ || exit 1; fi

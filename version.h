@@ -2,14 +2,14 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway software UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: version.h,v 1.1.1.1 2003/09/23 17:29:46 rusfidogate Exp $
+ * $Id: version.h,v 5.2 2004/11/23 00:50:36 anray Exp $
  *
  * Global version number, patch level
  *****************************************************************************/
 
 #define VERSION_MAJOR	5
-#define VERSION_MINOR	0
-#define PATCHLEVEL	0
-#define EXTRAVERSION	"-beta7"
+#define VERSION_MINOR	2
+#define PATCHLEVEL	1
+#define EXTRAVERSION	"ds"
 
-#define STATE		"stable"
+#define STATE		"beta"

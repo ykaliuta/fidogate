@@ -1,7 +1,7 @@
 #
-# $Id: fidogate.conf.sample.in,v 1.1.1.1 2003/09/23 17:32:21 rusfidogate Exp $
+# $Id: fidogate.conf.sample.in,v 5.2 2004/11/23 00:50:36 anray Exp $
 #
-# NEW!!! (FIDOGATE 5.0.0) single common config file
+# NEW!!! (FIDOGATE 5.2.0ds) single common config file
 #
 # dyff example config
 #
@@ -9,7 +9,7 @@
 # C O M M O N   C O N F I G U R A T I O N                                    #
 ##############################################################################
 
-# Пути к основным каталогам
+# Paths to basic dirs
 #
 CONFIGDIR	<CONFIGDIR>
 BINDIR		<BINDIR>
@@ -19,10 +19,16 @@ VARDIR		<VARDIR>
 LOCKDIR		<LOCKDIR>
 SPOOLDIR	<SPOOLDIR>
 BTBASEDIR	<BTBASEDIR>
+NETMAILDIR	<NETMAILDIR>
 
 INBOUND		%B/in
 PINBOUND	%B/pin
-#UUINBOUND	%B/uuin
+#UUINBOUND      %B/uuin
+
+# nl-autoupd
+DIFFDIR         /var/ftp/pub/fileecho/nodediff
+NLDIR           /var/spool/fido/nodelist
+NLFDIR          /var/ftp/pub/fileecho/nodelist
 
 # Config files		
 ACL		%C/acl
@@ -111,10 +117,10 @@ FAreasBBS	%V/fareas.bbs
 ##############################################################################
 
 # hostname and domain
-Hostname	HOSTNAME
-Domain		DOMAINNAME
+Hostname	<HOSTNAME>
+Domain		<DOMAINNAME>
 # optional domain name for entries in HOSTS file
-HostsDomain	DOMAINNAME
+#HostsDomain	<HOSTNAME><DOMAINNAME>
 
 #AddressIsLocalForXPost  *[@.]vsu.ru,*[@.]f8.n5025.z2.fidonet.org
 #AddressIsLocalForXPost	*@corex.izhora.spb.ru,*@f1229.n5030.z2.fidonet.org
@@ -137,9 +143,9 @@ Address		2:5030/1229.1
 #
 #	zone	Internet domain		FTN domain	Outbound
 #	----	---------------		----------	--------
-Zone	default	.ftn.org		ftn		-
+Zone	default	.fidonet.org		fidonet		out
 Zone	1	.fidonet.org		fidonet		out.001
-Zone	2	.fidonet.org		fidonet		amiga.out
+Zone	2	.fidonet.org		fidonet		out
 Zone	3	.fidonet.org		fidonet		out.003
 Zone	4	.fidonet.org		fidonet		out.004
 Zone	5	.fidonet.org		fidonet		out.005
@@ -155,7 +161,7 @@ Zone	6	.fidonet.org		fidonet		out.006
 AreaFixMailer	<SENDMAIL> -t
 
 # CC of reply mails
-AreaFixCc	postmaster@corex.izhora.spb.ru
+AreaFixCc	postmaster@<DOMAINNAME>
 
 # Location of help file
 AreaFixHelp	%C/areafix.help
@@ -236,6 +242,10 @@ FStatusAreaFixList
 ##############################################################################
 # T O S S E R   C O N F I G U R A T I O N                                    #
 ##############################################################################
+#
+# Empty passwords in incoming packets is allowed
+#
+#AllowEmptyPwd
 
 # Toss process (runtoss, rununpack):
 #
@@ -421,7 +431,7 @@ TickDontSetTime
 #
 # Directory for old files replaced by ftntick with new versions
 #
-TickReplacedDir	"%G/oldfiles"
+TickReplacedDir	%G/oldfiles
 
 # Ignore replase old files
 TickReplacedIgnore
@@ -432,17 +442,20 @@ AutoCreateFileechoDontCheckPassword
 # Keys for put to fareas.bbs when fileecho is autocreated
 AutoCreateFileechoLine -# -s S -t 0
 
-# Patch to create fileechos directores
+# Path to create fileechos directores
 AutoCreateFechoPath /home/ftp/fileecho
 
 # Filebox style directory. In it create hardlinks to our downlinks
 PassthroughtBoxesDir %B/fbox
 
 # Time in hour to wait file if it missing, if tick file was resived
-TickWaitHour 168
+TickWaitHour 48
 
 # Action if time limit was finished ("delete" or "bad")
 TickWaitAction	delete
+
+# Action
+TickFileAction UNIXFTN *.bz2 /usr/lib/fidogate/bin/scriptfilearea %s
 
 # Kill dupe tick's with correspod file
 #KillTickDupe
@@ -571,13 +584,13 @@ BounceCCMail		postmaster
 #HostsRestricted
 
 # Newsgroup for unknown FTN areas
-FTNJunkGroup		fido.junk
+FTNJunkGroup		junk
 
 # AREAS key for FTNJunkGroup group
-FTNJunkGroup
+FTNJunkGroupKeys
 
 # Errors-To header
-Errors-To		dyff@corex.izhora.spb.ru
+Errors-To		dyff@<HOSTNAME><DOMAINNAME>
 
 
 # Translation of chars for automatic areas <-> newsgroup conversion
@@ -585,7 +598,11 @@ Errors-To		dyff@corex.izhora.spb.ru
 #
 #                       area chars	newsgroup chars
 #			----------	---------------
-#AreasXlate		_		-
+AreasXlate              &               \&
+AreasXlate              $               \$
+AreasXlate              '               \'
+AreasXlate              /               \/
+AreasXlate              |               \|
 
 # NOTE 1: real gateways should *not* disable FSC0035/47 kludges, the
 #         From: line is obsoleted by both ^ARFC-Xxxx kludges and
@@ -603,7 +620,7 @@ Errors-To		dyff@corex.izhora.spb.ru
 #     1  -  ^ARFC-Xxxx kludges for some headers (config.h, RFC_LVL_1_HEADERS)
 #     2  -  ^ARFC-Xxxx kludges for all headers
 #     3  -  ^ARFC-Xxxx kludges for all headers and MIME headers
-RFCLevel		3
+RFCLevel		0
 
 # Don't generate From: line at beginning of text body.
 NoFromLine
@@ -627,7 +644,7 @@ NoFSC0035ifAlias
 # sendmail program path and parameters
 #
 #    %s is replaced with the envelope sender
-FTNInSendmail	/usr/sbin/sendmail -f%s -t
+FTNInSendmail	<SENDMAIL> -f%s -t
 
 # rnews program path
 FTNInRnews	<RNEWS>
@@ -712,30 +729,29 @@ NewsPathTail	"fidogate!not-for-mail"
 # the address (\1 in sed, $1 in perl). POSIX *extended* regular expressions
 # are used.
 # The OS *must* support HAS_POSIX_REGEX in config.h!!!
-Regex1stLine  ^In article <?[^ ]*@[^ ]*>? on ..:..:..,? (.*) (writes|wrote)
-Regex1stLine  ^In article <?[^ ]*@[^ ]*>? on ..\...\...,? (.*) (writes|wrote)
-Regex1stLine  ^In article <?[^ ]*@[^ ]*>?,? (.*) (writes|wrote):$
-Regex1stLine  ^In <[^ ]*@[^ ]*>,? (.*) (writes|wrote):$
-Regex1stLine  ^I[nm] Artikel <?[^ ]*@[^ ]*>?,? (.*) (schreibt|schrieb)
-Regex1stLine  ^([a-z0-9_.\-]*@[a-z0-9_.\-]* \(.*\)) (writes|wrote|schreibt|schrieb)
-Regex1stLine  ^(.* <[a-z0-9_.\-]*@[a-z0-9_.\-]*>) (writes|wrote|schreibt|schrieb)
-Regex1stLine  ^(.* \([a-z0-9_.\-]*@[a-z0-9_.\-]*\)) (writes|wrote|schreibt|schrieb)
-Regex1stLine  ^([a-z0-9_.\-]*@[a-z0-9_.\-]*) (writes|wrote|schreibt|schrieb)
-Regex1stLine  ^On ..., .. ... .... ..:..:.. [+\-]...., (.*) (writes|wrote|schreibt|schrieb):$
-Regex1stLine  ^On .. ... .... ..:..:.. [+\-]...., (.*) (writes|wrote|schreibt|schrieb):$
+Regex1stLine  ^In article <?[^ ]*@[^ ]*>? on ..:..:..,? (.*) (writes|wrote|пишет)
+Regex1stLine  ^In article <?[^ ]*@[^ ]*>? on ..\...\...,? (.*) (writes|wrote|пишет)
+Regex1stLine  ^In article <?[^ ]*@[^ ]*>?,? (.*) (writes|wrote|пишет):$
+Regex1stLine  ^In <[^ ]*@[^ ]*>,? (.*) (writes|wrote|пишет):$
+Regex1stLine  ^I[nm] Artikel <?[^ ]*@[^ ]*>?,? (.*) (schreibt|schrieb|пишет)
+Regex1stLine  ^([a-z0-9_.\-]*@[a-z0-9_.\-]* \(.*\)) (writes|wrote|schreibt|schrieb|пишет)
+Regex1stLine  ^(.* <[a-z0-9_.\-]*@[a-z0-9_.\-]*>) (writes|wrote|schreibt|schrieb|пишет)
+Regex1stLine  ^(.* \([a-z0-9_.\-]*@[a-z0-9_.\-]*\)) (writes|wrote|schreibt|schrieb|пишет)
+Regex1stLine  ^([a-z0-9_.\-]*@[a-z0-9_.\-]*) (writes|wrote|schreibt|schrieb|пишет)
+Regex1stLine  ^On ..., .. ... .... ..:..:.. [+\-]...., (.*) (writes|wrote|schreibt|schrieb|пишет):$
+Regex1stLine  ^On .. ... .... ..:..:.. [+\-]...., (.*) (writes|wrote|schreibt|schrieb|пишет):$
 # This is very generic, thus it must be the last entry.
 # If this regex yields too many errors, comment it.
-Regex1stLine  ^[ 	]*([^>|].*) (writes|wrote|schreibt|schrieb):$
+Regex1stLine  ^[ 	]*([^>|].*) (writes|wrote|schreibt|schrieb|пишет):$
 
 
 # Line length for formatting long paragraphs in Fido messages
 # (replaces old MAX_LINELEN from config.h)
-MessageLineLength	92
+MessageLineLength	90
 
-# Default newsgroup for junk messages and keys for it (see also "areas"
-# config-file)
+# ftn2rfc gate ^ARFC kludges to headers
 #
-FTNJunkGroup junk
+#GateRfcKludge
 
 # Carbon group and name for search in "To:" field to put into this newsgroup
 #
