@@ -543,8 +543,7 @@
  * RFC headers output for ^ARFC level 1 (partial RFC headers)
  */
 #define RFC_LVL_1_HEADERS \
-    "Reply-To", "In-Reply-To", \
-    "Message-ID", "References"
+    "Reply-To", "Message-ID", "References"
 
 /*
  * RFC headers output for ^ARFC level 3 (all RFC headers, excluding some)

@@ -340,12 +340,12 @@ short int hi_test(char *key_string)
 /*
  * Test if DB key is already in database
  */
-char *hi_fetch(char *key_string, int flag)
+char *hi_fetch(char *key_string)
 {
     datum key, val;
     static char out[MAXPATH];
-    
-    if(flag == 0)
+
+    if(flag == 0)    
 	key_string = strchr(key_string, ' ') + 1;
     debug(7, "search key %s", key_string);
     key.dptr  = key_string;				/* Key */

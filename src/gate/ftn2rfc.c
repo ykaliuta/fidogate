@@ -1175,11 +1175,9 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    id_line = s_msgid_convert_origid(p);
 	 else if( (p = kludge_get(&body.kludge, "RFC-Message-ID", NULL)) )
 	    id_line = s_msgid_convert_origid(p);
-	}
-#ifdef RECODE_ALL_RFC
 	if( (p = kludge_get(&body.kludge, "RFC-References", NULL)) )
 	    ref_line = p;
-#endif
+	}
 
 	if(!id_line)
 	{
