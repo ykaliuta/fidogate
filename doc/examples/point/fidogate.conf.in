@@ -1,5 +1,5 @@
 #
-# $Id: fidogate.conf.in,v 5.3 2005/02/14 19:52:58 anray Exp $
+# $Id: fidogate.conf.in,v 5.4 2005/02/20 18:26:29 anray Exp $
 #
 # NEW!!! (FIDOGATE 5.0.0) single common config file
 #
@@ -196,7 +196,7 @@ KillEmpty
 LogNetMail
 
 # Check ^APATH for our own address
-CheckPath
+#CheckPath
 
 # Kill EchoMail with circular ^APATH (looking for our own AKA),
 # if CheckPath is enabled

@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: lock.c,v 5.2 2004/11/23 00:50:40 anray Exp $
+ * $Id: lock.c,v 5.3 2005/02/20 18:26:29 anray Exp $
  *
  * File locking
  *
@@ -299,7 +299,7 @@ int lock_lockfile_id(char *name, int wait, char *id)
 	res = stat(name, &statbuf);
 	if(!res)
 	{
-	     if(!check_stale_lock(name))
+	     if(check_stale_lock(name) != -1)
 	     {
 		  debug(7, "Lock exists.");
 		  exists_lock = TRUE;

@@ -1,3 +1,10 @@
+2005-02-20  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* doc/examples/point/fidogate.conf.in: Commented
+	CheckPath option in point example config.
+	* src/common/lock.c (lock_lockfile_id): Remove only
+	stale locks.
+
 2005-02-14  Andrey Slusar  <anray@users.sourceforge.net>
 
 	* doc/examples/dyff/fidogate.conf.sample.in: Removed
@@ -12,7 +19,7 @@
 
 2004-12-01  Andrey Slusar  <anray@users.sourceforge.net>
 
-	* src/common/packet.c (pkt_get_msg_hdr): remove
+	* src/common/packet.c (pkt_get_msg_hdr): Removed
 	very strong headers checking.
 
 2004-11-26  Andrey Slusar  <anray@users.sourceforge.net>
