@@ -441,7 +441,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
     {
       const struct option *p;
       char *s = nextchar;
-      int exact [B= 0;
+      int exact = 0;
       int ambig = 0;
       const struct option *pfound = NULL;
       int indfound;
