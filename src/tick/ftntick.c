@@ -642,6 +642,8 @@ int process_tic(Tick *tic)
 	/*
 	 * TickFileAction
 	 */
+	sprintf(buffer,"TickFileAction", tic->area);
+
 	for( s1 = cf_get_string(buffer, TRUE); s1 && *s1;
 	     s1 = cf_get_string(buffer, FALSE) )
         {
@@ -651,7 +653,7 @@ int process_tic(Tick *tic)
             char *wild_file;
             char *tick_action;
             debug(8, "config: TickFileAction %s", s1);
-            str_save = strsave(s1);
+	    str_save = strsave(s1);
             area = xstrtok(str_save, " \t");
             if( !stricmp(tic->area, area) )
             {

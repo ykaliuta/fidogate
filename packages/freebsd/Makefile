@@ -5,7 +5,8 @@
 #
 
 PORTNAME=		fidogate
-PORTVERSION=		5.1.0ds
+PORTVERSION=		5.1.0
+PORTREVISION=		ds
 CATEGORIES=		news mail
 MASTER_SITES=		http://node126.narod.ru/files/
 DISTNAME=		fidogate5.1.0ds-beta2
@@ -20,10 +21,10 @@ USE_PERL5=      	yes
 INSTALL_SHLIB=  	yes
 
 SPOOLDIR?=		/var/spool/fido/gate
-BTBASEDIR?=		/var/spool/fido/bt	
+BTBASEDIR?=		/var/spool/fido/bt
 LOCKDIR?=		/var/run/fidogate
 LOGDIR?=		/var/log/fido/gate
-VARDIR?=		/usr/local/var/fidogate
+VARDIR?=		${PREFIX}/var/fidogate
 
 PLIST_SUB+=		SPOOLDIR=${SPOOLDIR} \
 			BTBASEDIR=${BTBASEDIR} \
@@ -43,6 +44,9 @@ CONFIGURE_ARGS+=	--enable-aliases-local
 .endif
 .if defined(WITH_DBC)
 CONFIGURE_ARGS+=	--enable-dbc-history
+.endif
+.if defined(DNT_NETMAIL)
+CONFIGURE_ARGS+=	--enable-dnt-netmail
 .endif
 CONFIGURE_ARGS+=	--libexec=${PREFIX}/libexec/fidogate \
 			--sysconfdir=${PREFIX}/etc/fido/gate \
@@ -66,7 +70,6 @@ do-install:
 	${MKDIR} ${PREFIX}/share/doc/fidogate5
 	${INSTALL_DATA} ${WRKSRC}/doc/README.ru ${PREFIX}/share/doc/fidogate5/README.ru
 	${INSTALL_DATA} ${WRKSRC}/doc/README ${PREFIX}/share/doc/fidogate5/README
-	${INSTALL_DATA} ${WRKSRC}/Changes.ru ${PREFIX}/share/doc/fidogate5/Changes.ru
 	${INSTALL_DATA} ${WRKSRC}/ChangeLog ${PREFIX}/share/doc/fidogate5/ChangeLog
 	${MKDIR} ${PREFIX}/share/doc/fidogate5/examples
 	${MKDIR} ${PREFIX}/share/examples/fidogate5/dyff
@@ -93,7 +96,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/newsfeeds ${PREFIX}/share/examples/fidogate5/point/newsfeeds
 	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/packing ${PREFIX}/share/examples/fidogate5/point/packing
 	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/routing ${PREFIX}/share/examples/fidogate5/point/routing
-.endif	
+.endif
 
 post-install:
 	${STRIP_CMD} ${PREFIX}/bin/ftnaf

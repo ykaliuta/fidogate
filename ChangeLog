@@ -1,3 +1,8 @@
+2003-11-01  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* packages/freebsd: update freebsd port
+	* src/tick/ftntick.c: fix TickFileAction
+
 2003-10-30  Andrey Slusar <rusfidogate@users.sourceforge.net> 
 
 	* cvsexp: update
