@@ -4,6 +4,7 @@
 	* build/config.make.in: add ARC_RAR
 	* configure: add RAR, fix checking version inn, fix DOMAINNAME
 	* scripts/nodelist/nl-autoupd: fix path to sumcrc, name of nodelist
+	    and many bugfixes
 
 2003-09-26  Andrey Slusar <rusfidogate@users.sourceforge.net>
 	
