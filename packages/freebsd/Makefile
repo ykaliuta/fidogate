@@ -8,7 +8,7 @@ PORTNAME=		fidogate
 PORTVERSION=		5.2.0
 CATEGORIES=		news mail
 MASTER_SITES=		${MASTER_SITE_SOURCEFORGE}
-DISTNAME=		fidogate5.2.0ds-alpha3
+DISTNAME=		fidogate5.2.1ds
 
 MAINTAINER=		rusfidogate@users.sourceforge.net
 COMMENT=		Fido-Internet Gateway and Tosser

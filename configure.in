@@ -5,7 +5,7 @@ AC_REVISION([$Id$])
 dnl # Minimum Autoconf version required.
 AC_PREREQ(2.53)
 dnl # No comments...
-AC_INIT([fidogate],[5.2.0ds],[rusfidogate@users.sourceforge.net])
+AC_INIT([fidogate],[5.2.1ds],[rusfidogate@users.sourceforge.net])
 dnl # File to check from `configure' script
 AC_CONFIG_SRCDIR([src/common/config.c])
 dnl # Set automake and libtool scripts are in build directory

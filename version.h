@@ -9,7 +9,7 @@
 
 #define VERSION_MAJOR	5
 #define VERSION_MINOR	2
-#define PATCHLEVEL	0
-#define EXTRAVERSION	"ds-alpha3"
+#define PATCHLEVEL	1
+#define EXTRAVERSION	"ds"
 
 #define STATE		"beta"

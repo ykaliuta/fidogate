@@ -17,11 +17,7 @@
 	
     или взять с CVS:
 
-	cvs.fidogate.sourceforge.net
-    
-    для fidogate-ds:
-    
-	cvs.rusfidogate.sourceforge.net
+	cvs.sourceforge.net
 	
 ===============================================================================
 
@@ -109,12 +105,10 @@ co -r dp fidogate
 для fidogate-ds:
 
 STABLE:
-cvs -z3 -d:pserver:anonymous@cvs.rusfidogate.sourceforge.net:/cvsroot/rusfidogate
-co fidogate-sta
+cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/rusfidogate co fidogate-sta
 
 DEVELOPMENT:
-cvs -z3 -d:pserver:anonymous@cvs.rusfidogate.sourceforge.net:/cvsroot/rusfidogate
-co fidogate
+cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/rusfidogate co fidogate
 
     Также последнюю официальную версию fidogate можно взять на сайтах:
 	http://sourceforge.net/projects/fidogate

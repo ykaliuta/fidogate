@@ -161,19 +161,14 @@ char *str_copy( char *d, size_t n, char *s ) {
     return d;
 }
 
-char *str_append( char *d, size_t n, char *s ) {
-    int sz;
-    char *p = s;
-    
-    sz = strlen( d );
-    while( *p && sz < n ) {
-	d[sz] = *p;
-	 p++; sz++;
-    }
-    d[sz++] = 0;
+char *str_append( char *d, size_t n, char *s )
+{
+    int max = n - strlen(d) - 1;
+    strncat(d, s, max);
+    d[n-1] = 0;
 
     return d;
-}    
+}   
 
 char *str_append2(char *d, size_t n, char *s1, char *s2)
 {
