@@ -1,16 +1,16 @@
 Summary: Fido-Internet Gateway and Fido Tosser
 Name: fidogate
-Version: 5.0.0
-Release: beta7
+Version: 5.1.0ds
+Release: beta1
 Copyright: GPL
 Group: Fidonet/Gate
-Source0: ftp://ftp.fidogate.org/pub/fidogate/fidogate-%{version}-%{release}.tar.bz2
+Source0: http://node126.narod.ru/fidogate%{version}-%{release}.tar.bz2
 #Patch0: %{name}-%{version}-%{release}.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: fidobase, inn
+Requires: 
 
 %description
-FIDOGATE Version 5
+FIDOGATE-DS Version 5
  * Fido-Internet Gateway
  * Fido FTN-FTN Gateway
  * Fido Mail Processor

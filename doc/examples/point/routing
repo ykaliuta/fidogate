@@ -26,12 +26,16 @@
 #
 
 NetMail
-route    hold   2:2499/999.9
-route    normal 2:2499/999 1:* 2:* 3:* 4:* 5:* 6:*
 
-# Crash mail via boss
-bossroute crash	*
+send		hold   2:2499/999.9
+route		normal 2:2499/999 1:* 2:* 3:* 4:* 5:* 6:*
 
 EchoMail
-sendmove hold   2:2499/999.9
-sendmove normal *
+
+sendmove	hold   2:2499/999.9
+sendmove	normal *
+
+Tick
+
+send		hold   2:2499/999.9
+send		normal *

@@ -18,15 +18,20 @@
 #     dirmove  DIRECTORY        NODES
 #
 
-arc		zip	"/usr/bin/zip -gkjq %s %s"
-arc		arc	"/usr/bin/arc an %s %s"
+arc     rar     "/usr/local/bin/rar a -m5 -y -md1024 -inul -o+ %s %s"
+arc     zip     "/usr/local/bin/zip -9gkjq %s %s"
 
-progn		gate	"/usr/lib/fidogate/ftn2rfc %s"
-progn		areafix	"/usr/lib/fidogate/ftnafpkt %s"
+progn	gate	"/usr/local/fido/libexec/ftn2rfc -i -x /usr/local/fido/libexec/ftninpost -l %s"
 
+unarc   ZIP     "PK0x030x04"    "/usr/local/bin/unzip -ojL %s" "/usr/local/bin/unzip -l %s"
+unarc   RAR     "Rar!"          "/usr/local/bin/rar e -inul -o+ %s" "/usr/local/bin/rar l %s"
 
 ######## P A C K I N G #######################################################
 
-pack		noarc	2:2499/999.9
-
+EchoMail
+pack		gate	2:2499/999.9
 pack		zip	*
+
+NetMail
+pack		gate	2:2499/999.9
+pack		noarc	*

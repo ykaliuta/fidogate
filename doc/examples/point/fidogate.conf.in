@@ -1,45 +1,90 @@
-# -*- sh -*-
 #
 # $Id$
 #
-# FIDOGATE 4.3.2+ example point configuration
+# NEW!!! (FIDOGATE 5.0.0) single common config file
 #
-# point.demo.org
+# dyff example config
 #
-
 ##############################################################################
 # C O M M O N   C O N F I G U R A T I O N                                    #
 ##############################################################################
 
-# directories
-CONFIGDIR	/etc/fidogate
-LIBDIR		/usr/lib/fidogate
-BINDIR		/usr/lib/fidogate/bin
-LOGDIR		/var/log/fidogate
-VARDIR		/var/lib/fidogate
-LOCKDIR		/var/lock/fidogate
-SPOOLDIR	/var/spool/fidogate
-BTBASEDIR	/var/spool/bt
+# Пути к основным каталогам
+#
+CONFIGDIR	<CONFIGDIR>
+BINDIR		<BINDIR>
+LIBEXECDIR	<LIBEXECDIR>
+LOGDIR		<LOGDIR>
+VARDIR		<VARDIR>
+LOCKDIR		<LOCKDIR>
+SPOOLDIR	<SPOOLDIR>
+BTBASEDIR	<BTBASEDIR>
 
 INBOUND		%B/in
 PINBOUND	%B/pin
-UUINBOUND	%B/uuin
-FTPINBOUND	%B/ftpin
+#UUINBOUND	%B/uuin
 
-# files		
+# Config files		
+ACL		%C/acl
 ALIASES		%C/aliases
 AREAS		%C/areas
 HOSTS		%C/hosts
+FTNACL		%C/ftnacl
 PASSWD		%C/passwd
 PACKING		%C/packing
 ROUTING		%C/routing
+SPYES		%C/spyes
+UPLINKS		%C/uplinks
+
+# Gate config
+CONFIG_GATE	= %C/fidogate.conf
+
+# Databases
 HISTORY		%V/history
+TIC_HISTORY	%V/tic_hist
+DBC_HISTORY	%V/dbc
+HUBROUTEDB	%V/route
+
+
 LOGFILE		%G/log
+
+# File with compiled by charsetc characteristic set.
 CHARSETMAP	%L/charset.bin
+
+# Path to sequencer
+SEQ_MAIL	%V/seq/mail
+SEQ_NEWS	%V/seq/news
+SEQ_MSGID	%V/seq/msgid
+SEQ_PKT		%V/seq/pkt
+SEQ_SPLIT	%V/seq/split
+SEQ_FF		%V/seq/ff
+SEQ_TOSS	%V/seq/toss
+SEQ_PACK	%V/seq/pack
+SEQ_TICK	%V/seq/tick
+
+# Directories for gateway and tossting and output tick's files
+OUTRFC_MAIL	%S/outrfc/mail
+OUTRFC_NEWS	%S/outrfc/news
+OUTPKT		%S/outpkt
+OUTPKT_MAIL	%S/outpkt/mail
+OUTPKT_NEWS	%S/outpkt/news
+TOSS_TOSS	%S/toss/toss
+TOSS_ROUTE	%S/toss/route
+TOSS_PACK	%S/toss/pack
+TOSS_BAD	%S/toss/bad
+TICK_HOLD	%B/tick
+
+
+# News directories
+INN_BATCHDIR	<INN_BATCHDIR>
+NEWSVARDIR	<NEWSVARDIR>
+NEWSLIBDIR	<NEWSLIBDIR>
+NEWSBINDIR	<NEWSBINDIR>
+NEWSSPOOLDIR	<NEWSSPOOLDIR>
 
 # facility, level when using syslog support (LOGFILE = "syslog")
 # NOT YET SUPPORTED by FIDOGATE C programs (used by Perl scripts)
-LogFacility	local0
+LogFacility	local15
 LogLevel	notice
 
 # OPTIONAL:
@@ -66,40 +111,28 @@ FAreasBBS	%V/fareas.bbs
 ##############################################################################
 
 # hostname and domain
-Hostname	point
-Domain		.demo.org
-# optional domain name for entries in HOSTS file
-HostsDomain	.demo.org
-
-
+Hostname	<HOSTNAME>
+Domain		<DOMAINNAME>
 
 ##############################################################################
 # F I D O N E T   A D D R E S S E S                                          #
 ##############################################################################
 
+# Основной адрес и aka
 Address		2:2499/999.9
-
-# optional (different) gateway address, same as `ADDRESS' if missing
-#GateAddress	2:2499/999.9
-
 
 # zones and domains, the outbound directory is relative to the one
 # specified with `BTBASEDIR'.
 #
 #	zone	Internet domain		FTN domain	Outbound
 #	----	---------------		----------	--------
-Zone	default	.fidonet.org		FidoNet		-
-
-Zone	1	.fidonet.org		FidoNet		out.001
-Zone	2	.fidonet.org		FidoNet		out
-Zone	3	.fidonet.org		FidoNet		out.003
-Zone	4	.fidonet.org		FidoNet		out.004
-Zone	5	.fidonet.org		FidoNet		out.005
-Zone	6	.fidonet.org		FidoNet		out.006
-
-Zone	21	.gernet.heise.de	GerNet		gernet.015
-
-Zone	242	.Fido.DE		FidoDE		out.0f2
+Zone	default	.ftn.org		ftn		-
+Zone	1	.fidonet.org		fidonet		out.001
+Zone	2	.fidonet.org		fidonet		out
+Zone	3	.fidonet.org		fidonet		out.003
+Zone	4	.fidonet.org		fidonet		out.004
+Zone	5	.fidonet.org		fidonet		out.005
+Zone	6	.fidonet.org		fidonet		out.006
 
 
 
@@ -108,14 +141,10 @@ Zone	242	.Fido.DE		FidoDE		out.0f2
 ##############################################################################
 
 # Mailer program (must behave like sendmail -t)
-AreaFixMailer	/usr/sbin/sendmail -t
+AreaFixMailer	<SENDMAIL> -t
 
 # CC of reply mails
-#AreaFixCc	postmaster@point.demo.org
-
-# Location of help file
-AreaFixHelp	%L/areafix.help
-
+AreaFixCc	postmaster@<HOSTNAME><DOMAINNAME>
 
 ##############################################################################
 # T O S S E R   C O N F I G U R A T I O N                                    #
@@ -141,14 +170,10 @@ DiskFreeMin	10240
 #
 # Run DiskFreeProg
 DiskFreeMethod	prog
-# Always enough free disk space (use for WIN32)
-#DiskFreeMethod	none
 
 # Disk free program, %p is replace with path name
 #
 DiskFreeProg	df -P %p
-
-
 
 # Kill empty NetMails addressed to one of our AKAs
 # (default: processed normally)
@@ -170,7 +195,7 @@ KillEmpty
 LogNetMail
 
 # Check ^APATH for our own address
-#CheckPath
+CheckPath
 
 # Kill EchoMail with circular ^APATH (looking for our own AKA),
 # if CheckPath is enabled
@@ -188,25 +213,24 @@ MaxHistory 28
 KillOld
 
 # Kill dupe messages
-#KillDupe
+KillDupe
 
 # Kill messages without ^AMSGID (= treat as dupe)
-#KillNoMSGID
+KillNoMSGID
 
 
 # Zonegate configuration for EchoMail
 #
 #		Address to	Add to SEEN-BYs
 #		----------	---------------
-#ZoneGate	2:123/456	123/456 2452/110
-#ZoneGate	2:789/999	789/999 2452/110
-#ZoneGate	1:105/42	105/42 2452/110
+#ZoneGate	2:123/456	123/456 2499/999
+#ZoneGate	2:789/999	789/999 2499/999
+#ZoneGate	2:5030/1229.0	105/42 2499/999
 
 # Add extra nodes to SEEN-BY
 #
 #		Area		Nodes
 #		----		-----
-#AddToSeenBy	ABLED           2:24/24
 #AddToSeenBy	ABLENEWS	2:24/24
 
 
@@ -219,7 +243,27 @@ KillOld
 #
 #NoEmptyPath
 
+#    `BundleDisp <disp>', where <disp> can have values:
+#	0 -- truncate bundle to zero length (`#' in .flo);
+#	1 -- delete bundle (`^' in .flo);
+#	2 -- leave bundle (`@' in .flo);
+#    Default value is `0'.
+#
+BundleDisp	1
 
+# Time in hour to repack and reroute output netmail
+#
+RepackMailTime 100
+
+# Number of days a MSGID (FIDO and RFC) entry stays in the history database
+# (decimal fraction allowed)
+MaxHistoryDBC 28
+
+# Keys for put to areas.bbs when echo is autocreated
+AutoCreateLine -s S -t 0
+
+# Do'nt check 'pkt password when echo autocreate
+AutoCreateDontCheckPassword
 
 ##############################################################################
 # T I C K E R   C O N F I G U R A T I O N                                    #
@@ -227,49 +271,91 @@ KillOld
 
 # Default outbound flavor for files forwarded by ftntick
 #
-TickFlav	"Normal"
+TickFlav	"Hold"
 
 # Default outbound flavor for file attaches by ftnfattach
 #
 FAttachFlav	"Normal"
 
 #
-# Directory for old files replaced by ftntick with new versions
+# Mode for creaed tick files
 #
-#TickReplacedDir	"/pub/fido/oldfiles"
+TickMode	0600
 
-#
+# Change mode for fileecho spool files and files descriptors (.desc or
+# files.bbs)
+FileEchoFilesModeChange 0600
+
 # File area for unknown TIC file areas
-#
 UnknownTickArea UNKNOWN
 
+# Change tick time to time incoming tick.
+TickDontSetTime
 
+#
+# Directory for old files replaced by ftntick with new versions
+#
+TickReplacedDir	"%G/oldfiles"
+
+# Ignore replase old files
+TickReplacedIgnore
+
+# Do'nt check 'tic password when fileecho autocreate
+AutoCreateFileechoDontCheckPassword
+
+# Keys for put to fareas.bbs when fileecho is autocreated
+AutoCreateFileechoLine -s S -t 0
+
+# Patch to create fileechos directores
+AutoCreateFechoPath /home/ftp/fileecho
+
+# Time in hour to wait file if it missing, if tick file was resived
+TickWaitHour 168
+
+# Action if time limit was finished ("delete" or "bad")
+TickWaitAction	delete
+
+# Kill dupe tick's with correspod file
+#KillTickDupe
+
+# Number of days a CRC entry stays in the history database
+# (decimal fraction allowed)
+MaxTicHistory
 
 ##############################################################################
 # G A T E W A Y   C O N F I G U R A T I O N                                  #
 ##############################################################################
 
 # Default origin line for EchoMail messages
-Origin		"FIDOGATE Example Point"
+Origin		"//Unix or dead..."
 
 # Organization header for News
-Organization	"FIDOGATE Example Point"
+Organization	"Core Local Node"
 
 # Use text from * Origin line for Organization header
-#UseOriginForOrganization
+UseOriginForOrganization
 
 # Use text from Organization header for * Origin line
 #UseOrganizationForOrigin
 
 # Use text from X-FTN-Tearline, X-Mailer, User-Agent, X-Newsreader header
 # for --- tearline
-#UseXHeaderForTearline
+UseXHeaderForTearline
+
+# Do'nt set ^CHRS kludge
+NoChrsKludge
+
+# Do'nt set ^RFC-X kludges
+NoRfcKludge
+
+# Don't set gateway kludge
+NoGatewayKludge
 
 # Use FTN to address for mail addressed to the gateway without a To
 # line, e.g. mail to
-#     Max Mueller @ 2:2452/110.2
+#     Max Mueller @ 2:2499/999.1
 # with a HOSTS entry
-#     2:2452/110.2  orodruin-ftn.fido.de
+#     2:2499/999.1  orodruin-ftn.fido.de
 # is converted to
 #     To: Max_Mueller@orodruin-ftn.fido.de
 #
@@ -281,11 +367,11 @@ Organization	"FIDOGATE Example Point"
 # Type of 4D EchoMail control lines.
 #
 # With this enabled FIDOGATE generates SEEN-BY and ^APATH like:
-#     SEEN-BY: 2452/110.2
-#     ^APATH: 2452/110.2
+#     SEEN-BY: 2499/999.1
+#     ^APATH: 2499/999.1
 # Else (undef'ed) only the boss node's address is used:
-#     SEEN-BY: 2452/110
-#     ^APATH: 2452/110
+#     SEEN-BY: 2499/999
+#     ^APATH: 2499/999
 # There seems to be no standard for 4D EchoMail addressing. If you run
 # into problems with this kind of EchoMail message, please change the
 # code in rfc2ftn.c:print_origin().
@@ -299,7 +385,6 @@ EchoMail4D
 # Generate `User.Name@do.main' instead of `User_Name@do.main'
 #DotNames
 
-
 # Don't gate messages with unknown zone in ^AMSGID (known zones are defined
 # in config.common).
 #KillUnknownMSGIDZone
@@ -309,7 +394,6 @@ EchoMail4D
 
 # Don't gate split messages with a ^ASPLIT kludge
 #KillSplit
-
 
 # X-FTN header:
 #
@@ -321,36 +405,49 @@ EchoMail4D
 #     D    X-FTN-Domain
 #     S    X-FTN-Seen-By
 #     P    X-FTN-Path
+#     F    X-FTN-Flags
 #
-#X-FTN		ftTOVDSP
-X-FTN		ftTOVD
+X-FTN		ftTOVDPKF
 
+# Do'nt process `Return-Receipt-To' kludge -> message attribut RREQ.
+#DontProcessReturnReceiptTo
+
+# Do'nt put ^X-From: kludge from rfc_from
+#XFromKludge
 
 # Maximum size of FTN messages (default value) for splitting
-#MaxMsgSize		15000
 MaxMsgSize		32000
 
 # Limit message size for gateway, bigger messages will be bounced/not gated
 #LimitMsgSize		256000
 
+# Write single articles to output RFC files generated by `ftn2rfc',
+# not news batches containing several articles (batch is default).
+#SingleArticles
 
 # Do not allow RFC addresses (chars !, %, @) in FTN to field
 #NoAddressInToField
 
+# Do not logging error message if article not found when gating RFC->FTN.
+#NoLogIfArticleNotFound
+
 # CC of bounced messages
-#BounceCCMail		postmaster@point.demo.org
+BounceCCMail		postmaster
 
 # Send mail from message trackers to
-TrackerMail		user@point.demo.org
+#TrackerMail		postmaster
 
 # Restrict gateway usage to FTN nodes registered in HOSTS
 #HostsRestricted
 
 # Newsgroup for unknown FTN areas
-FTNJunkGroup		fido.junk
+FTNJunkGroup		junk
+
+# AREAS key for FTNJunkGroup group
+FTNJunkGroup
 
 # Errors-To header
-#Errors-To		postmaster@orodruin.fido.de
+Errors-To		dyff@<HOSTNAME><DOMAINNAME>
 
 
 # Translation of chars for automatic areas <-> newsgroup conversion
@@ -358,7 +455,7 @@ FTNJunkGroup		fido.junk
 #
 #                       area chars	newsgroup chars
 #			----------	---------------
-#AreasXlate		_		-
+AreasXlate		$		_
 
 # NOTE 1: real gateways should *not* disable FSC0035/47 kludges, the
 #         From: line is obsoleted by both ^ARFC-Xxxx kludges and
@@ -375,13 +472,21 @@ FTNJunkGroup		fido.junk
 #     0  -  no ^ARFC-Xxxx kludges
 #     1  -  ^ARFC-Xxxx kludges for some headers (config.h, RFC_LVL_1_HEADERS)
 #     2  -  ^ARFC-Xxxx kludges for all headers
-RFCLevel		0
+#     3  -  ^ARFC-Xxxx kludges for all headers and MIME headers
+RFCLevel		3
 
 # Don't generate From: line at beginning of text body.
 NoFromLine
 
 # Don't generate FSC-0035 kludges (^AREPLYADDR, ^AREPLYTO)
 NoFSC0035
+
+# Disable the insertion of the ^AREPLYADDR и ^AREPLYTO kludges, the lines
+# `From:', `Reply-To:' and so on into the message body, if there exists a
+# corresponding alias for the RFC address. 
+#
+NoFSC0035ifAlias
+
 
 # Don't generate FSC-0047 kludges (^ASPLIT)
 #NoFSC0047
@@ -392,27 +497,26 @@ NoFSC0035
 # sendmail program path and parameters
 #
 #    %s is replaced with the envelope sender
-FTNInSendmail	/usr/sbin/sendmail -odb -oee -oi -f%s -pFIDOGATE:gateway -t
+FTNInSendmail	<SENDMAIL> -f%s -t
 
 # rnews program path
-FTNInRnews	/usr/bin/rnews
+FTNInRnews	<RNEWS>
 
 # run ftninrecomb
-#FTNInRecombine
-
+FTNInRecombine	%L/ftninrecomb
 
 # Use 8bit ISO-8859-1 characters when gating from FTN to RFC
-#NetMail8bit
+NetMail8bit
 
 # Use MIME quoted-printable ISO-8859-1 characters when gating from FTN to RFC
-NetMailQuotedPrintable
+#NetMailQuotedPrintable
 
 # X-Flags policy
 #
 #    n, N, 0    -    No X-Flags processing at all
 #    s, S, 1    -    X-Flags processing for local sender
 #    a, A, 2    -    X-Flags processing for all
-XFlagsPolicy n
+XFlagsPolicy s
 
 # Don't try to get sender real name from Reply-To header
 DontUseReplyTo
@@ -432,6 +536,18 @@ RFCAddrMode <>
 # downlinks in areas.bbs will be skipped.
 #CheckAreasBBS
 
+#
+# Ignore charset listed in ^CHRS kludge and use default fido charset
+#
+IgnoreCHRS
+
+# Ignore Soft CR e.q. don't skip simbol 0x8d aka russian char 'Н' in gated
+# messages FTN->RFC and tick's field `Description'. DontIgnore0x8d
+DontIgnoreSoftCR
+
+
+# Do'nt change content type charset
+DontChangeContentTypeCharset
 
 # Charset mapping
 #
@@ -444,18 +560,22 @@ RFCAddrMode <>
 #				^ACHRS kludge is present
 #
 # Default charset mapping, if NetMailCharset or -C is not set
-DefaultCharset	x-ibmpc:latin-1:iso-8859-1
+DefaultCharset	cp866:cp866:koi8-r
 
 # Charset mapping for NetMail
-NetMailCharset	x-ibmpc:latin-1:iso-8859-1
+NetMailCharset	cp866:cp866:koi8-r
 
+# If set and no matching in/out charset is found, ftn2rfc will use
+# the first charset translation pair from charset.map with
+# in charset = Fido ^ACHRS
+# NOT YET IMPLEMENTED
+NetMailCharsetUse1st
 
 # The STRING which FIDOGATE's ftn2rfc adds to the Path header,
 # normally "not-for-mail". If gated messages are not generally
 # exported to the Usenet, setting it to "fidogate!not-for-mail" makes
 # the INN newsfeeds entry easier and less error-prone.
 NewsPathTail	"fidogate!not-for-mail"
-
 
 # Regular expression patterns for finding addresses in the first line
 # of the messages body. The first (...) sub-expression will be used for
@@ -476,3 +596,31 @@ Regex1stLine  ^On .. ... .... ..:..:.. [+\-]...., (.*) (writes|wrote|schreibt|sc
 # This is very generic, thus it must be the last entry.
 # If this regex yields too many errors, comment it.
 Regex1stLine  ^[ 	]*([^>|].*) (writes|wrote|schreibt|schrieb):$
+
+
+# Line length for formatting long paragraphs in Fido messages
+# (replaces old MAX_LINELEN from config.h)
+MessageLineLength	78
+
+# Default newsgroup for junk messages and keys for it (see also "areas"
+# config-file)
+#
+FTNJunkGroup junk
+
+# Carbon group and name for search in "To:" field to put into this newsgroup
+#
+CarbonNameGroup Dmitry_Fedotov sysop.carbon
+
+# Enable autocreate newsgroups
+AutoCreateNG
+
+# Enable autoremove newsgroups (ftnafutil)
+AutoRemoveNG
+
+# Newsserver scrips to create/renumber/remove newsgroups
+AutoCreateNewgroupCmd <NEWSBINDIR>/ctlinnd newgroup %s
+AutoCreateRenumberCmd <NEWSBINDIR>/ctlinnd renumber %s
+AutoCreateRmgroupCmd  <NEWSBINDIR>/ctlinnd rmgroup %s
+
+# Announce newsgroup file
+AreaFixCreateAnnounceFile %G/newareas

@@ -1,4 +1,3 @@
-#!/bin/sh
 dnl Process this file with autoconf to produce a configure script.
 dnl
 dnl $Id$
@@ -8,7 +7,7 @@ AC_REVISION([$CVSid$])
 dnl # Minimum Autoconf version required.
 AC_PREREQ(2.53)
 dnl # No comments...
-AC_INIT([fidogate],[5.0],[dyff@users.sourceforge.net])
+AC_INIT([fidogate],[5.1],[rusfidogate@users.sourceforge.net])
 dnl # File to check from `configure' script
 AC_CONFIG_SRCDIR([src/common/config.c])
 dnl # Set automake and libtool scripts are in build directory
@@ -39,6 +38,17 @@ case "$with_vardir" in
 yes) AC_MSG_ERROR([--with-vardir requires an argument; use --with-vardir=DIR]) ;;
 ''|no) ;;
 *) vardir="$withval" ;;
+esac
+])
+
+# Check for a --with-sysconfdir argument 
+AC_ARG_WITH(sysconfdir, dnl 
+  --with-sysconfdir=DIR     set fidogate config DIR,
+            [dnl 
+case "$with_sysconfdir" in
+yes) AC_MSG_ERROR([--with-sysconfdir requires an argument; use --with-sysconfdir=DIR]) ;;
+''|no) ;;
+*) sysconfdir="$withval" ;;
 esac
 ])
 
