@@ -86,7 +86,7 @@ int createnewsgroup(char *groupname, char *description, unsigned char flag)
 	    error("Can't open %s", LOCAL_GROUPINFO);
 	    return -1;
 	}
-	fprintf(fd, "%s\ty\t%s", groupname, description);
+	fprintf(fd, "%s\ty\t%s\n", groupname, description);
     } else {
 	if ((fd = fopen(GROUPINFO, "a+")) == NULL) {
 	    error("Can't open %s", GROUPINFO);
@@ -112,7 +112,7 @@ int activatenewsgroup(char *groupname)
     }
     if (isactivenewsgroup(groupname))
 	return 0;
-    sprintf(fname, "%s/%s", INTERESTING_GROUPS, groupname);
+    snprintf(fname, sizeof(fname), "%s/%s", INTERESTING_GROUPS, groupname);
     if ((fd = fopen(fname, "w")) == NULL) {
 	error("Can't create %s", fname);
 	return -1;
@@ -138,7 +138,7 @@ int deactivatenewsgroup(char *groupname)
     char fname[PATH_MAX];
 
     if (isactivenewsgroup(groupname)) {
-	sprintf(fname, "%s/%s", INTERESTING_GROUPS, groupname);
+	snprintf(fname, sizeof(fname), "%s/%s", INTERESTING_GROUPS, groupname);
 	rc = remove(fname);
 	if (rc)
 	    error("Can't remove %s\n", fname);
@@ -168,6 +168,10 @@ int islocalnewsgroup(char *groupname)
 	}
     }
     fclose(fd);
+    if(verbose)
+	if(rc) message("%s local group", groupname);
+	else
+            message("%s not local group", groupname);
     return rc;
 }
 
@@ -175,11 +179,14 @@ int isactivenewsgroup(char *groupname)
 {
     char fname[PATH_MAX];
 
-    sprintf(fname, "%s/%s", INTERESTING_GROUPS, groupname);
-    if (access(fname, F_OK) == 0)
+    snprintf(fname, sizeof(fname), "%s/%s", INTERESTING_GROUPS, groupname);
+    if (access(fname, F_OK) == 0){
+        if(verbose) message("Group %s inactive", fname);
 	return 1;
-    else
+    } else {
+        if(verbose) message("Group %s active, fname");
 	return 0;
+    }
 }
 
 int removenewsgroup(char *groupname)

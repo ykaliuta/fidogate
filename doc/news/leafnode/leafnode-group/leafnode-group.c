@@ -107,14 +107,18 @@ int main(int argc, char *argv[])
 	rc = listnewsgroups(NULL);
     else if (flagACTIVELIST)
 	rc = makeactivelist();
-    else if (flagCHECK)
+    else if (flagCHECK){
 	rc = !isgrouponserver(groupname);
-    else if (flagREMOVE) {
+	if(verbose){
+	    if(rc) message("%s", groupname);
+	    else message("Group not found %s", groupname);
+	}
+    } else if (flagREMOVE) {
 	rc = removenewsgroup(groupname);
     } else if (flagMAKE || flagMAKE_LOCAL) {
 	if (!isgrouponserver(groupname)) {
 	    char comment[4096];
-	    sprintf(comment, diagtime());
+	    snprintf(comment, sizeof(comment), diagtime());
 	    rc = createnewsgroup(groupname, comment,
 				 (flagMAKE == 1 ? 0 : 1));
 	}
@@ -162,6 +166,6 @@ void help(void)
 	   "-------------------------------------------------------------\n"
 	   "Eagle's %s comes with ABSOLUTELY NO WARRANTY;\n"
 	   "This is free software, and you are welcome to redistribute it\n"
-	   "under certain conditions; type 'less LICENSE' for details.\n",
+	   "under certain conditions\n",
 	   prgname, prgname, version);
 }

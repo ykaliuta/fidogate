@@ -10,10 +10,6 @@
 #include <limits.h>
 #include "../common.h"
 
-#ifdef _BSD
-#include <sys/syslimits.h> 
-#endif 
-
 extern FILE *inp_nntp;
 extern FILE *out_nntp;
 extern int verbose;
@@ -225,7 +221,10 @@ int post_FILE(FILE *f, fpos_t *pos)
 	flagONE = 1;
 	fgetpos(f, &s_pos);
     }
-    putaline(" + ");
+#ifdef DEBUG
+    putaline("**** Рассортировано leafnode-rnews ****");
+#endif
+    putaline(" ");
     putaline(".");
     fflush(out_nntp);
     s = get_line(line);
@@ -267,9 +266,9 @@ int post_MAIL(FILE *f, char *newsgroups, char *subject)
 	    *s = '\0';
 	if (strncmp(line, "From ", 5) == 0) {
             bzero(line, BUFSIZE);
-	    sprintf(line, "Newsgroups: %s", newsgroups);
+	    snprintf(line, sizeof(line), "Newsgroups: %s", newsgroups);
 	} else if (subject[0] != '\0' && strncmp(line, "Subject: ", 9) == 0) {
-	    sprintf(line, "Subject: %s", subject);
+	    snprintf(line, sizeof(line), "Subject: %s", subject);
             l = strlen(line);
 	    memset(&line[l], ' ', BUFSIZE - l);
             line[BUFSIZE - 1] = '\0';

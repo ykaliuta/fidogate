@@ -19,7 +19,7 @@ char *diagtime()
 	tm = localtime(&clock);
 	tm->tm_mon++;
         tm->tm_year -= 100;
-	sprintf(buf, "%s%d.%s%d.%s%d %s%d:%s%d:%s%d",
+	snprintf(buf, sizeof(buf), "%s%d.%s%d.%s%d %s%d:%s%d:%s%d",
 		tm->tm_mday > 9 ? "":"0",
 		tm->tm_mday,
 		tm->tm_mon > 9 ? "":"0",

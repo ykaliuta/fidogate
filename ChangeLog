@@ -1,3 +1,7 @@
+2003-10-18  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* doc/news/leafnode: update, fix errors(thanks to Elohin Igor)
+
 2003-10-15  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* doc/mailer/sendmail/mailer/ftn.m4.in: delete section ftnmail

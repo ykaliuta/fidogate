@@ -20,8 +20,11 @@ clean:
 
 save:
 	save $(SRC_leafnode) Makefile  *.1
-uninstall:
-	rm -f $(DESTDIR)/leafnode-group
 install:
-	install -o news -g news -m 750 leafnode-group $(DESTDIR)/leafnode-group
+	install -o news -g news -m 755 leafnode-group $(DESTDIR)/leafnode-group	
 	cp leafnode-group.1 $(DESTMAN)/leafnode-group.1
+
+uninstall:
+	rm -f $(DESTDIR)/leafnode-group	
+	rm -f $(DESTMAN)/leafnode-group.1
+	

@@ -20,7 +20,9 @@ save:
 	save $(SRC_send-fidogate) *.1
 	
 install:
-	install -o news -g news -m 750 send-fidogate $(DESTDIR)/send-fidogate
+	install -o news -g news -m 755 send-fidogate $(DESTDIR)/send-fidogate
+	cp send-fidogate.1 $(DESTMAN)	
 	
 uninstall:
 	rm -f $(DESTDIR)/send-fidogate
+	rm -f $(DESTMAN)/send-fidogate.1	

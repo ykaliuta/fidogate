@@ -13,8 +13,8 @@
 #include "../common.h"
 
 #ifdef _BSD
-#include <sys/syslimits.h>
-#endif 
+#define <sys/syslimits.h>
+#endif
 
 int verbose;
 char *prgname;
@@ -33,7 +33,6 @@ int main(int argc, char *argv[])
     char c;
     char cmd[PATH_MAX];
 
-    verbose = 0;
     prgname = strrchr(argv[0], '/');
     if (prgname == NULL)
 	prgname = argv[0];
@@ -79,8 +78,8 @@ int main(int argc, char *argv[])
 	i++;
 	if (verbose)
 	    notice("send %s started", dir->d_name);
-	sprintf(fullpath, "%s/%s", outgoing, dir->d_name);
-	sprintf(cmd, "%s %s/%s | %s",
+	snprintf(fullpath, sizeof(fullpath), "%s/%s", outgoing, dir->d_name);
+	snprintf(cmd, sizeof(cmd), "%s %s/%s | %s",
 		DELETE_CTRL_D, outgoing, dir->d_name, rfc2ftn);
 	if (system(cmd)) {
 	    if (verbose)
@@ -116,6 +115,7 @@ void help(void)
 	   "-------------------------------------------------------------\n"
 	   "Eagle's send-fidogate comes with ABSOLUTELY NO WARRANTY;\n"
 	   "This is free software, and you are welcome to redistribute it\n"
-	   "under certain conditions; type 'less LICENSE' for details.\n",
+	   "under certain conditions.\n",
 	   version);
 }
+

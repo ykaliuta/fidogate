@@ -22,7 +22,7 @@ void loginit(char *service, char *dir)
 {
     logname[0] = '\0';
     if (dir != NULL) {
-	sprintf(logname, "%s/%s", dir, service);
+	snprintf(logname, sizeof(logname), "%s/%s", dir, service);
 	if ((logfd = fopen(logname, "w+")) == NULL) {
 	    fprintf(stderr, "Warning: Cannot open %s (%s). Use syslog\n",
 		    logname, sys_errlist[errno]);

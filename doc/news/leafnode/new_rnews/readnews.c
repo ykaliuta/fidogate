@@ -126,7 +126,7 @@ int check_failed()
 	    strcmp(dir->d_name, "..") == 0)
 	    continue;
 	n++;
-	sprintf(fullpath, "%s/%s", FAILED_POSTING, dir->d_name);
+	snprintf(fullpath, sizeof(fullpath), "%s/%s", FAILED_POSTING, dir->d_name);
 	rc = readnews(0, fullpath);
 	switch (rc) {
 	case 0:
@@ -154,7 +154,7 @@ int tofailed(FILE *f, fpos_t bpos, char *fname)
     struct passwd *pw;
     unsigned char flagONE;
 
-    sprintf(ofn, "%s/XXXXXXXX", fname);
+    snprintf(ofn, sizeof(ofn), "%s/XXXXXXXX", fname);
     if ((o = mkstemp(ofn)) < 0) {
 	error("Cannot create failed posting file %s(%s). Skip", fname,
 	      sys_errlist[errno]);

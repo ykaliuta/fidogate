@@ -36,7 +36,7 @@ int erase_outgoing_msgid(char *msgid)
 	if (strcmp(dir->d_name, ".") == 0 ||
 	    strcmp(dir->d_name, "..") == 0)
 	    continue;
-	sprintf(curr_name, "%s/%s", OUTGOING, dir->d_name);
+	snprintf(curr_name, sizeof(curr_name), "%s/%s", OUTGOING, dir->d_name);
 	if (stat(curr_name, &stbuf) < 0)
 	    continue;
 	if ((stbuf.st_mode & S_IFMT) == S_IFDIR)

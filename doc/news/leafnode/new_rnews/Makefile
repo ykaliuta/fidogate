@@ -1,3 +1,4 @@
+CC = gcc
 CFLAGS = -O2 $(CFG) #-DDEBUG #-DREMOVE_SUCCESS
 LDFLAGS = -s
 LIBS = ../lib/nntpftn.a
@@ -25,8 +26,10 @@ m2news.o:       m2news.c        ../common.h
 mail2news.o:    mail2news.c     ../common.h 
 
 install:	rnews m2news
-	install -o news -g news -m 750 rnews $(DESTDIR)/rnews
-	install -o news -g news -m 750 m2news $(DESTDIR)/m2news
+	install -o news -g news -m 755 rnews $(DESTDIR)/rnews
+	install -o root -g root -m 755 m2news $(DESTDIR)/m2news
+	chmod u+s $(DESTDIR)/rnews
+	chmod u+s $(DESTDIR)/m2news
 	cp rnews.1 m2news.1 $(DESTMAN)
 
 uninstall:	rnews m2news

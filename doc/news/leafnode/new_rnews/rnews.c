@@ -100,6 +100,6 @@ void help(void)
 	   "-------------------------------------------------------------\n"
 	   "Eagle's rnews comes with ABSOLUTELY NO WARRANTY;\n"
 	   "This is free software, and you are welcome to redistribute it\n"
-	   "under certain conditions; type 'less LICENSE' for details.\n",
+	   "under certain conditions.\n",
 	   version);
 }
