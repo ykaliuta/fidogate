@@ -1,3 +1,7 @@
+2004-02-10  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
+
+	* stc/tick/ftntick.c: fix the AutoCreateFileechoLine problem
+
 2004-02-07  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* version.h: new EXTRAVERSION alpha3
