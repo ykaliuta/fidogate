@@ -23,8 +23,8 @@
 /* Define if you have the regcomp function.  */
 #undef HAVE_REGCOMP
 
-/* Define if you have the snprintf function.  */
-#undef HAVE_SNPRINTF
+/* Define if you have the sprintf function.  */
+#undef HAVE_SPRINTF
 
 /* Define if you have the statfs function.  */
 #undef HAVE_STATFS
@@ -428,7 +428,7 @@
  *				generates something like
  *				"Received: by NeXT.Mailer"
  *
- *   HAVE_SNPRINTF              snprintf(), vsnprintf() supported
+ *   HAVE_SPRINTF               sprintf(), vsprintf() supported
  *
  *   HAVE_SYSLOG		syslogd, syslog(), vsyslog() supported
  *
@@ -453,7 +453,7 @@
 # undef  HAVE_STRCASECMP
 # undef  HAVE_STRICMP
 # undef  HAVE_STRERROR
-# undef  HAVE_SNPRINTF
+# undef  HAVE_SPRINTF
 # undef  HAVE_TM_GMTOFF
 # undef  HAVE_STRFTIME
 # undef  HAVE_TM_ZONE

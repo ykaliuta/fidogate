@@ -1785,7 +1785,7 @@ int print_origin(FILE *fp, char *origin, Node *node_from)
 	/* Max. allowed length of origin line is 79 (80 - 1) chars, 3
 	 * are used by " ()".  */
 	len = 80 - strlen(bufa) - 3;
-	
+
 	/* Add origin text */
 	str_append(buf, len, origin);
 	/* Add address */

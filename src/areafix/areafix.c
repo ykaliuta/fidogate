@@ -148,7 +148,7 @@ void areafix_tlprintf(const char *fmt, ...)
 
     va_start(args, fmt);
     
-#ifdef HAVE_SNPRINTF    
+#ifndef HAVE_SPRINTF    
     n = vsnprintf(buf, sizeof(buf), fmt, args);
 #else
     n = vsprintf(buf, fmt, args);

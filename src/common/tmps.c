@@ -39,7 +39,7 @@
  * not supported, this size must be large enough to hold the complete output
  * string.
  */
-#ifdef HAVE_SNPRINTF
+#ifndef HAVE_SPRINTF
 # define TMPS_PRINTF_BUFSIZE	128
 #else
 # define TMPS_PRINTF_BUFSIZE	4096		/* To be reasonably safe */
@@ -206,7 +206,7 @@ TmpS *tmps_printf(const char *fmt, ...)
     va_start(args, fmt);
 
     p = tmps_alloc(TMPS_PRINTF_BUFSIZE);
-#ifdef HAVE_SNPRINTF    
+#ifndef HAVE_SPRINTF    
     do 
     {
 	n = vsnprintf(p->s, p->len, fmt, args);
@@ -349,7 +349,7 @@ char *s_printf(const char *fmt, ...)
     va_start(args, fmt);
 
     p = tmps_alloc(TMPS_PRINTF_BUFSIZE);
-#ifdef HAVE_SNPRINTF    
+#ifndef HAVE_SPRINTF    
     do 
     {
 	n = vsnprintf(p->s, p->len, fmt, args);

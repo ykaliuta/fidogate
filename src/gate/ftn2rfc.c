@@ -1373,8 +1373,10 @@ carbon:
 	}
 
 	/* Common header */
-	if(use_origin_for_organization && body.origin)
+	if(body.origin)
 	{
+	  if(use_origin_for_organization)
+	  {
 	    strip_crlf(body.origin);
 	    msg_xlate_line(buffer, sizeof(buffer), body.origin, cvt8 & AREA_QP,
 			    ignore_soft_cr);
@@ -1385,15 +1387,18 @@ carbon:
 	    p = buffer + strlen(" * Origin: ");
 	    while(is_blank(*p))
 		p++;
-        if (strlen(p) == 0)
+            if (strlen(p) == 0)
 #ifdef NOINSERT_ORGANIZATION 
             tl_appendf(&theader, "Organization: %s\n", "(none)" );
 #else /* NOINSERT_ORGANIZATION */ 
             tl_appendf(&theader, "Organization: %s\n", cf_p_organization() );
 #endif /* NOINSERT_ORGANIZATION */ 
-        else
+            else
             tl_appendf(&theader, "Organization: %s\n", p);
-        }
+	  }
+	  else
+	  tl_appendf(&theader, "Organization: %s\n", cf_p_organization() );
+	}
 	tl_appendf(&theader, "Lines: %d\n", lines);
 	if(gateway)
 	    tl_appendf(&theader, "X-Gateway: FIDO %s [FIDOGATE %s], %s\n",

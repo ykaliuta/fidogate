@@ -1,3 +1,15 @@
+2003-12-01  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: fix UseOriginForOrganization
+	    (thanks to Anton Leer)
+	* package/freebsd: update
+	* config.h.in: SNPRINTF change to SPRINTF
+	* acconfig.h: SNPRINTF change to SPRINTF
+	* src/areafix/areafix.c: SNPRINTF change to SPRINTF
+	* src/common/misc.c: SNPRINTF change to SPRINTF
+	* src/common/textlist.c: SNPRINTF change to SPRINTF
+	* src/common/tmps.c: SNPRINTF change to SPRINTF
+
 2003-11-25  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/charset/cyrillic.map: fix cp1125 map(thanks to
