@@ -8,10 +8,11 @@
 # Russian, contributed by Andy Igoshin <ai@vsu.ru>
 #
 alias	cp866		cp866
-alias	ukr		cp1125
 alias	alt		cp866
 alias	x-alt		cp866
 alias	x-cp866		cp866
+alias	cp1125		cp1125
+alias	ukr		cp1125
 alias	koi8-u		koi8-r
 alias	ibm-878		koi8-r
 alias	ibm-915		iso-8859-5
