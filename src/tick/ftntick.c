@@ -639,31 +639,36 @@ int process_tic(Tick *tic)
 	    debug(9, "unlink %s", old_name);
 	    unlink(old_name);
 	}
-
-	sprintf(buffer,"TickFileAction %s ", tic->area);
-
+	/*
+	 * TickFileAction
+	 */
 	for( s1 = cf_get_string(buffer, TRUE); s1 && *s1;
 	     s1 = cf_get_string(buffer, FALSE) )
-	{
-	    int ret;
-	    char *tick_action;
-
-	    debug(8, "config: TickFileAction %s", s1);
-	    tick_action = strsave(s1);
-	    s2 = xstrtok(tick_action, " \t");
-	    if( wildmatch(tic->file, s2, TRUE) )
-	    {
-		s1 = strstr(tick_action, s2)+strlen(s2)+1;
-		BUF_COPY(buffer, s1);
-		str_printf(buffer, sizeof(buffer), new_name);
-		debug(8, "exec: %s", buffer);
-		if( !(ret = run_system(buffer)) )
-		    log("exec: %s failed, exit code = %d", buffer, ret);
-		xfree(tick_action);
-		break;
-	    }
-	    xfree(tick_action);
-	}
+        {
+            int ret;
+            char *str_save;
+            char *area;
+            char *wild_file;
+            char *tick_action;
+            debug(8, "config: TickFileAction %s", s1);
+            str_save = strsave(s1);
+            area = xstrtok(str_save, " \t");
+            if( !stricmp(tic->area, area) )
+            {
+                wild_file = xstrtok (NULL, " \t");
+                tick_action = xstrtok (NULL, "\n");
+                if( wildmatch(tic->file, wild_file, TRUE) )
+                {
+                    sprintf(buffer, tick_action, new_name);
+                    debug(8, "exec: %s", buffer);
+	            if( !(ret = run_system(buffer)) )
+                        log("exec: %s failed, exit code = %d", buffer, ret);
+                    xfree(str_save);
+                    break;
+	        }
+            }
+            xfree(str_save);
+        }
 #ifdef FECHO_PASSTHROUGHT
 	if ( bbs->flags & AREASBBS_PASSTHRU ) 
 	    unlink (new_name);
