@@ -25,6 +25,11 @@ INBOUND		%B/in
 PINBOUND	%B/pin
 #UUINBOUND      %B/uuin
 
+# nl-autoupd
+DIFFDIR         /var/ftp/pub/fileecho/nodediff
+NLDIR           /var/spool/fido/nodelist
+NLFDIR          /var/ftp/pub/fileecho/nodelist
+
 # Config files		
 ACL		%C/acl
 ALIASES		%C/aliases
