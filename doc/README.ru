@@ -31,8 +31,8 @@
     Перед тем как начать компиляцию необходимо распаковать fidogate:
       
 	tar xIvf fidogate-X.X.X.tar.bz2
-      
-или если упаковано архиватором gzip, то:
+	
+    или если упаковано архиватором gzip, то:
       
 	tar xzvf fidogate-X.X.X.tar.gz
       
@@ -110,7 +110,7 @@ cvs -z3 -d:pserver:anonymous@cvs.rusfidogate.sourceforge.net:/cvsroot/rusfidogat
 co fidogate-sta
 
 DEVELOPMENT:
-cvs -z3 -d:pserver:anonymous@cvs.rusfidogate.sourceforge.net:/cvsroot/rusfidogate              
+cvs -z3 -d:pserver:anonymous@cvs.rusfidogate.sourceforge.net:/cvsroot/rusfidogate
 co fidogate
 
     Также последнюю официальную версию fidogate можно взять на сайтах:
