@@ -55,7 +55,7 @@ int check_stale_lock(char *name)
 
         if(pid < 2 || sizeof(buff) == 0 || (kill(pid, 0) == -1 && errno == ESRCH))
         {
-    		log("$WARNING: stale lock file %s (pid = %d) found", name, pid);
+    		fglog("$WARNING: stale lock file %s (pid = %d) found", name, pid);
 
 	        if (unlink(name) != 0)
 	        {
@@ -179,13 +179,13 @@ int lock_lockfile_nfs(char *name, int wait, char *id)
     {
 	if(wait)
 	{
-	    log("$ERROR: creating unique %s (for lock %s) failed",
+	    fglog("$ERROR: creating unique %s (for lock %s) failed",
 		uniq_name, name);
 	    exit(EX_OSFILE);
 	}
 	else
 	{
-	    log("$WARNING: creating unique %s (for lock %s) failed",
+	    fglog("$WARNING: creating unique %s (for lock %s) failed",
 		uniq_name, name);
 	    return ERROR;
 	}
@@ -213,14 +213,14 @@ int lock_lockfile_nfs(char *name, int wait, char *id)
 	    {
 		if(wait)
 		{
-		    log("$ERROR: linking unique %s -> lock %s failed",
+		    fglog("$ERROR: linking unique %s -> lock %s failed",
 			uniq_name, name);
 		    unlink(uniq_name);
 		    exit(EX_OSFILE);
 		}
 		else
 		{
-		    log("$WARNING: linking unique %s -> %s failed",
+		    fglog("$WARNING: linking unique %s -> %s failed",
 			uniq_name, name);
 		    unlink(uniq_name);
 		    return ERROR;
@@ -233,7 +233,7 @@ int lock_lockfile_nfs(char *name, int wait, char *id)
 	    if( stat(uniq_name, &st) == ERROR)
 	    {
 		/* Should not fail */
-		log("$ERROR: stat unique %s (for lock %s) failed",
+		fglog("$ERROR: stat unique %s (for lock %s) failed",
 		    uniq_name, name);
 		unlink(uniq_name);
 		exit(EX_OSFILE);
@@ -267,7 +267,7 @@ int unlock_lockfile_nfs(char *name)
     
     if( unlink(name) == ERROR )
     {
-	log("$WARNING: removing lock %s failed", name);
+	fglog("$WARNING: removing lock %s failed", name);
 	ret = ERROR;
     }
 

@@ -265,7 +265,7 @@ FILE *outpkt_open(Node *from, Node *to,
     p->fp = outpkt_fopen(p->tmpname, W_MODE);
     if(p->fp == NULL)
     {
-	log("$failed to open packet %s", p->tmpname);
+	fglog("$failed to open packet %s", p->tmpname);
 	return NULL;
     }
     
@@ -283,7 +283,7 @@ FILE *outpkt_open(Node *from, Node *to,
     /* Rest is filled in by pkt_put_hdr() */
     if(pkt_put_hdr(p->fp, &pkt) == ERROR)
     {
-	log("$Can't write to packet file %s", p->tmpname);
+	fglog("$Can't write to packet file %s", p->tmpname);
 	fclose(p->fp);
 	p->fp = NULL;
 	return NULL;

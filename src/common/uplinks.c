@@ -86,14 +86,14 @@ static AreaUplink *uplinks_parse_line(char *buf)
     
     if( asc_to_node(n, &uplink, FALSE) == ERROR )
     {
-	log("uplinks: illegal FTN address %s", n);
+	fglog("uplinks: illegal FTN address %s", n);
 	return NULL;
     }
 
 #ifdef DEBUG
     if( uplinks_check_dups ((!strcmp (t, "af"))?TRUE:FALSE, &uplink) )
     {
-	log("uplinks: duplicate uplink entry %s", n);
+	fglog("uplinks: duplicate uplink entry %s", n);
 	return NULL;
     }
 #endif /* DEBUG */

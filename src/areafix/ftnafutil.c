@@ -91,7 +91,7 @@ int do_mail(Node *node, char *area, char *s, AreaUplink *upl)
 
     if(!upl || !upl->password)
     {
-	log("ERROR: no uplink password for %s, can't send request", 
+	fglog("ERROR: no uplink password for %s, can't send request", 
 	    znfp1(node));
 	return ERROR;
     }
@@ -145,7 +145,7 @@ void rm_group(char *area, Node *uplink)
 		debug(8, "config: AutoRemoveNG");
     		BUF_COPY2(buffer, "%N/ngoper remove ", ar->group);
 		if (0 != run_system(buffer))
-		    log("ERROR: can't remove newsgroup (rc != 0)");
+		    fglog("ERROR: can't remove newsgroup (rc != 0)");
 	    }
 	    else
 	    debug(8, "config: AutoRemoveNG not defuned");
@@ -219,7 +219,7 @@ int do_areasbbs(int cmd)
 	case DO_DELETE:
 	    if(!uplink || areasbbs_isstate(state, 'U') )
 	    {
-		log("area %s: no uplink or unsubscribe, deleting", p->area);
+		fglog("area %s: no uplink or unsubscribe, deleting", p->area);
 		if(!n_flag) 
 		{
 		    areasbbs_remove(p, pl);
@@ -253,12 +253,12 @@ int do_areasbbs(int cmd)
 	    {
 	    	if(! (a = uplinks_line_get(areafix, uplink)) )
 		{
-		    log("no uplinks record found for %s area %s", p->area,
+		    fglog("no uplinks record found for %s area %s", p->area,
 			znfp1(uplink));
 		    break;
 		}
 
-		log("area %s: #dl=%d state=%s, unsubscribing at uplink %s (request timed out in %i day(s))",
+		fglog("area %s: #dl=%d state=%s, unsubscribing at uplink %s (request timed out in %i day(s))",
 		      p->area, n, state, znfp1(uplink), tm);
 		if(do_mail(uplink, p->area, "-", a) != ERROR)
 		{
@@ -274,7 +274,7 @@ int do_areasbbs(int cmd)
 		    lon->sorted = NULL;
 		    if (areasbbs_isstate(state, 'F'))
 		    {
-			log("area %s: forwarded request is timed out, deleted", p->area);
+			fglog("area %s: forwarded request is timed out, deleted", p->area);
 			areasbbs_remove(p, pl);
 #ifdef ACTIVE_LOOKUP
 			rm_group(p->area, uplink);
@@ -302,11 +302,11 @@ int do_areasbbs(int cmd)
 
 	    	if(! (a = uplinks_line_get(areafix, uplink)) )
 		{
-		    log("no uplinks record found for %s area %s", p->area,
+		    fglog("no uplinks record found for %s area %s", p->area,
 			znfp1(uplink));
 		    break;
 		}
-		log("area %s: #dl=%d state=%s, unsubscribing at uplink %s (no traffic for %i day(s))",
+		fglog("area %s: #dl=%d state=%s, unsubscribing at uplink %s (no traffic for %i day(s))",
 		      p->area, n, state, znfp1(uplink), tm);
 		if(do_mail(uplink, p->area, "-", a) != ERROR)
 		{
@@ -331,11 +331,11 @@ int do_areasbbs(int cmd)
 	    {
 	    	if(! (a = uplinks_line_get(areafix, uplink)) )
 		{
-		    log("no uplinks record found for %s area %s", p->area,
+		    fglog("no uplinks record found for %s area %s", p->area,
 			znfp1(uplink));
 		    break;
 		}
-		log("area %s: #dl=%d state=%s, unsubscribing at uplink %s (no downlinks)",
+		fglog("area %s: #dl=%d state=%s, unsubscribing at uplink %s (no downlinks)",
 		      p->area, n, state, znfp1(uplink));
 		if(do_mail(uplink, p->area, "-", a) != ERROR)
 		{
@@ -359,11 +359,11 @@ int do_areasbbs(int cmd)
 	    {
 	    	if(! (a = uplinks_line_get(areafix, uplink)) )
 		{
-		    log("no uplinks record found for %s area %s", p->area,
+		    fglog("no uplinks record found for %s area %s", p->area,
 			znfp1(uplink));
 		    break;
 		}
-		log("area %s: #dl=%d state=%s, resubscribing at uplink %s",
+		fglog("area %s: #dl=%d state=%s, resubscribing at uplink %s",
 		      p->area, n, state, znfp1(uplink));
 		p->time = time( NULL );
 		areafix_set_changed();
@@ -374,7 +374,7 @@ int do_areasbbs(int cmd)
 	case DO_UNRESUBSCRIBE:
 	    if(! (a = uplinks_line_get(areafix, uplink)) )
 	    {
-		log("no uplinks record found for %s area %s", p->area,
+		fglog("no uplinks record found for %s area %s", p->area,
 		    znfp1(uplink));
 		break;
 	    }
@@ -384,7 +384,7 @@ int do_areasbbs(int cmd)
 			    areasbbs_isstate(state, 'F')||
 			    areasbbs_isstate(state, 'W')))
 	    {
-		log("area %s: #dl=%d state=%s, resubscribing at uplink %s",
+		fglog("area %s: #dl=%d state=%s, resubscribing at uplink %s",
 		      p->area, n, state, znfp1(uplink));
 		if(uplink)
 		{

@@ -139,7 +139,7 @@ int do_packets(void)
 	    debug(5, "node=%s", znfp1(node));
 	    if(bink_bsy_create(node, NOWAIT) == ERROR)
 	    {
-		log("%s busy, skipping", znfp1(node));
+		fglog("%s busy, skipping", znfp1(node));
 		continue;
 	    }
 
@@ -191,7 +191,7 @@ int do_packets(void)
 	debug(2, "Exit code=%d", ret);
 	if(ret)
 	{
-	    log("ERROR: can't exec command %s", script);
+	    fglog("ERROR: can't exec command %s", script);
 	    return ERROR;
 	}
 	tmps_freeall();
@@ -218,7 +218,7 @@ int exec_ftn2rfc(char *name)
     debug(2, "Exit code=%d", ret);
     if(ret)
     {
-	log("ERROR: can't exec command %s", buffer);
+	fglog("ERROR: can't exec command %s", buffer);
 	return ERROR;
     }
     

@@ -352,7 +352,7 @@ void charset_init(void)
 {
     if(charset_read_bin( cf_p_charsetmap() ) == ERROR) 
     {
-	log("ERROR: reading from %s", cf_p_charsetmap());
+	fglog("ERROR: reading from %s", cf_p_charsetmap());
 	exit(EX_SOFTWARE);
     }
 

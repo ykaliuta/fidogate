@@ -74,17 +74,17 @@ static Spy *spyes_parse_line(char *buf)
     
     if( asc_to_node(n, &node, TRUE) == ERROR )
     {
-	log("spyes: illegal FTN address %s", n);
+	fglog("spyes: illegal FTN address %s", n);
 	return NULL;
     }
     if( spyes_check_dups(&node) )
     {
-	log("spyes: duplicate spy entry %s", n);
+	fglog("spyes: duplicate spy entry %s", n);
 	return NULL;
     }
     if( asc_to_node(r, &forward_node, TRUE) == ERROR )
     {
-	log("spyes: illegal FTN address %s", r);
+	fglog("spyes: illegal FTN address %s", r);
 	return NULL;
     }
     

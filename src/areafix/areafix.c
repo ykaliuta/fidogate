@@ -359,7 +359,7 @@ int areafix_auth_check(Node *node, char *passwd, int checkpass)
 
     if(pwd == NULL)
     {
-	log("WARNING: node %s have null password",znfp1(node));
+	fglog("WARNING: node %s have null password",znfp1(node));
 	return authorized;
     }
     
@@ -796,7 +796,7 @@ int cmd_new_int(Node *node, char *line, char *dwnl)
     OFuncP    areafix_savedprintf = areafix_printf;
     Textlist *areafix_savedotl    = areafix_otl;
 
-    areafix_printf = log;
+    areafix_printf = fglog;
     areafix_otl = NULL;
 
     ret = cmd_new(node, line, dwnl, TRUE);
@@ -846,7 +846,7 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 	for (i=0;o1[i]!='\x0';i++)
 	    if (strchr(name,o1[i])!=NULL)
 	    {
-		log("WARNING: Area \"%s\"  have forbidden char, can't create.", name);
+		fglog("WARNING: Area \"%s\"  have forbidden char, can't create.", name);
 		areafix_printf("%-41s: have forbidden char, can't create.", name);
 		return -2;
 	    }
@@ -973,7 +973,7 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 	    }
 	    else 
 	    {
-    		log("CONFIG: AutoCreateFechoPath not defined and filearea not passthru");
+    		fglog("CONFIG: AutoCreateFechoPath not defined and filearea not passthru");
     		p->dir = "-";
 	    }
 	    sprintf(full_farea_dir,"%s/%s",autocreate_fecho_path, str_lower(name));
@@ -984,24 +984,24 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 		{
 		    if(mkdir(autocreate_fecho_path, FILE_DIR_MODE) == -1)
 		    {
-			log("$ERROR: can't create directory %s", autocreate_fecho_path);
+			fglog("$ERROR: can't create directory %s", autocreate_fecho_path);
 			return ERROR;
 		    }
 		    else
 		    {
 			chmod(autocreate_fecho_path, DIR_MODE);
-			log("create fileecho directory %s", autocreate_fecho_path);
+			fglog("create fileecho directory %s", autocreate_fecho_path);
 		    }
 		}
 		if(mkdir(full_farea_dir, FILE_DIR_MODE) == -1)
 		{
-		    log("$ERROR: can't create directory %s", full_farea_dir);
+		    fglog("$ERROR: can't create directory %s", full_farea_dir);
 		    return ERROR;
 		}
 		else
 		{
 		    chmod(full_farea_dir, DIR_MODE);
-		    log("create directory %s", full_farea_dir);
+		    fglog("create directory %s", full_farea_dir);
 		}
 	    }
 	}
@@ -1027,7 +1027,7 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 		fclose (fd);
 	    }
 	    else
-		log("ERROR: can't open create log file %s", create_log_file);
+		fglog("ERROR: can't open create log file %s", create_log_file);
 	}
 #ifdef CREATE_LOG_FORWREQ
     }
@@ -1035,9 +1035,9 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 	no_create_log_file = 1;
 #endif /* CREATE_LOG_FORWREQ */
 #ifndef FTN_ACL
-    log("%s %s: new %s lvl=%d key=%s desc=\"%s\"%s%s",
+    fglog("%s %s: new %s lvl=%d key=%s desc=\"%s\"%s%s",
 #else
-    log("%s %s: new %s lvl=%d key=%s desc=\"%s\"%s",
+    fglog("%s %s: new %s lvl=%d key=%s desc=\"%s\"%s",
 #endif /* !FTN_ACL */
     my_context,
     znfp1(node),
@@ -1080,7 +1080,7 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 	if ( (run_system (buffer)) )
 	    debug(7,"exec autocreate script %s", buffer);
 	else
-	    log("ERROR: failed exec autocreate script %s", buffer);
+	    fglog("ERROR: failed exec autocreate script %s", buffer);
     }
     else
         areasbbs_changed();
@@ -1106,7 +1106,7 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 			lon_add( &(p->nodes), &node );
 		    }
 		    else
-			log( "config: AutoCreateSubscribeFileechoNodes: \
+			fglog( "config: AutoCreateSubscribeFileechoNodes: \
 			    invalid entry \"%s\"", s2 );
 	    }
     	xfree(s1);
@@ -1133,7 +1133,7 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 		    debug(5, "subscribe node %s", s2);
 		}
 		else
-		    log( "config: AutoCreateSubscribeNodes: invalid entry \
+		    fglog( "config: AutoCreateSubscribeNodes: invalid entry \
 			\"%s\"", s2 );
 	}
         xfree(s1);
@@ -1145,14 +1145,14 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 
 	    if ( NULL != (autocreate_area = areas_lookup( p->area, NULL, node)))
 	    {
-		log("create newsgroup %s", autocreate_area->group);
+		fglog("create newsgroup %s", autocreate_area->group);
 	        BUF_COPY2(buffer, "%N/ngoper create ", autocreate_area->group);
 		if (0 != run_system(buffer))
-		    log("ERROR: can't create newsgroup (rc != 0)");
+		    fglog("ERROR: can't create newsgroup (rc != 0)");
 	    }
 	    else
 	    {
-	        log("ERROR: can't create newsgroup (not found in areas)");
+	        fglog("ERROR: can't create newsgroup (not found in areas)");
 	    }
     }
 #endif /* ACTIVE_LOOKUP */
@@ -1179,7 +1179,7 @@ int cmd_listall(Node *node)
 #ifdef AFSEND_ECHO_STATUS
     char tmp[35];
 #endif /* AFSEND_ECHO_STATUS */
-    log("%s: listall", znfp1(node));
+    fglog("%s: listall", znfp1(node));
 
 #ifndef AF_LISTALL_RESTRICTED
     if(!authorized)
@@ -1379,7 +1379,7 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
     int print_all = FALSE;
 #endif /* AF_AVAIL */
     
-    log("%s: list", znfp1(node));
+    fglog("%s: list", znfp1(node));
 
     if(!authorized)
     {
@@ -1548,7 +1548,7 @@ int cmd_query(Node *node)
     AreasBBS *p;
     LON *l;
     
-    log("%s: query", znfp1(node));
+    fglog("%s: query", znfp1(node));
 
     if(!authorized)
     {
@@ -1613,7 +1613,7 @@ int cmd_unlinked(Node *node)
     char *s;
     int key_ok;
     
-    log("%s: unlinked", znfp1(node));
+    fglog("%s: unlinked", znfp1(node));
 
     if(!authorized)
     {
@@ -1841,7 +1841,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 		    if( !p->zone )
 		    {
 			areafix_printf("%-41s: no uplink, dead area", p->area);
-			log("%s: dead area %s, delete", znfp1(node), p->area);
+			fglog("%s: dead area %s, delete", znfp1(node), p->area);
 			areasbbs_remove1(p);
 			areasbbs_changed();
 			continue;
@@ -1899,11 +1899,11 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 
 			    /* Not subscribed at uplink, print note */
 			    areafix_printf("        (this area is currently not subscribed at uplink %s)", znf1(&l->first->node));
-			    log("%s: +%s (not subscribed at uplink, request forwarded)", znfp1(node), p->area);
+			    fglog("%s: +%s (not subscribed at uplink, request forwarded)", znfp1(node), p->area);
 			}
 			else
 			{
-			    log("WARNING: no entry for uplink %s in uplink\
+			    fglog("WARNING: no entry for uplink %s in uplink\
 			     config file", 
 				    znf1(&l->first->node));
 			    areafix_printf("        Please forward this message to sysop:\r\n"
@@ -1918,18 +1918,18 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 		    {
 			/* Subscribed at uplink, but no traffic yet, print note */
 			areafix_printf("        (this area subscribed at uplink %s, but no traffic yet)", znf1(&l->first->node));
-			log("%s: +%s (subscribed at uplink, but no traffic yet)",
+			fglog("%s: +%s (subscribed at uplink, but no traffic yet)",
 			    znfp1(node), p->area);
 		    }
 		    else if (areasbbs_isstate(p->state, 'F') && upl)
 		    {
 			/* Requested from uplink, but no traffic yet, print note */
 			areafix_printf("        (this area requested from uplink %s, but no traffic yet)", znf1(&l->first->node));
-			log("%s: +%s (already requested from uplink, but no traffic yet)",
+			fglog("%s: +%s (already requested from uplink, but no traffic yet)",
 			    znfp1(node), p->area);
 		    }
 		    else
-			log("%s: +%s", znfp1(node), p->area);
+			fglog("%s: +%s", znfp1(node), p->area);
 
 		    if(!iswc)
 			send_rules(node, str_upper(area));
@@ -1937,7 +1937,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 		else
 		{
 		    areafix_printf("%-41s: no uplink, dead area", p->area);
-		    log("%s: dead area %s, delete", znfp1(node), p->area);
+		    fglog("%s: dead area %s, delete", znfp1(node), p->area);
 		    areasbbs_remove1(p);
 		    areasbbs_changed();
 		}
@@ -1978,14 +1978,14 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 		{
 		    areafix_printf("%s: internal areafix error (can't create area)\r\n"
 				   "Please forward this message to sysop", a->areas);
-		    log("ERROR: can't create area %s (cmd_new() returned ERROR)", a->areas);
+		    fglog("ERROR: can't create area %s (cmd_new() returned ERROR)", a->areas);
 				    
 		    continue;
 		}
 		authorized_fwd = an;
 		if ( NULL == ( p = areasbbs_lookup( a->areas ) ) )
 		{
-		    log("ERROR: can't create area %s (not found after creation)", a->areas);
+		    fglog("ERROR: can't create area %s (not found after creation)", a->areas);
 		    areafix_printf( "%s: internal areafix error (can't create area)\r\n"
 				   "Please forward this message to sysop",
 				   a->areas );
@@ -2058,7 +2058,7 @@ int cmd_unsub(Node *node, char *area, Textlist *upl)
 	    if(l && l->size < 1)
 	    {
 		areafix_printf("%-41s: no uplink, dead area", p->area);
-		log("%s: dead area %s, delete", znfp1(node), p->area);
+		fglog("%s: dead area %s, delete", znfp1(node), p->area);
 		areasbbs_remove1(p);
 		areasbbs_changed();
 		continue;
@@ -2086,13 +2086,13 @@ int cmd_unsub(Node *node, char *area, Textlist *upl)
 #ifdef SUB_LIMIT
 		lim_g--;
 #endif /* SUB_LIMIT */
-		log("%s: -%s", znfp1(node), p->area);
+		fglog("%s: -%s", znfp1(node), p->area);
 		
 		if( (l->size == 1 && p->flags & AREASBBS_PASSTHRU) )
 		{
 		    if( (a = uplinks_line_get(areafix, &l->first->node)) )
 		    {
-			log("unsubscribe from area %s (no downlinks)", p->area);
+			fglog("unsubscribe from area %s (no downlinks)", p->area);
 			areasbbs_chstate(&(p->state), "SWF", 'U');
 			areasbbs_changed();
 
@@ -2106,7 +2106,7 @@ int cmd_unsub(Node *node, char *area, Textlist *upl)
 		    }
 		    else
 		    {
-			log("uplink entry for area %s(%s) not found, delete area",
+			fglog("uplink entry for area %s(%s) not found, delete area",
 				p->area, znfp1(&l->first->node));
 			areasbbs_remove1(p);
 			areasbbs_changed();
@@ -2115,7 +2115,7 @@ int cmd_unsub(Node *node, char *area, Textlist *upl)
 		}
 		if(l->size == 0 && p->flags & AREASBBS_PASSTHRU)
 		{
-		    log("delete area %s (no uplink)", p->area);
+		    fglog("delete area %s (no uplink)", p->area);
 		    areasbbs_remove1(p);
 		    areasbbs_changed();
 		    continue;
@@ -2147,7 +2147,7 @@ int cmd_help(Node *node)
     FILE *fp;
     char *helpfile;
 
-    log("%s: help", znfp1(node));
+    fglog("%s: help", znfp1(node));
 
     if( (helpfile = cf_get_string("AreaFixHelp", TRUE)) )
     {
@@ -2163,13 +2163,13 @@ int cmd_help(Node *node)
 	}
 	else
 	{
-	    log("ERROR: can't open %s", helpfile);
+	    fglog("ERROR: can't open %s", helpfile);
 	    areafix_printf( "(can't open areafix help file)\r\n"
 			    "Please forward this message to sysop");
 	}
     }
     else
-	log("WARNING: AreaFixHelp not defined");
+	fglog("WARNING: AreaFixHelp not defined");
 
     areafix_printf("Sorry, no help available.");
 
@@ -2186,7 +2186,7 @@ int cmd_passwd(Node *node, char *arg)
     char *p;
     Node n;
     
-    log("%s: passwd", znfp1(node));
+    fglog("%s: passwd", znfp1(node));
 
     authorized = FALSE;
 
@@ -2267,11 +2267,11 @@ int cmd_delete(Node *node, char *area)
 	    {
 	        BUF_COPY2(buffer, "%N/ngoper remove ", autocreate_area->group);
 		if (0 != run_system(buffer))
-		    log("ERROR: can't create newsgroup (rc != 0)");
+		    fglog("ERROR: can't create newsgroup (rc != 0)");
 	    }
 	    else
 	    {
-	        log("ERROR: can't create newsgroup (not found in areas)");
+	        fglog("ERROR: can't create newsgroup (not found in areas)");
 	    }
     }
 #endif /* ACTIVE_LOOKUP */
@@ -2296,7 +2296,7 @@ int cmd_passive(Node *node, char *area, Textlist *upl)
 	areafix_printf("Command PASSIVE: not authorized.");
 	return OK;
     }
-    log("%s: passive", znfp1(node));
+    fglog("%s: passive", znfp1(node));
 
     for(p=areasbbs_first(); p; p=p->next)
     {
@@ -2321,7 +2321,7 @@ int cmd_passive(Node *node, char *area, Textlist *upl)
 		    a = uplinks_line_get(areafix, &n->node);
 		    if(!a)
 		    {
-			log("WARNING: can't find uplink for %s area", p->area);
+			fglog("WARNING: can't find uplink for %s area", p->area);
 			return OK;
 		    }
 		    tl_appendf(upl, "%s,%s,%s,%s,-%s",
@@ -2337,7 +2337,7 @@ int cmd_passive(Node *node, char *area, Textlist *upl)
 			areasbbs_isstate(p->state, 'F') ||
 			areasbbs_isstate(p->state, 'S')))
 		    {
-			log("setting state 'P' for area %s", p->area);
+			fglog("setting state 'P' for area %s", p->area);
 			areasbbs_chstate(&(p->state), "WFS", 'P');
 		    }
 		}
@@ -2370,7 +2370,7 @@ int cmd_active(Node *node, char *area, Textlist *upl)
 	areafix_printf("Command ACTIVE: not authorized.");
 	return OK;
     }
-    log("%s: active", znfp1(node));
+    fglog("%s: active", znfp1(node));
 
     for(p=areasbbs_first(); p; p=p->next)
     {
@@ -2389,7 +2389,7 @@ int cmd_active(Node *node, char *area, Textlist *upl)
 		    a = uplinks_line_get(areafix, &n->node);
 		    if(!a)
 	    	    {
-			log("WARNING: can't find uplink for %s area", p->area);
+			fglog("WARNING: can't find uplink for %s area", p->area);
 			return OK;
 		    }
 		    tl_appendf(upl, "%s,%s,%s,%s,+%s",
@@ -2465,7 +2465,7 @@ void send_request(Textlist *upl)
 		    }
 		    if(link && strcmp(l, link) == 0)
 		    {
-			log("request %s", tl->line);
+			fglog("request %s", tl->line);
 			tl_append(&out, tl->line);
 		    }
 		    xfree(s);
@@ -2551,7 +2551,7 @@ short int send_rules(Node *link, char *area)
 
 	if( !fp )
 	{
-    	    log("ERROR: can't open %s for reading", p);
+    	    fglog("ERROR: can't open %s for reading", p);
 	    return ERROR;
 	}
     }
@@ -2566,7 +2566,7 @@ short int send_rules(Node *link, char *area)
 	{
 	    if(! (filen = xstrtok(NULL, " \t")) )
 	    {
-		log("ERROR: can't find rules file correspond for area %s", area);
+		fglog("ERROR: can't find rules file correspond for area %s", area);
 		return ERROR;
 	    }
 	    break;
@@ -2581,7 +2581,7 @@ short int send_rules(Node *link, char *area)
 
     if( !(fp = fopen(filen, R_MODE)) )
     {
-    	log("ERROR: can't open %s for reading", filen);
+    	fglog("ERROR: can't open %s for reading", filen);
 	return ERROR;
     }
 

@@ -138,14 +138,14 @@ int do_expire(int type)
     /* Open old history for reading */
     if( (hi_o = fopen(history, R_MODE)) == NULL ) 
     {
-	log("$ERROR: open MSGID history %s failed", history);
+	fglog("$ERROR: open MSGID history %s failed", history);
 	return ERROR;
     }
 
     /* Open new history for writing */
     if( (hi_n = fopen(history_n, W_MODE)) == NULL ) 
     {
-	log("$ERROR: open MSGID history %s failed", history_n);
+	fglog("$ERROR: open MSGID history %s failed", history_n);
 	fclose(hi_o);
 	return ERROR;
     }
@@ -153,7 +153,7 @@ int do_expire(int type)
     /* Create empty new .dir and .pag*/
     if( (fp = fopen(history_n_dir, W_MODE)) == NULL ) 
     {
-	log("$ERROR: open MSGID history %s failed", history_n_dir);
+	fglog("$ERROR: open MSGID history %s failed", history_n_dir);
 	fclose(hi_o);
 	fclose(hi_n);
 	return ERROR;
@@ -161,7 +161,7 @@ int do_expire(int type)
     fclose(fp);
     if( (fp = fopen(history_n_pag, W_MODE)) == NULL ) 
     {
-	log("$ERROR: open MSGID history %s failed", history_n_pag);
+	fglog("$ERROR: open MSGID history %s failed", history_n_pag);
 	fclose(hi_o);
 	fclose(hi_n);
 	return ERROR;
@@ -172,7 +172,7 @@ int do_expire(int type)
     dbzincore(1);
     if (dbzagain(history_n, history) < 0)
     {
-	log("$ERROR: dbzagain %s failed", history_n);
+	fglog("$ERROR: dbzagain %s failed", history_n);
 	fclose(hi_o);
 	fclose(hi_n);
 	return ERROR;
@@ -196,17 +196,17 @@ int do_expire(int type)
     /* Rename */
     if(rename(history_n, history) == ERROR)
     {
-	log("$ERROR: rename %s -> %s failed", history_n, history);
+	fglog("$ERROR: rename %s -> %s failed", history_n, history);
 	return ERROR;
     }
     if(rename(history_n_dir, history_dir) == ERROR)
     {
-	log("$ERROR: rename %s -> %s failed", history_n_dir, history_dir);
+	fglog("$ERROR: rename %s -> %s failed", history_n_dir, history_dir);
 	return ERROR;
     }
     if(rename(history_n_pag, history_pag) == ERROR)
     {
-	log("$ERROR: rename %s -> %s failed", history_n_pag, history_pag);
+	fglog("$ERROR: rename %s -> %s failed", history_n_pag, history_pag);
 	return ERROR;
     }
     
@@ -239,7 +239,7 @@ int do_line(FILE *hi_n, char *line, int type)
 	
 	if(!msgid || !p || !rfc_msgid)
 	{
-	    log("$WARNING: illegal entry in %s, line %ld", history, history_line);
+	    fglog("$WARNING: illegal entry in %s, line %ld", history, history_line);
 	    return ERROR;
 	}
     }
@@ -250,7 +250,7 @@ int do_line(FILE *hi_n, char *line, int type)
 	p     = strtok(NULL, "\t");
 	if(!msgid || !p)
 	{
-	    log("$WARNING: illegal entry in %s, line %ld", history, history_line);
+	    fglog("$WARNING: illegal entry in %s, line %ld", history, history_line);
 	    return ERROR;
 	}
     }
@@ -267,7 +267,7 @@ int do_line(FILE *hi_n, char *line, int type)
 	/* Get offset in history text file */
 	if( (offset = ftell(hi_n)) == ERROR)
 	{
-	    log("$ERROR: ftell MSGID history failed");
+	    fglog("$ERROR: ftell MSGID history failed");
 	    return ERROR;
 	}
 	    /* Write MSGID line to history text file */
@@ -278,7 +278,7 @@ int do_line(FILE *hi_n, char *line, int type)
 
 	    if (ret == ERROR || fflush(hi_n) == ERROR)
 	    {
-		log("$ERROR: write to MSGID history failed");
+		fglog("$ERROR: write to MSGID history failed");
 		return ERROR;
 	    }
 	
@@ -288,7 +288,7 @@ int do_line(FILE *hi_n, char *line, int type)
 	val.dptr  = (char *)&offset;		/* Value */
 	val.dsize = sizeof offset;
 	if (dbzstore(key, val) < 0) {
-	    log("ERROR: dbzstore of record for MSGID history failed");
+	    fglog("ERROR: dbzstore of record for MSGID history failed");
 	    return ERROR;
 	}
     }
@@ -444,7 +444,7 @@ int main(int argc, char **argv)
      */
     if(lock_program(cf_p_lock_history(), w_flag ? w_flag : WAIT) == ERROR )	/* Already busy */
     {
-	log("MSGID history database is busy");
+	fglog("MSGID history database is busy");
 	exit_free();
 	exit(EXIT_BUSY);
     }
@@ -460,7 +460,7 @@ int main(int argc, char **argv)
 	expire_delta = 1;
 
     /* Statistics */
-    log("ids processed: %ld total, %ld expired in %ld s, %.2f ids/s",
+    fglog("ids processed: %ld total, %ld expired in %ld s, %.2f ids/s",
 	n_processed, n_expired,
 	expire_delta, (double)n_processed/expire_delta);
     

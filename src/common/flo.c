@@ -91,7 +91,7 @@ int flo_openx(Node *node, int bsy, char *flav, int apmode)
     flo_fp = fopen(flo_name, mode);
     if(flo_fp == NULL)
     {
-	log("$opening FLO file %s mode %s failed", flo_name, mode);
+	fglog("$opening FLO file %s mode %s failed", flo_name, mode);
 	if(bsy)
 	    bink_bsy_delete(node);
 	return ERROR;
@@ -103,7 +103,7 @@ int flo_openx(Node *node, int bsy, char *flav, int apmode)
     if(lock_file(flo_fp))
     {
 	/* Lock error ... */
-	log("$locking FLO file %s failed", flo_name);
+	fglog("$locking FLO file %s failed", flo_name);
 	if(bsy)
 	    bink_bsy_delete(node);
 	fclose(flo_fp);
@@ -146,7 +146,7 @@ char *flo_gets(char *s, size_t len)
     /* Current offset */
     if( (off = ftell(flo_fp)) == -1 )
     {
-	log("$ftell FLO file %s failed", flo_name);
+	fglog("$ftell FLO file %s failed", flo_name);
 	return NULL;
     }
     flo_off_cur = off;
@@ -157,7 +157,7 @@ char *flo_gets(char *s, size_t len)
 	/* EOF or error */
 	if(ferror(flo_fp))
 	{
-	    log("$reading FLO file %s failed", flo_name);
+	    fglog("$reading FLO file %s failed", flo_name);
 	    return NULL;
 	}
     }
@@ -165,7 +165,7 @@ char *flo_gets(char *s, size_t len)
     /* New offset == offset of next entry line */
     if( (off = ftell(flo_fp)) == -1 )
     {
-	log("$ftell FLO file %s failed", flo_name);
+	fglog("$ftell FLO file %s failed", flo_name);
 	return NULL;
     }
     flo_off_next = off;
@@ -190,7 +190,7 @@ int flo_close(Node *node, int bsy, int del)
 	if(del)
 	    if(unlink(flo_name) == -1)
 	    {
-		log("$removing FLO file %s failed", flo_name);
+		fglog("$removing FLO file %s failed", flo_name);
 		ret = ERROR;
 	    }
 	fclose(flo_fp);
@@ -218,7 +218,7 @@ void flo_mark(void)
     /* Seek to beginning of line last read */
     if(fseek(flo_fp, flo_off_cur, SEEK_SET) == -1)
     {
-	log("$seeking to offset %ld in FLO file %s failed",
+	fglog("$seeking to offset %ld in FLO file %s failed",
 	    flo_off_cur, flo_name);
 	return;
     }
@@ -226,14 +226,14 @@ void flo_mark(void)
     /* Write ~ char */
     if( fwrite(&tilde, 1, 1, flo_fp) != 1 )
     {
-	log("$writing ~ to FLO file %s failed", flo_name);
+	fglog("$writing ~ to FLO file %s failed", flo_name);
 	return;
     }
 
     /* Seek to beginning of next line */
     if(fseek(flo_fp, flo_off_next, SEEK_SET) == -1)
     {
-	log("$seeking to offset %ld in FLO file %s failed",
+	fglog("$seeking to offset %ld in FLO file %s failed",
 	    flo_off_next, flo_name);
 	return;
     }

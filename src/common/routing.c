@@ -135,12 +135,12 @@ void routing_remap(int cmd)
     p = xstrtok(NULL, " \t");
     if(!p)
     {
-	log("remap: source node address missing");
+	fglog("remap: source node address missing");
 	return;
     }
     if(znfp_parse_diff(p, &src, &old) == ERROR)
     {
-	log("remap: illegal node address %s", p);
+	fglog("remap: illegal node address %s", p);
 	return;
     }
     
@@ -150,12 +150,12 @@ void routing_remap(int cmd)
     p = xstrtok(NULL, " \t");
     if(!p)
     {
-	log("remap: dest node address missing");
+	fglog("remap: dest node address missing");
 	return;
     }
     if(znfp_parse_diff(p, &dest, &old) == ERROR)
     {
-	log("remap: illegal node address %s", p);
+	fglog("remap: illegal node address %s", p);
 	return;
     }
 
@@ -165,7 +165,7 @@ void routing_remap(int cmd)
     p = xstrtok(NULL, " \t");
     if(!p)
     {
-	log("remap: name missing");
+	fglog("remap: name missing");
 	return;
     }
     
@@ -205,12 +205,12 @@ void routing_rewrite(int cmd)
     p = xstrtok(NULL, " \t");
     if(!p)
     {
-	log("rewrite: source node address missing");
+	fglog("rewrite: source node address missing");
 	return;
     }
     if(znfp_parse_diff(p, &src, &old) == ERROR)
     {
-	log("rewrite: illegal node address %s", p);
+	fglog("rewrite: illegal node address %s", p);
 	return;
     }
     
@@ -220,12 +220,12 @@ void routing_rewrite(int cmd)
     p = xstrtok(NULL, " \t");
     if(!p)
     {
-	log("rewrite: dest node address missing");
+	fglog("rewrite: dest node address missing");
 	return;
     }
     if(znfp_parse_diff(p, &dest, &old) == ERROR)
     {
-	log("rewrite: illegal node address %s", p);
+	fglog("rewrite: illegal node address %s", p);
 	return;
     }
 
@@ -245,7 +245,7 @@ void routing_rewrite(int cmd)
 	p = xstrtok(NULL, " \t");
 	if(!p)
 	{
-	    log("rewritefrom(to): name missing");
+	    fglog("rewritefrom(to): name missing");
 	    return;
 	}
 	r->name = strsave(p);	
@@ -289,12 +289,12 @@ void mk_route(int cmd)
     p = xstrtok(NULL, " \t");
     if(!p)
     {
-	log("routing: flavor argument missing");
+	fglog("routing: flavor argument missing");
 	return;
     }
     if((flav = parse_flav(p)) == ERROR)
     {
-	log("routing: unknown flavor %s", p);
+	fglog("routing: unknown flavor %s", p);
 	return;
     }
 
@@ -306,12 +306,12 @@ void mk_route(int cmd)
 	p = xstrtok(NULL, " \t");
 	if(!p)
 	{
-	    log("mk_route: dest node address missing");
+	    fglog("mk_route: dest node address missing");
 	    return;
 	}
 	if(znfp_parse_diff(p, &dest, &old) == ERROR)
 	{
-	    log("mk_route: illegal node address %s", p);
+	    fglog("mk_route: illegal node address %s", p);
 	    return;
 	}
     }
@@ -327,7 +327,7 @@ void mk_route(int cmd)
 
     if(cmd == CMD_XROUTE && links.size != 2)
     {
-	log("mk_route: xroute requires flavor type and 3 arguments");
+	fglog("mk_route: xroute requires flavor type and 3 arguments");
 	return;
     }
 
@@ -390,7 +390,7 @@ static Routing *routing_parse_line(char *buf)
     
     if((cmd = parse_cmd(p)) == ERROR)
     {
-	log("routing: unknown command %s", p);
+	fglog("routing: unknown command %s", p);
 	return NULL;
     }
     if(cmd == TYPE_NETMAIL  ||  cmd == TYPE_ECHOMAIL || cmd == TYPE_TICK)
@@ -421,12 +421,12 @@ static Routing *routing_parse_line(char *buf)
     p = xstrtok(NULL, " \t");
     if(!p)
     {
-	log("routing: flavor argument missing");
+	fglog("routing: flavor argument missing");
 	return NULL;
     }
     if((flav = parse_flav(p)) == ERROR)
     {
-	log("routing: unknown flavor %s", p);
+	fglog("routing: unknown flavor %s", p);
 	return NULL;
     }
 
@@ -438,12 +438,12 @@ static Routing *routing_parse_line(char *buf)
 	p = xstrtok(NULL, " \t");
 	if(!p)
 	{
-	    log("routing: second flavor argument missing");
+	    fglog("routing: second flavor argument missing");
 	    return NULL;
 	}
 	if((flav_new = parse_flav(p)) == ERROR)
 	{
-	    log("routing: unknown flavor %s", p);
+	    fglog("routing: unknown flavor %s", p);
 	    return NULL;
 	}
     }
@@ -458,14 +458,14 @@ static Routing *routing_parse_line(char *buf)
     p = xstrtok(NULL, " \t");
     if(!p)
     {
-	log("routing: node address argument missing");
+	fglog("routing: node address argument missing");
 	return NULL;
     }
     while(p)
     {
 	if(znfp_parse_diff(p, &node, &old) == ERROR)
 	{
-	    log("routing: illegal node address %s", p);
+	    fglog("routing: illegal node address %s", p);
 	}
 	else
 	{
@@ -562,7 +562,7 @@ PktDesc *parse_pkt_name(char *name, Node *from, Node *to)
     
     if(strlen(p) != 8+1+3)		/* Must be  GTFxxxxx.pkt */
     {
-	log("strange packet name %s", name);
+	fglog("strange packet name %s", name);
 	return NULL;
     }
     

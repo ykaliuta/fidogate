@@ -211,7 +211,7 @@ int main(int argc, char **argv)
 
     /* exec */
     if( execv(cmd, args) == ERROR )
-	log("$can't exec %s", cmd);
+	fglog("$can't exec %s", cmd);
 	
     /* Only reached if error */
     exit_free();

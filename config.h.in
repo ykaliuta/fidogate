@@ -294,14 +294,6 @@
 #undef ANSWER_OK
 
 /*
- * When gate FTN->RFC change format `From:' field from:
- *	Dimm Agabekov (BeXEL)' @ 2:5023/10
- * to:
- *	Dimm Agabekov (BeXEL) <"Dimm_Agabekov_(BeXEL)"@f10.n5023.z2.fidonet.org>
- */
-#define CHECK_FTN2RFC_TO 
-
-/*
  * Set fido-style msgid
  */
 #undef FIDO_STYLE_MSGID

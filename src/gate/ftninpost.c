@@ -96,7 +96,7 @@ int unsplit_mail_count(char *fname) {
     
     fp = fopen(fname, "r");
     if(!fp) {
-	log("can't open %s", fname);
+	fglog("can't open %s", fname);
         return ERROR;
     }
     while((fgets(line, sizeof(line), fp)))
@@ -164,13 +164,13 @@ int unsplit_mail() {
 	    
 	    fp = fopen(sfirst->fname, "r");
 	    if(!fp) {
-	       log("can't open %s", sfirst->fname);
+	       fglog("can't open %s", sfirst->fname);
 	       continue;
 	    }
             BUF_COPY2(path, sfirst->fname, ".unsplit");
 	    usp = fopen(path, "w");
             if(!usp) {
-		log("can't open %s for writing", path);
+		fglog("can't open %s for writing", path);
                 continue;
             }
             while(fgets(buffer, BUFSIZ, fp)) {
@@ -189,7 +189,7 @@ int unsplit_mail() {
                 }
             }
 	} else {
-	    log("Message %s incomplete", spl->id);
+	    fglog("Message %s incomplete", spl->id);
 	}
     }
 
@@ -270,9 +270,9 @@ int do_dir(char *cdir, int mode)
 		if(ret)
 		{
 		    char bad[MAXPATH];
-		    log( "$WARNING: %s returned non-zero status", p );
+		    fglog( "$WARNING: %s returned non-zero status", p );
 		    str_change_ext(bad, sizeof(bad), rfc_file, ".bad");
-		    log("ERROR: bad rfcbatch renamed to %s", bad);
+		    fglog("ERROR: bad rfcbatch renamed to %s", bad);
 		    rename(rfc_file, bad);
 		}
 		unlink( rfc_file );

@@ -98,7 +98,7 @@ short int hi_init(char *his_file)
 	/* Doesn't exist, create */
 	if( (fp = fopen(buffer, W_MODE)) == NULL )
 	{
-	    log("$ERROR: creating MSGID history %s failed", buffer);
+	    fglog("$ERROR: creating MSGID history %s failed", buffer);
 	    return ERROR;
 	}
 	else
@@ -111,20 +111,20 @@ short int hi_init(char *his_file)
 	/* Doesn't exist, create */
 	if( (fp = fopen(buffer, W_MODE)) == NULL )
 	{
-	    log("$ERROR: creating MSGID history %s failed", buffer);
+	    fglog("$ERROR: creating MSGID history %s failed", buffer);
 	    return ERROR;
 	}
 	else
-	    log("creating MSGID history %s", buffer);
+	    fglog("creating MSGID history %s", buffer);
     }
     /* Open the history text file */
     BUF_EXPAND(buffer, his_file);
     if( (hi_file = fopen(buffer, A_MODE)) == NULL ) 
     {
-	log("$ERROR: open MSGID history %s failed", buffer);
+	fglog("$ERROR: open MSGID history %s failed", buffer);
 	if(check_access(buffer, CHECK_FILE) == ERROR)
 	{
-	    log("$ERROR: Premission denied %s", buffer);
+	    fglog("$ERROR: Premission denied %s", buffer);
 	    return ERROR;
 	}
     }
@@ -132,7 +132,7 @@ short int hi_init(char *his_file)
     dbzincore(1);
     /**dbzwritethrough(1);**/
     if (dbminit(buffer) == -1) {
-	log("$ERROR: dbminit %s failed", buffer);
+	fglog("$ERROR: dbminit %s failed", buffer);
 	return ERROR;
     }
     return OK;
@@ -149,11 +149,11 @@ void hi_close(void)
     if(hi_file)
     {
 	if(fclose(hi_file) == ERROR) 
-	    log("$ERROR: close MSGID history failed");
+	    fglog("$ERROR: close MSGID history failed");
 	if (dbzsync())
-	    log("$ERROR: dbzsync MSGID history failed");
+	    fglog("$ERROR: dbzsync MSGID history failed");
 	if (dbmclose() < 0)
-	    log("$ERROR: dbmclose MSGID history failed");
+	    fglog("$ERROR: dbmclose MSGID history failed");
 
 	hi_file = NULL;
     }
@@ -176,13 +176,13 @@ short int hi_write_dbc(char *rfc_msgid, char *fido_msgid, short int dont_flush)
     /* Get offset in history text file */ 
      if ( (offset = ftell(hi_file)) == ERROR) 
      {
-	log("$ERROR: ftell DBC MSGID history failed");
+	fglog("$ERROR: ftell DBC MSGID history failed");
 	return ERROR;
      } 
     } 
     else 
     { 
-	log("$ERROR: can't open MSGID history file"); 
+	fglog("$ERROR: can't open MSGID history file"); 
 	return ERROR; 
     }
     
@@ -194,7 +194,7 @@ short int hi_write_dbc(char *rfc_msgid, char *fido_msgid, short int dont_flush)
     ret = fprintf(hi_file, "%s\t%s\t%ld\n", fido_msgid, rfc_msgid, ti.time);
     if ( ret == ERROR || (!dont_flush && fflush(hi_file) == ERROR) )
     {
-	log("$ERROR: write to DBC MSGID history failed");
+	fglog("$ERROR: write to DBC MSGID history failed");
 	return ERROR;
     }
 
@@ -205,7 +205,7 @@ short int hi_write_dbc(char *rfc_msgid, char *fido_msgid, short int dont_flush)
     val.dsize = sizeof offset;
     if (dbzstore(key, val) < 0)
     {
-	log("ERROR: dbzstore of record for DBC MSGID history failed");
+	fglog("ERROR: dbzstore of record for DBC MSGID history failed");
 	return ERROR;
     }
 
@@ -229,13 +229,13 @@ short int hi_write_t(time_t t, time_t msgdate, char *msgid)
      /* Get offset in history text file */ 
      if( (offset = ftell(hi_file)) == ERROR) 
      {
-	log("$ERROR: ftell MSGID history failed");
+	fglog("$ERROR: ftell MSGID history failed");
 	return ERROR;
      }
     }
     else 
     { 
-	log("$ERROR: can't open MSGID history file"); 
+	fglog("$ERROR: can't open MSGID history file"); 
 	return ERROR; 
     }
     
@@ -244,7 +244,7 @@ short int hi_write_t(time_t t, time_t msgdate, char *msgid)
     ret = fprintf(hi_file, "%s\t%ld\n", msgid, t);
     if (ret == ERROR || fflush(hi_file) == ERROR)
     {
-	log("$ERROR: write to MSGID history failed");
+	fglog("$ERROR: write to MSGID history failed");
 	return ERROR;
     }
 
@@ -254,7 +254,7 @@ short int hi_write_t(time_t t, time_t msgdate, char *msgid)
     val.dptr  = (char *)&offset;		/* Value */
     val.dsize = sizeof offset;
     if (dbzstore(key, val) < 0) {
-	log("ERROR: dbzstore of record for MSGID history failed");
+	fglog("ERROR: dbzstore of record for MSGID history failed");
 	return ERROR;
     }
 
@@ -289,13 +289,13 @@ short int hi_write_avail(char *area, char *desc)
      /* Get offset in history text file */
      if( (offset = ftell(hi_file)) == ERROR)
      {
-	log("$ERROR: ftell MSGID history failed");
+	fglog("$ERROR: ftell MSGID history failed");
 	return ERROR;
      }
     }
     else
     {
-	log("$ERROR: can't open MSGID history file"); 
+	fglog("$ERROR: can't open MSGID history file"); 
 	return ERROR; 
     }
 
@@ -304,7 +304,7 @@ short int hi_write_avail(char *area, char *desc)
     ret = fprintf(hi_file, "%s\t%s\n", area, desc);
     if (ret == ERROR || fflush(hi_file) == ERROR)
     {
-	log("$ERROR: write to MSGID history failed");
+	fglog("$ERROR: write to MSGID history failed");
 	return ERROR;
     }
 
@@ -314,7 +314,7 @@ short int hi_write_avail(char *area, char *desc)
     val.dptr  = (char *)&offset;		/* Value */
     val.dsize = sizeof offset;
     if (dbzstore(key, val) < 0) {
-	log("ERROR: dbzstore of record for MSGID history failed");
+	fglog("ERROR: dbzstore of record for MSGID history failed");
 	return ERROR;
     }
 

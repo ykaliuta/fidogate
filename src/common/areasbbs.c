@@ -469,7 +469,7 @@ int areasbbs_rewrite(void)
      */
     if(!areasbbs_filename)
     {
-	log("$ERROR: unable to rewrite areas.bbs");
+	fglog("$ERROR: unable to rewrite areas.bbs");
 	return ERROR;
     }
 
@@ -487,19 +487,19 @@ int areasbbs_rewrite(void)
 
     if( (fp = fopen(new, W_MODE)) == NULL )
     {
-	log("$ERROR: can't open %s for writing AREAS.BBS", new);
+	fglog("$ERROR: can't open %s for writing AREAS.BBS", new);
 	return ERROR;
     }
     if( areasbbs_print(fp) == ERROR )
     {
-	log("$ERROR: writing to %s", new);
+	fglog("$ERROR: writing to %s", new);
 	fclose(fp);
 	unlink(new);
 	return ERROR;
     }
     if( fclose(fp) == ERROR )
     {
-	log("$ERROR: closing %s", new);
+	fglog("$ERROR: closing %s", new);
 	unlink(new);
 	return ERROR;
     }
@@ -541,7 +541,7 @@ int areasbbs_rewrite(void)
     debug(4, "Renaming %s -> %s", old, new);
     rename(old, new);
 
-    log("%s changed", buffer);
+    fglog("%s changed", buffer);
 
     return OK;
 }

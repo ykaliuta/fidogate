@@ -188,7 +188,7 @@ int do_netmail(Message *msg, MsgBody *body)
  */
 int do_echomail(Message *msg, MsgBody *body)
 {
-    log("WARNING: echomail message from %s not processed", znfp1(&msg->node_orig));
+    fglog("WARNING: echomail message from %s not processed", znfp1(&msg->node_orig));
     
     return OK;
 }
@@ -216,11 +216,11 @@ int do_packet(FILE *pkt_file, Packet *pkt)
     {
 	if(feof(pkt_file))
 	{
-	    log("WARNING: premature EOF reading input packet");
+	    fglog("WARNING: premature EOF reading input packet");
 	    TMPS_RETURN(OK);
 	}
 	
-	log("ERROR: reading input packet");
+	fglog("ERROR: reading input packet");
 	TMPS_RETURN(ERROR);
     }
 
@@ -231,13 +231,13 @@ int do_packet(FILE *pkt_file, Packet *pkt)
 	msg.node_to   = pkt->to;
 	if(pkt_get_msg_hdr(pkt_file, &msg) == ERROR)
 	{
-	    log("ERROR: reading input packet");
+	    fglog("ERROR: reading input packet");
 	    TMPS_RETURN(ERROR);
 	}
 	
 	/* Read & parse message body */
 	if( pkt_get_body_parse(pkt_file, &body, &msg.node_from, &msg.node_to) != OK )
-	    log("ERROR: parsing message body");
+	    fglog("ERROR: parsing message body");
 
 	/* Retrieve address information from kludges for NetMail */
 	if(body.area == NULL)
@@ -295,13 +295,13 @@ int do_file(char *pkt_name)
     /* Open packet and read header */
     pkt_file = fopen(pkt_name, R_MODE);
     if(!pkt_file) {
-	log("ERROR: can't open packet %s", pkt_name);
+	fglog("ERROR: can't open packet %s", pkt_name);
 	rename_bad(pkt_name);
 	TMPS_RETURN(OK);
     }
     if(pkt_get_hdr(pkt_file, &pkt) == ERROR)
     {
-	log("ERROR: reading header from %s", pkt_name);
+	fglog("ERROR: reading header from %s", pkt_name);
 	fclose(pkt_file);
 	rename_bad(pkt_name);
 	TMPS_RETURN(OK);
@@ -309,12 +309,12 @@ int do_file(char *pkt_name)
     
     /* Process it */
     pkt_size = check_size(pkt_name);
-    log("packet %s (%ldb) from %s to %s", pkt_name, pkt_size,
+    fglog("packet %s (%ldb) from %s to %s", pkt_name, pkt_size,
 	znfp1(&pkt.from), znfp2(&pkt.to) );
     
     if(do_packet(pkt_file, &pkt) == ERROR) 
     {
-	log("ERROR: processing %s", pkt_name);
+	fglog("ERROR: processing %s", pkt_name);
 	fclose(pkt_file);
 	rename_bad(pkt_name);
 	TMPS_RETURN(severe_error);
@@ -323,7 +323,7 @@ int do_file(char *pkt_name)
     fclose(pkt_file);
 
     if (unlink(pkt_name)) {
-	log("ERROR: can't unlink %s", pkt_name);
+	fglog("ERROR: can't unlink %s", pkt_name);
 	rename_bad(pkt_name);
 	TMPS_RETURN(ERROR);
     }
@@ -354,7 +354,7 @@ void prog_signal(int signum)
 	name = "";            break;
     }
 
-    log("WARNING: KILLED%s: exit forced", name);
+    fglog("WARNING: KILLED%s: exit forced", name);
 }
 
 
@@ -546,7 +546,7 @@ int main(int argc, char **argv)
 	dir_sortmode(DIR_SORTMTIME);
 	if(dir_open(in_dir, "*.pkt", TRUE) == ERROR)
 	{
-	    log("ERROR: can't open directory %s", in_dir);
+	    fglog("ERROR: can't open directory %s", in_dir);
 	    exit_free();
 	    exit(EXIT_ERROR);
 	}

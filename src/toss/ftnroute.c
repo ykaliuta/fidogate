@@ -112,7 +112,7 @@ int troute_scan(char *file, int flag)
     fp = fopen(file, "r");
     if(!fp)
     {
-	log("$ERROR: reading %s", file);
+	fglog("$ERROR: reading %s", file);
 	return ERROR;
     }
 
@@ -214,7 +214,7 @@ int nodelist_read(void)
 
 	if( (stat(nl_file, &statnl)) != 0 )
 	{
-	    log("$ERROR: can't stat file %s", nl_file);
+	    fglog("$ERROR: can't stat file %s", nl_file);
 	    continue;
 	}
 	if( ( stat(cf_p_hubroutedb(), &statdb)) == 0 )
@@ -226,7 +226,7 @@ int nodelist_read(void)
 	fp = fopen(nl_file, "r");
 	if(!fp)
 	{
-	    log("$ERROR: reading %s", nl_file);
+	    fglog("$ERROR: reading %s", nl_file);
 		continue;
 	}
 
@@ -292,7 +292,7 @@ int nodelist_read(void)
     }
     if(!nl_file)
     {
-	log("ERROR: can't find nodelist file in global config");
+	fglog("ERROR: can't find nodelist file in global config");
 	return ERROR;
     }
 
@@ -411,10 +411,10 @@ int do_routing(char *name, FILE *fp, Packet *pkt)
 
 
     if(node_eq(&desc->to, &pkt->to))
-	log("packet for %s (%s)", znfp1(&pkt->to),
+	fglog("packet for %s (%s)", znfp1(&pkt->to),
 	    flav_to_asc(desc->flav)                              );
     else
-	log("packet for %s via %s (%s)", znfp1(&pkt->to),
+	fglog("packet for %s via %s (%s)", znfp1(&pkt->to),
 	    znfp2(&desc->to), flav_to_asc(desc->flav)     );
 
     return desc->move_only ? do_move(name, fp, desc)
@@ -439,7 +439,7 @@ int do_move(char *name, FILE *fp, PktDesc *desc)
     debug(5, "Rename %s -> %s", name, buffer);
     if(rename(name, buffer) == ERROR)
     {
-	log("$ERROR: can't rename %s -> %s", name, buffer);
+	fglog("$ERROR: can't rename %s -> %s", name, buffer);
 	return ERROR;
     }
 
@@ -447,7 +447,7 @@ int do_move(char *name, FILE *fp, PktDesc *desc)
     if(utime(buffer, NULL) == ERROR)
     {
 #ifndef __CYGWIN32__		/* Some problems with utime() here */
-	log("$WARNING: can't set time of %s", buffer);
+	fglog("$WARNING: can't set time of %s", buffer);
 #endif
 #if 0
 	return ERROR;
@@ -597,7 +597,7 @@ int do_cmd_mkroute(PktDesc *desc, MkRoute *r1)
 		}
 		else
 		{
-		    log("ERROR: hub for node=%s not found", znfp1(&desc->to));
+		    fglog("ERROR: hub for node=%s not found", znfp1(&desc->to));
 		    break;
 		}
 
@@ -699,7 +699,7 @@ int do_packet(char *pkt_name, FILE *pkt_file, Packet *pkt, PktDesc *desc)
 	msg.node_to   = pkt->to;
 	if(pkt_get_msg_hdr(pkt_file, &msg) == ERROR)
 	{
-	    log("ERROR: reading input packet");
+	    fglog("ERROR: reading input packet");
 	    ret = ERROR;
 	    break;
 	}
@@ -717,7 +717,7 @@ int do_packet(char *pkt_name, FILE *pkt_file, Packet *pkt, PktDesc *desc)
 	 */
 	if( pkt_get_body_parse(pkt_file, &body, &msg.node_from, &msg.node_to) != OK )
 	{
-	    log("ERROR: parsing message body");
+	    fglog("ERROR: parsing message body");
 	    fclose(pkt_file);
 	    TMPS_RETURN(ERROR);
 	}
@@ -774,13 +774,13 @@ int do_packet(char *pkt_name, FILE *pkt_file, Packet *pkt, PktDesc *desc)
 
     if(fclose(pkt_file) == ERROR)
     {
-	log("$ERROR: can't close packet %s", pkt_name);
+	fglog("$ERROR: can't close packet %s", pkt_name);
 	TMPS_RETURN(severe_error=ERROR);
     }
 
     if(ret == OK && *pkt_name != '\0')
 	if ( unlink(pkt_name)) {
-	    log("$ERROR: can't unlink packet %s", pkt_name);
+	    fglog("$ERROR: can't unlink packet %s", pkt_name);
 	    TMPS_RETURN(ERROR);
 	}
 
@@ -802,13 +802,13 @@ int do_file(char *pkt_name)
      */
     pkt_file = fopen(pkt_name, R_MODE);
     if(!pkt_file) {
-	log("$ERROR: can't open packet %s", pkt_name);
+	fglog("$ERROR: can't open packet %s", pkt_name);
 	TMPS_RETURN(ERROR);
     }
 
     if(pkt_get_hdr(pkt_file, &pkt) == ERROR)
     {
-	log("ERROR: reading header from %s", pkt_name);
+	fglog("ERROR: reading header from %s", pkt_name);
 	TMPS_RETURN(ERROR);
     }
 
@@ -817,7 +817,7 @@ int do_file(char *pkt_name)
      */
     if(do_routing(pkt_name, pkt_file, &pkt) == ERROR) 
     {
-	log("ERROR: in processing %s", pkt_name);
+	fglog("ERROR: in processing %s", pkt_name);
 	TMPS_RETURN(ERROR);
     }
 
@@ -903,7 +903,7 @@ void prog_signal(int signum)
 	name = "";            break;
     }
 
-    log("KILLED%s: exit forced", name);
+    fglog("KILLED%s: exit forced", name);
 }
 
 
@@ -1144,7 +1144,7 @@ int main(int argc, char **argv)
 	    }
 	    else
 	    {
-		log("$ERROR: can't open directory %s", in_dir);
+		fglog("$ERROR: can't open directory %s", in_dir);
 		exit_free();
 		exit(EX_OSERR);
 	    }
@@ -1166,7 +1166,7 @@ int main(int argc, char **argv)
 	dir_sortmode(DIR_SORTMTIME);
 	if(dir_open(in_dir, pattern, TRUE) == ERROR)
 	{
-	    log("$ERROR: can't open directory %s", in_dir);
+	    fglog("$ERROR: can't open directory %s", in_dir);
 	    exit_free();
 	    exit(EX_OSERR);
 	}

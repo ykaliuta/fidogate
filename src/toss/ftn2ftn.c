@@ -109,7 +109,7 @@ int do_message(Node *gate, Message *msg, MsgBody *body)
      */
     if(body->area)
     {
-	log("ftn2ftn: skipping EchoMail");
+	fglog("ftn2ftn: skipping EchoMail");
 	return ERROR;
     }
     
@@ -195,7 +195,7 @@ int unpack(Node *gate, FILE *pkt_file, Packet *pkt)
 	
 	if( pkt_get_body_parse(pkt_file, &body, &msg.node_from, &msg.node_to) != OK )
 	{
-	    log("ftn2ftn: error parsing message body");
+	    fglog("ftn2ftn: error parsing message body");
 	    TMPS_RETURN(ERROR);
 	}
 	/* Retrieve address information from body */
@@ -228,13 +228,13 @@ int unpack_file(Node *gate, char *pkt_name)
      */
     pkt_file = fopen(pkt_name, R_MODE);
     if(!pkt_file) {
-	log("$Can't open packet %s", pkt_name);
+	fglog("$Can't open packet %s", pkt_name);
 	exit_free();
 	exit(EX_OSERR);
     }
     if(pkt_get_hdr(pkt_file, &pkt) == ERROR)
     {
-	log("Error reading header from %s", pkt_name);
+	fglog("Error reading header from %s", pkt_name);
 	exit_free();
 	exit(EX_OSERR);
     }
@@ -245,7 +245,7 @@ int unpack_file(Node *gate, char *pkt_name)
     if(unpack(gate, pkt_file, &pkt) != OK) 
     {
 	fclose(pkt_file);
-	log("Error in unpacking %s", pkt_name);
+	fglog("Error in unpacking %s", pkt_name);
 	exit_free();
 	exit(EX_OSERR);
     }
@@ -253,7 +253,7 @@ int unpack_file(Node *gate, char *pkt_name)
     fclose(pkt_file);
 
     if (unlink(pkt_name)) {
-	log("$Could not unlink packet %s", pkt_name);
+	fglog("$Could not unlink packet %s", pkt_name);
 	exit_free();
 	exit(EX_OSERR);
     }

@@ -133,7 +133,7 @@ int main(int argc, char **argv)
     /* Run ftnaf */
     BUF_COPY2(cmd, cf_p_bindir(), "/ftnaf");
     if( execv(cmd, filefix ? args_filefix : args_areafix) == ERROR )
-	log("ERROR: can't exec %s", cmd);
+	fglog("ERROR: can't exec %s", cmd);
 	
     /* Only reached if error */
     exit(1);

@@ -96,9 +96,9 @@ int pkt_get_line(FILE *fp, char *buf, int size)
 	    /* orphan 0-byte, skip */
 	    pos = ftell(fp);
 	    if(pos == ERROR)
-		log("pkt_get_line(): orphan 0-char (can't determine offset)");
+		fglog("pkt_get_line(): orphan 0-char (can't determine offset)");
 	    else
-		log("pkt_get_line(): orphan 0-char (offset=%ld)", pos);
+		fglog("pkt_get_line(): orphan 0-char (offset=%ld)", pos);
 	    if(c1)
 	    {
 		size--;
@@ -120,7 +120,7 @@ int pkt_get_line(FILE *fp, char *buf, int size)
 	    if(c1 == 0)			/* Looks like it is ... */
 	    {
 		*p = 0;
-		log("pkt_get_line(): grunged packet");
+		fglog("pkt_get_line(): grunged packet");
 		return MSG_TYPE;
 	    }
 	    *p++ = c;
@@ -250,7 +250,7 @@ static int msg_body_parse_echomail(MsgBody *body)
 
     if(p == NULL)
     {
-	log("ERROR: parsing echomail message: no ^APATH or SEEN-BY line");
+	fglog("ERROR: parsing echomail message: no ^APATH or SEEN-BY line");
 	return -2;
     }
 
@@ -326,7 +326,7 @@ static int msg_body_parse_echomail(MsgBody *body)
 
     if(body->seenby.n==0)
     {
-	log("ERROR: parsing echomail message: no SEEN-BY line");
+	fglog("ERROR: parsing echomail message: no SEEN-BY line");
 	return -2;
     }
     if(body->tear==NULL || body->origin==NULL)
@@ -582,7 +582,7 @@ short int pkt_get_body_parse(FILE *fp, MsgBody *body, Node *from, Node *to)
 		do_flag = PARSE_BLANK;
 	    else
 	    {
-		log("ERROR: no found HI kludge in message");
+		fglog("ERROR: no found HI kludge in message");
 		return ERROR;
 	    }
 		
@@ -801,11 +801,11 @@ short int pkt_get_body_parse(FILE *fp, MsgBody *body, Node *from, Node *to)
     {
     	if(feof(fp))
 	{
-	    log("WARNING: premature EOF reading input packet");
+	    fglog("WARNING: premature EOF reading input packet");
 	}
 	else
 	{
-	    log("ERROR: reading input packet");
+	    fglog("ERROR: reading input packet");
 	    TMPS_RETURN(ERROR);
 	}
     }

@@ -89,7 +89,7 @@ char *strerror(int errnum)
  * If first character in format string is '$', output errno and error
  * string too.
  */
-void log(const char *fmt, ...)
+void fglog(const char *fmt, ...)
 {
     va_list args;
     FILE *fp;

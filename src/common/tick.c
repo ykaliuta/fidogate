@@ -105,7 +105,7 @@ int tick_put(Tick *tic, char *name, mode_t mode)
 
     if(!creat(name, mode))
     {
-	log("ERROR: can't create file %s (%s)", name, strerror(errno));
+	fglog("ERROR: can't create file %s (%s)", name, strerror(errno));
 	return ERROR;
     }
 
@@ -113,7 +113,7 @@ int tick_put(Tick *tic, char *name, mode_t mode)
 	return ERROR;
 
 //    if(chmod(name, mode) == -1)
-//	log("WARNING: can't change mode for file %s (%s)", name, strerror(errno));
+//	fglog("WARNING: can't change mode for file %s (%s)", name, strerror(errno));
     
     fprintf(fp, "Area %s\r\n", tic->area);
     fprintf(fp, "Origin %s\r\n", znf1(&tic->origin));
@@ -153,7 +153,7 @@ int tick_get(Tick *tic, char *name)
     
     if((fp = fopen(name, R_MODE)) == NULL)
     {
-	log("$WARNING: can't open file %s for reading (%s)", name, strerror(errno));
+	fglog("$WARNING: can't open file %s for reading (%s)", name, strerror(errno));
 	return ERROR;
     }
 
@@ -352,7 +352,7 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
 #ifndef FECHO_PASSTHROUGHT
     if(bink_attach(node, 0, name, flav, TRUE) == ERROR)
     {
-	log("$WARNING: can't attach file %s for %s", name, znfp1(node));
+	fglog("$WARNING: can't attach file %s for %s", name, znfp1(node));
 	return ERROR;
     }
 #else
@@ -360,7 +360,7 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
     {
 	if(!pass_path)
 	{
-	    log("$ERROR: config: PassthroughtBoxesDir not defined");
+	    fglog("$ERROR: config: PassthroughtBoxesDir not defined");
 	    return ERROR;
 	}
 
@@ -370,7 +370,7 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
 	    
 	if(mkdir_r(buffer, DIR_MODE) == ERROR)
 	{
-	    log("$WARNING: can't create dir %s", buffer);
+	    fglog("$WARNING: can't create dir %s", buffer);
 	    return ERROR;
 	}
 	BUF_APPEND2(buffer, "/", tic->file);
@@ -390,7 +390,7 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
 	    else if(errno == EEXIST)
 	    {
 #ifndef OVERWRITEN_FECHO_FILE_TO_LINK
-		log("$ERROR: can't link file %s -> %s (%s)", name, buffer,
+		fglog("$ERROR: can't link file %s -> %s (%s)", name, buffer,
 			    strerror(errno));
 		return ERROR;
 #else
@@ -400,7 +400,7 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
 	    }
 	    else
 	    {
-	    	log("$ERROR: can't link file %s -> %s, %s", name, buffer,
+	    	fglog("$ERROR: can't link file %s -> %s, %s", name, buffer,
 			strerror(errno));
 		return ERROR;
 	    }
@@ -437,7 +437,7 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
 #else
     if(!pass_path)
     {
-        log("$ERROR: config: PassthroughtBoxesDir not defined");
+        fglog("$ERROR: config: PassthroughtBoxesDir not defined");
         return ERROR;
     }
 
@@ -446,7 +446,7 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
            node->point);
     if(mkdir_r(buffer, DIR_MODE) == ERROR)
     {
-	log("$ERROR: can't create dir %s", buffer);
+	fglog("$ERROR: can't create dir %s", buffer);
 	return ERROR;
     }
 #endif /* USE_FILEBOX */
@@ -459,7 +459,7 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
     debug(4, "creating %s", buffer);
     if(tick_put(tic, buffer, mode) == ERROR)
     {
-	log("ERROR: tick_put() return -1");
+	fglog("ERROR: tick_put() return -1");
 	return ERROR;
     }
     
@@ -472,7 +472,7 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
 	return ERROR;
 #endif /* USE_FILEBOX */
 
-    log("area %s file %s (%lub) to %s",
+    fglog("area %s file %s (%lub) to %s",
 	tic->area, tic->file, tic->size, znfp1(node));
 
     return OK;
@@ -526,7 +526,7 @@ int copy_file(char *old, char *new, char *dir)
 	nr = fread(buffer, sizeof(char), sizeof(buffer), fold);
 	if(ferror(fold))
 	{
-	    log("$ERROR: can't read from %s", old);
+	    fglog("$ERROR: can't read from %s", old);
 	    fclose(fold);
 	    fclose(fnew);
 	    unlink(new);
@@ -536,7 +536,7 @@ int copy_file(char *old, char *new, char *dir)
 	nw = fwrite(buffer, sizeof(char), nr, fnew);
 	if(ferror(fnew))
 	{
-	    log("$ERROR: can't write to %s", new);
+	    fglog("$ERROR: can't write to %s", new);
 	    fclose(fold);
 	    fclose(fnew);
 	    unlink(new);

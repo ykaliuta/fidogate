@@ -159,14 +159,14 @@ void unpack(char *inb)
 
 		if(!a)
 		{
-		    log("unknown archive %s, moving archive to %s/bad", 
+		    fglog("unknown archive %s, moving archive to %s/bad", 
 			    dir->d_name, inb);
 		    move(archive, inb, "/bad/", dir->d_name);
 		    continue;
 		}
 
 		debug(5, "found %s (%s)", dir->d_name, a->name);
-		log("archive %s (%s)", archive, a->name);
+		fglog("archive %s (%s)", archive, a->name);
 
 		if(run_unpack(a->list, a->unarc, archive, a->name))
 		{
@@ -175,7 +175,7 @@ void unpack(char *inb)
 		}
 		else
 		{
-		    log("WARNING: moving to bad");
+		    fglog("WARNING: moving to bad");
 		    move(archive, inb, "/bad/", dir->d_name);
 		    continue;
 		}
@@ -255,7 +255,7 @@ int run_unpack(char *cmd_list, char *cmd_unarc, char *archive, char *type)
 
     if(!(fp = popen(line, R_MODE)))
     {
-    	log("ERROR: can't open pipe to %s", line);
+    	fglog("ERROR: can't open pipe to %s", line);
     }
     if(strcmp(type, "ZIP") == 0)
     {
@@ -269,25 +269,25 @@ int run_unpack(char *cmd_list, char *cmd_unarc, char *archive, char *type)
 	    {
 		if(atol(s)/10 > check_size(archive))
 		{
-		    log("WARNING: compression archive %s is biggest then 10", archive);
+		    fglog("WARNING: compression archive %s is biggest then 10", archive);
 		    return FALSE;
 		}
 	    }
 	    else
 	    {
-		log("WARNING: unpack failed, compresser returns:");
+		fglog("WARNING: unpack failed, compresser returns:");
 		str_printf(line, sizeof(line), cmd_list, archive);
 
 		if(!(fp = popen(line, R_MODE)))
 		{
-    		    log("ERROR: can't open pipe to %s", line);
+    		    fglog("ERROR: can't open pipe to %s", line);
 		}
 		else
 		{
 		    while(fgets(line, MAXPATH, fp))
 		    {
 			line[strlen(line)-1] = 0;
-			log("WARNING: %s", line);
+			fglog("WARNING: %s", line);
 		    }
 		    pclose(fp);
 		    return FALSE;
@@ -560,7 +560,7 @@ void run_toss(Runtoss *a)
 #endif
 	    (drive.f_ffree > 100))
     {
-	log("ERROR: MinDiskfree limit. Disk is full!");
+	fglog("ERROR: MinDiskfree limit. Disk is full!");
 	return;
     }
 #else
@@ -568,13 +568,13 @@ void run_toss(Runtoss *a)
     {
 	 char *str;
 	 if(!(str = subs(p,"%p",a->inbound))) {
-	      log("ERROR: can't subs macros");
+	      fglog("ERROR: can't subs macros");
 	      return;
 	 }
 	 
 	if( !(fp = popen(str, R_MODE)) )
 	{
-	    log("ERROR: can't open pipe");
+	    fglog("ERROR: can't open pipe");
 	}
 	else
 	{
@@ -584,7 +584,7 @@ void run_toss(Runtoss *a)
 	    if((s = xstrtok(NULL, " \t")))
 		if(atol(s) > minfree)
 		{
-	    	    log("ERROR: MinDiskfree limit. Disk %s is full!", p);
+	    	    fglog("ERROR: MinDiskfree limit. Disk %s is full!", p);
 		    pclose(fp);
 		    return;
 		}
@@ -602,7 +602,7 @@ void run_toss(Runtoss *a)
 	if(ret == 2) continue;
 	if(ret != 11 && ret != 0 && ret != 768 && ret != 512)
 	{
-	    log("$WARNING: ftntoss returned %d", ret);
+	    fglog("$WARNING: ftntoss returned %d", ret);
 	    unlock_program(PROGRAM);
 	    exit_free();
 	    exit(1);
@@ -611,7 +611,7 @@ void run_toss(Runtoss *a)
 	state = system_run(buffer);
 	if(state !=0 && state != 11)
 	{
-	    log("$WARNING: ftnroute returned %d", state);
+	    fglog("$WARNING: ftnroute returned %d", state);
 	    unlock_program(PROGRAM);
 	    exit_free();
 	    exit(1);
@@ -621,7 +621,7 @@ void run_toss(Runtoss *a)
 				, a->grade, verbose_flag);
 	if((state = system_run(buffer)) !=0 )
 	{
-	    log("$WARNING: ftnpack returned %d", state);
+	    fglog("$WARNING: ftnpack returned %d", state);
 	    unlock_program(PROGRAM);
 	    exit_free();
 	    exit(1);
@@ -672,7 +672,7 @@ void send_fidogate(void)
     sprintf(buffer,"%s/log-news", cf_p_logdir());
     log_file(buffer);
 
-    log("begin %s", batch);
+    fglog("begin %s", batch);
 #ifdef OLD_BATCHER
     sprintf(buf,"%s/batcher -N 20 -b500000 -p\"%s/rfc2ftn -b \
 	    -n %s\" fidogate %s", cf_p_newsbindir(), libexecdir, verbose_flag, batch);
@@ -739,7 +739,7 @@ void do_dir( char *input)
 		    if(b_flag)
 			if ( (ret = system_run(b_flag)) != 0)
 			{
-			    log("$WARNING: before toss script return %d", ret);
+			    fglog("$WARNING: before toss script return %d", ret);
 			    unlock_program(PROGRAM);
 			    exit_free();
 			    exit(2);
@@ -750,7 +750,7 @@ void do_dir( char *input)
 		    if(a_flag)
 			if( (ret = system_run(a_flag)) != 0)
 			{
-			    log("$WARNING: after toss script return %d", ret);
+			    fglog("$WARNING: after toss script return %d", ret);
 		    	    unlock_program(PROGRAM);
 			    exit_free();
 			    exit(2);
@@ -765,7 +765,7 @@ void do_dir( char *input)
 		{
 		    if( (ret = run_tick(p->inbound)) != 0)
 		    {
-			log("$WARNING: ftntick return %d status", ret);
+			fglog("$WARNING: ftntick return %d status", ret);
 		    }
 		}
 		else

@@ -85,7 +85,7 @@ static Alias *alias_parse_line( char *buf ) {
             }
             if( f != NULL ) {
                 if( asc_to_node( n, &node, FALSE ) == ERROR ) {
-	            log( "hosts: illegal FTN address %s", n );
+	            fglog( "hosts: illegal FTN address %s", n );
 	            return NULL;
                 }
                 p = ( Alias * )xmalloc( sizeof( Alias ) );

@@ -86,7 +86,7 @@ static Regex *regex_parse_line(char *s)
     p->re_s = strsave(s);
     err = regcomp(&p->re_c, p->re_s, REG_EXTENDED|REG_ICASE);
     if(err) {
-	log("WARNING: error compiling regex %s", p->re_s);
+	fglog("WARNING: error compiling regex %s", p->re_s);
 	xfree(p);
 	return NULL;
     }

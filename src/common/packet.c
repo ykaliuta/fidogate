@@ -189,7 +189,7 @@ static FILE *pkt_open_node(Node *node, char *flav, int bsy)
 	if(fp == NULL)
 	{
 	    /* If this failed we're out of luck ... */
-	    log("$ERROR: can't open OUT file %s", out);
+	    fglog("$ERROR: can't open OUT file %s", out);
 	    break;
 	}
 
@@ -210,7 +210,7 @@ static FILE *pkt_open_node(Node *node, char *flav, int bsy)
 	if(lock_file(fp))
 	{
 	    /* Lock error ... */
-	    log("$ERROR: can't lock OUT file %s", out);
+	    fglog("$ERROR: can't lock OUT file %s", out);
 	    fclose(fp);
 	    fp = NULL;
 	    break;
@@ -243,7 +243,7 @@ static FILE *pkt_open_node(Node *node, char *flav, int bsy)
     if(fseek(fp, 0L, SEEK_END) == -1)
     {
 	/* fseek() error ... */
-	log("$ERROR: fseek EOF OUT file %s failed", out);
+	fglog("$ERROR: fseek EOF OUT file %s failed", out);
 	if(bsy)
 	    bink_bsy_delete(node);
 	fclose(fp);
@@ -252,7 +252,7 @@ static FILE *pkt_open_node(Node *node, char *flav, int bsy)
     if( (pos = ftell(fp)) == -1L )
     {
 	/* ftell() error ... */
-	log("$ERROR: ftell OUT file %s failed", out);
+	fglog("$ERROR: ftell OUT file %s failed", out);
 	if(bsy)
 	    bink_bsy_delete(node);
 	fclose(fp);
@@ -284,7 +284,7 @@ static FILE *pkt_open_node(Node *node, char *flav, int bsy)
 	/* Rest is filled in by pkt_put_hdr() */
 	if(pkt_put_hdr(fp, &pkt) == ERROR)
 	{
-	    log("$ERROR: can't write to packet file %s", out);
+	    fglog("$ERROR: can't write to packet file %s", out);
 	    if(bsy)
 		bink_bsy_delete(node);
 	    fclose(fp);
@@ -303,7 +303,7 @@ static FILE *pkt_open_node(Node *node, char *flav, int bsy)
 	if(fseek(fp, -2L, SEEK_END) == -1)
 	{
 	    /* fseek() error ... */
-	    log("$ERROR: fseek EOF-2 OUT file %s failed", out);
+	    fglog("$ERROR: fseek EOF-2 OUT file %s failed", out);
 	    if(bsy)
 		bink_bsy_delete(node);
 	    fclose(fp);
@@ -311,7 +311,7 @@ static FILE *pkt_open_node(Node *node, char *flav, int bsy)
 	}
 	if( pkt_get_int16(fp) != 0L )
 	{
-	    log("$ERROR: malformed packet %s, no terminating 0-word", out);
+	    fglog("$ERROR: malformed packet %s, no terminating 0-word", out);
 	    if(bsy)
 		bink_bsy_delete(node);
 	    fclose(fp);
@@ -320,7 +320,7 @@ static FILE *pkt_open_node(Node *node, char *flav, int bsy)
 	if(fseek(fp, -2L, SEEK_END) == -1)
 	{
 	    /* fseek() error ... */
-	    log("$ERROR: fseek EOF-2 OUT file %s failed", out);
+	    fglog("$ERROR: fseek EOF-2 OUT file %s failed", out);
 	    if(bsy)
 		bink_bsy_delete(node);
 	    fclose(fp);
@@ -346,7 +346,7 @@ static FILE *pkt_create(Node *to)
     
     if((packet_file = fopen(packet_tmp, W_MODE)) == NULL)
     {
-	log("$ERROR: pkt_open(): can't create packet %s", packet_tmp);
+	fglog("$ERROR: pkt_open(): can't create packet %s", packet_tmp);
 	return NULL;
     }
     
@@ -376,7 +376,7 @@ static FILE *pkt_create(Node *to)
     /* Rest is filled in by pkt_put_hdr() */
     if(pkt_put_hdr(packet_file, &pkt) == ERROR)
     {
-	log("$ERROR: can't write to packet file %s", packet_tmp);
+	fglog("$ERROR: can't write to packet file %s", packet_tmp);
 	return NULL;
     }
 
@@ -440,7 +440,7 @@ int pkt_close(void)
 	if( strcmp(packet_tmp, packet_name) )
 	    if(rename(packet_tmp, packet_name) == ERROR)
 	    {
-		log("$ERROR: can't rename %s to %s", packet_tmp, packet_name);
+		fglog("$ERROR: can't rename %s to %s", packet_tmp, packet_name);
 		ret = ERROR;
 	    }
     }
@@ -496,7 +496,7 @@ time_t pkt_get_date(FILE *fp)
 	return ERROR;
     if( len != MSG_MAXDATE)
     {
-	log("ERROR: wrong date size in message header (%d bytes instead %d)", len,
+	fglog("ERROR: wrong date size in message header (%d bytes instead %d)", len,
 		MSG_MAXDATE);
 	return ERROR;
     }
@@ -510,7 +510,7 @@ time_t pkt_get_date(FILE *fp)
         return parsedate(buf, NULL);
     }
 
-    log("ERROR: wrong date format in message header %s", buf);
+    fglog("ERROR: wrong date format in message header %s", buf);
     return ERROR;
 
 }

@@ -72,7 +72,7 @@ long sequencer_nx(char *seqname, int err_abort)
     {
 	if(err_abort) 
 	{
-	    log("$ERROR: can't access sequencer file %s", filename);
+	    fglog("$ERROR: can't access sequencer file %s", filename);
 	    exit(EX_OSFILE);
 	}
 	else

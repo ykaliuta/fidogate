@@ -63,7 +63,7 @@ int mail_open(int sel)
 	str_printf(m_name, sizeof(m_name), "%s/%08ld.rfc", mail_dir, n);
 	m_file = fopen(m_tmp, W_MODE);
 	if(!m_file) {
-	    log("$Can't create mail file %s", m_tmp);
+	    fglog("$Can't create mail file %s", m_tmp);
 	    return ERROR;
 	}
 	break;
@@ -75,13 +75,13 @@ int mail_open(int sel)
 	str_printf(n_name, sizeof(n_name), "%s/%08ld.rfc", news_dir, n);
 	n_file = fopen(n_tmp, W_MODE);
 	if(!n_file) {
-	    log("$Can't create mail file %s", n_tmp);
+	    fglog("$Can't create mail file %s", n_tmp);
 	    return ERROR;
 	}
 	break;
 
     default:
-	log("mail_open(%d): illegal value", sel);
+	fglog("mail_open(%d): illegal value", sel);
 	return ERROR;
     }
 
@@ -124,7 +124,7 @@ void mail_close(int sel)
     case 'M':
 	fclose(m_file);
 	if(rename(m_tmp, m_name) == ERROR)
-	    log("$Can't rename mail file %s to %s", m_tmp, m_name);
+	    fglog("$Can't rename mail file %s to %s", m_tmp, m_name);
 
 	m_tmp[0]  = 0;
 	m_name[0] = 0;
@@ -135,7 +135,7 @@ void mail_close(int sel)
     case 'N':
 	fclose(n_file);
 	if(rename(n_tmp, n_name) == ERROR)
-	    log("$Can't rename mail file %s to %s", n_tmp, n_name);
+	    fglog("$Can't rename mail file %s to %s", n_tmp, n_name);
 
 	n_tmp[0]  = 0;
 	n_name[0] = 0;

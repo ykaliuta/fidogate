@@ -816,7 +816,7 @@ void do_deletepath(LON *path)
  */
 int do_unknown_area (char *areaname, Message *msg, MsgBody *body) {
 
-    log("unknown area %s from %s", areaname, znfp1(&msg->node_from) );
+    fglog("unknown area %s from %s", areaname, znfp1(&msg->node_from) );
     msgs_unknown++;
     if(kill_unknown)
 	return do_bad_msg(msg, body);
@@ -863,7 +863,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
     if (node_eq(&node2, &msg->node_orig))
     {
 	/* No origin line address => bad message */
-	log("bad echomail (no origin addr) area %s from %s",
+	fglog("bad echomail (no origin addr) area %s from %s",
 	    areaname,
 	    znfp1(&msg->node_from));
 	++msgs_insecure;
@@ -876,7 +876,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 	    0 != pkt->from.point && !node_eq(&msg->node_orig, &pkt->from))
     {
         /* forged origin line address => bad mesage */
-        log("bad echomail (forged origin addr) area %s from %s",
+        fglog("bad echomail (forged origin addr) area %s from %s",
 	    areaname,
 	    znfp1(&msg->node_from));
 	++msgs_insecure;
@@ -899,7 +899,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 	    NULL != (pwd = passwd_lookup("packet", &msg->node_from)) &&
 	    !stricmp(pkt->passwd, pwd->passwd))
 	{
-	    log("node %s not authorized to create area %s (%s pkt password)",
+	    fglog("node %s not authorized to create area %s (%s pkt password)",
 		znfp1(&msg->node_from),	areaname,
 		('\0' == *(pkt->passwd)) ? "no" : "bad");
 	    /* Unknown area */
@@ -909,7 +909,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 
 	if ( !authorized_new )
 	{
-	    log("node %s not authorized to create area %s (config restriction)",
+	    fglog("node %s not authorized to create area %s (config restriction)",
 		znfp1(&msg->node_from),	areaname);
 	    /* Unknown area */
 	    do_unknown_area(areaname, msg, body);
@@ -918,7 +918,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 
 	if ( areafix_check_forbidden_area( areaname ) )
 	{
-	    log("area %s is forbidden to create", areaname);
+	    fglog("area %s is forbidden to create", areaname);
 	    /* Unknown area */
 	    do_unknown_area(areaname, msg, body);
 	    return OK;
@@ -932,7 +932,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 
 	if ( OK != cmd_new_int (&msg->node_from, autocreate_cmd, NULL) )
 	{
-	    log("can't create area %s from %s (cmd_new() returned ERROR)",
+	    fglog("can't create area %s from %s (cmd_new() returned ERROR)",
 	        areaname, znfp1(&msg->node_from));
 	    do_unknown_area(areaname, msg, body);
 	    return OK;
@@ -940,13 +940,13 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 
 	if( NULL == (area = areasbbs_lookup (areaname)) )
 	{
-	    log("can't create area %s from %s (not found after creation)",
+	    fglog("can't create area %s from %s (not found after creation)",
 		areaname, znfp1(&msg->node_from));
 	    do_unknown_area(areaname, msg, body);
 	    return OK;
 	}
 
-	log("created area %s from %s", areaname, znfp1(&msg->node_from));
+	fglog("created area %s from %s", areaname, znfp1(&msg->node_from));
 
 	/*
 	 * Create newsgroup if needed.
@@ -962,11 +962,11 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 	        BUF_COPY2(autocreate_ng_cmd, "%N/ngoper create ", autocreate_area->group);
 		ret = run_system(autocreate_ng_cmd);
 		if (0 != ret)
-		    log("can't create newsgroup (rc != 0)");
+		    fglog("can't create newsgroup (rc != 0)");
 	    }
 	    else
 	    {
-		log("can't create newsgroup (not found in areas)");
+		fglog("can't create newsgroup (not found in areas)");
 	    }
 	}
 #endif /* !ACTIVE_LOOKUP */
@@ -1009,7 +1009,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 	    /* If KillNoMSGID ... */
 	    if(kill_nomsgid)
 	    {
-		log("no ^AMSGID treated as dupe from %s(%s): %s",
+		fglog("no ^AMSGID treated as dupe from %s(%s): %s",
 		    znfp1(&msg->node_from), znfp2(&pkt->from),  area->area);
 		msgs_dupe++;
 		(area->msgs_dupe)++;
@@ -1022,7 +1022,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 	    /* No ^AMSGID, use sender, date and checksum */
 	    if(msg_parse_origin(body->origin, &msg->node_orig) == ERROR)
 	    {
-		log("invalid * Origin treated as dupe from %s(%s): %s",
+		fglog("invalid * Origin treated as dupe from %s(%s): %s",
 		    znfp1(&msg->node_from), znfp2(&pkt->from), area->area);
 		msgs_dupe++;
 		(area->msgs_dupe)++;
@@ -1048,7 +1048,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 	{
 	    if(msg->date < exp_sec)
 	    {
-		log("message too old, treated as dupe: %s origin %s(%s) date %s",
+		fglog("message too old, treated as dupe: %s origin %s(%s) date %s",
 		    area->area, znfp1(&msg->node_orig), znfp2(&pkt->from),
 		    date(DATE_FTS_0001, &msg->date)                          );
 		msgs_dupe++;
@@ -1063,7 +1063,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 	if(hi_test(msgid))
 	{
 	    /* Dupe! */
-	    log("dupe from %s(%s): %s", znfp1(&msg->node_from), 
+	    fglog("dupe from %s(%s): %s", znfp1(&msg->node_from), 
 		    znfp2(&pkt->from), msgid);
 	    msgs_dupe++;
 	    (area->msgs_dupe)++;
@@ -1100,7 +1100,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 	   ! is_local_addr(&msg->node_to, FALSE)   )
 	{
 	    /* Routed EchoMail */
-	    log("routed echomail area %s from %s to %s", area->area,
+	    fglog("routed echomail area %s from %s to %s", area->area,
 		znfp1(&msg->node_from),
 		znfp2(&msg->node_to)                    );
 	    msgs_routed++;
@@ -1120,7 +1120,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 	    ! lon_search(&area->nodes, &msg->node_from)   )
 	{
 	    /* Insecure EchoMail */
-	    log("insecure echomail area %s from %s", area->area,
+	    fglog("insecure echomail area %s from %s", area->area,
 		znfp1(&msg->node_from)              );
 	    msgs_insecure++;
 	    (area->msgs_insecure)++;
@@ -1138,7 +1138,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 		&(msg->node_from)))
         if (ftnacl_isreadonly(&msg->node_from, area->area, TYPE_ECHO))
 	{
-	    log( "echomail to read only area %s from %s", area->area,
+	    fglog( "echomail to read only area %s from %s", area->area,
 		    znfp1(&msg->node_from)              );
 
 	    tl_appendf(&notify, "%s,Sysop,Toss Daemon,insecure echomail,\r\n\
@@ -1191,12 +1191,12 @@ area have status read-only\r\n\r\n\
     /* Make sure that sender is in PATH */
     if (NULL == path.last)
     {
-        log("WARNING: packet hasn't ^APATH, was added %s", nf1(&pkt->from));
+        fglog("WARNING: packet hasn't ^APATH, was added %s", nf1(&pkt->from));
         lon_add(&path, &pkt->from);
     }
     else if (!node_eq_echo(&path.last->node, &pkt->from))
     {
-	log("WARNING: last addr ^APATH (%s) isn't eq to addr in pkt header(%s)", znfp1(&path.last->node), znfp2(&pkt->from));
+	fglog("WARNING: last addr ^APATH (%s) isn't eq to addr in pkt header(%s)", znfp1(&path.last->node), znfp2(&pkt->from));
 	lon_add(&path, &pkt->from);
     }
 #endif /* SECURITY */
@@ -1252,7 +1252,7 @@ area have status read-only\r\n\r\n\
     if(check_path && do_check_path(&path)==ERROR)
     {
 	    /* Circular ^APATH EchoMail */
-	    log("circular path echomail area %s from %s to %s",
+	    fglog("circular path echomail area %s from %s to %s",
 		area->area, znfp1(&msg->node_from),
 		znfp2(&msg->node_to)                 );
 	    msgs_path++;
@@ -1270,7 +1270,7 @@ area have status read-only\r\n\r\n\
     if ( !lon_is_uplink(&(area->nodes), area->uplinks, &(msg->node_from)) &&
 	    areasbbs_isstate(area->state, 'W'))
     {
-	log ("Area %s have status W, rename to bad", area->area);
+	fglog("Area %s have status W, rename to bad", area->area);
     	lon_delete(&seenby);
 	lon_delete(&path);
 	lon_delete(&new);
@@ -1298,7 +1298,7 @@ area have status 'W' (no traffic from uplink)\r\n\r\n\
 	    areasbbs_isstate(area->state, 'W') ||
 	    areasbbs_isstate(area->state, 'F'))
 	{
-	    log("setting state 'S' for area %s", area->area);
+	    fglog("setting state 'S' for area %s", area->area);
 	    areasbbs_chstate(&(area->state), "UWF", 'S');
 	}
 	else
@@ -1388,7 +1388,7 @@ void do_rewrite(Message *msg)
 	    if(r->type==CMD_REWRITE || (r->type==CMD_REWRITE_FROM && 
 		    wildmatch(msg->name_from, r->name, TRUE)))
 	    {
-		log("rewrite(from): %s @ %s -> %s", msg->name_from,
+		fglog("rewrite(from): %s @ %s -> %s", msg->name_from,
 			znfp1(&msg->node_from),
 			znfp2(&r->to));
 
@@ -1400,7 +1400,7 @@ void do_rewrite(Message *msg)
 	    if(r->type==CMD_REWRITE ||(r->type==CMD_REWRITE_TO &&
 		    wildmatch(msg->name_to, r->name, TRUE))) 
 	    {
-		log("rewrite(to): %s @ %s -> %s", msg->name_from,
+		fglog("rewrite(to): %s @ %s -> %s", msg->name_from,
 			znfp1(&msg->node_from),
 			znfp2(&r->to));
 
@@ -1446,11 +1446,11 @@ int do_remap(Message *msg)
 	    if(! node_eq(&node, &msg->node_to))
 	    {
 		if(r->type == CMD_REMAP_TO)
-		    log("remapto: %s @ %s -> %s", msg->name_to,
+		    fglog("remapto: %s @ %s -> %s", msg->name_to,
 			znfp1(&node),
 			!kill ? znfp2(&msg->node_to) : "KILLED");
 		if(r->type == CMD_REMAP_FROM)
-		    log("remapfrom: %s @ %s -> %s", msg->name_from,
+		    fglog("remapfrom: %s @ %s -> %s", msg->name_from,
 			znfp1(&msg->node_from),
 			!kill ? znfp2(&msg->node_to) : "KILLED");
 	    }
@@ -1503,17 +1503,17 @@ int do_netmail(Packet *pkt, Message *msg, MsgBody *body, int forwarded)
 
     if(log_netmail)
 #ifndef SPYES
-	log("MAIL: %s @ %s -> %s @ %s",
+	fglog("MAIL: %s @ %s -> %s @ %s",
 	    msg->name_from, znfp1(&msg->node_from),
 	    msg->name_to  , znfp2(&msg->node_to) );
 #else
     {
 	if ( forwarded )
-	    log("FORWARDED MAIL: %s @ %s -> %s @ %s",
+	    fglog("FORWARDED MAIL: %s @ %s -> %s @ %s",
 		msg->name_from, znfp1(&msg->node_from),
 		msg->name_to  , znfp2(&msg->node_to) );
 	else
-	    log("MAIL: %s @ %s -> %s @ %s",
+	    fglog("MAIL: %s @ %s -> %s @ %s",
 		msg->name_from, znfp1(&msg->node_from),
 		msg->name_to  , znfp2(&msg->node_to) );
     }
@@ -1524,7 +1524,7 @@ int do_netmail(Packet *pkt, Message *msg, MsgBody *body, int forwarded)
      */
     if(msg->attr & MSG_FILE)
     {
-	log("file attach %s", msg->subject);
+	fglog("file attach %s", msg->subject);
     }
     
     /*
@@ -1534,7 +1534,7 @@ int do_netmail(Packet *pkt, Message *msg, MsgBody *body, int forwarded)
     {
 	if( is_local_addr(&msg->node_to, FALSE) )
 	{
-	    log("killing empty msg from %s @ %s",
+	    fglog("killing empty msg from %s @ %s",
 		msg->name_from, znfp1(&msg->node_from));
 	    msgs_empty++;
 	    
@@ -1648,11 +1648,11 @@ int unpack(FILE *pkt_file, Packet *pkt)
     {
 	if(feof(pkt_file))
 	{
-	    log("$WARNING: premature EOF reading input packet");
+	    fglog("$WARNING: premature EOF reading input packet");
 	    TMPS_RETURN(OK);
 	}
 	
-	log("ERROR: reading input packet");
+	fglog("ERROR: reading input packet");
 	TMPS_RETURN(ERROR);
     }
 
@@ -1666,7 +1666,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 
 	if(pkt_get_msg_hdr(pkt_file, &msg) == ERROR)
 	{
-	    log("ERROR: reading input packet");
+	    fglog("ERROR: reading input packet");
 	    TMPS_RETURN(ERROR);
 	}
 	
@@ -1681,11 +1681,11 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	{
 	    if(feof(pkt_file))
 	    {
-		log("$WARNING: premature EOF reading input packet");
+		fglog("$WARNING: premature EOF reading input packet");
 	    }
 	    else
 	    {
-		log("ERROR: reading input packet");
+		fglog("ERROR: reading input packet");
 		TMPS_RETURN(ERROR);
 	    }
 	}
@@ -1696,11 +1696,11 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	 * Parse message body
 	 */
 	if( msg_body_parse(&tl, &body) == -2 )
-	    log("ERROR: parsing message body");
+	    fglog("ERROR: parsing message body");
 #else
 	if(pkt_get_body_parse(pkt_file, &body, &msg.node_from, &msg.node_to) != OK)
 	{
-	    log("ERROR: parsing message body");
+	    fglog("ERROR: parsing message body");
 	    return ERROR;
 	}
 	msgs_in++;
@@ -1821,13 +1821,13 @@ int unpack_file(char *pkt_name)
     /* Open packet and read header */
     pkt_file = fopen(pkt_name, R_MODE);
     if(!pkt_file) {
-	log("$ERROR: can't open packet %s", pkt_name);
+	fglog("$ERROR: can't open packet %s", pkt_name);
 	rename_bad(pkt_name);
 	TMPS_RETURN(OK);
     }
     if(pkt_get_hdr(pkt_file, &pkt) == ERROR)
     {
-	log("ERROR: reading header from %s", pkt_name);
+	fglog("ERROR: reading header from %s", pkt_name);
 	fclose(pkt_file);
 	rename_bad(pkt_name);
 	TMPS_RETURN(OK);
@@ -1835,14 +1835,14 @@ int unpack_file(char *pkt_name)
     
     /* Unpack it */
     pkt_size = check_size(pkt_name);
-    log("packet %s (%ldb) from %s to %s", pkt_name, pkt_size,
+    fglog("packet %s (%ldb) from %s to %s", pkt_name, pkt_size,
 	znfp1(&pkt.from), znfp2(&pkt.to) );
     pkts_in++;
     pkts_bytes += pkt_size;
     
     if(unpack(pkt_file, &pkt) == ERROR) 
     {
-	log("ERROR: processing %s", pkt_name);
+	fglog("ERROR: processing %s", pkt_name);
 	fclose(pkt_file);
 	rename_bad(pkt_name);
 	TMPS_RETURN(severe_error);
@@ -1851,7 +1851,7 @@ int unpack_file(char *pkt_name)
     fclose(pkt_file);
 
     if (unlink(pkt_name)) {
-	log("$ERROR: can't unlink %s", pkt_name);
+	fglog("$ERROR: can't unlink %s", pkt_name);
 	rename_bad(pkt_name);
 	TMPS_RETURN(ERROR);
     }
@@ -1882,7 +1882,7 @@ void prog_signal(int signum)
 	name = "";            break;
     }
 
-    log("KILLED%s: exit forced", name);
+    fglog("KILLED%s: exit forced", name);
     if(strspn(name, "SIGHUP"));
 	exit(EX_USAGE);
 }
@@ -2292,7 +2292,7 @@ int main(int argc, char **argv)
 	dir_sortmode(DIR_SORTMTIME);
 	if(dir_open(in_dir, "*.pkt", TRUE) == ERROR)
 	{
-	    log("$ERROR: can't open directory %s", in_dir);
+	    fglog("$ERROR: can't open directory %s", in_dir);
 	    unlock_path(bbslock);
 	    exit_free();
 	    exit(EX_OSERR);
@@ -2425,20 +2425,20 @@ int main(int argc, char **argv)
 
 		if ( area->msgs_in == area->msgs_out )
 		{
-		    log( "area %-35s: msgs in: %-3u out: %-3u size: %li",
+		    fglog( "area %-35s: msgs in: %-3u out: %-3u size: %li",
 			 area->area, area->msgs_in, area->msgs_out,
 			 area->msgs_size );
 		}
 		else
 		{
 #  ifndef FTN_ACL
-		    log( "area %-35s: msgs in: %-3u out: %-3u size: %li killed: %u/%u/%u/%u",
+		    fglog( "area %-35s: msgs in: %-3u out: %-3u size: %li killed: %u/%u/%u/%u",
 			 area->area, area->msgs_in, area->msgs_out,
 			 area->msgs_size, area->msgs_routed,
 			 area->msgs_insecure, area->msgs_dupe,
 			 area->msgs_path );
 #  else
-		    log( "area %-35s: msgs in: %-3u out: %-3u size: %li killed: %u/%u/%u/%u/%u",
+		    fglog( "area %-35s: msgs in: %-3u out: %-3u size: %li killed: %u/%u/%u/%u/%u",
 			 area->area, area->msgs_in, area->msgs_out,
 			 area->msgs_size, area->msgs_routed,
 			 area->msgs_insecure, area->msgs_dupe, area->msgs_path,
@@ -2451,35 +2451,35 @@ int main(int argc, char **argv)
     }
     
     if(pkts_in)
-	log("pkts processed: %ld, %ld Kbyte in %ld s, %.2f Kbyte/s",
+	fglog("pkts processed: %ld, %ld Kbyte in %ld s, %.2f Kbyte/s",
 	    pkts_in, pkts_bytes/1024, toss_delta,
 	    (double)pkts_bytes/1024./toss_delta                      );
     
     if(msgs_in)
     {
-	log("msgs processed: %ld in, %ld out (%ld mail, %ld echo)",
+	fglog("msgs processed: %ld in, %ld out (%ld mail, %ld echo)",
 	    msgs_in, msgs_netmail+msgs_echomail, msgs_netmail, msgs_echomail);
-	log("msgs processed: %ld in %ld s, %.6f msgs/s",
+	fglog("msgs processed: %ld in %ld s, %.6f msgs/s",
 	    msgs_in, toss_delta, (double)msgs_in/toss_delta);
     }
     
     if(msgs_unknown || msgs_routed || msgs_insecure || msgs_empty)
-	log("msgs killed:    %ld empty, %ld unknown, %ld routed, %ld insecure",
+	fglog("msgs killed:    %ld empty, %ld unknown, %ld routed, %ld insecure",
 	    msgs_empty, msgs_unknown, msgs_routed, msgs_insecure             );
 #ifdef FTN_ACL
     if(msgs_readonly)
-	log("msgs killed:    %ld to read only areas", msgs_readonly);
+	fglog("msgs killed:    %ld to read only areas", msgs_readonly);
 #endif /* FTN_ACL */
     if(dupe_check && msgs_dupe)
-	log("msgs killed:    %ld dupe", msgs_dupe);
+	fglog("msgs killed:    %ld dupe", msgs_dupe);
     if(check_path && msgs_path)
-	log("msgs killed:    %ld circular path", msgs_path);
+	fglog("msgs killed:    %ld circular path", msgs_path);
 
     if(notify.n > 0)
 	send_request(&notify);
 
     if ( ERROR == areasbbs_rewrite() )
-	log("error while rewriting areas.bbs");
+	fglog("error while rewriting areas.bbs");
 
     unlock_path(bbslock);
     

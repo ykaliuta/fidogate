@@ -81,7 +81,7 @@ int hatch(char *area, char *file, char *desc)
     if( (bbs = areasbbs_lookup(area)) == NULL )
     {
 	/* Unknown area: log it, dump it. ;-) */
-	log("ERROR: unknown area %s", area);
+	fglog("ERROR: unknown area %s", area);
 	return EXIT_ERROR;
     }
     if( bbs->zone != -1 )
@@ -99,7 +99,7 @@ int hatch(char *area, char *file, char *desc)
     BUF_COPY3(file_name, bbs->dir, "/", file);
     if(stat(file_name, &st) == ERROR)
     {
-	log("$ERROR: can't stat() file %s", file_name);
+	fglog("$ERROR: can't stat() file %s", file_name);
 	return EXIT_ERROR;
     }
     file_size = st.st_size;
@@ -322,7 +322,7 @@ int main(int argc, char **argv)
     /* Read FAreas.BBS */
     if(areasbbs_init(areas_bbs) == ERROR)
     {
-	log("$ERROR: can't open %s", areas_bbs);
+	fglog("$ERROR: can't open %s", areas_bbs);
 	ret = EX_OSFILE;
     }
     

@@ -42,10 +42,10 @@ void rename_bad(char *name)
 
     str_change_ext(bad, sizeof(bad), name, ".bad");
     
-    log("ERROR: bad packet renamed to %s", bad);
+    fglog("ERROR: bad packet renamed to %s", bad);
     if(rename(name, bad) == ERROR)
     {
-	log("$ERROR: can't rename %s -> %s", name, bad);
+	fglog("$ERROR: can't rename %s -> %s", name, bad);
 	return;
     }
     

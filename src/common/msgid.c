@@ -450,10 +450,10 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
 	}
 	if (hi_init_dbc() == ERROR)
 	{
-	    log ("can't open dbc file");
+	    fglog ("can't open dbc file");
 	}
 	if(hi_write_dbc(message_id, tmps->s, dont_flush) == ERROR)
-    	    log ("can't write to dbc file");
+    	    fglog ("can't write to dbc file");
 	hi_close();
 	unlock_program(cf_p_lock_history());
     }

@@ -308,7 +308,7 @@ int mkdir_r(char *dir, mode_t mode)
 
 	if(check_access(tmp, CHECK_DIR) != TRUE)
 	{
-	    log("make directory %s", tmp);
+	    fglog("make directory %s", tmp);
 	    if(mkdir(tmp, mode) != 0)
 		return ERROR;
 	}

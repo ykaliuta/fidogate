@@ -105,7 +105,7 @@ short active_init( void ) {
         }
         fclose( active );
     } else {
-	log( "$ERROR: open news active file %s failed", name );
+	fglog( "$ERROR: open news active file %s failed", name );
 	return ERROR;
     }
 

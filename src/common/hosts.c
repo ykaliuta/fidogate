@@ -80,7 +80,7 @@ static Host *hosts_parse_line(char *buf)
     
     if( asc_to_node(f, &node, FALSE) == ERROR )
     {
-	log("hosts: illegal FTN address %s", f);
+	fglog("hosts: illegal FTN address %s", f);
 	return NULL;
     }
 

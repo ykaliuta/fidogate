@@ -194,7 +194,7 @@ unsigned long crc32_file(char *name)
     
     if((fp = fopen(name, R_MODE)) == NULL)
     {
-	log("$crc32_file(): can't open %s", name);
+	fglog("$crc32_file(): can't open %s", name);
 	return 0;
     }
     
