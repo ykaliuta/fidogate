@@ -410,10 +410,10 @@ int areafix_auth_check(Node *node, char *passwd, int checkpass)
 	debug(3, "authorized for NEW command");
 	authorized_new = TRUE;
     }
-    if(strchr(authorized_key, '&'))                                                            
-    {                                                                                          
-        debug(3, "authorized for FORWARD request");                                                
-        authorized_fwd = TRUE;                                                                 
+    if(strchr(authorized_key, '&'))
+    {
+        debug(3, "authorized for FORWARD request");
+        authorized_fwd = TRUE;
     }
     if(strchr(authorized_key, '~'))
     {
