@@ -821,8 +821,10 @@ short int pkt_get_body_parse(FILE *fp, MsgBody *body, Node *from, Node *to)
 	    debug(9, "WARNING: no ' * Origin:' line!");
 #ifdef INSERT_ORIGIN
 	    sprintf(buffer, " * Origin: (%s)\r", znfp1(from));
-	    body->origin = strsave(buffer);
+#else
+	    sprintf(buffer, " * Origin: \r");
 #endif
+	    body->origin = strsave(buffer);
 	}
 	if( body->seenby.n == 0 )
 	{
