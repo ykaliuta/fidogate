@@ -171,11 +171,19 @@ short int hi_write_dbc(char *rfc_msgid, char *fido_msgid, short int dont_flush)
     TIMEINFO ti;
 
     GetTimeInfo(&ti);
-    /* Get offset in history text file */
-    if( (offset = ftell(hi_file)) == ERROR)
+    if (hi_file)
     {
+    /* Get offset in history text file */ 
+    if( (offset = ftell(hi_file)) == ERROR) 
+     {
 	log("$ERROR: ftell DBC MSGID history failed");
 	return ERROR;
+     } 
+    } 
+    else 
+    { 
+     log("$ERROR: can't open MSGID history file"); 
+     return ERROR; 
     }
 
     /* Write MSGID line to history text file */
@@ -213,13 +221,21 @@ short int hi_write_t(time_t t, time_t msgdate, char *msgid)
     int ret;
     datum key, val;
 
-    /* Get offset in history text file */
-    if( (offset = ftell(hi_file)) == ERROR)
+    if (hi_file)
     {
+     /* Get offset in history text file */ 
+     if( (offset = ftell(hi_file)) == ERROR) 
+     {
 	log("$ERROR: ftell MSGID history failed");
 	return ERROR;
+     }
     }
-
+    else 
+    { 
+	log("$ERROR: can't open MSGID history file"); 
+	return ERROR; 
+    }
+    
     /* Write MSGID line to history text file */
     debug(7, "history: offset=%ld: %s %ld", offset, msgid, t);
     ret = fprintf(hi_file, "%s\t%ld\n", msgid, t);
@@ -265,11 +281,19 @@ short int hi_write_avail(char *area, char *desc)
     int ret;
     datum key, val;
 
-    /* Get offset in history text file */
-    if( (offset = ftell(hi_file)) == ERROR)
+    if (hi_file)
     {
+     /* Get offset in history text file */
+     if( (offset = ftell(hi_file)) == ERROR)
+     {
 	log("$ERROR: ftell MSGID history failed");
 	return ERROR;
+     }
+    }
+    else
+    {
+	log("$ERROR: can't open MSGID history file"); 
+	return ERROR; 
     }
 
     /* Write MSGID line to history text file */
