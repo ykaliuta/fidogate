@@ -111,10 +111,10 @@ FAreasBBS	%V/fareas.bbs
 ##############################################################################
 
 # hostname and domain
-Hostname	HOSTNAME
-Domain		DOMAINNAME
+Hostname	<HOSTNAME>
+Domain		<DOMAINNAME>
 # optional domain name for entries in HOSTS file
-#HostsDomain	HOSTNAME.DOMAINNAME
+#HostsDomain	<HOSTNAME><DOMAINNAME>
 
 #AddressIsLocalForXPost  *[@.]vsu.ru,*[@.]f8.n5025.z2.fidonet.org
 #AddressIsLocalForXPost	*@corex.izhora.spb.ru,*@f1229.n5030.z2.fidonet.org
