@@ -1078,10 +1078,6 @@ int main(int argc, char **argv)
     
     if(p_flag)
     {
-#ifndef AMIGADOS_4D_OUTBOUND
-	DIR *dp;
-	struct dirent *dir;
-#endif /* !AMIGADOS_4D_OUTBOUND */
 	char buf[MAXPATH];
 	char *base;
 	char *btbase;
@@ -1131,34 +1127,28 @@ int main(int argc, char **argv)
 		continue;
 #endif
 	    }
-
 #ifndef AMIGADOS_4D_OUTBOUND
-
 	    /* Open and read directory */
-	    if( (dp = opendir(buf)) )
+	    if(dir_open(buf, "?????????.pnt", TRUE) == ERROR)
 	    {
-		char buf2[MAXPATH];
-
-		while((dir = readdir(dp)))
-		    if(strlen(dir->d_name) == 12 &&
-				(strncmp(&dir->d_name[9],".pnt",4)))
-	    	    {
-			BUF_COPY3(buf2, buf, "/", dir->d_name);
-			if(do_repack(buf2, pattern, repack_time) == ERROR)
-			{
-			    ret = EXIT_ERROR;
-			    break;
-			}
-	    	    }
-		closedir(dp);
-		if(ret == EXIT_ERROR)
-		    break;
+		fglog("$ERROR: can't open directory %s", buf);
+		exit_free();
+		exit(EX_OSERR);
 	    }
 	    else
 	    {
-		fglog("$ERROR: can't open directory %s", in_dir);
-		exit_free();
-		exit(EX_OSERR);
+		char *buf2;
+		for(buf2=dir_get(TRUE); buf2; buf2=dir_get(FALSE))
+		{
+		    if(do_repack(buf2, pattern, repack_time) == ERROR)
+		    {
+			ret = EXIT_ERROR;
+			break;
+		    }
+	    	}
+		dir_close(buf);
+		if(ret == EXIT_ERROR)
+		    break;
 	    }
 #endif /* !AMIGADOS_4D_OUTBOUND */
 	}

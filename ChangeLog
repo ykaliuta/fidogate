@@ -1,3 +1,8 @@
+2004-07-23  Andrey Slusar <anray@users.sourceforge.net>
+
+	* src/toss/ftnroute.c: change opendir() to
+	    dir_open(), readdir() to dir_get()
+
 2004-07-22  Andrey Slusar <anray@users.sourceforge.net>
 
 	* src/areafix/areafix.c: change opendir() to
