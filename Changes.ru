@@ -4,6 +4,12 @@
 
 Version 5.2.1ds
 ~~~~~~~~~~~~~~~
+- Теперь конвертор чарсетмапов `charsetc' инсталлируется в libexec.
+- В ftnhatch добавлена опция --replaces.
+- Дефайн HAVE_REGEX_H переименован в HAS_POSIX_REGEX.
+- Если система, для которой собирается fidogate, поддерживает posix regex,
+  то по умолчанию дефайн HAS_POSIX_REGEX включается автоматически
+  configure-скриптом.
 - В основной конфигфайл добавлена опция AllowEmptyPwd, разрешающая тоссить
   беспарольные пакеты. На свои пакеты при этом ставятся пароли, прописанные
   в passwd.
@@ -11,10 +17,11 @@ Version 5.2.1ds
   и всегда равен "0".
 - AREAFIXMAXSTR по умолчанию теперь 150 строк.
 - Если включен SingleArticles, игнорируется опция FTNInRecombine.
-- В config.h.in добавлен ключ для сборки c поддержкой ньюссервера SN.
-- Если опции AutoCreateRenumberCmd в конфиге нет, то она просто
-  пропускается.
-- При компиляции с опцией AMIGADOS_4D_OUTBOUND, для исходящих пакетов
+- Добавлен send-fidogate.snews и send-fidogate.sn - соответственно
+  send-fidogate для работы с ньюссервером s-news и sn.
+- В config.h.in добавлен дефайн для сборки c поддержкой ньюссервера SN.
+- Если опции AutoCreateRenumberCmd в конфиге нет, то она пропускается.
+- При компиляции с опцией AMIGADOS_4D_OUTBOUND для исходящих пакетов
   используется outbound для Zone = default.
 - nl-autoupd берет DIFFDIR, NLDIR, NLFDIR из основного конфига.
 - confval выводит параметры в stdout, а не в stderr и если указан ключ -p
