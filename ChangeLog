@@ -1,3 +1,7 @@
+2004-01-25  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/areafix/areafix.c: change disable AF_AVAIL
+
 2004-01-23  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/gate/ftn2rfc.c: add NoRfcKludge

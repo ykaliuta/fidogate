@@ -697,9 +697,11 @@ int areafix_do_cmd(Node *node, char *line, Textlist *out, Textlist *upl)
 	    cmd = CMD_ACTIVE;
 	else if(!stricmp(buf, "resume"))
 	    cmd = CMD_ACTIVE;
-#ifdef AF_AVAIL
 	else if(!stricmp(buf, "avail"))
+#ifdef AF_AVAIL
 	    cmd = CMD_AVAIL;
+#else
+	    cmd = CMD_LISTALL;
 #endif /* AF_AVAIL */
 	else
 	{
