@@ -1,3 +1,11 @@
+2004-01-12  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* doc/examples: fixes
+
+2004-01-09  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* doc/FAQ.ru: update
+
 2003-12-29  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/areafix/areafix.c: fix forward requests(thanks

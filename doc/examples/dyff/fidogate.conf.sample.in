@@ -632,7 +632,7 @@ NoFSC0035ifAlias
 # sendmail program path and parameters
 #
 #    %s is replaced with the envelope sender
-FTNInSendmail	/usr/sbin/sendmail -f%s -t
+FTNInSendmail	<SENDMAIL> -f%s -t
 
 # rnews program path
 FTNInRnews	<RNEWS>

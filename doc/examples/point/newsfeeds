@@ -8,5 +8,5 @@
 #   NewsPathTail fidogate!not-for-mail
 # to your fidogate.conf!
 fidogate\
-	:!*,fido.ger.*,fido.test\
+	:!*,fido.*,cc.*\
 	:Tf,Wnb:fidogate
