@@ -1401,18 +1401,19 @@ int snd_message(Message *msg, Area *parea,
     {
 	if((header = s_header_getcomplete("Message-ID")))
 	{
+#ifdef FIDO_STYLE_MSGID
 	    if((id = s_msgid_rfc_to_fido(&flag, header, part, split != 0, msg->area,
 					 dont_flush_dbc_history, 0)))
 	    {
-#ifdef FIDO_STYLE_MSGID
 	     if(!echogate_alias)
 		fprintf(sf, "\001MSGID: %s %s\r\n", znfp1(&msg->node_from), id);
 	     else
 		fprintf(sf, "\001MSGID: %s %s\r\n", znf1(node_from), id);
+	    }
 #else
+	    if((id = s_msgid_rfc_to_fido(&flag, header, part, split != 0, msg->area)))
 		fprintf(sf, "\001MSGID: %s\r\n", id);
 #endif
-	    }
 	}	
 	else
 	    print_local_msgid(sf, node_from);
@@ -1420,7 +1421,11 @@ int snd_message(Message *msg, Area *parea,
 	if((header = s_header_getcomplete("References")) ||
 	   (header = s_header_getcomplete("In-Reply-To")))
 	{
+#ifdef FIDO_STYLE_MSGID
 	    if((id = s_msgid_rfc_to_fido(&flag, header, 0, 0, msg->area, 0, 1)))
+#else
+	    if((id = s_msgid_rfc_to_fido(&flag, header, 0, 0, msg->area)))
+#endif
 		fprintf(sf, "\001REPLY: %s\r\n", id);
 	}
     }
@@ -1433,7 +1438,11 @@ int snd_message(Message *msg, Area *parea,
 	if((header = s_header_getcomplete("References")) ||
 	   (header = s_header_getcomplete("In-Reply-To")))
 	{
+#ifdef FIDO_STYLE_MSGID
 	    if((id = s_msgid_rfc_to_fido(&flag, header, 0, 0, msg->area, 0, 1)))
+#else
+	    if((id = s_msgid_rfc_to_fido(&flag, header, 0, 0, msg->area)))
+#endif
 		fprintf(sf, "\001REPLY: %s\r\n", id);
 	}
     }

@@ -1,3 +1,9 @@
+2004-01-20  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/rfc2ftn.c: fix disable FIDO_STYLE_MSGID
+	* src/include/prototypes.h: fix disable FIDO_STYLE_MSGID
+	* src/common/msgid.c: fix disable FIDO_STYLE_MSGID
+
 2004-01-19  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/gate/ftn2rfc.c: add NEW_COMMENT_TO

@@ -271,9 +271,14 @@ char *s_msgid_default(Message *msg)
 /*
  * Convert RFC Message-ID/References to FIDO ^AMSGID/^AREPLY
  */
+#ifdef FIDO_STYLE_MSGID
 char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
 			  int part, int split, char *area, short int dont_flush,
 			  int for_reply)
+#else
+char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
+			  int part, int split, char *area)
+#endif
     /* origid_flag - Flag for ^AORIGID */
     /* message_id  - Original RFC-ID */
     /* part        - part number */
