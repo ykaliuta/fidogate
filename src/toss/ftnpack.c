@@ -1032,8 +1032,13 @@ int do_packing(char *name, FILE *fp, Packet *pkt)
 	/* Unknown grade/type for .pkt's files */
 	pktdesc.from  = pkt->from;
 	pktdesc.to    = pkt->to;
+#ifdef DO_NOT_TOSS_NETMAIL
+	pktdesc.grade = 'p';
+	pktdesc.type  = 'n';
+#else
 	pktdesc.grade = '-';
 	pktdesc.type  = '-';
+#endif /* DO_NOT_TOSS_NETMAIL */
 	pktdesc.flav  = FLAV_NORMAL;
 	
 	desc = &pktdesc;

@@ -1,5 +1,9 @@
 2004-01-31  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
+	* src/toss/ftnpack.c: add DO_NOT_TOSS_NETMAIL
+	    (thanks to Andrew Zhuravlev)
+	* src/toss/ftntoss.c: change DO_NOT_TOSS_NETMAIL
+	    (thanks to Andrew Zhuravlev)
 	* packages/freebsd: update freebsd port
 
 2004-01-30  Andrey Slusar <rusfidogate@users.sourceforge.net>

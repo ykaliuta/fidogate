@@ -70,7 +70,7 @@ int	do_echomail		(Packet *, Message *, MsgBody *);
 int	do_unknown_area		(char *, Message *, MsgBody *);
 #ifdef DO_NOT_TOSS_NETMAIL
 void	add_via			(Textlist *, Node *);
-#endif /* !DO_NOT_TOSS_NETMAIL */
+#endif /* DO_NOT_TOSS_NETMAIL */
 void	change_addr		(Node *, Node *);
 void	do_rewrite		(Message *);
 int	do_remap		(Message *);
@@ -1575,10 +1575,13 @@ int do_netmail(Packet *pkt, Message *msg, MsgBody *body, int forwarded)
 
 #ifdef DO_NOT_TOSS_NETMAIL
     pkt_outdir(cf_p_netmaildir(), NULL);
-#endif /* !DO_NOT_TOSS_NETMAIL */
 
+    /* dirty hack for more compatible with other soft */
+    fp = outpkt_open(cf_addr(), &msg->node_to, 'a', 'a', 'a', FALSE);
+#else
     /* Open output packet */
     fp = outpkt_open(cf_addr(), &msg->node_to, g_flag, 'n', flav, FALSE);
+#endif /* DO_NOT_TOSS_NETMAIL */
 
     if(fp == NULL)
 	return severe_error=ERROR;
