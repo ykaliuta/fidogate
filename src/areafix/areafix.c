@@ -2430,7 +2430,7 @@ void areafix_set_changed(void)
 }
 
 /*
- * Sending subscribe/unsubscribe requset to uplinks
+ * Sending subscribe/unsubscribe requests to uplinks
  */
 void send_request(Textlist *upl)
 {

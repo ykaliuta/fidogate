@@ -500,19 +500,21 @@ time_t pkt_get_date(FILE *fp)
 		MSG_MAXDATE);
 	return ERROR;
     }
-    // firts date format - FTS         `20 Dec 02  14:26:03'
+    // first date format - FTS         `20 Dec 02  14:26:03'
     // second date dormat - nostandart `Thu 12 Dec 02 18:19'
-    if ( (buf[2]==' ' && buf[6]==' ' && buf[9]== ' ' && buf[10]==' ' &&
-		buf[13] == ':' && buf[16] == ':') ||
-	 (buf[3]==' ' && buf[6]==' ' && buf[10]==' ' && buf[13]==' ' &&
-		 buf[16] == ':') )
+    if(buf[2]==' ' && buf[6]==' ' && buf[9]==' ')
     {
-        return parsedate(buf, NULL);
+	if(buf[10]==' ' && buf[13]==':' && buf[16]==':')
+	    return parsedate(buf, NULL);
+	if(buf[12]==':' && buf[15]==':' && buf[18]==' ')
+	{
+	    fglog("WARNING: unnecessary space in date, message header \'%s\'", buf);
+	    return parsedate(buf, NULL);
+	}
     }
 
-    fglog("ERROR: wrong date format in message header %s", buf);
+    fglog("ERROR: wrong date format in message header \'%s\'", buf);
     return ERROR;
-
 }
 
 
