@@ -1,3 +1,7 @@
+2004-02-06  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/areafix/areafix.c: fix support gcc<3.0
+
 2004-02-02  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* acconfig.h: change rfc_lvl_1

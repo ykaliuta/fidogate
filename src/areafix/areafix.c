@@ -1367,12 +1367,15 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
 {
     AreasBBS *p;
     LON *l;
-    char *s;
+    char *s, *mark;
     int key_ok;
     int list_f=FALSE;
 #ifdef AFSEND_ECHO_STATUS
     char tmp[35];
 #endif /* AFSEND_ECHO_STATUS */
+#ifdef FTN_ACL
+    char *mark_r, *mark_m;
+#endif /* FTN_ACL */
 #ifdef AF_AVAIL
     int print_all = FALSE;
 #endif /* AF_AVAIL */
@@ -1415,10 +1418,6 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
     if (flag == TRUE || !(s = cf_get_string("AvailFile", TRUE)))
     {
 #endif
-	char *mark;
-#ifdef FTN_ACL
-	char *mark_r, *mark_m;
-#endif /* FTN_ACL */
 	for(p=areasbbs_first(); p; p=p->next)
 	{
 
