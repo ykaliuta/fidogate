@@ -2193,11 +2193,13 @@ int main(int argc, char **argv)
 	debug(8, "config: HostsRestricted");
 	addr_restricted(TRUE);
     }
+#ifndef FIDO_STYLE_MSGID
     if( (p = cf_get_string("RFCLevel", TRUE)) )
     {
 	debug(8, "config: RFCLevel %s", p);
 	default_rfc_level = atoi(p);
     }
+#endif
     if(cf_get_string("UseOrganizationForOrigin", TRUE))
     {
 	debug(8, "config: UseOrganizationForOrigin");

@@ -4,6 +4,9 @@
 
 Version 5.2.1ds
 ~~~~~~~~~~~~~~~
+- При компиляции с FIDO_STYLE_MSGID RFCLevel в fidogate.conf игнорируется.
+  и всегда равен "0".
+- AREAFIXMAXSTR по умолчанию теперь 150 строк.
 - Если включен SingleArticles, игнорируется опция FTNInRecombine.
 - В config.h.in добавлен ключ для сборки c поддержкой ньюссервера SN.
 - Если опции AutoCreateRenumberCmd в конфиге нет, то она просто

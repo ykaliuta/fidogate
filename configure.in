@@ -294,8 +294,8 @@ AC_ARG_WITH(7bit-charset,
     AC_DEFINE_UNQUOTED(CHARSET_STD7BIT,"$withval"),AC_DEFINE_UNQUOTED(CHARSET_STD7BIT, "us-ascii"))
 
 AC_ARG_WITH(afix-maxstr,
-[  --with-afix-maxstr=AFS set maximum strings in areafix reports [79] ],
-    AC_DEFINE_UNQUOTED(AREAFIXMAXSTR,$withval),AC_DEFINE_UNQUOTED(AREAFIXMAXSTR, 79))
+[  --with-afix-maxstr=AFS set maximum strings in areafix reports [150] ],
+    AC_DEFINE_UNQUOTED(AREAFIXMAXSTR,$withval),AC_DEFINE_UNQUOTED(AREAFIXMAXSTR, 150))
 
 AC_ARG_ENABLE(aliases-local,
 [  --enable-aliases-local  rewrite addresses found in ALIASES so that the sender's address is the gateway address],

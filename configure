@@ -912,7 +912,7 @@ Optional Packages:
   --with-ftn-charset=CHS  set default assumed charset for Fido messages cp866
   --with-rfc-charset=CHS  set default assumed charset for RFC messages if without MIME headers koi8-r
   --with-7bit-charset=CHS set default charset for RFC messages with forced 7bit encoding us-ascii
-  --with-afix-maxstr=AFS set maximum strings in areafix reports 79
+  --with-afix-maxstr=AFS set maximum strings in areafix reports 150
   --with-desc-dir=DIR     put file descriptions into ".desc/%s.desc" file instead of files.bbs
 
 Some influential environment variables:
@@ -8093,7 +8093,7 @@ _ACEOF
 
 else
   cat >>confdefs.h <<_ACEOF
-#define AREAFIXMAXSTR 79
+#define AREAFIXMAXSTR 150
 _ACEOF
 
 fi;
