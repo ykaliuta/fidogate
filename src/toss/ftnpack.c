@@ -413,7 +413,11 @@ char *arcmail_name(Node *node, char *dir)
     else
     {
 	/* Outbound dir + zone dir */
+#ifndef AMIGADOS_4D_OUTBOUND
 	if((base = cf_zones_out(node->zone)) == NULL)
+#else
+	if((base = cf_zones_out(0)) == NULL)
+#endif
 	    return NULL;
 	BUF_COPY4(buf, cf_p_btbasedir(), "/", base, "/");
     }

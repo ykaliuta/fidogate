@@ -99,7 +99,11 @@ char *bink_out_name(Node *node)
     static char buf[MAXPATH];
     char *out, *outbound;
     
+#ifndef AMIGADOS_4D_OUTBOUND
     out = cf_zones_out(node->zone);
+#else
+    out = cf_zones_out(0);
+#endif
     if(!out)
 	return NULL;
     outbound = cf_p_btbasedir();
@@ -428,7 +432,11 @@ int bink_mkdir(Node *node)
      * Outbound dir + zone dir
      */
     BUF_COPY2(buf, cf_p_btbasedir(), "/");
+#ifndef AMIGADOS_4D_OUTBOUND
     if((base = cf_zones_out(node->zone)) == NULL)
+#else
+    if((base = cf_zones_out(0)) == NULL)
+#endif
 	return ERROR;
     BUF_APPEND(buf, base);
     base = buf + strlen(buf);

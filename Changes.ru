@@ -4,6 +4,8 @@
 
 Version 5.2.1ds
 ~~~~~~~~~~~~~~~
+- При компиляции с опцией AMIGADOS_4D_OUTBOUND, для исходящих пакетов
+  используется outbound для Zone = default.
 - nl-autoupd берет DIFFDIR, NLDIR, NLFDIR из основного конфига.
 - confval выводит параметры в stdout, а не в stderr и если указан ключ -p
   с параметром, то выводится только само значение параметра.

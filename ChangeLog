@@ -1,3 +1,12 @@
+2004-06-30  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/common/binkley.c: if enable AMIGADOS_4D_OUTBOUND,
+	    then using outbound for default zone
+	* src/toss/ftnpack.c: if enable AMIGADOS_4D_OUTBOUND,
+	    then using outbound for default zone
+	* src/toss/ftnroute.c: if enable AMIGADOS_4D_OUTBOUND,
+	    then using outbound for default zone
+
 2004-06-23  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/gate/ftn2rfc.c: add coding some headers
