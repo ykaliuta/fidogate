@@ -1279,11 +1279,11 @@ int cmd_listall(Node *node)
 		    {
 			if(!*buf)
 			    continue;
-			f2 = xstrtok(str_upper(buf),  " \t");
+			f2 = xstrtok(buf,  " \t");
 			f1 = xstrtok(NULL,  "\n");
 
 			find = FALSE;
-			if(hi_test(f2))
+			if(hi_test(str_upper(f2)))
 			    find = TRUE;
 
 			if(!find)
