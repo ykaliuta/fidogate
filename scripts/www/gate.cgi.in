@@ -8,29 +8,16 @@ use CGI::Carp;
 $ENV{"PATH"} = "/bin:/usr/bin";
 $ENV{"CDPATH"} = "";
 
-<INCLUDE config.pl>
-
-# read config
-my $CONFIG = "<CONFIG_MAIN>";
-CONFIG_read($CONFIG);
-
-
-$NEWSVARDIR   = CONFIG_get("NEWSVARDIR");
-$INN_BATCHDIR = CONFIG_get("INN_BATCHDIR");
-$VARDIR	      = CONFIG_get("VARDIR");
-$LOCKDIR      = CONFIG_get("$LOCKDIR");
-$SPOOLDIR     = CONFIG_get("SPOOLDIR");
-$BTBASEDIR    = CONFIG_get("BTBASEDIR");
 
 my @DIRS = (
-	    "$NEWSVARDIR",
-	    "$INN_BATCHDIR",
-	    "$VARDIR",
-	    "$LOCKDIR",
-	    "$SPOOLDIR/outpkt -R",
-	    "$BTBASEDIR/in -R",
-	    "$BTBASEDIR/pin -R",
-	    "$BTBASEDIR/uuin -R",
+	    "<NEWSVARDIR>",
+	    "<INN_BATCHDIR>",
+	    "<VARDIR>",
+	    "<LOCKDIR>",
+	    "<SPOOLDIR>/outpkt -R",
+	    "<BTBASEDIR>/in -R",
+	    "<BTBASEDIR>/pin -R",
+	    "<BTBASEDIR>/uuin -R",
 	   );
 
 
