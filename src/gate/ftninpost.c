@@ -84,7 +84,8 @@ options: -v --verbose                 more verbose\n\
 }
 
 /*
-int unsplit_mail_count(char *fname) {
+int unsplit_mail_count(char *fname)
+{
     FILE *fp;
     char line[100];
     int found = FALSE;
@@ -135,24 +136,27 @@ int unsplit_mail_count(char *fname) {
     return OK;
 }
 
-int unsplit_mail() {
-
+int unsplit_mail()
+{
     split *spl;
 
     debug(1, "Processing split mails\n");
     
-    for(spl = split_first; spl; spl=spl->next) {
-	split *splt;
-	split *sfirst;
+    for(spl = split_first; spl; spl=spl->next)
+    {
+    split *splt;
+    split *sfirst;
 	int count = 0;
-	for(splt = split_first; splt; splt=splt->next) {
-	    if(!strcmp(spl->id, splt->id)) {
+	for(splt = split_first; splt; splt=splt->next)
+	{
+	    if(!strcmp(spl->id, splt->id))
+	    {
 	       if(spl->part == 1)
 	          sfirst = spl;
 	       count++;
 	    }
  	}
-	// fixme - processing from first split //
+// fixme - processing from first split //
 	if(spl->parts == count) {
 	    FILE *fp, *usp;
             char path[MAXPATH];

@@ -1,3 +1,9 @@
+2004-11-02  Andrey Slusar <anray@users.sourceforge.net>
+
+	* src/gate/rfc2ftn.c: add tearline mime_deheader,
+	    Origin mime_deheader when UseOrganizationForOrigin
+	    enabled
+
 2004-10-29  Andrey Slusar <anray@users.sourceforge.net>
 
 	* scripts/www/gate.cgi.in: correct working
