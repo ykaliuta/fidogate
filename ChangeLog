@@ -1,3 +1,7 @@
+2003-11-12  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* doc/news/leafnode: update(thanks to Elohin Igor)
+
 2003-11-08  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/gate/ftn2rfc.c: add '(none)' to X-FTN-Tearline
