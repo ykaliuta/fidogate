@@ -34,7 +34,7 @@ int readnews(int argc, char *fname)
 	in = stdin;
     } else {
 	if ((in = fopen(fname, "r")) == NULL) {
-	    error("cant open input file %s", fname);
+	    myerror("cant open input file %s", fname);
 	    return -1;
 	}
     }
@@ -59,7 +59,7 @@ int readnews(int argc, char *fname)
 		    *b = '\0';
 		if (!isgrouponserver(newsgroups)) {
 		    tofailed(in, bpos, FAILED_POSTING);
-		    error("Group not found: %s", newsgroups);
+		    myerror("Group not found: %s", newsgroups);
 		    newsgroups[0] = '\0';
 		    msgid[0] = '\0';
 		    flagONE = 0;
@@ -69,7 +69,7 @@ int readnews(int argc, char *fname)
 		strncpy(msgid, &buf[12], 128);
 		if (ismsgidonserver(msgid)) {
 		    tofailed(in, bpos, DUPE_POST);
-		    error("Message-ID of %s already in use upstream",
+		    myerror("Message-ID of %s already in use upstream",
 			  msgid);
 		    newsgroups[0] = '\0';
 		    msgid[0] = '\0';
@@ -82,7 +82,7 @@ int readnews(int argc, char *fname)
 		    notice("Posting...");
 		if (post_FILE(in, &bpos) == FALSE) {
 		    tofailed(in, bpos, IN_COMING);
-		    error("Failed posting - posting to in.coming");
+		    myerror("Failed posting - posting to in.coming");
 		    rc = 1;
 		} else {
 		    if (verbose)
@@ -101,7 +101,7 @@ int readnews(int argc, char *fname)
 #ifdef REMOVE_SUCCESS
     if (in != stdin) {
 	if (remove(fname) < 0)
-	    error("%s %s", fname, sys_errlist[errno]);
+	    myerror("%s %s", fname, strerrro(errno));
     }
 #endif
     return rc;
@@ -115,7 +115,7 @@ int check_failed()
     int i, n, rc;
 
     if ((dfd = opendir(FAILED_POSTING)) == NULL) {
-	error("(check_failed.c): %s  \'%s\'\n", sys_errlist[errno],
+	myerror("(check_failed.c): %s  \'%s\'\n", strerror(errno),
 	      FAILED_POSTING);
 	return -1;
     }
@@ -156,13 +156,13 @@ int tofailed(FILE *f, fpos_t bpos, char *fname)
 
     snprintf(ofn, sizeof(ofn), "%s/XXXXXXXX", fname);
     if ((o = mkstemp(ofn)) < 0) {
-	error("Cannot create failed posting file %s(%s). Skip", fname,
-	      sys_errlist[errno]);
+	myerror("Cannot create failed posting file %s(%s). Skip", fname,
+	      strerror(errno));
 	return -1;
     }
     if ((out = fdopen(o, "w")) == NULL) {
-	error("Cannot create failed posting file %s(%s). Skip", fname,
-	      sys_errlist[errno]);
+	myerror("Cannot create failed posting file %s(%s). Skip", fname,
+	      strerror(errno));
 	return -1;
     }
     fsetpos(f, &bpos);

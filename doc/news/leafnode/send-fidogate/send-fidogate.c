@@ -59,15 +59,15 @@ int main(int argc, char *argv[])
 	}
     }
     if (setgid(getegid()) < 0) {
-	error("cannot setgid to %d", getegid());
+	myerror("cannot setgid to %d", getegid());
 	exit(1);
     }
     if (setuid(geteuid()) < 0) {
-	error("cannot setuid to %d", geteuid());
+	myerror("cannot setuid to %d", geteuid());
 	exit(1);
     }
     if ((dfd = opendir(outgoing)) == NULL) {
-	error("%s  \'%s\'\n", sys_errlist[errno], outgoing);
+	myerror("%s  \'%s\'\n", strerror(errno), outgoing);
 	return 1;
     }
     i = 0;
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 	    if (verbose)
 		notice("send %s ok", dir->d_name);
 	    if (remove(fullpath)) {
-		error("%s  \'%s\'\n", sys_errlist[errno], fullpath);
+		myerror("%s  \'%s\'\n", strerror(errno), fullpath);
 	    }
 	}
     }

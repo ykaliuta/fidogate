@@ -29,7 +29,7 @@ int erase_outgoing_msgid(char *msgid)
     char *s;
 
     if ((dir_fd = opendir(OUTGOING)) == NULL) {
-	error("Cannot open %s (%s)", OUTGOING, sys_errlist[errno]);
+	myerror("Cannot open %s (%s)", OUTGOING, strerror(errno));
 	return 1;
     }
     while ((dir = readdir(dir_fd)) != NULL) {
@@ -42,7 +42,7 @@ int erase_outgoing_msgid(char *msgid)
 	if ((stbuf.st_mode & S_IFMT) == S_IFDIR)
 	    continue;
 	if((fd = fopen(curr_name, "r")) == NULL){
-	    error("%s: %s", curr_name, sys_errlist[errno]);
+	    myerror("%s: %s", curr_name, strerror(errno));
             continue;
 	}
 	while (fgets(buf, BUFSIZE, fd)) {
@@ -54,7 +54,7 @@ int erase_outgoing_msgid(char *msgid)
 		if (strcmp(msgid, &buf[12]) == 0) {
 		    fclose(fd);
 		    if (remove(curr_name)) {
-			error("%s: %s", curr_name, sys_errlist[errno]);
+			myerror("%s: %s", curr_name, strerror(errno));
 		    }
                     goto b1;
 		}

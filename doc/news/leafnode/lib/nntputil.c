@@ -25,10 +25,10 @@ char *get_line(char *);
  */
 
 /*  Reads a signed long integer from \p in and stores it into the long
- *  that \p var points to. 
- *  \return 
- *  1 for success, 
- *  0 if problem 
+ *  that \p var points to.
+ *  \return
+ *  1 for success,
+ *  0 if problem
  */
 int get_long(const char *in, long *var)
 {
@@ -130,7 +130,7 @@ int newnntpreply( /*@out@ */ char **resline
     do {
 	response = get_line(buf);
 	if (!response) {
-	    error("NNTP server went away while waiting for response");
+	    myerror("NNTP server went away while waiting for response");
 	    return -1;
 	}
 	if (strlen(response) >= 3 && isdigit((unsigned char) response[0])
@@ -195,7 +195,7 @@ int post_FILE(FILE *f, fpos_t *pos)
     putaline("POST");
     r = nntpreply();
     if (r != 340) {
-	error("nntpreply rc = %d", r);
+	myerror("nntpreply rc = %d", r);
 	return FALSE;
     }
     flagNEXT = 0;
@@ -256,7 +256,7 @@ int post_MAIL(FILE *f, char *newsgroups, char *subject)
     putaline("POST");
     r = nntpreply();
     if (r != 340) {
-	error("nntpreply rc = %d", r);
+	myerror("nntpreply rc = %d", r);
 	return FALSE;
     }
     while (fgets(line, BUFSIZE - 1, f) != NULL) {

@@ -30,7 +30,7 @@ int nntp_connect(char *host, int port, char *line)
     char buf[BUFSIZE + 2];
 
     if ((hp = gethostbyname(host)) == NULL) {
-	error("Not a host name");
+	myerror("Not a host name");
 	return -1;
     }
     ap = hp->h_addr_list;
@@ -84,10 +84,10 @@ int connect_server(char *host, int port)
 
     if (nntp_connect(host, port, line1) < 0) {
 	if (line1[0] == '\0') {
-	    error("I/O problem");
+	    myerror("I/O problem");
 	    return -1;
 	}
-	error("Server rejected connection; return it's reply code.");
+	myerror("Server rejected connection; return it's reply code.");
 	return atoi(line1);
     }
 

@@ -21,7 +21,7 @@ int mail2news(int argc, char *fname, char *newsgroups, char *subject)
 	in = stdin;
     } else {
 	if ((in = fopen(fname, "r")) == NULL) {
-	    error("cant open input file %s", fname);
+	    myerror("cant open input file %s", fname);
 	    fprintf(stderr, "cant open input file %s\n", fname);
 	    return 1;
 	}
@@ -36,7 +36,7 @@ int mail2news(int argc, char *fname, char *newsgroups, char *subject)
 	if (strncmp(buf, "Message-ID: ", 12) == 0) {
 	    strncpy(msgid, &buf[12], 128);
 	    if (ismsgidonserver(msgid)) {
-		error("Message-ID of %s already in use upstream", msgid);
+		myerror("Message-ID of %s already in use upstream", msgid);
 		fprintf(stderr, "Message-ID of %s already in use upstream\n",
 			msgid);
 		fclose(in);

@@ -67,15 +67,15 @@ int main(int argc, char *argv[])
 	}
     }
     if (setgid(getegid()) < 0) {
-	error("cannot setgid to %d", getegid());
+	myerror("cannot setgid to %d", getegid());
 	exit(1);
     }
     if (setuid(geteuid()) < 0) {
-	error("cannot setuid to %d", geteuid());
+	myerror("cannot setuid to %d", geteuid());
 	exit(1);
     }
     if ((rc = connect_server("localhost", 119)) < 0) {
-	error("connect failed");
+	myerror("connect failed");
 	die(1);
     }
 

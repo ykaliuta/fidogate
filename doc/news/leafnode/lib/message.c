@@ -10,7 +10,6 @@
 #include <stdarg.h>
 #include <unistd.h>
 #include <limits.h>
-#include <errno.h>
 #include "../common.h"
 
 extern int verbose;
@@ -24,8 +23,8 @@ void loginit(char *service, char *dir)
     if (dir != NULL) {
 	snprintf(logname, sizeof(logname), "%s/%s", dir, service);
 	if ((logfd = fopen(logname, "w+")) == NULL) {
-	    fprintf(stderr, "Warning: Cannot open %s (%s). Use syslog\n",
-		    logname, sys_errlist[errno]);
+	    fprintf(stderr, "Warning: Cannot open %s. Use syslog\n",
+		    logname);
 	    logname[0] = '\0';
 	    service = "news";
 	} else
@@ -45,7 +44,7 @@ void logclose()
 	closelog();
     }
 }
-void error(const char *fmt, ...)
+void myerror(const char *fmt, ...)
 {
     va_list ap;
     char out[MSGBUF];
