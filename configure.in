@@ -354,6 +354,7 @@ AC_PATH_PROG(PERL, perl, no)
 AC_PATH_PROG(PERL5, perl5, $PERL)
 
 AC_PATH_PROG(ZIP, zip, no)
+AC_PATH_PROG(RAR, rar, no)
 AC_PATH_PROG(UNZIP, unzip, no)
 AC_PATH_PROG(ARC, arc, no)
 AC_PATH_PROG(LHA, lzh, no)

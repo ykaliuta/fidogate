@@ -44,7 +44,6 @@
 	AvailFile.
 245 [+] Смена пароля через areafix.
 246 [+] df -h в runinc.
-247 [+] bsd compitable makefiles.
 
 ========= Реализовано =======================================================
 
@@ -614,3 +613,4 @@
 >239.[+] При перепаковке мыла не вставлять еще раз ^Via.
 >240 [+] [intentionally left blank]
 >241 [+] make install-configs
+>242 [+] bsd compatible makefiles.

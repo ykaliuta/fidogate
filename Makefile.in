@@ -102,6 +102,7 @@ PATHOUTGOING = @PATHOUTGOING@
 PERL = @PERL@
 PERL5 = @PERL5@
 RANLIB = @RANLIB@
+RAR = @RAR@
 RNEWS = @RNEWS@
 SENDMAIL = @SENDMAIL@
 SPOOLDIR = @SPOOLDIR@
@@ -122,7 +123,7 @@ AUTOMAKE_OPTIONS = foreign
 
 TOPDIR = .
 
-SUBDIRS = src scripts doc test
+SUBDIRS = src scripts doc
 
 FDESTDIR = $(DEFAULT_V_CONFIGDIR) \
 		  $(DEFAULT_V_LOGDIR) \
@@ -161,9 +162,9 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	uninstall-info-recursive all-recursive install-data-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
-DIST_COMMON = ./stamp-h.in COPYING ChangeLog Makefile.am Makefile.in \
-	TODO acconfig.h acinclude.m4 aclocal.m4 build/compile \
-	build/config.guess build/config.sub build/depcomp \
+DIST_COMMON = ././stamp-h.in ./stamp-h.in COPYING ChangeLog Makefile.am \
+	Makefile.in TODO acconfig.h acinclude.m4 aclocal.m4 \
+	build/compile build/config.guess build/config.sub build/depcomp \
 	build/install-sh build/ltconfig build/ltmain.sh build/missing \
 	build/mkinstalldirs build/ylwrap config.h.in configure \
 	configure.in
@@ -328,7 +329,7 @@ GZIP_ENV = --best
 distdir: $(DISTFILES)
 	-chmod -R a+w $(distdir) >/dev/null 2>&1; rm -rf $(distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/build
+	$(mkinstalldirs) $(distdir)/./. $(distdir)/build
 	@for file in $(DISTFILES); do \
 	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
 	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \

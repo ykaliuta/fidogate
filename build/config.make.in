@@ -176,6 +176,7 @@ ARC_ARC     = @ARC@
 ARC_LHA     = @LHA@
 ARC_UNZIP   = @UNZIP@
 ARC_ZIP     = @ZIP@
+ARC_RAR     = @RAR@
 UUDECODE    = @UUDECODE@
 
 HOSTNAME    = @HOSTNAME@
