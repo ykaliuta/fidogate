@@ -27,5 +27,4 @@
 # area                        newsgroup                     [-option]
 # ------------------------    --------------------------    ---------
 
-LINUX.GER                     fido.ger.linux                -8
-UNIX.GER                      fido.ger.unix                 -8
+""				fido.			-8 -H -z 2 -a 2:2499/999.9

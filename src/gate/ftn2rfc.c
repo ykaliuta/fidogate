@@ -1401,7 +1401,11 @@ carbon:
 	if(body.origin)
 	{
 	 if(gate_rfc_kludge && (p = kludge_get(&body.kludge, "RFC-Organization", NULL)))
-	    tl_appendf(&theader, "Organization: %s\n", p);
+	 {
+	    msg_xlate_line(buffer, sizeof(buffer), p, cvt8 & AREA_QP,
+			    ignore_soft_cr);
+	    tl_appendf(&theader, "Organization: %s\n", buffer);
+	 }
 	 else
 	 {
 	  if(use_origin_for_organization)
