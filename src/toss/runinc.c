@@ -93,7 +93,7 @@ static  char 		*bindir	 = NULL; /* Fidogate binary directory */
 static  char 		verbose_flag[16];        /* Verbose flag */
 static  char		*a_flag		 = NULL; /* Exec script after tosting */
 static  char		*b_flag		 = NULL; /* Exec script before tosting */
-static	Runtoss		toss[5];
+static	Runtoss		toss[7];
 static	char		*site		 = "fidogate";
 
 /*
@@ -501,6 +501,20 @@ void toss_init(void)
     toss[4].fadir = NULL;
     toss[4].grade = "-gn";
     toss[4].flags = "-n -t -p";
+    
+    toss[5].name = "uuin";
+    BUF_COPY3(buffer, spool, "/", toss[5].name);
+    toss[5].inbound = strsave(buffer);
+    toss[5].fadir = NULL;
+    toss[5].grade = "-gu";
+    toss[5].flags = "-s";
+    
+    toss[6].name = "ftpin";
+    BUF_COPY3(buffer, spool, "/", toss[6].name);
+    toss[6].inbound = strsave(buffer);
+    toss[6].fadir = NULL;
+    toss[6].grade = "-gf";
+    toss[6].flags = "-s";
     
     return;
 
