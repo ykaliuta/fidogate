@@ -651,7 +651,7 @@ int process_tic(Tick *tic)
 	/*
 	 * TickFileAction
 	 */
-	sprintf(buffer,"TickFileAction", tic->area);
+	sprintf(buffer,"TickFileAction");
 
 	for( s1 = cf_get_string(buffer, TRUE); s1 && *s1;
 	     s1 = cf_get_string(buffer, FALSE) )
@@ -672,8 +672,9 @@ int process_tic(Tick *tic)
                 {
                     sprintf(buffer, tick_action, new_name);
                     debug(8, "exec: %s", buffer);
-		    if (ret = run_system(buffer))
-                        fglog("exec: %s failed, exit code = %d", buffer, ret);
+		    ret = run_system(buffer)
+		    if (ret)
+			fglog("exec: %s failed, exit code = %d", buffer, ret);
                     else
 			fglog("exec: %s complete", buffer);
 		    xfree(str_save);

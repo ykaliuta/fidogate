@@ -213,7 +213,7 @@ int do_dir(char *cdir, int mode)
 	{
 	    char rfc_file[MAXPATH];
 	    FILE *fp;
-	    char *p;
+	    char *p = NULL;
 	    int ret, pr = FALSE;
 
 	    BUF_COPY3(rfc_file, cdir, "/", dir->d_name);

@@ -824,7 +824,7 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
     int i, ignore_prl = FALSE;
     char *autocreate_fecho_path=NULL;
 
-    if(! (authorized_new || (authorized_fwd && inter))|| !authorized)
+    if( !(authorized_new || (authorized_fwd && inter)) || !authorized )
     {
 	areafix_printf("Command not authorized.");
 	return OK;
@@ -1245,7 +1245,7 @@ int cmd_listall(Node *node)
 #endif /* !FTN_ACL */
 #ifdef AFSEND_ECHO_STATUS
 	    sprintf(tmp, "   '%s' %s",p->state, ctime(&p->time));
-	    tmp[strlen(tmp)-1] = NULL;
+	    tmp[strlen(tmp)-1] = 0;
 	    BUF_APPEND(buffer, tmp);
 #endif /* AFSEND_ECHO_STATUS */
 	    areafix_printf("%s",buffer);
@@ -1491,7 +1491,7 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
 #endif /* !FTN_ACL */
 #ifdef AFSEND_ECHO_STATUS
 		sprintf(tmp, "   '%s' %s",p->state, ctime(&p->time));
-		tmp[strlen(tmp)-1] = NULL;
+		tmp[strlen(tmp)-1] = 0;
 		BUF_APPEND(buffer, tmp);
 #endif /* AFSEND_ECHO_STATUS */
 		areafix_printf("%s",buffer);
@@ -1868,7 +1868,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 #endif /* ANSWER_OK */
 #ifdef AFSEND_ECHO_STATUS
 		    sprintf(tmp, " Stat: '%s' last msg: %s",p->state, ctime(&p->time));
-		    tmp[strlen(tmp)-1] = NULL;
+		    tmp[strlen(tmp)-1] = 0;
 		    BUF_APPEND(buffer, tmp);
 #endif /* AFSEND_ECHO_STATUS */
 		    areafix_printf("%s",buffer);

@@ -1,5 +1,9 @@
 2004-03-24  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
+	* src/common/getopt.c: fix warnings
+	* src/common/log.c: fix warnings
+	* src/gate/ftninpost.c: fix warnings
+	* src/tick/ftntick.c: fix warnings
 	* src/areafix.c: remove unnecessary '\n' if
 	    enable AFSEND_ECHO_STATUS
 
