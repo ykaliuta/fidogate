@@ -307,7 +307,7 @@ AutoCreateFileechoDontCheckPassword
 # Keys for put to fareas.bbs when fileecho is autocreated
 AutoCreateFileechoLine -s S -t 0
 
-# Patch to create fileechos directores
+# Path to create fileechos directores
 AutoCreateFechoPath /home/ftp/fileecho
 
 # Time in hour to wait file if it missing, if tick file was resived
