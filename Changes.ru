@@ -2,6 +2,10 @@
   cvs -z3 -d:pserver:anonymous@cvs.rusfidogate.sourceforge.net:/cvsroot/rusfidogate \
   co fidogate-sta
 
+Version 5.2.0ds-alpha3
+~~~~~~~~~~~~~~~~~~~~~
+- Удален дефайн REPLY_IF_X_FLAGS_M. Теперь он всегда включен.
+
 Version 5.2.0ds-alpha2
 ~~~~~~~~~~~~~~~~~~~~~~
 - Если выключен AF_AVAIL, то команда ареафикса %avail работает также как

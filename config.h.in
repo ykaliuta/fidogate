@@ -207,11 +207,6 @@
 #undef FTN_ACL
 
 /*
- * Add ^aREPLY kludge if RFC header `X-Flags' contains `m' parameter
- */
-#undef REPLY_IF_X_FLAGS_M
-
-/*
  * Put file descriptions into `.desc/%s.desc' file instead of files.bbs
  */
  // .../fileecho/.desc/file.zip.desc

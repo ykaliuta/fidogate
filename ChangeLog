@@ -1,7 +1,7 @@
 2004-02-07  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* version.h: new EXTRAVERSION alpha3
-	* config.h.in: remove define REPLY_IF_X_FLAGS_M
+	* acconfig.h: remove define REPLY_IF_X_FLAGS_M
 	* src/common/msgid.c: correct x_flags_m
 	* src/gate/rfc2ftn.c: correct x_flags_m, remove
 	    define REPLY_IF_X_FLAGS_M

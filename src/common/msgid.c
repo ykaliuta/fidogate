@@ -277,7 +277,8 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
 			  int for_reply)
 #else
 char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
-			  int part, int split, char *area)
+			  int part, int split, char *area, short int x_flags_m,
+			  int for_reply)
 #endif
     /* origid_flag - Flag for ^AORIGID */
     /* message_id  - Original RFC-ID */
@@ -286,6 +287,7 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
     /* area        - FTN AREA */
     /* dont_flush  - Do'nt flush DBC History */
     /* for_reply   - Id will be ^AREPLY*/
+    /* x_flags_m   - X-Flags: m */
 {
     char *id, *host, *p;
     char *savep;
@@ -417,9 +419,19 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
 
     tmps = tmps_alloc(strlen(id)+1+/**Extra**/20);
 #ifndef FIDO_STYLE_MSGID
+    if(!x_flags_m)
+    {
     msgid_fts9_quote(tmps->s, id, tmps->len);
     str_printf(tmps->s + strlen(tmps->s), tmps->len - strlen(tmps->s),
 	" %08lx", crc32);
+    }
+    else
+    {
+    if(for_reply)
+	str_printf(tmps->s, strlen(tmps->s)+strlen(id)+2, "%s ", id);
+    str_printf(tmps->s + strlen(tmps->s), tmps->len - strlen(tmps->s),
+	"%08lx", crc32);
+    }
 #else
     if(for_reply)
         str_printf(tmps->s, strlen(tmps->s)+strlen(id)+2, "%s ", id);

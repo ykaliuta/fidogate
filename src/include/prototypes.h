@@ -318,7 +318,7 @@ extern int verbose;
 extern int no_debug;
 
 char   *strerror		(int);
-void	log_fg			(const char *, ...)
+void	log			(const char *, ...)
     __attribute__ ((format (printf, 1, 2)));
 void	debug			(int, const char *, ...)
     __attribute__ ((format (printf, 2, 3)));
@@ -424,11 +424,7 @@ int    xfeof                    (FILE *);
 /* msgid.c */
 char   *s_msgid_fido_to_rfc	(char *, int *, short);
 char   *s_msgid_default		(Message *);
-#ifdef FIDO_STYLE_MSGID
 char   *s_msgid_rfc_to_fido	(int *, char *, int, int, char *, short int, int);
-#else
-char   *s_msgid_rfc_to_fido     (int *, char *, int, int, char *);
-#endif
 char   *s_msgid_convert_origid	(char *);
 
 /* node.c */
