@@ -1,3 +1,8 @@
+2004-03-29  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/arafix/areafix.c: fix crashing ftnafutil if
+	    rulesfile is broken
+
 2004-03-24  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/common/getopt.c: fix warnings

@@ -2664,12 +2664,17 @@ short int rulesup(char *rulesc)
 		    fclose(fp);
 		    if(p)
 		    {
-			p = strchr(p, ':')+1;
-			if( (s = strtok(p, " \t")) )
+			if(strchr(p, ':'))
 			{
-			    BUF_COPY4(buffer, s, "\t", buf, "\n");
-			    fputs(buffer, fp1);
+			    p = strchr(p, ':')+1;
+			    if( (s = strtok(p, " \t")) )
+			    {
+				BUF_COPY4(buffer, s, "\t", buf, "\n");
+				fputs(buffer, fp1);
+			    }
 			}
+			else
+			    fglog("WARNING: rulesfile %s is broken", buf);
 		    }
 		}
 	}
