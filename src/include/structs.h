@@ -150,8 +150,10 @@ AreasBBS;
 typedef struct st_group {
     struct st_group *next;
     char *group;
+#ifndef SN
     int art_h;
     int art_l;
+#endif /* SN */
     char *flag;
 } Active;
 #endif /* ACTIVE_LOOKUP */

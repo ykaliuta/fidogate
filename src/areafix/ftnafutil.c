@@ -127,7 +127,9 @@ void rm_group(char *area, Node *uplink)
     Active *p;
     Area *ar;
 
+#ifndef SN
     active_init();
+#endif
 
 #ifndef BEST_AKA
     cf_set_zone(uplink->zone);
@@ -138,8 +140,12 @@ void rm_group(char *area, Node *uplink)
     {
 	if( ( p = active_lookup(ar->group)) )
 	{
+#ifndef SN
 	    debug(7, "Found: %s stat = %s, have %d article", p->group, p->flag,
 		    p->art_h-p->art_l);
+#else
+	    debug(7, "Found: %s stat = %s, have %d article", p->group, p->flag);
+#endif
 	    if ( cf_get_string("AutoRemoveNG", TRUE) )
 	    {
 		debug(8, "config: AutoRemoveNG");
@@ -633,7 +639,7 @@ int main(int argc, char **argv)
     uplinks_init();
 
     /* Read Active file */
-#ifdef ACTIVE_LOOKUP
+#if defined ACTIVE_LOOKUP && !defined SN
     active_init();
 #endif /*  ACTIVE_LOOKUP */
 

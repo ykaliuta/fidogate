@@ -231,7 +231,9 @@ Area *news_msg(char *line, Node *to)
 	    debug(7, "Found: %s %s Z%d", pa->area, pa->group, pa->zone);
 
 #ifdef ACTIVE_LOOKUP
+#ifndef SN
 	    active_init();
+#endif
 	    pg = active_lookup(pa->group);
 	    if(pg)
 	    {

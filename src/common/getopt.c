@@ -321,7 +321,7 @@ _getopt_internal (argc, argv, optstring, longopts, longind, long_only)
 {
   int option_index;
 
-  optarg = 0;
+  optarg = NULL;
 
   /* Initialize the internal data when the first call is made.
      Start processing options with ARGV-element 1 (since ARGV-element 0

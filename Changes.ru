@@ -4,6 +4,9 @@
 
 Version 5.2.1ds
 ~~~~~~~~~~~~~~~
+- В config.h.in добавлен ключ для сборки c поддержкой ньюссервера SN.
+- Если опции AutoCreateRenumberCmd в конфиге нет, то она просто
+  пропускается.
 - При компиляции с опцией AMIGADOS_4D_OUTBOUND, для исходящих пакетов
   используется outbound для Zone = default.
 - nl-autoupd берет DIFFDIR, NLDIR, NLFDIR из основного конфига.

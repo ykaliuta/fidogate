@@ -1,3 +1,14 @@
+2004-07-10  Andrey Slusar <anray@users.sourceforge.net>
+
+	* config.h.in: added SN option
+	* src/common/active.c: added SN active_lookup()
+	* src/areafix/ftnafutil.c: added SN option
+	* src/gate/ftn2rfc.c: added SN
+	* src/include/prototypes.h: added SN
+	* src/include/structs.h: added SN
+	* src/toss/ngoper.c: if AutoCreateRenumberCmd is not
+	    defined, this is silently skipped
+
 2004-07-05  Andrey Slusar <anray@users.sourceforge.net>
 
 	* doc/README.ru: update

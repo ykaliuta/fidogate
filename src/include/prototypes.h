@@ -61,7 +61,9 @@ int     ftnacl_search            ( Node *, char *, char, char );
 
 /* active.c */
 #ifdef ACTIVE_LOOKUP
+#ifndef SN
 short	active_init		(void);
+#endif
 Active *active_lookup		(char *);
 #endif /* ACTIVE_LOOKUP */
 
