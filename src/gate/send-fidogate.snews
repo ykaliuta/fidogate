@@ -48,8 +48,9 @@ fi
 
 ##  Do the work...
 ${PATHBIN}/qnews
-if test -s ${BATCH}/${LIST}/outgoing; then
- for SITE in ${SPOOL}/`cat ${BATCH}/${LIST}/outgoing`; do
+if [ -s ${BATCH}/${LIST}/outgoing ] ; then
+ mv ${BATCH}/${LIST}/outgoing ${BATCH}/${LIST}/outgoing.work
+ for SITE in ${SPOOL}/`cat ${BATCH}/${LIST}/outgoing.work`; do
 
     echo "${PROGNAME}: [$$] begin ${SITE}"
 
@@ -57,7 +58,10 @@ if test -s ${BATCH}/${LIST}/outgoing; then
 
     echo "${PROGNAME}: [$$] end ${SITE}"
  done
- rm -f ${BATCH}/${LIST}/outgoing
+ rm -f ${BATCH}/${LIST}/outgoing.work
+ if [ ! -f ${BATCH}/${LIST}/outgoing ] ; then
+  touch ${BATCH}/${LIST}/outgoing
+ fi
 fi
 
 ##  Remove the lock file.

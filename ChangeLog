@@ -1,3 +1,7 @@
+2004-11-07  Andrey Slusar <anray@users.sourceforge.net>
+
+	* src/gate/send-fidogate.snews: fine working
+
 2004-11-02  Andrey Slusar <anray@users.sourceforge.net>
 
 	* src/gate/rfc2ftn.c: add tearline mime_deheader,
