@@ -520,37 +520,19 @@ time_t pkt_get_date(FILE *fp)
  */
 int pkt_get_msg_hdr(FILE *fp, Message *msg)
 {
-    int i0, i1, i2;
+    msg->node_from.node = pkt_get_int16(fp);
+    msg->node_to  .node = pkt_get_int16(fp);
+    msg->node_from.net  = pkt_get_int16(fp);
+    msg->node_to  .net  = pkt_get_int16(fp);
+    msg->node_orig      = msg->node_from;
+    msg->attr           = pkt_get_int16(fp);
+    msg->cost           = pkt_get_int16(fp);
+    msg->date           = pkt_get_date(fp);
 
-    if ((msg->node_from.node = pkt_get_int16(fp)) == ERROR ||
-	(msg->node_to  .node = pkt_get_int16(fp)) == ERROR ||
-	(msg->node_from.net  = pkt_get_int16(fp)) == ERROR ||
-	(msg->node_to  .net  = pkt_get_int16(fp)) == ERROR ||
-	(msg->attr           = pkt_get_int16(fp)) == ERROR ||
-	(msg->cost           = pkt_get_int16(fp)) == ERROR ||
-	(msg->date           = pkt_get_date(fp) ) == ERROR ||
-	(i0 = pkt_get_string( fp, msg->name_to  , sizeof(msg->name_to  ))) == ERROR ||
-	(i1 = pkt_get_string( fp, msg->name_from, sizeof(msg->name_from))) == ERROR ||
-	(i2 = pkt_get_string( fp, msg->subject  , sizeof(msg->subject  ))) == ERROR)
-	    return ERROR;
+    pkt_get_string( fp, msg->name_to  , sizeof(msg->name_to  ));
+    pkt_get_string( fp, msg->name_from, sizeof(msg->name_from));
+    pkt_get_string( fp, msg->subject  , sizeof(msg->subject  ));
 
-	if(i0 > 36)
-	{
-	    debug(2, "toUserName to large");
-	    return ERROR;
-	}
-    	if(i1 > 36)
-	{
-	    debug(2, "fromUserName to large");
-	    return ERROR;
-	}
-	if(i2 > 72)
-	{
-	    debug(2, "subject to large");
-	    return ERROR;
-	}
-
-    msg->node_orig = msg->node_from;
     msg->area      = NULL;
     
     if(verbose >= 6)

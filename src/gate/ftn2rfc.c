@@ -890,8 +890,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    }
 	
 	    /* GIGO */
-	    if( (p = kludge_get(&body.kludge, "PID", NULL))  &&
-		!strnicmp(p, "GIGO", 4)                        )
+	    if( (p = kludge_get(&body.kludge, "PID", NULL)) &&
+		!strnicmp(p, "GIGO", 4)                       )
 	    {
 		fglog("skipping message from gateway (GIGO), area %s, origin=%s",
 		      area->area, znfp1(&msg.node_orig));
