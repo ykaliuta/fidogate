@@ -264,6 +264,11 @@
 #undef NOINSERT_ORGANIZATION
 
 /*
+ * Enable if insert Origin line if it absence
+ */
+#undef INSERT_ORIGIN
+
+/*
  * Don't put insecure mail into dupe database
  */
 #undef INSECURE_DONT_PUT_INTO_DUPE_DB

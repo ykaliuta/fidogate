@@ -1,3 +1,9 @@
+2003-12-06  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/common/message.c: add INSERT_ORIGIN
+	* acconfig.h: add INSERT_ORIGIN
+	* config.h.in: add INSERT_ORIGIN
+
 2003-12-03  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/charset/cyrillic.map: add belarussian(thanks to
