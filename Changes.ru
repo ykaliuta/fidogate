@@ -8,12 +8,11 @@ Version 5.2.0ds-alpha2
   поменять дирректорию, куда складывается нетмейл при включенном
   --enable-dnt-netmail. По умолчанию это /var/spool/fido/bt/netmail.
   Также ее можно поменять в fidogate.conf - NETMAILDIR.
-- Теперь при включении NoRfcKludge ftn2rfc не переносит RFC-Message-ID и
+- Теперь при включении NoRfcKludge ftn2rfc не декодирует RFC-Message-ID и
   Message-ID в Message-ID сгейтованных мессаг. Только из ORIGID или формирует
   из MSGID.
-- Новый токен NEW_COMMENT_TO. Если он включен, то в сгейтованных мессагах
-  в заголовке X-Comment-To: не ставятся скобки. Это - экспериментальная
-  опция. Пользоваться очень осторожно.
+- Новый токен OLD_COMMENT_TO. Если он выключен, то в сгейтованных мессагах
+  в заголовке X-Comment-To: не ставятся скобки.
 
 Version 5.2.0ds-alpha1
 ~~~~~~~~~~~~~~~~~~~~~~

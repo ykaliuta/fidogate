@@ -663,9 +663,10 @@ int process_tic(Tick *tic)
                 {
                     sprintf(buffer, tick_action, new_name);
                     debug(8, "exec: %s", buffer);
-	            if( !(ret = run_system(buffer)) )
+		    if (ret = run_system(buffer))
                         log("exec: %s failed, exit code = %d", buffer, ret);
-                    xfree(str_save);
+                    else log("exec: %s complete", buffer);
+		    xfree(str_save);
                     break;
 	        }
             }

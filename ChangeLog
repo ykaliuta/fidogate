@@ -5,6 +5,7 @@
 	    NEW_COMMENT_TO to OLD_COMMENT_TO
 	* src/gate/ftn2rfc.c: add RECODE_ALL_RFC, change
 	    NEW_COMMENT_TO to OLD_COMMENT_TO
+	* src/gate/rfc2ftn.c: fix generate MSGID
 
 2004-01-26  Andrey Slusar <rusfidogate@users.sourceforge.net>
 

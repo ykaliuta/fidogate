@@ -538,7 +538,7 @@
     "From:", "Reply-To:", "UUCPFROM:", "To:", "Cc:", "Bcc:", \
     "Newsgroups:", "Sender:", "Content-Transfer-Encoding:", \
     "Header-To:", "Header-Cc:", "Subject:", "User-Agent:", \
-    "In-Reply-To:", "References:"
+    "X-Mailer:", "X-Newsreader:", "In-Reply-To:", "References:"
 
 /*
  * RFC headers output for ^ARFC level 1 (partial RFC headers)
