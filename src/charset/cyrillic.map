@@ -1032,8 +1032,8 @@ map     \xAE    \x20
 map     \xAF    \xF4
 map     \xB0    \xF8
 map     \xB1    \x20
-map     \xB2    \x20
-map     \xB3    \x20
+map     \xB2    \x49
+map     \xB3    \x69
 map     \xB4    \x20
 map     \xB5    \x20
 map     \xB6    \x20

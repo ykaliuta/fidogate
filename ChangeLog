@@ -1,3 +1,8 @@
+2003-12-03  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/charset/cyrillic.map: add belarussian(thanks to
+	    Serge Serebro)
+
 2003-12-01  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/gate/ftn2rfc.c: fix UseOriginForOrganization
