@@ -1,6 +1,7 @@
 2004-02-07  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* version.h: new EXTRAVERSION alpha3
+	* packages/freebsd: update version number
 	* doc/README.ru: update documentation
 	* acconfig.h: remove define REPLY_IF_X_FLAGS_M
 	* src/common/msgid.c: correct x_flags_m
