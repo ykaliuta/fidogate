@@ -1,3 +1,7 @@
+2004-08-10  Andrey Slusar <anray@users.sourceforge.net>
+
+	* src/gate/send-fidogate.snews: fix errors
+
 2004-08-07  Andrey Slusar <anray@users.sourceforge.net>
 
 	* configure.in: fix default prefix

@@ -48,8 +48,8 @@ fi
 
 ##  Do the work...
 ${PATHBIN}/qnews
-if test -s ${BATCH}/${LIST}/outgoing
- for SITE in ${SPOOL}/`cat ${BATCH}/${LIST}/outgoing; do
+if test -s ${BATCH}/${LIST}/outgoing; then
+ for SITE in ${SPOOL}/`cat ${BATCH}/${LIST}/outgoing`; do
 
     echo "${PROGNAME}: [$$] begin ${SITE}"
 
