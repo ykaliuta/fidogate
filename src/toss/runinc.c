@@ -111,7 +111,15 @@ void unpack(char *inb)
 
     /* Make sure temporary unpacking directory exists and entering into */
     BUF_COPY2(buffer, inb, "/tmpunpack");
-    chdir(buffer);
+    
+    if(chdir(buffer) !== 0)
+    {
+	if(mkdir_r(buffer, 750) == ERROR)
+	{
+	    debug(7,"dir %s not exist or can't create", buffer);
+	    return;
+	}
+    }
 
     /* Reading files into inbound directory */
     if( ! (dp = opendir(inb)) )

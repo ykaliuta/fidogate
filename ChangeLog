@@ -1,5 +1,7 @@
 2004-06-15  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
+	* src/toss/runinc.c: if tmpunpack not exist,
+	    make this dir
 	* src/areafix/areafix.c: fix trap cmd_listall
 
 2004-06-11  Andrey Slusar <rusfidogate@users.sourceforge.net>
