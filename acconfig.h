@@ -19,9 +19,6 @@
 /* Define if you have the mktime function.  */
 #undef HAVE_MKTIME
 
-/* Define if you have the regcomp function.  */
-#undef HAVE_REGCOMP
-
 /* Define if you have the sprintf function.  */
 #undef HAVE_SPRINTF
 
@@ -60,9 +57,6 @@
 
 /* Define if you have the <ndir.h> header file.  */
 #undef HAVE_NDIR_H
-
-/* Define if you have the <regex.h> header file.  */
-#undef HAS_POSIX_REGEX
 
 /* Define if you have the <sys/dir.h> header file.  */
 #undef HAVE_SYS_DIR_H
@@ -477,7 +471,6 @@
 
 /* Standard config: POSIX UNIX */
 # undef HAVE_LINK
-# undef HAS_POSIX_REGEX
 
 /***** (MSDOS, OS/2, Windows) ************************************************/
 #ifdef MSDOS			/* MSDOS, DJGPP GNU gcc */

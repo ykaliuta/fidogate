@@ -34,9 +34,11 @@
 
 
 #ifdef HAS_POSIX_REGEX /*******************************************************/
-
+#ifdef HAVE_RX
+#include <rxposix.h>
+#else
 #include <regex.h>
-
+#endif
 
 
 /*

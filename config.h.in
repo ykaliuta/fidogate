@@ -62,9 +62,6 @@
 /* Define if you have the <ndir.h> header file.  */
 #undef HAVE_NDIR_H
 
-/* Define if you have the <regex.h> header file.  */
-#undef HAS_POSIX_REGEX
-
 /* Define if you have the <sys/dir.h> header file.  */
 #undef HAVE_SYS_DIR_H
 
@@ -478,7 +475,6 @@
 
 /* Standard config: POSIX UNIX */
 # undef HAVE_LINK
-# undef HAS_POSIX_REGEX
 
 /***** (MSDOS, OS/2, Windows) ************************************************/
 #ifdef MSDOS			/* MSDOS, DJGPP GNU gcc */
@@ -778,6 +774,9 @@
 /* Define to 1 if using `alloca.c'. */
 #undef C_ALLOCA
 
+/* Do we have a decent regex library? */
+#undef HAS_POSIX_REGEX
+
 /* Define to 1 if you have the `alarm' function. */
 #undef HAVE_ALARM
 
@@ -827,6 +826,9 @@
 
 /* Define to 1 if you have the `regcomp' function. */
 #undef HAVE_REGCOMP
+
+/* Do we have rxposix.h? */
+#undef HAVE_RX
 
 /* Define to 1 if `stat' has the bug that it succeeds when given the
    zero-length file name argument. */

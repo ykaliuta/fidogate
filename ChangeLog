@@ -1,3 +1,10 @@
+2004-11-23  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* configure.in: add HAS_POSIX_REGEX autodetecting.
+	When system is supporting regcomp() this option is
+	enabled automaticaly.
+	* src/common/rematch.c: add HAVE_RX
+
 2004-11-21  Andrey Slusar  <anray@users.sourceforge.net>
 
 	* doc/README.ru: add description for HAS_POSIX_REGEX
