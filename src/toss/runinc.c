@@ -820,7 +820,7 @@ void* subs(char *str,char *macro,char *expand) {
 int system_run(char *cmd)
 {
     debug(5,"exec: %s", cmd);
-    return run_system(cmd);
+    return system(cmd);
 
 }
 

@@ -273,7 +273,5 @@ void log_file(char *name)
  */
 void log_program(char *name)
 {
-    char *p;
-    
     BUF_COPY(logprog, name);
 }
