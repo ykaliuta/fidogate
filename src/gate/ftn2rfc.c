@@ -819,7 +819,9 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	 */
 	if(!cs_in)
 	    cs_in = cs_def;
-	charset_set_in_out(cs_in, CHARSET_STDRFC);
+	if(!cs_out)
+	    cs_out = CHARSET_STDRFC;
+	charset_set_in_out(cs_in, cs_out);
 	addr_from = rfcaddr_from_ftn(msg.name_from, &msg.node_orig);
 	addr_to   = rfcaddr_from_ftn(msg.name_to,   &msg.node_to  );
 

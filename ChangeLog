@@ -1,3 +1,7 @@
+2004-02-11  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: add preferred cs_out
+
 2004-02-11  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 
 	* src/areafix/areafix.c: fix the problem of similar path
