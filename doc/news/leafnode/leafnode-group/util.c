@@ -1,3 +1,10 @@
+/*
+ * (C) Maint Laboratory 2003-2004
+ * Author: Elohin Igor'
+ * e-mail: maint@unona.ru
+ * fido  : 2:5070/222.52
+ * URL   : http://maint.unona.ru
+ */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -7,9 +14,10 @@
 #include <sys/file.h>
 #include <pwd.h>
 #include "../common.h"
+#include "../config.h"
 
 #ifdef _BSD
-#include <sys/syslimits.h>
+#include <limits.h>
 #endif
 
 extern FILE *inp_nntp;
@@ -42,13 +50,13 @@ int makeactivelist()
     char line[MSGBUF];
     struct passwd *pass;
 
-    if ((pass = getpwnam(LEAFNODE_OWNER)) == NULL) {
-	myerror("Can't get uid and guid user %", LEAFNODE_OWNER);
+    if ((pass = getpwnam(leafnode_owner)) == NULL) {
+	myerror("Can't get uid and guid user %", leafnode_owner);
 	return -1;
     }
 
-    if ((fd = fopen(ACTIVE, "w")) == NULL) {
-	myerror("Can't open %s", ACTIVE);
+    if ((fd = fopen(active, "w")) == NULL) {
+	myerror("Can't open %s", active);
 	return -1;
     }
 
@@ -58,41 +66,42 @@ int makeactivelist()
 	return -1;
     }
     while ((l = get_line(line)) && (strcmp(l, "."))) {
-	fprintf(fd, "%s\n", l);
+        if(isfidogroup(line))
+            fprintf(fd, "%s\n", l);
     }
     fclose(fd);
-    if (chmod(ACTIVE, 0664)) {
-	myerror("Can't chmod %", ACTIVE);
-	remove(ACTIVE);
+    if (chmod(active, 0664)) {
+	myerror("Can't chmod %", active);
+	remove(active);
 	return 1;
     }
-    if (chown(ACTIVE, pass->pw_uid, pass->pw_gid)) {
-	myerror("Can't chown %", ACTIVE);
-	remove(ACTIVE);
+    if (chown(active, pass->pw_uid, pass->pw_gid)) {
+	myerror("Can't chown %", active);
+	remove(active);
 	return 1;
     }
-    message("Create %s ", ACTIVE);
+    message("Create %s ", active);
     return 0;
 }
 
 /*
- * flag - определяет локальная группа или нет. 1 - локальная
+ * flag = 1 - local group
  */
 int createnewsgroup(char *groupname, char *description, unsigned char flag)
 {
     FILE *fd;
     if (flag) {
-	if ((fd = fopen(LOCAL_GROUPINFO, "a+")) == NULL) {
-	    myerror("Can't open %s", LOCAL_GROUPINFO);
+	if ((fd = fopen(local_groupinfo, "a+")) == NULL) {
+	    myerror("Can't open %s", local_groupinfo);
 	    return -1;
 	}
 	fprintf(fd, "%s\ty\t%s\n", groupname, description);
     } else {
-	if ((fd = fopen(GROUPINFO, "a+")) == NULL) {
-	    myerror("Can't open %s", GROUPINFO);
+	if ((fd = fopen(groupinfo, "a+")) == NULL) {
+	    myerror("Can't open %s", groupinfo);
 	    return -1;
 	}
-	fprintf(fd, "%s\ty\t0\t0\t0\ty\t0\t0\t0\t%s\n", groupname,
+	fprintf(fd, "%s\ty\t0\t0\t0\t%s\n", groupname,
 		description);
     }
     fclose(fd);
@@ -109,11 +118,11 @@ int activatenewsgroup(char *groupname)
     if(islocalnewsgroup(groupname)) return 0;
     if (isactivenewsgroup(groupname))
 	return 0;
-    if ((pass = getpwnam(LEAFNODE_OWNER)) == NULL) {
-	myerror("Can't get uid and guid user %", LEAFNODE_OWNER);
+    if ((pass = getpwnam(leafnode_owner)) == NULL) {
+	myerror("Can't get uid and guid user %", leafnode_owner);
 	return -1;
     }
-    snprintf(fname, sizeof(fname), "%s/%s", INTERESTING_GROUPS, groupname);
+    snprintf(fname, sizeof(fname), "%s/%s", interesting_groups, groupname);
     if ((fd = fopen(fname, "w")) == NULL) {
 	myerror("Can't create %s", fname);
 	return -1;
@@ -140,7 +149,7 @@ int deactivatenewsgroup(char *groupname)
 
     if(islocalnewsgroup(groupname)) return 0;
     if (isactivenewsgroup(groupname)) {
-	snprintf(fname, sizeof(fname), "%s/%s", INTERESTING_GROUPS, groupname);
+	snprintf(fname, sizeof(fname), "%s/%s", interesting_groups, groupname);
 	rc = remove(fname);
 	if (rc)
 	    myerror("Can't remove %s\n", fname);
@@ -157,8 +166,8 @@ int islocalnewsgroup(char *groupname)
     char *s;
     int rc = 0;
 
-    if ((fd = fopen(LOCAL_GROUPINFO, "r")) == NULL) {
-	myerror("Can't open %s", LOCAL_GROUPINFO);
+    if ((fd = fopen(local_groupinfo, "r")) == NULL) {
+	myerror("Can't open %s", local_groupinfo);
 	return -1;
     }
     while (fgets(buf, 4095, fd) != NULL) {
@@ -178,7 +187,7 @@ int isactivenewsgroup(char *groupname)
     char fname[PATH_MAX];
 
     if(islocalnewsgroup(groupname)) return 0;
-    snprintf(fname, sizeof(fname), "%s/%s", INTERESTING_GROUPS, groupname);
+    snprintf(fname, sizeof(fname), "%s/%s", interesting_groups, groupname);
     if (access(fname, F_OK) == 0){
         if(verbose) message("Group %s inactive", fname);
 	return 1;
@@ -198,8 +207,8 @@ int removenewsgroup(char *groupname)
     char *s;
     struct passwd *pass;
 
-    if ((pass = getpwnam(LEAFNODE_OWNER)) == NULL) {
-	myerror("Can't get uid and guid user %", LEAFNODE_OWNER);
+    if ((pass = getpwnam(leafnode_owner)) == NULL) {
+	myerror("Can't get uid and guid user %", leafnode_owner);
 	return -1;
     }
 
@@ -215,8 +224,8 @@ int removenewsgroup(char *groupname)
     }
 
     if (islocalnewsgroup(groupname))
-	removefromfile(LOCAL_GROUPINFO, groupname);
-    removefromfile(GROUPINFO, groupname);
+	removefromfile(local_groupinfo, groupname);
+    removefromfile(groupinfo, groupname);
     message("Remove newsgroup: %s", groupname);
     return 0;
 }
@@ -229,8 +238,8 @@ int removefromfile(char *fname, char *groupname)
     char *s;
     struct passwd *pass;
 
-    if ((pass = getpwnam(LEAFNODE_OWNER)) == NULL) {
-	myerror("Can't get uid and guid user %", LEAFNODE_OWNER);
+    if ((pass = getpwnam(leafnode_owner)) == NULL) {
+	myerror("Can't get uid and guid user %", leafnode_owner);
 	return -1;
     }
     strcpy(tmpname, "/tmp/leafnodeXXXXXX");
@@ -264,12 +273,11 @@ int removefromfile(char *fname, char *groupname)
     movefile(tmpname, fname);
     if (chmod(fname, 0664)) {
 	myerror("Can't chmod %", fname);
-	remove(fname);
 	return 1;
     }
     if (chown(fname, pass->pw_uid, pass->pw_gid)) {
-	myerror("Can't chown %", fname);
-	remove(fname);
+        myerror("Can't chown %s(%d, %d) file %s", leafnode_owner,
+                pass->pw_uid, pass->pw_gid, fname);
 	return 1;
     }
     return 0;

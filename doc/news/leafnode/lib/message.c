@@ -1,6 +1,6 @@
 /*
- * (C) Maint Laboratory 2003
- * Author: Elohin Igor
+ * (C) Maint Laboratory 2003-2004
+ * Author: Elohin Igor'
  * e-mail: maint@unona.ru
  * fido  : 2:5070/222.52
  * URL   : http://maint.unona.ru

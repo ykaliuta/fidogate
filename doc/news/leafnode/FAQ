@@ -10,7 +10,7 @@ A: его нужно заменить на send-fidogate из моего пакета util-leafnode
 Q: Какие изменения нужно внести в fidogate.conf для работы ?
 A: Собственно не очень много.
  INN_BATCHDIR /var/spool/news/out.going вместо INN outgoing и путь к новому
- rnews. rnews рекомендую запускать с флагом '-c'.
+ leafnode-rnews. leafnode-rnews рекомендую запускать с флагом '-c'.
  
 Q: Как заводит новые news-группы ?
 A: Специального инструмента в leafnode нет, поэтому руками или опять же
@@ -37,3 +37,4 @@ A: Я поместил в /var/spool/news и поправить NEWSVARDIR
 
  Елохин И.Ю.             URL://http:maint.unona.ru 
  E-Mail: maint@unona.ru  fido: 2:5070/222.52
+ 

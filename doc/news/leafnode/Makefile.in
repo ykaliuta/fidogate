@@ -1,11 +1,12 @@
 CC = @CC@
-#ifdef __FreeBSD
-CFLAGS = -D_BSD
-#endif
+CFLAGS = #-D_BSD
 DIRS = lib new_rnews send-fidogate leafnode-group
-INSTALL_DIRS = new_rnews send-fidogate leafnode-group
+INSTALL_DIRS = new_rnews send-fidogate leafnode-group man config
 DESTDIR = <LIBEXECDIR>
 DESTMAN = /usr/local/man/man1
+DESTCFG = /etc/leafnode
+# For BSD
+#DESTCFG = /usr/local/etc/leafnode
 
 all:
 	${CC} ctrld.c -o ctrld
@@ -13,16 +14,26 @@ all:
 
 clean:
 	rm -f ctrld
+	rm -f *.tgz
 	for d in ${DIRS}; do (cd $$d && echo $$d && ${MAKE}  CC=$(CC) CFG=$(CFLAGS) DESTDIR=$(DESTDIR) DESTMAN=$(DESTMAN) $@) || exit; done;
 
 save:
-	save common.h
+	save common.h config.h
 	for d in ${DIRS}; do (cd $$d && echo $$d && ${MAKE}  CC=$(CC) CFG=$(CFLAGS) DESTDIR=$(DESTDIR) DESTMAN=$(DESTMAN) $@) || exit; done;
 
 install:
 	install -o news -g news -m 750 ctrld ${DESTDIR}/ctrld
-	for d in ${INSTALL_DIRS}; do (cd $$d && echo $$d && ${MAKE}  CC=$(CC) CFG=$(CFLAGS) DESTDIR=$(DESTDIR) DESTMAN=$(DESTMAN) $@) || exit; done;
-
+	for d in ${INSTALL_DIRS}; do (cd $$d && echo $$d && ${MAKE}  CC=$(CC) CFG=$(CFLAGS) DESTDIR=$(DESTDIR) DESTMAN=$(DESTMAN) DESTCFG=$(DESTCFG) $@) || exit; done;
 uninstall:
 	rm -f ${DESTDIR}/ctrld
-	for d in ${INSTALL_DIRS}; do (cd $$d && echo $$d && ${MAKE}  CC=$(CC) CFG=$(CFLAGS) DESTDIR=$(DESTDIR) DESTMAN=$(DESTMAN) $@) || exit; done;
+	for d in ${INSTALL_DIRS}; do (cd $$d && echo $$d && ${MAKE}  CC=$(CC) CFG=$(CFLAGS) DESTDIR=$(DESTDIR) DESTMAN=$(DESTMAN)  DESTCFG=$(DESTCFG) $@) || exit; done;
+
+tgz:
+	tar -cvzf util-leafnode.tgz new_rnews/Makefile new_rnews/*.[ch] \
+	 config/Makefile config/util-leafnode.conf \
+	 leafnode-group/Makefile leafnode-group/*.[ch] \
+	 lib/Makefile lib/*.[ch] \
+	 send-fidogate/Makefile send-fidogate/*.[ch] \
+	 man/Makefile man/*.1 \
+         Changes FAQ Makefile README *.[ch]
+         

@@ -1,6 +1,6 @@
 /*
- * (C) Maint Laboratory 2003
- * Author: Elohin Igor
+ * (C) Maint Laboratory 2003-2004
+ * Author: Elohin Igor'
  * e-mail: maint@unona.ru
  * fido  : 2:5070/222.52
  * URL   : http://maint.unona.ru
@@ -19,18 +19,12 @@ char *diagtime()
 	tm = localtime(&clock);
 	tm->tm_mon++;
         tm->tm_year -= 100;
-	snprintf(buf, sizeof(buf), "%s%d.%s%d.%s%d %s%d:%s%d:%s%d",
-		tm->tm_mday > 9 ? "":"0",
+	snprintf(buf, sizeof(buf), "%.2d.%.2d.%.2d %.2d:%.2d:%.2d",
 		tm->tm_mday,
-		tm->tm_mon > 9 ? "":"0",
 		tm->tm_mon,
-		tm->tm_year > 9 ? "":"0",
 		tm->tm_year,
-		tm->tm_hour > 9 ? "":"0",
 		tm->tm_hour,
-		tm->tm_min > 9 ? "":"0",
 		tm->tm_min,
-		tm->tm_sec > 9 ? "":"0",
 		tm->tm_sec);
 	return buf;
 }

@@ -1,6 +1,6 @@
 /*
- * (C) Maint Laboratory 2003
- * Author: Elohin Igor
+ * (C) Maint Laboratory 2003-2004
+ * Author: Elohin Igor'
  * e-mail: maint@unona.ru
  * fido  : 2:5070/222.52
  * URL   : http://maint.unona.ru
@@ -14,6 +14,7 @@
 #include <pwd.h>
 #include <dirent.h>
 #include "../common.h"
+#include "../config.h"
 
 extern unsigned char flagREMOVE;
 extern int verbose;
@@ -58,7 +59,7 @@ int readnews(int argc, char *fname)
 		if (b != NULL)
 		    *b = '\0';
 		if (!isgrouponserver(newsgroups)) {
-		    tofailed(in, bpos, FAILED_POSTING);
+		    tofailed(in, bpos, failed_posting);
 		    myerror("Group not found: %s", newsgroups);
 		    newsgroups[0] = '\0';
 		    msgid[0] = '\0';
@@ -68,7 +69,7 @@ int readnews(int argc, char *fname)
 	    } else if (strncmp(buf, "Message-ID: ", 12) == 0) {
 		strncpy(msgid, &buf[12], 128);
 		if (ismsgidonserver(msgid)) {
-		    tofailed(in, bpos, DUPE_POST);
+		    tofailed(in, bpos, dupe_post);
 		    myerror("Message-ID of %s already in use upstream",
 			  msgid);
 		    newsgroups[0] = '\0';
@@ -81,7 +82,7 @@ int readnews(int argc, char *fname)
 		if (verbose)
 		    notice("Posting...");
 		if (post_FILE(in, &bpos) == FALSE) {
-		    tofailed(in, bpos, IN_COMING);
+		    tofailed(in, bpos, incoming);
 		    myerror("Failed posting - posting to in.coming");
 		    rc = 1;
 		} else {
@@ -114,9 +115,9 @@ int check_failed()
     char fullpath[PATH_MAX];
     int i, n, rc;
 
-    if ((dfd = opendir(FAILED_POSTING)) == NULL) {
+    if ((dfd = opendir(failed_posting)) == NULL) {
 	myerror("(check_failed.c): %s  \'%s\'\n", strerror(errno),
-	      FAILED_POSTING);
+	      failed_posting);
 	return -1;
     }
     i = 0;
@@ -126,7 +127,7 @@ int check_failed()
 	    strcmp(dir->d_name, "..") == 0)
 	    continue;
 	n++;
-	snprintf(fullpath, sizeof(fullpath), "%s/%s", FAILED_POSTING, dir->d_name);
+	snprintf(fullpath, sizeof(fullpath), "%s/%s", failed_posting, dir->d_name);
 	rc = readnews(0, fullpath);
 	switch (rc) {
 	case 0:

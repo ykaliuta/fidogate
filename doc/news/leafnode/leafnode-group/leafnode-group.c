@@ -1,6 +1,6 @@
 /*
- * (C) Maint Laboratory 2003
- * Author: Elohin Igor
+ * (C) Maint Laboratory 2003-2004
+ * Author: Elohin Igor'
  * e-mail: maint@unona.ru
  * fido  : 2:5070/222.52
  * URL   : http://maint.unona.ru
@@ -10,11 +10,12 @@
 #include <string.h>
 #include <pwd.h>
 #include "../common.h"
+#include "../config.h"
 
 char *prgname;
 void usage(void);
 void help(void);
-char *version = "leafnode-util 0.1";
+char *version = "leafnode-util"VERSION;
 int verbose;
 
 int main(int argc, char *argv[])
@@ -36,6 +37,18 @@ int main(int argc, char *argv[])
 	prgname = argv[0];
     else
 	prgname++;
+
+    if (setuid(geteuid()) < 0) {
+	myerror("cannot setuid to %d", geteuid());
+	exit(1);
+    }
+    if (setgid(getegid()) < 0) {
+	myerror("cannot setgid to %d", getegid());
+	exit(1);
+    }
+
+    readcfg();
+    loginit("leafnode-group", util_logdir);
 
     if (argc > 1) {
 	for (i = 1; i < argc && argv[i][0] == '-'; i++) {
@@ -88,16 +101,7 @@ int main(int argc, char *argv[])
 	usage();
 	return 0;
     }
-    loginit("leafnode-group", NEWSLOGDIR);
-    if (setgid(getegid()) < 0) {
-	myerror("cannot setgid to %d", getegid());
-	exit(1);
-    }
-    if (setuid(geteuid()) < 0) {
-	myerror("cannot setuid to %d", geteuid());
-	exit(1);
-    }
-    if (connect_server("localhost", 119) < 0) {
+    if (connect_server("localhost", port_newsserv) < 0) {
 	myerror("connect failed");
 	die(1);
     }
@@ -147,7 +151,7 @@ void usage(void)
 }
 void help(void)
 {
-    printf("\t%s\n\t------------------\n"
+    printf("\t%s\n\t--------------\n"
 	   "usage: %s [-options] [group]\n"
 	   "options:\n"
 	   "\t-h           this help\n"
@@ -162,7 +166,7 @@ void help(void)
 	   "\t-c           check group\n"
 	   "\t-L           make \'active\' file\n"
 	   "\n"
-	   "Copyright (C) 2003  Igor Elohin <maint@unona.ru>\n"
+	   "Copyright (C) 2003-2004  Igor' Elohin <maint@unona.ru>\n"
 	   "-------------------------------------------------------------\n"
 	   "Eagle's %s comes with ABSOLUTELY NO WARRANTY;\n"
 	   "This is free software, and you are welcome to redistribute it\n"

@@ -17,14 +17,11 @@ util.o:         util.c          ../common.h
 
 clean:
 	rm -f $(OBJ_leafnode) leafnode-group core 0 back.out
-
 save:
-	save $(SRC_leafnode) Makefile  *.1
+	save $(SRC_leafnode) Makefile
 install:
-	install -o news -g news -m 755 leafnode-group $(DESTDIR)/leafnode-group	
-	cp leafnode-group.1 $(DESTMAN)/leafnode-group.1
-
+	install -o news -g news -m 755 leafnode-group $(DESTDIR)/leafnode-group
+	chmod gu+s $(DESTDIR)/leafnode-group
 uninstall:
 	rm -f $(DESTDIR)/leafnode-group	
-	rm -f $(DESTMAN)/leafnode-group.1
 	
