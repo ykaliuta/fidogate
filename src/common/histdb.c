@@ -340,7 +340,7 @@ short int hi_test(char *key_string)
 /*
  * Test if DB key is already in database
  */
-char *hi_fetch(char *key_string)
+char *hi_fetch(char *key_string, int flag)
 {
     datum key, val;
     static char out[MAXPATH];
