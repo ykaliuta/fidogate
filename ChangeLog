@@ -1,3 +1,8 @@
+2004-07-13  Andrey Slusar <anray@users.sourceforge.net>
+
+	* src/gate/rfc2ftn.c: fix FTS_VIA(thanks to
+	    Alex Soukhotine)
+
 2004-07-10  Andrey Slusar <anray@users.sourceforge.net>
 
 	* doc/news/leafnode: update leafnode-utils to

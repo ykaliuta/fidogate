@@ -1886,17 +1886,12 @@ int print_local_msgid(FILE *fp, Node *node_from)
  */
 int print_via(FILE *fp, Node *node_from)
 {
-    if(node_eq(node_from, cf_addr()))
-    fprintf(fp, "\001Via FIDOGATE/%s %s, %s\r",
-	    PROGRAM, znf1(node_from),
-	    date(DATE_VIA, NULL)  );
-    else
 #ifndef FTS_VIA
     fprintf(fp, "\001Via FIDOGATE/%s %s, %s\r",
 	    PROGRAM, znf1(cf_addr()),
 	    date(DATE_VIA, NULL)  );
 #else
-    fprintf(fp, "\001Via %s @@%s FIDOGATE/%s\r",
+    fprintf(fp, "\001Via %s @%s FIDOGATE/%s\r",
 	    znf1(cf_addr()),
 	    date(DATE_VIA, NULL), PROGRAM );
 #endif /* FTS_VIA */
