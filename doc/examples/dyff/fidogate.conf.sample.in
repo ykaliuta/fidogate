@@ -749,6 +749,10 @@ Regex1stLine  ^[ 	]*([^>|].*) (writes|wrote|schreibt|schrieb|пишет):$
 # (replaces old MAX_LINELEN from config.h)
 MessageLineLength	90
 
+# ftn2rfc gate ^ARFC kludges to headers
+#
+#GateRfcKludge
+
 # Carbon group and name for search in "To:" field to put into this newsgroup
 #
 CarbonNameGroup Dmitry_Fedotov junk

@@ -262,7 +262,7 @@
 #undef NOINSERT_ORGANIZATION
 
 /*
- * Enable if insert Origin line if it absence
+ * If Origin line is not present, include link address
  */
 #undef INSERT_ORIGIN
 

@@ -179,7 +179,8 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail, char *ref_line)
      */
     for(p=serialno; *p && !is_space(*p); p++) ;
     *p = 0;
-    
+
+
 #if defined(DBC_HISTORY) && defined(FIDO_STYLE_MSGID)
     /***** Parse dbc for msgid ******/
     if(!pzone && mail && strchr(msgid, ' '))
@@ -192,14 +193,14 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail, char *ref_line)
 	hi_close();
 	unlock_program(cf_p_lock_history());
 	if(s)
+	{
 	    return s;
+	}
 	else
 	{
 #endif /* DBC_HISTORY && FIDO_STYLE_MSGID */
-    	    if(ref_line)
-    	    {
+	    if(ref_line)
 		return ref_line;
-	    }
 #if defined(DBC_HISTORY) && defined(FIDO_STYLE_MSGID)
 	}
     }
@@ -289,14 +290,14 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
 			  int part, int split, char *area, short int x_flags_m,
 			  int for_reply)
 #endif
-    /* origid_flag - Flag for ^AORIGID */
-    /* message_id  - Original RFC-ID */
-    /* part        - part number */
-    /* split       - != 0 # of parts */
-    /* area        - FTN AREA */
-    /* dont_flush  - Do'nt flush DBC History */
-    /* for_reply   - Id will be ^AREPLY*/
-    /* x_flags_m   - X-Flags: m */
+/* origid_flag - Flag for ^AORIGID       */
+/* message_id  - Original RFC-ID         */
+/* part        - part number             */
+/* split       - != 0 # of parts         */
+/* area        - FTN AREA                */
+/* dont_flush  - Do'nt flush DBC History */
+/* for_reply   - Id will be ^AREPLY      */
+/* x_flags_m   - X-Flags: m              */
 {
     char *id, *host, *p;
     char *savep;
@@ -430,22 +431,22 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
 #ifndef FIDO_STYLE_MSGID
     if(!x_flags_m)
     {
-    msgid_fts9_quote(tmps->s, id, tmps->len);
-    str_printf(tmps->s + strlen(tmps->s), tmps->len - strlen(tmps->s),
-	" %08lx", crc32);
+	msgid_fts9_quote(tmps->s, id, tmps->len);
+	str_printf(tmps->s + strlen(tmps->s), tmps->len - strlen(tmps->s),
+		   " %08lx", crc32);
     }
     else
     {
-    if(for_reply)
-	str_printf(tmps->s, strlen(tmps->s)+strlen(id)+2, "%s ", id);
-    str_printf(tmps->s + strlen(tmps->s), tmps->len - strlen(tmps->s),
-	"%08lx", crc32);
+	if(for_reply)
+	    str_printf(tmps->s, strlen(tmps->s)+strlen(id)+2, "%s ", id);
+	str_printf(tmps->s + strlen(tmps->s), tmps->len - strlen(tmps->s),
+		   "%08lx", crc32);
     }
 #else
     if(for_reply)
         str_printf(tmps->s, strlen(tmps->s)+strlen(id)+2, "%s ", id);
     str_printf(tmps->s + strlen(tmps->s), tmps->len - strlen(tmps->s),
-	"%08lx", crc32);
+	       "%08lx", crc32);
 #endif /* !FIDO_STYLE_MSGID */
     xfree(savep);
     if(origid_flag)
@@ -457,12 +458,12 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
 	{
     	    return tmps->s;
 	}
-	if (hi_init_dbc() == ERROR)
+	if(hi_init_dbc() == ERROR)
 	{
 	    fglog ("can't open dbc file");
 	}
 	if(hi_write_dbc(message_id, tmps->s, dont_flush) == ERROR)
-    	    fglog ("can't write to dbc file");
+	    fglog ("can't write to dbc file");
 	hi_close();
 	unlock_program(cf_p_lock_history());
     }
