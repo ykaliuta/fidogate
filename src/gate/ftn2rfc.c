@@ -1278,20 +1278,18 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	}
 
 	tl_appendf(&theader, "Date: %s\n", date(NULL, &msg.date));
-
-	msg_xlate_line(buffer, sizeof(buffer), from_line, cvt8 & AREA_QP, ignore_soft_cr);
-	tl_appendf(&theader, "From: %s\n", buffer);
+	tl_appendf(&theader, "From: %s\n", from_line);
 
 	if(!reply_to_line && gate_rfc_kludge)
 	{
 	    if( (p = kludge_get(&body.kludge, "RFC-Reply-To", NULL)) )
-		reply_to_line = p;
+	    {
+		msg_xlate_line(buffer, sizeof(buffer), p, cvt8 & AREA_QP, ignore_soft_cr);
+		reply_to_line = buffer;
+	    }
 	}
 	if(reply_to_line)
-	{
-	    msg_xlate_line(buffer, sizeof(buffer), reply_to_line, cvt8 & AREA_QP, ignore_soft_cr);
-	    tl_appendf(&theader, "Reply-To: %s\n", buffer);
-	}
+	    tl_appendf(&theader, "Reply-To: %s\n", reply_to_line);
 	
 	if(gate_rfc_kludge)
 	{
@@ -1314,7 +1312,6 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	}
 	else
 	{
-	    msg_xlate_line(buffer, sizeof(buffer), p, cvt8 & AREA_QP, ignore_soft_cr);
 	    tl_appendf(&theader, "Subject: %s\n", msgbody_rfc_subject);
 	}
 	msg_xlate_line(buffer, sizeof(buffer), id_line, cvt8 & AREA_QP, ignore_soft_cr);
@@ -1334,22 +1331,22 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		msg_xlate_line(buffer, sizeof(buffer), ref_line, cvt8 & AREA_QP, ignore_soft_cr);
 		tl_appendf(&theader, "References: %s\n", buffer);
 	    }
-	    msg_xlate_line(buffer, sizeof(buffer), to_line, cvt8 & AREA_QP, ignore_soft_cr);
-	    tl_appendf(&theader, "To: %s\n", buffer);
+
+	    tl_appendf(&theader, "To: %s\n", to_line);
+
 	    if(cc_line)
 	    {
-		msg_xlate_line(buffer, sizeof(buffer), cc_line, cvt8 & AREA_QP, ignore_soft_cr);
-		tl_appendf(&theader, "Cc: %s\n", buffer);
+		tl_appendf(&theader, "Cc: %s\n", cc_line);
 	    }
+
 	    if(bcc_line)
 	    {
-		msg_xlate_line(buffer, sizeof(buffer), bcc_line, cvt8 & AREA_QP, ignore_soft_cr);
-		tl_appendf(&theader, "Bcc: %s\n", buffer);
+		tl_appendf(&theader, "Bcc: %s\n", bcc_line);
 	    }
 	    if(*x_orig_to)
 	    {
 		msg_xlate_line(buffer, sizeof(buffer), x_orig_to, cvt8 & AREA_QP, ignore_soft_cr);
-		tl_appendf(&theader, "X-Orig-To: %s\n", buffer);
+		tl_appendf(&theader, "X-Orig-To: %s\n", x_orig_to);
 	    }
 	    if(errors_to)
 	    {
@@ -1432,10 +1429,7 @@ carbon:
 		tl_appendf(&theader, "Distribution: %s\n",
 				 area->distribution               );
 	    if(to_line)
-	    {
-		msg_xlate_line(buffer, sizeof(buffer), to_line, cvt8 & AREA_QP, ignore_soft_cr);
-		tl_appendf(&theader, "X-Comment-To: %s\n", buffer);
-	    }
+		tl_appendf(&theader, "X-Comment-To: %s\n", to_line);
 	}
 
 	/* Common header */
