@@ -149,11 +149,13 @@ Textlist body = { NULL, NULL };
 char *get_name_from_body(void)
 {
     static char line1[2*MAXINETADDR];
+#ifdef HAVE_REGEX_H
+    static char buf[MAXINETADDR];
+#endif
     Textline *tl;
     char *p;
 #if 0
     int found = FALSE;
-    static char buf[MAXINETADDR];
     int i;
 #endif
     

@@ -1,7 +1,8 @@
 2004-11-07  Andrey Slusar <anray@users.sourceforge.net>
 
 	* src/gate/rfc2ftn.c: now default rfc charset
-	    is getting from DefaultCharset option
+	    is getting from DefaultCharset option, fix
+	    build with defined HAVE_REGEX_H
 	* src/gate/send-fidogate.snews: fine working
 
 2004-11-02  Andrey Slusar <anray@users.sourceforge.net>
