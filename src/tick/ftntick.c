@@ -149,7 +149,7 @@ int do_tic(int w_flag)
 	    }
 	    
 	    debug (4,"file: name=%s time=%ld now=%ld wait=%d",
-		    tic.file, st.st_mtime, now,
+		    tic.file, (long)st.st_mtime, (long)now,
 		    tic_wait ? tic_wait*3600 : tic_wait);
 		    
 	    if (tic_wait && (now-3600*tic_wait)<st.st_mtime)

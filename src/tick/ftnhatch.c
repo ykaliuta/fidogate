@@ -107,7 +107,7 @@ int hatch(char *area, char *file, char *desc)
     file_crc  = crc32_file(file_name);
     
     debug(4, "file: name=%s size=%ld time=%ld crc=%08lx",
-	  file_name, file_size, file_time, file_crc);
+	  file_name, file_size, (long)file_time, file_crc);
 
 
     /*
@@ -127,7 +127,7 @@ int hatch(char *area, char *file, char *desc)
     tic.created = CREATOR;
     tic.size    = file_size;
     tl_appendf(&tic.path, "%s %ld %s",
-	       znf1(cf_addr()), now, date(NULL, &now) );
+	       znf1(cf_addr()), (long)now, date(NULL, &now) );
     lon_add(&tic.seenby, cf_addr());
     lon_join(&tic.seenby, &bbs->nodes);
     /* tic.pw set by hatch_one() */

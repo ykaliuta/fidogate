@@ -133,7 +133,7 @@ int do_expire(int type)
     if(exp_sec < 0)
 	exp_sec = 0;
     debug(4, "expire: now=%ld max=%ld, expire < %ld",
-	  now_sec, max_sec, exp_sec                   );
+	  (long)now_sec, (long)max_sec, (long)exp_sec);
 
     /* Open old history for reading */
     if( (hi_o = fopen(history, R_MODE)) == NULL ) 
@@ -259,7 +259,7 @@ int do_line(FILE *hi_n, char *line, int type)
     t = atol(p);
     expired = t < exp_sec;
     debug(7, "msgid=%s  time=%ld  expired=%s",
-	  msgid, t, expired ? "YES" : "NO"     );
+	  msgid, (long)t, expired ? "YES" : "NO");
 
     /* Write if not expired */
     if(!expired) 
@@ -272,9 +272,9 @@ int do_line(FILE *hi_n, char *line, int type)
 	}
 	    /* Write MSGID line to history text file */
 	if (type == 1)
-	    ret = fprintf(hi_n, "%s\t%s\t%ld\n", msgid, rfc_msgid, t);
+	    ret = fprintf(hi_n, "%s\t%s\t%ld\n", msgid, rfc_msgid, (long)t);
 	else
-	    ret = fprintf(hi_n, "%s\t%ld\n", msgid, t);
+	    ret = fprintf(hi_n, "%s\t%ld\n", msgid, (long)t);
 
 	    if (ret == ERROR || fflush(hi_n) == ERROR)
 	    {
@@ -462,7 +462,7 @@ int main(int argc, char **argv)
     /* Statistics */
     fglog("ids processed: %ld total, %ld expired in %ld s, %.2f ids/s",
 	n_processed, n_expired,
-	expire_delta, (double)n_processed/expire_delta);
+	(long)expire_delta, (double)n_processed/expire_delta);
     
     unlock_program(cf_p_lock_history());
 

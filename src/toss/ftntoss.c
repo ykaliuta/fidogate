@@ -1816,7 +1816,8 @@ int unpack_file(char *pkt_name)
     exp_sec = now_sec - max_sec;
     if(exp_sec < 0)
 	exp_sec = 0;
-    debug(4, "now=%ld max=%ld, old < %ld", now_sec, max_sec, exp_sec);
+    debug(4, "now=%ld max=%ld, old < %ld",
+	    (long)now_sec, (long)max_sec, (long)exp_sec);
     
     /* Open packet and read header */
     pkt_file = fopen(pkt_name, R_MODE);
@@ -2452,7 +2453,7 @@ int main(int argc, char **argv)
     
     if(pkts_in)
 	fglog("pkts processed: %ld, %ld Kbyte in %ld s, %.2f Kbyte/s",
-	    pkts_in, pkts_bytes/1024, toss_delta,
+	    pkts_in, pkts_bytes/1024, (long)toss_delta,
 	    (double)pkts_bytes/1024./toss_delta                      );
     
     if(msgs_in)
@@ -2460,7 +2461,7 @@ int main(int argc, char **argv)
 	fglog("msgs processed: %ld in, %ld out (%ld mail, %ld echo)",
 	    msgs_in, msgs_netmail+msgs_echomail, msgs_netmail, msgs_echomail);
 	fglog("msgs processed: %ld in %ld s, %.6f msgs/s",
-	    msgs_in, toss_delta, (double)msgs_in/toss_delta);
+	    msgs_in, (long)toss_delta, (double)msgs_in/toss_delta);
     }
     
     if(msgs_unknown || msgs_routed || msgs_insecure || msgs_empty)
