@@ -248,10 +248,6 @@ AC_ARG_ENABLE(ftnacl,
 [  --disable-ftnacl        do'nt use ACL for FTN links ],
     ,AC_DEFINE(FTN_ACL))dnl'
 
-AC_ARG_ENABLE(reply-xflm,
-[  --disable-reply-xflm    Add ^aREPLY kludge if RFC header X-Flags contains m parameter],
-    ,AC_DEFINE(REPLY_IF_X_FLAGS_M))
-
 AC_ARG_WITH(desc-dir,
 [  --with-desc-dir=DIR     put file descriptions into ".desc/%s.desc" file instead of files.bbs],
     DESC_DIR="$withval",DESC_DIR=".desc")

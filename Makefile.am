@@ -38,7 +38,7 @@ FDESTDIR	= $(DEFAULT_V_CONFIGDIR) \
 		  $(DEFAULT_V_INBOUND)/tmpunpack \
 		  $(DEFAULT_V_PINBOUND) \
 		  $(DEFAULT_V_PINBOUND)/bad \
-		  $(DEFAULT_V_PINBOUND)/tmpunpack 
+		  $(DEFAULT_V_PINBOUND)/tmpunpack
 
 install-am: installdirs
 

@@ -1,3 +1,7 @@
+2004-02-18  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* build/config.make.in: add UUINBOUND, FTPINBOUND
+
 2004-02-17  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/gate/ftn2rfc.c: add gate RFC-User-Agent,

@@ -853,7 +853,6 @@ Optional Features:
   --enable-ai1		Add -a option to HOSTS entries, useful only with PASSTHRU_NET/ECHOMAIL
   --disable-best-aka	disable best AKA select
   --disable-ftnacl        do'nt use ACL for FTN links
-  --disable-reply-xflm    Add ^aREPLY kludge if RFC header X-Flags contains m parameter
   --disable-desc-dir      put file descriptions into files.bbs
   --disable-recode-file-desc disable recode file descriptions
   --disable-af-avail      change behaviour of areafix command "%list" and "%avail"
@@ -1732,17 +1731,6 @@ else
 _ACEOF
 
 fi;
-# Check whether --enable-reply-xflm or --disable-reply-xflm was given.
-if test "${enable_reply_xflm+set}" = set; then
-  enableval="$enable_reply_xflm"
-
-else
-  cat >>confdefs.h <<\_ACEOF
-#define REPLY_IF_X_FLAGS_M 1
-_ACEOF
-
-fi;
-
 
 # Check whether --with-desc-dir or --without-desc-dir was given.
 if test "${with_desc_dir+set}" = set; then
@@ -3572,7 +3560,7 @@ test x"$silent" = xyes && libtool_flags="$libtool_flags --silent"
 case "$host" in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 3575 "configure"' > conftest.$ac_ext
+  echo '#line 3563 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
