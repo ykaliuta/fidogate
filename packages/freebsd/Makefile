@@ -1,64 +1,123 @@
-# New ports collection makefile for:    fidogate
-# Date created:         27 Sep 2002
-# Whom:                 dyff
+# New ports collection makefile for: fidogate5
+# Whom:                 Andrey Slusar <rusfidogate@users.sourceforge.net>
+# Date created:         29 Aug 2003
+# $FreeBSD$
 #
-# $FreeBSD: ports/news/inn/Makefile,v 1.52 2002/08/01 07:35:52 ijliao Exp $
-#
 
-PORTNAME=	fidogate
-PORTVERSION=	5.0.0b7
-CATEGORIES=	russian news mail
-MASTER_SITES=	http://www.fidogate.spb.ru/download/ \
-		${MASTER_SITE_SUNSITE}
+PORTNAME=		fidogate
+PORTVERSION=		5.1.0-ds
+CATEGORIES=		news mail
+MASTER_SITES=		http://node126.narod.ru/files/
+DISTNAME=		fidogate-5.1.0-ds
 
-MAINTAINER=	dyff@fidogate.spb.ru
+MAINTAINER=		rusfidogate@users.sourceforge.net
+COMMENT=		Fido-Internet Gateway and Tosser
 
-USE_BZIP2=	yes
-GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
-USE_AUTOCONF=	yes
-USE_PERL5=	yes
+USE_BZIP2=      	yes
+GNU_CONFIGURE=  	yes
+USE_PERL5=      	yes
 
-INSTALL_SHLIB=	yes
+INSTALL_SHLIB=  	yes
 
-CONFIGURE_ARGS=	\
-		--enable-amiga-out \
-		--disable-desc-dir \
-		--prefix=/
+SPOOLDIR?=		/var/spool/fido/gate
+BTBASEDIR?=		/var/spool/fido/bt	
+LOCKDIR?=		/var/run/fidogate
+LOGDIR?=		/var/log/fido/gate
+VARDIR?=		/usr/local/var/fidogate
 
-DOCLIST=	\
-		README
+PLIST_SUB+=		SPOOLDIR=${SPOOLDIR} \
+			BTBASEDIR=${BTBASEDIR} \
+			LOGDIR=${LOGDIR} \
+			LOCKDIR=${LOCKDIR} \
+			PREFIX=${PREFIX}
+
+HAS_CONFIGURE=		yes
+.if !defined(WITH_BSO)
+CONFIGURE_ARGS+=	--enable-amiga-out
+.endif
+.if !defined(WITH_DESCDIR)
+CONFIGURE_ARGS+=	--disable-desc-dir
+.endif
+.if !defined(WITHOUT_ALIASES)
+CONFIGURE_ARGS+=	--enable-aliases-local
+.endif
+.if defined(WITH_DBC)
+CONFIGURE_ARGS+=	--enable-dbc-history
+.endif
+CONFIGURE_ARGS+=	--libexec=${PREFIX}/libexec/fidogate \
+			--sysconfdir=${PREFIX}/etc/fido/gate \
+			--libdir=${PREFIX}/lib/fidogate \
+			--with-lockdir=${LOCKDIR} \
+			--with-logdir=${LOGDIR} \
+			--with-vardir=${VARDIR} \
+			--with-spooldir=${SPOOLDIR} \
+			--with-btbasedir=${BTBASEDIR}
 
 do-install:
-	(cd ${WRKSRC}; ${GMAKE} -f ${MAKEFILE} ${MAKE_ARGS} install)
-	(cd ${WRKSRC}; ${GMAKE} -f ${MAKEFILE} ${MAKE_ARGS} install-config)
+	(cd ${WRKSRC}; ${MAKE} -f ${MAKEFILE} ${MAKE_ARGS} install)
+	${MKDIR} ${VARDIR}/seq
+	${CHOWN} news:news ${VARDIR}
+	${CHOWN} news:news ${VARDIR}/seq
+	${CHOWN} news:news ${PREFIX}/etc/fido/gate
+	${CHOWN} news:news ${PREFIX}/lib/fidogate
+	${CHOWN} news:news ${PREFIX}/libexec/fidogate
 
-pre-install:
-	(cd ${WRKSRC}; ${GMAKE} -f ${MAKEFILE} ${MAKE_ARGS} install-dirs)
+.if !defined(NOPORTDOCS)
+	${MKDIR} ${PREFIX}/share/doc/fidogate5
+	${INSTALL_DATA} ${WRKSRC}/doc/README ${PREFIX}/share/doc/fidogate5/README.ru
+	${INSTALL_DATA} ${WRKSRC}/doc/README.en ${PREFIX}/share/doc/fidogate5/README
+	${MKDIR} ${PREFIX}/share/doc/fidogate5/examples
+	${MKDIR} ${PREFIX}/share/examples/fidogate5/dyff
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/acl.sample ${PREFIX}/share/examples/fidogate5/dyff/acl.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/aliases.sample ${PREFIX}/share/examples/fidogate5/dyff/aliases.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/areafix.help.rus ${PREFIX}/share/examples/fidogate5/dyff/areafix.help.rus
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/areafix.help.sample ${PREFIX}/share/examples/fidogate5/dyff/areafix.help.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/areas.bbs.sample ${PREFIX}/share/examples/fidogate5/dyff/areas.bbs.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/areas.sample ${PREFIX}/share/examples/fidogate5/dyff/areas.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/fareas.bbs.sample ${PREFIX}/share/examples/fidogate5/dyff/fareas.bbs.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/fidogate.conf.sample ${PREFIX}/share/examples/fidogate5/dyff/fidogate.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/fidokill.sample ${PREFIX}/share/examples/fidogate5/dyff/fidokill.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/ftnacl.sample ${PREFIX}/share/examples/fidogate5/dyff/ftnacl.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/hosts.sample ${PREFIX}/share/examples/fidogate5/dyff/hosts.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/packing.sample ${PREFIX}/share/examples/fidogate5/dyff/packing.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/passwd.sample ${PREFIX}/share/examples/fidogate5/dyff/passwd.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/routing.sample ${PREFIX}/share/examples/fidogate5/dyff/routing.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/spyes.sample ${PREFIX}/share/examples/fidogate5/dyff/spyes.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/uplinks.sample ${PREFIX}/share/examples/fidogate5/dyff/uplinks.sample
+	${MKDIR} ${PREFIX}/share/examples/fidogate5/point
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/areas ${PREFIX}/share/examples/fidogate5/point/areas
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/areas.bbs ${PREFIX}/share/examples/fidogate5/point/areas.bbs
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/fidogate.conf ${PREFIX}/share/examples/fidogate5/point/fidogate.conf
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/newsfeeds ${PREFIX}/share/examples/fidogate5/point/newsfeeds
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/packing ${PREFIX}/share/examples/fidogate5/point/packing
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/point/routing ${PREFIX}/share/examples/fidogate5/point/routing
+.endif	
 
 post-install:
+	strip ${PREFIX}/bin/ftnaf
 	strip ${PREFIX}/bin/ftnafutil
+	strip ${PREFIX}/bin/ftnexpire
+	strip ${PREFIX}/bin/ftnfattach
+	strip ${PREFIX}/bin/ftnhatch
+	strip ${PREFIX}/bin/ftnoutpkt
+	strip ${PREFIX}/bin/ngoper
+	strip ${PREFIX}/bin/pktdebug
 	strip ${PREFIX}/bin/pkttmpl
 	strip ${PREFIX}/bin/runinc
-	strip ${PREFIX}/bin/ngoper
-	strip ${PREFIX}/bin/ftnfattach
 	strip ${PREFIX}/bin/sumcrc
-	strip ${PREFIX}/bin/ftnoutpkt
-	strip ${PREFIX}/bin/pktdebug
-	strip ${PREFIX}/libexec/ftnaf
-	strip ${PREFIX}/libexec/ftnafpkt
-	strip ${PREFIX}/libexec/ftnafmail
-	strip ${PREFIX}/libexec/ftnmail
-	strip ${PREFIX}/libexec/rfc2ftn
-	strip ${PREFIX}/libexec/ftn2rfc
-	strip ${PREFIX}/libexec/ftnin
-	strip ${PREFIX}/libexec/ftntick
-	strip ${PREFIX}/libexec/ftnhatch
-	strip ${PREFIX}/libexec/ftn2ftn
-	strip ${PREFIX}/libexec/ftntoss
-	strip ${PREFIX}/libexec/ftnroute
-	strip ${PREFIX}/libexec/ftnpack
-	strip ${PREFIX}/libexec/ftnexpire
-	strip ${PREFIX}/libexec/ftnflo
+	strip ${PREFIX}/libexec/fidogate/confval
+	strip ${PREFIX}/libexec/fidogate/ftn2ftn
+	strip ${PREFIX}/libexec/fidogate/ftn2rfc
+	strip ${PREFIX}/libexec/fidogate/ftnafmail
+	strip ${PREFIX}/libexec/fidogate/ftnafpkt
+	strip ${PREFIX}/libexec/fidogate/ftnflo
+	strip ${PREFIX}/libexec/fidogate/ftnin
+	strip ${PREFIX}/libexec/fidogate/ftninpost
+	strip ${PREFIX}/libexec/fidogate/ftnmail
+	strip ${PREFIX}/libexec/fidogate/ftnpack
+	strip ${PREFIX}/libexec/fidogate/ftnroute
+	strip ${PREFIX}/libexec/fidogate/ftntick
+	strip ${PREFIX}/libexec/fidogate/ftntoss
+	strip ${PREFIX}/libexec/fidogate/rfc2ftn
 
 .include <bsd.port.mk>

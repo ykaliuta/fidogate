@@ -22,9 +22,9 @@ FIDOGATE Version 5
 #%patch0 -p0
 
 ./configure --prefix=/usr \
-	    --with-sysconfdir=/etc/fidogate \
+	    --with-sysconfdir=/etc/fido/gate \
 	    --with-newsbindir=/usr/lib/news/bin \
-	    --with-logdir=/var/log/fidogate \
+	    --with-logdir=/var/log/fido/gate \
 	    --with-vardir=/var/lib/fidogate \
 	    --with-spooldir=/var/spool/fido/gate \
 	    --with-btbasedir=/var/spool/fido/bt \
@@ -80,8 +80,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %doc COPYING TODO TODO.rus doc/README doc/README.en
 
-%dir %attr(700,news,news)  /etc/fidogate
-%dir %attr(700,news,news)  /var/log/fidogate
+%dir %attr(700,news,news)  /etc/fido/gate
+%dir %attr(700,news,news)  /var/log/fido/gate
 %attr(-,news,news) /usr/bin/*
 %attr(-,news,news) /usr/libexec/*
 %attr(-,news,news) /usr/lib/*
@@ -106,4 +106,3 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %attr(600,news,news) /etc/fidogate/spyes.sample
 %config(noreplace) %attr(600,news,news) /var/lib/fidogate/areas.bbs.sample
 %config(noreplace) %attr(600,news,news) /var/lib/fidogate/fareas.bbs.sample
-
