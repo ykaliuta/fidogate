@@ -1,3 +1,13 @@
+2003-11-05  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* version.h: new development version
+	* src/toss/runinc.c: add key -c to runinc(thanks to
+	    Zhenja Kaluta)
+	* src/areafix/areafix.c: add key for NEW command(thanks
+	    to Zhenja Kaluta)
+	* Changes.ru: update
+	* doc/README.ru: update
+
 2003-11-01  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/gate/ftn2rfc.c: fix NOINSERT_ORGANIZATION(thanks

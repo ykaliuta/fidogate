@@ -105,7 +105,12 @@ co -r dp fidogate
 
 для fidogate-ds:
 
+STABLE:
 cvs -z3 -d:pserver:anonymous@cvs.rusfidogate.sourceforge.net:/cvsroot/rusfidogate
+co fidogate-sta
+
+DEVELOPMENT:
+cvs -z3 -d:pserver:anonymous@cvs.rusfidogate.sourceforge.net:/cvsroot/rusfidogate              
 co fidogate
 
     Также последнюю официальную версию fidogate можно взять на сайтах:

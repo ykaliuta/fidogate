@@ -122,6 +122,7 @@ static int lim_g = 0;
 static Node  authorized_node    = { -1, -1, -1, -1, "" };
 static int   authorized_cmdline = FALSE;
 int   authorized_new     = FALSE;
+int   authorized_fwd     = FALSE;
 static int   authorized_delete  = FALSE;
 #ifdef AF_LISTALL_RESTRICTED
 static char  authorized_listall = FALSE;
@@ -315,6 +316,7 @@ void areafix_auth_init(void)
     node_invalid(&authorized_node);
     authorized_cmdline = FALSE;
     authorized_new     = FALSE;
+    authorized_fwd     = FALSE;
     authorized_delete  = FALSE;
 #ifdef AF_LISTALL_RESTRICTED
     authorized_listall = FALSE;
@@ -403,10 +405,15 @@ int areafix_auth_check(Node *node, char *passwd, int checkpass)
     debug(3, "passwd lim : %d/%d", authorized_lim_G, authorized_lim_A);
 #endif /* SUB_LIMIT */
     
-    if(strchr(authorized_key, '&'))
+    if(strchr(authorized_key, '$'))
     {
 	debug(3, "authorized for NEW command");
 	authorized_new = TRUE;
+    }
+    if(strchr(authorized_key, '&'))                                                            
+    {                                                                                          
+        debug(3, "authorized for FORWARD request");                                                
+        authorized_fwd = TRUE;                                                                 
     }
     if(strchr(authorized_key, '~'))
     {
@@ -427,7 +434,7 @@ int areafix_auth_check(Node *node, char *passwd, int checkpass)
 void areafix_auth_cmd(void)
 {
     authorized = authorized_cmdline = authorized_new
-	       = authorized_delete  = TRUE;
+	       = authorized_delete  = authorized_fwd = TRUE;
 #ifdef AF_LISTALL_RESTRICTED
     authorized_listall = TRUE;
 #endif /* AF_LISTALL_RESTRICTED */
@@ -1935,7 +1942,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 	}
     }
 
-    if(!authorized_new)
+    if(!authorized_fwd)
     {
 	areafix_printf("%-41s: forward request not authorized", area_in);
 	return OK;
@@ -1950,8 +1957,8 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 		    BUF_COPY3( buf, a->areas, " ", a->options );
 		else
 		    BUF_COPY( buf,  a->areas );
-		an = authorized_new;
-		authorized_new = TRUE;
+		an = authorized_fwd;
+		authorized_fwd = TRUE;
 #ifdef CREATE_LOG_FORWREQ
 		no_create_log_file = NULL;
 #endif /* CREATE_LOG_FORWREQ */
@@ -1973,7 +1980,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 				    
 		    continue;
 		}
-		authorized_new = an;
+		authorized_fwd = an;
 		if ( NULL == ( p = areasbbs_lookup( a->areas ) ) )
 		{
 		    log("ERROR: can't create area %s (not found after creation)", a->areas);
