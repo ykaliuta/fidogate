@@ -196,14 +196,14 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail)
     }
 #endif /* DBC_HISTORY && FIDO_STYLE_MSGID */
     /***** New-style converted RFC Message-ID *****/
-//    if(wildmat(origaddr, "<*@*>"))
-//    {
-//	tmps = tmps_copy(origaddr);
-//	xfree(save);
-//	if(pzone)
-//	    *pzone = -2;
-//	return tmps->s;
-//    }
+    if(wildmat(origaddr, "<*@*>"))
+    {
+	tmps = tmps_copy(origaddr);
+	xfree(save);
+	if(pzone)
+	    *pzone = -2;
+	return tmps->s;
+    }
     
 
     /***** FTN-style *****/
