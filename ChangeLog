@@ -1,5 +1,6 @@
 2004-06-06  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
+	* version.h: update version number to 5.2.1ds
 	* src/common/getopt.c: fix args
 	* src/common/misc.c: fix and rewrite str_append()
 
