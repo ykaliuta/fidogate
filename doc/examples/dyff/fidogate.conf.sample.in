@@ -9,7 +9,7 @@
 # C O M M O N   C O N F I G U R A T I O N                                    #
 ##############################################################################
 
-# Пути к основным каталогам
+# Paths to basic dirs
 #
 CONFIGDIR	<CONFIGDIR>
 BINDIR		<BINDIR>
@@ -156,7 +156,7 @@ Zone	6	.fidonet.org		fidonet		out.006
 AreaFixMailer	<SENDMAIL> -t
 
 # CC of reply mails
-AreaFixCc	postmaster@corex.izhora.spb.ru
+AreaFixCc	postmaster@<DOMAINNAME>
 
 # Location of help file
 AreaFixHelp	%C/areafix.help
