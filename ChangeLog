@@ -1,5 +1,7 @@
 2004-10-15  Andrey Slusar <anray@users.sourceforge.net>
 
+	* src/charset/Makefile.am: add charsetc to
+	    installed libexec programs
 	* scripts/www/gate.cgi.in: fix working(thanks to
 	    Evgeniy Kozhuhovskiy)
 
