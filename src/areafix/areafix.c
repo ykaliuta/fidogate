@@ -1174,7 +1174,7 @@ int cmd_listall(Node *node)
     char *n, *f1, *f2;
     char *t;
     FILE *fp;
-    char buf[AREAFIXMAXSTR];
+    char buf[BUFSIZ];
     
 #ifdef AFSEND_ECHO_STATUS
     char tmp[35];

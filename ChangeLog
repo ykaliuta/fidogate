@@ -1,3 +1,7 @@
+2004-06-15  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/areafix/areafix.c: fix trap cmd_listall
+
 2004-06-11  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/common/packet.c: change checking pkt date
