@@ -553,14 +553,10 @@ Subject: GATE-PORT
   
   Редактируем newsfeeds inn'a:
 
-  Стираем все, что там незакомментировано и пишем:
+  Комментируем все, что там незакомментировано и пишем:
 
   === newsfeeds ===
-  ME\
-     :*,\
-     !junk,\
-     !control\
-     ::
+  ME:*/!junk,!control::
 
   fidogate\
      :*,!cc,\
