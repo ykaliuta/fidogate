@@ -54,6 +54,7 @@ char   *get_subject		(Textlist *);
 Area   *news_msg		(char *, Node *);
 int	msg_format_buffer	(char *, Textlist *);
 static int msg_get_line_length	(void);
+static int no_rfc_kludge = FALSE;	/* NoRfcKludge          */
 int	unpack			(FILE *, Packet *);
 int	unpack_file		(char *);
 
@@ -1168,10 +1169,13 @@ int unpack(FILE *pkt_file, Packet *pkt)
 
 	if( (p = kludge_get(&body.kludge, "ORIGID", NULL)) )
 	    id_line = s_msgid_convert_origid(p);
-	else if( (p = kludge_get(&body.kludge, "Message-ID", NULL)) )
+	else if(!no_rfc_kludge)
+	{
+	if( (p = kludge_get(&body.kludge, "Message-ID", NULL)) )
 	    id_line = s_msgid_convert_origid(p);
 	else if( (p = kludge_get(&body.kludge, "RFC-Message-ID", NULL)) )
 	    id_line = s_msgid_convert_origid(p);
+	}
 	if(!id_line)
 	{
 	    int id_zone;
@@ -1984,7 +1988,11 @@ int main(int argc, char **argv)
 	debug(8, "config: DontIgnore0x8d");
 	ignore_soft_cr = FALSE;
     }
-
+    if(cf_get_string("NoRfcKludge", TRUE))
+    {
+	debug(8, "config: NoRfcKludge");
+	no_rfc_kludge = TRUE;
+    }
 
     /* Init various modules */
     areas_init();

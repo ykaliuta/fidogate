@@ -1,3 +1,7 @@
+2004-01-23  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: add NoRfcKludge
+
 2004-01-20  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/gate/rfc2ftn.c: fix disable FIDO_STYLE_MSGID
