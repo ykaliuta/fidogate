@@ -282,7 +282,7 @@ AC_ARG_ENABLE(tick-crc,
 
 AC_ARG_ENABLE(no-organization,
 [  --enable-no-organization enable if no insert Origin line if it absence],
-	      AC_DEFINE(NOINSERT_ORGANIZATION),)
+	      ,AC_DEFINE(NOINSERT_ORGANIZATION),)
 
 AC_ARG_ENABLE(insecure-not-db,
 [  --disable-insecure-not-db put insecure mail into dupe database],

@@ -1,3 +1,8 @@
+2003-10-28  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: fix UseOriginForOrganization(thanks
+	    to Alex Kotikov)
+
 2003-10-27  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* configure: fix compile ftnnews(thanks to Zhenja Kaluta)
@@ -6,7 +11,7 @@
 
 2003-10-26  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
-	* src/tick/ftntick.c: fix *s2
+	* src/tick/ftntick.c: remove unused *s2
 
 2003-10-22  Andrey Slusar <rusfidogate@users.sourceforge.net>
 

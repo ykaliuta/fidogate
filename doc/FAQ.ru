@@ -737,32 +737,9 @@ Subject: GATE-PORT
      необходимо либо добавить юзера, собирающего фидогейт, в группу news либо собирать
      от root.
 
--------------------------------------------------------------------------------------
-
-  Q8:Что-то сдается мне, что у fidogate не все в порядке с подстановкой organization
-     если в пришедшем письме пустой origin. Собрал его с
-     ===
-     /*
-     * Enable if no insert Origin line if it absence
-     */
-     /* #undef NOINSERT_ORGANIZATION */
-     ===
-     т.е. должен вставлять, если я правильно понял смысл данной опции :-)
-     а ни фига подобного:
-     -*-
-     Oct 10 17:41:00 main rnews: rejected 437 Body of header is all blanks in
-     "Organization" header
-     -*-
-     В конфиге - UseOriginForOrganization включена. В чем может быть проблема?
-
-  A8:Просто если пользоваться UseOriginForOrganization, то fidogate мапит Origin 
-     входящих писем в Organization и если Origin пустой, то и Organization будет пустой.
-     Выход - включить UseOrganizationForOrigin, и тогда во все письма будет вставляться
-     Organization, заданный в fidogate.conf, а Origin будет мапиться в X-FTN-Origin.
-
 ---------------------------------------------------------------------------------------
 
-  Q9:Почему эхомейл тоссится, но в ньюсгруппах сообщения не появляются? В логах
+  Q8:Почему эхомейл тоссится, но в ньюсгруппах сообщения не появляются? В логах
      следующее:
      ===
      Oct 18 22:21:16 ftntoss packet /var/spool/bt/pin/9192da0c.pkt (1622b) from
@@ -770,7 +747,7 @@ Subject: GATE-PORT
      Oct 18 22:21:16 ftntoss WARNING: node 2:450/256.0 have null password
      ===
 
-  A9:Если у вас ходят непарольные пакеты, то не следует указывать в passwd на них пароли.
+  A8:Если у вас ходят непарольные пакеты, то не следует указывать в passwd на них пароли.
      Логично, не правда ли? В общем удали в passwd строки вида:
      === passwd ===
      packet  2:5030/1469             XXXXXXXX

@@ -1,5 +1,7 @@
 Version 5.1.0ds-beta2
 ~~~~~~~~~~~~~~~~~~~~~
+- Если ориджин во входящем сообщении пустой и включен NOINSERT_ORGANIZATION,
+  то при гейтовании в Organization вставляется (none)
 - Удален токен DEFAULT_OUTNETMAIL
 - Добавлены конфиги для exim4
 - В дефолтный charset добавлены украинские map-ы.

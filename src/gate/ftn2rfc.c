@@ -1385,15 +1385,15 @@ carbon:
 	    p = buffer + strlen(" * Origin: ");
 	    while(is_blank(*p))
 		p++;
-	    tl_appendf(&theader, "Organization: %s\n", p);
-	}
-
-#ifndef NOINSERT_ORGANIZATION
-	else
-	{
-	    tl_appendf(&theader, "Organization: %s\n", cf_p_organization() );
-	}
-#endif /* NOINSERT_ORGANIZATION */
+        if (strlen(p) == 0)
+#ifndef NOINSERT_ORGANIZATION 
+            tl_appendf(&theader, "Organization: %s\n", "(none)" );
+#else /* NOINSERT_ORGANIZATION */ 
+            tl_appendf(&theader, "Organization: %s\n", cf_p_organization() );
+#endif /* NOINSERT_ORGANIZATION */ 
+        else
+            tl_appendf(&theader, "Organization: %s\n", p);
+        }
 	tl_appendf(&theader, "Lines: %d\n", lines);
 	if(gateway)
 	    tl_appendf(&theader, "X-Gateway: FIDO %s [FIDOGATE %s], %s\n",
