@@ -486,10 +486,8 @@ AC_SUBST(INEWS)
 # Checking sendmail
 if test "${with_sendmail+set}" = set ;then
     AC_MSG_CHECKING(for sendmail)
-    if test -x $SENDMAIL; then
-	AC_MSG_RESULT($SENDMAIL)
-    else
-        AC_MSG_ERROR([sendmail not found, re-run with valid --with-sendmail])
+    if test "$SENDMAIL" = no; then
+	SENDMAIL = "/usr/sbin/sendmail"
     fi
 else
     AC_PATH_PROG(SENDMAIL, sendmail)

@@ -4976,13 +4976,8 @@ fi
 if test "${with_sendmail+set}" = set ;then
     echo "$as_me:$LINENO: checking for sendmail" >&5
 echo $ECHO_N "checking for sendmail... $ECHO_C" >&6
-    if test -x $SENDMAIL; then
-	echo "$as_me:$LINENO: result: $SENDMAIL" >&5
-echo "${ECHO_T}$SENDMAIL" >&6
-    else
-        { { echo "$as_me:$LINENO: error: sendmail not found, re-run with valid --with-sendmail" >&5
-echo "$as_me: error: sendmail not found, re-run with valid --with-sendmail" >&2;}
-   { (exit 1); exit 1; }; }
+    if test "$SENDMAIL" = no; then
+	SENDMAIL = "/usr/sbin/sendmail"
     fi
 else
     # Extract the first word of "sendmail", so it can be a program name with args.
