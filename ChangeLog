@@ -1,5 +1,9 @@
 2004-01-28  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
+	* src/common/rfcheader.c: fix rfc_lvl_3
+
+2004-01-28  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
 	* doc/old/FAQ_Fidogate: add old fidogate FAQ
 
 2004-01-27  Andrey Slusar <rusfidogate@users.sourceforge.net>
