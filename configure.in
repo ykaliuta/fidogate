@@ -19,7 +19,7 @@ AM_CONFIG_HEADER(config.h)
 config_vars=
 # Check for a --with-logdir argument
 AC_ARG_WITH(logdir, dnl
-  --with-logdir=DIR	  set fidogate log DIR,
+  --with-logdir=DIR		set fidogate log DIR,
 	    [dnl
 case "$with_logdir" in
 yes) AC_MSG_ERROR([--with-logdir requires an argument; use --with-logdir=DIR]) ;;
@@ -30,7 +30,7 @@ esac
 
 # Check for a --with-vardir argument
 AC_ARG_WITH(vardir, dnl
-  --with-vardir=DIR	  set fidogate var DIR,
+  --with-vardir=DIR		set fidogate var DIR,
 	    [dnl
 case "$with_vardir" in
 yes) AC_MSG_ERROR([--with-vardir requires an argument; use --with-vardir=DIR]) ;;
@@ -39,9 +39,20 @@ yes) AC_MSG_ERROR([--with-vardir requires an argument; use --with-vardir=DIR]) ;
 esac
 ])
 
+# Check for a --with-lockdir argument
+AC_ARG_WITH(lockdir, dnl
+  --with-lockdir=DIR		set fidogate lock DIR,
+	    [dnl
+case "$with_lockdir" in
+yes) AC_MSG_ERROR([--with-lockdir requires an argument; use --with-lockdir=DIR]) ;;
+''|no) ;;
+*) LOCKDIR="$withval" ;;
+esac
+])
+
 # Check for a --with-spooldir argument
 AC_ARG_WITH(spooldir, dnl
-  --with-spooldir=DIR	  set fidogate spool DIR,
+  --with-spooldir=DIR		set fidogate spool DIR,
 	    [dnl
 case "$with_spooldir" in
 yes) AC_MSG_ERROR([--with-spooldir requires an argument; use --with-spooldir=DIR]) ;;
@@ -52,7 +63,7 @@ esac
 
 # Check for a --with-sysconfdir argument
 AC_ARG_WITH(sysconfdir, dnl
-  --with-sysconfdir=DIR     set fidogate config DIR,
+  --with-sysconfdir=DIR		set fidogate config DIR,
             [dnl
 case "$with_sysconfdir" in
 yes) AC_MSG_ERROR([--with-sysconfdir requires an argument; use --with-sysconfdir=DIR]) ;;
@@ -63,7 +74,7 @@ esac
 
 # Check for a --with-btbasedir argument
 AC_ARG_WITH(btbasedir, dnl
-  --with-btbasedir=DIR	  set fidogate BTBASE DIR,
+  --with-btbasedir=DIR		set fidogate BTBASE DIR,
 	    [dnl
 case "$with_btbasedir" in
 yes) AC_MSG_ERROR([--with-btbasedir requires an argument; use --with-btbasedir=DIR]) ;;
@@ -79,7 +90,7 @@ AC_SUBST(btbasedir)
 
 # Check for a --with-netmaildir argument
 AC_ARG_WITH(netmaildir, dnl
-  --with-netmaildir=DIR	  set fidogate NETMAIL DIR,
+  --with-netmaildir=DIR		set fidogate NETMAIL DIR,
 	    [dnl
 case "$with_netmaildir" in
 yes) AC_MSG_ERROR([--with-netmaildir requires an argument; use --with-netmaildir=DIR]) ;;
@@ -89,13 +100,13 @@ yes) AC_MSG_ERROR([--with-netmaildir requires an argument; use --with-netmaildir
 esac
 ])
 if ! test "${netmaildir+set}" = set; then
-    netmaildir='/var/spool/fido/bt/netmail'
+    netmaildir="${btbasedir}/netmail"
 fi
 AC_SUBST(netmaildir)
 
 dnl# Check for a --with-newsbindir argument
 AC_ARG_WITH(newsbindir, dnl
-  --with-newsbindir=DIR	  set INN bin directory,
+  --with-newsbindir=DIR		set INN bin directory,
 	    [dnl
 case "$with_newsbindir" in
 yes) AC_MSG_ERROR([--with-newsbindir requires an argument; use --with-newsbindir=DIR]) ;;
@@ -106,7 +117,7 @@ esac
 
 dnl# Check for a --with-inews argument
 AC_ARG_WITH(INEWS_S, dnl
-  --with-inews=PATH	  set directory containt INEWS,
+  --with-inews=PATH		set directory containt INEWS,
 	    [dnl
 case "$with_inews" in
 yes) AC_MSG_ERROR([--with-inews   requires an argument; use --with-inews=PATH]) ;;
@@ -117,7 +128,7 @@ esac
 
 dnl# Check for a --with-rnews argument
 AC_ARG_WITH(RNEWS_S, dnl
-  --with-rnews=PATH	  set directory containt RNEWS,
+  --with-rnews=PATH		set directory containt RNEWS,
 	    [dnl
 case "$with_rnews" in
 yes) AC_MSG_ERROR([--with-rnews   requires an argument; use --with-rnews=PATH]) ;;
@@ -496,8 +507,8 @@ fi
 AC_SUBST(SENDMAIL)
 
 AC_MSG_CHECKING(for lock directory)
-if test -d /var/lock; then
-	LOCKDIR=/var/lock/fidogate
+if test "${with_lockdir+set}" = set; then
+	LOCKDIR="$with_lockdir"
 elif test -d /var/run; then
 	LOCKDIR=/var/run/fidogate
 elif test -d /var/spool/lock; then
