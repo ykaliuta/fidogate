@@ -1,4 +1,4 @@
-2004-01-28  Andrey Slusar <rusfidogate@users.sourceforge.net>
+2004-01-29  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/common/rfcheader.c: fix rfc_lvl_3
 

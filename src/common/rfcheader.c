@@ -120,7 +120,7 @@ void header_ca_rfc(FILE *out, int rfc_level)
 	Textline *p;
 	char **name;
 	int len;
-	int ok = TRUE;
+	int ok = FALSE;
 	char *crlf;
 	int i;
 	
@@ -129,13 +129,13 @@ void header_ca_rfc(FILE *out, int rfc_level)
 	{
 	    if(*p->line && !is_space(p->line[0])) 
 	    {
-		ok = TRUE;
+		ok = FALSE;
 		for(name=rfc_lvl_3; *name; name++)
 		{
 		    len  = strlen(*name);
 		    if(!strnicmp(p->line, *name, len) && (p->line[len]==':' || p->line[len]==' '))
 		    {
-			ok = FALSE;
+			ok = TRUE;
 			break;
 		    }
 		}
