@@ -1,0 +1,15 @@
+#:ts=8
+#
+#   $Id$
+#
+# User name aliases
+#
+# username	FTN address		Full name
+# --------	-----------		---------
+root		2:5030/1229.0		"SysOp"
+
+postmaster	2:5030/1229.1		"Mail Delivery Subsystem"
+dyff		2:5030/1229.1		"D*F*"
+
+dyff		2:5030/1229.0		"Dmitry Fedotov"
+dyff		2:5030/1229.0		"*"

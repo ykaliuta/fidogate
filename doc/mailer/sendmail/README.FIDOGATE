@@ -1,0 +1,18 @@
+-*- Indented-Text -*-
+
+$Id$
+
+This directory contains the sendmail m4 configuration file from the
+RedHat 4.1 (Vanderbilt) / sendmail 8.8.5 release with some additional
+config files for FIDOGATE support (tested on sendmail 8.8.5 - 8.12.0 version).
+
+See cf/*.mc for a sample setup with FIDOGATE.
+
+README		is the original README describing the m4 config in detail
+
+
+If you only want to copy the FIDOGATE specific files to you own
+sendmail m4 configuration tree, these are:
+
+mailer/ftn.m4	FIDOGATE ftn mailer definitions (ftn, ftni, ftna, ftno)
+cf/*		various example config files, mailertables etc.

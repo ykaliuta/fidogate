@@ -1,0 +1,12 @@
+#
+# Example entry for INN 1.x and FIDOGATE 4.3.x, add to INN's
+# /etc/news/newsfeeds.
+#
+
+# FIDOGATE gateway
+# Make sure that you add
+#   NewsPathTail fidogate!not-for-mail
+# to your fidogate.conf!
+fidogate\
+	:!*,fido.ger.*,fido.test\
+	:Tf,Wnb:fidogate

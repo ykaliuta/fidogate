@@ -1,0 +1,30 @@
+#!<PERL5> -U
+#
+# out-attach <H|N|D|C> <node> <file>
+#
+
+$binpath = "<BINDIR>";
+$outpath = "<BTBASEDIR>/out";
+#------------------------------------------------------------------------------
+use File::Basename;
+
+( $fl, $node, $file ) = @ARGV;
+
+if($fl eq "" or $node eq "" or $file eq "" ) {
+    print "usage: out-attach <Hold | Normal | Direct | Crash> <node> <file>\n";
+    exit 10;
+}
+
+if(! -f $file) {
+    print "out-attach: file $file not found\n";
+    exit 9;
+}
+
+$file = basename($file);
+$< = $>;
+
+system "cp $file $outpath/$file";
+system "$binpath/ftnfattach -F$fl $node $outpath/$file";
+system "chown <OWNER>.<GROUP> $outpath/$file";
+
+exit 0;

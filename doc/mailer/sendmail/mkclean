@@ -1,0 +1,15 @@
+#!/bin/sh
+
+DIRS="domain feature hack m4 mailer ostype sh siteconfig"
+
+rm -f README
+
+for d in $DIRS; do
+    if [ -d $d ]; then
+	for f in $d/*; do
+	    if [ -L $f ]; then
+		rm -f $f
+	    fi
+	done
+    fi
+done

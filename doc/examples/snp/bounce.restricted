@@ -1,0 +1,30 @@
+Subject: Returned mail: You're not a registered fido.vsu.ru node
+
+   ----- Transcript of session follows -----
+
+Your mail
+
+   From: %f @ %F
+   To:   %t @ %T
+   Date: %d
+   Subj: %s
+
+addressed to Internet
+
+   To:   %R
+
+could not be delivered.
+
+Usage of this gateway is restricted to users and points of systems
+registered for the Internet domain fido.vsu.ru.
+
+If you want to send mail to a local user at this system please omit
+the To line and put the user or real name into the FIDO header. Mails
+with a To line addressed to *any* user at this system (not just UUCP
+or GATEWAY) are treated as Internet mails.
+
+For more information about this gateway and fido.vsu.ru send a mail to
+FidoAdm @ 2:5020/1838 or fidoadm@intra.eu.org
+
+   ----- Message follows -----
+%M

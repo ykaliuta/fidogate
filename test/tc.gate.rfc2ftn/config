@@ -1,0 +1,10 @@
+#
+# $Id$
+#
+# Test config tc.af
+#
+
+UseOrganizationForOrigin
+
+include		../cf/fidogate.conf
+

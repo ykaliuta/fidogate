@@ -1,0 +1,11 @@
+#
+# $Id$
+#
+# Test config tc.af
+#
+
+AutoCreateCmd	../tc.af/acr_script.sh
+AreaFixHelp	%C/areafix1.help
+
+include		../cf/fidogate.conf
+

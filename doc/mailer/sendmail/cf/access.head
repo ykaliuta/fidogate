@@ -1,0 +1,9 @@
+# we allow relaying from/to ...
+localhost.localdomain			RELAY
+localhost				RELAY
+fido.de					RELAY
+ryath.faho.rwth-aachen.de		RELAY
+monster.Informatik.Uni-Oldenburg.DE	RELAY
+m-j-s.net				RELAY
+
+# SPAM reject list generated from /etc/mail/upload/junk - DO NOT EDIT!!!

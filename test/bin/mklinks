@@ -1,0 +1,26 @@
+#!/bin/sh
+
+ln -sf ../../src/charset/charset.bin .
+
+ln -sf ../../src/areafix/ftnaf .
+ln -sf ../../src/areafix/ftnafmail .
+ln -sf ../../src/areafix/ftnafpkt .
+
+ln -sf ../../src/gate/ftn2rfc .
+ln -sf ../../src/gate/ftnin .
+ln -sf ../../src/gate/ftninpost .
+ln -sf ../../src/gate/ftninrecomb .
+ln -sf ../../src/gate/ftnmail .
+ln -sf ../../src/gate/rfc2ftn .
+
+ln -sf ../../src/tick/ftnhatch .
+ln -sf ../../src/tick/ftntick .
+
+ln -sf ../../src/toss/ftn2ftn .
+ln -sf ../../src/toss/ftnexpire .
+ln -sf ../../src/toss/ftnpack .
+ln -sf ../../src/toss/ftnroute .
+ln -sf ../../src/toss/ftntoss .
+ln -sf ../../src/toss/runinc .
+
+#ln -sf ../../src/util/... .

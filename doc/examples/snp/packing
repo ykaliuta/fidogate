@@ -1,0 +1,35 @@
+#
+# FIDOGATE ftnpack config file
+#
+# Commands:
+#
+#     arc	NAME	"/PATH/PROG %s %s"
+#     prog	NAME	"/PATH/PROG %s"
+#     progn	NAME	"/PATH/PROG %s"
+#
+#     pack	NAME	NODES
+#     rpack	NAME	TARGET NODES
+#     fpack	NAME	TARGET NODES
+#     dirpack	DIR	NAME NODES
+#     dirmove	???
+#
+
+LastArcmailChars  2
+
+arc	zip	"/usr/bin/zip -9gkjq %s %s"
+arc	arc	"/usr/local/bin/arc an %s %s"
+#arc	lha	"/usr/bin/lha -aiq %s %s"
+
+progn	gate	"/usr/local/lib/fidogate/ftn2rfc -i -x /usr/local/lib/fidogate/ftninpost -l %s"
+
+######## P A C K I N G #######################################################
+
+EchoMail
+pack	gate	2:5020/1838.0
+pack	gate	2:5020/1354.500
+pack	zip	*
+
+NetMail
+pack	gate	2:5020/1838.0
+pack	gate	2:5020/1354.500
+pack	noarc	*

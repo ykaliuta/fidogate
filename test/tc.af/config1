@@ -1,0 +1,13 @@
+#
+# $Id$
+#
+# Test config tc.af
+#
+
+AutoCreateSubscribeNodes 2:5030/1235 1262 234.44
+AreaFixHelp	%C/areafix.help
+
+include		../cf/fidogate.conf
+
+AreaFixName     ConfigAreafix
+FileFixName	ConfigFilefix

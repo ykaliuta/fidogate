@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+
+<!-- FIDOGATE documentation -->
+
+<html>
+  <head>
+    <title>FIDOGATE Directories</title>
+  </head>
+  
+  <body bgcolor="#ffffff">
+    $Id$
+
+    <h1>FIDOGATE Directories</h1>
+    
+    This document describes the new directory structure for
+    FIDOGATE 4.3.0. (This is to some extend different from 4.2.x!)
+    <p>
+    The directory / file names listed here are the default values for
+    FIDOGATE 4.3+ source and binary distribution on Unix-like
+    systems.
+    
+    <dl>
+      <dt><tt>/etc/fidogate/</tt>
+      <dd>FIDOGATE configuration files live here:
+	<dl>
+	  <dt><tt>fidogate.conf</tt><dd>FIDOGATE main configuration file
+	  <dt><tt>aliases</tt><dd>FIDOGATE aliases
+	  <dt><tt>areas</tt><dd>FIDOGATE areas - newsgroups conversion
+	  <dt><tt>hosts</tt><dd>FIDOGATE hosts
+	  <dt><tt>packing</tt><dd>FIDOGATE packing configuration
+	  <dt><tt>passwd</tt><dd>FIDOGATE passwords
+	  <dt><tt>routing</tt><dd>FIDOGATE routing configuration
+	  <dt><tt>bounce.*</tt><dd>Bounce message templates
+	</dl>
+	<p>
+    
+      <dt><tt>/var/lib/fidogate/</tt>
+      <dd>Variable files live here:
+	<dl>
+	  <dt><tt>seq/</tt><dd>Directory for sequencer files
+	  <dt><tt>areas.bbs</tt><dd>Echo areas
+	  <dt><tt>fareas.bbs</tt><dd>File areas
+	  <dt><tt>history.*</tt><dd>Dupe history data base
+	  <dt>Nodelist<dd>Compiled nodelist + index
+	</dl>
+	<p>
+
+      <dt><tt>/var/lock/fidogate/</tt>
+      <dd>Lock files for FIDOGATE programs and scripts live here.
+	<p>
+
+      <dt><tt>/var/spool/fidogate/</tt>
+      <dd>Fido related programs spool area:
+	<dl>
+	  <dt><tt>outpkt/</tt><dd>Directory for output FTN packets (.pkt)
+	    <dl>
+	      <dt><tt>mail/</tt><dd>Mail packets created by rfc2ftn
+	      <dt><tt>news/</tt><dd>News packets created by rfc2ftn -n
+	    </dl>
+	  <dt><tt>outrfc/</tt><dd>Directory for output RFC messages (.rfc)
+	    <dl>
+	      <dt><tt>mail/</tt><dd>Mail messages created by ftn2rfc
+	      <dt><tt>news/</tt><dd>News messages/batches created by ftn2rfc
+	    </dl>
+	  <dt><tt>toss/</tt><dd>Tosser work directories
+	    <dl>
+	      <dt><tt>toss/</tt><dd>Temporary packets created by ftntoss
+	      <dt><tt>route/</tt><dd>Temporary packets created by ftnroute
+	      <dt><tt>pack/</tt><dd>Temporary packets created by ftnpack
+	      <dt><tt>bad/</tt><dd>Bad (insecure, routed, etc.)
+		packets created by ftnpack 
+	    </dl>
+	</dl>
+	<p>
+	  
+      <dt><tt>/var/spool/bt/</tt>
+      <dd>Fido BinkleyTerm-style inbound / outbound area:
+	<dl>
+	  <dt><tt>in/</tt><dd>Insecure inbound directory
+	  <dt><tt>pin/</tt><dd>Secure inbound directory (ftntoss default)
+	  <dt><tt>uuin/</tt><dd>recvuu inbound directory
+	  <dt><tt>out/</tt><dd>Zone 2 outbound directory
+	  <dt><tt>out.</tt><i>nnn</i><tt>/</tt><dd>Zone X outbound directory
+	  <dt><i>domain.nnn</i><tt>/</tt><dd>Domain/Zone X outbound directory
+	  <dt><tt>tick/</tt><dd>Tick (.tic) hold directory
+	</dl>
+	<p>
+
+      <dt><tt>/usr/lib/fidogate/</tt>
+      <dd>Main FIDOGATE library directory:
+	<dl>
+	  <dt><tt>bin/</tt><dd>Sub-directory for executable binaries
+	    and scripts.
+	</dl>
+	<p>
+    </dl>
+    
+  </body>
+</html>

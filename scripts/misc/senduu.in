@@ -1,0 +1,20 @@
+#!<SHELL>
+#
+# $Id$
+#
+# Send stuff on hold as UUENCODEd mail
+#
+# usage: senduu user@domain Z:N/F.P ...
+#
+
+if [ $# -ne 2 ]; then
+  echo "usage: senduu user@domain Z:N/F.P ..."
+  exit 1
+fi
+
+user=$1
+shift
+
+for node in $*; do
+    <LIBEXECDIR>/ftnflo -x "<BINDIR>/senduumail $user %s" $node
+done

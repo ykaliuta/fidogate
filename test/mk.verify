@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# $Id$
+#
+# Create run.verify
+#
+
+VERIFY=run.verify
+
+./run 2>&1 \
+    | ../tr.grepvar \
+    > $VERIFY

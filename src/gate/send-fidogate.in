@@ -1,0 +1,78 @@
+#!<SHELL>
+#
+# $Id$
+#
+# SH script to send batches to FIDOGATE
+#
+
+# Output to "log-news" log file
+FIDOGATE_LOGFILE="%G/log-news"
+export FIDOGATE_LOGFILE
+
+eval `<NEWSBINDIR>/innconfval -s`
+
+RFC2FTN=<SEND_RFC2FTN>
+PROGNAME=`basename $0`
+LOCK=<LOCKDIR>/LOCK.${PROGNAME}
+LOG=<LOGDIR>/${PROGNAME}.log
+BATCH=${PATHOUTGOING}
+
+MAXJOBS=200
+
+##  Start logging.
+test ! -f ${LOG} && touch ${LOG}
+chmod 0660 ${LOG}
+exec >>${LOG} 2>&1
+echo "${PROGNAME}: [$$] begin `date`"
+cd ${BATCH}
+
+##  Anyone else there?
+trap 'rm -f ${LOCK} ; exit 1' 1 2 3 15
+if test -e ${LOCK}; then
+     pid=`cat ${LOCK}`
+     echo "lock found ${pid}"
+     if kill -0 ${pid} 2> /dev/null; then
+	echo "${PROGNAME}: [$$] locked by [`cat ${LOCK}`]"
+	exit 0
+     fi
+fi
+
+
+##  Who are we sending to?
+if [ -n "$1" ] ; then
+    LIST="$*"
+else
+    LIST="fidogate"
+fi
+
+
+##  Do the work...
+for SITE in ${LIST}; do
+
+    ##  See if any data is ready for host.
+    BATCHFILE=${SITE}.fidogate
+    if [ -f ${SITE}.work ] ; then
+	cat ${SITE}.work >>${BATCHFILE}
+	rm -f ${SITE}.work
+    fi
+    mv ${SITE} ${SITE}.work
+    <NEWSBINDIR>/ctlinnd -s -t30 flush ${SITE} || continue
+    cat ${SITE}.work >>${BATCHFILE}
+    rm -f ${SITE}.work
+    if [ ! -s ${BATCHFILE} ] ; then
+	echo "${PROGNAME}: [$$] no articles for ${SITE}"
+	rm -f ${BATCHFILE}
+	continue
+    fi
+
+    echo "${PROGNAME}: [$$] begin ${SITE}"
+
+     <BATCHER>
+
+    echo "${PROGNAME}: [$$] end ${SITE}"
+done
+
+##  Remove the lock file.
+rm -f ${LOCK}
+
+echo "${PROGNAME}: [$$] end `date`"

@@ -1,0 +1,17 @@
+#!<SHELL>
+#
+# $Id$
+#
+# Pager wrapper for pktdebug
+#
+
+pager=${PAGER-more}
+
+if [ $# -eq 0 ]; then
+	echo "usage: pktmore pktfile ..."
+	exit 1
+fi
+
+for f in $*; do
+	( echo "***** $f *****"; pktdebug -mt $f ) | $pager
+done

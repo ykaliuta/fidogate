@@ -1,0 +1,469 @@
+tc: clean-up
+tc: init
+tc: running
+RFC To:       Any@f129.n5030.z2.fidonet.org
+    Name:     Any
+    Address:  f129.n5030.z2.fidonet.org
+    FTN node: 2:5030/129.0
+    Name:     dyff
+    Address:  izhora.spb.ru
+rfc2ftn MAIL: dyff@izhora.spb.ru -> Any@f129.n5030.z2.fidonet.org
+Writing FTN packet header:
+    From: 2:5030/1229.0
+    To  : 2:5030/1229.0
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: "XXXXXXXX"
+    Capw: 0001
+RFC To:       Any@f468.n5030.z2.fidonet.org
+    Name:     Any
+    Address:  f468.n5030.z2.fidonet.org
+    FTN node: 2:5030/468.0
+    Name:     dyff
+    Address:  izhora.spb.ru
+rfc2ftn MAIL: dyff@izhora.spb.ru -> Any@f468.n5030.z2.fidonet.org
+Writing FTN packet header:
+    From: 2:5030/468.999
+    To  : 2:5030/468.999
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+RFC To:       Any@f468.n5030.z2.fidonet.org
+    Name:     Any
+    Address:  f468.n5030.z2.fidonet.org
+    FTN node: 2:5030/468.0
+    Name:     dyff
+    Address:  izhora.spb.ru
+rfc2ftn MAIL: dyff@izhora.spb.ru -> Any@f468.n5030.z2.fidonet.org
+Writing FTN packet header:
+    From: 2:5030/468.999
+    To  : 2:5030/468.0
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: "XXXXXXXX"
+    Capw: 0001
+RFC To:       Any@f468.n5030.z2.fidonet.org
+    Name:     Any
+    Address:  f468.n5030.z2.fidonet.org
+    FTN node: 2:5030/468.0
+    Name:     dyff
+    Address:  izhora.spb.ru
+rfc2ftn MAIL: dyff@izhora.spb.ru -> Any@f468.n5030.z2.fidonet.org
+Writing FTN packet header:
+    From: 2:5030/468.999
+    To  : 2:5030/468.999
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+RFC To:       Any@f1251.n12.z526.z526.org
+    Name:     Any
+    Address:  f1251.n12.z526.z526.org
+    FTN node: 526:12/1251.0
+    Name:     dyff
+    Address:  izhora.spb.ru
+rfc2ftn MAIL: dyff@izhora.spb.ru -> Any@f1251.n12.z526.z526.org
+Writing FTN packet header:
+    From: 526:12/125.11
+    To  : 526:12/125.11
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+RFC To:       Any@f1.n168.z192.z192.org
+    Name:     Any
+    Address:  f1.n168.z192.z192.org
+    FTN node: 192:168/1.0
+    Name:     dyff
+    Address:  izhora.spb.ru
+rfc2ftn MAIL: dyff@izhora.spb.ru -> Any@f1.n168.z192.z192.org
+Writing FTN packet header:
+    From: 192:168/10.1
+    To  : 192:168/10.1
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+RFC To:       Any@f126.n50.z2.z2.org
+    Name:     Any
+    Address:  f126.n50.z2.z2.org
+    FTN node: 2:50/126.0
+    Name:     dyff
+    Address:  izhora.spb.ru
+rfc2ftn MAIL: dyff@izhora.spb.ru -> Any@f126.n50.z2.z2.org
+Writing FTN packet header:
+    From: 2:50/123.123
+    To  : 2:50/123.123
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+    Name:     dyff
+    Address:  izhora.spb.ru
+RFC Newsgroups: z2.ru.unix
+Writing FTN packet header:
+    From: 2:50/123.123
+    To  : 2:50/123.123
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+    Name:     dyff
+    Address:  izhora.spb.ru
+RFC Newsgroups: fido.ru.unix.prog
+Writing FTN packet header:
+    From: 2:5030/468.999
+    To  : 2:5030/468.999
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+processing article list ./batch.tmp
+old position file ./batch.tmp.pos exists
+re-positioning to offset 10
+processing article file ./newsspool/fido/ru/linux/1
+    Name:     guest
+    Address:  izhora.spb.ru
+RFC Newsgroups: z2.ru.unix
+Writing FTN packet header:
+    From: 2:50/123.123
+    To  : 2:50/123.123
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+Removing list file ./batch.tmp
+Removing position file ./batch.tmp.pos
+    Name:     guest
+    Address:  izhora.spb.ru
+RFC Newsgroups: z2.ru.unix
+Writing FTN packet header:
+    From: 2:50/123.123
+    To  : 2:50/123.123
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+==============================================================================
+FTN packet header:
+    From: 2:5030/1229.0
+    To  : 2:5030/1229.0
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: "XXXXXXXX"
+    Capw: 0001
+==============================================================================
+FTN message header:
+    From: Dmitry Fedotov                       @ 5030/1229
+    To  : Any                                  @ 5030/129
+    Subj: test
+    Attr: 0001
+------------------------------------------------------------------------------
+^AINTL 2:5030/129 2:5030/1229
+^AMSGID: 2:5030/1229.0 d8a44a3d
+^ACHRS: CP866 2
+------------------------------------------------------------------------------
+Test
+
+
+------------------------------------------------------------------------------
+--- tin/1.4.5-20010409 ("One More Nightmare") (UNIX) (Linux/2.4.19-gentoo-r9 (i686))
+==============================================================================
+==============================================================================
+FTN packet header:
+    From: 2:5030/468.999
+    To  : 2:5030/468.999
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+==============================================================================
+FTN message header:
+    From: dyff1                                @ 5030/468
+    To  : Any                                  @ 5030/468
+    Subj: test
+    Attr: 0001
+------------------------------------------------------------------------------
+^AINTL 2:5030/468 2:5030/468
+^AFMPT 999
+^AMSGID: 2:5030/468.999 d8a44a3d
+^ACHRS: CP866 2
+------------------------------------------------------------------------------
+Test
+
+
+------------------------------------------------------------------------------
+--- tin/1.4.5-20010409 ("One More Nightmare") (UNIX) (Linux/2.4.19-gentoo-r9 (i686))
+==============================================================================
+==============================================================================
+FTN packet header:
+    From: 2:5030/468.999
+    To  : 2:5030/468.0
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: "XXXXXXXX"
+    Capw: 0001
+==============================================================================
+FTN message header:
+    From: dyff1                                @ 5030/468
+    To  : Any                                  @ 5030/468
+    Subj: test
+    Attr: 0001
+------------------------------------------------------------------------------
+^AINTL 2:5030/468 2:5030/468
+^AFMPT 999
+^AMSGID: 2:5030/468.999 d8a44a3d
+^ACHRS: CP866 2
+------------------------------------------------------------------------------
+Test
+
+
+------------------------------------------------------------------------------
+--- tin/1.4.5-20010409 ("One More Nightmare") (UNIX) (Linux/2.4.19-gentoo-r9 (i686))
+==============================================================================
+==============================================================================
+FTN packet header:
+    From: 2:5030/468.999
+    To  : 2:5030/468.999
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+==============================================================================
+FTN message header:
+    From: dyff1                                @ 5030/468
+    To  : Any                                  @ 5030/468
+    Subj: test
+    Attr: 0001
+------------------------------------------------------------------------------
+^AINTL 2:5030/468 2:5030/468
+^AFMPT 999
+^AMSGID: 2:5030/468.999 d8a44a3d
+^ACHRS: CP866 2
+------------------------------------------------------------------------------
+Test
+
+
+------------------------------------------------------------------------------
+--- tin/1.4.5-20010409 ("One More Nightmare") (UNIX) (Linux/2.4.19-gentoo-r9 (i686))
+==============================================================================
+==============================================================================
+FTN packet header:
+    From: 526:12/125.11
+    To  : 526:12/125.11
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+==============================================================================
+FTN message header:
+    From: dyff2                                @ 12/125
+    To  : Any                                  @ 12/1251
+    Subj: test
+    Attr: 0001
+------------------------------------------------------------------------------
+^AINTL 526:12/1251 526:12/125
+^AFMPT 11
+^AMSGID: 526:12/125.11 d8a44a3d
+^ACHRS: CP866 2
+------------------------------------------------------------------------------
+Test
+
+
+------------------------------------------------------------------------------
+--- tin/1.4.5-20010409 ("One More Nightmare") (UNIX) (Linux/2.4.19-gentoo-r9 (i686))
+==============================================================================
+==============================================================================
+FTN packet header:
+    From: 192:168/10.1
+    To  : 192:168/10.1
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+==============================================================================
+FTN message header:
+    From: dyff3                                @ 168/10
+    To  : Any                                  @ 168/1
+    Subj: test
+    Attr: 0001
+------------------------------------------------------------------------------
+^AINTL 192:168/1 192:168/10
+^AFMPT 1
+^AMSGID: 192:168/10.1 d8a44a3d
+^ACHRS: CP866 2
+------------------------------------------------------------------------------
+Test
+
+
+------------------------------------------------------------------------------
+--- tin/1.4.5-20010409 ("One More Nightmare") (UNIX) (Linux/2.4.19-gentoo-r9 (i686))
+==============================================================================
+==============================================================================
+FTN packet header:
+    From: 2:50/123.123
+    To  : 2:50/123.123
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+==============================================================================
+FTN message header:
+    From: dyff4                                @ 50/123
+    To  : Any                                  @ 50/126
+    Subj: test
+    Attr: 0001
+------------------------------------------------------------------------------
+^AINTL 2:50/126 2:50/123
+^AFMPT 123
+^AMSGID: 2:50/123.123 d8a44a3d
+^ACHRS: CP866 2
+------------------------------------------------------------------------------
+Test
+
+
+------------------------------------------------------------------------------
+--- tin/1.4.5-20010409 ("One More Nightmare") (UNIX) (Linux/2.4.19-gentoo-r9 (i686))
+==============================================================================
+==============================================================================
+FTN packet header:
+    From: 2:50/123.123
+    To  : 2:50/123.123
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+==============================================================================
+FTN message header:
+    From: Dmitry Fedotov                       @ 50/123
+    To  : All                                  @ 50/123
+    Subj: test
+    Attr: 0000
+------------------------------------------------------------------------------
+AREA:RU.UNIX
+^AMSGID: 2:50/123.123 c87818a9
+^ACHRS: CP866 2
+------------------------------------------------------------------------------
+Test
+
+
+------------------------------------------------------------------------------
+--- tin/1.4.5-20010409 ("One More Nightmare") (UNIX) (Linux/2.4.19-gentoo-r9 (i686))
+ * Origin: //Unix or dead... (2:50/123.123)
+SEEN-BY: 50/123.123
+^APATH: 50/123.123
+==============================================================================
+==============================================================================
+FTN packet header:
+    From: 2:5030/468.999
+    To  : 2:5030/468.999
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+==============================================================================
+FTN message header:
+    From: Dmitry Fedotov                       @ 5030/468
+    To  : All                                  @ 5030/468
+    Subj: test
+    Attr: 0000
+------------------------------------------------------------------------------
+AREA:RU.UNIX.PROG
+^AMSGID: 2:5030/468.999 32e4f2c4
+^ACHRS: CP866 2
+------------------------------------------------------------------------------
+Test
+
+
+------------------------------------------------------------------------------
+--- tin/1.4.5-20010409 ("One More Nightmare") (UNIX) (Linux/2.4.19-gentoo-r9 (i686))
+ * Origin: //Unix or dead... (2:5030/468.999)
+SEEN-BY: 5030/468.999
+^APATH: 5030/468.999
+==============================================================================
+==============================================================================
+FTN packet header:
+    From: 2:50/123.123
+    To  : 2:50/123.123
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+==============================================================================
+FTN message header:
+    From: Any guest                            @ 50/123
+    To  : All                                  @ 50/123
+    Subj: test
+    Attr: 0000
+------------------------------------------------------------------------------
+AREA:RU.UNIX
+^AMSGID: 2:50/123.123 c87818a9
+^AREPLYADDR guest@izhora.spb.ru
+^AREPLYTO 2:50/123.123 Any guest
+^ACHRS: CP866 2
+------------------------------------------------------------------------------
+From: Any guest <guest@izhora.spb.ru>
+Reply-To: guest@unknow.sub.org
+------------------------------------------------------------------------------
+
+Test
+
+
+------------------------------------------------------------------------------
+--- tin/1.4.5-20010409 ("One More Nightmare") (UNIX) (Linux/2.4.19-gentoo-r9 (i686))
+ * Origin: A poorly-installed InterNetNews site (2:50/123.123)
+SEEN-BY: 50/123.123
+^APATH: 50/123.123
+==============================================================================
+==============================================================================
+FTN packet header:
+    From: 2:50/123.123
+    To  : 2:50/123.123
+    Baud: 0
+    Prod: 00 fe
+    Rev : x.x
+    Pass: ""
+    Capw: 0001
+==============================================================================
+FTN message header:
+    From: Any guest                            @ 50/123
+    To  : All                                  @ 50/123
+    Subj: test
+    Attr: 0000
+------------------------------------------------------------------------------
+AREA:RU.UNIX
+^AMSGID: 2:50/123.123 c87818a9
+^AREPLYADDR guest@izhora.spb.ru
+^AREPLYTO 2:50/123.123 Any guest
+------------------------------------------------------------------------------
+Test
+
+
+------------------------------------------------------------------------------
+--- tin/1.4.5-20010409 ("One More Nightmare") (UNIX) (Linux/2.4.19-gentoo-r9 (i686))
+ * Origin: A poorly-installed InterNetNews site (2:50/123.123)
+SEEN-BY: 50/123.123
+^APATH: 50/123.123
+==============================================================================

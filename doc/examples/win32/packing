@@ -1,0 +1,26 @@
+#
+# FIDOGATE ftnpack config file
+#
+# Commands:
+#
+#     arc      NAME  "/PATH/PROG %s %s"
+#     prog     NAME  "/PATH/PROG %s"
+#  
+#     pack     NAME  NODES
+#     rpack    NAME  TARGET NODES
+#     fpack    NAME  TARGET NODES
+#     dirpack  DIRECTORY  NAME  NODES
+#
+
+arc		zip	"/usr/bin/zip -gkjq %s %s"
+arc		arc	"/usr/bin/arc an %s %s"
+
+prog		gate	"/fidogate/lib/ftn2rfc %s"
+
+
+######## P A C K I N G #######################################################
+
+pack		noarc	2:2499/99
+
+#pack		zip	*
+pack		noarc	*

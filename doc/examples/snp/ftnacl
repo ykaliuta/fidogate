@@ -1,0 +1,10 @@
+# From snp19
+#
+
+Echo
+
+ReadOnly
+*	1838.INFO,1838.STAT,Humor.Filtered,N5020.HUBS
+
+Mandatory
+*	1838.INFO

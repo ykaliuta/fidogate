@@ -1,0 +1,8 @@
+#!<SHELL>
+#
+# $Id$
+#
+# Pager wrapper for out-ls
+#
+exec <BINDIR>/out-ls | ${PAGER-less}
+

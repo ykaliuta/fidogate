@@ -1,0 +1,12 @@
+#:ts=8
+#
+#   $Id$
+#
+# User name aliases
+#
+# username	FTN address		Full name
+# --------	-----------		---------
+root		2:2499/999.1		"Super User"
+
+postmaster	2:2499/999.1		"Mail Delivery Subsystem"
+

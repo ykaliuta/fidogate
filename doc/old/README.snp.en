@@ -1,0 +1,855 @@
+								-*- text -*-
+
+This patch is provided without any warranty. Author is not liable for any
+consequences caused by the usage of this patch.
+
+Nevertheless send your wishes, bug reports and patches to the addresses
+provided in the end of this file.
+
+===============================================================================
+How to use this patch:
+
+tar -xzf fidogate-X.X.X-snpXX.tar.gz -C ${source_dir}/fidogate-X.X.X
+cd ${source_dir}/fidogate-X.X.X
+read files README-english.snp and CHANGES-english.snp
+patch -p1 <fidogate-X.X.X-snpXX.diff
+patch -p1 <fidogate-X.X.X-snpXX_scripts.diff
+patch -p1 <fidogate-X.X.X-snpXX_ftnnews.diff	[if needed; see section 16]
+edit config.h and config.make
+make depend
+make
+make install
+
+===============================================================================
+
+List of changes after applying this patch:
+
+(further in text: `config.h' == `${source_dir}/fidogate-X.X.X/config.h')
+
+
+1. Corrected not recoding of headers while gating FTN->RFC and back.
+   For the normal work of recoding the line `#define AI_5' in config.h
+   should be uncommented.
+
+
+2. Corrected error in AmigaDOS outbound processing. [*]
+
+
+3. Disabled ^ACHRS и ^ACHARSET kludges recognition -- it is very rare that 
+   they contain the correct message encoding. [*]
+
+   To disable this feature comment out the line `#define SNP_IGNORE_CHRS'
+   in config.h
+
+
+4. Changed the processing of MIME headers while gating RFC->FTN and back.
+   Specifically, now the messages that consist of several parts 
+   (MIME type `multipart/mixed') are gated normally, and the FTN messages,
+   which contain the `^aRFC-Content-Transfer-Encoding: 7bit' kludge, 
+   are recoded.
+
+   To disable this feature comment out `#define SNP_MIME_FIX' in config.h
+
+
+5. Corrected the recoding tables from cp866 to koi8-r and back.
+
+
+6. Added the possibility to use wildcards (`*' symbol) in the file
+   ${prefix}/etc/fidogate/aliases.
+
+   To disable this feature comment out `#define SNP_ADVANCED_ALIASES'
+   in config.h
+
+   Example:
+
+	areafix		2:5020/1838.0		"Areafix"
+	filefix		2:5020/1838.0		"Filefix"
+	snp		2:5020/1838.0		"*"
+
+   messages to Areafix @ 2:5020/1838 will be sent to the user areafix,
+   messages to Filefix will be sent to the user filefix, messages to any other 
+   name, which differs from these two, will be sent to the user snp. 
+   When gating RFC->FTN the message from `"User" <snp>' will be transformed to 
+   `User @ 2:5020/1838'
+   Another example:
+
+	areafix		2:5020/1838.0		"Areafix"
+	filefix		2:5020/1838.0		"Filefix"
+	snp		2:5020/1838.0		"Serge N. Pokhodyaev"
+	snp		2:5020/1838.0		"*"
+
+   the only difference is that when gating RFC->FTN the message from 
+   `"User" <snp>' will be transformed to `Serge N. Pokhodyaev @ 2:5020/1838', 
+   i.e. the name given in the config will be substituted.
+   You can also disable the insertion of the ^AREPLYADDR и ^AREPLYTO kludges, 
+   the lines `From:', `Reply-To:' and so on into the message body, if there 
+   exists a corresponding alias for the RFC address. To do this you need to 
+   put the keyword `NoFSC0035ifAlias' in config.
+
+
+7. Added an automatic selection of AKA to be inserted into .pkt header and 
+   to areafix and filefix answers. Recommended, if you have several AKAs
+   in the same zone (in this case non-patched fidogate uses the first address
+   for this zone, found in the address list.
+
+   To disable this feature comment out `#define BEST_AKA' in config.h
+
+
+8. Now you can disable `^ACHRS', `^ARFC' and `^AGATEWAY' kludges insertion 
+   into FTN messages. Kludges are disabled by the config parameters
+   (correspondingly) `NoChrsKludge', `NoRfcKludge', `NoGatewayKludge'.
+
+   To disable this feature comment out `#define SNP_DENY_SOME_KLUDGES'
+   in config.h
+
+
+9. Added the feature to correct the date in the letters "from the future". 
+   Date is replaced by current, and the original date is stored in the header
+   `X-Original-Date'.
+
+   To disable this feature comment out `#define SNP_FUTURE_DATE_FIX'
+   in config.h
+
+
+10. Added one more variant of RFC headers gating -- all, except some.
+    Specifically, MIME headers are gated. This variant is enabled by 
+    adding the line `RFCLevel 3' to config. Also implemented concatenation 
+    of multiline RFC headers in a single line when gating RFC->FTN.
+    
+    To disable this feature comment out `#define SNP_RFC_LVL_3_HEADERS'
+    in config.h
+
+
+11. Added invalidation of tearlines, origins and SEEN-BY's when gating 
+    RFC->FTN.
+
+    To disable this feature comment out `#define SNP_INVALIDATE'
+    in config.h
+
+
+12. Now not only `^AVia' kludges are gated to RFC, but `^ARecd' kludges 
+    as well.
+
+    To disable this feature comment out `#define SNP_RECD' in config.h
+
+
+13. Now when gating FTN->RFC the X-Comment-To header is inserted, even if
+    the letter was addressed to `All'.
+
+    To disable this feature comment out `#define SNP_X_COMMENT_TO'
+    in config.h
+
+
+14. Added possibility to gate non-standard kludges RFC->FTN and back.
+
+    To disable this feature comment out `#define SNP_X_FTN_KLUDGE'
+    in config.h
+
+    Gating FTN->RFC is enabled by adding a `K' symbol to the `X-FTN'
+    parameter value in config. RFC->FTN gating is always enabled
+    Example:
+
+	FTN kludge			RFC header   
+
+	^ARealName: Vasya Pupkin   <->	X-FTN-Kludge: RealName: Vasya Pupkin
+	^AVeryLeftKludge	   <->	X-FTN-Kludge: VeryLeftKludge
+
+
+15. Now you can (and have to) set the packing rules in the file 
+    `${prefix}/etc/fidogate/packing' separately for netmail and echomail
+    by using `Netmail' и `Echomail' keywords.
+
+    To disable this feature comment out `#define SNP_PACKING_FIX'
+    in config.h
+
+    Example:
+
+	arc     zip     "/usr/bin/zip -9gkjq %s %s"
+
+	EchoMail
+	pack    noarc   2:5020/1838.0
+	pack    zip     *
+
+	NetMail
+	pack    noarc   *
+
+
+16. Added possibility to run FIDOGATE from a user other than `news'. To do this
+    you need to apply a separate patch `fidogate-X.X.X-snpXX_ftnnews.diff',
+    and then change the values of the OWNER and GROUP parameters in the 
+    file ${source_dir}/fidogate-X.X.X/config.make 
+
+
+17. Now you can define whether the bundles are truncated after transmissi9n,
+    deleted or left intact. The action is controlled by the config parameter
+    `BundleDisp <disp>', where <disp> can have values:
+	    0 -- truncate bundle to zero length (`#' in .flo);
+	    1 -- delete bundle (`^' in .flo);
+	    2 -- leave bundle (`@' in .flo);
+    Default value is `0'.
+
+    To disable this feature comment out `#define SNP_FILE_DISP'
+    in config.h
+
+
+18. Now when gating RFC->FTN RFC addresses of type 
+    `user%host.name@f128.n50.z2.fidonet.org' are processed correctly.
+
+
+19. [intentionally left blank]
+
+
+20. Added `passive' mode of the link's subscription. In this mode echomail
+    for the given link won't be packed, but the subscription information
+    is retained and all the messages from the link to echoareas in passive mode
+    are accepted. To put the echoes in passive, use areafix commands     
+    `passive AREA' or `pause AREA'. To activate passive areas use commands 
+    `active AREA' or `resume AREA'. Syntax of these commands is like that of 
+    `subscribe' and `unsubscribe' commands, with only one difference -- if 
+    `AREA' is not given, this is equivalent to a `*' template. Areas are also
+    activated when subscribing them again.
+    Passive links are denoted by `-p LIST' option in the areas.bbs and 
+    fareas.bbs files. `LIST' argument format is fully equivalent to the 
+    subscribed links list format, with the only difference -- the addresses
+    are delimited by comma, not by space. For example:
+
+	X 1838.TEST -p 2:5020/9999,9988 ...
+
+    Addresses 2:5020/9999.0 and 2:5020/9988.0 are passive.
+
+    To disable this feature comment out `#define SNP_AF_PASSIVE'
+    in config.h
+
+
+21. Added possibility to set certain echoes and fileechoes for certain links
+    `read only' and/or `mandatory' (can't unsubscribe or switch to passive). 
+    Special file (${prefix}/etc/fidogate/ftnacl) used to control access. Every
+    string of that file may contain acl type switch (`echo', `fecho',
+    `mandatory', `readonly') or actual acl. Acl format follows:
+
+	[!]addr[,[!]addr]...       [[!]area][,[!]area]....
+
+    addr -- FTN address, area -- area name, wildcards allowed in both fields.
+    `!' means rule inversion.
+
+    Addresses may be in reduced form (as link list in areas.bbs).
+
+    At first address is searched in address list. If matched -- 
+
+---------------------------------------------------------------------------------------
+    To do this, `-r ACL' и `-m ACL' options are used
+    in areas.bbs and fareas.bbs files. ACL is an address list, delimited
+    by comma. Addresses can be also shortened (as in the links list). 
+    `!' Symbol is also allowed, which inverts the restriction. The check is 
+    done from left to right till first match. ACL examples (other options
+    and the links list are replaced by dots):
+
+	X HUMOR.FILTERED -r * ...		 // read only for everyone
+	X N5020.SYSOP    -r !*/*.0,!1838.1,* ... // For all points, except
+						 // 2:5020/1838.1 - read only
+	X 1838.INFO      -m * -r * ...		 // Mandatory and read only
+						 // for everyone
+
+    Uplink (first address in the links list) is not affected by read only 
+    mode. If you want uplink to be affected by read only mode, you need to 
+    provide an `UplinkCanBeReadonly' parameter in fidogate.conf.
+---------------------------------------------------------------------------------------
+
+    If the point number is not given, it is assumed 0, i.e. `2:5020/*'
+    equals to `2:5020/*.0'. But `*' equals to `*:*/*.*'.
+    In the first rule you MUST provide a net number. I.e. the record like 
+    `-r *.1' is incorrect, you must write at least `-r */*.1'. The record
+    `-r *' is allowed, though.
+    If the zone is not present in the first rule, the zone from `-z' and `-a'
+    options is used. Example:
+
+	X HUMOR.FILTERED -z 2 -a 2:5020/1838.0 -r 5020/*.* -d "" 2:5020/7100
+
+    in this case `-r 5020/*.*' equals to `-r 2:5020/*.*', because zone 2 is 
+    assigned for this echoarea.
+
+    By default messages to read only areas are saved to `SPOOLDIR/toss/bad'
+    directory. If you put a `KillReadonly' parameter in config, this messages
+    would be deleted.
+
+    To disable this feature comment out `#define SNP_FTN_ACL' in the file
+    config.h
+
+
+22. Now node addresses printed in origin and `Via' in a 3D format
+    (i.e. z:n/f).
+    (requested by Leonid Kilasoniya)
+
+
+23. Now specific access mode 0600 is set for *.tic files.
+    (requested by Vladimir Lyapkin)
+    To disable this feature commet out the line 
+    `#define SNP_SET_TICK_MODE' in config.h
+
+
+24. Now ftninrecomb script is working, which assembles the messages,
+    splitted by fidogate. A bug is also fixed in documentation:
+    `FTNInRecombine' parameter should be written in this form:
+
+	FTNInRecombine  %L/ftninrecomb
+
+    ATTENTION: by default no assembly is made (FTNIn* parameters in config
+    are commented out), but you are strongly advised to turn message 
+    reassemling on (i.e. uncomment these parameters). In other case
+    you can experience loss of messages, splitted by other fidogate.
+
+
+25. If an RFC message contaiined `X-flags:' header with `m' parameter,
+    an `^aREPLY' kludge is now added when gating RFC->FTN (in original
+    fidogate this kludge is not added).
+    To disable this feature comment out the line
+    `#define SNP_REPLY_IF_X_FLAGS_M' in config.h
+
+
+26. Added possibility to put file descriptions not in `files.bbs', but in
+    separate files <filename>.desc in a `.desc' subdirectory.
+    (patch by Vladimir Lyapkin)
+    To disable this feature comment out the line
+    `#define SNP_DESC_DIR' in config.h
+
+
+27. Now an `X-FTN-From' RFC header is added to the gated echomail too.
+    To disable this feature comment out the line
+    `#define SNP_X_FTN_FROM_ECHOMAIL' in config.h
+
+
+28. Added decoding of MIME-encoded Subjects when gating RFC->FTN in the case,
+    when the encoding is not `iso-8859-1'.
+    (requested by Alexander V. Popaduck)
+    To disable this feature comment out the line
+    `#define SNP_MIME_DECODE_HEADER' in config.h
+
+
+29. Now zone and point numbers are not printed in the address output from the
+    FTN message header (for example, pktdebug -m, or ftntoss messages
+    `insecure echomail area ... from ...')
+
+
+30. Zero size area prefixes in the areas file are now working. For example:
+
+	""	ftn.		-8 -H -a 2:5020/1838
+
+    means, that echoarea `ECHO.NAME' will be transformed into newsgroup
+    `ftn.echo.name'.
+
+
+31. Corrected original FIDOGATE error: if an incorrect password was given
+    in an areafix request, the answer would be sent to the address -1:-1/-1
+
+    To disable this feature comment out the line
+    `#define SNP_AF_BAD_PASSWD_FIX' in config.h
+
+
+32. Added recognition of some additional RFC headers at the beginning of an
+    FTN message (right now only `Subject:').
+
+    To disable this feature comment out the line
+    `#define SNP_MORE_RFC_HDRS' in config.h
+
+
+33. Corrected original FIDOGATE error: the digital part of MSGID length
+    could exceed 8 symbols (which violates FTS-0009). (patch by Leonid
+    Kilasoniya)
+
+
+34. Corrected original FIDOGATE error: if an FTN message contained a line
+    longer than 79 symbols, garbige could be inserted to RFC message
+    when gating.
+
+
+35. Corrected original FIDOGATE error: in sendmail/Makefile `make' was  
+    called instead of $(MAKE) (bug found by Valentin Nechayev)
+
+
+36. No empty line is inserted now before tearline. 
+    (requested by Pavel V. Knyazev)
+    To disable this feature comment out the line
+    `#define SNP_NO_CRLF_BEFORE_TEARLINE' in config.h
+
+
+37. Added the feature "forward requests". When an attempt is made to 
+    subscribe to echoarea (or fileechoarea), which doesn't exist in 
+    areas.bbs/fareas.bbs, then a subscription request is sent to an uplink. 
+    You can define several different uplinks for different echoarea groups.
+    Settings are written in file `${prefix}/etc/fidogate/uplinks'. Example:
+
+    # Robot type    Area pattern    Uplink          Robot name      Password
+    # -----------   -------------   ----------      -----------     ---------
+    af              !N5025.*,*      2:5025/3        AFix            test
+    ff              !TEST.*,*       2:5025/5025     FileFix         xxxxxxxx
+
+    Subscription request for any echo except `N5025.*' will be forwarded to 
+    address `AFix @ 2:5025/3' with the password `test'.
+    Subscription request for any echo except `TEST.*' will be forwarded to 
+    address `FileFix @ 2:5025/5025' with the password `xxxxxxxx'.
+
+    Besides that, every uplink address should have a corresponding record 
+    in the file ${prefix}/etc/fidogate/hosts. For example:
+
+    2:5025/3	f3.n5025.z2.fidonet.org.	-p
+    2:5025/5025	f5020.n5025.z2.fidonet.org.	-p
+
+    `-p' is mandatory.
+
+    (patch by Oleg Derevenetz)
+
+    To disable this feature comment out the line
+    `#define SNP_UPLINKS' in config.h
+
+
+38. Added the feature "spy forwards".
+    Settings are written in file `${prefix}/etc/fidogate/spyes'. For example:
+
+    # FTN address   FTN address forward-to
+    # -----------   --------------------
+    2:5025/3.4      2:5025/3.7
+    2:5025/3.0      2:5025/3.7
+
+    (patch by Oleg Derevenetz)
+    To disable this feature comment out the line
+    `#define SNP_SPYES' in config.h
+
+
+39. Added possibility to announce new files, received by fileechoes.
+    Announces are wrtten (koi8-r encoding) into file, the name of which you
+    must put in <LIBEXECDIR>/ftntickpost after applying the patch ($ANNFILE
+    variable).
+
+    The announce looks like the following:
+
+    File          Size       Area         Origin        From
+    ============= ========== ============ ============= ======================
+    leguin24.ha   16384      BOOK         2:5020/614.1  2:5083/21
+                             Ursula Le Gwin. Some book name.  
+    ==========================================================================
+    ordar06.ha   787064     BOOK         2:5020/614.1  2:5083/21
+                            Robert Jordan. Other book name.
+    ==========================================================================
+
+
+40. Added pid check in lock files. As a result, there is no more need to 
+    periodically run runchklock script.
+    To disable this feature comment out the line
+    `#define SNP_CHECK_STALE_LOCK' in config.h
+
+
+41. Now ftnoutpkt can generate echomail. Echoarea is defined by `-A' option. 
+    Example:
+
+ftnoutpkt -f 'test @ 2:5020/1838.0' -s 'none' -A '1838.TEST' 'All' <test.txt
+
+    To disable this feature comment out the line
+    `#define SNP_FTNOUTPKT_ECHOMAIL' in config.h
+
+42. Added access restriction for the areafix %listall command. To allow a link
+    execution of this command, put `%' symbol in the "key" field in the file 
+    passwd. Example:
+
+	af	2:5020/1838.8	PASSWORD	1	AB
+	af	2:5020/1838.9	PASSWORD	1	%ABCD
+    
+    To disable this feature comment out the line
+    `#define SNP_AF_LISTALL_RESTRICTED' in config.h
+
+
+43. Implemented change: passthru areas are gated, when our address is in the
+    list of links, i.e. there is no need to put separate Address and
+    GateAddress in fidogate.conf and the corresponding `remap ...' in
+    ${prefix}/etc/fidogate/routing.
+    (patch by Sergey Samoyloff)
+    To disable this feature comment out the line
+    `#define SNP_FTNTOSS_NOPASSTHRU' in config.h
+
+
+44. Added recoding of file descriptions from .tic in correspondence with
+    DefaultCharset parameter value in fidogate.conf.
+    (patch by Sergey Samoyloff)
+    To disable this feature comment out the line
+    `#define SNP_RECODE_FILE_DESC' in config.h
+
+
+45. Added changing the names of files, which were received by fileechoes,
+    to lower case.
+    (patch by Sergey Samoyloff)
+    To disable this feature comment out the line
+    `#define SNP_CONVERT_FILENAMES_TO_LOWER' in config.h
+
+
+46. Added ACL to restrict e-mail gating by RFC and FTN addresses. Because of
+    this, ${prefix}/etc/fidogate/acl file format has changed, and a new 
+    bounce template has been added -- bounce.acl_netmail.
+    You can find the examples in fidogate-x.x.x/contrib/acl_netmail/ directory.
+    (patch by Sergey Samoyloff)
+    To disable this feature comment out the line
+    `#define SNP_NETMAIL_ACL' in config.h
+
+
+47. Added messages statistics for each echoarea (enabled by adding a line
+    `TrafficStatistics' to fidogate.conf). Statistics are printed by ftntoss 
+    to logfile after processing all .pkts. Example (the line is split in two
+    for convenience):
+
+Jun 09 06:20:45 ftntoss area \
+Ru.Linux                           : msgs in: 2   out: 1   killed: 0/0/1/0/0
+Jun 09 06:39:46 ftntoss area \
+RU.UNIX                            : msgs in: 2   out: 2
+
+    `killed: ...' field format: routed/insecure/dupes/circular path/readonly
+    (the last number is printed, if FIDOGATE is compiled with `SNP_FTN_ACL'
+    define)
+
+    If the number of `in' and `out' messages is equal, `killed' field is not
+    put to logfile.
+
+
+48. Added recoding of .pkt that are generated by ftnoutpkt and ftnafpkt
+    in correspondence with DefaultCharset parameter value in fidogate.conf.
+
+    To disable this feature comment out the line
+    `#define SNP_RECODE_OUTPKT' in config.h
+
+
+49. Added possibility to define in config the range of a last bundle extension 
+    symbol. The range is defined by the parameter `LastArcmailChars'
+    in the file ${prefix}/etc/fidogate/packing:
+
+	0 -- use symbols [0-9]
+	1 -- use symbols [0-9a-f]
+	2 -- use symbols [0-9a-z]
+	>2 -- use symbols from `0' till the symbol, the position number of 
+              which in the line `0123456789abcdefghijklmnopqrstuvwxyz'
+	      equals to the parameter value (for example, 17 -- 
+              use symbols [0-9a-h]
+
+    Example:
+
+	LastArcmailChars  2
+	arc     rar64   "/usr/bin/rar a -m5 -ep -s- -inul -md64 %s %s"
+	arc     rar     "/usr/bin/rar a -m5 -ep -s- -inul -md1024 %s %s"
+
+    (patch by Dmitriy Yermakov)
+
+    To disable this feature comment out the line
+    `#define SNP_PACK_LASTCHAR' in config.h
+
+
+50. Added possibility to limit arcmail size separately for each link 
+    in the file ${prefix}/etc/fidogate/packing:
+
+	pack    rar     size=500 2:5020/9999
+	pack    zip     size=300 2:5020/9988
+
+    The size is given in kilobytes. If size is not given, MaxArc parameter
+    value from fidogate.conf is used.
+    (patch by Dmitriy Yermakov)
+
+    To disable this feature comment out the line
+    `#define SNP_PACK_MAXARC' in config.h
+
+
+51. Corrected original FIDOGATE error -- when running ftnaf from command line,
+    level and key were not read from ${prefix}/etc/fidogate/passwd.
+
+    To disable this feature comment out the line
+    `#define SNP_AF_AUTH_FIX' in config.h
+
+
+52. Implemented changes in echoarea handling.
+
+    Now when subscribing to echoarea, ftnafutil sets a `W' status to it. 
+    This status is changed to `S' by ftntoss when messages appear in echoarea.
+
+    Added areas.bbs option `-t TIME', which shown the time when ftntoss 
+    processed the latest message for this area (if status is `-s S'), or time,
+    when an unsubscribe request was sent to uplink (if status is `-s U'), or
+    time, when a subscribe request was sent to uplink (if status is `-s W').
+
+    Because of these changes, areas.bbs file is rewritten by ftntoss during
+    each run.
+
+    Changed the "forward request" function (see section 37 of README): now   
+    the area, for which a request was sent, is created (with `F' status) 
+    and a link that tried to subscribe to it, is now subscribed. The uplinks
+    file format was extended for this: added sixth field where you can put 
+    the options to create area with. For example:
+
+	af	*	2:5020/3500	AreaFix	   PASSWORD	-# -k AKX
+
+    Access restriction options (`-k' и `-l') are applied -- if link's access
+    is limited, no request is sent to uplink.
+
+    To prevent requesting areas like `Hello', `Bye' and so on :) from uplinks,
+    `AreaFixSubscribeOnlyIfPlus' parameter is added to fidogate.conf -- if 
+    given, subscription is only made by command `+<area>'.
+
+    Added `expire' command of ftnafutil utility. By using this command all
+    downlinks are unsibscribed (and notified via netmail), and an unsubscribe 
+    request is sent to uplink, concerning the areas that didn't have traffic
+    for some time (controlled by `AreaFixNoTrafficTimeout' parameter (in days)
+    of fidogate.conf), or the areas that were requested from uplink, but no
+    messages appeared in them during some period of time (controlled by 
+    `AreaFixRequestTimeout' (in days) of fidogate.conf). If an area had `F'
+    status, it is deleted.
+
+    By default the parameter values for `AreaFixNoTrafficTimeout' and
+    `AreaFixRequestTimeout' equal 0, i.e. timeout checking is disabled.
+
+    To disable this feature comment out the line
+    `#define SNP_AF_IMPROVEMENTS' in config.h
+
+
+53. Changed action of %list command -- now it outputs only areas, subscribed
+    from uplinks (i.e. areas with `S' or `W' status).
+    Added areafix command %avail, which outputs the list of areas, which are
+    not subscribed from uplinks, or all areas (equivalent to the old action
+    of %list command), if `AreaFixAvailPrintsAllAreas' is given in the file 
+    fidogate.conf.
+    (requested by Oleg Artemjev)
+
+    To disable this feature comment out the line
+    `#define SNP_AF_AVAIL' in config.h
+
+
+54. Added `a' flag of `X-Flags' RFC header, which allows to set `ARQ' 
+    (audit request) flag in a gated to FTN message.
+    (requested by Valery Shishkov)
+
+    To disable this feature comment out the line
+    `#define SNP_X_FLAGS_A' in config.h
+
+
+55. Added the feature to autocreate echoareas while tossing.
+
+    When processing a message to an unknown area, first the .pkt password is
+    checked against the password in configs. This check can be disabled by 
+    putting `AutoCreateDontCheckPassword' keyword in fidogate.conf.
+
+    Then it is checked if a link is allowed to create echoareas (i.e. if there
+    is a `&' symbol in the "key" field of "af" context in file
+    ${prefix}/etc/fidogate/passwd)
+
+    Then it is checked if the area is allowed to be created. It can be 
+    forbidden by fidogate.conf keywords `AreaFixCreateForbiddenAreas' and 
+    `AreaFixCreateForbiddenAreasFile'; this is also applied to %create
+    areafix command. Each parameter may be used several times. Example:
+
+	AreaFixCreateForbiddenAreas *UUE*
+	AreaFixCreateForbiddenAreas RU.DRUGS
+	AreaFixCreateForbiddenAreasFile /var/spool/fido/misc/fidokill.na
+	AreaFixCreateForbiddenAreasFile /var/spool/fido/misc/stopareas
+
+    To specify forbidden areas, shell-style wildcards can be used
+    (`*', `?', `[...]', `[^...]').
+    In the files, containing the templates of forbidden areas, only symbol
+    sequences from the beginning of line till first space or tabulation 
+    symbol are recognized. I.e. lines
+
+	TALES.FROM.CRYPTKEEPER - Description missing -
+	TALKS.ASM            Low-level programming
+	TBBS                 - Description missing -
+	*.UUE			All UU echoes
+
+    are fully equivalent to the lines
+
+	TALES.FROM.CRYPTKEEPER
+	TALKS.ASM
+	TBBS
+	*.UUE
+
+    Then, if the area passed all the above checks, it is created. You can  
+    specify the options to be created with in fidogate.conf. For example:
+
+	AutoCreateLine -# -s S
+
+    After that, if AutoCreateNG keywork is specified in fidogate.conf, the 
+    corresponding newsgroup will be created (in correspondence with the file
+    ${prefix}/etc/fidogate/areas). To do this, a news user suid binary ngoper
+    is called (located in ${prefix}/lib/fidogate/bin/).
+    For it's normal work you need to provide `AutoCreateNewgroupCmd',
+    `AutoCreateRenumberCmd' and `AutoCreateRmgroupCmd' parameters, for example:
+
+	AutoCreateNewgroupCmd	/usr/bin/ctlinnd newgroup %s
+	AutoCreateRenumberCmd	/usr/bin/ctlinnd renumber %s
+	AutoCreateRmgroupCmd	/usr/bin/ctlinnd rmgroup %s
+
+    There is a possibility to automatically subscribe certain addresses to
+    a created area, for example:
+
+	AutoCreateSubscribeNodes 2:5020/1838.0 .1 .1838
+
+    There is a possibility to write the names of all created areas 
+    (automatically as well as by %create areafix command) to a specific file;
+    to do this specify it's path in fidogate.conf:
+
+	AreaFixCreateAnnounceFile /var/spool/fido/misc/newareas
+
+    Every line in the file looks like "<arename> <node> <unix_time>", example:
+
+	AREA.FOR.TEST 2:5020/9999.0 961289549
+
+    A create_announce script is added to fidogate-x.x.x/contrib/ directory,
+    which posts the messages about created areas.
+
+    (based on the patch by Sergey Samoyloff)
+
+    To disable this feature comment out the line
+    `#define SNP_AUTOCREATE' in config.h
+
+
+56. Added possibility to cofigure tick flavor for each address independently.
+    To allow this, ${prefix}/etc/fidogate/routing file format is extended.
+    A "tick" keyword is added (in addition to "netmail" and "echomail"). 
+    Only "send" command is used for flavor description, any other command 
+    is ignored.
+    Example:
+
+	NetMail
+	send    hold    2:5020/1838.0
+	route   normal  2:5020/278.0    2:* 1:* 3:* 4:* 5:* 6:*
+	Echomail
+	sendmove        hold    2:5020/1838.0
+	sendmove        normal  *
+	Tick
+	send    hold    2:5020/1838.* 2:5020/9999
+	send    normal  *
+
+    If no flavor is given in any command for some address, then `TickFlav' 
+    parameter value from fidogate.conf is used.
+
+    To disable this feature comment out the line
+    `#define SNP_TICK_FLAV_CONF' in config.h
+
+
+57. Now MSGIDs of all insecure messages are not added to dupes database.
+
+    To disable this feature comment out the line
+    `#define SNP_INSECURE_DONT_PUT_INTO_DUPE_DB' in config.h
+
+
+58. Now lock files are created when working with (f)areas.bbs. ftntoss, 
+    ftnaf, ftnafpkt and ftnafutil create lock файл before reading 
+    (f)areas.bbs and remove it before finishing of their work. If a lock file
+    already exists and contains pid of an existing process, ftntoss and 
+    ftnafutil stop with exit code 2. ftnaf and ftnafpkt wait until lock file
+    disappears. Lock files have the same path and name as (f)areas.bbs 
+    with the `.lock' extension.
+
+    To disable this feature comment out the line
+    `#define SNP_LOCK_AREAS_BBS' in config.h
+
+
+59. For the security reason enabled additional addresses checking in the  
+    .pkt header, message header, origin and echomail ^aPATH.
+
+    If the last address in PATH is not equal to address in the pkt header, 
+    then the address from the pkt header is inserted into PATH.
+
+    The following fidogate.conf keywords were added to control other checks:
+
+    CheckNoOriginAddr: controls checking address in origin, and can have 
+    values:
+	0 -- use address from message header as an origin address (behavior
+	     of original fidogate);
+	1 -- if a message doesn't contain address in origin, and pkt header
+	     contains a point address, then message is considered insecure
+	2 -- if a message doesn't contain address in origin, and pkt header
+	     contains any address, then message is considered insecure
+    Absence of this parameter in fidogate.conf equals it's presence with the
+    value of 0.
+
+    CheckMsgHdrAddr: if specified, then if origaddr in pkt header differs
+    from origaddr in the message header, then the message is considered
+    insecure.
+
+    CheckPointOriginAddr: if specified, and if the pkt header contains
+    a point address different from address in origin, then the message is 
+    considered insecure.
+
+    (thanks to Gena Makhomed)
+
+    To disable this feature comment out the line
+    `#define SNP_SECURITY' in config.h
+
+
+60. Now Via lines generated by FIDOGATE contains "\r" instead of "\r\n" at the
+    end of line.
+
+
+61. Added possibility to disable setting time of file received from fileecho
+    to .tic's one
+    To disable add parameter `TickDontSetTime' to fidogate.conf
+    (patch by Dmitry Budanov)
+
+    To disable this feature comment out the line
+    `#define SNP_TICK_DONT_SET_TIME' in config.h
+
+
+__________
+[*] -- taken from `.sc' patch (author -- Alexey Gretchaninov, 2:5010/81,
+       http://www.scorp.dhs.org)
+
+===============================================================================
+
+Для включения перекодировки следует добавить в
+`${prefix}/etc/fidogate/fidogate.conf' строки:
+
+DefaultCharset  cp866:cp866:koi8-r
+NetMailCharset  cp866:cp866:koi8-r
+
+===============================================================================
+
+The list of those who found bugs, sent requests and patches:
+
+1. Alexei Takaseev, 2:5071/22, taf@ilim.ru
+2. Leonid Kilasoniya, 2:5022/68
+3. Vladimir Lyapkin, 2:5022/47
+4. Peter V. Chernikoff, 2:5020/2091
+5. Oleg Artemjev, 2:5020/1354
+6. Alexander V. Popaduck, 2:5026/45.1
+7. Dmitry Astapov, 2:463/218
+8. Valentin Nechayev, netch@carrier.kiev.ua
+9. Dmitriy Yermakov, 2:5030/1115
+10. Pavel V. Knyazev, 2:5010/148.18, pasha@surnet.ru
+11. Oleg Derevenetz, 2:5025/3.4
+12. Eugene Panov, 2:5083/62, panov@mail.com
+13. Alexander Belkin, 2:5020/2120
+14. Sergey Samoyloff, 2:5074/9
+15. Alexey Wasilyev, 2:5053/40.1
+16. Dmitry Strokov, 2:50/617.1
+17. Valery Shishkov, 2:5040/9
+18. Dmitry Budanov, 2:5052/4
+19. Gena Makhomed, 2:4631/20
+20. Иван Березко, IBeriozko@nsi.ru
+21. Vitaliy T. Morarian, 2:4626/13
+22. Dmitry Fedotov, 2:5030/1229
+23. Vitaly Kuharev, 2:5058/49
+24. Maxi Rovnich, 2:5030/872
+25. Konstantin Petrenko, 2:5006/14
+26. Edward L. Vasilyev, 2:5066/68
+27. Tony Leontyev, 2:5020/517
+28. Andrew Taranik, 2:5090/4.0
+29. Sergei Oberemchuk, 2:463/768
+30. Alex Gromov, 2:5020/4400, alexgrom@ncplg.msk.ru
+31. Sean Rima, 2:263/950, Sean.Rima@tcob1.net
+32. Michael Kulinich, 2:5015/176
+33. Anton Myachin, 2:5010/203.1
+
+English version of README by Tony Leontyev, 2:5020/517, jet@jetfraer.net
+
+If I forgot to mention someone -- remind me by mail :)
+
+===============================================================================
+
+Author of the old patches: Serge N. Pokhodyaev
+Author of the current patch: Dmitry Fedotov
+
+FTN:	2:5030/1229
+
+The fresh version of patch can be found on
+
+	ftp://dig.pp.ru/archive/tools/ftn/
