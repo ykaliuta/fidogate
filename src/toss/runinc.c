@@ -112,14 +112,15 @@ void unpack(char *inb)
     /* Make sure temporary unpacking directory exists and entering into */
     BUF_COPY2(buffer, inb, "/tmpunpack");
     
-    if(chdir(buffer) !== 0)
+    if(check_access(buffer, CHECK_DIR) == ERROR)
     {
 	if(mkdir_r(buffer, 750) == ERROR)
 	{
-	    debug(7,"dir %s not exist or can't create", buffer);
+	    debug(7,"dir %s is not exist or can't create", buffer);
 	    return;
 	}
     }
+    chdir(buffer);
 
     /* Reading files into inbound directory */
     if( ! (dp = opendir(inb)) )
