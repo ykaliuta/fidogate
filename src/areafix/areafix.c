@@ -976,9 +976,8 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
     		log("CONFIG: AutoCreateFechoPath not defined and filearea not passthru");
     		p->dir = "-";
 	    }
-	    sprintf(full_farea_dir,"%s/%s",autocreate_fecho_path,
-		    str_lower(strsave(name)));
-	    p->dir = full_farea_dir;
+	    sprintf(full_farea_dir,"%s/%s",autocreate_fecho_path, str_lower(name));
+	    p->dir = strsave(full_farea_dir);
 	    if(check_access(full_farea_dir, CHECK_DIR) == ERROR)
 	    {
 		if(check_access(autocreate_fecho_path, CHECK_DIR) == ERROR)
@@ -1281,7 +1280,7 @@ int cmd_listall(Node *node)
 			if(!*buf)
 			    continue;
 			f = xstrtok(buf,  " \t");
-			f1 = xstrtok(NULL,  " \t");
+			f1 = xstrtok(NULL,  "\n");
 
 			find = FALSE;
 			if(hi_test(f))
