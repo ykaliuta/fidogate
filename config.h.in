@@ -397,6 +397,11 @@
  */
 #undef USE_SYSLOG
 
+/*
+ * Enable if you toss old format pkts.
+ */
+#undef OLD_TOSS
+
 /***** System dependend configuration ***************************************
  *
  *   HAVE_FCNTL_LOCK		Do you have file locking with fcntl()

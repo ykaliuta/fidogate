@@ -407,7 +407,7 @@ static int msg_body_parse_netmail(MsgBody *body)
 
     return OK;
 }
-#endif /* OLD_TMP */
+#endif /* OLD_TOSS */
 
 
 int is_blank_line(char *s)
@@ -423,7 +423,7 @@ int is_blank_line(char *s)
     return TRUE;
 }
 
-#ifdef OLD_TMP
+#ifdef OLD_TOSS
 int msg_body_parse(Textlist *text, MsgBody *body)
 {
     Textline *p, *pn;
@@ -513,7 +513,7 @@ int msg_body_parse(Textlist *text, MsgBody *body)
     return body->area ? msg_body_parse_echomail(body)
 	              : msg_body_parse_netmail (body) ;
 }
-#endif /* OLD_TMP */
+#endif /* OLD_TOSS */
 
 #define HI_KLUDGE		1
 #define PARSE_BLANK		2
