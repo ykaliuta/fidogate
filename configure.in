@@ -536,11 +536,11 @@ AC_MSG_CHECKING(for log directory)
 if test "${with_logdir+set}" = set; then
 	LOGDIR="$with_logdir"
 elif test -d /var/log; then
-	LOGDIR=/var/log/fidogate
+	LOGDIR=/var/log/fido/gate
 elif test -d /var/spool/log; then
 	LOGDIR=/var/spool/log/fidogate
 else
-	VARDIR=/var/log/fidogate
+	VARDIR=/var/log/fido/gate
 fi
 AC_MSG_RESULT($LOGDIR)
 AC_SUBST(LOGDIR)
