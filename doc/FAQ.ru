@@ -1,5 +1,5 @@
 
-    $Id: FAQ.ru,v 5.2 2004/11/23 00:50:36 anray Exp $
+    $Id: FAQ.ru,v 5.3 2005/01/29 19:48:30 anray Exp $
 
                     Configuration mini-faq
 
@@ -223,5 +223,19 @@ Subject: FIDOGATE
       фидошные REPLY и с интернет-стороны невозможно будет пользоваться
       скорингом. Если скоринг еще можно починить пользуясь dbc-history,
       то ломанные REPLY будут постоянно.
+
+----------------------------------------------------------------------------
+
+  Q13:Где можно взять готовые пакеты fidogate-ds для моего дистрибутива?
+  A13:Для Debian пакеты собирает Zhenja Kaluta и выкладывает на свой сайт:
+       http://kaliuta.basnet.by/debian/
+      Для FreeBSD можно взять в портах:
+       ports/news/fidogate-ds
+      или на сайте:
+       http://freshports.org/news/fidogate-ds/
+      Для ALTLinux собирает Zhenja Kaluta. Ищите на официальных зеркалах
+      ALTLinux.
+      Для RedHat-подобных(ASP, RH, FC) пакетов нет, но в сорсах fidogate-ds
+      можно найти spec для сборки (<fgds-src>/packages/rpm/).
 
 ================================================================================

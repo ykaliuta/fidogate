@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: ftn2rfc.c,v 5.2 2004/11/23 00:50:40 anray Exp $
+ * $Id: ftn2rfc.c,v 5.3 2005/01/29 19:48:31 anray Exp $
  *
  * Convert FTN mail packets to RFC mail and news batches
  *
@@ -39,7 +39,7 @@
 
 
 #define PROGRAM 	"ftn2rfc"
-#define VERSION 	"$Revision: 5.2 $"
+#define VERSION 	"$Revision: 5.3 $"
 #define CONFIG		DEFAULT_CONFIG_GATE
 
 
@@ -890,8 +890,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    }
 	
 	    /* GIGO */
-	    if( (p = kludge_get(&body.kludge, "PID", NULL))  &&
-		!strnicmp(p, "GIGO", 4)                        )
+	    if( (p = kludge_get(&body.kludge, "PID", NULL)) &&
+		!strnicmp(p, "GIGO", 4)                       )
 	    {
 		fglog("skipping message from gateway (GIGO), area %s, origin=%s",
 		      area->area, znfp1(&msg.node_orig));

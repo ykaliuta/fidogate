@@ -120,8 +120,18 @@ $uc   =~ tr/a-z/A-Z/;
 while(1) {
     $found = 0;
 
-    $day += 7;
     ##FIXME: wrap-around for next year, take into account leap years##
+    my($sec,$min,$hour,$mday,$mon,$year,$wday,$yday)=localtime();
+    $year += 1899;
+    my $HighYear = $year % 4 ? 0 : 1;
+    my $DLY=365 + $HighYear - $day;
+    if ($DLY < 7) {
+	$day=7 - $DLY;
+    }
+    else {
+	$day+=7;
+    }
+
     $dd  = sprintf "%02d", $day % 100;
     $ddd = sprintf "%03d", $day;
 
