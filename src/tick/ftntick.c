@@ -1069,7 +1069,7 @@ int main(int argc, char **argv)
 	    exec_script = optarg;
 	    break;
 	    
-	/***** Common options *****/
+    	/***** Common options *****/
 	case 'v':
 	    verbose++;
 	    break;

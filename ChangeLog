@@ -1,3 +1,10 @@
+2003-10-01  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
+
+	* src/util/confval.c: fixed the error 'Segmentation fault', added the
+	    new action: if it runs without flags then print all varables of
+	    fidogate.conf
+	* src/tick/ftntick.c: fixed TickFileAction
+
 2003-09-27  Andrey Slusar <rusfidogate@users.sourceforge.net>
 	
 	* src/common/histdb.c: add check hi_file (thanks to Alex Soukhotine)
