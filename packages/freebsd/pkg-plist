@@ -81,6 +81,8 @@ var/fidogate/fareas.bbs.sample
 %%PORTDOCS%%share/doc/fidogateds/FAQ.ru
 %%PORTDOCS%%share/doc/fidogateds/README
 %%PORTDOCS%%share/doc/fidogateds/ChangeLog
+%%PORTDOCS%%share/doc/fidogateds/old/FAQ_Fidogate
+%%PORTDOCS%%share/doc/fidogateds/old/FIDOGATE_ftrack
 %%PORTDOCS%%share/examples/fidogateds/dyff/acl.sample
 %%PORTDOCS%%share/examples/fidogateds/dyff/aliases.sample
 %%PORTDOCS%%share/examples/fidogateds/dyff/areafix.help.rus
@@ -116,6 +118,7 @@ var/fidogate/fareas.bbs.sample
 %%PORTDOCS%%@dirrm share/examples/fidogateds/dyff
 %%PORTDOCS%%@dirrm share/examples/fidogateds/point
 %%PORTDOCS%%@dirrm share/examples/fidogateds
+%%PORTDOCS%%@dirrm share/doc/fidogateds/old
 %%PORTDOCS%%@dirrm share/doc/fidogateds
 @dirrm var/fidogate/seq
 @dirrm var/fidogate

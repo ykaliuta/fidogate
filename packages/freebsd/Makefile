@@ -7,7 +7,7 @@
 PORTNAME=		fidogate
 PORTVERSION=		5.2.0
 CATEGORIES=		news mail
-MASTER_SITES=		http://node126.narod.ru/files/
+MASTER_SITES=		${MASTER_SITE_SOURCEFORGE}
 DISTNAME=		fidogate5.2.0ds-alpha2
 
 MAINTAINER=		rusfidogate@users.sourceforge.net
@@ -41,11 +41,20 @@ CONFIGURE_ARGS+=	--disable-desc-dir
 .if !defined(WITHOUT_ALIASES)
 CONFIGURE_ARGS+=	--enable-aliases-local
 .endif
-.if !defined(WITHOUT_DBC)
+.if defined(WITH_DBC)
 CONFIGURE_ARGS+=	--enable-dbc-history
 .endif
 .if defined(DNT_NETMAIL)
 CONFIGURE_ARGS+=	--enable-dnt-netmail
+.endif
+.if defined(WITHOUT_FMSGID)
+CONFIGURE_ARGS+=	--disable-fs-msgid
+.endif
+.if defined(WITHOUT_AVAIL)
+CONFIGURE_ARGS+=	--disable-af-avail
+.endif
+.if defined(WITHOUT_BEST_AKA)
+CONFIGURE_ARGS+=	--disable-best-aka
 .endif
 CONFIGURE_ARGS+=	--libexec=${PREFIX}/libexec/fidogate \
 			--sysconfdir=${PREFIX}/etc/fido/gate \
@@ -66,7 +75,7 @@ do-install:
 	${CHOWN} news:news ${PREFIX}/libexec/fidogate
 
 .if !defined(NOPORTDOCS)
-	${MKDIR} ${PREFIX}/share/doc/fidogateds
+	${MKDIR} ${PREFIX}/share/doc/fidogateds/old
 	${INSTALL_DATA} ${WRKSRC}/doc/README.ru ${PREFIX}/share/doc/fidogateds/README.ru
 	${INSTALL_DATA} ${WRKSRC}/doc/README ${PREFIX}/share/doc/fidogateds/README
 	${INSTALL_DATA} ${WRKSRC}/doc/FAQ.ru ${PREFIX}/share/doc/fidogateds/FAQ.ru
@@ -80,6 +89,8 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/doc/mailer/sendmail/mklinks ${PREFIX}/share/examples/fidogateds/mailer/sendmail/mklinks
 	${MKDIR} ${PREFIX}/share/examples/fidogateds/mailer/sendmail/mailer
 	${INSTALL_DATA} ${WRKSRC}/doc/mailer/sendmail/mailer/ftn.m4  ${PREFIX}/share/examples/fidogateds/mailer/sendmail/mailer/ftn.m4
+	${INSTALL_DATA} ${WRKSRC}/doc/old/FAQ_Fidogate ${PREFIX}/share/doc/fidogateds/old/FAQ_Fidogate
+	${INSTALL_DATA} ${WRKSRC}/doc/old/FIDOGATE_ftrack ${PREFIX}/share/doc/fidogateds/old/FIDOGATE_ftrack
 	${MKDIR} ${PREFIX}/share/examples/fidogateds/dyff
 	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/acl.sample ${PREFIX}/share/examples/fidogateds/dyff/acl.sample
 	${INSTALL_DATA} ${WRKSRC}/doc/examples/dyff/aliases.sample ${PREFIX}/share/examples/fidogateds/dyff/aliases.sample
