@@ -83,6 +83,9 @@
     3.5
 		smail:
 
+    3.6
+		masqmail:
+
     Для связывания с InterNetNews (INN):
 
     4.1		newsfeeds
@@ -114,11 +117,11 @@ cvs -z3 -d:pserver:anonymous@cvs.rusfidogate.sourceforge.net:/cvsroot/rusfidogat
 co fidogate
 
     Также последнюю официальную версию fidogate можно взять на сайтах:
-	www.sourceforge.net/projects/fidogate
-	www.fidogate.spb.ru
+	http://sourceforge.net/projects/fidogate
+	http://www.fidogate.spb.ru
 
     Версию fidogate-ds можно взять на сайтах:
-	www.sourceforge.net/projects/rusfidogate
+	http://sourceforge.net/projects/rusfidogate
 	
 ===============================================================================
 
@@ -1036,6 +1039,7 @@ TickWaitAction	delete
 # строка - строка передающаяся командному процессору(допустимы пробелы,
 # %s - заменяется на полное имя файла).
 #TickFileAction UNIXFTN *.bz2 /usr/lib/fidogate/bin/scriptfilearea %s
+TickFileAction NODEDIFF nodediff.* /usr/local/bin/nl-autoupd && /usr/local/bin/bfindex
 
 # Установка пермишенов на исходящие тики. (man 2 chown).
 TickMode	0600
@@ -1825,6 +1829,22 @@ mailertable в sendmail т.е. см. п.3.1.5
 
     Примеры можно найти в каталоге <fidogate_src>/doc/mailer/postfix.
     Более подробную информацию можно найти в документации к postfix.
+
+==============================================================================
+
+3.6     Конфигурирование masqmail для связи с fidogate.
+
+    Для подключения masqmail к fidogate, необходимо сделать следующее:
+
+    В masqmail.conf к local_nets дописать "*.fidonet.org" и к local_route
+    добавить описание файла с route для fidonet.org и создать сам файл,
+    примерно такой:
+
+    === /etc/masqmail/fidonet.route ===
+    protocol = pipe
+    allowed_rcpt_domains = "*.fidonet.org"
+    pipe = "/usr/lib/fidogate/ftnmail ${rcpt}"
+    ===
 
 ===============================================================================
 

@@ -440,10 +440,13 @@ AutoCreateFechoPath /home/ftp/fileecho
 PassthroughtBoxesDir %B/fbox
 
 # Time in hour to wait file if it missing, if tick file was resived
-TickWaitHour 168
+TickWaitHour 48
 
 # Action if time limit was finished ("delete" or "bad")
 TickWaitAction	delete
+
+# Action
+TickFileAction UNIXFTN *.bz2 /usr/lib/fidogate/bin/scriptfilearea %s
 
 # Kill dupe tick's with correspod file
 #KillTickDupe
