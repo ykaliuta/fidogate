@@ -1,3 +1,9 @@
+2003-10-30  Andrey Slusar <rusfidogate@users.sourceforge.net> 
+
+	* cvsexp: update
+	* src/common/address.c: fix AI_1
+	* doc/README.ru: update
+
 2003-10-28  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/gate/ftn2rfc.c: fix UseOriginForOrganization(thanks

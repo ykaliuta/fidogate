@@ -1,16 +1,16 @@
-Help файл для Areafix/Filefix, FIDOGATE 5.x
+Help файл для Areafix/Filefix, FIDOGATE
 
 Шаблон письма:
 
-  To:      AreaFix @ Z:N/F.P
-       или AreaMgr @ Z:N/F.P
-       или FileFix @ Z:N/F.P
-       или FileMgr @ Z:N/F.P
+  To:      AreaFix Z:N/F.P
+       или AreaMgr Z:N/F.P
+       или FileFix Z:N/F.P
+       или FileMgr Z:N/F.P
   Subject: PASSWORD [-l] [-q]
                           ^^-- аналогично команде QUERY
                      ^^------- аналогично команде LIST
 
-Commands in message body, optional prefix %% allowed:
+Команды в теле письма, необходим префикс % в начале:
 
 	listall		список всех имеющихся конференций.
 	list		список выписанных у аплинка конференций

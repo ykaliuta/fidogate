@@ -172,169 +172,159 @@ AC_ARG_ENABLE(local-ftn-addr,
 
 AC_ARG_ENABLE(dobsy-files,
 [  --disable-dobsy-files   create Binkley-style BSY],
-	      ,AC_DEFINE(DO_BSY_FILES))
+    ,AC_DEFINE(DO_BSY_FILES))
 
 AC_ARG_ENABLE(nfs-safe-lock,
 [  --enable-nfs-safe-lock  create lock files/BSY files in an NFS-safe way],
-	      AC_DEFINE(NFS_SAFE_LOCK_FILES),)
+    AC_DEFINE(NFS_SAFE_LOCK_FILES),)
 
 AC_ARG_ENABLE(amiga-out,
 [  --enable-amiga-out      create 4D outbound filenames for AmigaDOS mailers],
-	      AC_DEFINE(AMIGADOS_4D_OUTBOUND),)
+    AC_DEFINE(AMIGADOS_4D_OUTBOUND),)
 
 AC_ARG_WITH(maxmsg-size,
 [  --with-maxmsg-size=SIZE set max. message size for FIDO [14000]],
-	      AC_DEFINE_UNQUOTED(MAXMSGSIZE,$withval),AC_DEFINE_UNQUOTED(MAXMSGSIZE, 14000))
+    AC_DEFINE_UNQUOTED(MAXMSGSIZE,$withval),AC_DEFINE_UNQUOTED(MAXMSGSIZE, 14000))
 
 AC_ARG_WITH(ftn-invalid-domain,
-[  --with-ftn-invalid-domain=DOM
-                          set domain for invalid FTN addresses
-			  [INVALID_FTN_ADDRESS] ],
-	      AC_DEFINE_UNQUOTED(FTN_INVALID_DOMAIN,"$withval"),AC_DEFINE_UNQUOTED(FTN_INVALID_DOMAIN, "INVALID_FTN_ADDRESS"))
+[  --with-ftn-invalid-domain=DOM  set domain for invalid FTN addresses [INVALID_FTN_ADDRESS]],
+    AC_DEFINE_UNQUOTED(FTN_INVALID_DOMAIN,"$withval"),AC_DEFINE_UNQUOTED(FTN_INVALID_DOMAIN, "INVALID_FTN_ADDRESS"))
 
 AC_ARG_WITH(syslog-facility,
-[  --with-syslog-facility=FAC
-			  set syslog facility [LOG_LOCAL0] ],
-	      AC_DEFINE_UNQUOTED(FACILITY,$withval),AC_DEFINE_UNQUOTED(FACILITY, LOG_LOCAL0))
+[  --with-syslog-facility=FAC	set syslog facility [LOG_LOCAL0]],
+    AC_DEFINE_UNQUOTED(FACILITY,$withval),AC_DEFINE_UNQUOTED(FACILITY, LOG_LOCAL0))
 
 AC_ARG_WITH(ftn-charset,
 [  --with-ftn-charset=CHS  set default assumed charset for Fido messages [cp866] ],
-	      AC_DEFINE_UNQUOTED(CHARSET_STDFTN,"$withval"),AC_DEFINE_UNQUOTED(CHARSET_STDFTN, "cp866"))
+    AC_DEFINE_UNQUOTED(CHARSET_STDFTN,"$withval"),AC_DEFINE_UNQUOTED(CHARSET_STDFTN, "cp866"))
 
 AC_ARG_WITH(rfc-charset,
-[  --with-rfc-charset=CHS  set default assumed charset for RFC messages if
-                           without MIME headers [koi8-r]],
-	      AC_DEFINE_UNQUOTED(CHARSET_STDRFC,"$withval"),AC_DEFINE_UNQUOTED(CHARSET_STDRFC, "koi8-r"))
+[  --with-rfc-charset=CHS  set default assumed charset for RFC messages if without MIME headers [koi8-r]],
+    AC_DEFINE_UNQUOTED(CHARSET_STDRFC,"$withval"),AC_DEFINE_UNQUOTED(CHARSET_STDRFC, "koi8-r"))
 
 AC_ARG_WITH(7bit-charset,
-[  --with-7bit-charset=CHS set default charset for RFC messages with forced 7bit
-                           encoding [us-ascii]],
-	      AC_DEFINE_UNQUOTED(CHARSET_STD7BIT,"$withval"),AC_DEFINE_UNQUOTED(CHARSET_STD7BIT, "us-ascii"))
+[  --with-7bit-charset=CHS set default charset for RFC messages with forced 7bit encoding [us-ascii]],
+    AC_DEFINE_UNQUOTED(CHARSET_STD7BIT,"$withval"),AC_DEFINE_UNQUOTED(CHARSET_STD7BIT, "us-ascii"))
 
 AC_ARG_ENABLE(aliases-local,
-[  --enable-aliases-local  rewrite addresses found in ALIASES so that the
-                           sender's address is the gateway address],
-	      AC_DEFINE(ALIASES_ARE_LOCAL),)dnl'
+[  --enable-aliases-local  rewrite addresses found in ALIASES so that the sender's address is the gateway address],
+    AC_DEFINE(ALIASES_ARE_LOCAL),)dnl'
 
 AC_ARG_ENABLE(ai1,
-[  --enable-ai1            Add -a option to HOSTS entries, useful only with
-                           PASSTHRU_NET/ECHOMAIL],
-	      AC_DEFINE(ALIASES_ARE_LOCAL),)
-
+[  --enable-ai1		Add -a option to HOSTS entries, useful only with PASSTHRU_NET/ECHOMAIL],
+    AC_DEFINE(ALIASES_ARE_LOCAL),)
 
 AC_ARG_ENABLE(best-aka,
-[  --disable-best-aka      disable best AKA select],
-	      ,AC_DEFINE(BEST_AKA))
-
+[  --disable-best-aka	disable best AKA select],
+    ,AC_DEFINE(BEST_AKA))
 
 AC_ARG_ENABLE(ftnacl,
 [  --disable-ftnacl        do'nt use ACL for FTN links ],
-	      ,AC_DEFINE(FTN_ACL))dnl'
+    ,AC_DEFINE(FTN_ACL))dnl'
 
 AC_ARG_ENABLE(reply-xflm,
-[  --disable-reply-xflm    Add ^aREPLY kludge if RFC header X-Flags
-			   contains m parameter],
-	      ,AC_DEFINE(REPLY_IF_X_FLAGS_M))
+[  --disable-reply-xflm    Add ^aREPLY kludge if RFC header X-Flags contains m parameter],
+    ,AC_DEFINE(REPLY_IF_X_FLAGS_M))
 
 AC_ARG_WITH(desc-dir,
 [  --with-desc-dir=DIR     put file descriptions into ".desc/%s.desc" file instead of files.bbs],
-	      DESC_DIR="$withval",DESC_DIR=".desc")
+    DESC_DIR="$withval",DESC_DIR=".desc")
 
 AC_ARG_ENABLE(desc-dir,
 [  --disable-desc-dir      put file descriptions into files.bbs],
-	      ,AC_DEFINE_UNQUOTED(DESC_DIR,"$DESC_DIR"))
+    ,AC_DEFINE_UNQUOTED(DESC_DIR,"$DESC_DIR"))
 
 AC_ARG_ENABLE(recode-file-desc,
 [  --disable-recode-file-desc disable recode file descriptions],
-	      ,AC_DEFINE(RECODE_FILE_DESC))
+    ,AC_DEFINE(RECODE_FILE_DESC))
 
 AC_ARG_ENABLE(af-avail,
 [  --disable-af-avail      change behaviour of areafix command "%list" and "%avail" ],
-	      ,AC_DEFINE(AF_AVAIL))
+    ,AC_DEFINE(AF_AVAIL))
 
 AC_ARG_ENABLE(xff-echomail,
 [  --disable-xff-echomail  add X-FTN-From header in gated echomail],
-	      ,AC_DEFINE(X_FTN_FROM_ECHOMAIL))
+    ,AC_DEFINE(X_FTN_FROM_ECHOMAIL))
 
 AC_ARG_ENABLE(spyes,
 [  --disable-spyes         use SPYES config],
-	      ,AC_DEFINE(SPYES))
+    ,AC_DEFINE(SPYES))
 
 AC_ARG_ENABLE(aflr,
 [  --disable-aflr          restricted access to areafix command %listall],
-	      , AC_DEFINE(AF_LISTALL_RESTRICTED))
+    ,AC_DEFINE(AF_LISTALL_RESTRICTED))
 
 AC_ARG_ENABLE(recode-fd,
 [  --disable-recode-fd     recode file descriptor],
-	      , AC_DEFINE(RECODE_FILE_DESC))
+    ,AC_DEFINE(RECODE_FILE_DESC))
 
 AC_ARG_ENABLE(fecho-pass,
 [  --disable-fecho-pass    use passthrought filearea],
-	      , AC_DEFINE(FECHO_PASSTHROUGHT))
+    ,AC_DEFINE(FECHO_PASSTHROUGHT))
 
 AC_ARG_ENABLE(use-filebox,
 [  --disable-use-filebox   use fileboxes for fileecho],
-	      , AC_DEFINE(USE_FILEBOX))
+    ,AC_DEFINE(USE_FILEBOX))
 
 AC_ARG_ENABLE(tick-crc,
 [  --disable-tick-crc      ftntick CRC control],
-	      AC_DEFINE(FTNTICK_NOCRC),)
+    AC_DEFINE(FTNTICK_NOCRC),)
 
 AC_ARG_ENABLE(no-organization,
 [  --enable-no-organization enable if no insert Origin line if it absence],
-	      ,AC_DEFINE(NOINSERT_ORGANIZATION),)
+    ,AC_DEFINE(NOINSERT_ORGANIZATION),)
 
 AC_ARG_ENABLE(insecure-not-db,
 [  --disable-insecure-not-db put insecure mail into dupe database],
-	      ,AC_DEFINE(INSECURE_DONT_PUT_INTO_DUPE_DB))
+    ,AC_DEFINE(INSECURE_DONT_PUT_INTO_DUPE_DB))
 
 AC_ARG_ENABLE(af-ansok,
 [  --enable-af-ansok       change areafix answering to "ok" if subscribing],
-	      AC_DEFINE(ANSWER_OK), )
+    AC_DEFINE(ANSWER_OK), )
 
 AC_ARG_ENABLE(fs-msgid,
 [  --disable-fs-msgid      set gate msgid into outgoing messages],
-	      , AC_DEFINE(FIDO_STYLE_MSGID))
+    ,AC_DEFINE(FIDO_STYLE_MSGID))
 
 AC_ARG_ENABLE(dbc-history,
 [  --enable-dbc-history    use msgid correspond data base],
-	      AC_DEFINE(DBC_HISTORY), )
+    AC_DEFINE(DBC_HISTORY), )
 
 AC_ARG_ENABLE(afses,
 [  --enable-afses          areafix send echo status],
-	      AC_DEFINE(AFSEND_ECHO_STATUS),)
+    AC_DEFINE(AFSEND_ECHO_STATUS),)
 
 AC_ARG_ENABLE(sub_zonegate,
 [  --enable-sub-zonegate   subscribe only zonegate],
-	      AC_DEFINE(SUBSCRIBE_ZONEGATE),)
+    AC_DEFINE(SUBSCRIBE_ZONEGATE),)
 
 AC_ARG_ENABLE(pid2rd-tid2gtv,
 [  --enable-pid2rd-tid2gtv paste ^PID & ^TID kludges to message],
-	      AC_DEFINE(PID_READER_TID_GTV),)
+    AC_DEFINE(PID_READER_TID_GTV),)
 
 AC_ARG_ENABLE(tick-history,
 [  --disable-tick-history  tick dupe check],
-	      , AC_DEFINE(TIC_HISTORY))
+    ,AC_DEFINE(TIC_HISTORY))
 
 AC_ARG_ENABLE(dnt-netmail,
 [  --enable-dnt-netmail    do not toss netmail],
-	      AC_DEFINE(DO_NOT_TOSS_NETMAIL), )
+    AC_DEFINE(DO_NOT_TOSS_NETMAIL), )
 
 AC_ARG_ENABLE(sep-pkt,
 [  --enable-sep-pkt        separate message to individual pkt (rfc->ftn)],
-	      AC_DEFINE(SEP_RFC2FTN_PKT), )
+    AC_DEFINE(SEP_RFC2FTN_PKT), )
 
 AC_ARG_ENABLE(owfl,
 [  --disable-owfl          overwrite fileecho link],
-	      , AC_DEFINE(OVERWRITEN_FECHO_FILE_TO_LINK))
+    ,AC_DEFINE(OVERWRITEN_FECHO_FILE_TO_LINK))
 
 AC_ARG_ENABLE(active-lookup,
 [  --disable-active-lookup active file lookup],
-	      , AC_DEFINE(ACTIVE_LOOKUP))
+    ,AC_DEFINE(ACTIVE_LOOKUP))
 
 AC_ARG_ENABLE(recode-allrfc,
 [  --disable-recode-allrfc recoding some RFC header],
-	      , AC_DEFINE(RECODE_ALL_RFC))
+    ,AC_DEFINE(RECODE_ALL_RFC))
 
 
 dnl ###########################################################################
@@ -394,7 +384,7 @@ AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsb
     fi
     
     if $newsbindir/innconfval -v 2>&1 </dev/null | egrep 2\.\[3\|4] > /dev/null; then
-      eval `$newsbindir/innconfval -s`
+      eval `$newsbindir/innconfval -s|grep -v VERSION`
       NEWSLIBDIR=${PATHNEWS}
     else
       NEWSLIBDIR=$newsbindir
