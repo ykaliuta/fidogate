@@ -1299,6 +1299,15 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	}
 	if(reply_to_line)
 	    tl_appendf(&theader, "Reply-To: %s\n", reply_to_line);
+	
+	if(gate_rfc_kludge)
+	{
+	    if( (p = kludge_get(&body.kludge, "RFC-User-Agent", NULL)) )
+	    tl_appendf(&theader, "User-Agent: %s\n", p);
+	    if( (p = kludge_get(&body.kludge, "RFC-X-NewsReader", NULL)) )
+	    tl_appendf(&theader, "X-NewsReader: %s\n", p);
+	}
+	
 	if ( NULL == msgbody_rfc_subject )
 	{
 	msg_xlate_line(buffer, sizeof(buffer), msg.subject, cvt8 & AREA_QP, 

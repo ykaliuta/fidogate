@@ -1,5 +1,7 @@
 2004-02-17  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
+	* src/gate/ftn2rfc.c: add gate RFC-User-Agent,
+	    RFC-X-NewsReader
 	* src/gate/ftn2rfc.c: fix area-flag
 	* src/common/msgid.c: fix DBC_HISTORY
 
