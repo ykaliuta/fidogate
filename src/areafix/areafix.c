@@ -2613,11 +2613,8 @@ short int send_rules(Node *link, char *area)
 
 short int rulesup(char *rulesc)
 {
-    struct dirent *dir;
-    char *p, *s, *rulesc1, *rdir;
-    DIR *dp;
+    char *p, *s, *rulesc1, *rdir, *buf;
     FILE *fp, *fp1;
-    char buf[BUFFERSIZE];
 
     if(!rulesc)
     {
@@ -2634,7 +2631,7 @@ short int rulesup(char *rulesc)
 	debug(8, "config: RulesDir %s", s);
 	rdir = strsave(s);
 
-	if( ! (dp = opendir(rdir)) )
+	if(dir_open(rdir, "*.rul", TRUE) == ERROR)
 	{
 	    debug(7,"can't open directory %s", rdir);
 	    return ERROR;
@@ -2645,38 +2642,33 @@ short int rulesup(char *rulesc)
 	    debug(7, "ERROR: reading %s", rulesc1);
 	    return ERROR;
 	}
-	while((dir = readdir(dp)))
+	for(buf=dir_get(TRUE); buf; buf=dir_get(FALSE))
 	{
-	    if( (p = strchr(dir->d_name, '.')) )
-		if(!stricmp(p+1, "rul"))
-		{
-		    BUF_COPY3(buf, rdir, "/", dir->d_name);
-		    debug(9, "processing file %s", buf);
+	    debug(9, "processing file %s", buf);
 
-		    fp = fopen_expand_name(buf, R_MODE, FALSE);
-		    if(!fp)
+	    fp = fopen_expand_name(buf, R_MODE, FALSE);
+	    if(!fp)
+	    {
+		debug(7, "ERROR: reading %s", buf);
+		fclose(fp1);
+		return ERROR;
+	    }
+	    p = cf_getline(buffer, BUFFERSIZE, fp);
+	    fclose(fp);
+	    if(p)
+	    {
+		if(strchr(p, ':'))
+		{
+		    p = strchr(p, ':')+1;
+		    if( (s = strtok(p, " \t")) )
 		    {
-			debug(7, "ERROR: reading %s", buf);
-			fclose(fp1);
-			return ERROR;
-		    }
-		    p = cf_getline(buffer, BUFFERSIZE, fp);
-		    fclose(fp);
-		    if(p)
-		    {
-			if(strchr(p, ':'))
-			{
-			    p = strchr(p, ':')+1;
-			    if( (s = strtok(p, " \t")) )
-			    {
-				BUF_COPY4(buffer, s, "\t", buf, "\n");
-				fputs(buffer, fp1);
-			    }
-			}
-			else
-			    fglog("WARNING: rulesfile %s is broken", buf);
+			BUF_COPY4(buffer, s, "\t", buf, "\n");
+			fputs(buffer, fp1);
 		    }
 		}
+		else
+		    fglog("WARNING: rulesfile %s is broken", buf);
+	    }
 	}
 	fclose(fp1);
 	return OK;

@@ -1,7 +1,10 @@
 2004-07-22  Andrey Slusar <anray@users.sourceforge.net>
 
+	* src/areafix/areafix.c: change opendir() to
+	    dir_open(), readdir() to dir_get()
 	* src/gate/ftninpost.c: change system() to
-	    portable run_system()
+	    run_system(), opendir() to dir_open(),
+	    readdir() to dir_get()
 
 2004-07-20  Andrey Slusar <anray@users.sourceforge.net>
 

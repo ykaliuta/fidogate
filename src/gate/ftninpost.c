@@ -198,35 +198,33 @@ int unsplit_mail() {
 */
 int do_dir(char *cdir, int mode)
 {
-    DIR *dp;
-    struct dirent *dir;
+    char *rfc_file;
     char buf[MAXPATH+MAXINETADDR];
 
-    if( ! ( dp = opendir(cdir) ) )
+    if(dir_open(cdir, "*.rfc", TRUE) == ERROR)
     {
 	debug(7,"can't open directory %s", cdir);
 	return ERROR;
     }
-    while((dir = readdir(dp)))
+    for(rfc_file=dir_get(TRUE); rfc_file; rfc_file=dir_get(FALSE))
     {
-	if(wildmatch(dir->d_name, "*.rfc", TRUE))
+	FILE *fp;
+	char *p = NULL;
+	int ret, pr = FALSE;
+
+	debug( 8, "Processing %s", rfc_file );
+
+	switch( mode )
 	{
-	    char rfc_file[MAXPATH];
-	    FILE *fp;
-	    char *p = NULL;
-	    int ret, pr = FALSE;
-
-	    BUF_COPY3(rfc_file, cdir, "/", dir->d_name);
-	    debug( 8, "Processing %s", rfc_file );
-
-	    switch( mode ) {
-	        case 0:
-/*	    	    unsplit_mail_count(rfc_file);
-		    unsplit_mail();*/
-	            break;
-                case 1:
-	    	    if( ( p = strstr( ftnin_sendmail, " -f" ) ) ) {
-    			for( p+=3; p && *p == ' '; p++ );
+	    case 0:
+/*		unsplit_mail_count(rfc_file);
+		unsplit_mail();*/
+	    	break;
+            case 1:
+	    	if( ( p = strstr( ftnin_sendmail, " -f" ) ) )
+		{
+    		    for( p+=3; p && *p == ' '; p++ );
+		    {
 			if( *p == '%' && p[1] == 's' )
 			{
 			    fp = fopen( rfc_file, "r" );
@@ -246,36 +244,42 @@ int do_dir(char *cdir, int mode)
 				str_printf( buf, sizeof(buf), ftnin_sendmail, p ); 
 			    }
 			}
-                	p = buf;
-		    } else
-		        p = ftnin_sendmail;
-		    pr = TRUE;
-		    break;
-
-	        case 2:
-		    p = ftnin_rnews;
-		    pr = TRUE;
-		    break;
-
-		default:
-		    debug( 1, "unknow mode %d", mode );
-		    break;
-	    }
-	    if( pr == TRUE )
-	    {
-		debug( 8, "exec: %s", p );
-		freopen( rfc_file, R_MODE, stdin );
-		ret = run_system( p );
-		fclose( stdin );
-		if(ret)
-		{
-		    char bad[MAXPATH];
-		    fglog( "$WARNING: %s returned non-zero status", p );
-		    str_change_ext(bad, sizeof(bad), rfc_file, ".bad");
-		    fglog("ERROR: bad rfcbatch renamed to %s", bad);
-		    rename(rfc_file, bad);
+		    }
+            	    p = buf;
 		}
-		unlink( rfc_file );
+		else
+		p = ftnin_sendmail;
+		pr = TRUE;
+		break;
+
+	    case 2:
+		p = ftnin_rnews;
+		pr = TRUE;
+		break;
+
+	    default:
+		debug( 1, "unknown mode %d", mode );
+		break;
+	}
+	if( pr == TRUE )
+	{
+	    debug( 8, "exec: %s", p );
+	    freopen( rfc_file, R_MODE, stdin );
+	    ret = run_system( p );
+	    fclose( stdin );
+	    if(ret)
+	    {
+		char bad[MAXPATH];
+		fglog( "$WARNING: %s returned non-zero status", p );
+		str_change_ext(bad, sizeof(bad), rfc_file, ".bad");
+		fglog("ERROR: bad rfcbatch renamed to %s", bad);
+		rename(rfc_file, bad);
+	    }
+	    unlink( rfc_file );
+	    if( (p = cf_get_string("AfterGateNews", TRUE)) )
+	    {
+		debug(8, "config: AfterGateNews %s", p);
+		run_system(p);
 	    }
 	}
     }
