@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# $Id: tr.clean,v 1.1 2003/09/23 17:45:39 rusfidogate Exp $
+#
+# FIDOGATE test clean-up
+#
+
+rm -f *.bak *~ core history* *mon.out
+rm -rf tmp* afixlog
+rm -rf in pin toss outpkt outrfc seq log bt locks fareas
+rm -f run.diff

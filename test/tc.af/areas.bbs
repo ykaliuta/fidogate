@@ -1,0 +1,17 @@
+!
+#- TEST01 -z 2 -t 0 -s S 2:5030/468 1229.10
+#- LOCAL22 -z 2 -t 0 -s F 2:5030/468 1229.10
+#- LOCAL23 -z 2 -t 0 -s W 2:5030/468 1229.10
+#- LOCAL24 -z 2 -t 0 -s U 2:5030/468
+#- LOCAL11 -z 2 -t 0 -s S 2:5030/468 1229.10
+#- LOCAL12.N -z 2 -t 0 -s S 2:5030/468 1229.10
+#- LOCAL14.ANY -z 2 -l 4 -k C -t 0 -s U 2:5030/468
+#- GLOBAL1 -z 0 -t 0 -s U 
+#- DIFFZONE -z 246 -t 0 -s S 246:532/12 11
+#- LVL_ACCESS -z 2 -l 5 -t 0 -s U 2:5030/468
+#- KEY_ACCESS -z 2 -k N -t 0 -s U 2:5030/468
+#- CORE.LOCAL -z 2 -t 0 -s S 2:5030/1229 .2 .10
+#- ANY_ECHO -z 2 -t 0 -s S 2:5030/468 1229.5
+#- ANY_ECHO1 -z 2 -t 0 -s S 2:5030/465 1229.5
+#- ANY_ECHO2 -z 2 -t 0 -s S 2:5030/1229.5
+#- NEW_KEYS -z 2 -t 0 -s S 2:5030/1229.2

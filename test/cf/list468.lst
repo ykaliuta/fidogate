@@ -1,0 +1,8 @@
+NODEDIFF FidoNet: Weekly NodeList Updates
+PNT5030 N5030 Pointlist
+R50-LIST R50 Nodelist Segment
+R50ROUTE R50 Routing Scheme
+SPB_ECHO N5030 Echolists
+SPB_FECHO N5030 FileEcholists
+SPB_NC SPb nodelist segment
+SPB_NCZP SPb nodelist packed segment

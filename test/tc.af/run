@@ -1,0 +1,205 @@
+#!/bin/sh
+ ../tr.init
+A="../../src/areafix/ftnafpkt -c../cf/fidogate.conf -vvv"
+O="../../src/util/ftnoutpkt   -c../cf/fidogate.conf -vvv"
+F="../../src/areafix/ftnaf -b tmp_areas.bbs -vvv"
+D="../../src/util/pktdebug    -t"
+echo "tc: running"
+# command line
+echo "--------------------------------"
+cp areas.bbs tmp_areas.bbs
+# "%sub TEST011"	subscribe with wrong password
+# "%sub TEST01"		subscribe from different zone             54:123/23
+# "%sub TEST01"		subscribe to one local echo
+# "%sub LOCAL22"	subscribe to reqwested echo (F state)
+# "%sub LOCAL23"	subscribe to reqwested dead echo (W state)
+# "%sub LOCAL24"	subscribe to not reqwested echo (U state)
+# "%sub LOCAL*"		subscribe to pattern echo
+# "%sub GLOBAL1"	subscribe to dead echo (no uplink)
+# "%sub GLOBAL_UNK"	subscribe to unknown echo (not listed in uplinks)
+# "%sub GLOBAL_TMP"	subscribe to echo in uplinks file
+# "%sub GLOBAL_TMP*"	subscribe to echos in uplinks file and uplinks config
+# "%sub GLOBAL_TMP*"	subscribe to echos in areasbbs (wildmatch for areasbbs)
+# "%sub LVL_ACCESS"	subscribe (acess level)
+# "%sub KEY_ACCESS"	subscribe (acess key)
+# "%sub MO.CARS.OKA"	subscribe (uplink limit)
+# "%sub GER.ANSI"	global limit ++
+# "%sub GER.AOL"	subscribe (global limit)
+# "%unsub GLOBAL1"	unsubscribe (area not found)
+# "%unsub CORE.LOCAL"	unsubscribe (mandatory)
+# "%unsub TEST01"	unsubscribe (not subscribe) from          2:5030/1229.5
+# "%unsub ANY_ECHO"	unsubscribe from uplink 	          2:5030/1229.5
+# "%unsub ANY_ECHO1"	unsubscribe from uplink (no uplink entry) 2:5030/1229.5
+# "%unsub ANY_ECHO2"	unsubscribe (uplink not found)            2:5030/1229.5
+# "%listall"		listall not authorize                     2:5030/1229.5
+# "%delete X"		delete not authorize                      2:5030/1229.5
+# "%from"		change address and password               2:5030/1229.5
+# "%delete NEW_KEYS"	delete authorize                          2:5030/1229.5
+# "%listall"		listall authorize                         2:5030/1229.5
+# "%new NEW_ECHO"	new not authorize to create               2:5030/1229.5
+# "%sub CARDIAC"	new not authorize to forward request      2:5030/1229.5
+# "%list"		list active areas			  2:5030/1229.5
+# "%sub 988.local"	not authorized (key access)
+# "%new NEW_ECHO"	new normal create
+# "%new CORE.LOCAL"	new (area exist)
+# "%new CORE,LOCAL" 	new (ForbiddenChar)
+# "%new RU.LOLITA"	new (ForbiddenArea)
+# "%new NEW_KEYS <key>" new (keys -r -l -# -p -k -d -z -a -s -e -n)
+# "%avail"		avail = list without FStatusAreaFixList
+# "%query"		query
+# "%unlinked"		unlinked
+# "%unsub TEST01"       normal unsubscribe
+# "%help"		no help available
+# "%unsub *"            unsubscribe form all areas
+# "%sub 2.*"		wildcard subscribe to one echo
+# "%sub *"		wildcard subscribe to all echos
+# "%new ACRCM_AREA"	new (AutoCreateCmd test)
+# "%help"		can't open help file
+# "%help"		normal help
+# "%new ACR_FAREA"	new (AutoCreateFechoPath)
+# "%new AVP"		new (FileFixName)
+# "%new ACR_AREA"	new (AutoCreateSubscribe)
+# "%passive"		passive mode (AreaFixName)
+# "%active"		return from passive mode (AreaFixName)
+# "%list"		list (AreafixAvailPrintsAllAreas not effect)
+# "%list"		list (FStatusAreaFixList)
+# "%avail"		avail (AreafixAvailPrintsAllAreas)
+#
+# subscribe zonegate
+# subscribe show echo status
+#
+# new AutoCreateNG
+#
+# send_rules
+# subscribe authorization
+
+echo "tc: creating Areafix messages"
+
+$O -s 'XXXXXXX' -f 'Sysop @ 2:5030/1229.2' 'Areafix @ 2:5030/1229'  <<EOF
+from: Sysop@p2.f1229.n5030.z2.fidonet.org
+%sub TEST011
+EOF
+
+$O -s 'ANYPASS1' -f 'Sysop @ 54:123/23' 'Areafix @ 2:5030/1229'  <<EOF
+from: Sysop@f23.n123.z54.fidonet.org
+%sub TEST01
+EOF
+
+$O -s 'ANYPASSX' -f 'Sysop @ 2:5030/1229.2' 'Areafix @ 2:5030/1229'  <<EOF
+from: Sysop@p2.f1229.n5030.z2.fidonet.org
+%sub TEST01
+%sub LOCAL22
+%sub LOCAL23
+%sub LOCAL24
+%sub LOCAL*
+%sub GLOBAL1
+%sub GLOBAL_UNK
+%sub GLOBAL_TMP
+%sub GLOBAL_TMP*
+%sub GLOBAL_TMP.*
+%sub KEY_ACCESS
+%sub LVL_ACCESS
+%sub MO.CARS.OKA
+%sub GER.ANSI
+%sub GER.AOL
+%unsub GLOBAL1
+%unsub CORE.LOCAL
+EOF
+
+$O -s 'ANYPASS2' -f 'Sysop @ 2:5030/1229.5' 'Areafix @ 2:5030/1229'  <<EOF
+from: Sysop@p5.f1229.n5030.z2.fidonet.org
+%unsub TEST01
+%unsub ANY_ECHO
+%unsub ANY_ECHO1
+%unsub ANY_ECHO2
+%listall
+%delete X
+EOF
+
+
+$O -s 'ANYPASS2' -f 'Sysop @ 2:5030/1229.5' 'Areafix @ 2:5030/1229'  <<EOF
+from: Sysop@p5.f1229.n5030.z2.fidonet.org
+%from 2:5030/1229.2 ANYPASSX
+%delete NEW_KEYS
+%listall
+EOF
+
+$O -s 'ANYPASS2' -f 'Sysop @ 2:5030/1229.5' 'Areafix @ 2:5030/1229'  <<EOF
+from: Sysop@p5.f1229.n5030.z2.fidonet.org
+%new NEW_ECHO
+%sub CARDIAC
+%list
+EOF
+
+$O -s 'ANYPASSX' -f 'Sysop @ 2:5030/1229.2' 'Areafix @ 2:5030/1229' <<EOF
+%sub 988.local
+%new NEW_ECHO -#
+%new CORE.LOCAL
+%new CORE,LOCAL
+%new RU.LOLITA
+%new ECHO_KEYS.TEST -r -l -# -p -k T -d "test" -z 3 -a 2:5030/1229.44 -s N -e 10 -n 20
+%avail
+%query
+%unlinked
+%unsub TEST01
+%help
+%unsub * 
+%sub 2.*
+%sub *
+EOF
+
+echo "----- Input packets -----"
+
+$D outpkt/*.pkt
+
+echo "tc: copying input packets"
+mv outpkt/*.pkt ../bt/pin
+
+cp areas.bbs tmp_areas.bbs
+
+echo "----- Processing packets -----"
+
+$A -b tmp_areas.bbs -a 2:5030/1229
+
+echo "----- Output packets -----"
+
+$D outpkt/*.pkt
+
+$F -cconfig 2:5030/1229.2 new ACRCM_AREA
+$F -cconfig 2:5030/1229.2 help
+$F -cconfig1 2:5030/1229.2 help
+
+cp fareas.bbs tmp_fareas.bbs
+
+$F -c../cf/fidogate.conf -F -b tmp_fareas.bbs 2:5030/1229.2 new ACR_FAREA
+$F -cconfig1 -F -b tmp_fareas.bbs 2:5030/1229.2 sub AVP
+
+if test -d ./fareas/acr_farea; then
+    echo "+++ fileecho directory was created"
+else
+    echo "+++ fileecho directory was not created"
+fi
+
+$F -cconfig1 2:5030/1229.2 new ACR_AREA
+$F -cconfig1 2:5030/1229.2 passive
+$F -cconfig1 2:5030/1229.2 active
+
+echo "----- Result areas.bbs -----"
+
+cat tmp_areas.bbs
+
+echo "----- Result fareas.bbs -----"
+
+cat tmp_fareas.bbs
+
+
+# "%list"		list (AreafixAvailPrintsAllAreas not effect)
+# "%list"		list (FStatusAreaFixList)
+# "%avail"		avail (AreafixAvailPrintsAllAreas)
+# config option:
+# AreaFixSubscribeOnlyIfPlus
+# IgnorePRL
+# FStatusAreaFixList
+# RulesDir
+# RulesConfig
+# RulesSendTo

@@ -1,0 +1,21 @@
+#
+# $Id: acl,v 1.1 2003/09/23 17:45:44 rusfidogate Exp $
+#
+
+rfc2ftn
+
+NetMail
+alex@corex.izhora.spb.ru	*
+*				*
+
+EchoMail
+alex@corex.izhora.spb.ru	*
+*				*
+
+rfc2ftn
+
+NetMail
+2:5074/1229.7			*
+
+EchoMail
+2:5074/1229.7			*

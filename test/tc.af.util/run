@@ -1,0 +1,47 @@
+#!/bin/sh
+
+../tr.init
+
+A="../../src/areafix/ftnafutil -c../cf/fidogate.conf -vvv"
+D="../../src/util/pktdebug"
+F="../../src/areafix/ftnaf -c../cf/fidogate.conf -vvv"
+
+cp areas.bbs tmp_areas.bbs
+
+nexdate=`perl -e 'print time()-777600'`
+exdate=`perl -e 'print time()-950400'`
+exdate1=`perl -e 'print time()-8640000'`
+
+echo "
+#- TEST_EXPIRE0 -z 2 -t ${exdate1} -s F            2:5030/468 1229.10
+#- TEST_EXPIRE1 -z 2 -t ${exdate1} -s W            2:5030/468 1229.10
+#- TEST_EXPIRE2 -z 2 -t ${exdate1} -s S            2:5030/468 1229.10
+#- TEST_EXPIRE3 -z 2 -t ${exdate} -s S -n 10 -e 9  2:5030/468 1229.10
+#- TEST_EXPIRE4 -z 2 -t ${exdate} -s F -n 10 -e 9  2:5030/468 1229.10
+#- TEST_EXPIRE5 -z 2 -t ${nexdate} -s S -n 10 -e 9 2:5030/468 1229.10
+#- TEST_EXPIRE6 -z 2 -t ${nexdate} -s F -n 10 -e 9 2:5030/468 1229.10
+#- TEST_RESUBS1 -z 2 -t ${nexdate} -s W -n 10 -e 9 2:5030/468 1229.10" >> tmp_areas.bbs
+
+echo "--------- ftnafutil LISTGWLINKS ----------"
+$A -b tmp_areas.bbs   LISTGWLINKS
+echo "--------- ftnafutil DELETE ----------"
+$A -b tmp_areas.bbs   DELETE
+echo "--------- ftnafutil EXPIRE ----------"
+$A -b tmp_areas.bbs   EXPIRE
+echo "--------- ftnafutil RESUBSCRIBE ----------"
+$A -b tmp_areas.bbs   RESUBSCRIBE
+echo "--------- ftnafutil UNRESUBSCRIBE ----------"
+$A -b tmp_areas.bbs   UNRESUBSCRIBE
+echo "--------- ftnafutil LISTAREATIME ----------"
+$A -b tmp_areas.bbs   LISTAREATIME
+echo "--------- ftnafutil RULESUP ----------"
+$A -b tmp_areas.bbs   RULESUP
+
+$F -b tmp_areas.bbs 2:5030/1229.1 sub SPB.METALLOSTROY
+
+echo "--------- packets ----------"
+$D -t outpkt/*.pkt
+
+echo "----- Result areas.bbs -----"
+
+cat tmp_areas.bbs

@@ -1,0 +1,12 @@
+#
+# $Id: config.tmp,v 1.1 2003/09/23 17:46:40 rusfidogate Exp $
+#
+# Test config tc.af
+#
+
+UseOrganizationForOrigin
+
+include		../cf/fidogate.conf
+
+NoFromLine
+NoChrsKludge
