@@ -1,3 +1,7 @@
+2004-06-23  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: add coding some headers
+
 2004-06-15  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/toss/runinc.c: add -c option, if tmpunpack

@@ -1278,56 +1278,91 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	}
 
 	tl_appendf(&theader, "Date: %s\n", date(NULL, &msg.date));
-	tl_appendf(&theader, "From: %s\n", from_line);
+
+	msg_xlate_line(buffer, sizeof(buffer), from_line, cvt8 & AREA_QP, ignore_soft_cr);
+	tl_appendf(&theader, "From: %s\n", buffer);
+
 	if(!reply_to_line && gate_rfc_kludge)
 	{
 	    if( (p = kludge_get(&body.kludge, "RFC-Reply-To", NULL)) )
 		reply_to_line = p;
 	}
 	if(reply_to_line)
-	    tl_appendf(&theader, "Reply-To: %s\n", reply_to_line);
+	{
+	    msg_xlate_line(buffer, sizeof(buffer), reply_to_line, cvt8 & AREA_QP, ignore_soft_cr);
+	    tl_appendf(&theader, "Reply-To: %s\n", buffer);
+	}
 	
 	if(gate_rfc_kludge)
 	{
 	    if( (p = kludge_get(&body.kludge, "RFC-User-Agent", NULL)) )
-	    tl_appendf(&theader, "User-Agent: %s\n", p);
+	    {
+		msg_xlate_line(buffer, sizeof(buffer), p, cvt8 & AREA_QP, ignore_soft_cr);
+		tl_appendf(&theader, "User-Agent: %s\n", buffer);
+	    }
 	    if( (p = kludge_get(&body.kludge, "RFC-X-NewsReader", NULL)) )
-	    tl_appendf(&theader, "X-NewsReader: %s\n", p);
+	    {
+		msg_xlate_line(buffer, sizeof(buffer), p, cvt8 & AREA_QP, ignore_soft_cr);
+		tl_appendf(&theader, "X-NewsReader: %s\n", buffer);
+	    }
 	}
 	
 	if ( NULL == msgbody_rfc_subject )
 	{
-	msg_xlate_line(buffer, sizeof(buffer), msg.subject, cvt8 & AREA_QP, 
-			    ignore_soft_cr);
-
-	tl_appendf(&theader, "Subject: %s\n", buffer);
+	    msg_xlate_line(buffer, sizeof(buffer), msg.subject, cvt8 & AREA_QP, ignore_soft_cr);
+	    tl_appendf(&theader, "Subject: %s\n", buffer);
 	}
 	else
 	{
+	    msg_xlate_line(buffer, sizeof(buffer), p, cvt8 & AREA_QP, ignore_soft_cr);
 	    tl_appendf(&theader, "Subject: %s\n", msgbody_rfc_subject);
 	}
-	tl_appendf(&theader, "Message-ID: %s\n", id_line);
+	msg_xlate_line(buffer, sizeof(buffer), id_line, cvt8 & AREA_QP, ignore_soft_cr);
+	tl_appendf(&theader, "Message-ID: %s\n", buffer);
 
 	/* Different header for mail and news */
-	if(area==NULL) {			/* Mail */
+	if(area==NULL)				/* Mail */
+	{
 	    if ((!ref_line || strlen(ref_line) != 8 ) &&
-		(s = kludge_get(&body.kludge, "RFC-References", NULL)))
-		tl_appendf(&theader, "References: %s\n", s);
+				(s = kludge_get(&body.kludge, "RFC-References", NULL)))
+	    {
+		msg_xlate_line(buffer, sizeof(buffer), s, cvt8 & AREA_QP, ignore_soft_cr);
+		tl_appendf(&theader, "References: %s\n", buffer);
+	    }
 	    else if(ref_line)
-		tl_appendf(&theader, "References: %s\n", ref_line);
-	    tl_appendf(&theader, "To: %s\n", to_line);
+	    {
+		msg_xlate_line(buffer, sizeof(buffer), ref_line, cvt8 & AREA_QP, ignore_soft_cr);
+		tl_appendf(&theader, "References: %s\n", buffer);
+	    }
+	    msg_xlate_line(buffer, sizeof(buffer), to_line, cvt8 & AREA_QP, ignore_soft_cr);
+	    tl_appendf(&theader, "To: %s\n", buffer);
 	    if(cc_line)
-		tl_appendf(&theader, "Cc: %s\n", cc_line);
+	    {
+		msg_xlate_line(buffer, sizeof(buffer), cc_line, cvt8 & AREA_QP, ignore_soft_cr);
+		tl_appendf(&theader, "Cc: %s\n", buffer);
+	    }
 	    if(bcc_line)
-		tl_appendf(&theader, "Bcc: %s\n", bcc_line);
+	    {
+		msg_xlate_line(buffer, sizeof(buffer), bcc_line, cvt8 & AREA_QP, ignore_soft_cr);
+		tl_appendf(&theader, "Bcc: %s\n", buffer);
+	    }
 	    if(*x_orig_to)
-		tl_appendf(&theader, "X-Orig-To: %s\n", x_orig_to);
+	    {
+		msg_xlate_line(buffer, sizeof(buffer), x_orig_to, cvt8 & AREA_QP, ignore_soft_cr);
+		tl_appendf(&theader, "X-Orig-To: %s\n", buffer);
+	    }
 	    if(errors_to)
-		tl_appendf(&theader, "Errors-To: %s\n", errors_to);
+	    {
+		msg_xlate_line(buffer, sizeof(buffer), errors_to, cvt8 & AREA_QP, ignore_soft_cr);
+		tl_appendf(&theader, "Errors-To: %s\n", buffer);
+	    }
 	    /* FTN ReturnReceiptRequest -> Return-Receipt-To */
 	    if(msg.attr & MSG_RRREQ)
-		tl_appendf(&theader, "Return-Receipt-To: %s\n",
-				 s_rfcaddr_to_asc(&addr_from, FALSE)   );
+	    {
+		msg_xlate_line(buffer, sizeof(buffer),
+			s_rfcaddr_to_asc(&addr_from,  FALSE), cvt8 & AREA_QP, ignore_soft_cr);
+		tl_appendf(&theader, "Return-Receipt-To: %s\n", buffer);
+	    }
 	}
 	else 					/* News */
 	{
@@ -1335,7 +1370,10 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    int len_s;
 
 	    if(ref_line)
-		tl_appendf(&theader, "References: %s\n", ref_line);
+	    {
+		msg_xlate_line(buffer, sizeof(buffer), ref_line, cvt8 & AREA_QP, ignore_soft_cr);
+		tl_appendf(&theader, "References: %s\n", buffer);
+	    }
 
 	    carbon_group = NULL;
 
@@ -1394,7 +1432,10 @@ carbon:
 		tl_appendf(&theader, "Distribution: %s\n",
 				 area->distribution               );
 	    if(to_line)
-		tl_appendf(&theader, "X-Comment-To: %s\n", to_line);
+	    {
+		msg_xlate_line(buffer, sizeof(buffer), to_line, cvt8 & AREA_QP, ignore_soft_cr);
+		tl_appendf(&theader, "X-Comment-To: %s\n", buffer);
+	    }
 	}
 
 	/* Common header */
@@ -1500,19 +1541,16 @@ carbon:
 	 if (strncmp(body.tear, "--- ", 4))
 	    tl_appendf(&theader, "X-FTN-Tearline: %s\n", "(none)");
 	 else
-	  {
+	 {
 	    strip_crlf(body.tear);
-	    msg_xlate_line(buffer, sizeof(buffer), body.tear, cvt8 & AREA_QP,
-			    ignore_soft_cr);
-
+	    msg_xlate_line(buffer, sizeof(buffer), body.tear, cvt8 & AREA_QP, ignore_soft_cr);
 	    tl_appendf(&theader, "X-FTN-Tearline: %s\n", buffer+4);
-	  }
+	 }
 	}
 	if(x_ftn_O  &&  body.origin)
 	{
 	    strip_crlf(body.origin);
-	    msg_xlate_line(buffer, sizeof(buffer), body.origin, cvt8 & AREA_QP,
-			    ignore_soft_cr);
+	    msg_xlate_line(buffer, sizeof(buffer), body.origin, cvt8 & AREA_QP, ignore_soft_cr);
 
 	    p = buffer + strlen(" * Origin: ");
 	    while(is_blank(*p))
