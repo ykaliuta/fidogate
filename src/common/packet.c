@@ -508,12 +508,12 @@ time_t pkt_get_date(FILE *fp)
 	    return parsedate(buf, NULL);
 	if(buf[12]==':' && buf[15]==':' && buf[18]==' ')
 	{
-	    fglog("WARNING: unnecessary space in date, message header \'%s\'", buf);
+	    fglog("WARNING: unnecessary space in message date header \'%s\'", buf);
 	    return parsedate(buf, NULL);
 	}
     }
 
-    fglog("ERROR: wrong date format in message header \'%s\'", buf);
+    fglog("ERROR: wrong format message date header \'%s\'", buf);
     return ERROR;
 }
 
