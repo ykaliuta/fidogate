@@ -1,4 +1,9 @@
-2004-01-03  Andrey Slusar <rusfidogate@users.sourceforge.net>
+2004-03-02  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/common/msgid.c: add ref_line
+	* src/ftn2rfc.c: modify GateRfcKludge
+
+2004-03-01  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/ftn2rfc.c: remove define CHECK_FTN2RFC_TO
 	* src/all: change log() to fglog()

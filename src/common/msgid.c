@@ -120,7 +120,7 @@ static char *msgid_domain(int zone)
 /*
  * Convert FIDO ^AMSGID/REPLY to RFC Message-ID/References
  */
-char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail)
+char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail, char *ref_line)
 {
     char *save;
     char *origaddr, *serialno;
@@ -193,8 +193,17 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail)
 	unlock_program(cf_p_lock_history());
 	if(s)
 	    return s;
-    }
+	else
+	{
 #endif /* DBC_HISTORY && FIDO_STYLE_MSGID */
+    	    if(ref_line)
+    	    {
+		return ref_line;
+	    }
+#ifdef DBC_HISTORY
+	}
+    }
+#endif
     /***** New-style converted RFC Message-ID *****/
     if(wildmat(origaddr, "<*@*>"))
     {

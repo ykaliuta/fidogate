@@ -422,7 +422,7 @@ int    run_system		(char *);
 int    xfeof                    (FILE *);
 
 /* msgid.c */
-char   *s_msgid_fido_to_rfc	(char *, int *, short);
+char   *s_msgid_fido_to_rfc	(char *, int *, short, char *);
 char   *s_msgid_default		(Message *);
 char   *s_msgid_rfc_to_fido	(int *, char *, int, int, char *, short int, int);
 char   *s_msgid_convert_origid	(char *);

@@ -1185,7 +1185,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		    msg_body_clear(&body);
 		    continue;
 		}
-		id_line = s_msgid_fido_to_rfc(p, &id_zone, FALSE);
+		id_line = s_msgid_fido_to_rfc(p, &id_zone, FALSE, NULL);
 		if(no_unknown_msgid_zones)
 		    if(id_zone>=-1 && !cf_zones_check(id_zone))
 		    {
@@ -1223,19 +1223,16 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	}
 	
 	if( (p = kludge_get(&body.kludge, "ORIGREF", NULL)) )
-	    ref_line = s_msgid_convert_origid(p);
-	
-	if(!ref_line)
+		ref_line = s_msgid_convert_origid(p);
+	else
 	{
-	    if(gate_rfc_kludge && (p = kludge_get(&body.kludge, "RFC-References", NULL)) )
+	    if(gate_rfc_kludge)
 	    {
+		if( (p = kludge_get(&body.kludge, "RFC-References", NULL)) )
 		    ref_line = p;
 	    }
-	    else
-	    {
-		if( (p = kludge_get(&body.kludge, "REPLY", NULL)) )
-		    ref_line = s_msgid_fido_to_rfc(p, NULL, area!=NULL);
-	    }
+	    if( (p = kludge_get(&body.kludge, "REPLY", NULL)) )
+		    ref_line = s_msgid_fido_to_rfc(p, NULL, area!=NULL, ref_line);
 	}
 	
 	/* ^AGATEWAY */
