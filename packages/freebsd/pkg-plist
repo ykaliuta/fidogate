@@ -57,6 +57,7 @@ etc/fido/gate/routing.sample
 etc/fido/gate/spyes.sample
 etc/fido/gate/uplinks.sample
 libexec/fidogate/charset.bin
+libexec/fidogate/charsetc
 libexec/fidogate/confval
 libexec/fidogate/ftn2ftn
 libexec/fidogate/ftn2rfc
