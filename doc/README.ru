@@ -2235,3 +2235,9 @@ FTN:	2:5020/1838
 
 FTN:	2:5030/1229
 E-mail:	dyff@fidogate.spb.ru
+
+Авторы ds-ветки Andrey Slusar и Alexandr Dobroslavskiy. Все патчи, жалобы,
+предложения, пожелания по ней следует слать по адресам:
+
+FTN:	2:467/126, 2:5020/1356
+E-mail: anray@users.sf.net, dsas@users.sf.net
