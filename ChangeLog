@@ -1,8 +1,13 @@
+2004-02-26  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: remove OLD_COMMENT_TO
+	* src/common/histdb.c: fix writing fido_msgid
+
 2004-02-26  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 
-	* config.h: add the new define 'FIX_BAD_PKt_YEAR' for processing
-	    packets from PCBOARD
-	    
+	* config.h.in: add the new define 'FIX_BAD_PKt_YEAR'
+	    for processing packets from PCBOARD
+
 2004-02-25  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 
 	* src/areafix/ftnafutil.c: fix the problem with removing

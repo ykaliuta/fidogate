@@ -173,11 +173,6 @@
  */
 #undef ALIASES_ARE_LOCAL
 
-/*
- *
- */
-#undef OLD_COMMENT_TO
-
 /***** rfc2ftn configuration ************************************************/
 
 /** Passthru operation for NetMail: FIDO->Internet->FIDO **/

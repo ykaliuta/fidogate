@@ -174,11 +174,6 @@
  */
 #undef ALIASES_ARE_LOCAL
 
-/*
- *
- */
-#undef OLD_COMMENT_TO
-
 /***** rfc2ftn configuration ************************************************/
 
 /** Passthru operation for NetMail: FIDO->Internet->FIDO **/
@@ -401,11 +396,6 @@
  * Enable old style tosting
  */
 #undef OLD_TOSS
-
-/*
- * Fix the bad pkt year (problem 2k in PCBOARD)
- */
-#define FIX_BAD_PKT_YEAR
 
 /***** System dependend configuration ***************************************
  *
