@@ -532,9 +532,6 @@ EchoMail4D
 # in config.common).
 #KillUnknownMSGIDZone
 
-# Don't gate messages without a valid ^AMSGID (or similar)
-#KillNoMSGID
-
 # Don't gate split messages with a ^ASPLIT kludge
 #KillSplit
 

@@ -1,3 +1,9 @@
+2005-02-14  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* doc/examples/dyff/fidogate.conf.sample.in: Removed
+	dupe option KillNoMSGID (thanks to Andrey Silvestrov).
+	* doc/exaples/point/fidogate.conf.in: Ditto.
+
 2005-01-29  Andrey Slusar  <anray@users.sourceforge.net>
 
 	* scripts/nodelist/nl-autoupd.in (after): fix
