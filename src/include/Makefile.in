@@ -118,6 +118,7 @@ am__include = @am__include@
 am__quote = @am__quote@
 btbasedir = @btbasedir@
 install_sh = @install_sh@
+netmaildir = @netmaildir@
 vardir = @vardir@
 subdir = src/include
 mkinstalldirs = $(SHELL) $(top_srcdir)/build/mkinstalldirs

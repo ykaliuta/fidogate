@@ -173,7 +173,10 @@
  */
 #undef ALIASES_ARE_LOCAL
 
-
+/*
+ *
+ */
+#undef OLD_COMMENT_TO
 
 /***** rfc2ftn configuration ************************************************/
 
@@ -533,15 +536,15 @@
 #define FTN_RFC_HEADERS \
     "From:", "Reply-To:", "UUCPFROM:", "To:", "Cc:", "Bcc:", \
     "Newsgroups:", "Sender:", "Content-Transfer-Encoding:", \
-    "Header-To:", "Header-Cc:", "Subject:"
+    "Header-To:", "Header-Cc:", "Subject:", "User-Agent:", \
+    "In-Reply-To:", "References:"
 
 /*
  * RFC headers output for ^ARFC level 1 (partial RFC headers)
  */
 #define RFC_LVL_1_HEADERS \
-    "From", "Reply-To", "To", "Cc", "Newsgroups", "Date", \
-    "Sender", "Resent-From", "Return-Path", \
-    "Next-Attachment"
+    "Reply-To", "In-Reply-To", \
+    "Message-ID", "References"
 
 /*
  * RFC headers output for ^ARFC level 3 (all RFC headers, excluding some)

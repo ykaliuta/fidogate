@@ -4,6 +4,10 @@
 
 Version 5.2.0ds-alpha2
 ~~~~~~~~~~~~~~~~~~~~~~
+- Добавлена опция configure --whith-netmaildir, с помощью которой можно
+  поменять дирректорию, куда складывается нетмейл при включенном
+  --enable-dnt-netmail. По умолчанию это /var/spool/fido/bt/netmail.
+  Также ее можно поменять в fidogate.conf - NETMAILDIR.
 - Теперь при включении NoRfcKludge ftn2rfc не переносит RFC-Message-ID и
   Message-ID в Message-ID сгейтованных мессаг. Только из ORIGID или формирует
   из MSGID.

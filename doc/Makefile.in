@@ -117,6 +117,7 @@ am__include = @am__include@
 am__quote = @am__quote@
 btbasedir = @btbasedir@
 install_sh = @install_sh@
+netmaildir = @netmaildir@
 vardir = @vardir@
 
 dist_sysconf_DATA = examples/bounce/bounce.acl \

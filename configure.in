@@ -77,6 +77,21 @@ if ! test "${btbasedir+set}" = set; then
 fi
 AC_SUBST(btbasedir)
 
+# Check for a --with-netmaildir argument
+AC_ARG_WITH(netmaildir, dnl
+  --with-netmaildir=DIR	  set fidogate NETMAIL DIR,
+	    [dnl
+case "$with_netmaildir" in
+yes) AC_MSG_ERROR([--with-netmaildir requires an argument; use --with-netmaildir=DIR]) ;;
+''|no);;
+*) netmaildir="$withval"
+;;
+esac
+])
+if ! test "${netmaildir+set}" = set; then
+    netmaildir='/var/spool/fido/bt/netmail'
+fi
+AC_SUBST(netmaildir)
 
 dnl# Check for a --with-newsbindir argument
 AC_ARG_WITH(newsbindir, dnl

@@ -1574,7 +1574,7 @@ int do_netmail(Packet *pkt, Message *msg, MsgBody *body, int forwarded)
     }
 
 #ifdef DO_NOT_TOSS_NETMAIL
-    pkt_outdir(cf_p_outpkt_mail(), NULL);
+    pkt_outdir(cf_p_netmaildir(), NULL);
 #endif /* !DO_NOT_TOSS_NETMAIL */
 
     /* Open output packet */

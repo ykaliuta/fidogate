@@ -1,3 +1,19 @@
+2004-01-27  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* config.h.in: change FTN_RFC_HEADERS,
+	    RFC_LVL_1_HEADERS, RFC_LVL_3_HEADERS, change
+	    NEW_COMMENT_TO to OLD_COMMENT_TO
+	* src/gate/ftn2rfc.c: add RECODE_ALL_RFC, change
+	    NEW_COMMENT_TO to OLD_COMMENT_TO
+
+2004-01-26  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/rfc2ftn.c: fix disable FIDO_STYLE_MSGID
+	* configure.in: add option --with-netmaildir
+	* src/toss/ftntoss.c: change DO_NOT_TOSS_NETMAIL
+	* build/config.make.in: add NETMAILDIR
+	* doc/examples/dyff: add NETMAILDIR
+
 2004-01-25  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/areafix/areafix.c: change disable AF_AVAIL

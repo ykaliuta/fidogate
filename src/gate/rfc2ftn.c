@@ -1397,7 +1397,10 @@ int snd_message(Message *msg, Area *parea,
     /***** ^A kludges *******************************************************/
 
     /* Add kludges for MSGID / REPLY */
-    if(!x_flags_m && !xpost_flag)			/* ! X-Flags: m */
+    if(!x_flags_m)			/* ! X-Flags: m */
+#ifdef FIDO_STYLE_MSGID
+    if(!xpost_flag)
+#endif
     {
 	if((header = s_header_getcomplete("Message-ID")))
 	{
