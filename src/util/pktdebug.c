@@ -259,9 +259,26 @@ int main(int argc, char **argv)
 		    printf("ERROR: %s: reading message header\n", name);
 		    break;
 		}
-
+#ifdef OLD_TOSS
+		type = pkt_get_body(fp, &tl);
+		if(type == ERROR)
+		{
+		    if(feof(fp))
+		    {
+			printf("WARNING: %s: premature EOF reading "
+				"input packet\n", name);
+		    }
+		    else
+		    {
+			printf("ERROR: %s: reading input packet\n", name);
+			break;
+		    }
+		}
+		if( (c = msg_body_parse(&tl, &body)) != OK)
+#else
 		if( (c = pkt_get_body_parse(fp, &body, &msg.node_from,
 			    &msg.node_to)) != OK )
+#endif
 		    fprintf(stdout, "ERROR: %s: parsing message "
 			    "body failed (%d)\n", name, c);
 		if(body.area == NULL)

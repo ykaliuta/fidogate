@@ -8,7 +8,6 @@ POST-INSTALL)
 	BTBASEDIR=${BTBASEDIR:=/var/spool/fido/bt}
 	LOGDIR=${LOGDIR:=/var/log/fidogate}
 	LOCKDIR=${LOCKDIR:=/var/run/fidogate}
-	PREFIX=${PREFIX:=/usr/local}
 	
 	mkdir -p $LOCKDIR
 	mkdir -p $LOGDIR

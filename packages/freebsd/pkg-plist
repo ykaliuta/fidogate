@@ -77,49 +77,34 @@ libexec/fidogate/rfc2ftn
 libexec/fidogate/send-fidogate
 var/fidogate/areas.bbs.sample
 var/fidogate/fareas.bbs.sample
-%%PORTDOCS%%share/doc/fidogateds/README.ru
-%%PORTDOCS%%share/doc/fidogateds/FAQ.ru
-%%PORTDOCS%%share/doc/fidogateds/README
-%%PORTDOCS%%share/doc/fidogateds/ChangeLog
-%%PORTDOCS%%share/doc/fidogateds/old/FAQ_Fidogate
-%%PORTDOCS%%share/doc/fidogateds/old/FIDOGATE_ftrack
-%%PORTDOCS%%share/examples/fidogateds/dyff/acl.sample
-%%PORTDOCS%%share/examples/fidogateds/dyff/aliases.sample
-%%PORTDOCS%%share/examples/fidogateds/dyff/areafix.help.rus
-%%PORTDOCS%%share/examples/fidogateds/dyff/areafix.help.sample
-%%PORTDOCS%%share/examples/fidogateds/dyff/areas.bbs.sample
-%%PORTDOCS%%share/examples/fidogateds/dyff/areas.sample
-%%PORTDOCS%%share/examples/fidogateds/dyff/fareas.bbs.sample
-%%PORTDOCS%%share/examples/fidogateds/dyff/fidogate.conf.sample
-%%PORTDOCS%%share/examples/fidogateds/dyff/fidokill.sample
-%%PORTDOCS%%share/examples/fidogateds/dyff/ftnacl.sample
-%%PORTDOCS%%share/examples/fidogateds/dyff/hosts.sample
-%%PORTDOCS%%share/examples/fidogateds/dyff/packing.sample
-%%PORTDOCS%%share/examples/fidogateds/dyff/passwd.sample
-%%PORTDOCS%%share/examples/fidogateds/dyff/routing.sample
-%%PORTDOCS%%share/examples/fidogateds/dyff/spyes.sample
-%%PORTDOCS%%share/examples/fidogateds/dyff/uplinks.sample
-%%PORTDOCS%%share/examples/fidogateds/point/areas
-%%PORTDOCS%%share/examples/fidogateds/point/areas.bbs
-%%PORTDOCS%%share/examples/fidogateds/point/fidogate.conf
-%%PORTDOCS%%share/examples/fidogateds/point/newsfeeds
-%%PORTDOCS%%share/examples/fidogateds/point/packing
-%%PORTDOCS%%share/examples/fidogateds/point/routing
-%%PORTDOCS%%share/examples/fidogateds/mailer/sendmail/README.FIDOGATE
-%%PORTDOCS%%share/examples/fidogateds/mailer/sendmail/mkclean
-%%PORTDOCS%%share/examples/fidogateds/mailer/sendmail/mklinks
-%%PORTDOCS%%share/examples/fidogateds/mailer/sendmail/mailer/ftn.m4
-%%PORTDOCS%%share/examples/fidogateds/mailer/postfix/master.cf
-%%PORTDOCS%%share/examples/fidogateds/mailer/postfix/transport
-%%PORTDOCS%%@dirrm share/examples/fidogateds/mailer/sendmail/mailer
-%%PORTDOCS%%@dirrm share/examples/fidogateds/mailer/sendmail
-%%PORTDOCS%%@dirrm share/examples/fidogateds/mailer/postfix
-%%PORTDOCS%%@dirrm share/examples/fidogateds/mailer
-%%PORTDOCS%%@dirrm share/examples/fidogateds/dyff
-%%PORTDOCS%%@dirrm share/examples/fidogateds/point
-%%PORTDOCS%%@dirrm share/examples/fidogateds
-%%PORTDOCS%%@dirrm share/doc/fidogateds/old
-%%PORTDOCS%%@dirrm share/doc/fidogateds
+%%PORTDOCS%%%%DOCSDIR%%/README.ru
+%%PORTDOCS%%%%DOCSDIR%%/FAQ.ru
+%%PORTDOCS%%%%DOCSDIR%%/README
+%%PORTDOCS%%%%DOCSDIR%%/Changes.ru
+%%PORTDOCS%%%%DOCSDIR%%/ChangeLog
+%%PORTDOCS%%%%DOCSDIR%%/FAQ_fidogate
+%%PORTDOCS%%%%DOCSDIR%%/FIDOGATE_ftrack
+%%PORTDOCS%%%%DOCSDIR%%/README.snp
+%%PORTDOCS%%%%DOCSDIR%%/README.snp.en
+%%PORTDOCS%%%%DOCSDIR%%/fidogate.txt
+%%PORTDOCS%%%%DOCSDIR%%/fidogate.texi
+%%PORTDOCS%%%%DOCSDIR%%/msgid.doc
+%%PORTDOCS%%%%EXAMPLESDIR%%/point/areas
+%%PORTDOCS%%%%EXAMPLESDIR%%/point/areas.bbs
+%%PORTDOCS%%%%EXAMPLESDIR%%/point/fidogate.conf
+%%PORTDOCS%%%%EXAMPLESDIR%%/point/newsfeeds
+%%PORTDOCS%%%%EXAMPLESDIR%%/point/packing
+%%PORTDOCS%%%%EXAMPLESDIR%%/point/routing
+%%PORTDOCS%%%%EXAMPLESDIR%%/postfix/master.cf
+%%PORTDOCS%%%%EXAMPLESDIR%%/postfix/transport
+%%PORTDOCS%%%%EXAMPLESDIR%%/sendmail/ftn.m4
+%%PORTDOCS%%%%EXAMPLESDIR%%/inn/newsfeeds.fidogate
+%%PORTDOCS%%@dirrm %%EXAMPLESDIR%%/point
+%%PORTDOCS%%@dirrm %%EXAMPLESDIR%%/postfix
+%%PORTDOCS%%@dirrm %%EXAMPLESDIR%%/sendmail
+%%PORTDOCS%%@dirrm %%EXAMPLESDIR%%/inn
+%%PORTDOCS%%@dirrm %%EXAMPLESDIR%%
+%%PORTDOCS%%@dirrm %%DOCSDIR%%
 @dirrm var/fidogate/seq
 @dirrm var/fidogate
 @dirrm etc/fido/gate

@@ -1,3 +1,11 @@
+2004-06-07  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/send-fidogate.in: add detecting LOGDIR
+	    and LOCKDIR in fidogate.conf
+	* src/util/confval.c: change sterr to stdout if
+	    variable exist
+	* src/util/pktdebug.c: add OLD_TOSS
+
 2004-06-06  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* version.h: update version number to 5.2.1ds

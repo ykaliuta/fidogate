@@ -99,13 +99,13 @@ int main(int argc, char **argv)
     for(pFirst = config_first(); pFirst; pFirst = pFirst->next)
     {
 	if(argc == 1)
-	    fprintf(stderr, "fidogate_%s=\"%s\"\n", pFirst->key, pFirst->string);
+	    fprintf(stdout, "fidogate_%s=\"%s\"\n", pFirst->key, pFirst->string);
 	else if( p_flag )
 	{
 	    if(!stricmp(p_flag, pFirst->key))
 	    {
 		IsExist = 1;
-		fprintf(stderr, "fidogate_%s=\"%s\"\n", p_flag, pFirst->string);
+		fprintf(stdout, "%s\n", pFirst->string);
 	    }
 	}
     }
