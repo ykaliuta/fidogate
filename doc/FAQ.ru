@@ -543,7 +543,7 @@ Subject: GATE-PORT
   0     21 * * *  /usr/local/sbin/texpire
   # Каждый день отписываемся от эх без даунлинков.
   00   22  * * *   /usr/local/bin/ftnafutil expire
-  # Каждую неделю чистим [f]areas.bbs от отписанных эх, т.е. со статусом "U".
+  # Каждую неделю чистим areas.bbs от отписанных эх, т.е. со статусом "U".
   00   23  * * 1   /usr/local/bin/ftnafutil delete
   ===
   
@@ -585,7 +585,7 @@ Subject: GATE-PORT
   10    *  * * *   test -x /usr/local/news/bin/rnews && rnews -U
   # Каждый день отписываемся от эх без даунлинков.
   00   22  * * *   /usr/local/bin/ftnafutil expire
-  # Каждую неделю чистим [f]areas.bbs от отписанных эх, т.е. со статусом "U".
+  # Каждую неделю чистим areas.bbs от отписанных эх, т.е. со статусом "U".
   00   23  * * 1   /usr/local/bin/ftnafutil delete
   ===
   Перезапускаем innd.
@@ -759,6 +759,27 @@ Subject: GATE-PORT
      входящих писем в Organization и если Origin пустой, то и Organization будет пустой.
      Выход - включить UseOrganizationForOrigin, и тогда во все письма будет вставляться
      Organization, заданный в fidogate.conf, а Origin будет мапиться в X-FTN-Origin.
+
+---------------------------------------------------------------------------------------
+
+  Q9:Почему эхомейл тоссится, но в ньюсгруппах сообщения не появляются? В логах
+     следующее:
+     ===
+     Oct 18 22:21:16 ftntoss packet /var/spool/bt/pin/9192da0c.pkt (1622b) from
+     2:450/256.0 to 2:450/256.1
+     Oct 18 22:21:16 ftntoss WARNING: node 2:450/256.0 have null password
+     ===
+
+  A9:Если у вас ходят непарольные пакеты, то не следует указывать в passwd на них пароли.
+     Логично, не правда ли? В общем удали в passwd строки вида:
+     === passwd ===
+     packet  2:5030/1469             XXXXXXXX
+     packet  2:5030/1229.0           XXXXXXXX
+     packet  2:5030/1229.5           XXXXXXXX
+     packet  2:5030/1229.6           XXXXXXXX
+     packet  2:5030/1229.7           XXXXXXXX
+     packet  2:5030/1229.8           XXXXXXXX
+     ===
 
 ======================================================================================
 ======================================================================================
