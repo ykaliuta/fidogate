@@ -201,7 +201,8 @@ short int hi_write_dbc(char *rfc_msgid, char *fido_msgid, short int dont_flush)
     key.dsize = strlen(fido_msgid) + 1;
     val.dptr  = (char *)&offset;		/* Value */
     val.dsize = sizeof offset;
-    if (dbzstore(key, val) < 0) {
+    if (dbzstore(key, val) < 0)
+    {
 	log("ERROR: dbzstore of record for DBC MSGID history failed");
 	return ERROR;
     }

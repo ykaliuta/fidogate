@@ -36,7 +36,7 @@ CONFIG_read($CONFIG);
 
 # Configurable part ##########################################################
 
-my $msgfrom = "\"Stat daemon\" <news\@<HOSTNAME><DOMANNAME>>";
+my $msgfrom = "\"Stat daemon\" <news\@<HOSTNAME><DOMAINNAME>>";
 my $msgnewsgroup = "junk";
 my $msgnode = "2:5030/1229.0";
 
