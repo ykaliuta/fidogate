@@ -1,0 +1,9 @@
+#
+# $Id: hosts.sample,v 1.1.1.1 2003/09/23 17:32:21 rusfidogate Exp $
+#
+
+2:5030/468	f468.n5030.z2.fidonet.org.	-p
+2:5030/1115	f1115.n5030.z2.fidonet.org.	-p
+2:5030/953	f952.n5030.z2.fidonet.org.	-p
+2:5030/872	f872.n5030.z2.fidonet.org.	-p
+2:5030/1229	f1229.n5030.z2.fidonet.org.	-p

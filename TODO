@@ -1,0 +1,178 @@
+							 -*- Indented-Text -*-
+===== TODO list for FIDOGATE development =====================================
+
+DONE	* common/routing.c: added xroute, hostroute, hubroute, bossroute.
+
+	* common/message.c:627: config option for 0x8d check, heavily
+	  used eg in Russian charset CP866.
+
+DONE	* rfc2ftn: config option for passing charset in
+	  ^ARFC-Content-Type unmodified from original message.
+
+DONE	* sequencer(): auto create %V/seq dir.
+
+DONE	* rfc2ftn: config option for setting RRQ for Return-Receipt-To.
+
+DONE    * rfc2ftn: log WARNINGs if article not found, disable option
+	  in config.
+
+	* rfc2ftn: mime_deheader() für alle RFC-Header ->
+	  Fido-Something
+
+DONE	* get rid of the fidogate_exit(), exit.c stuff. Is/will this
+	  be used anyway???
+
+DONE	* ffx/ffxqt: remove compression/decompression (handled by
+	  ftnpack).
+
+
+
+        * ftn2rfc: if charset_set_in_out() fails, try to use a
+	  matching table for the input charset. eg if input charset
+	  normally is IBMPC, the output charset set to ISO-8859-1 and
+	  a user sends mail with input charset CP822 then change the
+	  output charset to ISO-8859-5.
+
+DONE	* ftnoutpkt, outpkt.c:outpkt_netmail(): allow creation of
+	  EchoMail.
+
+	* Areafix: if %from is used for address, send reply *both* to
+	  original sender and %from address.
+
+DONE	* routing.c/ftntoss.c: implement RemapX.
+
+	* log.c/config.h: get syslog facility/level from
+	  LogFacility/LogLevel, parse at run-time.
+
+	* ftnafutil: option to sort areas.bbs, including zone/keys.
+
+	* Different Message-ID and sender Internet domain
+	  configuration (extended Zone config).
+
+NOT NOW	* ftn2rfc: ^ARFC-<mime> import.
+
+	* ftn2rfc: send bounce mails directly as FTN messages, not via
+	  the mail system.
+ 	  ftn2rfc: bounce messages should include the complete FTN
+	  message with all kludges etc. to ease debugging.
+
+	* ftnpack: runtime configuration of arcmail extension
+	  usage. Use XX0-9 only, XX0-9 + XXA-F, wrap around to XX0 if
+	  last one is too large, etc.
+	  ArcMail extensions: mo[0-9], plus mo[a-f], maybe mo[a-z]?
+	  runtime configuration of arcmail extensions usage.
+
+	* ftnpack: error message if packet can't be moved to outbound?
+
+	* config.make/subst.pl: configuration macro if syslog is available.
+
+	* rfc2ftn: mail split limit configurable per host.
+
+STARTED	* areas.bbs: read-only/vacation flag for downlinks,
+	  e.g. Z:N/F.P=flags 
+	  ftnaf: commands for vacation flag.
+
+	* ftntoss: check # of ^AVia lines
+
+	* rfc2ftn: option to use node address, not gateway point
+	  address for local users.
+
+NOT NOW	* ftn2rfc: process ^ARFC headers. If RFC level 1, import
+	  important headers such as Date, Message-ID. If RFC level 2,
+	  import all headers present.
+
+	* rfcheader.c: rewrite all *header_get* functions using the
+	  new rfcheader_geth().
+
+MOSTLY	* ftnpack: better file attach processing, -F DIR option. Don't
+DONE	  copy netmail packets (do_noarc()), use rename(). If archiver
+	  fails, move packets back to toss/out directory.
+
+
+===== Later ==================================================================
+
+        * ftntick: charset translation when writing to files.bbs
+
+	* packing: different packing for NetMail/EchoMail
+
+	* packing: MaxArc configurable per node
+
+	* Allow config parameters on command line for all programs.
+
+	* Direct mailing list support, gateway EchoMail <-> mailing
+	  list.
+
+	* scripts: check that process which created lock file still
+	  exists.
+
+	* rfc2ftn: filter function for SPAM.
+
+	* ftntoss: remove duplicate addresses from SEEN-BY
+	  (postprocessing for PASSTHRU_ECHOMAIL).
+
+	* ftn2rfc: allow Newsgroups, Followup-To: header.
+
+	* config: run-time configuration for FTN_RFC_HEADERS,
+	  RFC_LVL_1_HEADERS, and text headers put into FTN message by
+	  rfc2ftn.
+
+	* rfc2ftn: check for multiple entries of the same groups in
+	  the Newsgroups header.
+
+	* rfc2ftn: save large mails to file, fattach on hold for
+	  recipient?
+
+	* rfc2ftn: configuration option for mail RFC level *per*
+	  *host*, e.g. option in HOSTS.
+
+DONE	* ftntick: call script for incoming TICs, passing file area,
+	  name, ... for announcements
+
+	* "BestMatchAKA" parameter for all programs. Similar to
+	  setting AKA based on current zone, using the AKA with best
+	  fits the sender/receiver. For multi-point operation.
+
+	* ftnflo: pipe to program processing the entries (e.g. send
+ 	  with FTP), new scripts senduu, senduumail.
+
+	* ftntick: remove FILES.BBS entry for old replaced file.
+
+	* ftntick: if node is busy, put necessary data for
+	  bink_attach() into separate file, don't wait, retry on the
+	  next run.
+
+	* ftnpack: remove 0-size arcmail from previous days.
+	
+	* ftnroute: new command "xroute" allowing routing based on
+	  source *and* destination address.
+
+	* ftnhatch: copy option: copy file to file area and put entry
+	  into files.bbs (standard hatch behavior).
+
+DONE	* Check packet passwords of incoming packets.
+
+	* ftntoss: strip ^APATH for ZoneGate
+
+	* ftntoss: ZoneGateFrom as suggested by <slapic@fido.hu>:
+-------------------------------------------------------------------------
+i receive mail from 1:270/101 as 1:270/104 (so i'm 1:270/104)
+my normal address is 2:371/2000
+i must forward/pack echomail as 2:371/2000
+i should strip seen-by and path when forwarding mail from 1:270/101 
+regardless whom i'm sending to.
+
+at this moment i have two installed fidogate, one with aka 1:270/104, and 
+one with aka 2:371/2000
+my 1:270/104 system receives from 1:270/101, and packs for 2:371/2000
+2:371/2000 receives from 1:270/104 and processes mail as normal.
+and at the end, 2:371/2000 exports to 1:270/101...
+it's not so nice... working, but not nice... i'd like to use one system 
+on a phisical system.
+so if i can do something like this:
+ZoneGateFrom    1:270/101       270/101 104 371/2000
+ZoneGate        1:270/101       270/101 371/2000
+and as the zonegatefrom specifies, fidogate should strip seen-by and path 
+every mail _from_ 1:270/101
+-------------------------------------------------------------------------
+	  This requires setting the sender address for the particular
+	  area. Something else?

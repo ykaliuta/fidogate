@@ -1,0 +1,17 @@
+#!/bin/sh
+
+REL=$(./version)
+TAG="R"`echo $REL | tr -d .`"$2"
+
+echo "Exporting release $REL (tag $TAG)"
+
+rm -rf /var/tmp/fidogate-$REL
+rm -rf /var/tmp/fidogate-*$REL.tar*
+
+cvs export -r $TAG -d /var/tmp/fidogate-$REL fidogate || exit 1;
+
+cd /var/tmp
+tar cvf fidogate-test-$REL.tar fidogate-$REL/test/
+rm -rf fidogate-$REL/test
+tar cvf fidogate-$REL.tar fidogate-$REL/
+gzip -v9 fidogate-*.tar
