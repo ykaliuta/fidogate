@@ -7,14 +7,12 @@
 	    to Zhenja Kaluta)
 	* Changes.ru: update
 	* doc/README.ru: update
+	* packages/freebsd: update
 
 2003-11-01  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/gate/ftn2rfc.c: fix NOINSERT_ORGANIZATION(thanks
 	    to Anton Leer)
-
-2003-11-01  Andrey Slusar <rusfidogate@users.sourceforge.net>
-
 	* doc/FAQ.ru: update
 	* packages/freebsd: update freebsd port
 	* src/tick/ftntick.c: fix TickFileAction
