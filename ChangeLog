@@ -1,3 +1,9 @@
+2004-07-05  Andrey Slusar <anray@users.sourceforge.net>
+
+	* doc/README.ru: update
+	* doc/FAQ.ru: update
+	* src/gate/ftn2rfc.c: fix SingleArticles
+
 2004-06-30  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/common/binkley.c: if enable AMIGADOS_4D_OUTBOUND,

@@ -1635,7 +1635,6 @@ carbon:
 		    break;
 		}
 
-	    if(!single_articles)
 		/* News batch */
 		fprintf(mail_file('n'), "#! rnews %ld\n",
 			tl_size(&theader) + tl_size(&tbody) );

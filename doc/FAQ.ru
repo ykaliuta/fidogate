@@ -332,7 +332,7 @@ fidogate на английский язык.
   Значит дирректория fidogate5.2.0ds-alpha1, делаем с получившейся
   дирректории файл fidogate5.2.0ds-alpha1.tar.bz2, копируем этот файл в
   /usr/ports/distfiles, дирректорию <fidogate-src>/packages/freebsd
-  полностью копируем в дирректорию /usr/ports/news/fidogateds-devel,
+  полностью копируем в дирректорию /usr/ports/news/fidogate-ds-devel,
   если в version.h написано, что STATE "beta" или в fidogateds, если
   STATE "stable". Потом делаем cd /usr/ports/news/fidogateds{-devel} и
   там даем команду make makesum для генерации md5sum, далее делаем все,
@@ -829,6 +829,32 @@ fidogate на английский язык.
       конфиге и ключа -R конфига areas. В большинстве случаев достаточно
       выставить RFCLevel 0.
 
+----------------------------------------------------------------------------
+
+  Q11:А как можно организовать постинг отчетов о том, что прошло по файлэхам?
+  
+  A11:Например по крону запускать скрипт вида:
+  ===
+  #!/bin/sh
+  #
+  # (c) Evgeniy Kozhuhovskiy 2:450/256
+  #
+  if [ -f /var/log/fidogate/newfiles ] ; then 
+   (
+    echo "From: FileFix Daemon <filefix@f256.n450.z2.fidonet.org>"
+    echo "Newsgroups: fido.pvt.xxx.station.robots"
+    echo "Subject: New files arrived"
+    echo 
+    echo "New files on 2:450/256:"
+    echo 
+    cat /var/log/fidogate/newfiles
+    echo "eof"
+   )|inews -h -O -S
+   # Это - опционально
+   cat /var/log/fidogate/newfiles >>/var/log/fidogate/newfiles.full
+   rm -f /var/log/fidogate/newfiles
+  fi
+  ===
 =============================================================================
  
  10. Благодарности всем, кто помогал мне в составлении данного FAQ, оживлении
