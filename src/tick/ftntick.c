@@ -310,7 +310,7 @@ int process_tic(Tick *tic)
 #ifdef FECHO_PASSTHROUGHT
     char full_farea_dir[MAXPATH];
 #endif /* FECHO_PASSTHROUGHT */
-    char tmp [30];
+    char *tmp = NULL;
     short create_flag = FALSE;
     char *s1;
     int errlvl;
@@ -368,11 +368,20 @@ int process_tic(Tick *tic)
 	    }
 	    
 	    if( (a = uplinks_line_get(FALSE, &tic->from)) )
+	    {
+		tmp = (char*) xmalloc(strlen(tic->area) + strlen(autocreate_line) + strlen(a->options) + 3);
 		sprintf(tmp,"%s %s %s", tic->area, autocreate_line, a->options);
+	    }
 	    else
-		BUF_COPY3(tmp, tic->area, " ", autocreate_line);
+	    {
+		tmp = (char*) xmalloc(strlen(tic->area) + strlen(autocreate_line) + 2);
+		sprintf(tmp, "%s %s", tic->area, autocreate_line);
+	    }
 
-	    if ( cmd_new_int (&tic->from, tmp, "-") == ERROR )
+	    errlvl = cmd_new_int (&tic->from, tmp, "-");
+	    if( tmp != NULL )
+		xfree(tmp);
+	    if ( errlvl == ERROR )
 	    {
 		log("can't create filarea %s from %s (cmd_new() returned ERROR)",
 	    	    tic->area, znfp1(&tic->from));
