@@ -276,9 +276,4 @@ void log_program(char *name)
     char *p;
     
     BUF_COPY(logprog, name);
-
-    if( (p = getenv("LOGFILE")) )
-       log_file(p);
-    if( (p = getenv("FIDOGATE_LOGFILE")) )
-       log_file(p);
 }

@@ -1,3 +1,8 @@
+2004-08-21  Andrey Slusar <anray@users.sourceforge.net>
+
+	* src/common/log.c: remove getenv()s, create
+	    security risk for setuid news programs.
+
 2004-08-10  Andrey Slusar <anray@users.sourceforge.net>
 
 	* src/gate/send-fidogate.snews: fix errors
