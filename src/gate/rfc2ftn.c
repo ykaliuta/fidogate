@@ -844,9 +844,7 @@ int snd_mail(RFCAddr rfc_to, long size)
      * Subject
      */
     if( (p = header_get("Subject")) )
-    {
 	mime_deheader(subj, MSG_MAXSUBJ, p);
-    }
     else
 	BUF_COPY(subj, "(no subject)");
 

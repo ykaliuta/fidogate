@@ -194,7 +194,11 @@ void header_read(FILE *file)
 	    break;
 	strip_crlf(buf);
 	if(is_blank(buf[0]))
-	    BUF_APPEND(queue,buf);
+	{
+	    char *p;
+	    for(p = buf; *p && is_blank(*p); ++p);
+	    BUF_APPEND(queue,p);
+	}
 	else
 	{
 	    if(!first)
