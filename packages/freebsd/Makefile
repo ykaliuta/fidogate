@@ -50,7 +50,7 @@ CONFIGURE_ARGS+=	--enable-dnt-netmail
 .if defined(WITHOUT_FMSGID)
 CONFIGURE_ARGS+=	--disable-fs-msgid
 .endif
-.if defined(WITHOUT_AVAIL)
+.if !defined(WITH_AVAIL)
 CONFIGURE_ARGS+=	--disable-af-avail
 .endif
 .if defined(WITHOUT_BEST_AKA)

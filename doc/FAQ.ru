@@ -814,6 +814,7 @@ Subject: GATE-PORT
  1.Elohin Igor 2:5070/222.52
  2.Zhenya Kaluta 2:450/254
  3.Alexandr Dobroslavskiy 2:5020/1356
+ 4.Andrew Zhuravlev 2:5035/67
 
  А также составителям "старого" FAQ по FIDOGATE.
  
