@@ -1497,7 +1497,7 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
 		areafix_printf("%s",buffer);
 	}
     } 
-#ifdef AVAIL_FILE
+#ifdef AF_AVAIL
      /* Check for define echolist in config file */
     else 
     {
@@ -1517,7 +1517,7 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
 	}
     }
     
-#endif /* AVAIL_FILE */
+#endif /* AF_AVAIL */
 
     areafix_printf("");
     areafix_printf("* = linked to this area");

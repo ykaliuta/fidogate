@@ -1146,9 +1146,14 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    else
 		to_line = s_printf("%s (%s)", msgbody_rfc_to, addr_to.real);
 	}
-	else {
+	else
+	{
 	    if(area)
+#ifndef NEW_COMMENT_TO
 		to_line = s_printf("(%s)", addr_to.real);
+#else
+		to_line = s_printf("%s", addr_to.real);
+#endif
 	    else
 		to_line = s_printf("%s", mail_to);
 	}

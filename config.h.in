@@ -174,7 +174,10 @@
  */
 #undef ALIASES_ARE_LOCAL
 
-
+/*
+ *
+ */
+#undef NEW_COMMENT_TO
 
 /***** rfc2ftn configuration ************************************************/
 

@@ -1,3 +1,10 @@
+2004-01-19  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: add NEW_COMMENT_TO
+	* config.h.in: add NEW_COMMENT_TO
+	* src/gate/rfc2ftn.c: fix disable FIDO_STYLE_MSGID
+	* src/areafix/areafix.c: fix AF_AVAIL
+
 2004-01-18  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/areafix/areafix.c: fix disable AF_AVAIL

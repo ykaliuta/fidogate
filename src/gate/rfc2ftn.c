@@ -1404,10 +1404,14 @@ int snd_message(Message *msg, Area *parea,
 	    if((id = s_msgid_rfc_to_fido(&flag, header, part, split != 0, msg->area,
 					 dont_flush_dbc_history, 0)))
 	    {
+#ifdef FIDO_STYLE_MSGID
 	     if(!echogate_alias)
 		fprintf(sf, "\001MSGID: %s %s\r\n", znfp1(&msg->node_from), id);
 	     else
 		fprintf(sf, "\001MSGID: %s %s\r\n", znf1(node_from), id);
+#else
+		fprintf(sf, "\001MSGID: %s\r\n", id);
+#endif
 	    }
 	}	
 	else
