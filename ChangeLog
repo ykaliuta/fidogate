@@ -1,5 +1,7 @@
 2004-07-10  Andrey Slusar <anray@users.sourceforge.net>
 
+	* doc/news/leafnode: update leafnode-utils to
+	    new version 0.6.2
 	* config.h.in: added SN option
 	* src/common/active.c: added SN active_lookup()
 	* src/areafix/ftnafutil.c: added SN option

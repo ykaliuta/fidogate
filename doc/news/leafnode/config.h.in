@@ -1,0 +1,65 @@
+/*
+ * (C) Maint Laboratory 2003-2004
+ * Author: Elohin Igor'
+ * e-mail: maint@unona.ru
+ * fido  : 2:5070/222.52
+ * URL   : http://maint.unona.ru
+ */
+#ifndef __CONFIG_H__
+#define __CONFIG_H__
+
+#define OUTGOING "/var/spool/leafnode2/out.going"
+#define FAILED_POSTING "/var/spool/leafnode2/failed.postings"
+#define INCOMING "/var/spool/leafnode2/in.coming"
+#define DUPE_POST "/var/spool/leafnode2/dupe.post"
+#define INTERESTING_GROUPS "/var/spool/leafnode2/interesting.groups"
+#define GROUPINFO "/var/spool/leafnode2/leaf.node/groupinfo"
+#ifdef _BSD
+#define LOCAL_GROUPINFO "/usr/local/etc/leafnode/local.groups"
+#include <limits.h>
+#else
+#define LOCAL_GROUPINFO "/etc/leafnode/local.groups"
+#endif
+#define ACTIVE "/var/spool/leafnode2/leaf.node/active"
+#define RFC2FTN  "<SEND_RFC2FTN> -n -v"
+#define DELETE_CTRL_D  "<LIBEXECDIR>/ctrld"	// Убрать Ctrl+D в конце строк, которые ставит leafnode
+#define UTIL_LOGDIR  "/var/log/leafnode"
+#define LEAFNODE_OWNER "news"
+#define LOGFILE "util-leafnode"
+#define PORT_NEWSSERV 119
+
+#ifdef READ_CONFIG
+char outgoing[PATH_MAX];
+char failed_posting[PATH_MAX];
+char incoming[PATH_MAX];
+char dupe_post[PATH_MAX];
+char interesting_groups[PATH_MAX];
+char groupinfo[PATH_MAX];
+char local_groupinfo[PATH_MAX];
+char active[PATH_MAX];
+char rfc2ftn[PATH_MAX];
+char delete_ctrl_d[PATH_MAX];	// убрать ctrl+d в конце строк, которые ставит leafnode
+char util_logdir[PATH_MAX];
+char leafnode_owner[15];
+char logfile[15];
+int  port_newsserv;
+char ffgroups[128];
+#else
+extern char outgoing[];
+extern char failed_posting[];
+extern char incoming[];
+extern char dupe_post[];
+extern char interesting_groups[];
+extern char groupinfo[];
+extern char local_groupinfo[];
+extern char active[];
+extern char rfc2ftn[];
+extern char delete_ctrl_d[];	// убрать ctrl+d в конце строк, которые ставит leafnode
+extern char util_logdir[];
+extern char leafnode_owner[];
+extern char logfile[];
+extern int  port_newsserv;
+extern char ffgroups[128];
+#endif
+
+#endif
