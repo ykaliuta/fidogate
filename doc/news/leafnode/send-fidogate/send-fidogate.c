@@ -14,7 +14,7 @@
 
 #ifdef _BSD
 #include <sys/syslimits.h>
-# endif 
+#endif 
 
 int verbose;
 char *prgname;
