@@ -6,9 +6,10 @@ PRE-INSTALL)
 POST-INSTALL)
 	SPOOLDIR=${SPOOLDIR:=/var/spool/fido/gate}
 	BTBASEDIR=${BTBASEDIR:=/var/spool/fido/bt}
-	LOGDIR=${LOGDIR:=/var/log/fidogate}
+	LOGDIR=${LOGDIR:=/var/log/fido/gate}
 	LOCKDIR=${LOCKDIR:=/var/run/fidogate}
-	
+	VARDIR=${VARDIR:=${PREFIX}/var/fidogate}
+
 	mkdir -p $LOCKDIR
 	mkdir -p $LOGDIR
 	mkdir -p $BTBASEDIR/fbox

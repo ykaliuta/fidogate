@@ -4,12 +4,13 @@
 # $FreeBSD$
 #
 
-PORTNAME=		fidogateds
+PORTNAME=		fidogate
 PORTVERSION=		5.2.1
-CATEGORIES=		russian news mail
+CATEGORIES=		news mail
 MASTER_SITES=		${MASTER_SITE_SOURCEFORGE}
 MASTER_SITE_SUBDIR=	rusfidogate
-DISTNAME=		fidogate5.2.1ds
+PKGNAMESUFFIX=		-ds
+DISTNAME=		${PORTNAME}${PORTVERSION}ds
 
 MAINTAINER=		vasallia@ukr.net
 COMMENT=		Fido-Internet Gateway and Tosser
@@ -22,8 +23,6 @@ USE_BZIP2=		yes
 GNU_CONFIGURE=		yes
 USE_PERL5=		yes
 
-INSTALL_SHLIB=		yes
-
 SPOOLDIR?=/var/spool/fido/gate
 BTBASEDIR?=/var/spool/fido/bt
 LOCKDIR?=/var/run/fidogate
@@ -34,6 +33,7 @@ PLIST_SUB+=		SPOOLDIR=${SPOOLDIR} \
 			BTBASEDIR=${BTBASEDIR} \
 			LOGDIR=${LOGDIR} \
 			LOCKDIR=${LOCKDIR} \
+			VARDIR=${VARDIR} \
 			PREFIX=${PREFIX}
 
 HAS_CONFIGURE=		yes
@@ -76,8 +76,7 @@ CONFIGURE_TARGET=	--build=${MACHINE_ARCH}-portbld-freebsd${OSREL}
 
 DOCS=		doc/README.ru doc/README doc/FAQ.ru ChangeLog Changes.ru \
 		doc/old/FAQ_fidogate doc/old/FIDOGATE_ftrack doc/old/README.snp \
-		doc/old/README.snp.en doc/old/fidogate.txt doc/old/fidogate.texi \
-		doc/old/msgid.doc
+		doc/old/fidogate.txt doc/old/fidogate.texi doc/old/msgid.doc
 
 .if !defined(NOPORTDOCS)
 post-install:
