@@ -276,11 +276,6 @@ int do_dir(char *cdir, int mode)
 		rename(rfc_file, bad);
 	    }
 	    unlink( rfc_file );
-	    if( (p = cf_get_string("AfterGateNews", TRUE)) )
-	    {
-		debug(8, "config: AfterGateNews %s", p);
-		run_system(p);
-	    }
 	}
     }
     dir_close();
