@@ -1,3 +1,8 @@
+2004-02-20  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/common/msgid.c: not write mail to msgid
+	    history
+
 2004-02-19  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* all: fix Makefiles

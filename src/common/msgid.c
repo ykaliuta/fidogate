@@ -443,18 +443,21 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
     if(origid_flag)
 	*origid_flag = TRUE;
 #if defined(DBC_HISTORY) && defined(FIDO_STYLE_MSGID)
-    if(lock_program(cf_p_lock_history(), FALSE) == ERROR )
+    if(area)
     {
-        return tmps->s;
+	if(lock_program(cf_p_lock_history(), FALSE) == ERROR )
+	{
+    	    return tmps->s;
+	}
+	if (hi_init_dbc() == ERROR)
+	{
+	    log ("can't open dbc file");
+	}
+	if(hi_write_dbc(message_id, tmps->s, dont_flush) == ERROR)
+    	    log ("can't write to dbc file");
+	hi_close();
+	unlock_program(cf_p_lock_history());
     }
-    if (hi_init_dbc() == ERROR)
-    {
-	log ("can't open dbc file");
-    }
-    if(hi_write_dbc(message_id, tmps->s, dont_flush) == ERROR)
-        log ("can't write to dbc file");
-    hi_close();
-    unlock_program(cf_p_lock_history());
 #endif /* DBC_HISTORY && FIDO_STYLE_MSGID*/
     return tmps->s;
 }
