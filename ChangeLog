@@ -1,3 +1,8 @@
+2004-02-26  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
+
+	* config.h: add the new define 'FIX_BAD_PKt_YEAR' for processing
+	    packets from PCBOARD
+	    
 2004-02-25  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 
 	* src/areafix/ftnafutil.c: fix the problem with removing

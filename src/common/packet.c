@@ -786,10 +786,12 @@ int pkt_get_hdr(FILE *fp, Packet *pkt)
     pkt->to.node = val;
     /* Year */
     if((val = pkt_get_int16(fp)) == ERROR)  return ERROR;
-    if(val == 0)
-	val = tm->tm_year;
-    else if(val < 1900 || val > 2099)
+    if(val == 0 || val < 1900 || val > 2099)
+#ifdef FIX_BAD_PKT_YEAR
+	;
+#else
 	retVal = ERROR;
+#endif
     else
 	t.tm_year = val - 1900;
     /* Month */
