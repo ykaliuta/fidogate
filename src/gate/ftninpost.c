@@ -356,13 +356,16 @@ int main(int argc, char **argv)
     else
 	debug(9, "WARNING: FTNInRnews not defined in %s", c_flag ? c_flag : CONFIG);
 
-    if( (p = cf_get_string("FTNInRecombine", TRUE)) )
+    if(!cf_get_string("SingleArticles", TRUE))
     {
-	debug(8, "config: FTNInRecombine %s", p);
-	BUF_EXPAND(buf, p);
+	if( (p = cf_get_string("FTNInRecombine", TRUE)) )
+	{
+	    debug(8, "config: FTNInRecombine %s", p);
+	    BUF_EXPAND(buf, p);
+	}
+	else
+	    debug(9, "WARNING: FTNInRecombine not defined in %s", c_flag ? c_flag : CONFIG);
     }
-    else
-	debug(9, "WARNING: FTNInRecombine not defined in %s", c_flag ? c_flag : CONFIG);
 
     if(*buf)
 	run_system(buf);

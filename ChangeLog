@@ -1,3 +1,9 @@
+2004-07-15  Andrey Slusar <anray@users.sourceforge.net>
+
+	* src/gate/ftn2rfc.c: fix SingleArticles
+	* src/gate/ftninpost.c: if SingleArticles defined,
+	    not using FTNInRecombine
+
 2004-07-13  Andrey Slusar <anray@users.sourceforge.net>
 
 	* src/gate/rfc2ftn.c: fix FTS_VIA(thanks to

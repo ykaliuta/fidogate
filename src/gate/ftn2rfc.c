@@ -1629,7 +1629,8 @@ carbon:
 	tl_appendf(&theader, "\n");
 
 	/* Write header and message body to output file */
-	if(area) {
+	if(area)
+	{
 	    if(!mail_file('n'))
 		if(mail_open('n') == ERROR)
 		{
@@ -1638,8 +1639,11 @@ carbon:
 		}
 
 		/* News batch */
+	    if(!single_articles)
+	    {
 		fprintf(mail_file('n'), "#! rnews %ld\n",
 			tl_size(&theader) + tl_size(&tbody) );
+	    }
 	    tl_print(&theader, mail_file('n'));
 	    tl_print(&tbody,   mail_file('n'));
 
