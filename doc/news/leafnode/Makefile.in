@@ -1,8 +1,10 @@
-CC = gcc
+CC = @CC@
+#ifndef __FreeBSD
 CFLAGS = -D_BSD
+#endif
 DIRS = lib new_rnews send-fidogate leafnode-group
 INSTALL_DIRS = new_rnews send-fidogate leafnode-group
-DESTDIR = /usr/local/fidogate/leafnode
+DESTDIR = <LIBEXECDIR>
 DESTMAN = /usr/local/man/man1
 
 all:

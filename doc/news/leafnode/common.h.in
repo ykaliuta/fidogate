@@ -18,14 +18,14 @@
 #define INTERESTING_GROUPS "/var/spool/leafnode/interesting.groups"
 #define GROUPINFO "/var/spool/leafnode/leaf.node/groupinfo"
 #define LOCAL_GROUPINFO "/usr/local/etc/leafnode/local.groups"
-#define ACTIVE "/var/spool/leafnode/leaf.node/active"
-#define RFC2FTN  "/usr/local/fidogate/libexec/rfc2ftn -n -v"
-#define DELETE_CTRL_D  "/usr/local/fidogate/leafnode/ctrld" // Убрать Ctrl+D в конце строк, которые ставит leafnode
-#define DIRLOG  "/var/log/fidogate"
+#define ACTIVE "<NEWSLIBDIR>/active"
+#define RFC2FTN  "<SEND_RFC2FTN> -n -v"
+#define DELETE_CTRL_D  "<LIBEXECDIR>/ctrld" // Убрать Ctrl+D в конце строк, которые ставит leafnode
+#define DIRLOG  "<LOGDIR>"
 #define NEWSLOGDIR  "/var/log/leafnode"
 #define MSGBUF 512
 #define LEAFNODE_OWNER "news"
-#define LOGNAME "leafnode"
+#define LOGNAME "leafnode.log"
 
 void loginit(char *, char *);
 void logclose(void);
@@ -39,4 +39,3 @@ int get_server(char *);
 char *get_line(char *);
 void putaline(const char *fmt, ...);
 char *diagtime(void);
-
