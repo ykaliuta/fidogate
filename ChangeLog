@@ -1,5 +1,10 @@
 2004-02-13  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
+	* src/toss/ftntoss.c: add NoRewrite and modify
+	    DO_NOT_TOSS_NETMAIL(thanks to Andrew Zhuravlev)
+
+2004-02-13  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
 	* src/gate/ftn2rfc.c: add gate RFC-Organization if
 	    enable option GateRfcKludge
 

@@ -152,6 +152,9 @@ char *autocreate_line = "";		/* config: AutoCreateLine */
 char autocreate_ng = FALSE;		/* config: AutoCreateNG */
 #endif /* !ACTIVE_LOOKUP */
 int autocreate_check_pass = TRUE;	/* config: AutoCreateDontCheckPAssword */
+#ifdef DO_NOT_TOSS_NETMAIL
+char no_rewrite	  = FALSE;		/* config: NoRewrite */
+#endif /* DO_NOT_TOSS_NETMAIL */
 
 short check_point_origin_addr = FALSE;
 /* Values checking for old messages */
@@ -1542,12 +1545,20 @@ int do_netmail(Packet *pkt, Message *msg, MsgBody *body, int forwarded)
     /*
      * Rewrite from/to addresses according to ROUTING rules
      */
+#ifdef DO_NOT_TOSS_NETMAIL
+    if (!no_rewrite) do_rewrite(msg);
+#else
     do_rewrite(msg);
+#endif /* DO_NOT_TOSS_NETMAIL */
     
     /*
      * Remap to address according to ROUTING rules
      */
+#ifdef DO_NOT_TOSS_NETMAIL
+    if(!no_rewrite && do_remap(msg))
+#else
     if(do_remap(msg))
+#endif /* DO_NOT_TOSS_NETMAIL */
     {
 	/* Kill this message, remapped to 0:0/0.0 */
 	return OK;
@@ -2211,6 +2222,13 @@ int main(int argc, char **argv)
     {
 	check_point_origin_addr = FALSE;
     }
+#ifdef DO_NOT_TOSS_NETMAIL
+    if( cf_get_string("NoRewrite", TRUE) )
+    {
+       no_rewrite=TRUE;
+       debug(8, "config: NoRewrite");
+    }
+#endif /* DO_NOT_TOSS_NETMAIL */
 
     zonegate_init();
     addtoseenby_init();
