@@ -978,6 +978,11 @@ DeleteSeenBy 50/128
 #
 UplinkCanBeReadonly
 
+#
+# Разрешить тоссинг беспарольных пакетов.
+#
+AllowEmptyPwd
+
 # Пока не используются
 #RouteFile /var/spool/ndl/r50.rou
 #TrueFile  /var/spool/ndl/r50.tru

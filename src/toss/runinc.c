@@ -861,7 +861,7 @@ int main(int argc, char **argv)
 	{ "config",       1, 0, 'c' },  /* Config file */
 	{ "before",       1, 0, 'b' },  /* Exec script before tosting */
 	{ "after",        1, 0, 'a' },  /* Exec script after tosting */
-	{ "outpkt",       0, 0, 'o' },  /* Exec script after tosting */
+	{ "outpkt",       0, 0, 'o' },  /* Exec packing */
 	{ "site",	  1, 0, 's' },  /* Site name */
 
 	{ "verbose",      0, 0, 'v'},	/* More verbose */
