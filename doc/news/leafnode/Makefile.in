@@ -1,5 +1,5 @@
 CC = @CC@
-#ifndef __FreeBSD
+#ifdef __FreeBSD
 CFLAGS = -D_BSD
 #endif
 DIRS = lib new_rnews send-fidogate leafnode-group

@@ -13,7 +13,7 @@
 #include "../common.h"
 
 #ifdef _BSD
-#define <sys/syslimits.h>
+#include <sys/syslimits.h>
 #endif
 
 int verbose;
