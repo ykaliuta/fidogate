@@ -672,7 +672,7 @@ int process_tic(Tick *tic)
                 {
                     sprintf(buffer, tick_action, new_name);
                     debug(8, "exec: %s", buffer);
-		    ret = run_system(buffer)
+		    ret = run_system(buffer);
 		    if (ret)
 			fglog("exec: %s failed, exit code = %d", buffer, ret);
                     else
