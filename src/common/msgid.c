@@ -192,6 +192,7 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail)
 	s = hi_fetch(msgid, 0);
 	hi_close();
 	unlock_program(cf_p_lock_history());
+	if(s)
 	return s;
     }
 #endif /* DBC_HISTORY && FIDO_STYLE_MSGID */
@@ -450,7 +451,7 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
     {
 	log ("can't open dbc file");
     }
-    if(hi_write_dbc(message_id, hexid, dont_flush) == ERROR)
+    if(hi_write_dbc(message_id, tmps->s, dont_flush) == ERROR)
         log ("can't write to dbc file");
     hi_close();
     unlock_program(cf_p_lock_history());
