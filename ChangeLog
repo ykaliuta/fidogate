@@ -2,6 +2,8 @@
 
 	* src/common/packet.c: fix the processing of the bad
 	    packets
+	* src/common/rfcheader.c: remove the unnecessary space
+	    in RFC header
 
 2004-02-23  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
