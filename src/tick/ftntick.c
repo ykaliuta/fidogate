@@ -665,7 +665,8 @@ int process_tic(Tick *tic)
                     debug(8, "exec: %s", buffer);
 		    if (ret = run_system(buffer))
                         log("exec: %s failed, exit code = %d", buffer, ret);
-                    else log("exec: %s complete", buffer);
+                    else
+			log("exec: %s complete", buffer);
 		    xfree(str_save);
                     break;
 	        }
