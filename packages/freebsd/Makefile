@@ -96,30 +96,30 @@ do-install:
 .endif	
 
 post-install:
-	strip ${PREFIX}/bin/ftnaf
-	strip ${PREFIX}/bin/ftnafutil
-	strip ${PREFIX}/bin/ftnexpire
-	strip ${PREFIX}/bin/ftnfattach
-	strip ${PREFIX}/bin/ftnhatch
-	strip ${PREFIX}/bin/ftnoutpkt
-	strip ${PREFIX}/bin/ngoper
-	strip ${PREFIX}/bin/pktdebug
-	strip ${PREFIX}/bin/pkttmpl
-	strip ${PREFIX}/bin/runinc
-	strip ${PREFIX}/bin/sumcrc
-	strip ${PREFIX}/libexec/fidogate/confval
-	strip ${PREFIX}/libexec/fidogate/ftn2ftn
-	strip ${PREFIX}/libexec/fidogate/ftn2rfc
-	strip ${PREFIX}/libexec/fidogate/ftnafmail
-	strip ${PREFIX}/libexec/fidogate/ftnafpkt
-	strip ${PREFIX}/libexec/fidogate/ftnflo
-	strip ${PREFIX}/libexec/fidogate/ftnin
-	strip ${PREFIX}/libexec/fidogate/ftninpost
-	strip ${PREFIX}/libexec/fidogate/ftnmail
-	strip ${PREFIX}/libexec/fidogate/ftnpack
-	strip ${PREFIX}/libexec/fidogate/ftnroute
-	strip ${PREFIX}/libexec/fidogate/ftntick
-	strip ${PREFIX}/libexec/fidogate/ftntoss
-	strip ${PREFIX}/libexec/fidogate/rfc2ftn
+	${STRIP_CMD} ${PREFIX}/bin/ftnaf
+	${STRIP_CMD} ${PREFIX}/bin/ftnafutil
+	${STRIP_CMD} ${PREFIX}/bin/ftnexpire
+	${STRIP_CMD} ${PREFIX}/bin/ftnfattach
+	${STRIP_CMD} ${PREFIX}/bin/ftnhatch
+	${STRIP_CMD} ${PREFIX}/bin/ftnoutpkt
+	${STRIP_CMD} ${PREFIX}/bin/ngoper
+	${STRIP_CMD} ${PREFIX}/bin/pktdebug
+	${STRIP_CMD} ${PREFIX}/bin/pkttmpl
+	${STRIP_CMD} ${PREFIX}/bin/runinc
+	${STRIP_CMD} ${PREFIX}/bin/sumcrc
+	${STRIP_CMD} ${PREFIX}/libexec/fidogate/confval
+	${STRIP_CMD} ${PREFIX}/libexec/fidogate/ftn2ftn
+	${STRIP_CMD} ${PREFIX}/libexec/fidogate/ftn2rfc
+	${STRIP_CMD} ${PREFIX}/libexec/fidogate/ftnafmail
+	${STRIP_CMD} ${PREFIX}/libexec/fidogate/ftnafpkt
+	${STRIP_CMD} ${PREFIX}/libexec/fidogate/ftnflo
+	${STRIP_CMD} ${PREFIX}/libexec/fidogate/ftnin
+	${STRIP_CMD} ${PREFIX}/libexec/fidogate/ftninpost
+	${STRIP_CMD} ${PREFIX}/libexec/fidogate/ftnmail
+	${STRIP_CMD} ${PREFIX}/libexec/fidogate/ftnpack
+	${STRIP_CMD} ${PREFIX}/libexec/fidogate/ftnroute
+	${STRIP_CMD} ${PREFIX}/libexec/fidogate/ftntick
+	${STRIP_CMD} ${PREFIX}/libexec/fidogate/ftntoss
+	${STRIP_CMD} ${PREFIX}/libexec/fidogate/rfc2ftn
 
 .include <bsd.port.mk>
