@@ -1,3 +1,10 @@
+2004-08-29  Andrey Slusar <anray@users.sourceforge.net>
+
+	* doc/FAQ_Config.ru: added full fidogate russian
+	    configuration FAQ
+	* doc/FAQ.ru: now this is a confiuration mini FAQ
+	    (part 10 of FAQ_Config.ru)
+
 2004-08-26  Andrey Slusar <anray@users.sourceforge.net>
 
 	* doc/FAQ.ru: add s-news configure
@@ -5,7 +12,7 @@
 2004-08-21  Andrey Slusar <anray@users.sourceforge.net>
 
 	* src/common/log.c: remove getenv()s, create
-	    security risk for setuid news programs.
+	    security risk for setuid news programs
 
 2004-08-10  Andrey Slusar <anray@users.sourceforge.net>
 
