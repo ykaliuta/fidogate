@@ -1,3 +1,8 @@
+2004-02-24  Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
+
+	* src/common/packet.c: fix the processing of the bad
+	    packets
+
 2004-02-23  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* configure.in: modify detect sendmail

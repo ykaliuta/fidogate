@@ -754,10 +754,12 @@ int pkt_get_hdr(FILE *fp, Packet *pkt)
     struct tm t;
     int ozone, dzone;
     int cw, swap;
+    int retVal;
     char xpkt[4];
     struct tm *tm;
     TIMEINFO ti;
-
+    
+    retVal = OK;
     GetTimeInfo(&ti);
     tm = localtime(&ti.time);
     node_clear(&pkt->from);
@@ -785,53 +787,50 @@ int pkt_get_hdr(FILE *fp, Packet *pkt)
     /* Year */
     if((val = pkt_get_int16(fp)) == ERROR)  return ERROR;
     if(val == 0)
-    {
 	val = tm->tm_year;
-    }
     else if(val < 1900 || val > 2099)
-    {
-	return ERROR;
-    }
+	retVal = ERROR;
     else
 	t.tm_year = val - 1900;
     /* Month */
     if((val = pkt_get_int16(fp)) == ERROR)  return ERROR;
     if(val > 11)
-	return ERROR;
+	retVal = ERROR;
     t.tm_mon = val;
     /* Day */
     if((val = pkt_get_int16(fp)) == ERROR)  return ERROR;
     if(val > 31)
-	return ERROR;
+	retVal = ERROR;
     if(val == 0)
 	val = tm->tm_mday;
     t.tm_mday = val;
     /* Hour */
     if((val = pkt_get_int16(fp)) == ERROR)  return ERROR;
     if(val > 23)
-	return ERROR;
+	retVal = ERROR;
     t.tm_hour = val;
     /* Minute */
     if((val = pkt_get_int16(fp)) == ERROR)  return ERROR;
     if(val > 59)
-	return ERROR;
+	retVal = ERROR;
     t.tm_min = val;
     /* Second */
     if((val = pkt_get_int16(fp)) == ERROR)  return ERROR;
     if(val > 59)
-	return ERROR;
+	retVal = ERROR;
     t.tm_sec = val;
     t.tm_wday = -1;
     t.tm_yday = -1;
     t.tm_isdst = -1;
-    pkt->time = mktime(&t);
+    if(retVal == OK)
+	pkt->time = mktime(&t);
     /* Baud */
     if((val = pkt_get_int16(fp)) == ERROR)  return ERROR;
     pkt->baud = val;
     /* Version --- MUST BE PKT_VERSION (2) */
     if((val = pkt_get_int16(fp)) == ERROR)  return ERROR;
     if(val != PKT_VERSION)
-	return ERROR;
+	retVal = ERROR;
     pkt->version = val;
     /* Orig net */
     if((val = pkt_get_int16(fp)) == ERROR)  return ERROR;
@@ -911,7 +910,9 @@ int pkt_get_hdr(FILE *fp, Packet *pkt)
     if(verbose >= 3)
 	pkt_debug_hdr(stderr, pkt, "Reading ");
     
-    return ferror(fp);
+    if(ferror(fp) == ERROR)
+	return ERROR;
+    return retVal;
 }
 
 
