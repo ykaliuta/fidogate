@@ -270,10 +270,6 @@ int do_dir(char *cdir, int mode)
 		    log( "$WARNING: %s returned non-zero status", p );
 		    str_change_ext(bad, sizeof(bad), rfc_file, ".bad");
 		    log("ERROR: bad rfcbatch renamed to %s", bad);
-			if(rename(rfc_file, bad) == ERROR)
-			{
-			    log("$ERROR: can't rename %s -> %s", rfc_file, bad);
-			}
 		}
 		unlink( rfc_file );
 	    }
