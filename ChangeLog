@@ -1,3 +1,8 @@
+2004-03-24  Andrey Slusar <rusfidogate@users.sourceforge.net>
+
+	* src/areafix.c: remove unnecessary '\n' if
+	    enable AFSEND_ECHO_STATUS
+
 2004-03-10  Andrey Slusar <rusfidogate@users.sourceforge.net>
 
 	* src/gate/ftn2rfc.c: fix gate_rfc_kludge

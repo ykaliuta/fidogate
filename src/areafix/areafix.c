@@ -1245,6 +1245,7 @@ int cmd_listall(Node *node)
 #endif /* !FTN_ACL */
 #ifdef AFSEND_ECHO_STATUS
 	    sprintf(tmp, "   '%s' %s",p->state, ctime(&p->time));
+	    tmp[strlen(tmp)-1] = NULL;
 	    BUF_APPEND(buffer, tmp);
 #endif /* AFSEND_ECHO_STATUS */
 	    areafix_printf("%s",buffer);
@@ -1490,6 +1491,7 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
 #endif /* !FTN_ACL */
 #ifdef AFSEND_ECHO_STATUS
 		sprintf(tmp, "   '%s' %s",p->state, ctime(&p->time));
+		tmp[strlen(tmp)-1] = NULL;
 		BUF_APPEND(buffer, tmp);
 #endif /* AFSEND_ECHO_STATUS */
 		areafix_printf("%s",buffer);
@@ -1866,6 +1868,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 #endif /* ANSWER_OK */
 #ifdef AFSEND_ECHO_STATUS
 		    sprintf(tmp, " Stat: '%s' last msg: %s",p->state, ctime(&p->time));
+		    tmp[strlen(tmp)-1] = NULL;
 		    BUF_APPEND(buffer, tmp);
 #endif /* AFSEND_ECHO_STATUS */
 		    areafix_printf("%s",buffer);
