@@ -1,3 +1,11 @@
+2005-03-13  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/toss/ftnpack.c (do_pack): Fixed checking
+	busy node(modified patch from Zhenya Kaluta).
+	* src/common/lock.c (lock_lockfile_id): Fixed
+	checking locks, not containing pid(patch from
+	Zhenya Kaluta).
+
 2005-02-20  Andrey Slusar  <anray@users.sourceforge.net>
 
 	* doc/examples/point/fidogate.conf.in: Commented
