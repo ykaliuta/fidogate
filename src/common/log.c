@@ -137,7 +137,7 @@ void fglog(const char *fmt, ...)
 	if(fp)
 	{
 	    fprintf(fp, "%s %s ",
-		    date_buf(buf, sizeof(buf), DATE_LOG, 0), logprog);
+		    date_buf(buf, sizeof(buf), DATE_LOG, (long *)0), logprog);
 	    vfprintf(fp, *fmt == '$' ? fmt + 1 : fmt, args);
 	    if (*fmt == '$')
 		fprintf(fp, " (errno=%d: %s)", errno, strerror(errno));

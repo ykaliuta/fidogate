@@ -125,7 +125,7 @@ fidogate_local:
 
 fidogate_1309:
   driver = pipe
-  command = "<LIBEXECDIR>/ftnmail -i -a 2:5020/1309.332 ${pipe_addresses}"
+  command = "<LIBEXECDIR>/rfc2ftn -i -a 2:5020/1309.332 ${pipe_addresses}"
   user = news
   group = news
 
@@ -133,7 +133,7 @@ fidogate_1354:
   driver = pipe
   user = news
   group = news
-  command = "<LIBEXECDIR>/ftnmail -i ${pipe_addresses}"
+  command = "<LIBEXECDIR>/rfc2ftn -i ${pipe_addresses}"
 
 remote_smtp:
   driver = smtp
