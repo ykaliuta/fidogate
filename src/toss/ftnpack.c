@@ -911,7 +911,7 @@ int do_pack(PktDesc *desc, char *name, FILE *file, Packing *pack)
 	debug(1, "%s busy, skipping", znfp1(&flonode));
 	if(file)
 	    fclose(file);
-	bink_bsy_delete(&arcnode);
+/*	bink_bsy_delete(&arcnode); */
 	return OK;			/* This is o.k. */
     }
        

@@ -242,11 +242,6 @@ FStatusAreaFixList
 ##############################################################################
 # T O S S E R   C O N F I G U R A T I O N                                    #
 ##############################################################################
-#
-# Empty passwords in incoming packets is allowed
-#
-#AllowEmptyPwd
-
 # Toss process (runtoss, rununpack):
 #
 # Maximum number of messages to toss before closing output packets/

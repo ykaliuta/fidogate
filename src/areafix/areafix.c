@@ -359,13 +359,8 @@ int areafix_auth_check(Node *node, char *passwd, int checkpass)
 
     if(pwd == NULL)
     {
-	if( cf_get_string("AllowEmptyPwd", TRUE) )
-	    authorized = TRUE;
-	else
-	{
-	    fglog("WARNING: node %s have null password",znfp1(node));
-	    return authorized;
-	}
+	fglog("WARNING: node %s have null password",znfp1(node));
+        return authorized;
     }
     
     /* Extract level, key, and real name from pwd->args */

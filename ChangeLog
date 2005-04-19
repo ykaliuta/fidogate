@@ -1,3 +1,10 @@
+2005-04-19  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* Changes.ru: Update.
+	* src/areafix/areafix.c (areafix_auth_check): Removed
+	option AllowEmptyPwd. It's broke the areafix keys
+	checking.
+
 2005-03-13  Andrey Slusar  <anray@users.sourceforge.net>
 
 	* src/toss/ftnpack.c (do_pack): Fixed checking
