@@ -5,12 +5,12 @@ dnl Copyright (c) 2003-2004 Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 dnl
 AC_REVISION([$Revision$])
 AC_PREREQ(2.53)
-AC_INIT([fidogate],[5.2.1ds],[anray@users.sourceforge.net])
+AC_INIT([fidogate],[5.2.2ds],[anray@users.sourceforge.net])
 AM_CONFIG_HEADER([config.h])
 AC_CONFIG_SRCDIR([src/common/config.c])
 AC_CONFIG_AUX_DIR([build])
 AC_PREFIX_DEFAULT(/usr/local/fido)
-AM_INIT_AUTOMAKE(fidogate, 5.2.1ds, nodefine)
+AM_INIT_AUTOMAKE(fidogate, 5.2.2ds, nodefine)
 AM_MAINTAINER_MODE
 AC_CANONICAL_HOST
 

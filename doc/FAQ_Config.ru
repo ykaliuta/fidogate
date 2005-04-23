@@ -727,11 +727,12 @@ Subject: FIDOGATE
  
  10. Благодарности всем, кто помогал мне в составлении данного FAQ, оживлении
      проекта fidogate и активно присылающие патчи и пожелания.
- 
- 1.Elohin Igor 2:5070/222.52
- 2.Zhenya Kaluta 2:450/254
- 3.Alexandr Dobroslavskiy 2:5020/1356
- 4.Andrew Zhuravlev 2:5035/67
+
+ 1. Alexandr Dobroslavskiy 2:5020/1356
+ 2. Andrew Zhuravlev 2:5035/67
+ 3. Peter Levchenko 2:463/672
+ 4. Elohin Igor 2:5070/222.52
+ 5. Zhenya Kaluta 2:450/254
 
  А также составителям "старого" FAQ по FIDOGATE.
  
