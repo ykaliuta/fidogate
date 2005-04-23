@@ -1,5 +1,7 @@
 2005-04-23  Andrey Slusar  <anray@users.sourceforge.net>
 
+	======= Release 5.2.2ds ========================
+	------- CVS tag R522 ---------------------------
 	* doc/FAQ_Config.ru: Update.
 	* configure.in: Update version number to
 	5.2.2ds.
