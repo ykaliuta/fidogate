@@ -1,3 +1,9 @@
+2005-04-23  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* scripts/nodelist/nl-autoupd.in (after): Fix crc
+	showing, delete unpacked old diffs(patch from Peter
+	Levchenko).
+
 2005-04-19  Andrey Slusar  <anray@users.sourceforge.net>
 
 	* Changes.ru: Update.
