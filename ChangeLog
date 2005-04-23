@@ -1,5 +1,9 @@
 2005-04-23  Andrey Slusar  <anray@users.sourceforge.net>
 
+	* doc/FAQ_Config.ru: Update.
+	* configure.in: Update version number to
+	5.2.2ds.
+	* version.h (PATCHLEVEL): Ditto.
 	* scripts/nodelist/nl-autoupd.in (after): Fix crc
 	showing, delete unpacked old diffs(patch from Peter
 	Levchenko).
