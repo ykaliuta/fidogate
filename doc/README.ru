@@ -587,10 +587,10 @@ SPOOLDIR	/var/spool/fidogate
 # Общий каталог, в котором хранятся инбоунды и аутбоунды.
 BTBASEDIR	/var/spool/bt
 
-# Инбоунд
+# Unprotected инбоунд
 INBOUND		%B/in
 
-# Аутбоунд
+# Protected инбоунд.
 PINBOUND	%B/pin
 
 # Стандартые имена конфигов, и указание где они лежат. Если не нравится, то

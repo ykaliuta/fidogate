@@ -1846,102 +1846,102 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 			areasbbs_changed();
 			continue;
 		    }
-		    if( p->zone != node->zone && ((p->zone) > 6 || (node->zone) > 6))
+		    if( p->zone != node->zone && ((p->zone) > 6 || (node->zone) > 6) )
 		    {
 			areafix_printf("%-41s: different zone (Z%d), not added",
-				       p->area, p->zone);
+					p->area, p->zone);
 			continue;
 		    }
 		}
 	    }
 	    
-		if(l->first)
-		{
-		    lon_add(l, node);
-		    areasbbs_changed();
+	    if(l->first)
+	    {
+		lon_add(l, node);
+		areasbbs_changed();
 
-		    sprintf(buffer,"%-41s: ", p->area);
+		sprintf(buffer,"%-41s: ", p->area);
 #ifndef ANSWER_OK
-		    BUF_APPEND(buffer,"subscribed");
+		BUF_APPEND(buffer,"subscribed");
 #else
-		    BUF_APPEND(buffer,"Ok");
+		BUF_APPEND(buffer,"Ok");
 #endif /* ANSWER_OK */
 #ifdef AFSEND_ECHO_STATUS
-		    sprintf(tmp, " Stat: '%s' last msg: %s",p->state, ctime(&p->time));
-		    tmp[strlen(tmp)-1] = 0;
-		    BUF_APPEND(buffer, tmp);
+		sprintf(tmp, " Stat: '%s' last msg: %s",
+			p->state, ctime(&p->time));
+		tmp[strlen(tmp)-1] = 0;
+		BUF_APPEND(buffer, tmp);
 #endif /* AFSEND_ECHO_STATUS */
-		    areafix_printf("%s",buffer);
+		areafix_printf("%s",buffer);
 
 #ifdef SUB_LIMIT
-		    lim_g++;
+		lim_g++;
 #endif /* SUB_LIMIT */
 
-		    if( areasbbs_isstate(p->state, 'U') || 
-		        areasbbs_isstate(p->state, 'P'))
+		if( areasbbs_isstate(p->state, 'U') || 
+		    areasbbs_isstate(p->state, 'P'))
+		{
+		    if((a=uplinks_line_get (areafix, &l->first->node))!=NULL)
 		    {
-			if((a=uplinks_line_get (areafix, &l->first->node))!=NULL)
+			/* Subscribe from uplink */
+			tl_appendf(upl, "%s,%s,%s,%s,+%s",
+				   znf1(&l->first->node),
+				   a->robotname, 
+				   fix_name ? fix_name : areafix_name(),
+				   a->password,
+				   str_upper(p->area));
+
+			areasbbs_chstate(&p->state, "UP", 'W');
+			p->time = time( NULL );
+			
+			if( lon_search(&p->passive, node) )
 			{
-			    /* Subscribe from uplink */
-			    tl_appendf(upl, "%s,%s,%s,%s,+%s",
-				znf1(&l->first->node),
-				a->robotname, 
-				fix_name ? fix_name : areafix_name(),
-			        a->password,
-				str_upper(p->area));
-
-			    areasbbs_chstate(&p->state, "UP", 'W');
-			    p->time = time( NULL );
-
-			    if( lon_search(&p->passive, node) )
-			    {
-				lon_remove(&p->passive, node);
-			    }
-
-			    /* Not subscribed at uplink, print note */
-			    areafix_printf("        (this area is currently not subscribed at uplink %s)", znf1(&l->first->node));
-			    fglog("%s: +%s (not subscribed at uplink, request forwarded)", znfp1(node), p->area);
+			    lon_remove(&p->passive, node);
 			}
-			else
-			{
-			    fglog("WARNING: no entry for uplink %s in uplink\
-			     config file", 
-				    znf1(&l->first->node));
-			    areafix_printf("        Please forward this message to sysop:\r\n"
-					   "        no entry for uplink %s in uplink config file",
-				    znf1(&l->first->node));
 
-			    if(upl == NULL)
-				return DELETE;
-			}
-		    }
-		    else if (areasbbs_isstate(p->state, 'W'))
-		    {
-			/* Subscribed at uplink, but no traffic yet, print note */
-			areafix_printf("        (this area subscribed at uplink %s, but no traffic yet)", znf1(&l->first->node));
-			fglog("%s: +%s (subscribed at uplink, but no traffic yet)",
-			    znfp1(node), p->area);
-		    }
-		    else if (areasbbs_isstate(p->state, 'F') && upl)
-		    {
-			/* Requested from uplink, but no traffic yet, print note */
-			areafix_printf("        (this area requested from uplink %s, but no traffic yet)", znf1(&l->first->node));
-			fglog("%s: +%s (already requested from uplink, but no traffic yet)",
-			    znfp1(node), p->area);
+			/* Not subscribed at uplink, print note */
+			areafix_printf("        (this area is currently not subscribed at uplink %s)", znf1(&l->first->node));
+			fglog("%s: +%s (not subscribed at uplink, request forwarded)", znfp1(node), p->area);
 		    }
 		    else
-			fglog("%s: +%s", znfp1(node), p->area);
+		    {
+			fglog("WARNING: no entry for uplink %s in uplink config file", 
+			      znf1(&l->first->node));
+			areafix_printf("        Please forward this message to sysop:\r\n"
+				       "        no entry for uplink %s in uplink config file",
+				       znf1(&l->first->node));
 
-		    if(!iswc)
-			send_rules(node, str_upper(area));
+			if(upl == NULL)
+			    return DELETE;
+		    }
+		}
+		else if (areasbbs_isstate(p->state, 'W'))
+		{
+		    /* Subscribed at uplink, but no traffic yet, print note */
+		    areafix_printf("        (this area subscribed at uplink %s, but no traffic yet)", znf1(&l->first->node));
+		    fglog("%s: +%s (subscribed at uplink, but no traffic yet)",
+			  znfp1(node), p->area);
+		}
+		else if (areasbbs_isstate(p->state, 'F') && upl)
+		{
+		    /* Requested from uplink, but no traffic yet, print note */
+		    areafix_printf("        (this area requested from uplink %s, but no traffic yet)", znf1(&l->first->node));
+		    fglog("%s: +%s (already requested from uplink, but no traffic yet)",
+			  znfp1(node), p->area);
 		}
 		else
-		{
-		    areafix_printf("%-41s: no uplink, dead area", p->area);
-		    fglog("%s: dead area %s, delete", znfp1(node), p->area);
-		    areasbbs_remove1(p);
-		    areasbbs_changed();
-		}
+		    fglog("%s: +%s", znfp1(node), p->area);
+
+		if(!iswc)
+		    send_rules(node, str_upper(area));
+	    }
+	    else
+	    {
+		areafix_printf("%-41s: no uplink, dead area", p->area);
+		fglog("%s: dead area %s, delete", znfp1(node), p->area);
+		areasbbs_remove1(p);
+		areasbbs_changed();
+	    }
 	}
     }
 
