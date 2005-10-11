@@ -1,5 +1,5 @@
 
-  $Id: README.ru,v 5.4 2005/04/19 17:34:11 anray Exp $
+  $Id: README.ru,v 5.5 2005/10/11 14:23:00 anray Exp $
 
 
    Copyright (C) 2001-2002, Dmitry Fedotov
@@ -587,10 +587,10 @@ SPOOLDIR	/var/spool/fidogate
 # Общий каталог, в котором хранятся инбоунды и аутбоунды.
 BTBASEDIR	/var/spool/bt
 
-# Инбоунд
+# Unprotected инбоунд
 INBOUND		%B/in
 
-# Аутбоунд
+# Protected инбоунд.
 PINBOUND	%B/pin
 
 # Стандартые имена конфигов, и указание где они лежат. Если не нравится, то

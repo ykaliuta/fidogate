@@ -1,5 +1,5 @@
 
-    $Id: FAQ.ru,v 5.3 2005/01/29 19:48:30 anray Exp $
+    $Id: FAQ.ru,v 5.4 2005/10/11 14:23:00 anray Exp $
 
                     Configuration mini-faq
 
@@ -217,7 +217,7 @@ Subject: FIDOGATE
       Оно же для freebsd порта WITHOUT_FMSGID=yes. Тогда fidogate будет
       писать в MSGID полный фидошный Message-ID. Еще рекомендую для
       совместимости с ifmail гейтами в fidogate.conf прописать опцию
-      GateRfcKludge и RFCLevel 2. Это - оптимальные параметры.
+      GateRfcKludge и RFCLevel 1. Это - оптимальные параметры.
       Категорически не рекомендую собирать fidogate для крупного гейта
       без опции --disable-fs-msgid, иначе будут возникать ломанные
       фидошные REPLY и с интернет-стороны невозможно будет пользоваться
