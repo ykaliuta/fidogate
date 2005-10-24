@@ -1,3 +1,9 @@
+2005-10-23  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/toss/ftntoss.c: Added int_uplinks flag.
+	(do_echomail): Added uplinks initing(bug, reported
+	by Pasha.K)
+
 2005-10-11  Andrey Slusar  <anray@users.sourceforge.net>
 
 	* doc/README.ru: Fix PINBOUND description.
