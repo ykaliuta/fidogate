@@ -1846,7 +1846,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 			areasbbs_changed();
 			continue;
 		    }
-		    if( p->zone != node->zone && ((p->zone) > 6 || (node->zone) > 6) )
+		    if( (p->zone) > 6 || (node->zone) > 6)
 		    {
 			areafix_printf("%-41s: different zone (Z%d), not added",
 					p->area, p->zone);

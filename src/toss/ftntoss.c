@@ -111,15 +111,12 @@ char l_flag = FALSE;			/* Create lock file */
 char p_flag = FALSE;			/* -p --passthru */
 
 static char in_dir[MAXPATH];		/* Input directory */
-
-
 static char must_exit = FALSE;		/* Flag for -x operation */
 static int  msg_count = 0;		/* Counter for -m, -x operation */
-
 static int  severe_error = OK;		/* ERROR: exit after error */
-
 static int  signal_exit = FALSE;	/* Flag: TRUE if signal received */
 
+short int   int_uplinks = FALSE;        /* Flag: TRUE if uplinks initialised */
 
 
 /*
@@ -924,7 +921,11 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 	    return OK;
 	}
 
-
+	if(!int_uplinks)
+	{
+	    uplinks_init();
+	    int_uplinks = TRUE;
+	}
 	if( (a = uplinks_line_get(TRUE, &msg->node_from)) )
 	    BUF_COPY5(autocreate_cmd, areaname, " ", autocreate_line, " ", a->options);
 	else
