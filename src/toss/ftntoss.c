@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: ftntoss.c,v 5.3 2005/10/24 22:18:52 anray Exp $
+ * $Id: ftntoss.c,v 5.4 2005/11/16 09:13:49 anray Exp $
  *
  * Toss FTN NetMail/EchoMail
  *
@@ -40,7 +40,7 @@
 
 
 #define PROGRAM 	"ftntoss"
-#define VERSION 	"$Revision: 5.3 $"
+#define VERSION 	"$Revision: 5.4 $"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 
@@ -926,7 +926,8 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 	    uplinks_init();
 	    int_uplinks = TRUE;
 	}
-	if( (a = uplinks_line_get(TRUE, &msg->node_from)) )
+	a = uplinks_line_get(TRUE, &msg->node_from);
+	if(a->options)
 	    BUF_COPY5(autocreate_cmd, areaname, " ", autocreate_line, " ", a->options);
 	else
 	    BUF_COPY3(autocreate_cmd, areaname, " ", autocreate_line);

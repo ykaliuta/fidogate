@@ -1,5 +1,5 @@
 #
-# $Id: acl.sample,v 5.2 2004/11/23 00:50:36 anray Exp $
+# $Id: acl.sample,v 5.3 2005/11/16 09:13:49 anray Exp $
 #
 
 rfc2ftn
@@ -12,7 +12,7 @@ EchoMail
 alex@corex.izhora.spb.ru	*
 *				*
 
-rfc2ftn
+ftn2rfc
 
 NetMail
 2:5074/1229.7			*
