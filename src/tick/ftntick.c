@@ -367,14 +367,19 @@ int process_tic(Tick *tic)
 		int_uplinks = TRUE;
 	    }
 	    
-	    if( (a = uplinks_line_get(FALSE, &tic->from)) )
+	    a = uplinks_line_get(FALSE, &tic->from);
+	    if(a->options)
 	    {
-		tmp = (char*) xmalloc(strlen(tic->area) + strlen(autocreate_line) + strlen(a->options) + 3);
-		sprintf(tmp,"%s %s %s", tic->area, autocreate_line, a->options);
+	        tmp = (char*) xmalloc(strlen(tic->area)
+				      + strlen(autocreate_line)
+				      + strlen(a->options) + 3);
+		sprintf(tmp,"%s %s %s", tic->area,
+			autocreate_line, a->options);
 	    }
 	    else
 	    {
-		tmp = (char*) xmalloc(strlen(tic->area) + strlen(autocreate_line) + 2);
+		tmp = (char*) xmalloc(strlen(tic->area)
+				      + strlen(autocreate_line) + 2);
 		sprintf(tmp, "%s %s", tic->area, autocreate_line);
 	    }
 

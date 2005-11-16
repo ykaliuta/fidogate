@@ -926,7 +926,8 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 	    uplinks_init();
 	    int_uplinks = TRUE;
 	}
-	if( (a = uplinks_line_get(TRUE, &msg->node_from)) )
+	a = uplinks_line_get(TRUE, &msg->node_from);
+	if(a->options)
 	    BUF_COPY5(autocreate_cmd, areaname, " ", autocreate_line, " ", a->options);
 	else
 	    BUF_COPY3(autocreate_cmd, areaname, " ", autocreate_line);
