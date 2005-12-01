@@ -1062,22 +1062,22 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 #else
 	sprintf(buffer,"%s %s %s %s %s %d %s %s %d %s",
 #endif /* !FTN_ACL */
-	    autocreate_script_cmd,
-	    p->area,
-	    znfp1(node),
-	    p->state,
-	    znfp1(&p->addr),
-	    p->lvl,
-	    p->key ? p->key:"NONE", 
-	    p->desc ? p->desc:"NONE",
-	    p->zone,
+		autocreate_script_cmd,
+		p->area,
+		znfp1(node),
+		p->state,
+		znfp1(&p->addr),
+		p->lvl,
+		p->key ? p->key:"NONE", 
+		p->desc ? p->desc:"NONE",
+		p->zone,
 #ifndef FTN_ACL
-	    p->flags & AREASBBS_PASSTHRU ? "-#" : "-",
-	    p->flags & AREASBBS_READONLY ? "-r" : "-");
+		p->flags & AREASBBS_PASSTHRU ? "-#" : "-",
+		p->flags & AREASBBS_READONLY ? "-r" : "-");
 #else
-	    p->flags & AREASBBS_PASSTHRU ? "-#" : "-");
+		p->flags & AREASBBS_PASSTHRU ? "-#" : "-");
 #endif /* !FTN_ACL */
-	if ( (run_system (buffer)) )
+	if( run_system(buffer) )
 	    debug(7,"exec autocreate script %s", buffer);
 	else
 	    fglog("ERROR: failed exec autocreate script %s", buffer);
@@ -1089,7 +1089,7 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
     if (!strcmp(my_context,"ff"))
     {
 
-        for ( s1 = cf_get_string("AutoCreateSubscribeFileechoNodes", TRUE);
+	for ( s1 = cf_get_string("AutoCreateSubscribeFileechoNodes", TRUE);
 	      s1 && *s1;
 	      s1 = cf_get_string("AutoCreateSubscribeFileechoNodes", FALSE) )
 	    {
@@ -1098,8 +1098,8 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 		old.zone = cf_zone();
 		old.net = old.node = old.point = -1;
 
-		for ( s2 = xstrtok( s1, " \t" ); s2 && *s2; s2 = xstrtok( NULL,
-			     " \t" ) )
+		for ( s2 = xstrtok( s1, " \t" ); s2 &&
+			   *s2; s2 = xstrtok( NULL, " \t" ) )
 		    if ( OK == asc_to_node_diff( s2, &node, &old ) )
 		    {
 			old = node;
@@ -1143,7 +1143,7 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
     {
 	debug(8, "config: AutoCreateNG");
 
-	    if ( NULL != (autocreate_area = areas_lookup( p->area, NULL, node)))
+	    if(autocreate_area = areas_lookup( p->area, NULL, node))
 	    {
 		fglog("create newsgroup %s", autocreate_area->group);
 	        BUF_COPY2(buffer, "%N/ngoper create ", autocreate_area->group);
@@ -1215,7 +1215,7 @@ int cmd_listall(Node *node)
 
 #ifdef FTN_ACL
 	if ( (cf_get_string("UplinkCanBeReadonly", TRUE) ||
-	      !lon_is_uplink(&(p->nodes), p->uplinks, node)             ) &&
+	      !lon_is_uplink(&(p->nodes), p->uplinks, node) ) &&
 	     ftnacl_isreadonly(node, p->area, my_type) )
 	{
 	    mark_r = "R";
@@ -1230,18 +1230,18 @@ int cmd_listall(Node *node)
 	if(p->desc)
 #ifndef FTN_ACL
 	    sprintf(buffer,"%s Z%-3d %-39s: %s",
-			   mark, p->zone, p->area, p->desc);
+		    mark, p->zone, p->area, p->desc);
 #else
 	    sprintf(buffer,"%s %s %s Z%-3d %-35s: %s",
-			   mark, mark_r, mark_m, p->zone, p->area, p->desc);
+		    mark, mark_r, mark_m, p->zone, p->area, p->desc);
 #endif /* !FTN_ACL */
 	else
 #ifndef FTN_ACL
 	    sprintf(buffer,"%s Z%-3d %s",
-			   mark, p->zone, p->area);
+		    mark, p->zone, p->area);
 #else
 	    sprintf(buffer,"%s %s %s Z%-3d %s",
-			   mark, mark_r, mark_m, p->zone, p->area);
+		    mark, mark_r, mark_m, p->zone, p->area);
 #endif /* !FTN_ACL */
 #ifdef AFSEND_ECHO_STATUS
 	    sprintf(tmp, "   '%s' %s",p->state, ctime(&p->time));
@@ -1294,10 +1294,10 @@ int cmd_listall(Node *node)
 				hi_write_avail(f2, f1);
 #ifndef FTN_ACL
 				sprintf(buffer,"  Z%-3d %-39s: %s",
-				    (a->uplink).zone, f2, f1);
+					(a->uplink).zone, f2, f1);
 #else
 				sprintf(buffer,"      Z%-3d %-35s: %s",
-				    (a->uplink).zone, f2, f1);
+					(a->uplink).zone, f2, f1);
 #endif /* !FTN_ACL */
 			    }
 			    else
@@ -1305,10 +1305,10 @@ int cmd_listall(Node *node)
 				hi_write_avail(f2, "");
 #ifndef FTN_ACL
 				sprintf(buffer,"  Z%-3d %s", 
-				    (a->uplink).zone, f2);
+					(a->uplink).zone, f2);
 #else
 				sprintf(buffer,"      Z%-3d %s",
-				    (a->uplink).zone, f2);
+					(a->uplink).zone, f2);
 #endif /* !FTN_ACL */
 			    }
 			    areafix_printf("%s",buffer);
@@ -1846,7 +1846,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 			areasbbs_changed();
 			continue;
 		    }
-		    if( (p->zone) > 6 || (node->zone) > 6)
+		    if( (p->zone > 6) || (node->zone > 6) )
 		    {
 			areafix_printf("%-41s: different zone (Z%d), not added",
 					p->area, p->zone);
@@ -1881,7 +1881,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 		if( areasbbs_isstate(p->state, 'U') || 
 		    areasbbs_isstate(p->state, 'P'))
 		{
-		    if((a=uplinks_line_get (areafix, &l->first->node))!=NULL)
+		    if(a=uplinks_line_get (areafix, &l->first->node))
 		    {
 			/* Subscribe from uplink */
 			tl_appendf(upl, "%s,%s,%s,%s,+%s",
