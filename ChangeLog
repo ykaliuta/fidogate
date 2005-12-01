@@ -1,7 +1,7 @@
 2005-11-11  Andrey Slusar  <anray@users.sourceforge.net>
 
 	* src/tick/ftntick.c (process_tic): Fix detecting
-	options from uplinks(thanks to Alexey Illarionov)
+	options from uplinks(thanks to Alexey Illarionov).
 	* src/toss/ftntoss.c (do_echomail): Ditto.
 	* doc/examples/dyff/acl.sample: Fix ftn2rfc acl
 	declaration(thanks to Igor Mitichev).
