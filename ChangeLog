@@ -1,3 +1,7 @@
+2006-02-26  Andrey Slusar  <anray@users.sourceforge.net>
+
+	* src/areafix/areafix.c (cmd_sub): Fix build warning.
+
 2005-11-11  Andrey Slusar  <anray@users.sourceforge.net>
 
 	* src/tick/ftntick.c (process_tic): Fix detecting
