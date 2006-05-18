@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: uplinks.c,v 5.2 2004/11/23 00:50:40 anray Exp $
+ * $Id: uplinks.c,v 5.3 2006/05/18 18:35:08 anray Exp $
  *
  * Read area uplinks list from file. The format is as follows:
  *	ROBOT_TYPE   AREAS   Z:N/F.P   ROBOT_NAME    PASSWORD
@@ -122,13 +122,13 @@ static int uplinks_do_file(char *name)
     debug(14, "Reading uplinks file %s", name);
     
     fp = fopen_expand_name(name, R_MODE_T, FALSE);
-    if(!fp)
+    if(fp == NULL)
 	return ERROR;
     
     while(cf_getline(buffer, BUFFERSIZE, fp))
     {
 	p = uplinks_parse_line(buffer);
-	if(!p)
+	if(p == NULL)
 	    continue;
 	
 	/*
