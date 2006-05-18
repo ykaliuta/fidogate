@@ -122,13 +122,13 @@ static int uplinks_do_file(char *name)
     debug(14, "Reading uplinks file %s", name);
     
     fp = fopen_expand_name(name, R_MODE_T, FALSE);
-    if(!fp)
+    if(fp == NULL)
 	return ERROR;
     
     while(cf_getline(buffer, BUFFERSIZE, fp))
     {
 	p = uplinks_parse_line(buffer);
-	if(!p)
+	if(p == NULL)
 	    continue;
 	
 	/*

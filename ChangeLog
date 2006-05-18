@@ -1,3 +1,13 @@
+2006-05-09  Andrey Slusar  <anrays@gmail.com>
+
+	======= Release 5.2.3ds ========================
+	------- CVS tag R523 ---------------------------
+	* version.h (PATCHLEVEL): Bump to 5.2.3ds.
+	* configure.in: Update my email address, bump to
+	5.2.3ds.
+	* Makefile.am (installdirs): Add needed spaces
+	(thanks to Evgeniy Kozhuhovskiy).
+
 2006-02-26  Andrey Slusar  <anray@users.sourceforge.net>
 
 	* src/areafix/areafix.c (cmd_sub): Fix build warning.
