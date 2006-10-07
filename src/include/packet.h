@@ -95,10 +95,10 @@ typedef struct
     int attr;					/* Attribute flags */
     int cost;					/* Cost */
     time_t date;				/* Date */
-    char name_to[MSG_MAXNAME];			/* To name */
-    char name_from[MSG_MAXNAME];		/* From name */
-    char subject[MSG_MAXSUBJ];			/* Subject */
+    unsigned char name_to[MSG_MAXNAME];		/* To name */
+    unsigned char name_from[MSG_MAXNAME];	/* From name */
+    unsigned char subject[MSG_MAXSUBJ];		/* Subject */
 
-    char *area;					/* EchoMail area or NULL */
+    unsigned char *area;			/* EchoMail area or NULL */
 }
 Message;

@@ -50,8 +50,8 @@ Subject: FIDOGATE
 
   Для полноценной работы фидогейта необходим MTA, ньюссервер, ньюсочиталка,
   читалка мейла, фидошный мейлер. В данном FAQ будет рассмотрена настройка
-  ньюссерверов inn и leafnode и MTA postfix и exim в совместной работе с
-  FIDOGATE. Прежде всего нужно определиться с выбором какой ньюссервер и
+  ньюссерверов inn, leafnode, s-news и MTA postfix, exim в совместной работе
+  с FIDOGATE. Прежде всего нужно определиться с выбором какой ньюссервер и
   МТА вы будете использовать.
 
 -----------------------------------------------------------------------------
@@ -265,7 +265,7 @@ Subject: FIDOGATE
   Патчи дают дополнительные возможности. В том числе если вы пользуетесь newsstar,
   то они вам понадобятся. Порт s-news FreeBSD уже содержит эти патчи.
 
-   Компилируем, налаживаем патчи, если у вас inetd, то прописываем s-news в
+   Компилируем, накладываем патчи, если у вас inetd, то прописываем s-news в
   inetd.conf:
   ===
   nntp stream tcp nowait news:news /usr/local/sbin/nntpd nntpd
@@ -295,7 +295,7 @@ Subject: FIDOGATE
   localhost rpx
   ===
   Разрешаем через stdin и локалхост постить артикли.
-  Делаем makehistory для создания history.
+  Запускаем makehistory для создания history.
 
 -------------------------------------------------------------------------------
 
@@ -648,7 +648,7 @@ Subject: FIDOGATE
   настройка s-news:
   Правим fidogate.conf:
   ===
-  INN_BATCHDIR    /usr/local/etc/s-news/suck/fidogate
+  INN_BATCHDIR    /usr/local/etc/s-news/suck
   NEWSVARDIR      /usr/local/etc/s-news
   NEWSLIBDIR      /usr/local/etc/s-news
   NEWSBINDIR      /usr/local/sbin

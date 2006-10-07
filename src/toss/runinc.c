@@ -525,7 +525,7 @@ int toss_init(void)
 	    if(mkdir(buffer, 0750) == -1)
 	    {
 		fglog("$ERROR: can't create directory %s", buffer);
-		return;
+		return ERROR;
 	    }
 	    else
 	    {
@@ -535,7 +535,7 @@ int toss_init(void)
 	}
     }
 
-    return;
+    return 0;
 }
 
 /*

@@ -57,8 +57,8 @@ static char areas_x_g[256];		/* Newsgroup -> area */
  */
 static void areas_init_xlate(void)
 {
-    char *cf, *x_a, *x_g;
-    unsigned char *p, *q;
+    char *cf;
+    unsigned char *x_a, *x_g, *p, *q;
     
     for ( cf = cf_get_string("AreasXlate", TRUE);
 	  cf && *cf;
