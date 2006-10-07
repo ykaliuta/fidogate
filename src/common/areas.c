@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: areas.c,v 5.2 2004/11/23 00:50:40 anray Exp $
+ * $Id: areas.c,v 5.3 2006/10/07 18:19:56 anray Exp $
  *
  * Area <-> newsgroups conversion
  *
@@ -57,8 +57,8 @@ static char areas_x_g[256];		/* Newsgroup -> area */
  */
 static void areas_init_xlate(void)
 {
-    char *cf, *x_a, *x_g;
-    unsigned char *p, *q;
+    char *cf;
+    unsigned char *x_a, *x_g, *p, *q;
     
     for ( cf = cf_get_string("AreasXlate", TRUE);
 	  cf && *cf;

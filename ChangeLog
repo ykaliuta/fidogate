@@ -1,3 +1,11 @@
+2006-10-07  Andrey Slusar  <anrays@gmail.com>
+
+	* src/toss/runinc.c (toss_init): Fix return values.
+	* src/include/packet.h (struct): Fix types for name_to,
+	name_from, subject.
+	* src/common/areas.c (areas_init_xlate): Fix types
+	for x_a and x_g.
+
 2006-05-09  Andrey Slusar  <anrays@gmail.com>
 
 	======= Release 5.2.3ds ========================

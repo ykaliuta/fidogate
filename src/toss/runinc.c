@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: runinc.c,v 5.2 2004/11/23 00:50:41 anray Exp $
+ * $Id: runinc.c,v 5.3 2006/10/07 18:19:56 anray Exp $
  *
  * Processing inbound packets
  *
@@ -62,7 +62,7 @@
 #endif
 
 #define PROGRAM		"runinc"
-#define VERSION		"$Revision: 5.2 $"
+#define VERSION		"$Revision: 5.3 $"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 void* subs(char *str,char *macro,char *expand);
@@ -525,7 +525,7 @@ int toss_init(void)
 	    if(mkdir(buffer, 0750) == -1)
 	    {
 		fglog("$ERROR: can't create directory %s", buffer);
-		return;
+		return ERROR;
 	    }
 	    else
 	    {
@@ -535,7 +535,7 @@ int toss_init(void)
 	}
     }
 
-    return;
+    return 0;
 }
 
 /*
