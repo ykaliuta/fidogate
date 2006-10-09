@@ -1,3 +1,10 @@
+2006-10-10  Andrey Slusar  <anrays@gmail.com>
+
+	* src/common/lock.c: Fix stale locks detecting(patch
+	from Zhenya Kaluta, tested by Evgeniy Kozhuhovskiy).
+	* src/common/log.c: Fix tossing(patch from Zhenya
+	Kaluta, tested by Evgeniy Kozhuhovskiy).
+
 2006-10-07  Andrey Slusar  <anrays@gmail.com>
 
 	* src/toss/runinc.c (toss_init): Fix return values.

@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: log.c,v 5.2 2004/11/23 00:50:40 anray Exp $
+ * $Id: log.c,v 5.3 2006/10/09 21:32:21 anray Exp $
  *
  * Log and debug functions
  *
@@ -147,7 +147,8 @@ void fglog(const char *fmt, ...)
 	}
 
 	/* if verbose is set, print also to debugfile (without date) */
-	if (verbose)
+	/* This code now is breaks work */
+/*	if (verbose)
 	{
 	    if(!debugfile)
 		debugfile = stderr;
@@ -158,7 +159,7 @@ void fglog(const char *fmt, ...)
 		fprintf(debugfile, " (errno=%d: %s)", errno, strerror(errno));
 	    fprintf(debugfile, "\n");
 	    fflush(debugfile);
-	}
+	} */
 #if defined(HAVE_SYSLOG) && defined(HAVE_SYSLOG_H)
     }
 #endif	
