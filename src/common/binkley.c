@@ -181,7 +181,7 @@ int bink_bsy_create(Node *node, int wait)
 # ifdef NFS_SAFE_LOCK_FILES
     return lock_lockfile_nfs(name, wait, NULL);
 # else
-    return lock_lockfile_id(name, wait, NULL);
+    return lock_lockfile(name, wait);
 # endif
 #else
     return OK;

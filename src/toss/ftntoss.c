@@ -467,7 +467,7 @@ int toss_echomail(Message *msg, MsgBody *body, LON *seenby, LON *path,
 {
     LNode *p;
     FILE *fp;
-    Textlist save;
+    Textlist save = { NULL, NULL, 0 };
     char is_saved;
     
     for(p=nodes->first; p; p=p->next)

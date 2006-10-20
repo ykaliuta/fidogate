@@ -34,6 +34,11 @@
 
 #include <signal.h>
 #include <sys/types.h>
+#include <errno.h>
+
+#define LOCKFILE_UNLOCKED	0
+#define LOCKFILE_LOCKED		1
+#define LOCKFILE_ERROR		-1
 
 /*
  * May be there is as stale lock?
@@ -44,38 +49,31 @@ int check_stale_lock(char *name)
     pid_t pid;
     FILE *fp;
 
-    if((fp = fopen(name,"r")))
+    if((fp = fopen(name,"r")) == NULL)
     {
-    	fgets(buff,sizeof(buff),fp);
-	if(strlen(buff) > 0)
-	    pid=(pid_t) atoi(buff);
-	else
-	    pid = -1;
-    	fclose(fp);
-
-        if(pid < 2 || sizeof(buff) == 0 || (kill(pid, 0) == -1 && errno == ESRCH))
-        {
-    		fglog("$WARNING: stale lock file %s (pid = %d) found", name, pid);
-
-	        if (unlink(name) != 0)
-	        {
-		    debug(7, "Deleteting stale lock file %s failed.",name);
-            	    return ERROR;
-	        }
-	        else
-	        {
-            	    return 1;
-		}
-        }
-        else
-        {
-            return 2;
-        }
+	 if(errno == ENOENT)
+	      return LOCKFILE_UNLOCKED;
+	 else
+	      return LOCKFILE_ERROR;
     }
+    fgets(buff,sizeof(buff),fp);
+    fclose(fp);
+
+    if(strlen(buff) > 0)
+	 pid=(pid_t) atoi(buff);
     else
+	 pid = -1;
+
+    if(kill(pid, 0) == 0 || errno == EPERM)
+	 return LOCKFILE_LOCKED;
+    
+    fglog("$WARNING: stale lock file %s (pid = %d) found", name, pid);
+    if (unlink(name) != 0)
     {
-        return 0;
+	 debug(7, "Deleteting stale lock file %s failed.", name);
+	 return LOCKFILE_ERROR;
     }
+    return LOCKFILE_UNLOCKED;
 }
 
 /*
@@ -279,14 +277,12 @@ int unlock_lockfile_nfs(char *name)
 #else /**!NFS_SAFE_LOCKFILES**/
 /*
  * Create lock file with PID (id==NULL) or arbitrary string (id!=NULL)
+ * Update: id != NULL lock is removed, is not used
  */
-int lock_lockfile_id(char *name, int wait, char *id)
+int lock_lockfile(char *name, int wait)
 {
-    FILE *fp;
+    FILE *fp = NULL;
     short int wait_time = FALSE;
-    struct stat statbuf;
-    int res = 0;
-    int slock_state = 0;
     short int exists_lock = FALSE;
     
     if (wait && wait != WAIT)
@@ -296,32 +292,25 @@ int lock_lockfile_id(char *name, int wait, char *id)
     debug(7, "Creating lock file %s ...", name);
     do
     {
-        exists_lock = FALSE;
-	res = stat(name, &statbuf);
-	if(!res)
-	{
-	    if((id == NULL) && ((slock_state = check_stale_lock(name)) == 0))
-	    {
-		debug(7, "Lock exists %s", slock_state);
-		exists_lock = TRUE;
-	    }
-	    else
-		unlink(name);
-	}
-	if(!exists_lock)
-	{
-	    if((fp = fopen(name, "w")))
-	    {
-		if(id)
-		    fprintf(fp, "%s\n", id);
-		else
-		    fprintf(fp, "%d\n", (int)getpid());
-		fclose(fp);
-		return OK;
-	    }
-	}
+	 /* if there is a stale lock, this function will remove it */
+	 switch(check_stale_lock(name))
+	 {
+	 case LOCKFILE_UNLOCKED:
+	      if((fp = fopen(name, "w")) == NULL)
+		   return ERROR;
+	      fprintf(fp, "%d\n", (int)getpid());
+	      fclose(fp);
+	      return OK;
 
+	 case LOCKFILE_LOCKED:
+	      debug(7, "Lock exists %s", name);
+	      exists_lock = TRUE;
+	      break;
 
+	 default:
+	      return ERROR;
+	 }
+	 
 	if(wait > 0)
 	{
 	    if(wait_time)
@@ -357,22 +346,6 @@ int unlock_lockfile(char *name)
 
 
 
-/*
- * Create lock file for program in SPOOLDIR/LOCKS
- */
-int lock_program_id(char *name, int wait, char *id)
-{
-    char buf[MAXPATH];
-
-    BUF_COPY3(buf, cf_p_lockdir(), "/", name);
-
-#ifdef NFS_SAFE_LOCK_FILES
-    return lock_lockfile_nfs(buf, wait, id);
-#else
-    return lock_lockfile_id(buf, wait, id);
-#endif
-}
-
 
 int lock_program(char *name, int wait)
 {
@@ -383,7 +356,7 @@ int lock_program(char *name, int wait)
 #ifdef NFS_SAFE_LOCK_FILES
     return lock_lockfile_nfs(buf, wait, NULL);
 #else
-    return lock_lockfile_id(buf, wait, NULL);
+    return lock_lockfile(buf, wait);
 #endif
 }
 
@@ -415,7 +388,7 @@ int lock_path(char *path, int wait)
 #  ifdef NFS_SAFE_LOCK_FILES
     return lock_lockfile_nfs(xpath, wait, NULL);
 #  else
-    return lock_lockfile_id(xpath, wait, NULL);
+    return lock_lockfile(xpath, wait);
 #  endif
 }
 

@@ -855,7 +855,7 @@ int do_repack(char *dir, char *wildcard, int repack_time)
 # ifdef NFS_SAFE_LOCK_FILES
     if(lock_lockfile_nfs(buf, NOWAIT, NULL) == ERROR)
 # else
-    if(lock_lockfile_id(buf, NOWAIT, NULL) == ERROR)
+    if(lock_lockfile(buf, NOWAIT) == ERROR)
 # endif
 	continue;
 #endif /* DO_BSY_FILES */
