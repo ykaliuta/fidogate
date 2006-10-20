@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: ftnroute.c,v 5.2 2004/11/23 00:50:41 anray Exp $
+ * $Id: ftnroute.c,v 5.3 2006/10/20 10:18:11 anray Exp $
  *
  * Route FTN NetMail/EchoMail
  *
@@ -39,7 +39,7 @@
 
 
 #define PROGRAM 	"ftnroute"
-#define VERSION 	"$Revision: 5.2 $"
+#define VERSION 	"$Revision: 5.3 $"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 
@@ -855,7 +855,7 @@ int do_repack(char *dir, char *wildcard, int repack_time)
 # ifdef NFS_SAFE_LOCK_FILES
     if(lock_lockfile_nfs(buf, NOWAIT, NULL) == ERROR)
 # else
-    if(lock_lockfile_id(buf, NOWAIT, NULL) == ERROR)
+    if(lock_lockfile(buf, NOWAIT) == ERROR)
 # endif
 	continue;
 #endif /* DO_BSY_FILES */
