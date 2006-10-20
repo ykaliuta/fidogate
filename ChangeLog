@@ -1,5 +1,7 @@
 2006-10-20  Andrey Slusar  <anrays@gmail.com>
 
+	* src/toss/ftntoss.c: Fix checking NULL entry in areas
+	(patch from Yauheni Kaliuta).
 	* src/common/areas.c (areas_init_xlate): correct types
 	for x_a and x_g(patch from Yauheni Kaliuta).
 	* src/common/binkley.c:
