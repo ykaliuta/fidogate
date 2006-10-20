@@ -2,6 +2,11 @@
   cvs -z3 -d:pserver:anonymous@cvs.rusfidogate.sourceforge.net:/cvsroot/rusfidogate \
   co fidogate-sta
 
+Version 5.2.3ds
+~~~~~~~~~~~~~~~
+- Переписана система лочек - теперь id-ы не используются(спасибо Евгению
+  Калюте).
+
 Version 5.2.1ds
 ~~~~~~~~~~~~~~~
 - Убрана опция AllowEmptyPwd, по причине того, что она ломает использование
