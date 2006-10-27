@@ -1035,9 +1035,9 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 
 	    /* Compute CRC for strings from, to, subject */
 	    crc32_init();
-	    crc32_compute(msg->name_from, strlen(msg->name_from));
-	    crc32_compute(msg->name_to  , strlen(msg->name_to  ));
-	    crc32_compute(msg->subject  , strlen(msg->subject  ));
+	    crc32_compute((unsigned char *)msg->name_from, strlen(msg->name_from));
+	    crc32_compute((unsigned char *)msg->name_to  , strlen(msg->name_to  ));
+	    crc32_compute((unsigned char *)msg->subject  , strlen(msg->subject  ));
 
 	    str_printf(buffer, sizeof(buffer), "%s NOMSGID: %s %s %08lx",
 		       area->area, znfp1(&msg->node_orig),

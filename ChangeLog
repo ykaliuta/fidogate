@@ -1,3 +1,10 @@
+2006-10-27  Andrey Slusar  <anrays@gmail.com>
+
+	* src/common/msgid.c:
+	* src/include/packet.h:
+	* src/toss/ftntoss.c:
+	areas, name_from, name_to, subject is char types.
+
 2006-10-20  Andrey Slusar  <anrays@gmail.com>
 
 	* Changes.ru: add entry for locking without id's.
