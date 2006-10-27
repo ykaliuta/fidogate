@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: ftntoss.c,v 5.6 2006/10/20 10:54:26 anray Exp $
+ * $Id: ftntoss.c,v 5.7 2006/10/27 09:22:58 anray Exp $
  *
  * Toss FTN NetMail/EchoMail
  *
@@ -40,7 +40,7 @@
 
 
 #define PROGRAM 	"ftntoss"
-#define VERSION 	"$Revision: 5.6 $"
+#define VERSION 	"$Revision: 5.7 $"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 
@@ -1035,9 +1035,9 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 
 	    /* Compute CRC for strings from, to, subject */
 	    crc32_init();
-	    crc32_compute(msg->name_from, strlen(msg->name_from));
-	    crc32_compute(msg->name_to  , strlen(msg->name_to  ));
-	    crc32_compute(msg->subject  , strlen(msg->subject  ));
+	    crc32_compute((unsigned char *)msg->name_from, strlen(msg->name_from));
+	    crc32_compute((unsigned char *)msg->name_to  , strlen(msg->name_to  ));
+	    crc32_compute((unsigned char *)msg->subject  , strlen(msg->subject  ));
 
 	    str_printf(buffer, sizeof(buffer), "%s NOMSGID: %s %s %08lx",
 		       area->area, znfp1(&msg->node_orig),

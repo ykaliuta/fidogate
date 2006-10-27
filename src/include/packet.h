@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: packet.h,v 5.3 2006/10/07 18:19:56 anray Exp $
+ * $Id: packet.h,v 5.4 2006/10/27 09:22:58 anray Exp $
  *
  * Packet structure
  *
@@ -95,10 +95,10 @@ typedef struct
     int attr;					/* Attribute flags */
     int cost;					/* Cost */
     time_t date;				/* Date */
-    unsigned char name_to[MSG_MAXNAME];		/* To name */
-    unsigned char name_from[MSG_MAXNAME];	/* From name */
-    unsigned char subject[MSG_MAXSUBJ];		/* Subject */
+    char name_to[MSG_MAXNAME];			/* To name */
+    char name_from[MSG_MAXNAME];		/* From name */
+    char subject[MSG_MAXSUBJ];			/* Subject */
 
-    unsigned char *area;			/* EchoMail area or NULL */
+    char *area;					/* EchoMail area or NULL */
 }
 Message;

@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: msgid.c,v 5.2 2004/11/23 00:50:40 anray Exp $
+ * $Id: msgid.c,v 5.3 2006/10/27 09:22:58 anray Exp $
  *
  * MSGID <-> Message-ID conversion handling. See also ../doc/msgid.doc
  *
@@ -265,9 +265,9 @@ char *s_msgid_default(Message *msg)
      * Compute CRC for strings from, to, subject
      */
     crc32_init();
-    crc32_compute(msg->name_from, strlen(msg->name_from));
-    crc32_compute(msg->name_to  , strlen(msg->name_to  ));
-    crc32_compute(msg->subject  , strlen(msg->subject  ));
+    crc32_compute((unsigned char *)msg->name_from, strlen(msg->name_from));
+    crc32_compute((unsigned char *)msg->name_to  , strlen(msg->name_to  ));
+    crc32_compute((unsigned char *)msg->subject  , strlen(msg->subject  ));
 
     return s_printf("<NOMSGID_%d=3A%d=2F%d.%d_%s_%08lx@%s>",
 		    msg->node_orig.zone, msg->node_orig.net,
