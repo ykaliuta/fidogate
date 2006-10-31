@@ -102,6 +102,7 @@ typedef struct st_area {	/* Area/newsgroup entry with options */
 #define AREA_HIERARCHY	32	/* -H  Area/group names match entire hierar. */
 #define AREA_NO		64	/* -!  Don't gate area/group */
 #define AREA_QP		128	/* -Q  Use quoted-printable ISO-8859-1 */
+#define AREA_HB64	256	/* -b  Use base64 to encode headers */
 
 
 

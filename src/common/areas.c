@@ -228,8 +228,20 @@ Area *areas_parse_line(char *buf)
 		tl_append(&p->x_hdr, o);
 	if(!strcmp(o, "-8"))
 	    p->flags |= AREA_8BIT;
+
+/* do not use b64 and qp in the same time */
 	if(!strcmp(o, "-Q"))
-	    p->flags |= AREA_QP;
+        {
+            p->flags |= AREA_QP;
+            p->flags &= AREA_HB64;
+        }
+            
+	if(!strcmp(o, "-b"))
+        {
+	    p->flags |= AREA_HB64;
+            p->flags &= ~AREA_QP;
+        }
+            
 	if(!strcmp(o, "-C"))
 	    /* -C DEF:IN:OUT */
 	    if((o = xstrtok(NULL, " \t")))

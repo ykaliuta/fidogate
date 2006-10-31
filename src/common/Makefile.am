@@ -85,7 +85,8 @@ SRC	   = acl.c \
 	    uplinks.c \
 	    version.c \
 	    wildmat.c \
-	    xalloc.c
+	    xalloc.c \
+	    xstrlen.c
 
 distclean-am:
 	rm -f cf_* parsedate.c parsedate.h
