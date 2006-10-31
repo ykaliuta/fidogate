@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: ftn2rfc.c,v 5.3 2005/01/29 19:48:31 anray Exp $
+ * $Id: ftn2rfc.c,v 5.4 2006/10/31 21:06:02 anray Exp $
  *
  * Convert FTN mail packets to RFC mail and news batches
  *
@@ -39,7 +39,7 @@
 
 
 #define PROGRAM 	"ftn2rfc"
-#define VERSION 	"$Revision: 5.3 $"
+#define VERSION 	"$Revision: 5.4 $"
 #define CONFIG		DEFAULT_CONFIG_GATE
 
 
@@ -119,6 +119,7 @@ static int no_address_in_to_field = FALSE;
 /* Character conversion */
 static int netmail_8bit = FALSE;
 static int netmail_qp   = FALSE;
+static int netmail_hb64 = FALSE;
 
 /* Use FTN to address (cvt to Internet address) for mail_to */
 static int use_ftn_to_address = FALSE;
@@ -139,6 +140,18 @@ static char *netmail_charset_out = NULL;
 static char *news_path_tail = "fidogate!not-for-mail";
 static short int ignore_chrs 	= FALSE;
 static short int ignore_soft_cr	= FALSE;
+
+static int is_7bit(char *buffer, size_t len) {
+     int i;
+     
+     if(buffer == NULL)
+	  return TRUE;
+
+     for(i = 0; i < len; i++)
+	  if(buffer[i] & 0x80)
+	       return FALSE;
+     return TRUE;
+}
 
 
 /*
@@ -478,7 +491,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
     int ret;
     int rfc_lvl, rfc_lines;
     char *split_line;
-    int cvt8 = 0;			/* AREA_8BIT | AREA_QP */
+    int cvt8 = 0;			/* AREA_8BIT | AREA_QP | AREA_HB64 */
     char *cs_def, *cs_in, *cs_out;	/* Charset def, in(=FTN), out(=RFC) */
     char *cs_save;
     MIMEInfo *mime;
@@ -645,7 +658,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	 */
 	if( (area = news_msg(body.area, &msg.node_to)) )
 	{
-	    cvt8 = area->flags & (AREA_8BIT | AREA_QP);
+	    cvt8 = area->flags & (AREA_8BIT | AREA_QP | AREA_HB64);
 	    
 	    /* Set AKA according to area's zone */
 	    cf_set_zone(area->zone);
@@ -680,7 +693,9 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    if(netmail_8bit)
 		cvt8 |= AREA_8BIT;
 	    if(netmail_qp)
-		cvt8 |= AREA_QP;
+                cvt8 |= AREA_QP;
+            if(netmail_hb64)
+                cvt8 |= AREA_HB64;
 	    
 	    /* Set AKA according to sender's zone */
 	    cf_set_zone(msg.node_orig.zone!=-1 
@@ -1322,9 +1337,19 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	
 	if ( NULL == msgbody_rfc_subject )
 	{
+            char *tmpbuf;
 	    msg_xlate_line(buffer, sizeof(buffer), msg.subject,
 			   cvt8 & AREA_QP, ignore_soft_cr);
-	    tl_appendf(&theader, "Subject: %s\n", buffer);
+            if((! is_7bit(buffer, strlen(buffer))) && (cvt8 & AREA_HB64))
+            {
+                mime_enheader(&tmpbuf, buffer, strlen(buffer), cs_out);
+                tl_appendf(&theader, "Subject: %s\n", tmpbuf);
+                xfree(tmpbuf);
+            }
+            else
+            {
+                tl_appendf(&theader, "Subject: %s\n", buffer);
+            }
 	}
 	else
 	{
@@ -1986,11 +2011,18 @@ int main(int argc, char **argv)
 	debug(8, "config: NetMail8bit");
 	netmail_8bit = TRUE;
     }
+    if(cf_get_string("NetMailHeadersBase64", TRUE))
+    {
+	debug(8, "config: NetMailHeadersBase64");
+	netmail_hb64 = TRUE;
+        netmail_qp = FALSE;
+    }
     if(cf_get_string("NetMailQuotedPrintable", TRUE) ||
        cf_get_string("NetMailQP", TRUE)                )
     {
 	debug(8, "config: NetMailQP");
 	netmail_qp = TRUE;
+        netmail_hb64 = FALSE;
     }
     if(cf_get_string("UseFTNToAddress", TRUE))
     {

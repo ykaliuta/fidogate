@@ -1,3 +1,15 @@
+2006-10-31  Andrey Slusar  <anrays@gmail.com>
+
+	* src/common/Makefile.am:
+	* src/common/areas.c:
+	* src/common/mime.c:
+	* src/common/xstrnlen.c(new file):
+	* src/gate/ftn2rfc.c:
+	* src/include/prototypes.h:
+	* src/include/structs.h:
+	Add and implement option NetMailHeadersBase64, fix 
+	decode headers(patch from Zhenja Kaliuta).
+
 2006-10-27  Andrey Slusar  <anrays@gmail.com>
 
 	* src/common/msgid.c:

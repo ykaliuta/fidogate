@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: structs.h,v 5.2 2004/11/23 00:50:41 anray Exp $
+ * $Id: structs.h,v 5.3 2006/10/31 21:06:02 anray Exp $
  *
  * An assortment of FIDOGATE data structure definitions
  *
@@ -102,6 +102,7 @@ typedef struct st_area {	/* Area/newsgroup entry with options */
 #define AREA_HIERARCHY	32	/* -H  Area/group names match entire hierar. */
 #define AREA_NO		64	/* -!  Don't gate area/group */
 #define AREA_QP		128	/* -Q  Use quoted-printable ISO-8859-1 */
+#define AREA_HB64	256	/* -b  Use base64 to encode headers */
 
 
 

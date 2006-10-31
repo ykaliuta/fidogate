@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: prototypes.h,v 5.3 2006/10/20 10:18:11 anray Exp $
+ * $Id: prototypes.h,v 5.4 2006/10/31 21:06:02 anray Exp $
  *
  * Prototypes for functions in libfidogate.a
  *
@@ -354,6 +354,7 @@ int	msg_parse_msgid		(char *, Node *);
 
 char   *mime_dequote		(char *, size_t, char *, int);
 char   *mime_deheader		(char *, size_t, char *);
+int    mime_enheader		(char **, unsigned char *, size_t, char *);
 
 /* misc.c */
 char   *str_change_ext		(char *, size_t, char *, char *);
@@ -680,3 +681,6 @@ char   *strsave2		(char *, char *);
 void	exit_free		(void);
 
 MIMEInfo *get_mime		(char *, char *, char *);
+
+/* xstrnlen.c */
+size_t	xstrnlen		(const char *, size_t);

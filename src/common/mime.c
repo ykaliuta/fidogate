@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: mime.c,v 5.2 2004/11/23 00:50:40 anray Exp $
+ * $Id: mime.c,v 5.3 2006/10/31 21:06:02 anray Exp $
  *
  * MIME stuff
  *
@@ -123,7 +123,8 @@ char *mime_dequote(char *d, size_t n, char *s, int flags)
 #define MIME_HEADER_CODE_MIDDLE_QP	"?Q?"
 #define MIME_HEADER_CODE_MIDDLE_B64	"?B?"
 #define MIME_HEADER_CODE_END	"?="
-
+#define MIME_HEADER_STR_DELIM	"\r\n "
+#define MIME_STRING_LIMIT 74
 /* A..Z -- 0x00..0x19
  * a..z -- 0x1a..0x33
  * 0..9 -- 0x34..0x3d
@@ -142,6 +143,21 @@ int mime_b64toint(char c)
     else                               return ERROR;
 }
 
+char mime_inttob64(int a)
+{
+    char c = (char)(a & 0x0000003f);
+    if(c <= 0x19)
+        return c + 'A';
+    if(c <= 0x33)
+        return c - 0x1a + 'a';
+    if(c <= 0x3d)
+        return c - 0x34 + '0';
+    if(c == 0x3e)
+        return '+';
+    else
+        return '/';
+}
+
 int mime_qptoint(char c)
 {
          if (('0' <= c) && ('9' >= c)) return (       c - '0');
@@ -149,6 +165,100 @@ int mime_qptoint(char c)
     else if (('a' <= c) && ('f' >= c)) return (0x0a + c - 'a');
     else                               return ERROR;
 }
+
+#define B64_ENC_CHUNK 3
+#define B64_NLET_PER_CHUNK 4
+#define B64_MAX_ENC_LEN 31
+
+int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
+{
+    int buflen, delimlen = 0;
+    char *buf = NULL;
+    int padding;
+    int i;
+    int outpos = 0;
+    char *delim = NULL;
+    
+    padding = (B64_ENC_CHUNK - len % B64_ENC_CHUNK) % B64_ENC_CHUNK;
+    
+    /* Round it up and find len
+     * (here (val) *  B64_ENC_CHUNK * B64_NLET_PER_CHUNK / B64_ENC_CHUNK )*/
+    buflen = ((len + (B64_ENC_CHUNK - 1)) / B64_ENC_CHUNK )  * B64_NLET_PER_CHUNK + 1; 
+    
+    if(encoding == NULL)
+    {
+        delimlen = strlen(MIME_HEADER_STR_DELIM);
+    }
+    else
+    {
+        delimlen = strlen(MIME_HEADER_CODE_START)
+            + xstrnlen(encoding, B64_MAX_ENC_LEN)
+            + strlen(MIME_HEADER_CODE_MIDDLE_B64)
+            + strlen(MIME_HEADER_CODE_END);
+        buflen += delimlen;
+        delimlen += strlen(MIME_HEADER_STR_DELIM);
+    }
+
+    if((delim = xmalloc(delimlen + 1)) == NULL)
+        return ERROR;
+
+    buflen += (buflen / MIME_STRING_LIMIT) * delimlen;
+    
+    if((buf = xmalloc(buflen)) == NULL)
+    {
+        xfree(delim);
+        return ERROR;
+    }
+
+    memset(buf, 0, buflen);
+    delim[0] = '\0';
+
+    *dst = buf;
+    
+    if(encoding == NULL)
+    {
+        strcpy(delim, MIME_HEADER_STR_DELIM);
+    }
+    else
+    {
+        strcat(buf, MIME_HEADER_CODE_START);
+        strncat(buf, encoding, B64_MAX_ENC_LEN);
+        strcat(buf, MIME_HEADER_CODE_MIDDLE_B64);
+        outpos += strlen(buf);
+
+        strcat(delim, MIME_HEADER_CODE_END);
+        strcat(delim, MIME_HEADER_STR_DELIM);
+        strcat(delim, buf);
+    }
+
+    len += padding; 
+
+    for(i = 0; i < len; i += 3)
+    {
+        if((outpos % MIME_STRING_LIMIT) < 4 )
+        {
+            strcat(buf+outpos, delim);
+            outpos += delimlen;
+        }
+        /*
+          Use this set of shifts, because loop and pointer is
+          endian-dependend way
+        */
+        buf[outpos++] = mime_inttob64(src[i] >> 2);
+        buf[outpos++] = mime_inttob64((src[i] << 4) | (src[i+1] >> 4));
+        buf[outpos++] = mime_inttob64((src[i+1] << 2) | (src[i+2] >> 6));
+        buf[outpos++] = mime_inttob64(src[i+2]);
+    }
+    while(padding > 0)
+        buf[outpos - padding--] = '=';
+
+    if(encoding != NULL)
+        strcat(buf, MIME_HEADER_CODE_END);
+
+    xfree(delim);
+    return OK;
+}
+
 
 int mime_b64_decode(char **dst, char *src, size_t len)
 {

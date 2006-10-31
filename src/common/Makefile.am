@@ -1,5 +1,5 @@
 #
-#    $Id: Makefile.am,v 5.2 2004/11/23 00:50:40 anray Exp $
+#    $Id: Makefile.am,v 5.3 2006/10/31 21:06:02 anray Exp $
 #
 #    Makefile for FIDOGATE src/common/
 #
@@ -85,7 +85,8 @@ SRC	   = acl.c \
 	    uplinks.c \
 	    version.c \
 	    wildmat.c \
-	    xalloc.c
+	    xalloc.c \
+	    xstrlen.c
 
 distclean-am:
 	rm -f cf_* parsedate.c parsedate.h

@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: areas.c,v 5.4 2006/10/20 10:18:11 anray Exp $
+ * $Id: areas.c,v 5.5 2006/10/31 21:06:02 anray Exp $
  *
  * Area <-> newsgroups conversion
  *
@@ -228,8 +228,20 @@ Area *areas_parse_line(char *buf)
 		tl_append(&p->x_hdr, o);
 	if(!strcmp(o, "-8"))
 	    p->flags |= AREA_8BIT;
+
+/* do not use b64 and qp in the same time */
 	if(!strcmp(o, "-Q"))
-	    p->flags |= AREA_QP;
+        {
+            p->flags |= AREA_QP;
+            p->flags &= AREA_HB64;
+        }
+            
+	if(!strcmp(o, "-b"))
+        {
+	    p->flags |= AREA_HB64;
+            p->flags &= ~AREA_QP;
+        }
+            
 	if(!strcmp(o, "-C"))
 	    /* -C DEF:IN:OUT */
 	    if((o = xstrtok(NULL, " \t")))
