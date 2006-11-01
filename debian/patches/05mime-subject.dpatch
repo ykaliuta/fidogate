@@ -1,0 +1,325 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 99-unnamed.dpatch by Yauheni Kaliuta <y.kaliuta@gmail.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: added configuration option "NetMailHeadersBase64"
+## DP: added areas key '-b'
+
+@DPATCH@
+Index: src/common/areas.c
+===================================================================
+RCS file: /cvsroot/rusfidogate/fidogate/src/common/areas.c,v
+retrieving revision 5.4
+diff -u -r5.4 areas.c
+--- 1/src/common/areas.c	20 Oct 2006 10:18:11 -0000	5.4
++++ 1/src/common/areas.c	28 Oct 2006 20:23:12 -0000
+@@ -228,8 +228,20 @@
+ 		tl_append(&p->x_hdr, o);
+ 	if(!strcmp(o, "-8"))
+ 	    p->flags |= AREA_8BIT;
++
++/* do not use b64 and qp in the same time */
+ 	if(!strcmp(o, "-Q"))
+-	    p->flags |= AREA_QP;
++        {
++            p->flags |= AREA_QP;
++            p->flags &= AREA_HB64;
++        }
++            
++	if(!strcmp(o, "-b"))
++        {
++	    p->flags |= AREA_HB64;
++            p->flags &= ~AREA_QP;
++        }
++            
+ 	if(!strcmp(o, "-C"))
+ 	    /* -C DEF:IN:OUT */
+ 	    if((o = xstrtok(NULL, " \t")))
+Index: src/common/mime.c
+===================================================================
+RCS file: /cvsroot/rusfidogate/fidogate/src/common/mime.c,v
+retrieving revision 5.2
+diff -u -r5.2 mime.c
+--- 1/src/common/mime.c	23 Nov 2004 00:50:40 -0000	5.2
++++ 1/src/common/mime.c	28 Oct 2006 20:23:12 -0000
+@@ -123,7 +123,8 @@
+ #define MIME_HEADER_CODE_MIDDLE_QP	"?Q?"
+ #define MIME_HEADER_CODE_MIDDLE_B64	"?B?"
+ #define MIME_HEADER_CODE_END	"?="
+-
++#define MIME_HEADER_STR_DELIM	"\r\n "
++#define MIME_STRING_LIMIT 74
+ /* A..Z -- 0x00..0x19
+  * a..z -- 0x1a..0x33
+  * 0..9 -- 0x34..0x3d
+@@ -142,6 +143,21 @@
+     else                               return ERROR;
+ }
+ 
++char mime_inttob64(int a)
++{
++    char c = (char)(a & 0x0000003f);
++    if(c <= 0x19)
++        return c + 'A';
++    if(c <= 0x33)
++        return c - 0x1a + 'a';
++    if(c <= 0x3d)
++        return c - 0x34 + '0';
++    if(c == 0x3e)
++        return '+';
++    else
++        return '/';
++}
++
+ int mime_qptoint(char c)
+ {
+          if (('0' <= c) && ('9' >= c)) return (       c - '0');
+@@ -150,6 +166,100 @@
+     else                               return ERROR;
+ }
+ 
++#define B64_ENC_CHUNK 3
++#define B64_NLET_PER_CHUNK 4
++#define B64_MAX_ENC_LEN 31
++
++int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
++{
++    int buflen, delimlen = 0;
++    char *buf = NULL;
++    int padding;
++    int i;
++    int outpos = 0;
++    char *delim = NULL;
++    
++    padding = (B64_ENC_CHUNK - len % B64_ENC_CHUNK) % B64_ENC_CHUNK;
++    
++    /* Round it up and find len
++     * (here (val) *  B64_ENC_CHUNK * B64_NLET_PER_CHUNK / B64_ENC_CHUNK )*/
++    buflen = ((len + (B64_ENC_CHUNK - 1)) / B64_ENC_CHUNK )  * B64_NLET_PER_CHUNK + 1; 
++    
++    if(encoding == NULL)
++    {
++        delimlen = strlen(MIME_HEADER_STR_DELIM);
++    }
++    else
++    {
++        delimlen = strlen(MIME_HEADER_CODE_START)
++            + strnlen(encoding, B64_MAX_ENC_LEN)
++            + strlen(MIME_HEADER_CODE_MIDDLE_B64)
++            + strlen(MIME_HEADER_CODE_END);
++        buflen += delimlen;
++        delimlen += strlen(MIME_HEADER_STR_DELIM);
++    }
++
++    if((delim = xmalloc(delimlen + 1)) == NULL)
++        return ERROR;
++
++    buflen += (buflen / MIME_STRING_LIMIT) * delimlen;
++    
++    if((buf = xmalloc(buflen)) == NULL)
++    {
++        xfree(delim);
++        return ERROR;
++    }
++
++    memset(buf, 0, buflen);
++    delim[0] = '\0';
++
++    *dst = buf;
++    
++    if(encoding == NULL)
++    {
++        strcpy(delim, MIME_HEADER_STR_DELIM);
++    }
++    else
++    {
++        strcat(buf, MIME_HEADER_CODE_START);
++        strncat(buf, encoding, B64_MAX_ENC_LEN);
++        strcat(buf, MIME_HEADER_CODE_MIDDLE_B64);
++        outpos += strlen(buf);
++
++        strcat(delim, MIME_HEADER_CODE_END);
++        strcat(delim, MIME_HEADER_STR_DELIM);
++        strcat(delim, buf);
++    }
++
++    len += padding; 
++
++    for(i = 0; i < len; i += 3)
++    {
++        if((outpos % MIME_STRING_LIMIT) < 4 )
++        {
++            strcat(buf+outpos, delim);
++            outpos += delimlen;
++        }
++        /*
++          Use this set of shifts, because loop and pointer is
++          endian-dependend way
++        */
++        buf[outpos++] = mime_inttob64(src[i] >> 2);
++        buf[outpos++] = mime_inttob64((src[i] << 4) | (src[i+1] >> 4));
++        buf[outpos++] = mime_inttob64((src[i+1] << 2) | (src[i+2] >> 6));
++        buf[outpos++] = mime_inttob64(src[i+2]);
++    }
++    while(padding > 0)
++        buf[outpos - padding--] = '=';
++
++    if(encoding != NULL)
++        strcat(buf, MIME_HEADER_CODE_END);
++
++    xfree(delim);
++    return OK;
++}
++
++
+ int mime_b64_decode(char **dst, char *src, size_t len)
+ {
+     char *buf;
+Index: src/gate/ftn2rfc.c
+===================================================================
+RCS file: /cvsroot/rusfidogate/fidogate/src/gate/ftn2rfc.c,v
+retrieving revision 5.3
+diff -u -r5.3 ftn2rfc.c
+--- 1/src/gate/ftn2rfc.c	29 Jan 2005 19:48:31 -0000	5.3
++++ 1/src/gate/ftn2rfc.c	28 Oct 2006 20:23:12 -0000
+@@ -119,6 +119,7 @@
+ /* Character conversion */
+ static int netmail_8bit = FALSE;
+ static int netmail_qp   = FALSE;
++static int netmail_hb64 = FALSE;
+ 
+ /* Use FTN to address (cvt to Internet address) for mail_to */
+ static int use_ftn_to_address = FALSE;
+@@ -140,6 +141,18 @@
+ static short int ignore_chrs 	= FALSE;
+ static short int ignore_soft_cr	= FALSE;
+ 
++static int is_7bit(char *buffer, size_t len) {
++     int i;
++     
++     if(buffer == NULL)
++	  return TRUE;
++
++     for(i = 0; i < len; i++)
++	  if(buffer[i] & 0x80)
++	       return FALSE;
++     return TRUE;
++}
++
+ 
+ /*
+  * Get header for
+@@ -478,7 +491,7 @@
+     int ret;
+     int rfc_lvl, rfc_lines;
+     char *split_line;
+-    int cvt8 = 0;			/* AREA_8BIT | AREA_QP */
++    int cvt8 = 0;			/* AREA_8BIT | AREA_QP | AREA_HB64 */
+     char *cs_def, *cs_in, *cs_out;	/* Charset def, in(=FTN), out(=RFC) */
+     char *cs_save;
+     MIMEInfo *mime;
+@@ -645,7 +658,7 @@
+ 	 */
+ 	if( (area = news_msg(body.area, &msg.node_to)) )
+ 	{
+-	    cvt8 = area->flags & (AREA_8BIT | AREA_QP);
++	    cvt8 = area->flags & (AREA_8BIT | AREA_QP | AREA_HB64);
+ 	    
+ 	    /* Set AKA according to area's zone */
+ 	    cf_set_zone(area->zone);
+@@ -680,7 +693,9 @@
+ 	    if(netmail_8bit)
+ 		cvt8 |= AREA_8BIT;
+ 	    if(netmail_qp)
+-		cvt8 |= AREA_QP;
++                cvt8 |= AREA_QP;
++            if(netmail_hb64)
++                cvt8 |= AREA_HB64;
+ 	    
+ 	    /* Set AKA according to sender's zone */
+ 	    cf_set_zone(msg.node_orig.zone!=-1 
+@@ -1322,9 +1337,19 @@
+ 	
+ 	if ( NULL == msgbody_rfc_subject )
+ 	{
++            char *tmpbuf;
+ 	    msg_xlate_line(buffer, sizeof(buffer), msg.subject,
+ 			   cvt8 & AREA_QP, ignore_soft_cr);
+-	    tl_appendf(&theader, "Subject: %s\n", buffer);
++            if((! is_7bit(buffer, strlen(buffer))) && (cvt8 & AREA_HB64))
++            {
++                mime_enheader(&tmpbuf, buffer, strlen(buffer), cs_out);
++                tl_appendf(&theader, "Subject: %s\n", tmpbuf);
++                xfree(tmpbuf);
++            }
++            else
++            {
++                tl_appendf(&theader, "Subject: %s\n", buffer);
++            }
+ 	}
+ 	else
+ 	{
+@@ -1986,11 +2011,18 @@
+ 	debug(8, "config: NetMail8bit");
+ 	netmail_8bit = TRUE;
+     }
++    if(cf_get_string("NetMailHeadersBase64", TRUE))
++    {
++	debug(8, "config: NetMailHeadersBase64");
++	netmail_hb64 = TRUE;
++        netmail_qp = FALSE;
++    }
+     if(cf_get_string("NetMailQuotedPrintable", TRUE) ||
+        cf_get_string("NetMailQP", TRUE)                )
+     {
+ 	debug(8, "config: NetMailQP");
+ 	netmail_qp = TRUE;
++        netmail_hb64 = FALSE;
+     }
+     if(cf_get_string("UseFTNToAddress", TRUE))
+     {
+Index: src/include/fidogate.h
+===================================================================
+RCS file: /cvsroot/rusfidogate/fidogate/src/include/fidogate.h,v
+retrieving revision 5.2
+diff -u -r5.2 fidogate.h
+--- 1/src/include/fidogate.h	23 Nov 2004 00:50:41 -0000	5.2
++++ 1/src/include/fidogate.h	28 Oct 2006 20:23:12 -0000
+@@ -55,6 +55,7 @@
+ # include <process.h>
+ #endif
+ #include <ctype.h>
++#define _GNU_SOURCE
+ #include <string.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+Index: src/include/prototypes.h
+===================================================================
+RCS file: /cvsroot/rusfidogate/fidogate/src/include/prototypes.h,v
+retrieving revision 5.3
+diff -u -r5.3 prototypes.h
+--- 1/src/include/prototypes.h	20 Oct 2006 10:18:11 -0000	5.3
++++ 1/src/include/prototypes.h	28 Oct 2006 20:23:13 -0000
+@@ -354,6 +354,7 @@
+ 
+ char   *mime_dequote		(char *, size_t, char *, int);
+ char   *mime_deheader		(char *, size_t, char *);
++int    mime_enheader		(char **, unsigned char *, size_t, char *);
+ 
+ /* misc.c */
+ char   *str_change_ext		(char *, size_t, char *, char *);
+Index: src/include/structs.h
+===================================================================
+RCS file: /cvsroot/rusfidogate/fidogate/src/include/structs.h,v
+retrieving revision 5.2
+diff -u -r5.2 structs.h
+--- 1/src/include/structs.h	23 Nov 2004 00:50:41 -0000	5.2
++++ 1/src/include/structs.h	28 Oct 2006 20:23:13 -0000
+@@ -102,6 +102,7 @@
+ #define AREA_HIERARCHY	32	/* -H  Area/group names match entire hierar. */
+ #define AREA_NO		64	/* -!  Don't gate area/group */
+ #define AREA_QP		128	/* -Q  Use quoted-printable ISO-8859-1 */
++#define AREA_HB64	256	/* -b  Use base64 to encode headers */
+ 
+ 
+ 

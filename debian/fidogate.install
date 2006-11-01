@@ -1,0 +1,8 @@
+usr/bin/*
+usr/lib/fidogate/*
+etc/fidogate/* usr/share/fidogate
+var/lib/fidogate/*.bbs
+var/lib/fidogate/seq
+var/log/*
+var/spool/*
+var/run/*

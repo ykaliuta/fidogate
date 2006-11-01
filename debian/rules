@@ -1,0 +1,128 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE=1
+
+include /usr/share/dpatch/dpatch.make
+
+PACKAGE = fidogate
+BUILDROOT = $(CURDIR)/debian/tmp
+DEBIAN_ROOT = $(BUILDROOT)
+
+DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+#12:40 <ugenka> ./configure --enable-aliases-local --enable-amiga-out --disable-fecho-pass
+#--enable-af-ansok --enable-afses --enable-pid2rd-tid2gtv --enable-sep-pkt --disable-desc-dir
+
+#  $ ./configure --prefix=/usr/local/fido
+#  --with-spooldir=/var/spool/fido/gate
+#  --with-logdir=/var/log/fido/gate --with-vardir=/var/lib/fidogate
+#  --with-lockdir=/var/run/fidogate --without-news --with-owner=ftn
+#  --with-group=ykaliuta
+
+
+
+configure_options := \
+	--prefix=/usr \
+	--sysconfdir=/etc/$(PACKAGE) \
+	--libexecdir=/usr/lib/$(PACKAGE) \
+	--with-logdir=/var/log/$(PACKAGE) \
+	--with-vardir=/var/lib/$(PACKAGE) \
+	--with-spooldir=/var/spool/$(PACKAGE) \
+	--with-btbasedir=/var/spool/ftn \
+	--with-newsbindir=/usr/lib/news/bin\
+	--with-owner=ftn --with-group=ftn \
+	--without-news --with-sendmail=/usr/sbin/sendmail \
+	--enable-dbc-history --disable-desc-dir
+
+
+configure-stamp: configure
+	dh_testdir
+
+#hack but ... 
+	sed -i 's/\(^INSTALL_.*\)-g \$${GROUP} -o \$${OWNER}/\1/'  configure
+	sed -i 's/^\(	chown ${OWNER}\)/#\1/' Makefile.in
+
+	chmod +x configure
+	./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) \
+	--mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info   $(configure_options)
+
+	touch $@
+
+build: build-stamp
+
+build-stamp: patch-stamp configure-stamp
+	dh_testdir
+	$(MAKE)
+	touch $@
+
+clean: unpatch
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	-$(MAKE) distclean
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	$(MAKE) DESTDIR=$(BUILDROOT) install
+
+	install -d $(BUILDROOT)/usr/include/$(PACKAGE)
+	cp $(CURDIR)/src/include/*h $(BUILDROOT)/usr/include/$(PACKAGE)
+
+	cat $(BUILDROOT)/usr/lib/fidogate/send-fidogate | \
+		sed 's|log/fidogate|log/news|g' > \
+			$(BUILDROOT)/usr/bin/send-fidogate
+	chmod +x $(BUILDROOT)/usr/bin/send-fidogate
+
+	touch $(BUILDROOT)/var/lib/$(PACKAGE)/areas.bbs
+	touch $(BUILDROOT)/var/lib/$(PACKAGE)/fareas.bbs
+
+	install -d $(BUILDROOT)/usr/share/sendmail/cf/mailer
+	install -m 644 doc/mailer/sendmail/mailer/ftn.m4 \
+		$(BUILDROOT)/usr/share/sendmail/cf/mailer
+
+	install -d $(BUILDROOT)/etc/postfix
+	install -m 644 doc/mailer/postfix/master.cf \
+			$(BUILDROOT)/etc/postfix/master.cf-$(PACKAGE)
+	install -m 644 doc/mailer/postfix/transport \
+			$(BUILDROOT)/etc/postfix/transport-$(PACKAGE)
+
+
+binary-all: build install
+	dh_testdir
+	dh_testroot
+	dh_install --sourcedir=$(BUILDROOT)
+	dh_installdocs
+	dh_installchangelogs 
+	dh_installlogrotate
+	dh_installcron
+	dh_link
+	dh_compress
+	dh_fixperms
+
+binary-indep: binary-all
+	dh_testdir
+	dh_testroot
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+binary-arch: binary-all 
+	dh_testdir
+	dh_testroot
+	dh_strip -s --dbg-package=$(PACKAGE)-dbg
+	dh_makeshlibs -s
+	dh_shlibdeps -s -Llibfidogate5
+	dh_installdeb -s
+	dh_gencontrol -s
+	dh_md5sums -s
+	dh_builddeb -s
+
+binary: binary-arch binary-indep
+.PHONY: binary-arch binary-indep binary install 

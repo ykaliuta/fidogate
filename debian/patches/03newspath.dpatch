@@ -1,0 +1,36 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: this patch is used to pin path to news subsystem to debian
+## DP: way to build on systems without inn
+
+@DPATCH@
+--- fidogate/configure.orig	2004-03-21 11:50:13.000000000 +0200
++++ fidogate/configure	2004-03-21 11:55:42.000000000 +0200
+@@ -4965,16 +4965,16 @@
+     fi
+ }
+ else
+-    BATCHER='time $RFC2FTN -f $BATCHFILE -m 500'
+-    RNEWS='/none/rnews'
+-    INEWS='/none/inews'
+-    NEWSLIBDIR='/none/news-libdir'
+-    PATHOUTGOING='/none/news-pathoutgoing'
+-    PATHARTICLES='/none/news-patharticles'
+-    PATHNEWS='/none/news-pathnews'
+-    PATHBIN='/none/news-pathbin'
+-    PATHETC='/none/news-pathetc'
+-    PATHDB='/none/news-pathdb'
++    BATCHER='time $PATHBIN/batcher -N $QUEUEJOBS -b500000 -p"$RFC2FTN -b -n" $SITE $BATCHFILE'
++    RNEWS='/usr/lib/news/bin/rnews'
++    INEWS='/usr/lib/news/bin/inews'
++    NEWSLIBDIR='/usr/lib/news'
++    PATHOUTGOING='/var/spool/news/outgoing'
++    PATHARTICLES='/var/spool/news/articles'
++    PATHNEWS='/usr/lib/news'
++    PATHBIN='/usr/lib/news/bin'
++    PATHETC='/etc/news'
++    PATHDB='/var/lib/news'
+ fi
+ 
+ 

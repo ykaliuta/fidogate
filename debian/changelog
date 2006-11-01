@@ -1,0 +1,142 @@
+fidogate (5.2.3ds+cvs20061020-3) unstable; urgency=low
+
+  * Use conffiles for [f]areas.bbs
+  * Added zip to Suggests
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Sat, 28 Oct 2006 21:53:25 +0300
+
+fidogate (5.2.3ds+cvs20061020-2) unstable; urgency=low
+
+  * try to encode subject to base64 now 
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Tue, 24 Oct 2006 02:16:50 +0300
+
+fidogate (5.2.3ds+cvs20061020-1) unstable; urgency=low
+
+  * New upstream release
+  * Use dpatch back, dbs is too much here
+  * Removed configureation script
+  * Use ucf for the configuration files
+  * Splitted to the set of packages, instead of one
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Sat, 21 Oct 2006 20:13:37 +0300
+
+fidogate (5.2.0.CVS20040311-tren2) unstable; urgency=low
+
+  * Fixed inn pathes and batcher for --without-news build 
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Sun, 21 Mar 2004 11:57:38 +0200
+
+fidogate (5.2.0.CVS20040311-tren1) unstable; urgency=low
+
+  * Rebuilt with dbs
+  * Removed commands to make ftnnews (fixed in upstream)
+  * Removed build depends of sendmail and inn
+  * Fixed inbound directory
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Sat, 20 Mar 2004 19:46:15 +0200
+
+fidogate (5.2.0.CVS20040310-tren2) unstable; urgency=low
+
+  * Build with dbc_history 
+  
+ -- Zhenja Kaluta <trinfo@mail.ru>  Tue, 16 Mar 2004 23:06:51 +0200
+   
+fidogate (5.2.0.CVS20040310-tren1) unstable; urgency=low
+
+  * New cvs snapshot 
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Sun, 14 Mar 2004 20:15:36 +0200
+
+fidogate (5.2.0.CVS20040225-tren1) unstable; urgency=low
+
+  * New cvs snapshot
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Thu, 26 Feb 2004 23:36:01 +0200
+
+fidogate (5.2.0.CVS20040212-tren1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Thu, 12 Feb 2004 23:21:07 +0200
+
+fidogate (5.2.0.CVS20031112-tren1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Thu, 13 Nov 2003 21:09:49 +0200
+
+fidogate (5.0.0.CVS20031020-tren1) unstable; urgency=low
+
+  * New upstream release
+  * Added configure patch to fix ftnnews
+  * Added organization patch to fix blank origin
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Sat, 25 Oct 2003 12:08:01 +0300
+
+fidogate (5.0.0.CVS20030925-tren1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Thu, 25 Sep 2003 23:00:09 +0300
+
+fidogate (5.0.0.CVS20030618-tren1) unstable; urgency=low
+
+  * New upstream release
+  * Installation of sendmail configuration moved to rules
+  * Adopted to dpatch
+  * Added postfix configuration
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Sat,  9 Aug 2003 11:12:08 +0300
+
+fidogate (5.0.0.CVS20030409-tren5) unstable; urgency=low
+
+  * Fixed runnews bug (libtool script in package)
+  * Minor changes in rules
+  * send-fidogate.log moved to /var/log/news
+  * removed fidogateconfig from postinst
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Thu, 10 Jul 2003 00:12:05 +0300
+
+fidogate (5.0.0.CVS20030409-tren4) unstable; urgency=low
+
+  * Fixed "if" in postinst
+  * Fixed ' disbalance in fidogateconfig
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Thu, 29 May 2003 09:05:55 +0300
+
+fidogate (5.0.0.CVS20030409-tren3) unstable; urgency=low
+
+  * Added variables in generated configuration file
+  * Fixed echomail routing in generated routing file
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Thu, 22 May 2003 22:50:39 +0300
+
+fidogate (5.0.0.CVS20030409-tren2) unstable; urgency=low
+
+  * Fixed postinst adduser bug 
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Sat, 26 Apr 2003 00:57:47 +0300
+
+fidogate (5.0.0.CVS20030409-tren1) unstable; urgency=low
+
+  * New upstream release
+  * Fixed runinc.c: unread config, expand macros %p in DiskFreeProg
+  * added prototypes.h to some sources to build
+  * added ftnnews to make correct install
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Thu, 10 Apr 2003 00:17:15 +0300
+
+fidogate (5.0.0.CVS20021204-2) unstable; urgency=low
+
+  * Fixed ngoper permissions
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Wed, 11 Dec 2002 17:09:29 +0200
+
+fidogate (5.0.0.CVS20021204-1) unstable; urgency=low
+
+  * Initial Release
+
+ -- Zhenja Kaluta <trinfo@mail.ru>  Mon,  9 Dec 2002 20:28:48 +0200
+
+

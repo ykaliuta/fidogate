@@ -1,0 +1,62 @@
+Source: fidogate
+Section: net
+Priority: optional
+Maintainer: Zhenja Kaliuta <y.kaliuta@gmail.com>
+Build-Depends: dpatch, debhelper (>= 5), autotools-dev, bison
+Standards-Version: 3.6.1
+
+Package: fidogate
+Architecture: any
+Depends: adduser, ucf, ${shlibs:Depends}, ${misc:Depends}
+Suggests: news-transport-system | inn2, mail-transport-agent | sendmail, zip
+Description: Internet-Fidonet gateway
+ Fidogate branch with good cyrillic support and advanced features.
+
+Package: fidogate-dbg
+Architecture: any
+Depends: fidogate (= ${Source-Version})
+Description: Internet-Fidonet gateway, debug files
+ Fidogate branch with good cyrillic support and advanced features.
+ .
+ This package contains non-stripped binaries for the debugging
+
+Package: libfidogate5
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Internet-Fidonet gateway, runtime library
+ Fidogate branch with good cyrillic support and advanced features.
+ .
+ This is a dynamic library with common functions 
+ for all fidogate programs
+
+Package: libfidogate-dev
+Section: libdevel
+Architecture: any
+Depends: libfidogate5 (= ${Source-Version})
+Description: Internet-Fidonet gateway, development headers
+ Fidogate branch with good cyrillic support and advanced features.
+ .
+ These are header files
+
+Package: fidogate-doc
+Architecture: all
+Description: documentation for fidogate
+ Fidogate branch with good cyrillic support and advanced features.
+ .
+ This package contains documentation files
+
+
+Package: fidogate-sendmail
+Architecture: all
+Description: sendmail configuration for fidogate
+ Fidogate branch with good cyrillic support and advanced features.
+ .
+ This package contains mailer difinition for sendmail mta
+
+Package: fidogate-postfix
+Architecture: all
+Description: postfix configuration for fidogate
+ Fidogate branch with good cyrillic support and advanced features.
+ .
+ This package contains mailer difinition for postfix mta

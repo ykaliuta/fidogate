@@ -1,0 +1,35 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: this patch is used to pin sendmail path even when there is not
+## DP: sendmail on the system
+
+@DPATCH@
+--- fidogate/configure.in.orig	2004-02-24 00:15:03.000000000 +0200
++++ fidogate/configure.in	2004-02-24 12:01:36.000000000 +0200
+@@ -147,7 +147,7 @@
+   --with-sendmail=PATH    Specify path to sendmail,
+             [dnl
+ case "$with_sendmail" in
+-yes|''|no) AC_MSG_ERROR([--with-sendmail   requires an argument; use --with-sendmail=PATH]) ;;
++yes|no) AC_MSG_ERROR([--with-sendmail   requires an argument; use --with-sendmail=PATH]) ;;
+ *) SENDMAIL="$withval" ;;
+ esac
+ ])
+@@ -510,15 +510,7 @@
+ 
+ # Checking sendmail
+ AC_MSG_CHECKING(for sendmail)
+-if test "${with_sendmail+set}" = set ;then
+-	SENDMAIL="$with_sendmail"
+-else
+-    XPATH="/usr/sbin:/usr/lib:/usr/ucblib:/usr/share"
+-    AC_PATH_PROG(SENDMAIL, sendmail,, $XPATH)
+-    if test "x$SENDMAIL" = "x"; then
+-	AC_MSG_ERROR([sendmail not found, re-run with valid --with-sendmail=DIR])
+-    fi
+-fi
++SENDMAIL = "/usr/sbin/sendmail"
+ AC_SUBST(SENDMAIL)
+ 
+ AC_MSG_CHECKING(for lock directory)

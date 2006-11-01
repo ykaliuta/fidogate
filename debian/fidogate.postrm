@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -e
+
+PACKAGE=fidogate
+
+if [ "$1" = "purge" ];then
+    if [ -x /usr/bin/ucf ] ; then
+	SAMPLES="acl areafix.help  fidokill hosts passwd spyes \
+                aliases fidogate.conf ftnacl packing routing uplinks"
+	CONFIGS="bounce.acl  bounce.acl_netmail  bounce.addrinto  \
+                bounce.down  bounce.insecure  bounce.noto  bounce.restricted"
+	for i in $SAMPLES $CONFIGS; do
+	    ucf --purge /etc/$PACKAGE/$i
+	done
+    fi
+fi
+
+
+#DEBHELPER#
+
+exit 0

@@ -1,0 +1,28 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: this patch adds group write permissions to allow work on
+## DP: mixed ftn/news system
+
+@DPATCH@
+--- fidogate/config.h.in.orig	2004-03-20 17:42:46.000000000 +0200
++++ fidogate/config.h.in	2004-03-20 17:44:26.000000000 +0200
+@@ -516,12 +516,12 @@
+ /*
+  * Permissions
+  */
+-#define PACKET_MODE	0600		/* Mode for outbound packets */
+-#define BSY_MODE	0644		/* Mode for BSY files */
+-#define FLO_MODE	0644		/* Mode for FLO files */
+-#define DIR_MODE	0755		/* Mode for directories */
+-#define FILE_DIR_MODE	0700		/* Mode for create fileecho directories */
+-#define CONF_MODE	0640		/* Mode for written config files */
++#define PACKET_MODE	0660		/* Mode for outbound packets */
++#define BSY_MODE	0664		/* Mode for BSY files */
++#define FLO_MODE	0664		/* Mode for FLO files */
++#define DIR_MODE	0775		/* Mode for directories */
++#define FILE_DIR_MODE	0770		/* Mode for create fileecho directories */
++#define CONF_MODE	0660		/* Mode for written config files */
+ 
+ /*
+  * RFC headers recognized at beginning of FTN message body
