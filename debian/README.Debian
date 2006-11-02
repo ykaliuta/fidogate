@@ -1,6 +1,15 @@
 fidogate for Debian
 -------------------
 
-Here was discription of fidogateconfig script, but it's not valid now 
+Build with the folowing confiure options:
 
- -- Yauheni Kaliuta <yauheni.kaliuta@nokia.com>, Sat, 21 Oct 2006 20:07:31 +0300
+	--enable-dbc-history
+	--disable-desc-dir
+	--enable-aliases-local
+	--disable-fecho-pass
+	--enable-af-ansok
+	--enable-afses
+	--enable-pid2rd-tid2gtv
+	--enable-sep-pkt
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>, Fri,  3 Nov 2006 01:35:31 +0200

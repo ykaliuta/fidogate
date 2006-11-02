@@ -3,8 +3,11 @@ fidogate (5.2.3ds+cvs20061031-1) unstable; urgency=low
   * New upstream release
     - mime-subject patch included
     - bugfixes
-
- -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Wed,  1 Nov 2006 10:32:09 +0200
+  * libfidogate5 moved back into fidogate
+  * Changed configure options. See README.Debian
+  * Fixed some typos in texts
+  
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Fri,  3 Nov 2006 01:44:27 +0200
 
 fidogate (5.2.3ds+cvs20061020-3) unstable; urgency=low
 
@@ -23,7 +26,7 @@ fidogate (5.2.3ds+cvs20061020-1) unstable; urgency=low
 
   * New upstream release
   * Use dpatch back, dbs is too much here
-  * Removed configureation script
+  * Removed configuration script
   * Use ucf for the configuration files
   * Splitted to the set of packages, instead of one
 

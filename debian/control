@@ -20,25 +20,6 @@ Description: Internet-Fidonet gateway, debug files
  .
  This package contains non-stripped binaries for the debugging
 
-Package: libfidogate5
-Section: libs
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Internet-Fidonet gateway, runtime library
- Fidogate branch with good cyrillic support and advanced features.
- .
- This is a dynamic library with common functions 
- for all fidogate programs
-
-Package: libfidogate-dev
-Section: libdevel
-Architecture: any
-Depends: libfidogate5 (= ${Source-Version})
-Description: Internet-Fidonet gateway, development headers
- Fidogate branch with good cyrillic support and advanced features.
- .
- These are header files
-
 Package: fidogate-doc
 Architecture: all
 Description: documentation for fidogate
@@ -46,17 +27,16 @@ Description: documentation for fidogate
  .
  This package contains documentation files
 
-
 Package: fidogate-sendmail
 Architecture: all
 Description: sendmail configuration for fidogate
  Fidogate branch with good cyrillic support and advanced features.
  .
- This package contains mailer difinition for sendmail mta
+ This package contains mailer definition for sendmail mta
 
 Package: fidogate-postfix
 Architecture: all
 Description: postfix configuration for fidogate
  Fidogate branch with good cyrillic support and advanced features.
  .
- This package contains mailer difinition for postfix mta
+ This package contains mailer definition for postfix mta
