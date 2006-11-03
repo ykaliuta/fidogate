@@ -110,7 +110,7 @@ binary-arch: binary-all
 	dh_testroot
 	dh_strip -s --dbg-package=$(PACKAGE)-dbg
 	dh_makeshlibs -s
-	dh_shlibdeps -s -Lfidogate
+	dh_shlibdeps -s
 	dh_installdeb -s
 	dh_gencontrol -s
 	dh_md5sums -s

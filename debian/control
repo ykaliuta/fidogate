@@ -8,6 +8,9 @@ Standards-Version: 3.6.1
 Package: fidogate
 Architecture: any
 Depends: adduser, ucf, ${shlibs:Depends}, ${misc:Depends}
+Conflicts: libfidogate5, libfidogate-dev
+Replaces: libfidogate5, libfidogate-dev
+Provides: libfidogate5, libfidogate-dev
 Suggests: news-transport-system | inn2, mail-transport-agent | sendmail, zip
 Description: Internet-Fidonet gateway
  Fidogate branch with good cyrillic support and advanced features.

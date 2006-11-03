@@ -1,3 +1,9 @@
+fidogate (5.2.3ds+cvs20061031-2) unstable; urgency=low
+
+  * Force libfidogate5 and libfidogate-dev removing
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Fri,  3 Nov 2006 02:00:46 +0200
+
 fidogate (5.2.3ds+cvs20061031-1) unstable; urgency=low
 
   * New upstream release
