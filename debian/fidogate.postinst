@@ -51,7 +51,7 @@ EOF
 	chown -R ftn:ftn /var/lock/$PACKAGE/ \
 	    /var/log/$PACKAGE/ \
 	    /var/spool/$PACKAGE/ /var/spool/ftn \
-	    /var/lib/$PACKAGE
+	    /var/lib/$PACKAGE /var/run/$PACKAGE
 	chmod -R ug+rw /var/log/$PACKAGE /var/spool/$PACKAGE/
 	chown news:ftn /usr/bin/ngoper
 	chown ftn:news /usr/lib/$PACKAGE/rfc2ftn
