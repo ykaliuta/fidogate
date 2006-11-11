@@ -1,0 +1,22 @@
+--- fidogate.orig/src/gate/send-fidogate.in	2004-02-20 13:02:51.000000000 +0200
++++ fidogate/src/gate/send-fidogate.in	2004-02-20 13:12:22.000000000 +0200
+@@ -19,6 +19,10 @@
+ 
+ MAXJOBS=200
+ 
++CTLINND=<NEWSBINDIR>/ctlinnd
++
++[ -f <CONFIGDIR>/${PROGNAME}.conf ] && . <CONFIGDIR>/${PROGNAME}.conf
++
+ ##  Start logging.
+ test ! -f ${LOG} && touch ${LOG}
+ chmod 0660 ${LOG}
+@@ -56,7 +60,7 @@
+ 	rm -f ${SITE}.work
+     fi
+     mv ${SITE} ${SITE}.work
+-    <NEWSBINDIR>/ctlinnd -s -t30 flush ${SITE} || continue
++    $CTLINND -s -t30 flush ${SITE} || continue
+     cat ${SITE}.work >>${BATCHFILE}
+     rm -f ${SITE}.work
+     if [ ! -s ${BATCHFILE} ] ; then

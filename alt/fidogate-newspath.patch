@@ -1,0 +1,29 @@
+--- fidogate/configure.in.orig	2004-03-21 11:50:13.000000000 +0200
++++ fidogate/configure.in	2004-03-21 11:55:42.000000000 +0200
+@@ -4965,16 +4965,16 @@
+     fi
+ }
+ else
+-    BATCHER='time $RFC2FTN -f $BATCHFILE -m 500'
+-    RNEWS='/none/rnews'
+-    INEWS='/none/inews'
+-    NEWSLIBDIR='/none/news-libdir'
+-    PATHOUTGOING='/none/news-pathoutgoing'
+-    PATHARTICLES='/none/news-patharticles'
+-    PATHNEWS='/none/news-pathnews'
+-    PATHBIN='/none/news-pathbin'
+-    PATHETC='/none/news-pathetc'
+-    PATHDB='/none/news-pathdb'
++    BATCHER='time $PATHBIN/batcher -N $QUEUEJOBS -b500000 -p"$RFC2FTN -b -n" $SITE $BATCHFILE'
++    RNEWS='/usr/bin/rnews'
++    INEWS='/usr/bin/inews'
++    NEWSLIBDIR='/usr'
++    PATHOUTGOING='/var/spool/news/outgoing'
++    PATHARTICLES='/var/spool/news/articles'
++    PATHNEWS='/usr'
++    PATHBIN='/usr/bin'
++    PATHETC='/etc/news'
++    PATHDB='/var/lib/news'
+ fi
+ 
+ 

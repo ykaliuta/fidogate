@@ -1,0 +1,26 @@
+fidogate for ALT
+----------------
+
+There are *.sample files in /etc/fidogate. Copy them to the origianal
+names and edit for your needs. 
+
+Please, check program names to archives in packing configuration
+file. 
+
+Of course, you need inn (or leafnode) to gate fido to news. PATHs to
+inn programs now are hardcoded to build. 
+
+/usr/sbin/send-fidogate script is for gate newsgroups from inn to
+fidogate. You should put path to ctlinnd program in
+/etc/fidogate/send-fidogate.conf
+
+fidogate is expecting to find sendmail program in
+/usr/sbin/sendmail. If you want to gate netmail to e-mail you should
+check if you have any mta and /usr/sbin/sendmail wrapper. 
+
+Because alt linux policy I cannot include SUID programs, so to make
+gate working you should make:
+
+chmod 750 /usr/bin/ngoper /usr/lib/fidogate/rfc2ftn
+
+ -- Zhenja Kaluta <tren@altlinux.ru>, Fri Feb 20 14:40:06 2004

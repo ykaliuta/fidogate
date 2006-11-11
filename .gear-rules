@@ -1,0 +1,6 @@
+copy: alt/fidogate*.ALT
+copy: alt/send-fidogate.conf
+copy: alt/fidogate*.d
+copy: alt/fidogate*.logrotate
+copy: alt/fidogate*.patch
+tar.bz2: . name=fidogate-@version@.cvs20061031 base=fidogate

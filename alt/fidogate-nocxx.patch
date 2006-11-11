@@ -1,0 +1,13 @@
+diff --git a/fidogate/configure.in b/fidogate/configure.in
+index 652639e..773c164 100644
+--- a/fidogate/configure.in
++++ b/fidogate/configure.in
+@@ -15,7 +15,7 @@ AM_MAINTAINER_MODE
+ AC_CANONICAL_HOST
+ 
+ dnl Check for programs.
+-AC_PROG_CXX
++dnl AC_PROG_CXX
+ AC_PROG_CC
+ AC_PROG_CPP
+ AC_PROG_INSTALL
