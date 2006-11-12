@@ -1,3 +1,10 @@
+fidogate (5.2.3ds+cvs20061031-3) unstable; urgency=low
+
+  * Fixed permission changes in postints
+  * Added unzip to Suggests
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Sun, 12 Nov 2006 18:09:20 +0200
+
 fidogate (5.2.3ds+cvs20061031-2) unstable; urgency=low
 
   * Force libfidogate5 and libfidogate-dev removing
