@@ -48,18 +48,16 @@ EOF
 
 # Fix permissions
 	chown -R ftn:ftn /etc/$PACKAGE
-	chown -R ftn:ftn /var/lock/$PACKAGE/ \
+	chown ftn:ftn /var/lock/$PACKAGE/ \
 	    /var/log/$PACKAGE/ \
-	    /var/spool/$PACKAGE/ /var/spool/ftn \
-	    /var/lib/$PACKAGE /var/run/$PACKAGE
+	    /var/spool/ftn  /var/run/$PACKAGE
+	chown -R ftn:ftn /var/spool/$PACKAGE/  /var/lib/$PACKAGE
 	chmod -R ug+rw /var/log/$PACKAGE /var/spool/$PACKAGE/
 	chown news:ftn /usr/bin/ngoper
 	chown ftn:news /usr/lib/$PACKAGE/rfc2ftn
 
 	chmod 4755 /usr/lib/$PACKAGE/rfc2ftn
 	chmod 4750 /usr/bin/ngoper
-
-
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
