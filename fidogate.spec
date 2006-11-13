@@ -53,6 +53,7 @@ SENDMAIL=/usr/sbin/sendmail ./configure --sysconfdir=%_sysconfdir/%name \
 	--libdir=%_libdir \
 	--libexecdir=%_libdir/%name \
 	--with-logdir=%_logdir/%name \
+	--with-lockdir=%buildroot%_lockdir/%name
 	--with-vardir=%_localstatedir/%name \
 	--with-spooldir=%_spooldir/%name \
 	--with-btbasedir=%_spooldir/ftn \
@@ -133,6 +134,7 @@ mv %buildroot%_bindir/outb %buildroot%_bindir/fg-outb
 * Fri Nov 10 2006 Zhenja Kaliuta <tren@altlinux.ru> 5.2.3-alt1
 - New upstream snapshot (20061031)
 - Removed C++ dependency
+- Added --with-lockdir configure flag
 
 * Thu Apr 20 2006 Vladimir V Kamarzin <vvk@altlinux.ru> 5.2.2-alt3
 - 20060301 snapshot (Closes #8650)
