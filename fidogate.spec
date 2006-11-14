@@ -5,7 +5,7 @@
 Summary: Fido-Internet Gateway and Fido Tosser
 Name: fidogate
 Version: 5.2.3
-Release: alt1
+Release: alt2
 License: GPL
 Packager: FTN Development Team <ftn@packages.altlinux.org>
 Group: Networking/Other
@@ -53,7 +53,7 @@ SENDMAIL=/usr/sbin/sendmail ./configure --sysconfdir=%_sysconfdir/%name \
 	--libdir=%_libdir \
 	--libexecdir=%_libdir/%name \
 	--with-logdir=%_logdir/%name \
-	--with-lockdir=%buildroot%_lockdir/%name
+	--with-lockdir=%_lockdir/%name \
 	--with-vardir=%_localstatedir/%name \
 	--with-spooldir=%_spooldir/%name \
 	--with-btbasedir=%_spooldir/ftn \
@@ -131,6 +131,9 @@ mv %buildroot%_bindir/outb %buildroot%_bindir/fg-outb
 %_lockdir/%name
 
 %changelog
+* Mon Nov 13 2006 Zhenja Kaliuta <tren@altlinux.ru> 5.2.3-alt2
+- Fixed --with-lockdir configure flag
+
 * Fri Nov 10 2006 Zhenja Kaliuta <tren@altlinux.ru> 5.2.3-alt1
 - New upstream snapshot (20061031)
 - Removed C++ dependency
