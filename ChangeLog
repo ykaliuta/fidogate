@@ -1,3 +1,8 @@
+2006-11-15  Andrey Slsuar  <anrays@gmail.com>
+
+	* src/tick/ftntick.c (process_tick): Fix crashes
+	(bug, reported by Eugene V. Subbotin)
+
 2006-10-31  Andrey Slusar  <anrays@gmail.com>
 
 	* src/common/Makefile.am:
