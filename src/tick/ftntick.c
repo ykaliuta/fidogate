@@ -368,7 +368,7 @@ int process_tic(Tick *tic)
 	    }
 	    
 	    a = uplinks_line_get(FALSE, &tic->from);
-	    if(a->options)
+	    if(a != NULL && a->options != NULL)
 	    {
 	        tmp = (char*) xmalloc(strlen(tic->area)
 				      + strlen(autocreate_line)
