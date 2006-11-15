@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: ftntick.c,v 5.3 2005/11/16 09:13:49 anray Exp $
+ * $Id: ftntick.c,v 5.4 2006/11/15 09:01:37 anray Exp $
  *
  * Process incoming TIC files
  *
@@ -37,7 +37,7 @@
 
 
 #define PROGRAM		"ftntick"
-#define VERSION		"$Revision: 5.3 $"
+#define VERSION		"$Revision: 5.4 $"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 
@@ -368,7 +368,7 @@ int process_tic(Tick *tic)
 	    }
 	    
 	    a = uplinks_line_get(FALSE, &tic->from);
-	    if(a->options)
+	    if(a != NULL && a->options != NULL)
 	    {
 	        tmp = (char*) xmalloc(strlen(tic->area)
 				      + strlen(autocreate_line)
