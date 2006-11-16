@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: areafix.c,v 5.7 2006/02/26 15:42:00 anray Exp $
+ * $Id: areafix.c,v 5.8 2006/11/15 09:51:57 anray Exp $
  *
  * Common Areafix functions
  *
@@ -1956,7 +1956,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 	for (a=uplinks_lookup (areafix, area); a; a=a->next)
 	{
 		/* Create area */
-		if ( NULL != a->options )
+		if (a != NULL && a->options != NULL)
 		    BUF_COPY3( buf, a->areas, " ", a->options );
 		else
 		    BUF_COPY( buf,  a->areas );
