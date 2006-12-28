@@ -1,9 +1,25 @@
+2006-12-27  Andrey Slusar  <anrays@gmail.com>
+
+	* src/toss/ftntoss.c (do_echomail): Change password
+	checking in echomail packets - when password is incorrect,
+	packet moved to bads.
+	* src/toss/ngoper.c: Add cvs Id.
+
 2006-11-15  Andrey Slusar  <anrays@gmail.com>
 
 	* src/areafix/areafix.c (cmd_sub): Fix potential
 	crashes.
 	* src/tick/ftntick.c (process_tick): Fix crashes
 	(bug, reported by Eugene V. Subbotin)
+
+2006-11-05  Andrey Slusar  <anrays@gmail.com>
+
+	* src/common/mime.c:
+	* src/gate/ftn2rfc.c:
+	* src/gate/rfc2ftn.c:
+	* src/include/fidogate.h:
+	* src/include/prototypes.h:
+	Add decoding bodyes in base64(patch from Zhenja Kaliuta).
 
 2006-10-31  Andrey Slusar  <anrays@gmail.com>
 

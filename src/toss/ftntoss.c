@@ -43,8 +43,6 @@
 #define VERSION 	"$Revision$"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
-
-
 /*
  * Prototypes
  */
@@ -148,7 +146,6 @@ char *autocreate_line = "";		/* config: AutoCreateLine */
 #ifndef ACTIVE_LOOKUP
 char autocreate_ng = FALSE;		/* config: AutoCreateNG */
 #endif /* !ACTIVE_LOOKUP */
-int autocreate_check_pass = TRUE;	/* config: AutoCreateDontCheckPAssword */
 #ifdef DO_NOT_TOSS_NETMAIL
 char no_rewrite	  = FALSE;		/* config: NoRewrite */
 #endif /* DO_NOT_TOSS_NETMAIL */
@@ -883,6 +880,18 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
     }
 #endif /* !SECURITY */
 
+    if (NULL != (pwd = passwd_lookup("packet", &msg->node_from)) &&
+	!stricmp(pkt->passwd, pwd->passwd))
+    {
+	fglog("Insecure echomail packet from %s, area %s (%s pkt password)",
+	      znfp1(&msg->node_from), areaname,
+	      ('\0' == *(pkt->passwd)) ? "no" : "bad");
+	++msgs_insecure;
+	if (!kill_insecure)
+	    return do_bad_msg(msg, body);
+	return OK;
+    }
+
     if ( NULL == (area = areasbbs_lookup (areaname)) )
     {
 
@@ -890,19 +899,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 
 	areafix_init(TRUE);
 
-	areafix_auth_check(&msg->node_from, pkt->passwd, autocreate_check_pass);
-
-	if (autocreate_check_pass &&
-	    NULL != (pwd = passwd_lookup("packet", &msg->node_from)) &&
-	    !stricmp(pkt->passwd, pwd->passwd))
-	{
-	    fglog("node %s not authorized to create area %s (%s pkt password)",
-		znfp1(&msg->node_from),	areaname,
-		('\0' == *(pkt->passwd)) ? "no" : "bad");
-	    /* Unknown area */
-	    do_unknown_area(areaname, msg, body);
-	    return OK;
-	}
+	areafix_auth_check(&msg->node_from, NULL, FALSE);
 
 	if ( !authorized_new )
 	{
@@ -2208,11 +2205,6 @@ int main(int argc, char **argv)
     {
 	debug(8, "config: AutoCreateLine %s", p);
 	autocreate_line = p;
-    }
-    if ( cf_get_string("AutoCreateDontCheckPassword", TRUE) )
-    {
-	debug(8, "config: AutoCreateDontCheckPassword");
-	autocreate_check_pass = FALSE;
     }
 #ifndef ACTIVE_LOOKUP
     if ( cf_get_string("AutoCreateNG", TRUE) )

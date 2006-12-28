@@ -1,3 +1,7 @@
+/*
+ * $Id$
+ */
+
 #include "fidogate.h"
 
 #include "getopt.h"
