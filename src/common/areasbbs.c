@@ -661,14 +661,12 @@ void areasbbs_free(void)
     for(p=areasbbs_list; p; p=n)
     {
 	n=p->next;
-	if(p->area)
-	    xfree(p->area);
-	if(p->key)
-	    xfree(p->key);
-	if(p->desc)
-	    xfree(p->desc);
-	if(p->state)
-	    xfree(p->state);
+	xfree(p->area);
+	xfree(p->dir);
+	xfree(p->key);
+	xfree(p->desc);
+	xfree(p->state);
+
 	if((&p->passive)->size > 0)
 	    lon_delete(&p->passive);
 	if((&p->nodes)->size > 0)

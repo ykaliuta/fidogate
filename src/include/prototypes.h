@@ -354,6 +354,7 @@ int	msg_parse_msgid		(char *, Node *);
 
 char   *mime_dequote		(char *, size_t, char *, int);
 char   *mime_deheader		(char *, size_t, char *);
+int    mime_debody		(Textlist*); /* decode base64 body */
 int    mime_enheader		(char **, unsigned char *, size_t, char *);
 
 /* misc.c */
@@ -545,9 +546,13 @@ RFCAddr	rfcaddr_from_rfc	(char *);
 char   *s_rfcaddr_to_asc	(RFCAddr *, int);
 
 /* rfcheader.c */
+Textlist* header_get_list	(void);
+int	header_alter		(Textlist *, char *, char *);
 void	header_ca_rfc		(FILE *, int);
 void	header_delete		(void);
+int	header_delete_from_body	(Textlist *);
 void	header_read		(FILE *);
+int	header_read_list	(Textlist*, Textlist*);
 short	header_hops		(void);
 char   *rfcheader_get		(Textlist *, char *);
 char   *header_get		(char *);
@@ -618,7 +623,9 @@ void	tl_print_x		(Textlist *, FILE *, char *);
 void	tl_clear		(Textlist *);
 long	tl_size			(Textlist *);
 void	tl_addtl		(Textlist *, Textlist *);
-
+Textline* tl_get		(Textlist *, char *, int);
+char*	tl_get_str		(Textlist *, char *, int);
+int	tl_copy			(Textlist *, Textlist *);
 /* tick.c */
 int	copy_file		(char *, char *, char *);
 void	tick_init		(Tick *);
@@ -681,6 +688,7 @@ char   *strsave2		(char *, char *);
 void	exit_free		(void);
 
 MIMEInfo *get_mime		(char *, char *, char *);
+MIMEInfo *get_mime_from_header	(Textlist*);
 
 /* xstrnlen.c */
 size_t	xstrnlen		(const char *, size_t);

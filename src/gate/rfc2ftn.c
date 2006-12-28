@@ -807,7 +807,9 @@ int snd_mail(RFCAddr rfc_to, long size)
     
     if(rfc_to.user[0])
 	debug(3, "RFC To:       %s", s_rfcaddr_to_asc(&rfc_to, TRUE));
-
+    
+    if(mime_debody(&body) != OK)
+	 return ERROR;
     /*
      * MIME header
      */
@@ -1208,7 +1210,7 @@ int snd_message(Message *msg, Area *parea,
      */
     if(parea && parea->rfc_lvl!=-1)
 	rfc_level = parea->rfc_lvl;
-    
+
     /* MIME stuff and charset handling */
     if(mime->encoding && strieq(mime->encoding, "quoted-printable"))
 	mime_qp = MIME_QP;

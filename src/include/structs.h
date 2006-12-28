@@ -506,8 +506,10 @@ typedef struct st_mimeinfo
     char *type;			/* Content-Type (complete header) */
     char *type_type;		/*              MIME type part */
     char *type_charset;		/*              charset part */
-    char *type_boundary;	/*              charset part */
+    char *type_boundary;	/*              boundary part */
     char *encoding;		/* Content-Transfer-Encoding */
+    char *disposition;		/* Content-Disposition */
+    char *disposition_filename; /* filename from C-Disposition  header */
 }
 MIMEInfo;
 

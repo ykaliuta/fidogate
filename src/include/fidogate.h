@@ -112,6 +112,12 @@
 #define INVALID		(-1)
 #define WILDCARD	(-2)
 
+#define DEFAULT_LINE_LENGTH	72
+#define MAX_LINE_LENGTH		200
+#define INTERNAL_TYPE "text/plain; charset=windows-1251"
+#define INTERNAL_ENCODING "8bit"
+#define INTERNAL_CHARSET "windows-1251"
+
 /*
  * We supply our own version of the toupper()/tolower()
  * macros, because the exact behaviour of those in
@@ -146,3 +152,8 @@
  */
 #include "prototypes.h"
 #include "cf_funcs.h"
+
+#ifdef HAVE_ICONV
+#include <iconv.h>
+#endif
+

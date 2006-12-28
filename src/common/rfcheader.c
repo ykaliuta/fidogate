@@ -42,6 +42,11 @@ static Textline *last_header = NULL;
 
 
 
+Textlist* header_get_list(void)
+{
+    return &header;
+}
+
 /*
  * header_ca_rfc() --- Output ^ARFC-Xxxx kludges
  */
@@ -210,8 +215,71 @@ void header_read(FILE *file)
 	tl_append(&header, queue);
 }
 
+/*
+ * header_read_list() --- read header lines from Textlist
+ */
+int header_read_list(Textlist *body, Textlist *header)
+{
+    static char buf[BUFFERSIZE];
+    static char queue[BUFFERSIZE];
+    short int first = TRUE;
+    Textline *line; 
+    
+    if(body == NULL || header == NULL)
+	return ERROR;
+    
+    queue[0]='\0';
+    
+    tl_clear(header);
 
+    for(line = body->first; line != NULL; line = line->next)
+    {
+	strncpy(buf, line->line, BUFFERSIZE-1);
+	buf[BUFFERSIZE] = '\0';
+	if(*buf == '\r' || *buf == '\n')
+	    break;
+	strip_crlf(buf);
+	if(is_blank(buf[0]))
+	{
+	    BUF_APPEND(queue,buf);
+	}
+	else
+	{
+	    if(!first)
+		tl_append(header, queue);
+	    else
+		first = FALSE;
+	    BUF_COPY(queue,buf);
+	}
+    }
+    if(strlen(queue) > 1)
+	tl_append(header, queue);
+    return OK;
+}
 
+/* delete rfc header from the beginning of body */
+
+int header_delete_from_body(Textlist *body)
+{
+    char *buf;
+    Textline *line; 
+    
+    if(body == NULL)
+	return ERROR;
+
+    for(line = body->first; ; line = body->first)
+    {
+	buf = line->line;
+	if(*buf == '\r' || *buf == '\n')
+	{
+	    tl_delete(body, line);
+	    break;
+	}
+	tl_delete(body, line);
+    }
+    return OK;
+}
+    
 /*
  * header_hops() --- return # of hops (Received headers) of message
  */
@@ -387,7 +455,6 @@ char *header_getnext(void)
 }
 
 
-
 /*
  * Return complete header line, concat continuation lines if necessary.
  */
@@ -417,6 +484,39 @@ char *s_header_getcomplete(char *name)
 }
 
 
+/*
+ * Change header line
+ */
+
+int header_alter(Textlist *header, char *name, char *newval)
+{
+    Textline *line;
+    char *new_header;
+    
+    if(header == NULL || name == NULL)
+	return ERROR;
+
+    for(line = header->first; line != NULL; line = line->next)
+    {
+	if(!strneq(line->line, name, strlen(name)))
+	    continue;
+
+	if(newval == NULL)
+	{
+	    tl_delete(header, line);
+	    return OK;
+	}
+	/* name + ": " + newval + '\n' */
+	new_header = xmalloc(strlen(name) + 2 + strlen(newval) + 1);
+	strcpy(new_header, name);
+	strcat(new_header, ": ");
+	strcat(new_header, newval);
+	xfree(line->line);
+	line->line = new_header;
+	return OK;
+    }
+    return ERROR;
+}
 
 /*
  * addr_token() --- get addresses from string (',' separated)

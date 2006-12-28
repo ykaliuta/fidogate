@@ -358,8 +358,6 @@ int check_valid_domain(char *s)
  * Format buffer line and put it into Textlist. Returns number of
  * lines.
  */
-#define DEFAULT_LINE_LENGTH	72
-#define MAX_LINE_LENGTH		200
 
 static int msg_get_line_length(void)
 {
