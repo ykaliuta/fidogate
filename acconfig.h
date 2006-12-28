@@ -679,6 +679,8 @@
 					 * systems, it can be incremented with
 					 * ftntoss/ftnroute's -M option */
 
+/* Define if using iconv */
+#undef HAVE_ICONV
 
 /* Define if using alloca.c.  */
 #undef C_ALLOCA

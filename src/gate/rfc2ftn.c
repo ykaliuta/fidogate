@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway software UNIX <-> FIDO
  *
- * $Id: rfc2ftn.c,v 5.2 2004/11/23 00:50:41 anray Exp $
+ * $Id: rfc2ftn.c,v 5.3 2006/12/28 17:51:39 anray Exp $
  *
  * Read mail or news from standard input and convert it to a FIDO packet.
  *
@@ -39,7 +39,7 @@
 
 
 #define PROGRAM 	"rfc2ftn"
-#define VERSION 	"$Revision: 5.2 $"
+#define VERSION 	"$Revision: 5.3 $"
 #define CONFIG		DEFAULT_CONFIG_GATE
 
 
@@ -807,7 +807,9 @@ int snd_mail(RFCAddr rfc_to, long size)
     
     if(rfc_to.user[0])
 	debug(3, "RFC To:       %s", s_rfcaddr_to_asc(&rfc_to, TRUE));
-
+    
+    if(mime_debody(&body) != OK)
+	 return ERROR;
     /*
      * MIME header
      */
@@ -1208,7 +1210,7 @@ int snd_message(Message *msg, Area *parea,
      */
     if(parea && parea->rfc_lvl!=-1)
 	rfc_level = parea->rfc_lvl;
-    
+
     /* MIME stuff and charset handling */
     if(mime->encoding && strieq(mime->encoding, "quoted-printable"))
 	mime_qp = MIME_QP;

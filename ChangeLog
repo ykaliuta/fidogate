@@ -7,6 +7,17 @@
 	* doc/examples/snp/fidogate.conf:
 	Removed AutoCreateDontCheckPassword and updated Changes for
 	this.
+	* src/common/areasbbs.c (areasbbs_free): xfree() without
+	checking.
+	* src/common/mime.c:
+	* src/common/rfcheader.c:
+	* src/common/textlist.c:
+	* src/include/fidogate.h:
+	* src/include/prototypes.h:
+	* src/include/structs.h:
+	* acconfig.h:
+	Added conversations with iconv support and fix recoding(patch
+	from Zhenya Kaliuta).
 
 2006-12-27  Andrey Slusar  <anrays@gmail.com>
 

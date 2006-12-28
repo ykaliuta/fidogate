@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: textlist.c,v 5.2 2004/11/23 00:50:40 anray Exp $
+ * $Id: textlist.c,v 5.3 2006/12/28 17:51:39 anray Exp $
  *
  * Store text file as chain of linked text lines in memory
  *
@@ -236,4 +236,44 @@ void tl_addtl(Textlist *d, Textlist *s)
 
     for(p=s->first; p; p=p->next)
 	tl_append(d, p->line);
+}
+
+Textline* tl_get(Textlist *list, char *str, int len)
+{
+    Textline *p = NULL;
+    
+    for(p = list->first; p != NULL; p = p->next)
+    {
+	if(len == 0)
+	{
+	     if(stricmp(p->line, str) == 0)
+		break;
+	}
+	else
+	{
+	    if(strnicmp(p->line, str, len) == 0)
+		break;
+	}
+    }
+    return p;
+}
+	
+char* tl_get_str(Textlist *list, char *str, int len)
+{
+    Textline *p;
+    char *new_str = NULL;
+  
+    p = tl_get(list, str, len);
+    if(p != NULL)
+	new_str = strsave(p->line);
+    return new_str;
+}
+
+int tl_copy(Textlist *dst, Textlist *src)
+{
+    Textline *p;
+
+    for(p = src->first; p != NULL; p = p->next)
+	tl_append(dst, p->line);
+    return OK;
 }

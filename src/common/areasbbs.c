@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: areasbbs.c,v 5.2 2004/11/23 00:50:40 anray Exp $
+ * $Id: areasbbs.c,v 5.3 2006/12/28 17:51:39 anray Exp $
  *
  * Function for processing AREAS.BBS EchoMail distribution file.
  *
@@ -661,14 +661,12 @@ void areasbbs_free(void)
     for(p=areasbbs_list; p; p=n)
     {
 	n=p->next;
-	if(p->area)
-	    xfree(p->area);
-	if(p->key)
-	    xfree(p->key);
-	if(p->desc)
-	    xfree(p->desc);
-	if(p->state)
-	    xfree(p->state);
+	xfree(p->area);
+	xfree(p->dir);
+	xfree(p->key);
+	xfree(p->desc);
+	xfree(p->state);
+
 	if((&p->passive)->size > 0)
 	    lon_delete(&p->passive);
 	if((&p->nodes)->size > 0)

@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: ftn2rfc.c,v 5.4 2006/10/31 21:06:02 anray Exp $
+ * $Id: ftn2rfc.c,v 5.5 2006/12/28 17:51:39 anray Exp $
  *
  * Convert FTN mail packets to RFC mail and news batches
  *
@@ -39,7 +39,7 @@
 
 
 #define PROGRAM 	"ftn2rfc"
-#define VERSION 	"$Revision: 5.4 $"
+#define VERSION 	"$Revision: 5.5 $"
 #define CONFIG		DEFAULT_CONFIG_GATE
 
 
@@ -358,8 +358,6 @@ int check_valid_domain(char *s)
  * Format buffer line and put it into Textlist. Returns number of
  * lines.
  */
-#define DEFAULT_LINE_LENGTH	72
-#define MAX_LINE_LENGTH		200
 
 static int msg_get_line_length(void)
 {
