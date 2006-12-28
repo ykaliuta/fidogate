@@ -384,9 +384,6 @@ FileFixCreateForbiddenAreasFile %C/ffidokill
 # Keys for put to areas.bbs when echo is autocreated
 AutoCreateLine -# -s S -t 0
 
-# Do'nt check 'pkt password when echo autocreate
-AutoCreateDontCheckPassword
-
 # If specified, then if origaddr in pkt header differs from origaddr in the
 # message header, then the message is considered insecure.
 #

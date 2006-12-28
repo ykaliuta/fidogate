@@ -263,9 +263,6 @@ MaxHistoryDBC 28
 # Keys for put to areas.bbs when echo is autocreated
 AutoCreateLine -s S -t 0
 
-# Do'nt check 'pkt password when echo autocreate
-AutoCreateDontCheckPassword
-
 ##############################################################################
 # T I C K E R   C O N F I G U R A T I O N                                    #
 ##############################################################################
