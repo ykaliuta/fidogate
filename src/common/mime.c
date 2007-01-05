@@ -973,9 +973,11 @@ static Textlist* mime_debody_section(Textlist *body, Textlist *header)
     if((mime = get_mime_from_header(header)) == NULL)
 	return NULL;
 
-    if(strieq(mime->type_type, "text/plain") || (mime->type == NULL))
+    if((mime->type_type == NULL) || strieq(mime->type_type, "text/plain")
+	|| (mime->type == NULL))
     {
-	if(strieq(mime->encoding, "8bit") || strieq(mime->encoding, "7bit"))
+	if((mime->encoding == NULL) || strieq(mime->encoding, "8bit")
+	    || strieq(mime->encoding, "7bit"))
 	{
 	    dec_body = body;
 	}
@@ -997,13 +999,13 @@ static Textlist* mime_debody_section(Textlist *body, Textlist *header)
     }
     else if(strieq(mime->type_type, "multipart/mixed"))
     {
-	dec_body = mime_debody_multipart(body, mime);
+        dec_body = mime_debody_multipart(body, mime);
     }
     else
     {
-	fglog("WARNING: Skipped unsupported mime type  %s", mime->type_type);
-	dec_body = NULL;
-	goto exit;
+        fglog("WARNING: Skipped unsupported mime type  %s", mime->type_type);
+        dec_body = NULL;
+        goto exit;
     }
 exit:
     put_mime(mime);
