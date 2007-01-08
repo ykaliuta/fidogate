@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: mime.c,v 5.5 2007/01/05 23:09:23 anray Exp $
+ * $Id: mime.c,v 5.6 2007/01/08 14:26:11 anray Exp $
  *
  * MIME stuff
  *
@@ -34,6 +34,20 @@
 
 static int is_qpx		(int);
 static int x2toi		(char *);
+static int put_mime		(MIMEInfo *);
+static int mime_decharset_string(char*, size_t*, const char*, size_t*, char*, char*);
+
+static char* mime_get_main_charset()
+{
+    MIMEInfo *mime;
+    char *charset;
+    mime = get_mime( s_header_getcomplete("MIME-Version"),
+		     s_header_getcomplete("Content-Type"),
+		     s_header_getcomplete("Content-Transfer-Encoding"));
+    charset = strsave(mime->type_charset);
+    put_mime(mime);
+    return charset;
+}
 
 
 static int is_qpx(int c)
@@ -124,6 +138,9 @@ char *mime_dequote(char *d, size_t n, char *s, int flags)
 #define MIME_HEADER_CODE_END	"?="
 #define MIME_HEADER_STR_DELIM	"\r\n "
 #define MIME_STRING_LIMIT 74
+#define MIME_ENC_STRING_LIMIT 80
+#define MIME_MAX_ENC_LEN 31
+
 /* A..Z -- 0x00..0x19
  * a..z -- 0x1a..0x33
  * 0..9 -- 0x34..0x3d
@@ -167,7 +184,6 @@ int mime_qptoint(char c)
 
 #define B64_ENC_CHUNK 3
 #define B64_NLET_PER_CHUNK 4
-#define B64_MAX_ENC_LEN 31
 
 int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
 {
@@ -191,7 +207,7 @@ int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
     else
     {
         delimlen = strlen(MIME_HEADER_CODE_START)
-            + xstrnlen(encoding, B64_MAX_ENC_LEN)
+            + xstrnlen(encoding, MIME_MAX_ENC_LEN)
             + strlen(MIME_HEADER_CODE_MIDDLE_B64)
             + strlen(MIME_HEADER_CODE_END);
         buflen += delimlen;
@@ -221,7 +237,7 @@ int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
     else
     {
         strcat(buf, MIME_HEADER_CODE_START);
-        strncat(buf, encoding, B64_MAX_ENC_LEN);
+        strncat(buf, encoding, MIME_MAX_ENC_LEN);
         strcat(buf, MIME_HEADER_CODE_MIDDLE_B64);
         outpos += strlen(buf);
 
@@ -407,7 +423,10 @@ char *mime_deheader(char *d, size_t n, char *s)
 {
     int	i;
     char *p, *beg, *end, *buf;
-
+    char charset[MIME_MAX_ENC_LEN + 1];
+    int is_new_decoder = 1, is_mimed = 0;
+    size_t tmp_len, dst_len;
+        
     memset(d, 0, n);
     for (i = 0; (n - 1 > i) && ('\0' != *s);)
     {
@@ -417,6 +436,15 @@ char *mime_deheader(char *d, size_t n, char *s)
 	    p = strchr(s + strlen(MIME_HEADER_CODE_START), '?');
 	    if (NULL != p)
 	    {
+		tmp_len = p - (s + strlen(MIME_HEADER_CODE_START));
+		if(tmp_len > MIME_MAX_ENC_LEN)
+		{
+		    fglog("ERROR: charset name's length too long, %d. Do not recode", tmp_len);
+		    is_new_decoder = 0;
+		}
+		strncpy(charset, s + strlen(MIME_HEADER_CODE_START), tmp_len);
+		charset[tmp_len] = '\0';
+		debug(6, "subject charset: %s", charset);
 		/* Check if b64 or qp */
 		if (strnieq(p, MIME_HEADER_CODE_MIDDLE_QP, strlen(MIME_HEADER_CODE_MIDDLE_QP)))
 		{
@@ -427,7 +455,17 @@ char *mime_deheader(char *d, size_t n, char *s)
 			strnieq(end, MIME_HEADER_CODE_END, strlen(MIME_HEADER_CODE_END)) &&
 			ERROR != mime_qp_decode(&buf, beg, end - beg))
 		    {
-			strncpy(&(d[i]), buf, n - i - 1);
+			is_mimed = 1;
+			if(!is_new_decoder || strieq(charset, INTERNAL_CHARSET))
+			{
+			    strncpy(&(d[i]), buf, n - i - 1);
+			}
+			else
+			{
+			    dst_len = tmp_len = n - i - 1;
+			    if(mime_decharset_string(&(d[i]), &tmp_len, buf, &dst_len, charset, INTERNAL_CHARSET) == ERROR)
+				strncpy(&(d[i]), buf, n - i - 1);
+			}
 			free(buf);
 			i += strlen(&(d[i]));
 			s = end + strlen(MIME_HEADER_CODE_END);
@@ -443,7 +481,17 @@ char *mime_deheader(char *d, size_t n, char *s)
 			strnieq(end, MIME_HEADER_CODE_END, strlen(MIME_HEADER_CODE_END)) &&
 			ERROR != mime_b64_decode(&buf, beg, end - beg))
 		    {
-			strncpy(&(d[i]), buf, n - i - 1);
+			is_mimed = 1;
+			if(!is_new_decoder || strieq(charset, INTERNAL_CHARSET))
+			{
+			    strncpy(&(d[i]), buf, n - i - 1);
+			}
+			else
+			{
+			    dst_len = tmp_len = n - i - 1;
+			    if(mime_decharset_string(&(d[i]), &tmp_len, buf, &dst_len, charset, INTERNAL_CHARSET) == ERROR)
+				strncpy(&(d[i]), buf, n - i - 1);
+			}
 			free(buf);
 			i += strlen(&(d[i]));
 			s = end + strlen(MIME_HEADER_CODE_END);
@@ -457,13 +505,32 @@ char *mime_deheader(char *d, size_t n, char *s)
 	d[i++] = *s++;
     }
     d[i] = 0;
+    /* if 8bit subject, normalize it */
+    if(is_new_decoder && !is_mimed)
+    {
+	char *tmp_str, *src_charset;
+	int src_len, dst_len;
 
+	if((src_charset = mime_get_main_charset()) != NULL)
+	{
+	    debug(6, "Normilizing 8bit subject from  charset %s to %s", src_charset, INTERNAL_CHARSET);
+		
+	    src_len = strlen(d);
+	    dst_len = src_len + 1;
+	    tmp_str = xmalloc(dst_len);
+	    if(mime_decharset_string(tmp_str, &dst_len, d, &src_len, src_charset, INTERNAL_CHARSET) != ERROR)
+		strcpy(d, tmp_str);
+	    xfree(src_charset);
+	    xfree(tmp_str);
+	}
+    }
     return d;
 }
 
 /* takes space-stripped string */
 /* Now is not used */
 /*
+
 static char* mime_fetch_attribute(char *str, char *attr)
 {
      int attr_len = strlen(attr);
@@ -486,6 +553,7 @@ static char* mime_fetch_attribute(char *str, char *attr)
      return tmp_str;
 }
 */
+
 static int mime_parse_header(Textlist *line, char *str)
 {
      char *p = NULL;
@@ -553,7 +621,6 @@ static MIMEInfo *get_mime_disposition(char *ver, char *type, char *enc, char *di
 	if(header_line.first != NULL && header_line.first->line != NULL)
 	    mime->type_type = s_copy(header_line.first->line);
 	
-/*    tmp_str = tl_get_str(&header_line, "charset", strlen("charset")); */
 	tmp_line = tl_get(&header_line, "charset", strlen("charset"));
 	if(tmp_line != NULL)
 	{
@@ -561,8 +628,6 @@ static MIMEInfo *get_mime_disposition(char *ver, char *type, char *enc, char *di
 	    mime->type_charset = s_copy(tmp_str);
 	    xfree(tmp_str);
 	}
-/*    tmp_str = tl_get_str(&header_line, "boundary", */
-/*    strlen("boundary")); */
 	tmp_line = tl_get(&header_line, "boundary", strlen("boundary"));
 	if(tmp_line != NULL)
 	{
@@ -577,7 +642,6 @@ static MIMEInfo *get_mime_disposition(char *ver, char *type, char *enc, char *di
     {
 	tmp_str = s_copy(disp);
 	mime_parse_header(&header_line, tmp_str);
-/*	tmp_str = tl_get_str(&header_line, "filename", strlen("filename")); */
 	tmp_line = tl_get(&header_line, "filename", strlen("filename"));
 	if(tmp_line != NULL)
 	    tmp_str = mime_attr_value(tmp_line->line);
@@ -628,7 +692,7 @@ MIMEInfo* get_mime_from_header (Textlist *header)
 				    rfcheader_get(header, "Content-Disposition"));
 }
 
-int put_mime(MIMEInfo *mime)
+static int put_mime(MIMEInfo *mime)
 {
     s_free((char*)mime);
     return 0;
@@ -749,7 +813,6 @@ fail:
 
 /* decode base64 body */
 
-#define MIME_MAX_ENC_LEN 80
 
 static Textlist* mime_debody_base64(Textlist *body)
 {
@@ -776,7 +839,7 @@ static Textlist* mime_debody_base64(Textlist *body)
     for(line = body->first; line != NULL; line = line->next)
     {
 
-	enc_len = (xstrnlen(line->line, MIME_MAX_ENC_LEN) / 4) * 4;
+	enc_len = (xstrnlen(line->line, MIME_ENC_STRING_LIMIT) / 4) * 4;
 	if(mime_b64_decode(&dec_str, line->line, enc_len) == ERROR)
 	    goto exit;
     
@@ -894,73 +957,126 @@ static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime)
 }
 
 
+/*
+ * get source string, lenght of it, buffer for the destination string
+ * and its length.
+ * Return in srclen -- rest of undecoded characters (0 if ok)
+ * in dstlen -- number of unused bytes in the dst buffer
+ * The argument's order is like in str/mem functions
+ *
+ * Adjust given length to string's length
+ */
 
+static int mime_decharset_string(char *dst, size_t *dstlen, const char *src, size_t *srclen, char *from, char *to)
+{
+    int rc;
+    int len;
+
+#ifdef HAVE_ICONV
+    iconv_t desc;
+#endif
+    if(src == NULL || dst == NULL || srclen == NULL || dstlen == NULL)
+	return ERROR;
+    
+    if(*srclen == 0 || *dstlen == 0)
+	return ERROR;
+
+    debug(6, "mime charset: recoding from %s to %s", from, to);
+
+    len = strlen(src);
+    if(len < *srclen)
+	*srclen = len;
+    
+#ifdef HAVE_ICONV
+    
+    debug(6, "Using ICONV");
+    desc = iconv_open(to, from);
+    if(desc == (iconv_t)-1)
+    {
+	fglog("WARNING: iconv cannot convert from %s to %s", from, to);
+	return ERROR;
+    }
+
+    while(*srclen > 0)
+    {
+	rc = iconv(desc, &src, srclen, &dst, dstlen);
+	if(rc != -1)
+	    continue;
+
+	if(errno == E2BIG) {
+	    rc = ERROR;
+	    goto exit;
+	}
+	
+       /* Only if wrong symbol (or sequence), try to skip it */
+	(*srclen)--;
+	src++;
+	/* reset conversion state */
+	/* iconv(desc, NULL, NULL, &res_ptr, &res_len); */
+    }
+
+    rc = OK;
+exit:
+    *dst = '\0';
+    iconv_close(desc);
+#else
+
+    charset_set_in_out(from, to);
+    *dst = '\0';
+    
+    for(; (*srclen > 0 ) && (*dstlen > 0); (*srclen)--, (*dstlen)--) 
+	strcat(dst, charset_map_c(*(src++), 0));
+
+    rc = OK;
+    
+#endif
+    return rc;
+    
+}
 
 static int mime_decharset_section(Textlist *body, MIMEInfo *mime)
 {
 
-#ifdef HAVE_ICONV
-
-    iconv_t desc;
-    const char *src_ptr;
-    char *res_str, *res_ptr;
+    char *res_str = NULL;
     size_t res_len, src_len;
     size_t max_len;
     int rc;
     
     Textline *line;
-#endif
     
     if(body == NULL || mime == NULL)
 	return ERROR;
 
-#ifdef HAVE_ICONV
-    
     /* if no charset, us-ascii assumed */
     if(mime->type_charset == NULL || strieq(mime->type_charset, INTERNAL_CHARSET))
 	return OK;
-    
-    desc = iconv_open(INTERNAL_CHARSET, mime->type_charset);
-    if(desc == (iconv_t)-1)
-    {
-	fglog("WARNING: iconv cannot convert from %s to %s", mime->type_charset, INTERNAL_CHARSET);
-	return ERROR;
-    }
 
-    /* Converting to 8bit charset, so result always less or equal */
+   
     max_len = msg_get_line_length();
     res_str = xmalloc(max_len + 1);
 
     for(line = body->first; line != NULL; line = line->next)
     {
-	res_ptr = res_str;
-	src_ptr = line->line;
 	src_len = strlen(line->line);
 	res_len = max_len;
 
-        while(src_len > 0)
-	{
-	    rc = iconv(desc, &src_ptr, &src_len, &res_ptr, &res_len);
-	    if(rc == -1)
-	    {
-		/* Only if wrong symbol (or sequence), try to skip it */
-		src_len--;
-		src_ptr++;
-		/* reset conversion state */
-		/* iconv(desc, NULL, NULL, &res_ptr, &res_len); */
-	    }
+	rc = mime_decharset_string(res_str, &res_len, line->line, &src_len, mime->type_charset, INTERNAL_CHARSET);
+
+	if(rc == ERROR) {
+	    if(src_len != 0 && res_len == 0)
+		fglog("WARNING: no space in the destination buffer for iconv");
+	    else
+		goto exit; /* something really wrong */
 	}
-	res_str[max_len - res_len] = '\0';
+	
+	/* Converting to 8bit charset, so result always less or equal */
 	strcpy(line->line, res_str);
-	iconv(desc, NULL, NULL, &res_ptr, &res_len);
     }
-    
-    iconv_close(desc);
+
+    rc = OK;
+exit:
     xfree(res_str);
-
-#endif
-
-    return OK;
+    return rc;
 }
     
 
@@ -999,13 +1115,13 @@ static Textlist* mime_debody_section(Textlist *body, Textlist *header)
     }
     else if(strieq(mime->type_type, "multipart/mixed"))
     {
-        dec_body = mime_debody_multipart(body, mime);
+	dec_body = mime_debody_multipart(body, mime);
     }
     else
     {
-        fglog("WARNING: Skipped unsupported mime type  %s", mime->type_type);
-        dec_body = NULL;
-        goto exit;
+	fglog("WARNING: Skipped unsupported mime type  %s", mime->type_type);
+	dec_body = NULL;
+	goto exit;
     }
 exit:
     put_mime(mime);
@@ -1039,9 +1155,7 @@ int mime_debody(Textlist *body)
 	xfree(dec_body);
     }
 
-#ifdef HAVE_ICONV
     header_alter(header, "Content-Type", INTERNAL_TYPE);
-#endif
     header_alter(header, "Content-Transfer-Encoding", INTERNAL_ENCODING);
 
     return OK;

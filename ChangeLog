@@ -1,3 +1,11 @@
+2007-01-08  Andrey Slusar  <anrays@gmail.com>
+
+	* src/common/mime.c:
+	* src/gate/rfc2ftn.c:
+	Fix 8-bit subject handling.
+	If subject was not mimed, recode it according to message
+	charset(patch from Zhenya Kaliuta).
+
 2007-01-06  Andrey Slusar  <anrays@gmail.com>
 
 	* src/common/mime.c: (mime_debody_section): Fix works when

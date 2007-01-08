@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway software UNIX <-> FIDO
  *
- * $Id: rfc2ftn.c,v 5.3 2006/12/28 17:51:39 anray Exp $
+ * $Id: rfc2ftn.c,v 5.4 2007/01/08 14:26:11 anray Exp $
  *
  * Read mail or news from standard input and convert it to a FIDO packet.
  *
@@ -39,7 +39,7 @@
 
 
 #define PROGRAM 	"rfc2ftn"
-#define VERSION 	"$Revision: 5.3 $"
+#define VERSION 	"$Revision: 5.4 $"
 #define CONFIG		DEFAULT_CONFIG_GATE
 
 
@@ -807,10 +807,21 @@ int snd_mail(RFCAddr rfc_to, long size)
     
     if(rfc_to.user[0])
 	debug(3, "RFC To:       %s", s_rfcaddr_to_asc(&rfc_to, TRUE));
-    
-    if(mime_debody(&body) != OK)
-	 return ERROR;
+
     /*
+     * Subject
+     */
+    if( (p = header_get("Subject")) )
+	mime_deheader(subj, MSG_MAXSUBJ, p);
+    else
+	BUF_COPY(subj, "(no subject)");
+
+    if( (p = cf_get_string("UseNewMime", TRUE)) != NULL )
+	 if(mime_debody(&body) != OK)
+	      return ERROR;
+
+    
+     /*
      * MIME header
      */
     mime = get_mime( s_header_getcomplete("MIME-Version"),
@@ -855,13 +866,6 @@ int snd_mail(RFCAddr rfc_to, long size)
     p = mail_sender(&rfc_from, &node_from);
     BUF_COPY(msg.name_from, p);
 	
-    /*
-     * Subject
-     */
-    if( (p = header_get("Subject")) )
-	mime_deheader(subj, MSG_MAXSUBJ, p);
-    else
-	BUF_COPY(subj, "(no subject)");
 
     /*
      * Date
