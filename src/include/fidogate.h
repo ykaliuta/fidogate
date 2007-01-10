@@ -114,9 +114,16 @@
 
 #define DEFAULT_LINE_LENGTH	72
 #define MAX_LINE_LENGTH		200
+
+#ifdef HAVE_ICONV
 #define INTERNAL_TYPE "text/plain; charset=windows-1251"
-#define INTERNAL_ENCODING "8bit"
 #define INTERNAL_CHARSET "windows-1251"
+#else
+#define INTERNAL_TYPE "text/plain; charset=cp866"
+#define INTERNAL_CHARSET "cp866"
+#endif
+#define INTERNAL_ENCODING "8bit"
+
 
 /*
  * We supply our own version of the toupper()/tolower()

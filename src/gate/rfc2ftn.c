@@ -816,10 +816,8 @@ int snd_mail(RFCAddr rfc_to, long size)
     else
 	BUF_COPY(subj, "(no subject)");
 
-    if( (p = cf_get_string("UseNewMime", TRUE)) != NULL )
-	 if(mime_debody(&body) != OK)
-	      return ERROR;
-
+    if(mime_debody(&body) != OK)
+	return ERROR;
     
      /*
      * MIME header
