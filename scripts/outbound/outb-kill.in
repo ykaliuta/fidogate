@@ -1,11 +1,12 @@
 #!<SHELL>
 #
-# $Id: outb-kill.in,v 5.2 2004/11/23 00:50:39 anray Exp $
+# $Id: outb-kill.in,v 5.3 2007/01/10 00:10:37 anray Exp $
 #
 # Remove node from areas.bbs, kill outbound files
 #
 
 BIN=<BINDIR>
+LIBEXEC=<LIBEXECDIR>
 
 for n in $*; do
 	[ -z "$n" ] && exit 0;
@@ -19,6 +20,6 @@ for n in $*; do
 		echo "Unsubscribing to all areas ..."
 		$BIN/ftnaf -- $n '-*' 
 		echo "Killing outbound files ..."
-		$BIN/ftnflo -v -x "echo '  %s'" -- $n
+		$LIBEXEC/ftnflo -v -x "echo '  %s'" -- $n
 	fi
 done

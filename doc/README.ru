@@ -1,5 +1,5 @@
 
-  $Id: README.ru,v 5.5 2005/10/11 14:23:00 anray Exp $
+  $Id: README.ru,v 5.6 2006/12/28 14:48:08 anray Exp $
 
 
    Copyright (C) 2001-2002, Dmitry Fedotov
@@ -959,9 +959,6 @@ AutoCreateSubscribeNodes 2:5030/1235 1262
 # Список адресов, которые подписываются автоматически на создаваемые
 # файлэхи.
 AutoCreateSubscribeFileechoNodes 2:5030/1235
-
-# Не делать проверку пароля в pkt, перед созданием эхоконференции.
-AutoCreateDontCheckPassword
 
 # Если в заголовке pkt содержится поинтовый адрес, не совпадающий с
 # адресом в ориджине, или если этого адреса нет в кладже ^AMSGID, то

@@ -1,3 +1,7 @@
+/*
+ * $Id: ngoper.c,v 5.3 2006/12/28 12:15:26 anray Exp $
+ */
+
 #include "fidogate.h"
 
 #include "getopt.h"
