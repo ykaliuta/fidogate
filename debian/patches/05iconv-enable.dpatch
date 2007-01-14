@@ -1,0 +1,20 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 99-unnamed.dpatch by Yauheni Kaliuta <y.kaliuta@gmail.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: No description.
+
+@DPATCH@
+diff --git a/config.h.in b/config.h.in
+index 2f9fc8a..f77d19c 100644
+--- a/config.h.in
++++ b/config.h.in
+@@ -681,7 +681,7 @@
+ 					 * ftntoss/ftnroute's -M option */
+ 
+ /* Define if using iconv */
+-#undef HAVE_ICONV
++#define HAVE_ICONV 1
+ 
+ /* Define if using alloca.c.  */
+ #undef C_ALLOCA
