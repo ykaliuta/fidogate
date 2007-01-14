@@ -1,3 +1,16 @@
+2007-01-10  Andrey Slusar  <anrays@gmail.com>
+
+	* src/include/fidogate.h: Different INTERNAL_CHARSET and
+	INTERNAL_TYPE when defined and not defined HAVE_ICONV.
+	(thanks to Zhenya Kaliuta)
+	* src/gate/rfc2ftn.c: Fix recoding when HAVE_ICONV defined.
+	(thanks to Zhenya Kaliuta)
+
+2007-01-09  Andrey Slusar  <anrays@gmail.com>
+
+	* scripts/outbound/outb-kill.in: Fix ftnflo location
+	(Thanks to Yuri Chumakov)
+
 2007-01-08  Andrey Slusar  <anrays@gmail.com>
 
 	* src/common/mime.c:
