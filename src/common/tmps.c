@@ -160,7 +160,7 @@ void tmps_free(TmpS *s)
     exit_free();
 
     /* Not found, internal error */
-    fatal("Internal error - freeing invalid temp string", EX_SOFTWARE);
+    fatal("tmps_free() internal error - freeing invalid temp string", EX_SOFTWARE);
 }
 
 
@@ -322,7 +322,7 @@ void s_free(char *s)
     }
 
     /* Not found, internal error */
-    fatal("Internal error - freeing invalid temp string", EX_SOFTWARE);
+    fatal("s_free() internal error - freeing invalid temp string", EX_SOFTWARE);
 }
 
 
@@ -397,7 +397,7 @@ char *s_stripsize(char *s)
     p = tmps_find(s);
     if(!p)
 	/* Not found, internal error */
-	fatal("Internal error - freeing invalid temp string", EX_SOFTWARE);
+	fatal("s_stripsize() internal error - freeing invalid temp string", EX_SOFTWARE);
     
     tmps_realloc(p, strlen(p->s)+1);
     
