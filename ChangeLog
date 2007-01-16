@@ -1,3 +1,8 @@
+2007-01-16  Andrey Slusar  <anrays@gmail.com>
+
+	* src/common/tmps.c: More comments in fatal() messages.
+	* src/common/mime.c: Fix crashes.
+
 2007-01-10  Andrey Slusar  <anrays@gmail.com>
 
 	* src/include/fidogate.h: Different INTERNAL_CHARSET and
