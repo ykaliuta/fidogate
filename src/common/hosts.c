@@ -214,9 +214,7 @@ void hosts_free(void)
     {
 	n=p->next;
 
-	if(p->name)
-	    xfree(p->name);
-
+	xfree(p->name);
 	xfree(p);
     }
 }

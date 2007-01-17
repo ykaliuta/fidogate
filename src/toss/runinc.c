@@ -607,7 +607,7 @@ void run_toss(Runtoss *a)
 		    return;
 		}
 	}
-	free(str);
+	xfree(str);
 	pclose(fp);
     }
 #endif

@@ -152,8 +152,7 @@ void passwd_free(void)
 
 	xfree(p->context);
 	xfree(p->passwd);
-	if(p->args)
-	    xfree(p->args);
+	xfree(p->args);
 	xfree(p);
     }
 

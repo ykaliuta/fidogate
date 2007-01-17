@@ -67,9 +67,9 @@ int do_addr(FTNAddr *from, FTNAddr *to, char *subj, Textlist *tl, char *area,
     for ( ptr = tl->first; NULL != ptr; ptr = ptr->next )
     {
 	p = xlat_s( ptr->line, NULL );
-	free( ptr->line );
+	xfree( ptr->line );
 	ptr->line = strsave( p );
-	free( p );
+	xfree( p );
     }
     
     TMPS_RETURN(outpkt_netmail(&msg, tl, PROGRAM, origin, tearline));

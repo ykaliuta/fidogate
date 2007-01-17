@@ -510,6 +510,7 @@ typedef struct st_mimeinfo
     char *encoding;		/* Content-Transfer-Encoding */
     char *disposition;		/* Content-Disposition */
     char *disposition_filename; /* filename from C-Disposition  header */
+    struct st_mimeinfo *next;
 }
 MIMEInfo;
 
