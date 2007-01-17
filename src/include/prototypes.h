@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: prototypes.h,v 5.5 2006/12/28 17:51:39 anray Exp $
+ * $Id: prototypes.h,v 5.6 2007/01/17 22:45:57 anray Exp $
  *
  * Prototypes for functions in libfidogate.a
  *
@@ -38,15 +38,15 @@
 
 
 /* acl.c */
-#define acl_init()              acl_do_file( cf_p_acl( ) )
-void    acl_do_file		( char * );
-void	acl_ngrp		( RFCAddr, int );
-int	acl_ngrp_lookup		( char * );
-int	pna_notify		( char * );
-void	list_init		( char ***, char * );
-int	list_match		( char **, char ** );
-int	ftnacl_lookup		( Node *, Node *, char * );
-void	acl_ftn_free		( void );
+#define acl_init()              acl_do_file( cf_p_acl() )
+void    acl_do_file		(char *);
+void	acl_ngrp		(RFCAddr, int);
+int	acl_ngrp_lookup		(char *);
+int	pna_notify		(char *);
+void	list_init		(char ***, char *);
+int	list_match		(char **, char **);
+int	ftnacl_lookup		(Node *, Node *, char *);
+void	acl_ftn_free		(void);
 
 /* acl_ftn.c */
 #ifdef FTN_ACL
@@ -55,8 +55,8 @@ void	acl_ftn_free		( void );
 #define ftnacl_init()               ftnacl_do_file( cf_p_ftnacl() )
 #define ftnacl_ismandatory(a, b, c) ftnacl_search(a, b, TYPE_MANDATORY, c)
 #define ftnacl_isreadonly(a, b, c)  ftnacl_search(a, b, TYPE_READONLY, c)
-void    ftnacl_do_file           ( char * );
-int     ftnacl_search            ( Node *, char *, char, char );
+void    ftnacl_do_file           (char *);
+int     ftnacl_search            (Node *, char *, char, char);
 #endif /* FTN_ACL */
 
 /* active.c */
@@ -71,25 +71,25 @@ Active *active_lookup		(char *);
 #define ADDRESS_ERROR_SIZE	256
 extern char address_error[ADDRESS_ERROR_SIZE];
 
-void	addr_restricted		( int );
-int	addr_is_restricted	( void );
-char   *str_ftn_to_inet		( char *, size_t, Node *, int );
-char   *s_ftn_to_inet		( Node * );
-Node   *inet_to_ftn		( char * );
-int	addr_is_local		( char * );
-int	addr_is_domain		( char * );
-int 	addr_is_local_xpost	( char * );
-void	addr_is_local_xpost_init( char * );
+void	addr_restricted		(int);
+int	addr_is_restricted	(void);
+char   *str_ftn_to_inet		(char *, size_t, Node *, int);
+char   *s_ftn_to_inet		(Node *);
+Node   *inet_to_ftn		(char *);
+int	addr_is_local		(char *);
+int	addr_is_domain		(char *);
+int 	addr_is_local_xpost	(char *);
+void	addr_is_local_xpost_init(char *);
 #ifdef AI_1
-int	verify_host_flag	( Node * );
+int	verify_host_flag	(Node *);
 #endif
 
 /* aliases.c */
-#define alias_init()            alias_do_file( cf_p_aliases( ) )
-void    alias_do_file		( char * );
-Alias  *alias_lookup		( Node *, char * );
-Alias  *alias_lookup_strict	( Node *, char * );
-Alias  *alias_lookup_userdom	( RFCAddr * );
+#define alias_init()            alias_do_file( cf_p_aliases() )
+void    alias_do_file		(char *);
+Alias  *alias_lookup		(Node *, char *);
+Alias  *alias_lookup_strict	(Node *, char *);
+Alias  *alias_lookup_userdom	(RFCAddr *);
 
 /* uplinks.c */
 void		uplinks_init	(void);
@@ -150,8 +150,7 @@ int	check_old		(char *, time_t dt);
 void	bounce_set_cc		(char *);
 int	print_file_subst	(FILE *, FILE*, Message*, char*, Textlist*);
 int	bounce_header		(char *);
-void	bounce_mail		(char *, RFCAddr *, Message *,
-				 char *, Textlist *);
+void	bounce_mail		(char *, RFCAddr*, Message*, char*, Textlist*);
 
 /* charset.c */
 CharsetTable *charset_table_new	(void);
@@ -364,15 +363,13 @@ void	str_printf		(char *, size_t, const char *, ...)
 int	str_last		(char *, size_t);
 char   *str_lower		(char *);
 char   *str_upper		(char *);
-char   *str_copy		(char *, size_t, char *);
-char   *str_append		(char *, size_t, char *);
-char   *str_append2		(char *, size_t, char *, char *);
-char   *str_copy2		(char *, size_t, char *, char *);
-char   *str_copy3		(char *, size_t, char *, char *, char *);
-char   *str_copy4		(char *, size_t, char *, char *, char *,
-				 char *);
-char   *str_copy5		(char *, size_t, char *, char *, char *,
-				 char *, char *);
+char   *str_copy		(char *, size_t, char*);
+char   *str_append		(char *, size_t, char*);
+char   *str_append2		(char *, size_t, char*, char*);
+char   *str_copy2		(char *, size_t, char*, char*);
+char   *str_copy3		(char *, size_t, char*, char*, char*);
+char   *str_copy4		(char *, size_t, char*, char*, char*, char*);
+char   *str_copy5		(char *, size_t, char*, char*, char*, char*, char*);
 
 #define BUF_LAST(d)			str_last  (d,sizeof(d))
 #define BUF_COPY(d,s)			str_copy  (d,sizeof(d),s)
@@ -384,7 +381,7 @@ char   *str_copy5		(char *, size_t, char *, char *, char *,
 #define BUF_COPY5(d,s1,s2,s3,s4,s5)	str_copy5 (d,sizeof(d),s1,s2,s3,s4,s5)
 
 int    strlen_zero		(char *);
-char   *str_copy_range		(char *, size_t, char *, char *);
+char   *str_copy_range		(char *, size_t, char*, char*);
 #ifdef HAVE_STRCASECMP
 #ifndef HAVE_STRICMP
 # define stricmp  strcasecmp
@@ -425,9 +422,9 @@ int    run_system		(char *);
 int    xfeof                    (FILE *);
 
 /* msgid.c */
-char   *s_msgid_fido_to_rfc	(char *, int *, short, char *);
+char   *s_msgid_fido_to_rfc	(char *, int*, short, char*);
 char   *s_msgid_default		(Message *);
-char   *s_msgid_rfc_to_fido	(int *, char *, int, int, char *, short int, int);
+char   *s_msgid_rfc_to_fido	(int *, char*, int, int, char*, short int, int);
 char   *s_msgid_convert_origid	(char *);
 
 /* node.c */
@@ -486,7 +483,7 @@ char   *pkt_get_outdir		(void);
 void	pkt_baddir		(char *, char *);
 char   *pkt_get_baddir		(void);
 FILE   *pkt_open		(char *, Node *, char *, int);
-int	pkt_close		();
+int	pkt_close		(void);
 char   *pkt_name		(void);
 char   *pkt_tmpname		(void);
 int	pkt_isopen		(void);

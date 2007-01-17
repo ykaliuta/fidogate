@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: areafix.c,v 5.8 2006/11/15 09:51:57 anray Exp $
+ * $Id: areafix.c,v 5.9 2007/01/17 22:45:57 anray Exp $
  *
  * Common Areafix functions
  *
@@ -248,7 +248,7 @@ void areafix_set_areasbbs(char *name)
 }
 
 
-int areafix_check_forbidden_area( char *areaname )
+int areafix_check_forbidden_area(char *areaname)
 {
     char *s;
 
@@ -736,50 +736,50 @@ int areafix_do_cmd(Node *node, char *line, Textlist *out, Textlist *upl)
     ret = OK;
     switch(cmd)
     {
-    case CMD_LIST:
+	case CMD_LIST:
 #ifndef AF_AVAIL
-	ret = cmd_list(node);
+	    ret = cmd_list(node);
 #else
-	ret = cmd_list(node, TRUE);
+	    ret = cmd_list(node, TRUE);
 #endif /* !AF_AVAIL */
-	break;
-    case CMD_QUERY:
-	ret = cmd_query(node);
-	break;
-    case CMD_UNLINKED:
-	ret = cmd_unlinked(node);
-	break;
-    case CMD_SUB:
-	ret = cmd_sub(node, arg, upl);
-	break;
-    case CMD_UNSUB:
-	ret = cmd_unsub(node, arg, upl);
-	break;
-    case CMD_HELP:
-	ret = cmd_help(node);
-	break;
-    case CMD_PASSWD:
-	ret = cmd_passwd(node, arg);
-	break;
-    case CMD_LISTALL:
-	ret = cmd_listall(node);
-	break;
-    case CMD_NEW:
-	ret = cmd_new(node, arg, NULL, FALSE);
-	break;
-    case CMD_DELETE:
-	ret = cmd_delete(node, arg);
-	break;
-    case CMD_PASSIVE:
-	ret = cmd_passive(node, arg, upl);
-	break;
-    case CMD_ACTIVE:
-	ret = cmd_active(node, arg, upl);
-	break;
+	    break;
+	case CMD_QUERY:
+	    ret = cmd_query(node);
+	    break;
+	case CMD_UNLINKED:
+	    ret = cmd_unlinked(node);
+	    break;
+	case CMD_SUB:
+	    ret = cmd_sub(node, arg, upl);
+	    break;
+	case CMD_UNSUB:
+	    ret = cmd_unsub(node, arg, upl);
+	    break;
+	case CMD_HELP:
+	    ret = cmd_help(node);
+	    break;
+	case CMD_PASSWD:
+	    ret = cmd_passwd(node, arg);
+	    break;
+	case CMD_LISTALL:
+	    ret = cmd_listall(node);
+	    break;
+	case CMD_NEW:
+	    ret = cmd_new(node, arg, NULL, FALSE);
+	    break;
+	case CMD_DELETE:
+	    ret = cmd_delete(node, arg);
+	    break;
+	case CMD_PASSIVE:
+	    ret = cmd_passive(node, arg, upl);
+	    break;
+	case CMD_ACTIVE:
+	    ret = cmd_active(node, arg, upl);
+	    break;
 #ifdef AF_AVAIL
-    case CMD_AVAIL:
-	ret = cmd_list(node, FALSE);
-	break;
+	case CMD_AVAIL:
+	    ret = cmd_list(node, FALSE);
+	    break;
 #endif /* AF_AVAIL */
     }	
     
@@ -836,11 +836,11 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
     {
 	areafix_printf("%-41s: area already exists,\r\n"
 		       "%-41s  can't create new one.",
-		name, " ");
+		       name, " ");
 	return OK;
     }
 
-    if((o1 = cf_get_string("ForbiddenChar", TRUE)))
+    if( (o1 = cf_get_string("ForbiddenChar", TRUE)) )
     {
 	debug(8, "config: ForbiddenChar %s", o1);
 	for (i=0;o1[i]!='\x0';i++)
@@ -852,14 +852,14 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 	    }
     }
 
-    if ( !authorized_cmdline )
+    if(!authorized_cmdline)
     {
-	if (areafix && areafix_check_forbidden_area(name))
+	if(areafix && areafix_check_forbidden_area(name))
 	{
 		areafix_printf("%-41s: forbidden area, can't create.", name);
 		return OK;
 	}
-	if (!areafix && filefix_check_forbidden_area(name))
+	if(!areafix && filefix_check_forbidden_area(name))
 	{
 		areafix_printf("%-41s: forbidden area, can't create.", name);
 		return OK;
@@ -1092,23 +1092,23 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 	for ( s1 = cf_get_string("AutoCreateSubscribeFileechoNodes", TRUE);
 	      s1 && *s1;
 	      s1 = cf_get_string("AutoCreateSubscribeFileechoNodes", FALSE) )
-	    {
+	{
 
 		Node node, old;
 		old.zone = cf_zone();
 		old.net = old.node = old.point = -1;
 
-		for ( s2 = xstrtok( s1, " \t" ); s2 &&
-			   *s2; s2 = xstrtok( NULL, " \t" ) )
-		    if ( OK == asc_to_node_diff( s2, &node, &old ) )
-		    {
-			old = node;
-			lon_add( &(p->nodes), &node );
-		    }
-		    else
-			fglog( "config: AutoCreateSubscribeFileechoNodes: \
+		for ( s2 = xstrtok( s1, " \t" ); s2 && *s2;
+		      s2 = xstrtok( NULL, " \t" ) )
+		if ( OK == asc_to_node_diff( s2, &node, &old ) )
+		{
+		    old = node;
+		    lon_add( &(p->nodes), &node );
+		}
+		else
+		    fglog( "config: AutoCreateSubscribeFileechoNodes: \
 			    invalid entry \"%s\"", s2 );
-	    }
+	}
     	xfree(s1);
     }
     else
@@ -1125,15 +1125,16 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 	    old.zone = cf_zone();
 	    old.net = old.node = old.point = -1;
 
-	    for ( s2 = xstrtok( s1, " \t" ); s2 && *s2; s2 = xstrtok( NULL, " \t" ) )
-		if ( OK == asc_to_node_diff( s2, &node, &old ) )
-		{
-		    old = node;
-		    lon_add( &(p->nodes), &node );
-		    debug(5, "subscribe node %s", s2);
-		}
-		else
-		    fglog( "config: AutoCreateSubscribeNodes: invalid entry \
+	    for ( s2 = xstrtok( s1, " \t" ); s2 && *s2;
+		  s2 = xstrtok( NULL, " \t" ) )
+	    if ( OK == asc_to_node_diff( s2, &node, &old ) )
+	    {
+		old = node;
+		lon_add( &(p->nodes), &node );
+		debug(5, "subscribe node %s", s2);
+	    }
+	    else
+		fglog( "config: AutoCreateSubscribeNodes: invalid entry \
 			\"%s\"", s2 );
 	}
         xfree(s1);

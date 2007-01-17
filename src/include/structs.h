@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: structs.h,v 5.4 2006/12/28 17:51:39 anray Exp $
+ * $Id: structs.h,v 5.5 2007/01/17 22:45:57 anray Exp $
  *
  * An assortment of FIDOGATE data structure definitions
  *
@@ -510,6 +510,7 @@ typedef struct st_mimeinfo
     char *encoding;		/* Content-Transfer-Encoding */
     char *disposition;		/* Content-Disposition */
     char *disposition_filename; /* filename from C-Disposition  header */
+    struct st_mimeinfo *next;
 }
 MIMEInfo;
 

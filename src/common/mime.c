@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: mime.c,v 5.7 2007/01/16 02:52:39 anray Exp $
+ * $Id: mime.c,v 5.8 2007/01/17 22:45:57 anray Exp $
  *
  * MIME stuff
  *
@@ -35,6 +35,11 @@
 static int is_qpx		(int);
 static int x2toi		(char *);
 static int mime_decharset_string(char*, size_t*, const char*, size_t*, char*, char*);
+void	   mime_free		(void);
+
+static MIMEInfo *mime_list = NULL;
+
+
 
 static char* mime_get_main_charset()
 {
@@ -44,6 +49,7 @@ static char* mime_get_main_charset()
 		     s_header_getcomplete("Content-Type"),
 		     s_header_getcomplete("Content-Transfer-Encoding"));
     charset = strsave(mime->type_charset);
+    mime_free();
     return charset;
 }
 
@@ -1102,7 +1108,7 @@ static Textlist* mime_debody_section(Textlist *body, Textlist *header)
 	{
 	    fglog("WARNING: Skipped unsupported transfer encoding %s", mime->encoding);
 	    dec_body = NULL;
-	    return NULL;
+	    goto exit;
 	}
 	mime_decharset_section(dec_body, mime);
     }
@@ -1114,7 +1120,10 @@ static Textlist* mime_debody_section(Textlist *body, Textlist *header)
     {
 	fglog("WARNING: Skipped unsupported mime type  %s", mime->type_type);
 	dec_body = NULL;
+	goto exit;
     }
+exit:
+    mime_free();
     return dec_body;
     
 }
@@ -1151,3 +1160,23 @@ int mime_debody(Textlist *body)
     return OK;
 }
 
+void mime_free(void)
+{
+    MIMEInfo *mime, *n;
+    
+    for(mime=mime_list; mime; mime=n)
+    {
+	n = mime->next;
+
+	xfree(mime->version);
+	xfree(mime->type);
+	xfree(mime->type_type);
+	xfree(mime->type_charset);
+	xfree(mime->type_boundary);
+	xfree(mime->encoding);
+	xfree(mime->disposition);
+	xfree(mime->disposition_filename);
+	xfree(mime);
+    }
+
+}
