@@ -1,3 +1,8 @@
+2007-01-29  Andrey Slusar  <anrays@gmail.com>
+
+	* src/toss/ftntoss.c (do_echomail): Fix tossing,
+	when packet in passwd defined.
+
 2007-01-17  Andrey Slusar  <anrays@gmail.com>
 
 	* src/common/mime.c: Add mime allocation function.

@@ -881,7 +881,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 #endif /* !SECURITY */
 
     if (NULL != (pwd = passwd_lookup("packet", &msg->node_from)) &&
-	!stricmp(pkt->passwd, pwd->passwd))
+	stricmp(pkt->passwd, pwd->passwd))
     {
 	fglog("Insecure echomail packet from %s, area %s (%s pkt password)",
 	      znfp1(&msg->node_from), areaname,
