@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: mime.c,v 5.8 2007/01/17 22:45:57 anray Exp $
+ * $Id: mime.c,v 5.9 2007/01/29 10:51:29 anray Exp $
  *
  * MIME stuff
  *
@@ -93,8 +93,8 @@ char *mime_dequote(char *d, size_t n, char *s, int flags)
 	        c = x2toi(s+1);
 		s += 2;
 	    }
-	    else if(s[1]=='\n'           ||	/* =<LF> and */
-	       (s[1]=='\r' && s[2]=='\n')  )	/* =<CR><LF> */
+	    else if(s[1]=='\n'           ||		/* =<LF> and */
+		    (s[1]=='\r' && s[2]=='\n')  )	/* =<CR><LF> */
 	    {
 		break;
 	    }
@@ -103,7 +103,8 @@ char *mime_dequote(char *d, size_t n, char *s, int flags)
 	{
 	    c = ' ';
 	}
-	else {					/* Nothing special to do */
+	else
+	{					   	 /* Nothing special to do */
 	    c = *s;
 	}
 
@@ -121,7 +122,7 @@ char *mime_dequote(char *d, size_t n, char *s, int flags)
 	    }
 	}
 	else
-	  d[i] = c;
+	    d[i] = c;
     }
     d[i] = 0;
 
@@ -154,7 +155,7 @@ char *mime_dequote(char *d, size_t n, char *s, int flags)
  */
 int mime_b64toint(char c)
 {
-         if (('A' <= c) && ('Z' >= c)) return (       c - 'A');
+    if (('A' <= c) && ('Z' >= c)) return (       c - 'A');
     else if (('a' <= c) && ('z' >= c)) return (0x1a + c - 'a');
     else if (('0' <= c) && ('9' >= c)) return (0x34 + c - '0');
     else if ('+' == c)                 return 0x3e;
@@ -180,10 +181,10 @@ char mime_inttob64(int a)
 
 int mime_qptoint(char c)
 {
-         if (('0' <= c) && ('9' >= c)) return (       c - '0');
-    else if (('A' <= c) && ('F' >= c)) return (0x0a + c - 'A');
-    else if (('a' <= c) && ('f' >= c)) return (0x0a + c - 'a');
-    else                               return ERROR;
+    if (('0' <= c) && ('9' >= c))	return (       c - '0');
+    else if (('A' <= c) && ('F' >= c))	return (0x0a + c - 'A');
+    else if (('a' <= c) && ('f' >= c))	return (0x0a + c - 'a');
+    else                              	return ERROR;
 }
 
 #define B64_ENC_CHUNK 3
@@ -260,9 +261,9 @@ int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
             outpos += delimlen;
         }
         /*
-          Use this set of shifts, because loop and pointer is
-          endian-dependend way
-        */
+	 * Use this set of shifts, because loop and pointer is
+	 * endian-dependend way
+	 */
         buf[outpos++] = mime_inttob64(src[i] >> 2);
         buf[outpos++] = mime_inttob64((src[i] << 4) | (src[i+1] >> 4));
         buf[outpos++] = mime_inttob64((src[i+1] << 2) | (src[i+2] >> 6));
@@ -467,7 +468,8 @@ char *mime_deheader(char *d, size_t n, char *s)
 			else
 			{
 			    dst_len = tmp_len = n - i - 1;
-			    if(mime_decharset_string(&(d[i]), &tmp_len, buf, &dst_len, charset, INTERNAL_CHARSET) == ERROR)
+			    if(mime_decharset_string(&(d[i]), &tmp_len, buf, &dst_len,
+						     charset, INTERNAL_CHARSET) == ERROR)
 				strncpy(&(d[i]), buf, n - i - 1);
 			}
 			free(buf);
@@ -476,7 +478,7 @@ char *mime_deheader(char *d, size_t n, char *s)
 			continue;
 		    }
 		}
-		else if (strnieq(p, MIME_HEADER_CODE_MIDDLE_B64, strlen(MIME_HEADER_CODE_MIDDLE_B64)))
+		else if(strnieq(p, MIME_HEADER_CODE_MIDDLE_B64, strlen(MIME_HEADER_CODE_MIDDLE_B64)))
 		{
 		    /* May be b64 */
 		    beg = p + strlen(MIME_HEADER_CODE_MIDDLE_B64);
@@ -493,10 +495,11 @@ char *mime_deheader(char *d, size_t n, char *s)
 			else
 			{
 			    dst_len = tmp_len = n - i - 1;
-			    if(mime_decharset_string(&(d[i]), &tmp_len, buf, &dst_len, charset, INTERNAL_CHARSET) == ERROR)
+			    if(mime_decharset_string(&(d[i]), &tmp_len, buf, &dst_len,
+						     charset, INTERNAL_CHARSET) == ERROR)
 				strncpy(&(d[i]), buf, n - i - 1);
 			}
-			free(buf);
+			xfree(buf);
 			i += strlen(&(d[i]));
 			s = end + strlen(MIME_HEADER_CODE_END);
 			continue;
@@ -518,11 +521,12 @@ char *mime_deheader(char *d, size_t n, char *s)
 	if((src_charset = mime_get_main_charset()) != NULL)
 	{
 	    debug(6, "Normilizing 8bit subject from  charset %s to %s", src_charset, INTERNAL_CHARSET);
-		
+	    
 	    src_len = strlen(d);
 	    dst_len = src_len + 1;
 	    tmp_str = xmalloc(dst_len);
-	    if(mime_decharset_string(tmp_str, &dst_len, d, &src_len, src_charset, INTERNAL_CHARSET) != ERROR)
+	    if(mime_decharset_string(tmp_str, &dst_len, d, &src_len,
+				     src_charset, INTERNAL_CHARSET) != ERROR)
 		strcpy(d, tmp_str);
 	    xfree(src_charset);
 	    xfree(tmp_str);
@@ -560,39 +564,40 @@ static char* mime_fetch_attribute(char *str, char *attr)
 
 static int mime_parse_header(Textlist *line, char *str)
 {
-     char *p = NULL;
+    char *p = NULL;
+    
+    if(line == NULL || str == NULL)
+	return ERROR;
 
-     if(line == NULL || str == NULL)
-	  return ERROR;
-
-     debug(6, "Parsing header %s", str);
-     for(p = strtok(str, ";"); p != NULL; p = strtok(NULL, ";"))
-     {
-	  debug(6, "Recording header attribute %s", p);
-	  p = strip_space(p);
-	  tl_append(line, p);
-     }
-     return OK;
+    debug(6, "Parsing header %s", str);
+    for(p = strtok(str, ";"); p != NULL; p = strtok(NULL, ";"))
+    {
+	debug(6, "Recording header attribute %s", p);
+	p = strip_space(p);
+	tl_append(line, p);
+    }
+    return OK;
 }
 
 static char* mime_attr_value(char *str)
 {
-     char *p, *q = NULL;
+    char *p, *q = NULL;
      
-     if(str == NULL)
-	  return NULL;
+    if(str == NULL)
+	return NULL;
 
-     p = strchr(str, '=');
-     if(p != NULL) {
-	  if(*(++p) == '\"')
-	       p++;
-	  for(q = p; *q != '\0'; q++)
-	       if(*q == '\"' || is_space(*q))
-		    break;
-	  *q = 0;
-	  p = strsave(p);
-     }
-     return p;
+    p = strchr(str, '=');
+    if(p != NULL)
+    {
+	if(*(++p) == '\"')
+	    p++;
+	for(q = p; *q != '\0'; q++)
+	    if(*q == '\"' || is_space(*q))
+		break;
+	*q = 0;
+	p = strsave(p);
+    }
+    return p;
 }
 
 /*
@@ -606,7 +611,7 @@ static MIMEInfo *get_mime_disposition(char *ver, char *type, char *enc, char *di
     Textlist header_line = { NULL, NULL };
     Textline *tmp_line;
     char *tmp_str = NULL;
-
+    
     mime = (MIMEInfo*)s_alloc(sizeof(*mime));
     
     mime->version       = ver;
@@ -677,7 +682,7 @@ static MIMEInfo *get_mime_disposition(char *ver, char *type, char *enc, char *di
  
 MIMEInfo *get_mime(char *ver, char *type, char *enc)
 {
-     return get_mime_disposition(ver, type, enc, NULL);
+    return get_mime_disposition(ver, type, enc, NULL);
 }
 
 /* TODO smth like s_header_getcomplete() */
@@ -737,9 +742,10 @@ static char* mime_debody_flush_str(Textlist *body, char *str)
     if(len < 2)
 	return NULL;
 
-    if(str[len - 2] == '\r') {
-	 str[len - 2] = '\n';
-	 str[len - 1] = '\0';
+    if(str[len - 2] == '\r')
+    {
+	str[len - 2] = '\n';
+	str[len - 1] = '\0';
     }
     else if(str[len - 1] != '\n')
     {
@@ -949,7 +955,7 @@ static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime)
 		break;
 	}
     }
-	    
+    
     xfree(boundary);
     xfree(fin_boundary);
     return dec_body;
@@ -1002,12 +1008,13 @@ static int mime_decharset_string(char *dst, size_t *dstlen, const char *src, siz
 	if(rc != -1)
 	    continue;
 
-	if(errno == E2BIG) {
+	if(errno == E2BIG)
+	{
 	    rc = ERROR;
 	    goto exit;
 	}
 	
-       /* Only if wrong symbol (or sequence), try to skip it */
+	/* Only if wrong symbol (or sequence), try to skip it */
 	(*srclen)--;
 	src++;
 	/* reset conversion state */
@@ -1059,9 +1066,11 @@ static int mime_decharset_section(Textlist *body, MIMEInfo *mime)
 	src_len = strlen(line->line);
 	res_len = max_len;
 
-	rc = mime_decharset_string(res_str, &res_len, line->line, &src_len, mime->type_charset, INTERNAL_CHARSET);
+	rc = mime_decharset_string(res_str, &res_len, line->line, &src_len,
+				   mime->type_charset, INTERNAL_CHARSET);
 
-	if(rc == ERROR) {
+	if(rc == ERROR)
+	{
 	    if(src_len != 0 && res_len == 0)
 		fglog("WARNING: no space in the destination buffer for iconv");
 	    else
@@ -1089,10 +1098,10 @@ static Textlist* mime_debody_section(Textlist *body, Textlist *header)
 	return NULL;
 
     if((mime->type_type == NULL) || strieq(mime->type_type, "text/plain")
-	|| (mime->type == NULL))
+       || (mime->type == NULL))
     {
 	if((mime->encoding == NULL) || strieq(mime->encoding, "8bit")
-	    || strieq(mime->encoding, "7bit"))
+	   || strieq(mime->encoding, "7bit"))
 	{
 	    dec_body = body;
 	}
