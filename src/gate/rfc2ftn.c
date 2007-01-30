@@ -1469,7 +1469,7 @@ again:
 	    /* Generate FSC-0035 ^AREPLYADDR, ^AREPLYTO */
 	    pt = xlat_s(s_rfcaddr_to_asc(&rfc_from, FALSE), pt);
 	    if(replyaddr_ifmail_tx)
-		fprintf(sf, "\001REPLYADDR <%s>\r\n",
+		fprintf(sf, "\001REPLYADDR %s <%s>\r\n", msg->name_from,
 			pt ? pt : s_rfcaddr_to_asc(&rfc_from, FALSE) );
 	    else
 		fprintf(sf, "\001REPLYADDR %s\r\n",
@@ -1480,8 +1480,11 @@ again:
 			znf1(node_from), msg->name_from);
 	    else
 #endif
-		fprintf(sf, "\001REPLYTO %s %s\r\n",
-		        znf1(cf_addr()), msg->name_from);
+		if(replyaddr_ifmail_tx)
+		    fprintf(sf, "\001REPLYTO %s UUCP\r\n", znf1(cf_addr()));
+		else
+		    fprintf(sf, "\001REPLYTO %s %s\r\n", znf1(cf_addr()),
+			    msg->name_from);
 	}
 
     if(x_flags_f)
