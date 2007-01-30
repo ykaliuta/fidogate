@@ -1,3 +1,8 @@
+2007-01-30  Andrey Slusar  <anrays@gmail.com>                                   
+
+	* src/gate/rfc2ftn.c (snd_message): Fix works
+	option `ReplyAddrIfmailTX'.
+
 2007-01-29  Andrey Slusar  <anrays@gmail.com>
 
 	* src/toss/ftntoss.c (do_echomail): Fix tossing,
