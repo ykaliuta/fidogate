@@ -812,7 +812,7 @@ int do_unknown_area (char *areaname, Message *msg, MsgBody *body) {
 
     fglog("unknown area %s from %s", areaname, znfp1(&msg->node_from) );
     msgs_unknown++;
-    if(kill_unknown)
+    if(!kill_unknown)
 	return do_bad_msg(msg, body);
     return OK;
 }
