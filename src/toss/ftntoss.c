@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: ftntoss.c,v 5.9 2007/01/29 10:51:29 anray Exp $
+ * $Id: ftntoss.c,v 5.10 2007/04/07 20:04:09 anray Exp $
  *
  * Toss FTN NetMail/EchoMail
  *
@@ -40,7 +40,7 @@
 
 
 #define PROGRAM 	"ftntoss"
-#define VERSION 	"$Revision: 5.9 $"
+#define VERSION 	"$Revision: 5.10 $"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 /*
@@ -812,7 +812,7 @@ int do_unknown_area (char *areaname, Message *msg, MsgBody *body) {
 
     fglog("unknown area %s from %s", areaname, znfp1(&msg->node_from) );
     msgs_unknown++;
-    if(kill_unknown)
+    if(!kill_unknown)
 	return do_bad_msg(msg, body);
     return OK;
 }
