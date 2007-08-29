@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: mime.c,v 5.9 2007/01/29 10:51:29 anray Exp $
+ * $Id: mime.c,v 5.10 2007/08/29 20:21:20 anray Exp $
  *
  * MIME stuff
  *
@@ -190,7 +190,7 @@ int mime_qptoint(char c)
 #define B64_ENC_CHUNK 3
 #define B64_NLET_PER_CHUNK 4
 
-int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
+int mime_enheader(char **dst, char *src, size_t len, char *encoding)
 {
     int buflen, delimlen = 0;
     char *buf = NULL;
@@ -516,7 +516,7 @@ char *mime_deheader(char *d, size_t n, char *s)
     if(is_new_decoder && !is_mimed)
     {
 	char *tmp_str, *src_charset;
-	int src_len, dst_len;
+	size_t src_len, dst_len;
 
 	if((src_charset = mime_get_main_charset()) != NULL)
 	{
