@@ -354,7 +354,7 @@ int	msg_parse_msgid		(char *, Node *);
 char   *mime_dequote		(char *, size_t, char *, int);
 char   *mime_deheader		(char *, size_t, char *);
 int    mime_debody		(Textlist*); /* decode base64 body */
-int    mime_enheader		(char **, unsigned char *, size_t, char *);
+int    mime_enheader		(char **, char *, size_t, char *);
 
 /* misc.c */
 char   *str_change_ext		(char *, size_t, char *, char *);

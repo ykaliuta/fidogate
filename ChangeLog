@@ -1,3 +1,10 @@
+2007-08-29  Andrey Slusar  <anrays@gmail.com>
+
+	* src/common/mime.c (mime_enheader):
+	(mime_deheader):
+	* src/include/prototypes.h (mime_enheader):
+	Correct types for variables.
+
 2007-04-07  Andrey Slusar  <anrays@gmail.com>
 
 	* src/toss/ftntoss.c (do_unknown_area): Correct
