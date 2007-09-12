@@ -1,3 +1,8 @@
+2007-09-12  Andrey Slusar  <anrays@gmail.com>
+
+	* src/gate/ftn2rfc.c (snd_message): Add ':' to
+	REPLYADDR/REPLYTO when ReplyAddrIfmailTX enable.
+
 2007-08-29  Andrey Slusar  <anrays@gmail.com>
 
 	* src/common/mime.c (mime_enheader):
