@@ -337,13 +337,9 @@ Unpacking *unpacking_parse_line(char *buf1)
 	return NULL;
     }
 
-#ifdef HAVE_STRICMP
-    if(!stricmp(f ,"unarc"))
+    if(stricmp(f ,"unarc"))
 	return NULL;
-#else
-    if(strcasecmp(f ,"unarc"))
-	return NULL;
-#endif /* HAVE_STRICMP */
+
     /* Create new entry and put into list */
     r = (Unpacking *)xmalloc(sizeof(Unpacking));
     f = xstrtok(NULL, " \t");

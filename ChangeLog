@@ -1,3 +1,9 @@
+2007-10-13  Andrey Slusar  <anrays@gmail.com>
+
+	* src/toss/runinc.c (unpacking_parse_line): Fix
+	unarc check when HAVE_STRICMP defined(reported by
+	Alex Kocharin).
+
 2007-09-12  Andrey Slusar  <anrays@gmail.com>
 
 	* src/gate/ftn2rfc.c (snd_message): Add ':' to
