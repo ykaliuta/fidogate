@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: declare.h,v 5.2 2004/11/23 00:50:41 anray Exp $
+ * $Id$
  *
  * Declaration header for not-so-ANSI systems
  *

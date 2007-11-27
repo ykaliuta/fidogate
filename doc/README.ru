@@ -1,5 +1,5 @@
 
-  $Id: README.ru,v 5.6 2006/12/28 14:48:08 anray Exp $
+  $Id$
 
 
    Copyright (C) 2001-2002, Dmitry Fedotov

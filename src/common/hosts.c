@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: hosts.c,v 5.2 2004/11/23 00:50:40 anray Exp $
+ * $Id$
  *
  * Process hostname <-> node aliases from hosts file
  *
@@ -214,9 +214,7 @@ void hosts_free(void)
     {
 	n=p->next;
 
-	if(p->name)
-	    xfree(p->name);
-
+	xfree(p->name);
 	xfree(p);
     }
 }

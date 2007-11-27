@@ -1,13 +1,13 @@
 #!<PERL5>
 #
-# $Id: logsendmail.in,v 5.2 2004/11/23 00:50:39 anray Exp $
+# $Id$
 #
 # Gather statistics from sendmail V8 syslog output
 #
 
 require 5.000;
 
-my $VERSION    = '$Revision: 5.2 $ ';
+my $VERSION    = '$Revision$ ';
 my $PROGRAM    = "logsendmail";
 
 use strict;

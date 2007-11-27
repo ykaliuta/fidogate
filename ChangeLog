@@ -1,3 +1,52 @@
+2007-10-13  Andrey Slusar  <anrays@gmail.com>
+
+	* src/toss/runinc.c (unpacking_parse_line): Fix
+	unarc check when HAVE_STRICMP defined(reported by
+	Alex Kocharin).
+
+2007-09-12  Andrey Slusar  <anrays@gmail.com>
+
+	* src/gate/ftn2rfc.c (snd_message): Add ':' to
+	REPLYADDR/REPLYTO when ReplyAddrIfmailTX enable.
+
+2007-08-29  Andrey Slusar  <anrays@gmail.com>
+
+	* src/common/mime.c (mime_enheader):
+	(mime_deheader):
+	* src/include/prototypes.h (mime_enheader):
+	Correct types for variables.
+
+2007-04-07  Andrey Slusar  <anrays@gmail.com>
+
+	* src/toss/ftntoss.c (do_unknown_area): Correct
+	works `KillUnknown' option(thanks to Dmitry Rodin).
+
+2007-01-30  Andrey Slusar  <anrays@gmail.com>                                   
+
+	* src/gate/rfc2ftn.c (snd_message): Fix works
+	option `ReplyAddrIfmailTX'.
+
+2007-01-29  Andrey Slusar  <anrays@gmail.com>
+
+	* src/toss/ftntoss.c (do_echomail): Fix tossing,
+	when packet in passwd defined.
+
+2007-01-17  Andrey Slusar  <anrays@gmail.com>
+
+	* src/common/mime.c: Add mime allocation function.
+	* src/include/structs.h (st_mimeinfo): Add next.
+	* src/common/hosts.c (hosts_free):
+	* src/common/passwd.c (passwd_free):
+	Remove unneeded if.
+	* src/util/ftnoutpkt.c (do_addr):
+	* src/toss/runinc.c (run_toss):
+	free()->xfree() for more portable.
+
+2007-01-16  Andrey Slusar  <anrays@gmail.com>
+
+	* src/common/tmps.c: More comments in fatal() messages.
+	* src/common/mime.c: Fix crashes.
+
 2007-01-10  Andrey Slusar  <anrays@gmail.com>
 
 	* src/include/fidogate.h: Different INTERNAL_CHARSET and
@@ -21,7 +70,7 @@
 
 2007-01-06  Andrey Slusar  <anrays@gmail.com>
 
-	* src/common/mime.c: (mime_debody_section): Fix works when
+	* src/common/mime.c (mime_debody_section): Fix works when
 	mime type or encoding is empty.
 
 2006-12-30  Andrey Slusar  <anrays@gmail.com>

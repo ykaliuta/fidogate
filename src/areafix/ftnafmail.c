@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: ftnafmail.c,v 5.2 2004/11/23 00:50:39 anray Exp $
+ * $Id$
  *
  * setuid frontend for ftnaf, limiting options for security reason
  *
@@ -38,7 +38,7 @@
 
 
 #define PROGRAM		"ftnafmail"
-#define VERSION		"$Revision: 5.2 $"
+#define VERSION		"$Revision$"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 

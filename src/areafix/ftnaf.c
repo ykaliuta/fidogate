@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: ftnaf.c,v 5.2 2004/11/23 00:50:39 anray Exp $
+ * $Id$
  *
  * Areafix-like AREAS.BBS EchoMail distribution manager. Commands somewhat
  * conforming to FSC-0057.
@@ -37,7 +37,7 @@
 #include <signal.h>
 
 #define PROGRAM		"ftnaf"
-#define VERSION		"$Revision: 5.2 $"
+#define VERSION		"$Revision$"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 

@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: ftnhatch.c,v 5.2 2004/11/23 00:50:41 anray Exp $
+ * $Id$
  *
  * Hatch file into file area
  *
@@ -36,7 +36,7 @@
 
 
 #define PROGRAM		"ftnhatch"
-#define VERSION		"$Revision: 5.2 $"
+#define VERSION		"$Revision$"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 

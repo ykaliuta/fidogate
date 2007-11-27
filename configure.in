@@ -1,9 +1,9 @@
-dnl $Id: configure.in,v 5.4 2006/05/18 18:35:07 anray Exp $
+dnl $Id$
 dnl
 dnl Copyright (c) 2003-2004 Andrey Slusar <anrays@gmail.com>
 dnl Copyright (c) 2003-2004 Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 dnl
-AC_REVISION([$Revision: 5.4 $])
+AC_REVISION([$Revision$])
 AC_PREREQ(2.53)
 AC_INIT([fidogate],[5.2.3ds],[anrays@gmail.com])
 AM_CONFIG_HEADER([config.h])

@@ -1,6 +1,6 @@
 #
 #
-# $Id: Makefile.am,v 5.3 2006/05/18 18:35:07 anray Exp $
+# $Id$
 #
 # Makefile FIDOGATE TOPDIR
 #

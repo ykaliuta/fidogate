@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: sumcrc.c,v 5.2 2004/11/23 00:50:41 anray Exp $
+ * $Id$
  *
  * sumcrc32 --- CRC32 checksum computation
  *
@@ -36,7 +36,7 @@
 
 
 #define PROGRAM		"sumcrc32"
-#define VERSION		"$Revision: 5.2 $"
+#define VERSION		"$Revision$"
 
 
 int s1_flag = FALSE;		/* -1 */

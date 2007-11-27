@@ -1,5 +1,5 @@
 /*
- * $Id: xstrnlen.c,v 5.1 2006/10/31 21:06:02 anray Exp $
+ * $Id$
  */
 
 #include "fidogate.h"

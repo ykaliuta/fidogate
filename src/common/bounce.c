@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: bounce.c,v 5.2 2004/11/23 00:50:40 anray Exp $
+ * $Id$
  *
  * Bounce mails for various reasons, using LIBDIR/bounce.XXX messages
  *

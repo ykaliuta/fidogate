@@ -1,12 +1,12 @@
 #
-# $Id: redhat6-morannon.mc,v 5.2 2004/11/23 00:50:37 anray Exp $
+# $Id$
 #
 # Fido.DE (morannon.fido.de)
 #
 
 include(`../m4/cf.m4')
 
-VERSIONID(`$Id: redhat6-morannon.mc,v 5.2 2004/11/23 00:50:37 anray Exp $')
+VERSIONID(`$Id$')
 
 dnl #
 dnl # Configuration

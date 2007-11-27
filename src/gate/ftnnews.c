@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: ftnnews.c,v 5.2 2004/11/23 00:50:41 anray Exp $
+ * $Id$
  *
  * setuid frontend for rfc2ftn, limiting options for security reasons
  *
@@ -39,7 +39,7 @@
 
 
 #define PROGRAM		"ftnnews"
-#define VERSION		"$Revision: 5.2 $"
+#define VERSION		"$Revision$"
 #define CONFIG		DEFAULT_CONFIG_GATE
 
 #define RFC2FTN		"rfc2ftn"

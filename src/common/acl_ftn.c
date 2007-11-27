@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: acl_ftn.c,v 5.2 2004/11/23 00:50:40 anray Exp $
+ * $Id$
  *
  * Active group
  *
@@ -75,27 +75,31 @@ static char atype = '\0';
 static char mtype = '\0';
 
 
-static ftn_acl_t *ftnacl_parse_line( char *buf ) {
+static ftn_acl_t *ftnacl_parse_line(char *buf)
+{
 
     ftn_acl_t *a = NULL;
     Node node, old;
     char *t1, *t2, *t3;
     char *p, *p2;
 
-    t1 = strtok( buf, " \t" );
+    t1 = strtok(buf, " \t");
 
-    if( t1 == NULL )
+    if(t1 == NULL)
 	return NULL;
 
-    t2 = strtok( NULL, " \t" );
-    t3 = strtok( NULL, " \t" );
+    t2 = strtok(NULL, " \t");
+    t3 = strtok(NULL, " \t");
 
-    if( t2 == NULL ) {
-        if( strieq( t1, "echo" ) ) {
+    if(t2 == NULL)
+    {
+        if( strieq(t1, "echo") )
+	{
 	    mtype = TYPE_ECHO;
 	    atype = '\0';
         }
-        else if( strieq( t1, "fecho" ) ) {
+        else if( strieq(t1, "fecho") )
+	{
             mtype = TYPE_FECHO;
             atype = '\0';
         }
@@ -105,28 +109,35 @@ static ftn_acl_t *ftnacl_parse_line( char *buf ) {
             atype = TYPE_MANDATORY;
 	else 
 	    fglog("acl_ftn: area mask not specified, ignoring line");
-    } else {
+    }
+    else
+    {
         if( strieq( t1, "include" ) )
 	    ftnacl_do_file( t2 );
         else if( ( mtype == '\0' ) || ( atype == '\0' ) )
 	    fglog("acl_ftn: acl type not specified, ignoring line");
-        else {
-            a = xmalloc( sizeof( ftn_acl_t ) );
-            lon_init( &a->nodes );
+        else
+	{
+            a = xmalloc(sizeof( ftn_acl_t ));
+            lon_init(&a->nodes);
             a->mtype = mtype;
             a->atype = atype;
 
-            old.zone = cf_zone( );
+            old.zone = cf_zone();
             old.net = old.node = old.point = -1;
             p = t1;
-            while( p ) {
-	        p2 = strchr( p, ',' );
-	        if ( p2 != NULL )
+            while( p )
+	    {
+	        p2 = strchr(p, ',');
+	        if(p2 != NULL)
 	            *p2++ = '\0';
-	        if( asc_to_node_diff_acl(p, &node, &old) == OK ) {
+	        if( asc_to_node_diff_acl(p, &node, &old) == OK )
+		{
 	            old = node;
 	            lon_add(&a->nodes, &node);
-	        } else {
+	        }
+		else
+		{
 	            fglog("acl_ftn: parse error");
 	            lon_delete(&a->nodes);
 	            xfree(a);
@@ -134,7 +145,8 @@ static ftn_acl_t *ftnacl_parse_line( char *buf ) {
 	        }
 	        p = p2;
             }
-            if( t3 ) {
+            if(t3)
+	    {
 	        struct tm r;
 
 	        r.tm_mday = atoi(strtok(t3, "."));
@@ -142,8 +154,11 @@ static ftn_acl_t *ftnacl_parse_line( char *buf ) {
 	        r.tm_year = atoi(strtok(NULL, "."))+100;
 	        r.tm_sec = r.tm_min = r.tm_hour = 0;
 	        a->date = mktime(&r);
-            } else
+            }
+	    else
+	    {
 	        a->date = 0;
+	    }
             a->str = strsave(t2);
 	}
     }
@@ -151,17 +166,19 @@ static ftn_acl_t *ftnacl_parse_line( char *buf ) {
 }
 
 
-int ftnacl_search( Node *node, char *area, char atype, char mtype ) {
+int ftnacl_search(Node *node, char *area, char atype, char mtype)
+{
 
     ftn_acl_t *acl;
 
-    if( ftn_acl != NULL ) {
-	for( acl = ftn_acl; NULL != acl; acl = acl->ll_next )
+    if( ftn_acl != NULL )
+    {
+	for(acl = ftn_acl; NULL != acl; acl = acl->ll_next)
 	{
-            if( atype == acl->atype && mtype == acl->mtype &&
-	       lon_search_acl( &acl->nodes, node ) &&
-	       wildmatch_string( area, acl->str, TRUE ) &&
-	       ( !acl->date || acl->date > time( NULL ) ) )
+            if(atype == acl->atype && mtype == acl->mtype &&
+	       lon_search_acl(&acl->nodes, node) &&
+	       wildmatch_string(area, acl->str, TRUE) &&
+	       (!acl->date || acl->date > time(NULL)) )
                 return TRUE;
         }
     }
@@ -169,22 +186,27 @@ int ftnacl_search( Node *node, char *area, char atype, char mtype ) {
 }
 
 
-void ftnacl_do_file( char *name ) {
+void ftnacl_do_file(char *name)
+{
 
     FILE *fp;
     ftn_acl_t *p;
 
-    debug( 14, "Reading FTNACL file %s", name );
+    debug(14, "Reading FTNACL file %s", name);
 
-    fp = fopen_expand_name( name, R_MODE_T, FALSE );
-    if( fp != NULL ) {
-        while ( cf_getline( buffer, BUFFERSIZE, fp ) ) {
+    fp = fopen_expand_name(name, R_MODE_T, FALSE);
+    if(fp != NULL)
+    {
+        while(cf_getline(buffer, BUFFERSIZE, fp))
+	{
 	    p = ftnacl_parse_line( buffer );
-	    if( p != NULL )
-                LIST_INS_END( ftn_acl, p );
+	    if(p != NULL)
+                LIST_INS_END(ftn_acl, p);
         }
-        fclose( fp );
-    } else {
+        fclose(fp);
+    }
+    else
+    {
 	fglog( "$acl_ftn: can't open %s", name );
     }
     
@@ -192,19 +214,21 @@ void ftnacl_do_file( char *name ) {
 }
 
 
-void acl_ftn_free( void ) {
+void acl_ftn_free(void)
+{
     ftn_acl_t *acl, *acl1;
 
-    for(acl = ftn_acl; NULL != acl; acl = acl1) {
+    for(acl = ftn_acl; NULL != acl; acl = acl1)
+    {
 
 	acl1 = acl->ll_next;
-	if( acl->str )
-	    xfree( acl->str );
+        xfree(acl->str);
 
-	if( ( &acl->nodes )->size > 0 ) {
-	    lon_delete( &acl->nodes );
+	if( (&acl->nodes)->size > 0 )
+	{
+	    lon_delete(&acl->nodes);
 	}
-	xfree( acl );
+	xfree(acl);
     }
 }
 #endif /* FTN_ACL */

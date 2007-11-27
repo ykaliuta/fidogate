@@ -31,7 +31,7 @@ diff -cr ./feature/rbl.m4 /home/ca/smi/sendmail/cf/feature/rbl.m4
   
   divert(0)
 ! ifdef(`_RBL_R_',`dnl',`dnl
-! VERSIONID(`$Id: mrbl.p3,v 5.2 2004/11/23 00:50:37 anray Exp $')')
+! VERSIONID(`$Id$')')
   divert(-1)
 ! define(`_RBL_SRV_',ifelse(_ARG_,`',`maps.vix.com',_ARG_))dnl
 ! define(`_RBL_MSG_',ifelse(_ARG2_,`',`"Mail from " $`'&{client_addr} " refused by blackhole site '_RBL_SRV_`"',_ARG2_))dnl
@@ -139,7 +139,7 @@ diff -cr ./m4/proto.m4 /home/ca/smi/sendmail/cf/m4/proto.m4
   #
   divert(0)
   
-! VERSIONID(`$Id: mrbl.p3,v 5.2 2004/11/23 00:50:37 anray Exp $')
+! VERSIONID(`$Id$')
   
   MAILER(local)dnl
   
