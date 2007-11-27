@@ -1,3 +1,31 @@
+fidogate (5.2.3ds+cvs20071013-1) unstable; urgency=low
+
+  * New upstream snapshot:
+  * src/toss/runinc.c (unpacking_parse_line): Fix
+    unarc check when HAVE_STRICMP defined(reported by Alex Kocharin).
+  * src/gate/ftn2rfc.c (snd_message): Add ':' to
+    REPLYADDR/REPLYTO when ReplyAddrIfmailTX enable.
+  * src/common/mime.c (mime_enheader): (mime_deheader):
+  * src/include/prototypes.h (mime_enheader):
+    Correct types for variables.
+  * src/toss/ftntoss.c (do_unknown_area): Correct
+    works `KillUnknown' option(thanks to Dmitry Rodin).
+  * src/gate/rfc2ftn.c (snd_message): Fix works
+    option `ReplyAddrIfmailTX'.
+  * src/toss/ftntoss.c (do_echomail): Fix tossing,
+    when packet in passwd defined.
+  * src/common/mime.c: Add mime allocation function.
+  * src/include/structs.h (st_mimeinfo): Add next.
+  * src/common/hosts.c (hosts_free):
+  * src/common/passwd.c (passwd_free): Remove unneeded if.
+  * src/util/ftnoutpkt.c (do_addr):
+  * src/toss/runinc.c (run_toss):
+    free()->xfree() for more portable.
+  * src/common/tmps.c: More comments in fatal() messages.
+  * src/common/mime.c: Fix crashes.
+  
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Tue, 27 Nov 2007 23:36:14 +0200
+
 fidogate (5.2.3ds+cvs20070110-1) unstable; urgency=low
 
   * New upstream snapshot
