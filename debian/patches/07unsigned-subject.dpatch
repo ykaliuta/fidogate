@@ -1,0 +1,33 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: this patch is used to pin sendmail path even when there is not
+## DP: sendmail on the system
+
+@DPATCH@
+diff --git a/src/common/mime.c b/src/common/mime.c
+index 5c546a3..b71449c 100644
+--- a/src/common/mime.c
++++ b/src/common/mime.c
+@@ -190,7 +190,7 @@ int mime_qptoint(char c)
+ #define B64_ENC_CHUNK 3
+ #define B64_NLET_PER_CHUNK 4
+ 
+-int mime_enheader(char **dst, char *src, size_t len, char *encoding)
++int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
+ {
+     int buflen, delimlen = 0;
+     char *buf = NULL;
+diff --git a/src/include/prototypes.h b/src/include/prototypes.h
+index dd618fa..35df6e5 100644
+--- a/src/include/prototypes.h
++++ b/src/include/prototypes.h
+@@ -354,7 +354,7 @@ int	msg_parse_msgid		(char *, Node *);
+ char   *mime_dequote		(char *, size_t, char *, int);
+ char   *mime_deheader		(char *, size_t, char *);
+ int    mime_debody		(Textlist*); /* decode base64 body */
+-int    mime_enheader		(char **, char *, size_t, char *);
++int    mime_enheader		(char **, unsigned char *, size_t, char *);
+ 
+ /* misc.c */
+ char   *str_change_ext		(char *, size_t, char *, char *);
