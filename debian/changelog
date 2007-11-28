@@ -1,3 +1,10 @@
+fidogate (5.2.3ds+cvs20071013-2) unstable; urgency=low
+
+  * Added 06enheader-debug.dpatch
+  * Fixed subject corruption
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Thu, 29 Nov 2007 01:49:18 +0200
+
 fidogate (5.2.3ds+cvs20071013-1) unstable; urgency=low
 
   * New upstream snapshot:
