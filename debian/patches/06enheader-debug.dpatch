@@ -1,0 +1,47 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: this patch is used to pin sendmail path even when there is not
+## DP: sendmail on the system
+
+@DPATCH@
+diff --git a/src/common/mime.c b/src/common/mime.c
+index 5c546a3..7f670da 100644
+--- a/src/common/mime.c
++++ b/src/common/mime.c
+@@ -198,6 +198,9 @@ int mime_enheader(char **dst, char *src, size_t len, char *encoding)
+     int i;
+     int outpos = 0;
+     char *delim = NULL;
++
++    debug(6, "MIME: %s: %d chars to encode (%s): %s",
++	  __FUNCTION__, len, encoding, src);
+     
+     padding = (B64_ENC_CHUNK - len % B64_ENC_CHUNK) % B64_ENC_CHUNK;
+     
+@@ -275,6 +278,8 @@ int mime_enheader(char **dst, char *src, size_t len, char *encoding)
+     if(encoding != NULL)
+         strcat(buf, MIME_HEADER_CODE_END);
+ 
++    debug(6, "MIME: %s: encoded: %s", __FUNCTION__, buf);
++
+     xfree(delim);
+     return OK;
+ }
+diff --git a/src/gate/ftn2rfc.c b/src/gate/ftn2rfc.c
+index cf2b3e8..9c7a97c 100644
+--- a/src/gate/ftn2rfc.c
++++ b/src/gate/ftn2rfc.c
+@@ -736,9 +736,10 @@ int unpack(FILE *pkt_file, Packet *pkt)
+ 	    if(strieq(mime->encoding, "quoted-printable")) 
+ 		cvt8 = AREA_QP;
+ 	}
+-	debug(5, "cvt8:%s%s",
++	debug(5, "cvt8:%s%s%s",
+ 	      (cvt8 & AREA_8BIT ? " 8bit" : ""),
+-	      (cvt8 & AREA_QP   ? " quoted-printable" : ""));
++	      (cvt8 & AREA_QP   ? " quoted-printable" : ""),
++	      (cvt8 & AREA_HB64 ? " headers BASE64" : ""));
+ 	
+ 	/*
+ 	 * Convert message body
