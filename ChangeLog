@@ -1,3 +1,10 @@
+2007-12-21  Andrey Slusar  <anrays@gmail.com>
+
+	* src/common/mime.c:
+	* src/gate/ftn2rfc.c:
+	* src/include/prototypes.h:
+	Fix type for buffer(Thanks to Zhenya Kaliuta).
+
 2007-10-13  Andrey Slusar  <anrays@gmail.com>
 
 	* src/toss/runinc.c (unpacking_parse_line): Fix
