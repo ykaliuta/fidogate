@@ -1,4 +1,9 @@
 2008-06-24  Max N. Boyarov  <m.boyarov@bsd.by>
+	* src/areafix/areafix.c (cmd_new): Fix
+	anoher initialization to avoid segfault
+	on free(3)
+
+2008-06-24  Max N. Boyarov  <m.boyarov@bsd.by>
 
 	* src/areafix/areafix.c (cmd_new): Fix
 	initialization to avoid segfault on free(3)

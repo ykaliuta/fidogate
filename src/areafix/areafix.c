@@ -974,7 +974,7 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 	    else 
 	    {
     		fglog("CONFIG: AutoCreateFechoPath not defined and filearea not passthru");
-    		p->dir = ("-");
+    		p->dir = strsave("-");
 	    }
 	    sprintf(full_farea_dir,"%s/%s",autocreate_fecho_path, str_lower(name));
 	    p->dir = strsave(full_farea_dir);
