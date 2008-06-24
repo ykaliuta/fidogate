@@ -1,3 +1,8 @@
+2008-06-24  Max N. Boyarov  <m.boyarov@bsd.by>
+
+	* src/areafix/areafix.c (cmd_new): Fix
+	initialization to avoid segfault on free(3)
+
 2007-12-21  Andrey Slusar  <anrays@gmail.com>
 
 	* src/common/mime.c:
