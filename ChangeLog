@@ -1,3 +1,9 @@
+2008-06-29  Andrey Slusar  <anrays@gmail.com>
+
+	* configure:
+	* configure.in:
+	Fix option `--enable-ai1'(thanks to Max N. Boyarov).
+
 2008-06-24  Max N. Boyarov  <m.boyarov@bsd.by>
 
 	* src/areafix/areafix.c (cmd_new): Fix
