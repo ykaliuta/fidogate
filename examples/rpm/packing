@@ -1,0 +1,32 @@
+#
+# $Id: packing,v 1.3 2002/08/05 23:53:47 dyff Exp $
+#
+# FIDOGATE ftnpack config file
+#
+# Commands:
+#
+#     arc                 NAME  "/PATH/PROG %s %s"
+#     prog                NAME  "/PATH/PROG %s"
+#     progn               NAME  "/PATH/PROG %s"
+#
+#     (progn doesn't delete packet after running PROG)
+#  
+#     pack                NAME  NODES
+#     rpack               NAME  TARGET NODES
+#     fpack               NAME  TARGET NODES
+#     dirpack  DIRECTORY  NAME  NODES
+#     dirmove  DIRECTORY        NODES
+#
+
+arc		zip	"/usr/bin/zip -gkjq %s %s"
+arc		arc	"/usr/bin/arc an %s %s"
+
+progn		gate	"/usr/lib/fidogate/ftn2rfc %s"
+progn		areafix	"/usr/lib/fidogate/ftnafpkt %s"
+
+
+######## P A C K I N G #######################################################
+
+pack		noarc	2:2499/999.1
+
+pack		zip	*

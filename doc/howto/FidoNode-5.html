@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<TITLE>Linux Fido-Node HOWTO: Nodelisten-Compiler</TITLE>
+</HEAD>
+<BODY>
+<A HREF="FidoNode-6.html">Weiter</A>
+<A HREF="FidoNode-4.html">Zurück</A>
+<A HREF="FidoNode.html#toc5">Inhalt</A>
+<HR>
+<H2><A NAME="s5">5. Nodelisten-Compiler</A></H2>
+
+<P>
+<P>Alle im Config-File angegebenen Nodelisten sollten im Verzeichnis
+<CODE>/var/spool/fnet/nodelist</CODE> vorhanden sein. Dann ruft man
+einfach <CODE>ifindex</CODE> auf, welcher dann <CODE>index.dir</CODE> und
+<CODE>index.pag</CODE> erstellt, welche die compilierte Nodeliste enthalten.
+<P>Leider ist <CODE>ifindex</CODE> nicht besonders schnell, daher kuerze ich die
+<CODE>nodelist</CODE> immer vor der Compilierung auf das, was ich, in Deutschland,
+benoetige. Hierfuer verwende ich das Script 
+<CODE>fidogate/scripts/nodelist/nl-del</CODE>
+<P>Dieses Skript startet man mit
+<P>
+<HR>
+<PRE>
+nl-del -z1,3,4,5,6 -o nl_short.xxx nodelist.xxx
+</PRE>
+<HR>
+<P>Wobei xxx die Nummer der aktuellen Nodeliste ist.
+<P>Nun muss man natuerlich auch Diffs einarbeiten koennen. Hierzu gibt es
+seit ifmail-2.6 das Programm <CODE>nlpatch</CODE>, welches man mit der alten
+Nodelist sowie dem aktuellen Diff als Parameter aufruft, z.B.:
+<PRE>
+        nlpatch nodelist.123 NODEDIFF.130
+</PRE>
+
+auf (natuerlich mit den entsprechenden Tag-Nummern). Es wird dann
+automatisch nodelist.130 generiert.
+<P>
+<P>
+<P>
+<HR>
+<A HREF="FidoNode-6.html">Weiter</A>
+<A HREF="FidoNode-4.html">Zurück</A>
+<A HREF="FidoNode.html#toc5">Inhalt</A>
+</BODY>
+</HTML>

@@ -1,0 +1,77 @@
+#:ts=8
+#
+# FIDOGATE config file common stuff,
+# included by config.gate, config.main, config.ffx
+#
+# Fido.DE domain gateway
+#
+# Format:  keyword arg ...
+#          keyword and args may be put in double quotes "..."
+#
+
+
+#
+# Directories: lib, spool, BinkleyTerm-style outbound base dir (without
+# the .../out.xxx), BinkleyTerm-style inbound dir
+#
+# lib, spool defaults are defined in config.h
+#
+LibDir		/usr/local/lib/fidogate
+SpoolDir	/var/spool/fido
+LogDir          /var/log/fido
+Outbound	/var/spool/fido/out
+Inbound		/var/spool/fido/in
+PInbound	/var/spool/fido/pin
+UUInbound	/var/spool/fido/uuin
+
+#
+# Configuration files
+#
+# defaults are defined in config.h
+#
+ACL		%L/acl
+Aliases		%L/aliases
+Areas		%L/areas
+Hosts		%L/hosts
+Packing		%L/packing
+Passwd		%L/passwd
+Routing		%L/routing
+
+
+
+#
+# Internet address
+#
+Hostname	fido
+Domain		.vsu.ru
+# Optional domain name for entries in HOSTS file
+HostsDomain	.vsu.ru
+
+AddressIsLocalForXPost	*[@.]vsu.ru,*[@.]f8.n5025.z2.fidonet.org
+
+#
+# Zones and domains, the outbound directory is relative to the one
+# specified with `Outbound'.
+#
+#	zone	Internet domain		FTN domain	Outbound
+#	----	---------------		----------	--------
+Zone	default	.fidonet.org		fidonet		-
+Zone	1	.fidonet.org		fidonet		out.001
+Zone	2	.fidonet.org		fidonet		out
+Zone	3	.fidonet.org		fidonet		out.003
+Zone	4	.fidonet.org		fidonet		out.004
+Zone	5	.fidonet.org		fidonet		out.005
+Zone	6	.fidonet.org		fidonet		out.006
+Zone	21	.schoolnet.vsu.ru	schoolnet	schoolnet.015
+
+
+#
+# OPTIONAL:
+#
+# MSDOS client drive to UNIX server directory translation. This allows
+# FIDOGATE running on a UNIX system and BinkleyTerm on an MSDOS PC.
+#
+#DosDrive	H:	/home
+#DosDrive	I:	/var/spool
+#DosDrive	I:	/usr/spool
+#DosDrive	P:	/u1

@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# Delete entire directory from CVS repository
+#
+
+if [ $# -lt 1 ]; then
+    echo "usage: cvsdeldir DIR ..."
+    exit 1
+fi
+
+# Run CVS delete
+cvs delete -f -R $*

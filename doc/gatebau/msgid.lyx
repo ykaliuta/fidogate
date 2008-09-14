@@ -1,0 +1,661 @@
+#This file was created by <mj> Thu May  1 20:00:31 1997
+#LyX 0.10 (C) 1995 1996 Matthias Ettrich and the LyX Team
+\lyxformat 2.10
+\textclass linuxdoc
+\language default
+\inputencoding default
+\fontscheme default
+\epsfig dvips
+\papersize a4 
+\paperfontsize 10 
+\baselinestretch 1.00 
+\secnumdepth 3 
+\tocdepth 3 
+\paragraph_separation skip 
+\quotes_language english 
+\quotes_times 2 
+\paperorientation portrait 
+\papercolumns 1 
+\papersides 1 
+\paperpagestyle plain 
+
+\layout Title
+\fill_top \fill_bottom 
+MSGID / Message-ID Conversion for Fido-Internet Gateways 
+\layout Author
+
+Martin Junius
+\family typewriter 
+ <mj@fido.
+de>
+\family default 
+ 
+\layout Date
+\cursor 0 
+Version 4.
+2 of 01 May 1997, supersedes the MSGID.
+DOC version 4.
+1.
+
+\layout Abstract
+
+This document describes the conversion between FIDO ^AMSGID/^AREPLY and
+ Internet RFC mail/news Message-ID/References.
+ It is a recommendation for a common handling of message ID passing for
+ FIDONET-Internet gateways.
+ 
+\layout Section
+
+Credits  
+\layout Standard
+
+This work is not entirely mine.
+ It includes suggestions and improvements by 
+\layout Itemize
+
+Joerg Stattaus 
+\newline 
+mailto:Joerg_Stattaus@ac.
+maus.
+de 
+\layout Itemize
+
+Albi Rebmann 
+\newline 
+mailto:albi@life.
+sub.
+org 
+\layout Itemize
+
+Michael Holzt 
+\newline 
+mailto:Michael_Holzt@mhs.
+ftg.
+donut.
+ruhr.
+com 
+\layout Itemize
+
+Martin Horneffer 
+\newline 
+mailto:Martin_Horneffer@ac2.
+maus.
+de 
+\layout Itemize
+
+Johann H.
+ Addicks 
+\newline 
+mailto:J.
+H.
+ADDICKS@BLUEBOCS.
+donut.
+ruhr.
+com 
+\layout Itemize
+
+Jason Fesler 
+\newline 
+mailto:jfesler@wmeonlin.
+sacbbx.
+com 
+\layout Itemize
+
+Odinn Sorensen 
+\newline 
+mailto:odinn@winboss.
+dk  
+\layout Section
+
+Formats 
+\layout Subsection
+
+FTN ^AMSGID Kludge Formats  
+\layout Subsubsection
+
+FTN generic 
+\layout Verbatim
+
+^AMSGID: anything abcd1234 
+\layout Subsubsection
+
+Internet 
+\layout Verbatim
+
+^AMSGID: <id@do.
+main> abcd1234 
+\layout Subsection
+
+RFC Message-ID Formats  
+\layout Subsubsection
+
+FTN w/o MSGID 
+\layout Verbatim
+
+Message-ID: <NOMSGID_mimeftnaddr_YYMMDD_HHMMSS_abcd1234@ftn.
+domain> 
+\layout Subsubsection
+
+FTN generic 
+\layout Verbatim
+
+Message-ID: <MSGID_mimeanything_abcd1234@ftn.
+domain> 
+\layout Subsubsection
+
+Internet 
+\layout Verbatim
+
+Message-ID: <id@do.
+main> 
+\layout Section
+
+Non-FIDONET FTNs
+\layout Standard
+
+A gateway 
+\shape italic 
+must
+\shape default 
+ use 
+\family typewriter 
+fidonet.
+org
+\family default 
+ for Message-IDs originating from the standard FIDONET zones 1-6.
+
+\layout Standard
+
+However, for non-FIDONET zones, a gateway may use a more appropiate Internet
+ domain.
+ Of course, it is essential that multiple gateways for one FTN zone/domain
+ use the 
+\shape italic 
+same
+\shape default 
+ Internet domain for gated Message-IDs!!! 
+\layout Standard
+
+Of course, there may be different Internet domains for the sender's address
+ (From header), but for Message-IDs a unique Internet domain for each gated
+ FTN zone/domain is 
+\shape italic 
+mandatory
+\shape default 
+.
+ 
+\layout Section
+
+Converting FTN ^AMSGID to RFC Message-ID  
+\layout Standard
+
+Converting ^AREPLY works the same way, using References for news or In-Reply-To
+ for mail.
+ 
+\layout Subsection
+
+FIDO messages without ^AMSGID  
+\layout Standard
+
+Some FIDO messages do not contain a unique ^AMSGID.
+ In this case it is necessary to generate a Message-ID which is the same
+ for all gateways.
+ (Otherwise dupes on the Internet side cannot be detected.
+)
+\layout Standard
+
+The proposed method works as follows: for each message without a MSGID the
+ `id' part of Message-ID is composed of the string "NOMSGID_", the FTN sender
+ address Z:N/F.
+P using MIME-style quoted printables for `:', `/' as in 3.
+3, the string "_", the date of the message formatted as "YYMMDD_HHMMSS"
+ (year month day, hour minute second), the string "_", and a CRC32 over
+ the concatenation of the FIDO headers From, To, and Subject.
+ 
+\layout Itemize
+
+The FTN sender address is taken from the origin line (EchoMail) or the message
+ header + ^AINTL/FMPT/TOPT (NetMail).
+ A node address must include the `.
+0'.
+  
+\layout Itemize
+
+The date is taken from the date field in the message header.
+  
+\layout Itemize
+
+The CRC value is computed using the same polynomial and method as specified
+ in section 6.
+   
+\layout Standard
+
+The `do.
+main' part is the Internet domain appropiate for this FTN (fidonet.
+org for FIDONET zone 1-6).
+
+\layout Standard
+
+Examples:
+\layout Verbatim
+
+FIDO-Message    From:    Martin Junius @ FIDO 2:242/6.
+1 
+\newline 
+                To:      Test User     @ FIDO 2:242/6 
+\newline 
+                Subject: Nur ein Test 
+\newline 
+                Date:    06 Dec 92  22:22:00 
+\newline 
+--> 
+\newline 
+Message-ID: <NOMSGID_2=3A242=2F6.
+1_921206_222200_08cfe072@fidonet.
+org> 
+\layout Standard
+
+
+\protected_separator 
+
+\layout Verbatim
+
+FIDO-Message    From:    Martin Junius @ FIDO 2:2452/110 
+\newline 
+                To:      Test User     @ FIDO 2:2452/111 
+\newline 
+                Subject: Nur ein Test 
+\newline 
+                Date:    05 Jan 95  11:23:32 
+\newline 
+--> 
+\newline 
+Message-ID: <NOMSGID_2=3A2452=2F110.
+0_950105_112332_08cfe072@fidonet.
+org> 
+\layout Standard
+
+08cfe072 = CRC32("Martin Junius" + "Test User" + "Nur ein Test")
+\layout Standard
+
+PROBLEMS: message with the same date and subject, e.
+g.
+ robot mails or split mails, will get the same Message-ID and therefore
+ be trashed by the news dupe check.
+ 
+\layout Subsection
+
+FTN MSGID with Internet ID  
+\layout Verbatim
+
+^AMSGID: <id@do.
+main> abcd1234 
+\newline 
+--> 
+\newline 
+Message-ID: <id@do.
+main> 
+\layout Standard
+
+If the origin address part of MSGID is a valid RFC Message-ID `<*@*>', then
+ it is directly used for the RFC Message-ID.
+ If `<id@do.
+main>' is quoted according to the FTS-0009 specs (".
+.
+.
+"), these quotes must be removed and double quotes ("") reduced to a single
+ one.
+ 
+\layout Subsection
+
+Generic MSGID Conversion  
+\layout Standard
+
+This procedure may be used for all FIDO-style and unknown MSGIDs.
+   
+\layout Verbatim
+
+^AMSGID: anything abcd1234 
+\newline 
+--> 
+\newline 
+Message-ID: <MSGID_mimeanything_abcd1234@ftn.
+domain> 
+\layout Standard
+
+`anything' is converted to `mimeanything' using the following rules (see
+ also the Q encoding specified in RFC1522): 
+\layout Itemize
+
+` ' (space) is converted to `_' (underscore)  
+\layout Itemize
+
+Any character not allowed in RFC822 atoms (except `.
+'), `/', `=' and `_' (meaning control chars < 0x20, 
+\family typewriter 
+()<>@,;:"[]/=_
+\family default 
+ and chars >= 0x7f) are converted to a MIME-style quoted printable `=XX'
+ where XX is the hex ASCII character code (upper case).
+  
+\layout Itemize
+
+All other characters are left as is.
+   
+\layout Standard
+
+`ftn.
+domain' must be the appropiate Internet domain (fidonet.
+org for FIDONET zone 1-6).
+ If `anything' is a string quoted with ".
+.
+.
+", these quotes and any quotes within the string are kept as `=22'.
+
+\layout Standard
+
+Examples:  
+\layout Verbatim
+
+^AMSGID: 2:2452/110.
+1@FIDONet abcd1234 
+\newline 
+--> 
+\newline 
+Message-ID: <MSGID_2=3A2452=2F110.
+1=40FIDONet_abcd1234@fidonet.
+org>
+\layout Standard
+
+
+\protected_separator 
+
+\layout Verbatim
+
+^AMSGID: 242:1000/1.
+1 abcd1234 
+\newline 
+--> 
+\newline 
+Message-ID: <MSGID_242=3A1000=2F1.
+1_abcd1234@fido.
+de>
+\layout Standard
+
+
+\protected_separator 
+
+\layout Verbatim
+
+^MSGID: "some "" junk" abcd1234 
+\newline 
+--> 
+\newline 
+Message-ID: <MSGID_=22some_=22=22_junk=22_abcd1234@fidonet.
+org>
+\layout Section
+
+RFC Message-ID to FTN MSGID Conversion
+\layout Subsection
+
+NOMSGID Message-IDs  
+\layout Standard
+
+Any Message-ID starting with <NOMSGID.
+.
+.
+@.
+.
+.
+> is NOT converted back to an FTN ^AMSGID or ^AREPLY! 
+\layout Subsection
+
+Normal Message-IDs  
+\layout Verbatim
+
+Message-ID: <id@do.
+main> 
+\newline 
+--> 
+\newline 
+^AMSGID: <id@do.
+main> abcd1234 
+\layout Standard
+
+RFC Message-IDs are converted by putting the entire string into the origin
+ address part of FTN MSGID and adding a hex serial number.
+
+\layout Itemize
+
+For EchoMail, the `abcd1234' hex number is a checksum computed for the concatena
+tion of the Message-ID string and the FTN area name (upper case letters).
+
+\newline 
+abcd1234 = CRC32("<id@do.
+main>" + "AREA")
+\layout Itemize
+
+For NetMail the hex number is just the checksum computed for the Message-ID
+ string.
+ 
+\newline 
+abcd1234 = CRC32("<id@domain>")
+\layout Standard
+
+If the Message-ID contains the characters ` ' (space) or `"', the `<id@domain>'
+ string must be quoted using ".
+.
+.
+" according to FTS-0009.
+ Any `"' within this string must be doubled.
+
+\layout Standard
+
+Putting the area name into the CRC32 value generates different MSGIDs for
+ different areas, preventing nopes, if the FTN tosser does dupe checking
+ on a global basis.
+  Examples:  
+\layout Verbatim
+
+Message-ID: <1991Aug9.
+034239.
+10837@bisun.
+nbg.
+sub.
+org> 
+\newline 
+FTN Area: DE.
+COMM.
+GATEWAYS 
+\newline 
+--> 
+\newline 
+^AMSGID: <1991Aug9.
+034239.
+10837@bisun.
+nbg.
+sub.
+org> 9dc743f7
+\layout Standard
+
+
+\protected_separator 
+
+\layout Verbatim
+
+Message-ID: <IBNTXSD@methan.
+chemie.
+fu-berlin.
+de> 
+\newline 
+FTN Area: GATEWAYS.
+GER 
+\newline 
+--> 
+\newline 
+^AMSGID: <IBNTXSD@methan.
+chemie.
+fu-berlin.
+de> 22f000eb
+\layout Standard
+
+
+\protected_separator 
+
+\layout Verbatim
+
+Message-ID: <junk" id "@illegal> 
+\newline 
+FTN Area: JUNK 
+\newline 
+--> 
+\newline 
+^AMSGID: "<junk"" id ""@illegal>" 22a75d09 
+\layout Subsection
+
+Converted FTN Message-IDs  
+\layout Verbatim
+
+Message-ID: <MSGID-mimeanything_abcd1234@ftn.
+domain> 
+\newline 
+--> 
+\newline 
+^AMSGID: anything abcd1234 
+\layout Standard
+
+Reversing the rules of 3.
+3: 
+\layout Itemize
+
+`_' is converted to ` ' (space).
+  
+\layout Itemize
+
+`=XX' is converted to the character with hex code XX.
+   
+\layout Standard
+
+Examples:  
+\layout Verbatim
+
+Message-ID: <MSGID_2=3A2452=2F110.
+99_fedcba98@fidonet.
+org> 
+\newline 
+--> 
+\newline 
+^AMSGID: 2:2452/110.
+99 fedcba98 
+\layout Section
+
+Splitting Messages  
+\layout Standard
+
+Due to the limitation of some FTN programs, it is necessary to split messages
+ larger than 16K (to be on the safe side, 13-14K is a reasonable value for
+ the max.
+ size of the message _body_) when gating to FTN.
+
+\layout Standard
+
+To prevent messages from vanishing in the bit bucket, the ^AMSGID must be
+ different for the split parts.
+ Due to the brain damage of most FTN dupe checkers it's also necessary to
+ modify the subject line.
+  The proposed technique is to increment the `abcd1234' hex number by 1
+ for subsequent messages, i.
+e.
+ the value computed as above for part 1, +1 for part 2, +2 for part 3, and
+ so on.
+ The hex number in ^AREPLY is not modified.
+
+\layout Standard
+
+The subject of part 1 is unmodified, for subsequent parts the part number
+ is prepended to the subject, string "nn: ".
+
+\layout Standard
+
+To indicate the splitting, a ^ASPLIT kludge according to FSC-0047 is used
+ before the first line of the message body part:   
+\layout Verbatim
+
+^ASPLIT: date      time     @net/node    nnnnn pp/xx +++++++++++ 
+\layout Standard
+
+e.
+g.
+ 
+\layout Verbatim
+
+^ASPLIT: 30 Mar 90 11:12:34 @494/4       123   02/03 +++++++++++ 
+\layout Standard
+
+There is exactly one empty line after the message body part, before the
+ "---" tear line or the first ^AVia line.
+  Example:   
+\layout Verbatim
+
+Subject: This is a 3 part message 
+\newline 
+Message-ID: <IBNTXSD@methan.
+chemie.
+fu-berlin.
+de> 
+\newline 
+ 
+\newline 
+FTN Area: GATEWAYS.
+GER 
+\newline 
+ 
+\newline 
+--> 
+\newline 
+Subj: This is a 3 part message 
+\newline 
+^AMSGID: <IBNTXSD@methan.
+chemie.
+fu-berlin.
+de> 22f000eb 
+\newline 
+^ASPLIT: 30 Mar 90 11:12:34 @494/4       00000 01/03 +++++++++++ 
+\newline 
+ 
+\newline 
+Subj: 02: This is a 3 part message 
+\newline 
+^AMSGID: <IBNTXSD@methan.
+chemie.
+fu-berlin.
+de> 22f000ec 
+\newline 
+^ASPLIT: 30 Mar 90 11:12:34 @494/4       00000 02/03 +++++++++++ 
+\newline 
+ 
+\newline 
+Subj: 03: This is a 3 part message 
+\newline 
+^AMSGID: <IBNTXSD@methan.
+chemie.
+fu-berlin.
+de> 22f000ed 
+\newline 
+^ASPLIT: 30 Mar 90 11:12:34 @494/4       00000 03/03 +++++++++++ 
+\layout Section
+
+Computing CRC32 values  
+\layout Standard
+
+The CRC32 value is computed using the polynomial  
+\layout Itemize
+
+X^32+X^26+X^23+X^22+X^16+X^12+X^11+X^10+X^8+X^7+X^5+X^4+X^2+X^1+X^0
+\layout Standard
+
+a start value of 0xffffffff and XORing the result with 0xffffffff (same
+ as in ZModem and ZIP).
+ The resulting value is printed using an 8 digit hex number with lower case
+ letters a-f.
+ 

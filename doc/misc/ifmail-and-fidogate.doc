@@ -1,0 +1,48 @@
+Date:   Tue, 9 Aug 1994 18:21:00 +0200
+From: Ralph_Schleicher@purple.pnof.sub.org (Ralph Schleicher)
+Subject: Patch/Hints for FIDOGATE
+
+Ich haette dann noch einen Tip fuer FIDOGATE in Verbindung mit IFcico.
+Traegt man in `.../ifmail/config' die Zeile
+----------------------------------------------------------------------------
+# Toss program, used by ifunpack.
+#
+iftoss      /usr/fido/bin/toss
+----------------------------------------------------------------------------
+ein, dann kann man die reinkommenden Pakete durch Aufruf von `ifunpack'
+ganz einfach mit Hilfe dieses kleinen Perlchens auspacken:
+----------------------------------------------------------------------------
+#!/usr/local/bin/perl
+#
+# ~fido/bin/toss
+#
+# Translate FIDO packets into RFC format and feed it to the mailer or
+# news-system.  We simply ignore all arguments to make the script work
+# with Eugene Crosser's `ifunpack'.
+
+
+# Check who I am.
+#
+($user, $p, $u, $g, $c1, $c2, $c3, $home) = getpwuid ($>);
+
+die "$0: You should run me as user `fido'\n"
+  if $user ne 'fido';
+
+# Load the main configuration file.
+#
+# require "$home/conf/fido.perl";
+#
+$fidogate = "/usr/fido/lib/fidogate";
+
+# Do it.
+#
+die "$0:fido2rfc: return code is $result\n"
+  if ($result = system ("$fidogate/fido2rfc") >> 8) != 0;
+
+die "$0:fidoin: return code is $result\n"
+  if ($result = system ("$fidogate/fidoin", "-x", "fidorun") >> 8) != 0;
+
+exit 0;
+----------------------------------------------------------------------------
+
+Ralph Schleicher, Germany (Freie Republik Allg\"au)

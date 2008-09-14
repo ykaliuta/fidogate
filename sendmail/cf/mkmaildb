@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# $Id: mkmaildb,v 4.7 2002/08/04 02:27:32 dyff Exp $
+#
+# Update db maps in /etc/mail
+#
+MAILDIR=/etc/mail
+
+if [ -f $MAILDIR/rewrite ] ; then
+  makemap hash $MAILDIR/rewrite     < $MAILDIR/rewrite
+fi
+if [ -f $MAILDIR/mailertable ] ; then
+  makemap hash $MAILDIR/mailertable < $MAILDIR/mailertable
+fi
+if [ -f $MAILDIR/virtusertable ] ; then
+  makemap hash $MAILDIR/virtusertable < $MAILDIR/virtusertable
+fi
+if [ -f $MAILDIR/upload/junk ] ; then
+  cp $MAILDIR/access.head $MAILDIR/access
+  perl -ne 'chop; print "$_\tREJECT\n";' $MAILDIR/upload/junk >>$MAILDIR/access
+  makemap hash $MAILDIR/access < $MAILDIR/access
+fi

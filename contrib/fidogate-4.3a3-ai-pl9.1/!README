@@ -1,0 +1,16 @@
+ai-pl9.1, Fidogate 4.3a3, 24 Jun 1998, Andy Igoshin <ai@vsu.ru>
+
+
+    The present archive is an adaptation of patch fidogate-4.2.9-ai-pl9.0
+to fidogate-4.3a3. The current version is fidogate-4.3.a3-ai-pl9.1.
+
+    The differences between pl9.0 and pl9.1 are:
+    - UNICODE support was removed, because fidogate-4.3a3 contains another
+mechanisms for re-encoding of messages.
+    - Re-encoding tables for Russian language were added: { koi8-r, iso-8859-5,
+cp1251 } <-> cp866. The corresponding aliases koi8-u, x-cp866, x-cp1251 are
+also supported.
+    - Sample configuration files (used at fido.vsu.ru site) were added.
+
+
+				    Andy Igoshin  <ai@vsu.ru>

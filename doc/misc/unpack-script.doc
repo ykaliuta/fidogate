@@ -1,0 +1,191 @@
+Date: Tue, 30 Aug 1994 01:13:26 +0000
+From: Martin Seine <martin@erde.gun.de>
+Subject: Re: Fido-Point-HowTo
+
+Hi,
+
+bin noch nicht ganz dazu gekommen, das Howto zu lesen, aber da ich gerade
+3.8p6 installiere, habe ich mir mal das fgunpack geschnappt und 
+ueberarbeitet. Es schien mir nicht ganz so zweckmaessig.
+
+Was ich geandert habe:
+         - ZOO-Packer (ok, trivial)
+         - Entpackeraufruf vereinfacht
+         - syslog wird voll unterstuetzt
+         - FGATE wird in Path genommen, weil if??? und fgate u.U.
+           in unterschiedlichen stehen
+         - Dateien werden nicht wild kopiert, sondern nur einmal
+           und dann per Link. Ausnahme: Fehlerdateien werden
+           richtig kopiert, damit sie nicht rausrotieren.
+         - Gibt's Fehler, wird eine Benachrichtigungs-Mail verschickt.
+         - stdout etwas entlastet
+         - sbin aus dem Pfad entfernt. In sbin hat nur root was zu suchen.
+
+Ist (wohl) noch keine finale Version, aber mal sehen, ob's noch andere 
+Vorschlaege gibt.
+
+Beim Ueberfliegen schien mir der smail (oder war's cnews)-Teil nicht ganz so
+sauber, aber den muss ich mir noch anschauen.
+
+Ach ja, hier das fgunpack:
+------------------------------[ schnipp ]----------------------------
+#!/bin/bash 
+#
+# unpack-script for FidoGate (together with ifcico)
+#
+# written by Roland Rosenfeld   12.06.94
+#   roland@p13.flokiste.fido.de (2:2450/111.13)
+#
+# corrected paths, usage of syslog, more packer, clean up, restructured
+#       martin@erde.GUN.de (Martin Seine) <2:2448/413.100>
+#
+
+FNET=/usr/local/lib/fnet
+FGATE=/usr/local/lib/fidonet
+IFCFG=$FNET/config
+IN=/var/spool/fidonet/in
+
+# Facility is the log-file facility, where syslog stores the messages
+# if you're not using syslog, no need to change it
+FACILITY=news
+
+# System-manager who receives notices, if there are unpacking errors
+MANAGER=postmaster
+
+PATH=/bin:/usr/bin:/usr/local/bin:$FGATE
+
+if [ $1 ]
+then
+    INFO_TTY=$1
+else
+    INFO_TTY=/dev/console
+fi
+
+WEARE=`basename $0`
+
+#
+# get directory-names from $IFCFG
+#
+INBOUND=`grep -i "^[    ]*inbound" $IFCFG | awk '{ print $2 }'`
+LOGFILE=`grep -i "^[    ]*logfile" $IFCFG | awk '{ print $2 }'`
+
+if [ ! -d $INBOUND/bad ] ; then
+   if [ -e $INBOUND/bad ] ; then
+    rm -Rf $INBOUND/bad
+   fi
+   mkdir $INBOUND/bad
+fi
+
+CORRECT=true
+
+function iflog() {
+   if [ -S /dev/log ] ; then
+    logger -i -p $FACILITY.info "$WEARE: $@"
+   else
+    echo "`date \"+%y/%m/%d %T\"` $$ $WEARE:" $@ >> $LOGFILE
+   fi
+   echo "`date \"+%b %d %T\"` $WEARE [$$]:" $@ >> $INFO_TTY
+}
+
+
+function unpack_mail() {
+   pushd $INBOUND >/dev/null
+   EMPTY=true
+   for f in *.mo? *.tu? *.we? *.th? *.fr? *.sa? *.su? *.pkt
+   do
+    if [ -f $f ] ; then
+        if [ $EMPTY = true ] ; then
+            rm -rf bak.oo
+            mv -f  bak.o  bak.oo >/dev/null
+            mv -f  bak    bak.o  >/dev/null
+            mkdir  bak
+        fi
+        mv -f  $f bak/
+        ln -s -f $INBOUND/bak/$f $IN/$f
+        EMPTY=false
+    fi
+   done
+
+   # now all new packets lay in $INBOUND/bak
+
+   if [ $EMPTY = true ]
+   then
+    iflog No new mail found in $INBOUND
+    exit
+   fi
+
+   popd >/dev/null
+
+   pushd $IN >/dev/null
+   #
+   # Analyze packer with file(1) and unpack them if possible
+   #
+   for f in *.mo? *.tu? *.we? *.th? *.fr? *.sa? *.su?
+   do
+       if [ -f $f ] ; then
+          arc=`file -L $f | awk '{ print $2 }'`
+          case $arc in
+            ARJ) unarj e $f ;;
+            ARC) arc e $f ;;
+            ZIP) unzip -x $f < /dev/null ;;
+            LHA) lharc e $f ;;
+        ZOO) zoo eq $f ;;
+          *) iflog unknown packer \'$arc\' for $f
+         false ;;
+          esac
+      if [ $? -gt 0 ] ; then
+              iflog couldn\'t unpack $f \(moved to $INBOUND/bad\)
+              cp -f $f $INBOUND/bad
+          CORRECT=false
+          else
+          iflog unpacked $f \($arc\)-archive
+          rm -f $f
+          fi
+       fi
+   done
+   popd >/dev/null
+}
+
+#
+#
+# main unpack-program
+#
+#
+
+export FNET
+cd $FNET
+unpack_mail
+
+iflog starting fido2rfc
+ftn2rfc -x fidorun -l in/lock
+
+if [ $CORRECT = false ] ; then
+mail $MANAGER <<END
+Subject: Fido-packet errors
+
+There occured errors while processing Fido-Packets.
+
+Please check the logfiles
+
+Your Gateway
+END
+fi
+
+# iflog starting Linux-TIC-Processor
+# /usr/local/lib/tic/process_tics.pl < /dev/null
+# /usr/local/lib/tic/poster.pl Daily < /dev/null
+
+# iflog starting dodeliver
+# /usr/bin/nice /usr/local/lib/fnet/dodeliver
+------------------------------[ schnapp ]----------------------------
+
+
+Bis spaeter,
+
+Martin
+
+---------------------------------------------------------------------
+Martin Seine                                       martin@erde.gun.de
+                                        Martin.Seine@FernUni-Hagen.de
+
+

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="SGML-Tools 1.0.7">
+ <TITLE>MSGID / Message-ID Conversion for Fido-Internet Gateways : Converting FTN ^AMSGID to RFC Message-ID </TITLE>
+ <LINK HREF="msgid-5.html" REL=next>
+ <LINK HREF="msgid-3.html" REL=previous>
+ <LINK HREF="msgid.html#toc4" REL=contents>
+</HEAD>
+<BODY>
+<A HREF="msgid-5.html">Next</A>
+<A HREF="msgid-3.html">Previous</A>
+<A HREF="msgid.html#toc4">Contents</A>
+<HR>
+<H2><A NAME="s4">4. Converting FTN ^AMSGID to RFC Message-ID </A></H2>
+
+<P>
+<P>Converting ^AREPLY works the same way, using References for news or In-Reply-To for mail. 
+<H2><A NAME="ss4.1">4.1 FIDO messages without ^AMSGID </A>
+</H2>
+
+<P>
+<P>Some FIDO messages do not contain a unique ^AMSGID. In this case it is necessary to generate a Message-ID which is the same for all gateways. (Otherwise dupes on the Internet side cannot be detected.)
+<P>The proposed method works as follows: for each message without a MSGID the `id' part of Message-ID is composed of the string "NOMSGID_", the FTN sender address Z:N/F.P using MIME-style quoted printables for `:', `/' as in 3.3, the string "_", the date of the message formatted as "YYMMDD_HHMMSS" (year month day, hour minute second), the string "_", and a CRC32 over the concatenation of the FIDO headers From, To, and Subject. 
+<UL>
+<LI>The FTN sender address is taken from the origin line (EchoMail) or the message header + ^AINTL/FMPT/TOPT (NetMail). A node address must include the `.0'.  </LI>
+<LI>The date is taken from the date field in the message header.  </LI>
+<LI>The CRC value is computed using the same polynomial and method as specified in section 6.   </LI>
+</UL>
+<P>The `do.main' part is the Internet domain appropiate for this FTN (fidonet.org for FIDONET zone 1-6).
+<P>Examples:
+<PRE>
+FIDO-Message    From:    Martin Junius @ FIDO 2:242/6.1 
+                To:      Test User     @ FIDO 2:242/6 
+                Subject: Nur ein Test 
+                Date:    06 Dec 92  22:22:00 
+--&gt; 
+Message-ID: &lt;NOMSGID_2=3A242=2F6.1_921206_222200_08cfe072@fidonet.org&gt; 
+</PRE>
+<P>
+<P>
+<PRE>
+FIDO-Message    From:    Martin Junius @ FIDO 2:2452/110 
+                To:      Test User     @ FIDO 2:2452/111 
+                Subject: Nur ein Test 
+                Date:    05 Jan 95  11:23:32 
+--&gt; 
+Message-ID: &lt;NOMSGID_2=3A2452=2F110.0_950105_112332_08cfe072@fidonet.org&gt; 
+</PRE>
+<P>08cfe072 = CRC32("Martin Junius" + "Test User" + "Nur ein Test")
+<P>PROBLEMS: message with the same date and subject, e.g. robot mails or split mails, will get the same Message-ID and therefore be trashed by the news dupe check. 
+<H2><A NAME="ss4.2">4.2 FTN MSGID with Internet ID </A>
+</H2>
+
+<P>
+<PRE>
+^AMSGID: &lt;id@do.main&gt; abcd1234 
+--&gt; 
+Message-ID: &lt;id@do.main&gt; 
+</PRE>
+<P>If the origin address part of MSGID is a valid RFC Message-ID `&lt;*@*&gt;', then it is directly used for the RFC Message-ID. If `&lt;id@do.main&gt;' is quoted according to the FTS-0009 specs ("..."), these quotes must be removed and double quotes ("") reduced to a single one. 
+<H2><A NAME="ss4.3">4.3 Generic MSGID Conversion </A>
+</H2>
+
+<P>
+<P>This procedure may be used for all FIDO-style and unknown MSGIDs.   
+<PRE>
+^AMSGID: anything abcd1234 
+--&gt; 
+Message-ID: &lt;MSGID_mimeanything_abcd1234@ftn.domain&gt; 
+</PRE>
+<P>`anything' is converted to `mimeanything' using the following rules (see also the Q encoding specified in RFC1522): 
+<UL>
+<LI>` ' (space) is converted to `_' (underscore)  </LI>
+<LI>Any character not allowed in RFC822 atoms (except `.'), `/', `=' and `_' (meaning control chars &lt; 0x20, <CODE>()&lt;&gt;@,;:"[]/=_</CODE> and chars &gt;= 0x7f) are converted to a MIME-style quoted printable `=XX' where XX is the hex ASCII character code (upper case).  </LI>
+<LI>All other characters are left as is.   </LI>
+</UL>
+<P>`ftn.domain' must be the appropiate Internet domain (fidonet.org for FIDONET zone 1-6). If `anything' is a string quoted with "...", these quotes and any quotes within the string are kept as `=22'.
+<P>Examples:  
+<PRE>
+^AMSGID: 2:2452/110.1@FIDONet abcd1234 
+--&gt; 
+Message-ID: &lt;MSGID_2=3A2452=2F110.1=40FIDONet_abcd1234@fidonet.org&gt;
+</PRE>
+<P>
+<P>
+<PRE>
+^AMSGID: 242:1000/1.1 abcd1234 
+--&gt; 
+Message-ID: &lt;MSGID_242=3A1000=2F1.1_abcd1234@fido.de&gt;
+</PRE>
+<P>
+<P>
+<PRE>
+^MSGID: "some "" junk" abcd1234 
+--&gt; 
+Message-ID: &lt;MSGID_=22some_=22=22_junk=22_abcd1234@fidonet.org&gt;
+</PRE>
+<HR>
+<A HREF="msgid-5.html">Next</A>
+<A HREF="msgid-3.html">Previous</A>
+<A HREF="msgid.html#toc4">Contents</A>
+</BODY>
+</HTML>

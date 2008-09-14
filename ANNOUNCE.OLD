@@ -1,0 +1,702 @@
+======================================================================
+
+[See ANNOUNCE for more recent changes]
+
+
+Changes in 4.3.6:
+
+* Updates to various scripts.
+
+* Interface to INN and Sendmail updated for RedHat 6.x.
+
+* ftn2rfc: new config option MessageLineLength for formatting long
+  lines from Fido messages.
+
+* Examples updated.
+
+
+
+Changes in 4.3.5:
+
+* ftntick: new -x --exec-script option to run e.g. announcement script.
+  ftntickpost: skeleton for such a script.
+
+* ftnpack, ftnfattach, bink_attach() in general: search FLO file for
+  entry with file attachment, only attach if necessary. ftnpack now
+  avoids adding to orphan arcmail packets not listed in any FLO file.
+
+* sendmail configuration: no longer uses copy of m4 copy files, but
+  symlinks to /usr/lib/sendmail-cf. New redhat6-orodruin.mc config
+  file for RedHat 6.0 and sendmail 8.9.3.
+
+* rfc2ftn: bug fix for UseXHeaderforTearline.
+
+* Default configuration now supports INN 2.2 on RedHat 6.0.
+
+
+
+Changes in 4.3.4:
+
+* Removed out-dated examples.
+
+* New module strtok_r.c, re-implementing old strtok(), xstrtok()
+  functions. 
+
+* New module rematch.c, regular expression handling for 1st line.
+
+* rfc2ftn: new config option Regex1stLine, regular expressions for
+  finding addresses in the first (and second) line of the message body
+  for replies.
+
+* Documentation doc/fidogate.* now completely up-to-date for this
+  release. New examples for point configuration in examples/point/
+
+
+
+Changes in 4.3.3:
+
+* packet processing: yet another bugfix for Zone 0 packets.
+
+* Win32: added missing config.make to examples/win32/
+
+* rfc2ftn: major improvements to charset handling. Now parses MIME
+  headers and correctly outputs ^ACHRS and ^ARFC-MIME-Header. Charset
+  mapping Internet -> Fido is now implemented.
+
+* ftn2rfc, rfc2ftn: AI_2 and AI_7 patches are now fully integrated,
+  fixing some things along the way. New config option
+  UseXHeaderForTearline enables using X-FTN-Tearline, X-Mailer,
+  User-Agent, or X-Newsreader for the Fido --- tearline.
+
+* Documentation: major update, chapters on config files and example
+  configurations are now up-to-date for version 4.3.
+
+* Solaris 2.x: proper definitions in config.h and src/include/declare.h.
+
+
+
+Changes in 4.3.2:
+
+* parsedate() and date() tested for Y2k compliance, everything is (and 
+  was!) OK.
+
+* Major code clean-up for node-as-ascii-string output functions, using 
+  static buffers where possible and avoiding the usage of tmps
+  strings.
+
+* misc.c:run_system(): cmd[] buffer was too small, now BUFFERSIZE,
+  in particular fixes ffxqt problems with long command lines.
+
+* config files: inline comments are no longer supported, only lines
+  starting with (some white space and) '#' are treated as comments!
+
+* charsetc: some bug fixes.
+
+* Win32 port: some bug fixes and work-arounds, compiles with Cygwin
+  B20.1. New example config files in examples/win32/.
+
+* Areafix: %unlinked lists only areas with access rights (level, key).
+
+* Updated texinfo documentation: at least the sections on compilation
+  and installation are now up-to-date for version 4.3.x.
+
+* Packets with zone information (really *old* tosser programs) are
+  processed with the default zone (from 1st aka).
+
+* rfc2ftn: CheckAreasBBS should now work if gateway address and main
+  address are identical.
+
+* rfc2ftn: AI_9 patches obsoleted.
+
+* rfc2ftn: preparation for charset mapping support (will be finalized
+  in 4.3.3).
+
+
+
+Changes in 4.3.1:
+
+* logdaily: updated.
+
+* logsendmail: major changes to analysis and output format.
+
+* areasbbssync: -l creates diff listing for text output.
+
+* runpoll-binkd: poll script using BinkD.
+
+* out-rm*: updated.
+
+* version.h code changed as follows:
+    VERSION_MAJOR	major version number
+    VERSION_MINOR	minor version number
+    PATCHLEVEL		patchlevel
+    STATE		development ./. stable
+  Current version: 4.3.1 (development)
+
+* Removed the last remaining ultra-ugly code from the original ifmail
+  - shuffle.h and SHUFFLEBUFFERS! FIDOGATE now uses the new temporary
+  string code in tmps.c with memory management throughout the various
+  programs.
+  This *may* result in some memory leaks in version 4.3.1, the new
+  version is not yet thoroughly tested!
+
+* An sprintf() replacement str_printf() is now used throughout the
+  FIDOGATE code, avoiding potential buffer overflows. If your C
+  library support snprinft() it will be used, otherwise FIDOGATE
+  terminates with a fatal error if a buffer overflow occurs.
+
+* Gateway programs: fixed some bugs with the new configuration file,
+  GateAddr and the handling of the -a / -u command line options.
+
+* All test cases have been updated to the new single configuration
+  file fidogate.conf (that's internal for me, the test cases are not
+  included in the source distribution).
+
+* rfc2ftn: parsing of *.maus.de addresses removed, config options
+  MausGate, MausDomain are now obsolete.
+
+* ftn2rfc: bugfix memory allocation.
+
+
+
+Changes in 4.3.0:
+
+* New, and improved versions of the various runxxx scripts and the INN 
+  interface scripts.
+
+* General clean-up of scripts/ directory, obsolete ones removed.
+
+* gate.cgi: new FIDOGATE status CGI script.
+
+* Updated morannon example config files (NOT using the new single
+  fidogate.conf, but the old 4.3a5 config files).
+
+* runpoll: new generic version without the ffx programs (suitable for
+  most FIDOGATE points).
+
+* Allow configuration with only Address statements, Uplink or
+  GateAddress is not necessary, if main and gateway address are the
+  same. 
+
+* Started to get rid of some of the ugly shuffle.h stuff.
+
+* rfc2ftn: code to generate ^AORIGID removed (already disabled per
+  default).
+
+* config.make: NEW DEFAULT CONFIGURATION IS NOW A SINGLE CONFIG FILE
+  /etc/fidogate/fidogate.conf FOR ALL PROGRAMS!!! (The different 4.3a5 
+  config files can still be used by changing the corresponding
+  definitions in config.make, line 91-98.
+
+  Currently, there is only one example of the new single config file:
+  examples/orodruin/fidogate.conf
+
+* ftntoss: config option EchoMail4D renamed to TossEchoMail4D to avoid 
+  conflicts with rfc2ftn configuration.
+
+
+Changes in 4.3a5:
+
+* ftntoss/ftn2rfc: bug-fix for processing packets with point
+  addresses, should fix NetMail problems with non-point addresses in
+  packets from/to point addresses.
+
+* src/*/*.pl: improved and adapted to Perl5.
+
+* ftntoss: new config options AddOtherAKAs, forces ftntoss to all AKAs 
+  for the current zone to SEEN-BY.
+
+* Config functions updated to support new option GateAddr, which will
+  replace the multiple config files and the to some extent confusing
+  Address/Uplink settings in the next FIDOGATE release. NO CHANGES IN
+  THIS RELEASE YET!!!
+
+* ftn2rfc: new config option NewsPathTail. If set to
+  "fidogate!not-for-mail" it will make a correct setup of the INN
+  newsfeeds entry for FIDOGATE much more easy, avoiding news being send
+  back to the Fido uplink.
+
+* ftn2rfc: fix for AI_2 alias processing of recipient address.
+
+
+
+Changes in 4.3a4:
+
+* ftn2rfc / areas: support for -C default:in:out charset option.
+
+* Integrated various patches contributed by Andy Igoshin <ai@vsu.ru>,
+  see contrib/fidogate-4.3a3-ai-pl9.1/ for some documentation and
+  examples. Controlled by #define AI_x in config.h, not all of them
+  are enabled per default.
+  Also includes Russian charset mapping table.
+
+
+
+Changes in 4.3a3:
+
+* rununpack/runtoss: use correct config file (toss.conf), syslog
+  support is there, but commented due to some problems with my perl
+  installation. New LogFacility, LogLevel config options (toss.conf).
+
+* ftnafutil: avoid error log messages for uplinks without uplink entry
+  in passwd.
+
+* packet writing code: no more ^AFMPT 0 (run-time configuration will
+  be available for rfc2ftn in the future, don't use PASSTHRU_NETMAIL
+  with this release!)
+
+* charset mapping: old charset mapping code (charset.c) removed,
+  replaced with new code using charset.bin (compiled version of
+  charset.map), new config option CHARSETMAP (see config.make,
+  common.conf).
+
+* ftn2rfc: uses new charset mapping, new DefaultCharset,
+  NetMailCharset config options (gate.conf).
+
+* logcheck: bugfix, removed duplicate entries without -r option.
+
+* ftnin: now supports FLO files with *.pkt entries.
+
+* areasbbssync: new script for synchronizing INN's active and
+  FIDOGATE's areas.bbs.
+
+
+
+Changes in 4.3a2:
+
+* New config examples for 4.3
+
+* Perl scripts: config.pl now compiled into all perl scripts, -L/-S
+  options removed from all perl scripts.
+
+* rununpack: complete rewrite using perl.
+
+* runtoss: complete rewrite using perl,
+  new config (toss.conf) options: DiskFreeMin, DiskFreeMethod, DiskFreeProgram
+
+* ftnaf/ftnafpkt: major changes to commands, external help file:
+
+      Help for Areafix/Filefix, FIDOGATE 4.3
+      
+      Send mail
+      
+	To:      AreaFix @ Z:N/F.P
+	     or  AreaMgr @ Z:N/F.P
+	     or  FileFix @ Z:N/F.P
+	     or  FileMgr @ Z:N/F.P
+	Subject: PASSWORD [-l] [-q]
+				^^-- same as QUERY command
+			   ^^------- same as LIST command
+      
+      Commands in message body, optional prefix %% allowed:
+      
+	listall                      list all available areas
+	list                         list areas available to node
+	query                        list subscribed areas
+	unlinked                     list unsubscribed areas
+	from Z:N/F.P PASSWORD        set address and password
+	passwd Z:N/F.P PASSWORD
+	password Z:N/F.P PASSWORD
+	+AREA                        subscribe to AREA
+	AREA    
+	subscribe AREA
+	sub AREA
+	-AREA                        unsubscribe from AREA
+	unsubscribe AREA
+	unsub AREA
+	vacation AREA                set vacation flag for AREA
+	&AREA [-options]             create new AREA
+	new AREA [-options]
+	~AREA                        delete AREA
+	delete AREA
+	comment TEXT                 arbitrary comment (ignored)
+	help                         this help
+      
+      AREA names are not case-sensitive and support shell-style wildcards
+	* ? [a-z] [abc], e.g. COMP.OS.*, [A-D]*.GER
+
+  Now supports remote deletion and creation of areas (area key ~ and &
+  for authorization).
+
+* charsetc: new compiler for charset mapping tables. New mapping
+  tables not yet implemented, though.
+
+* logcheck/logsendmail: updated to sendmail 8.8.7
+
+* out-rmbsy: updated.
+
+* rfc2ftn: new option CheckAreasBBS, checking areas.bbs for downlinks
+  when gating. Areas won't be gated if no downlink.
+
+* rfc2ftn: new command line option -f / --batch-file BATCH, allows
+  direct processing of INN's batch files in /var/spool/news/out.going
+  without using the batcher, a major performance improvement.
+
+* send-fidogate: adapted to new rfc2ftn -f BATCH.
+
+* Busy files: use NFS-safe locking code.
+
+* areas.bbs: new option -s STATE for storing state information of
+  area. If set to 'U', the area is marked as not subscribed at the
+  uplink, an appropiate note will be printed by ftnaf.
+
+* ftnafutil: automatically
+  * delete areas from areas.bbs with no uplink (ftnafutil delete)
+  * send Areafix request to uplink, if
+    - an area with state -s U has new downlinks (ftnafutil subscribe) or
+    - an area with state -s S has no more downlinks (ftnafutil unsubscribe).
+
+* passwd: new context "uplink" for ftnafutil Areafix requests.
+
+* rununpack: don't remove extracted files, if archiver program fails.
+
+
+
+Changes in 4.3a1:
+
+* First release starting major restructuring of the FIDOGATEE code.
+
+* syslog support.
+
+* Totally new compile-time/run-time configuration controlled by
+  DEFAULT_* macros in config.make.
+    - compile-time defaults defined in config.make
+    - run-time values can be set in config files (*.conf)
+    - environment variables FIDOGATE_* to override
+
+* New default directory structure (see doc/dirs.html for details):
+    /etc/fidogate
+    /var/lib/fidogate
+    /var/lock/fidogate
+    /var/log/fidogate
+    /var/spool/fidogate
+    /var/spool/bt
+    /usr/lib/fidogate
+
+* Config files renamed to common.conf, ffx.conf, gate.conf, toss.conf.
+
+* config.h now only for system specific configuration.
+
+* -L, -S options removed from all programs.
+
+* Run-time configuration available to perl scripts.
+
+* ftnoutpkt: new utility for creating FTN packets.
+
+* New Areafix code structure.
+
+* ftnafpkt: new Areafix utility reading/writing FTN packets.
+
+* ftnpack: new commands dirmove, progn.
+
+* ftnmail: new setuid frontend for rfc2ftn to be used by sendmail.
+
+* contrib/*: new stuff contributed by FIDOGATE users
+
+
+
+Changes in 4.2.9:
+
+* ftn2rfc: new -n --no-remove option, allows ftn2rfc to be used from
+  packing prog gate ".../ftn2rfc -n %s".
+
+* sendmail/cf: rfc2ftn writes output packets to SPOOLDIR/outpkt/mail
+  to enable separate processing of mail and news.
+
+* Corresponding changes to run* scripts, new runmail script.
+
+* ftnaf: areas.bbs now supports an area description, option -d "DESC".
+
+* ftntoss: new option -d --no-dupecheck to disabled dupe check.
+
+* Some minor changes.
+
+
+
+Changes in 4.2.8:
+
+* rfc2ftn: new ReplyAddrIfmailTX option for compatibility with
+  (broken) ifmail-TX.
+
+* logcheck: new script for analyzing sendmail rejects.
+
+* rfc2ftn/ftn2rfc: improved ^AGATEWAY, X-Gateway processing.
+
+* ftn2rfc: fixed BounceCCMail (messed up in 4.2.6).
+
+* fb-filelist: new version using fareas.bbs.
+
+* ftnroute: new bossroute command, allows crash mail for points to be
+  routed via their boss node.
+
+
+
+Changes in 4.2.7:
+
+* Fixed bug in routing config file, routing commands for EchoMail were
+  broken in 4.2.6.
+
+* runtoss, rununpack: allow arbitrary input directory as command line
+  parameter. 
+
+* sendmail configuration: SPAM filter hacks and examples added.
+
+* ftninpost: fixed running ftninrecomb.
+
+* Updated documentation.
+
+* New FIDOGATE mailing list, see below!
+
+* WIN32 binary release with some configuration examples and test
+  script.
+
+* rfc2ftn: new config XFlagsPolicy, DontUseReplyTo (see docs). Better
+  log for all mails with X-Flags settings.
+
+* ftntick: new UnkownTickArea for incoming TICs with unknown file
+  areas.
+
+* ftn2rfc, rfc2ftn: new RFCAddrMode option.
+
+
+
+Changes in 4.2.6:
+
+* Portability improvements, fixes for GNU-WIN32.
+
+* New nodelist utility scripts nl-check, nl-autoupd.
+
+* nl-diff: fixed CRC comparison bug.
+
+WARNING!!! directories for temporary files created by ftn2rfc are
+renamed to SPOOLDIR/in/tmpmail and SPOOLDIR/in/tmpnews.
+
+* ftn2rfc: new -1 --single-articles option, forces ftn2rfc to single
+  news article files in SPOOLDIR/in/tmpnews. This enables FIDOGATE to
+  cooperate with other news posting tools such as innxmit and rpost
+  (from the suck package).
+
+* aliases/areas/hosts/routing/packing/passwd config files support a
+  new "include FILE" command.
+
+* ftntick: bugfix for empty Desc(ription) line.
+
+* ftnaf: bugfix for command line mode, added create command (currently
+  command line only), stub for vacation command.
+
+* ftninpost: improved version.
+
+* rfc2ftn: MIME quoted-printable in Subject is converted to 8bit.
+
+* make install-dirs improved.
+
+
+
+Changes in 4.2.5:
+
+* ftnflo: portability fix.
+
+* Port to GNU-WIN32.
+
+* MSDOS/OS2 port: fixed typo in prototypes.h.
+
+* Some sendmail related fixes.
+
+
+
+Changes in 4.2.4:
+
+* Port to NextStep 3.3 contributed by
+  <Holger_Graudejus@p17.f6666.n245.z2.fidonet.org>.
+
+* config.h: fixed DO_HAVE_SYSEXITS_H.
+
+* rfc2ftn: PASSTHRU_ECHOMAIL implementation contributed by
+  Jean-Louis Noel <jln@stben.be>.
+
+NOTE: PASSTHRU_NETMAIL and PASSTHRU_ECHOMAIL are now switched off in
+the FIDOGATE distribution config.h!
+
+* rununpack: use directory tmpunpack/ instead of tmp/ to avoid
+  conflicts with ifcico.
+
+* ftntick: fixed copy error if Replaces (old) file doesn't exist and
+  TickReplacedDir is used.
+
+* nl-html: new nodelist to HTML converter.
+
+
+
+Changes in 4.2.3:
+
+* ftntick: area lookup now case-insensitive.
+
+
+
+Changes in 4.2.2:
+
+* ftntoss: additionally checks SEENBYs for message sender/recipient,
+  messages from local AKA are no longer insecure.
+
+* Port to FreeBSD contributed by Dirk Meyer
+  <dirk.meyer@dinoex.sub.org>. 
+
+* rununpack: added RAR support contributed by Matthias Schniedermeyer
+  <ms@twist.owl.de>.
+
+* rfc2ftn: better support for From/Reply-To text headers, will add
+  Header-To/Header-Cc for mailing lists.
+
+* ftn2rfc: don't gate messages with ^AMSGID: <NOMSGID_...>
+
+* rununpack: fixed unzip command line.
+
+
+
+Changes in 4.2.1:
+
+* New #define AMIGADOS_4D_OUTBOUND.
+
+* ftnpack: new command line option -f --ffx to process ffx -b files.
+
+* New directory abbreviations: %G = LogDir, %O = Outbound, %I =
+  Inbound, %P = PInbound, %U = UUInbound 
+
+* rununpack: now processes all files in ArcMail file, improved dupe file
+  rename loop.
+
+* sendmail configuration updated to 8.8.5.
+
+* system() calls fixed for MSDOS and OS2.
+
+* rfc2ftn: fixed Message-ID: <NOMSGID_...@...> conversion, avoiding
+  ^AMSGID: <NOMSGID_...@...> abcd1234 as it always should have been
+  according to the MSGID.DOC specs.
+
+* Various small bugfixes.
+
+
+
+Changes in 4.2.0:
+
+* ftn2rfc: new KillSplit option, don't gate messages with ^ASPLIT.
+
+* ftntoss: new KillOld option, don't toss messages older than
+  MaxHistory days.
+
+* ftntoss: new statistics, msgs/s, pkts/s, KB/s.
+
+* ftntoss: better handling of 4D EchoMail from points, point tosser
+  now works without EchoMail4D.
+
+* ftntoss: new NoEmptyPath option, avoiding empty ^APATH line (for
+  point tosser).
+
+* ftntoss: new EchoMail4D option, generating 4D EchoMail control
+  lines.
+
+* ftntick: fixed Replaces handling when new and replaced file are the
+  same. 
+
+* newsyslog script: compress old log files.
+
+* ftn2rfc: new Content-Transfer-Encoding: 7bit|8bit|quoted-printable
+  header for controlling encoding.
+
+* ftn2rfc: don't use 8bit or quoted-printable if message contains no
+  8bit characters.
+
+* ftn2rfc: only do Cc lines, if there is a To line. Avoids problems
+  with Fido-style CC lines.
+
+* rfc2ftn: new message size limit, config option LimitMsgSize, areas
+  option -L.
+
+* New example configurations provided by Andreas Braukmann's
+  <andy@Abra.DE>.
+
+* pktdebug: new -s --short command line option.
+
+* Various small bugfixes.
+
+
+
+Changes in 4.1.6:
+
+* Bugfix for rfc2ftn in parsing References / In-Reply-To continuation
+  headers.
+
+* New "UseFTNToAddress" config option for ftn2rfc.
+
+
+
+Changes in 4.1.5:
+
+* Bugfix in sendmail ftn mailer.
+
+* Bugfix for make install.
+
+
+
+Changes in 4.1.4:
+
+* Fixed Gateway Z:N/F.P and X-Comment-To problems.
+
+* Revised msgid.doc, now a LyX / LinuxDoc SGML document.
+
+* Updated sendmail configuration, added some documentation.
+
+
+
+Changes in 4.1.3:
+
+* Dupe check performance problems fixed.
+
+* Improved ^AREPLYADDR parsing.
+
+* File attachments interwork rfc2ftn / ftnpack fixed.
+
+* Sender text line added to FTN messages for mailing lists etc.
+
+* Improved runtime configuration of Inbound, PInbound, UUInbound.
+
+* Several minor bug fixes.
+
+
+
+Changes in 4.1.2:
+
+* Bugfix for QUOTED-PRINTABLE encoding.
+
+
+
+Changes in 4.1.1:
+
+* Support for ISO-8859-1 8BIT and QUOTED-PRINTABLE character set when
+  gating Fido -> Internet.
+
+* Important security fixes for setuid installed programs.
+  (New ftnafmail frontend for ftnaf)
+
+* Several bug fixes.
+
+
+
+Major changes in FIDOGATE 4:
+
+* Areas in AREAS.BBS must now explicitly be marked as passthru (dir
+  entry must start with `#'), otherwise ftntoss will create packets
+  for the own address as well.
+
+* Gateway can now work under the same main address as the tosser
+  (config.gate: Address == Uplink).
+
+* If the KillXXXX options are not specified, ftntoss will put bad
+  messages into packets in SPOOLDIR/toss/bad.
+
+* File attach processing: option -F must be used with ftnpack.
+
+* Dupe check: ftntoss now uses a MSGID history database if enabled.
+
+* Tons of new config options! See examples/orodruin/... and
+  examples/morannon/...
+

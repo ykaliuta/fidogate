@@ -1,0 +1,990 @@
+FSC-0028
+
+FwdSpec - A Collection of Notes on Moving Files in FidoNet
+
+
+
+Preamble
+
+Copyright 1988 Greylock Software, Inc.
+
+  POBox 730
+  Gt Barrington MA 01230
+  
+  FidoNet>1:321/202.0
+
+
+Synopsis
+
+  This started as a reverse-engineered technical description of the
+  core operations of Ron Bemis' Flea program, and an attempt to
+  formulate a new specification which is a more symmetric superset
+  of that functionality.  Specifications for Mr. Bemis software is
+  available with that software, which is not freely distributed.
+  
+  This document ONLY addresses the format of files transferred
+  between systems.  It does not address configuration information,
+  which is really an implementation specific issue.
+  
+  This is currently only a base for discussion, which should be
+  carried on in the SOFTWARE (SDS) and FTSC conferences.
+
+
+Distribution
+
+  This document may be freely distributed, so long as it is
+  complete.
+  
+  Comments should be directed to:
+  
+  Barry Geller:    266/12
+  Tom Hendricks:   261/662
+  Harry Lee:       321/202
+  Rick Moore:      115/333
+
+
+1  General
+
+1.1  Existing Tools
+
+1.1.1  FileFwd
+
+  FileFwd is a program by Joe Keenan whose primary purpose is to
+  move consistently named files on a routed, regular basis.  It is
+  extremely useful for routing echomail packets through intermediate
+  nodes without unpacking and re-packing at each of the stations.
+
+
+
+
+
+
+
+
+Copr 1988 Greylock Software, Inc       1                           Dec 2, 1988
+
+
+
+
+FwdSpec - A Collection of Notes on Moving Files in FidoNet
+
+
+
+1.1.2  Flea
+
+  Flea is a program created by Ron Bemis which is used to broadcast
+  files in a manner similar to EchoMail.  It is the primary tool
+  used by the FidoNet Software Distribution System.
+  
+  Specifications for the Flea program are ostensibly available from
+  the author.
+
+
+1.1.3  GlueFwd
+
+  GlueFwd is a distributed document control system from Greylock
+  Software that was considered and rejected for use by the FidoNet
+  Software Distribution System.
+  
+  Unlike Flea and Tick, GlueFwd uses messages to contain the
+  associated routing information.
+
+
+1.1.4  Tick
+
+  Tick is a program by Barry Geller, which performs approximately
+  the same functions as Flea, but uses a unique associated
+  information file format.
+
+
+1.2  Basics
+
+1.2.1  Associated Routing Information
+
+  There are a number of problems associated with file routing,
+  either point to point, or broadcast.  The basic problem is how to
+  handle the associated routing information.  The approaches involve
+  a spectrum ranging from information contained ONLY on the systems
+  handling the files to carrying the information WITH the files
+  being handled.
+  
+  In addition, there is the choice of how this information is to be
+  conveyed.  The choices range from associated files, to messages.
+
+
+1.2.2  Name Collisions
+
+
+1.2.3  Larva - starting the process
+
+  The "Larva" process is usually invoked by the user at the command
+  line.  This is how a file is put in motion.  It creates the
+  appropriate outbound .Fle files and the file attach information
+  required by the given mailer environment.
+
+
+
+
+
+
+Copr 1988 Greylock Software, Inc       2                           Dec 2, 1988
+
+
+
+
+FwdSpec - A Collection of Notes on Moving Files in FidoNet
+
+
+
+1.2.4  Flea - moving stuff along
+
+  The "Flea" process is the one that moves the files along.  It does
+  the following:
+  
+  Check the inbound for .Pre file, and process any that are
+  releasable as you would a normal .Fle file
+  
+  Check the inbound for .Fle files, and process each as follows:
+  
+  Parse the .Fle file, making sure its associate file exists, it
+  comes from a valid source, and that it is not a pre-release.  If
+  any of those conditions are violated, the file is renamed either
+  to .Bad or .Pre.
+  
+  If all is well, move the file to the appropriate path associated
+  with the area, and, if possible, update the FILES.BBS file.
+  
+  Using a Larva-like process, send the file along to any nodes in
+  your echo list that have not seen the file.
+  
+  A Flea process is generally run whenever inbound mail is received.
+
+
+1.3  Nomenclature
+
+1.3.1  [Required]
+
+
+1.3.2  {Optional}
+
+
+1.3.3  Address: {Domain>}{Zone:}Net/Node{.Point}
+
+  In the context of Flea 2.x, only Net/Node style addressing is
+  supported.
+
+
+1.3.4  Dates
+
+
+2  New Forwarding Format (TICK)
+
+2.1  General Goals
+
+2.1.1   Removing order dependency
+
+  The current structure of .Fle files is very order dependent.  In
+  some cases, .Fle file lines have verbs, in others, they do not.  
+  Presumably, Flea proper will have problems processing lines beyond
+  the description that are not in the proper order.
+  
+
+
+
+
+
+Copr 1988 Greylock Software, Inc       3                           Dec 2, 1988
+
+
+
+
+FwdSpec - A Collection of Notes on Moving Files in FidoNet
+
+
+
+  This weakness should be eliminated, essentially by insisting on a
+  verb per line, which makes possible free-form parsing, eliminating
+  order dependency.  Within some groups of entries with the same
+  verb, order dependency may be required.
+
+
+2.1.2   Limiting the type of information contained in a given datum
+
+  Flea 2.x very often carries different types of information on a
+  given line.  While on the surface, this seems like an economical
+  way to do things, it can lead to complications later on.
+  
+  Therefore, it is a general design goal to keep the type and use of
+  a given datum associated with a given verb very clean.
+
+
+2.1.3   Removing Case Sensitivity
+
+  Flea is currently very case sensitive.  Software should be soft.
+  
+  An argument has been made that case sensitivity is a protection
+  against bad files being inserted into the system.  If someone
+  wants to generate a trojan horse, they will need passwords (the
+  primary protection), and in all likelihood would use some sort of
+  Larval tool to generate it anyway.  Case sensitivity makes it
+  slightly more difficult for a developer to "enter the fray".
+
+
+2.1.4   Removing Inconsistent Colon Usage
+
+  Flea currently is haphazard in its usage of colons after verbs. 
+  Colons should be made optional (or eliminated) on all verbs.
+
+
+2.1.5   Optional Multiple DESC lines
+
+  Flea currently supports a single description line, which is
+  additionally position sensitive.  By creating a DESC verb, the
+  position sensitivity can be eliminated, and multiple DESC lines
+  can optionally be supported.
+  
+  At the current time, .Tic files use the DESC verb, but multiple
+  DESC lines are not permitted.  Minimal compliance will be to
+  handle one; multiple lines will be addressed later.
+
+
+2.1.6   App (Application) line support
+
+  In general, all mechanisms in FidoNet should allow for
+  growth/variation by other developers in a non-harmful manner.
+  
+  In the case of Flea routing files, an APP verb with non-specific
+  data should be provided for.  For example, let's assume that UPCL
+  supports some sort of a "return receipt" functionality - when a
+
+
+
+Copr 1988 Greylock Software, Inc       4                           Dec 2, 1988
+
+
+
+
+FwdSpec - A Collection of Notes on Moving Files in FidoNet
+
+
+
+  file hits you, so long as it's posted to your area, and with the
+  sysop's consent (in the form of a configuration option), a message
+  is sent to the Origin node.
+  
+  This might be done as follows:
+  
+  APP GREYLOCK Return-Receipt
+  
+  The "Greylock" sub-verb would keep APP conflicts from occurring.  
+  
+  Processors other than UPCL would pass the line through to any
+  rebroadcast .Tic files intact.  (In fact, so would UPCL.)
+  
+  App lines, taken as a group, are order dependent.  A Tick
+  processor should output App lines created during forwarding in the
+  same order they read them, and if a Tick processor creates new App
+  lines, they should be added to the end of the existing App line
+  list.
+  
+  Once the majority of processors support a given APP functionality,
+  it might be moved to the spec proper.
+  
+  Indeed, any lines with "unrecognized verbs" should be passed
+  through intact, and in the order encountered.
+
+
+2.1.7   Use of PATH construct rather than sby kludge
+
+  Seenby information is more easily digested by humans (and
+  programs) if it is sorted.  Unfortunately, such sorting removes
+  the ability to use it for both seenby, and path information as it
+  is in Flea 2.2.  In addition, the mechanism used by Flea 2.2
+  precludes tiny seenby's, or Zone gating.
+  
+  Therefore, a PATH construct, much like an EchoMail PATH line
+  should be used, instead of the current mechanism.  Once again,
+  order dependency should be discouraged.  Within a group of path
+  lines, obviously, order is important.
+
+
+2.1.8   Multiple Sby's per Sby line
+
+  The current seen-by construct, with one seenby per line, with the
+  word seen-by required on each line is hideously inefficient.
+  
+  This should be changed to mimic echomail's seen-by handling, where
+  multiple seenby's are contained on each line, up to 78 or so
+  characters worth.
+  
+  A possible reason to keep the seenby down to a single entry per
+  line is if information on how and when that node got the file is
+  to be included.  While this might be worth considering, it will
+  add considerable weight to the .Fle file.
+  
+
+
+
+Copr 1988 Greylock Software, Inc       5                           Dec 2, 1988
+
+
+
+
+FwdSpec - A Collection of Notes on Moving Files in FidoNet
+
+
+
+  At the current time, Tick files are assumed to have one seen-by
+  per line.
+
+
+2.1.9   Full (Optional) Domain, Zone, and Point support
+
+  In order to allow for the future growth of the network, and
+  interactions with other networks, addresses should be able to
+  contain a fully qualified FidoNet address:
+  
+      Domain>Zone:Net/Node.Point.
+  
+  Further, given that many authors' primary machines are points, the
+  result is as shown in the sample above: completely unknown
+  addresses appearing in the .Fle files.
+  
+  Of course, these should not be required, but used as necessary.
+  
+  At the current time, Domains are completely unsupported, and
+  should not be used.
+
+
+2.1.10  Different extensions to avoid problems with Opus Style Outbound
+
+  The extension .Fle was chosen because it leads to some expedient
+  side effects in the form of file truncation/elimination by Opus or
+  Binkley when the files reside in the outbound directory.
+  
+  On the other hand, both Opus and Binkley explicitly specify their
+  outbound areas should be used ONLY for that.  A number of
+  Binkley/Opus developers have expressed concern with this problem.
+  
+  For this, and other reasons, .Fle files should be given a new
+  extension of some sort, one that is not closely related to the
+  commonly used routing/message file extensions.  In addition,
+  rather than the three divergent extensions now used by Flea (.Fle,
+  .Bad, and .Pre), any and all extensions used by file routers based
+  on this technology should use extensions that are more closely
+  grouped.
+  
+  As an ancillary note, the FTSC should consider a "File
+  Specification Pattern Registry".  This would not be limited to
+  network tools, and it would not be an indication of ownership, it
+  would simply be a reference.
+
+
+2.1.11  RFC-822 Format
+
+  It might make some sense to consider using an RFC-822 compatible
+  format for these files.  In a future version of this document,
+  I'll detail this possibility.
+  
+  It would also be nice from the point of view of implementing a
+  similar system on UseNet/Internet flavored systems.
+
+
+
+Copr 1988 Greylock Software, Inc       6                           Dec 2, 1988
+
+
+
+
+FwdSpec - A Collection of Notes on Moving Files in FidoNet
+
+
+
+2.1.12  Valid pairing of associated info file and file proper
+
+  We need a mechanism to insure that the primary file and the
+  associated information file are a valid pairing.
+  
+  Consider the following scenario ...
+  
+  System allows overwrites.  A file and associated .Tic arrive. 
+  They are, for whatever reason, not processed.  A file by the same
+  name comes in.  The pair is no longer valid, but given current
+  technology, it would be passed along.
+
+
+2.2  Considerations
+
+2.2.1  Up and downness
+
+2.2.1.1  Single Uplink
+
+
+2.2.2  Table driven duplicate elimination
+
+
+2.2.3  Mapping between distribution and on-line organization
+
+  There is a problem in the current implementation in that the local
+  organization of a system tends to defeat the duplicate catching
+  aspects of the system.
+  
+  I.E., the SDS currently sends out ALL FidoNet files in one
+  "channel".  Many systems move files of this category or that to
+  unique directories.
+
+
+2.2.4  Many features are intended for local optional implementation
+
+  Many of the features in this specification obviously affect how
+  individual sysops run their systems.  As such, these features
+  should be optionally supported by each sysop, although the
+  information should be passed through the associated information
+  file regardless of whether or not they support the feature.
+
+
+2.3  Schematic of .Tic file
+
+  Area{:} [AreaName]
+  {Release{:} [Time]}
+  {Replaces{:} [FileName]}
+  File{:} [FileName]
+  DESC{:} [Description]
+  {DESC{:} [Description]}
+  {Size{:} [Bytes]}
+  {Date{:} [FileDate]}
+  {CRC{:} [Calculated CRC-32 (in hex?)]}
+
+
+
+Copr 1988 Greylock Software, Inc       7                           Dec 2, 1988
+
+
+
+
+FwdSpec - A Collection of Notes on Moving Files in FidoNet
+
+
+
+  Origin{:} [Address]
+  From{:} [Address] [Pwd]
+  {Created{:} [Program Banner]}
+  Seenby{:} [Address] {Address} ...
+  {Seenby{:} [Address] {Address} ...}
+  {APP{:} [Application Specific Information]}
+  Path{:} [Address] {Address} ...
+  {Path{:} [Address] {Address} ...}
+  
+  
+  Note this file is NOT order dependent.  Some of the newer features
+  are more for discussion than anything else.
+
+
+2.4  Nomenclature and Rules
+
+2.4.1  Address Format: Zone:Net/Node{.Point}
+
+
+2.4.2  Don't Barf on appended or unknown stuff
+
+  Lines that are unrecognizable (i.e., non-existent or non-supported
+  verbs) should be passed through untouched.
+  
+  Lines that have additional data beyond the required data
+  (separated by whitespace) should not cause the system to fail,
+  although it is obviously difficult to pass this information
+  through.
+
+
+2.4.3  One or zero items of a given type unless otherwise specified
+
+
+2.4.4  Simple ASCII Alphabet
+
+
+2.4.5  Unix Date Time Formats
+
+  All times are expressed as a long decimal in Unix format - the
+  number of seconds since 1970.
+
+
+2.4.6  [Required Data]
+
+
+2.4.7  {Optional Data}
+
+
+2.5  Detail
+
+2.5.1   App [Ref] {Info}
+
+  This is a "pass through" line to allow developers some room for
+  development without breaking other developer's work.
+
+
+
+Copr 1988 Greylock Software, Inc       8                           Dec 2, 1988
+
+
+
+
+FwdSpec - A Collection of Notes on Moving Files in FidoNet
+
+
+
+  
+  An APP line should have the following form:
+  
+    APP [AppRef] {App Information}
+  
+  or
+  
+    APPLICATION [AppRef] {App Information}
+  
+  Application lines should have their order preserved, and
+  applications adding lines should do so at the end of the existing
+  application list.
+
+
+2.5.2   Area [Name]
+
+  Area names should probably be limited to 8 characters, with
+  alphabet restrictions, to simplify their implementation.
+  
+  This is a mandatory line, and only one should exist in the file.
+
+
+2.5.3   Author [Name]
+
+  This is an item for discussion.
+
+
+2.5.4   CRC [Decimal CRC Value]
+
+  As .Fle files stand, it is possible to "slip something in" to the
+  pipe, particularly if .Fle files are processed only once in a
+  while as opposed to after each inbound call.
+  
+  A number of the proposed (and optional) features here provide
+  safeguards against this.  Specifically, computing the file CRC,
+  and preserving the original file date and size in the .Tic file.
+  
+  This has some value as a verification tool, without the legal
+  encumbrances of PKSCrypt, etc.
+  
+  This probably should be a CRC-32 value.  This would also closely
+  follow some of the ideas that are being considered for echomail
+  processing.
+  
+  This is currently a point for discussion.  It probably should be a
+  mandatory field.
+
+
+2.5.5   Created [Program Banner]
+
+  This should contain some program identification information of the
+  program that generated the attach information.
+  
+
+
+
+
+Copr 1988 Greylock Software, Inc       9                           Dec 2, 1988
+
+
+
+
+FwdSpec - A Collection of Notes on Moving Files in FidoNet
+
+
+
+  There might be some standard format for the first part of this
+  line, allowing for variant information after this.
+  
+  This is an optional line.
+
+
+2.5.6   Date [Date/Time of creation]
+
+  This is a check for valid file pairing between the associated
+  information file and the primary file.  It is the file date stamp
+  of the primary file in Unix format.
+
+
+2.5.7   Desc [File Description]
+
+  This is a description of the file.  There is as yet unspecified
+  length restriction on this line.
+  
+  At the current time, exactly one of these lines should appear in
+  the Tick file.
+  
+  In the future, more than one line may be supported.
+
+
+2.5.8   Dest [Address]
+
+  This is related to Route (qv)
+
+
+2.5.9   Encrypted [PKS Key]
+
+  Read the section on "GARBLE", and change it as follows:
+  
+  The file is initially encrypted using a PKS style encryption. 
+  This would be the ONLY time the file is encrypted.  The FTSC or
+  someone would have to collect a list of valid public keys of
+  authors (and probably eventually everyone).  The file would then
+  be of "known-quality", or at least from a known source.  The key
+  would be included in the .Tic file for ease of operation.
+  
+  The ramifications of this are considerable.  First off, PKSCrypt
+  is something the spook types in the world are bothered by. 
+  Secondly, the source is not available, and the program does not
+  work on some machines (i.e., my 386.)  Large keys would probably
+  have to be used so a large number of possible keys will exist,
+  which means considerable encryption and decryption processing
+  time.  Finally, there is the question of a "Key registry", and how
+  you verify them.
+  
+  I am not sure if this and Garbled are and/or or either/or.
+
+
+
+
+
+
+
+Copr 1988 Greylock Software, Inc      10                           Dec 2, 1988
+
+
+
+
+FwdSpec - A Collection of Notes on Moving Files in FidoNet
+
+
+
+2.5.10  File [FileName]
+
+  ONLY a filename (no path information) is contained on the FILE
+  line.  No wildcards.
+  
+  Exactly one of these lines must exist in a Tick file.
+
+
+2.5.11  From [Address]
+
+  This is the address of the system sending the file on the current
+  leg.
+
+
+2.5.12  Garbled
+
+  This is really just a thought for consideration than anything
+  else.
+  
+  If this is present, the file referenced by the .Tic file is
+  assumed to be archived (we'd have to address the issue of
+  "deviant" archivers") by an agreed upon password between the
+  sender and the sendee.
+  
+  The ramifications of this are considerable.  It would mean that
+  individual archives would need to be created for any node so
+  protected, which would need to be deleted after sending.  This
+  implies a considerable expenditure of time and resources to create
+  and store these archives.
+
+
+2.5.13  Log [Comment]
+
+  This is another one for consideration.  Any such lines would be
+  displayed on the console and/or the system log.
+
+
+2.5.14  Magic [FileName]
+
+  This is food for thought.
+  
+  In order to resolve and standardize version numbering in file
+  names, and magic file names, this might be used to distribute a
+  "magic file name" with a given file.
+  
+  More than one of these lines might exist.
+
+
+2.5.15  Origin [Address]
+
+  Where the file originally entered the system.
+
+
+
+
+
+
+Copr 1988 Greylock Software, Inc      11                           Dec 2, 1988
+
+
+
+
+FwdSpec - A Collection of Notes on Moving Files in FidoNet
+
+
+
+2.5.16  Path [Address] {Arrival}
+
+  Path lines are, among themselves, order dependent.  However, they
+  need not be contiguous.
+  
+  The current path specification allows for only one address per
+  path statement.
+  
+  It might make sense to leave it this way, and add an "Arrival
+  time", which would be the time the file was processed.
+  
+  I.E., the file would start out with the path for this node and the
+  next node with the time of creation.  When it gets to the next
+  node, he changes his time to the time of processing, and puts out
+  a similar line for the node(s) he sends to.
+
+
+2.5.17  Pw [Password]
+
+  This is the password between the sender and the sendee.  This
+  password is not case sensitive.
+  
+  Exactly one of these lines must exist in a Tick file.
+  
+  It would be nice to have some method of password securing that did
+  not require the password to be exchanged in clear text.
+
+
+2.5.18  Release [DateTime]
+
+  This is an optional line used to contain a Unix Date Time (seconds
+  since 1970) of the release of the file.
+  
+  The handling of this is really murky as far as I can tell.  A
+  brief digression into "political structures."
+  
+  Let's consider the case of the SDS.  In SDS, it has generally been
+  assumed that ONLY nodes that are a part of the SDS get their files
+  using Flea/Tick technology.  However, whether it is aware of it or
+  not, this is not the case.
+  
+  Here's what I think was intended: a file comes in with a
+  Pre-release time set.  That is the time at which the file is moved
+  to the publicly available area.  I am not sure whether it is
+  passed along the chain until that date, or if it is simply not to
+  be made "publicly available" until that date.
+
+
+2.5.19  Replaces [FileName]
+
+  Only a filespec, no path information, is contained on this flavor
+  line.
+  
+
+
+
+
+Copr 1988 Greylock Software, Inc      12                           Dec 2, 1988
+
+
+
+
+FwdSpec - A Collection of Notes on Moving Files in FidoNet
+
+
+
+  A REPLACES line is used to optionally (at each given node) dispose
+  of older versions of the file being sent out.  For instance,
+  Binkley releases are named:
+  
+  BEXE_XXX.Arc
+  
+  Assuming the next version of Binkley was 2.10, and assuming
+  REPLACES was enabled for the given area, the file named on the
+  REPLACES line would either be erased or moved if found.
+  
+  I.E.:
+  
+  FILE BEXE_210.Zoo
+  REPLACES BEXE_*.Arc
+  
+  If these lines are encountered, and replacement is allowed, and
+  BEXE_200.Arc was found, it would, in some way, be removed from the
+  access directory.
+  
+  Wildcards should be allowed, but should also be used with care.
+  
+  Multiple REPLACES lines should be allowed.
+
+
+2.5.20  Route [Address]
+
+  This is just thinking out loud.
+  
+  These would have to be order dependent.  They would be set up at
+  the point of creation, and there would have to be agreements all
+  along the way.
+  
+  A political nightmare, but very useful in a corporate environment.
+  
+  Collisions are a very real problem here.
+
+
+2.5.21  RtRcpt {Address}
+
+  This is an item for discussion more than anything else.  It would
+  be nice to have a means to find out how far your files have
+  moved.  On the other hand, there are significant Policy type
+  considerations for such a functionality.
+  
+  If the optional address is omitted, the ORIGIN is used.
+
+
+2.5.22  Seenby [Address] {Arrival}
+
+  The current seenby specification allows for only one seenby per
+  line.
+  
+
+
+
+
+
+Copr 1988 Greylock Software, Inc      13                           Dec 2, 1988
+
+
+
+
+FwdSpec - A Collection of Notes on Moving Files in FidoNet
+
+
+
+  Seenby's are NOT order dependent.  Seenby information is more
+  useful in "alphabetical" than encountered order, although it is
+  not a requirement.
+
+
+2.5.23  Size [File Size in Bytes]
+
+
+2.5.24  Source [Address]
+
+  Where the file actually came from.
+  
+  This is a point for discussion.  Let's consider the SDS again.
+  
+  In theory, SDS is a controlled system.  Files are only supposed to
+  enter it from a very limited subset of FidoNet.  Currently, the
+  Origin is the location the file was "launched" from, a very
+  different thing than the author's address.
+  
+  The Source address, if present, is the address of a primary system
+  used by the actual author.
+  
+  For instance, consider Binkley.  Binkley is supposed to enter the
+  system at the region 16 SDS node, although it is written by nodes
+  that do not participate in SDS.
+
+
+2.5.25  Topo {Address}
+
+  This feature, if enabled, can be used to generate a topology
+  report for the area specified to the given node.  If no node is
+  specified, the report should be sent to the Origin node.
+
+
+2.5.26  Unidentified Verb Handling
+
+  Lines with unrecognized verbs should be passed through.  Order is
+  a critical issue here.  Unknown lines should be output in the same
+  order they were input.
+
+
+2.6  Feature Table
+
+Feature                  Status       Count
+                                  
+Area [Name]                               1
+File [FileName]                           1
+Path [Address]                          >=1
+Created [Text]                          0-1
+From [Address]                    
+Origin [Address]                  
+SeenBy [Address]                  
+Path [Address]                    
+                                  
+
+
+
+Copr 1988 Greylock Software, Inc      14                           Dec 2, 1988
+
+
+
+
+FwdSpec - A Collection of Notes on Moving Files in FidoNet
+
+
+
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+Unidentified Verbs                
+
+
+2.7  TK123456.Tic (Updated and amended slightly from Barry's Orig)
+
+  Area TICKTEST
+  File TEST.TXT
+  Desc This is the file description Line!
+  Origin 1:266/1
+  From 1:266/13
+  Created by TICK v1.00 - Copyright (C) 1988 by I. Barry Geller
+  Release 59000000
+  Path 1:266/21
+  Path 1:266/13
+  Path 1:150/1
+  Seenby 1:266/21
+  Seenby 1:266/13
+  Seenby 1:150/1
+  Pw TESTPW
+
+
+2.8  Notes
+
+2.8.1  The primary file should be sent before the associated file
+
+  The actual file should be sent before the associated information
+  file.  Consider this was not done in the following scenario:
+  
+  Associated file sent
+  Primary file partially sent - session fails
+  System processes associated files, and fails to find last primary
+  During next session, primary is sent, with no associated
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Copr 1988 Greylock Software, Inc      15                           Dec 2, 1988
+
+

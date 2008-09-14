@@ -1,0 +1,2 @@
+#!/bin/sh
+cvs ci -m "See ChangeLog" $*

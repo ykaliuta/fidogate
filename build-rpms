@@ -1,0 +1,32 @@
+#!/bin/sh
+
+REL=$(./version)
+TAG=`echo $REL | tr -d .`
+
+tarfile=fidogate-$REL.tar.gz
+tarfilesources=/usr/src/redhat/SOURCES/$tarfile
+tarfilevartmp=/var/tmp/$tarfile
+rpmb=/usr/src/redhat/RPMS/i386/fidogate-$REL-*.i386.rpm
+rpms=/usr/src/redhat/SRPMS/fidogate-$REL-*.src.rpm
+
+if [ ! -f $tarfilesources ]; then
+    if [ ! -f $tarfilevartmp ]; then
+	echo "build-rpms: $tarfilevartmp doesn't exist."
+	exit 1
+    fi
+fi
+
+if [ `whoami` != "root" ]; then
+    echo "build-rpms: your must be root run this script."
+    exit 1
+fi
+
+if [ -f $tarfilevartmp ]; then
+    rm -f $tarfilesources
+    mv $tarfilevartmp /usr/src/redhat/SOURCES
+fi
+
+#rpm -ba fidogate.spec
+rpmbuild -ba fidogate.spec
+
+rpm --addsign $rpmb $rpms

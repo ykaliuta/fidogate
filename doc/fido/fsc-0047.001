@@ -1,0 +1,231 @@
+Document: FSC-0047
+Version:  001
+Date:     28-May-90
+
+
+
+
+         The ^ASPLIT Kludge Line For Splitting Large Messages
+
+                             Pat Terry
+                            5:494/4.101
+               pat.Terry@p101.f4.n494.z5.fidonet.org
+                       pterry@m2xenix.psg.org
+   
+
+
+
+Status of this document:
+
+     This FSC suggests a proposed protocol for the FidoNet(r) community,
+     and requests discussion and suggestions for improvements.
+     Distribution of this document is unlimited.
+
+     Fido and FidoNet are registered marks of Tom Jennings and Fido
+     Software.
+
+
+
+
+
+Objectives
+===========
+
+Several packers place a limit on the size of message that can be
+transmitted.  This is often of the order of 14K which, while
+sufficient for most purposes, is inadequate for several
+applications, and in particular for long messages gated to and
+from UUCP land.
+
+A SPLIT/UNSPLIT suite of two programs has been developed, intended
+to handle this problem.  SPLIT will split long .MSG format
+messages into smaller packets.  After transmission to a remote
+site, the packets may be merged by UNSPLIT to recreate the
+original message, as closely as possible.  The only differences
+are the addition of a kludge line and, possibly, a few line
+breaks.
+
+The system ensures that each large message, when split, generates
+a collection of small messages, each of which is still valid in
+its own right.  If recombination is not effected, the messages
+will still be usefully received, and, in particular, split
+messages to UUCP should still all get to their destinations,
+albeit in parts.
+
+After some weeks of testing, the system seems to be sufficiently
+stable and useful to justify making an FSC proposal.
+
+
+
+The ^A SPLIT kludge line
+========================
+
+Messages split and joined by this system make use of an ^A kludge
+line, which has the form below.  It is proposed in this note that
+this become the basis for a "standard".
+
+One of these lines is added to the list of kludges preceding each
+part of a split message.  When recombined, a line of this form
+remains, for reasons which will appear later.
+
+Generically the lines look like this, in fixed columns:
+
+^ASPLIT: date      time     @net/node    nnnnn pp/xx +++++++++++
+
+where
+      nnnnn gives the original message number from which the
+            components have been derived (cols 41 - 45)
+      pp    gives the part number (cols 47 and 48)
+      xx    gives the total number of parts (cols 50 and 51)
+
+For example
+
+^ASPLIT: 30 Mar 90 11:12:34 @494/4       123   02/03 +++++++++++
+            |      |        |  |          |     |  |  |
+            |      |        @  |          |     |  |  |
+            Date   Time        Node       MSG   |  |  Eye catcher
+            (when split)  (of origin) (at time  |  Total parts
+                                      of split) Part number
+
+
+Thus a large file (existing as 123.MSG when the splitter was run)
+originating from 494/4 might be split into 3 parts with the split
+lines
+
+^ASPLIT: 30 Mar 90 11:12:34 @494/4       123   01/03 ++++++++++++
+^ASPLIT: 30 Mar 90 11:12:34 @494/4       123   02/03 ++++++++++++
+^ASPLIT: 30 Mar 90 11:12:34 @494/4       123   03/03 ++++++++++++
+
+Columns 9 through 45 are really a "uniquefier".  The nnnnn
+message number is just the one the message had when it was split,
+and is of no other significance.  Similarly, the system does not
+use 4-d addressing for the node/net component, because this is of
+no real interest to this application, and requires parsing a file
+like BINKLEY.CFG, or similar extra work, to determine the other
+components.
+
+This is, admittedly, verbose, but if recombination fails for any
+reason (like all the packets not arriving at once) one can still
+recombine or examine the relevant pieces manually.  Note also
+that the lines are added to messages that are themselves "long",
+and the *relative* increase in length is actually very small.
+Further justification will be found below.
+
+
+Splitting large messages
+========================
+
+When splitting large messages, the following happens:
+
+The message base is scanned for large messages.
+
+For each of the (few) large messages found that qualify, the
+large message is split into parts.  The original FTSC header is
+placed in each component part, save that the FileAttach bit (if
+any) is removed from the 2nd, 3rd ... parts.  No attempt is made
+to modify the To:, or From: fields.  The Subject: field for the
+2nd, 3rd ... parts is modified to include a leading part number.
+
+The original kludge lines are retained in the first part. Most
+other "leading" kludges, like ^AFMPT, ^ATOPT, ^AINTL are retained
+in these parts.  However, ^AEID and ^AMSGID lines, if any, are
+removed from the 2nd, 3rd ... parts.  This is potentially
+awkward, but is to avoid "dupe detectors" discarding the 2nd, 3rd
+ ... parts, and in practice should cause no real problems. Large
+echomail messages originating on a system will presumably have
+their ^AEID lines added to the constituent parts at
+scanning/packing time on that system (ie AFTER splitting), and
+other large messages should probably not reach this stage - they
+should have been split or discarded earlier.
+
+A ^ASPLIT line is added to each part to allow for possible later
+recombination.
+
+If the message is addressed "TO UUCP: in the FTSC header, the To:
+lines at the start of the message text are copied to all parts.
+
+The "body" of the message is then split between the various
+parts.  An attempt is made to split at the end of a line in each
+case.
+
+The trailing tear line, ^AVia ^APath etc lines are added to all
+parts.
+
+
+Joining ("unsplitting") messages
+================================
+
+When reconstituting large messages, the following happens:
+
+The message base is scanned for messages with ^ASPLIT lines.
+A list is made of messages to be unsplit, with each message
+having a list of its component parts. If a duplicate component
+part is found, it is discarded (thus partially getting around the
+problem of any discarded ^AEID lines in the components).
+Messages marked "in transit" or "sent" are not eligible for
+recombination.  Nor are messages with a split component number of
+00, as these will only exist as the result of an earlier
+recombination.
+
+For each set of components of messages to be recombined the
+following happens:
+
+The first component is examined so as to extract the Kludge
+lines, and any UUCP "To: " lines. These, and the FTSC header, are
+written out to a new file, with the ^ASPLIT line modified to have
+a component number of 00, so as to prevent further splitting
+should the splitter program be reapplied to the recombined
+message.  If this is not done, large messages can get into a
+tedious split-unsplit- split-unsplit... cycle each time the
+system is run.
+
+The text portions of the first and subsequent parts are then
+merged (discarding extra copies of kludges, UUCP "To:" lines and
+the like).
+
+Any tearline, Origin, ^APATH, ^AVia lines etc are appended.
+
+Normally the component files are then automatically deleted.
+
+
+Justification for "human readable" uniquifier.
+==============================================
+
+Most systems do not display kludge lines, and the ^ASPLIT line
+should be of no real interest.  However, in one particular
+application which was using this system, the ^ASPLIT lines were
+made visible for messages that could not be recombined (because
+they become too large for gating from FidoNet to another RFC-822
+compliant network), and hence it has been deemed essential that a
+"visible" line derived from ^ASPLIT became human readable, easily
+spotted, and comprehensible.  For much the same reason, fixed
+columns have been used, rather than free format, so that archaic
+FORTRAN programmers could easily develop "unsplitters" after
+getting all the pieces!  Lastly, in this system a sort was done
+to order the ^ASPLIT line to be the last kludge line before the
+message body proper.
+
+
+Acknowledgements
+================
+
+Particular thanks must be expressed to Randy Bush for offering to
+test this system in its earliest releases on the very busy 1/5
+zonegate, and for suggesting various improvements.  Thanks for
+testing are also due to Dave Wilson who operates the 5/1 zonegate
+at the other end of the link from Randy, and to Mike Lawrie of
+Rhodes Computer Centre for useful suggestions regarding the form
+of the ^ASPLIT line acceptable to non-Fido users.
+
+
+Prototype system
+================
+
+A version of SPLIT/UNSPLIT using this system may be FREQ'd
+from 1:105/42 or 5:494/4 using the magic name SPLITTER.  As at
+this time I have unsubstantiated reports that it does not work
+in conjunction with systems running Novell software (I have no
+access to Novell).  It works fine using Msged and QMail.
+
+
+ 

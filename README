@@ -1,0 +1,140 @@
+-*- Indented-Text -*-
+
+$Id: README,v 4.36 2003/04/10 21:22:05 n0ll Exp $
+
+======================================================================
+				   
+			F  I  D  O  G  A  T  E
+
+			      Version 4
+
+		     ============================
+		        * Fido-Internet Gateway
+		        * Fido FTN-FTN Gateway
+		        * Fido Mail Processor
+		        * Fido File Processor
+		        * Fido Areafix/Filefix
+		     ============================
+
+
+WARNING!!! If you're migrating from FIDOGATE 4.2.9 to 4.4.x, please
+note the following *MAJOR* changes:
+
+     4.3a1..a5	New directory hierarchy, new config files
+		/etc/fidogate/*.conf (see doc/dirs.html)
+
+     4.3.0+	In addition, FIDOGATE now uses a single config file
+		/etc/fidogate/fidogate.conf for *all* programs.
+
+     4.4.x	The new stable release, even somewhat well documented.
+		See ANNOUNCE for recent changes.
+
+
+Please subscribe to the FIDOGATE mailing list!!!
+
+======================================================================
+
+[ For detailed instructions see doc/fidogate.txt ]
+
+Needed:
+
+* GNU CC or ANSI C compiler
+* GNU make
+* GNU flex/bison or lex/yacc
+* Perl5
+* sendmail m4 configuration files
+* GNU m4 for the sendmail m4 configuration
+
+Compiling:
+
+1.  Edit config.make
+2.  Edit config.h if needed
+3.  Run "make depend"
+4.  Run "make"
+
+Installing:
+
+5.  Run "make install-dirs" to create the installation directories
+    (only if needed)
+6.  Run "make install" to install the programs
+7.  Create the various config files and put them into CONFIGDIR
+    (see examples/... to get started)
+
+See also doc/fidogate.txt (PostScript documentation can be compiled by
+running "make doc" in the doc/ subdirectory) for a detailed
+description of the FIDOGATE installation.
+
+======================================================================
+
+There is a *NEW* mailing list for FIDOGATE discussions and
+announcements:
+
+    mailto:fidogate-list@lists.sourceforge.net
+
+To SUBSCRIBE to this mailing list goto
+
+    http://lists.sourceforge.net/lists/listinfo/fidogate-list
+
+======================================================================
+
+Latest version:
+
+The latest version of FIDOGATE can be found at:
+
+    http://sourceforge.net/project/showfiles.php?group_id=10739
+
+    ftp://ftp.fidogate.org/pub/fidogate/
+    http://www.fidogate.org/pub/fidogate/
+
+
+See also the FIDOGATE home page at:
+
+    http://www.fidogate.org/
+    http://fidogate.sourceforge.net/
+
+======================================================================
+
+Warning: configuration changed a lot since release 3.9.7, so using an
+old configuration without any changes for release 4 will cause
+problems.
+
+In particular, Roland's fgpack script (see doc/Fido-Point-HOWTO) does
+*NOT* work with the release 4 ftnpack!!!
+
+======================================================================
+
+GNU-WIN32 version:
+
+As of FIDOGATE 4.2.5, the source can be compiled with the Cygnus
+GNU-WIN32 development environment for Windows 95 and NT. You'll need
+the WIN32 version of perl, too. See examples/win32/config.make.
+
+GNU-WIN32 information can be found at
+    http://www.cygnus.com/misc/gnu-win32/
+
+Perl for WIN32 information can be found at
+    http://www.activestate.com/
+
+======================================================================
+
+Contributing patches:
+
+PLEASE NOTE THE FOLLOWING RULES FOR CONTRIBUTING PATCHES:
+
+* No changes to the indentation, white space etc. No beautifying,
+  please.
+
+* Supply only context diffs (command diff -u), not complete changed
+  files.
+
+* Supply patches against the latest version of FIDOGATE, or even
+  better against the FIDOGATE CVS repository.
+
+If you do not follow these simple rules, it is quite likely that I'll
+not integrate your patches.
+
+======================================================================
+
+$Date: 2003/04/10 21:22:05 $
+Martin Junius
+mailto:mj@fido.de

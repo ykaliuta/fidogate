@@ -1,0 +1,24 @@
+-*- Indented-Text -*-
+
+TODO list for FIDOGATE tests:
+
+	* ftnpack:
+
+	  - packet file names not ending in .pkt on command line
+            correctly archived as something.pkt?
+
+	  OK: ftnpack uses the filename of the packet file for the
+	  archive and doesn't generate a new one. If filenames are
+	  given on the command line, these will be used for the
+	  archive, regardless whether they end in .pkt or not.
+
+	  Maybe add a new option to always generate a new packet name
+	  ending in .pkt.
+
+
+	* ftntoss:
+
+	  - new tosser 4D EchoMail handling as of 4.2.0 for a boss
+	    node tosser with some points.
+
+	  OK: no problems found.

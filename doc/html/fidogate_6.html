@@ -1,0 +1,207 @@
+<HTML>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- Created on August, 26  2004 by texi2html 1.64 -->
+<!-- 
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Olaf Bachmann <obachman@mathematik.uni-kl.de>
+Send bugs and suggestions to <texi2html@mathematik.uni-kl.de>
+ 
+-->
+<HEAD>
+<TITLE>FIDOGATE: Usage</TITLE>
+
+<META NAME="description" CONTENT="FIDOGATE: Usage">
+<META NAME="keywords" CONTENT="FIDOGATE: Usage">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META NAME="Generator" CONTENT="texi2html 1.64">
+
+</HEAD>
+
+<BODY LANG="" BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#FF0000">
+
+<A NAME="SEC76"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC75"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_6.html#SEC77"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC75"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_6.html#SEC77"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H1> 6. FIDOGATE Usage </H1>
+<!--docid::SEC76::-->
+<P>
+
+<A NAME="IDX5"></A>
+</P><P>
+
+<BLOCKQUOTE><TABLE BORDER=0 CELLSPACING=0> 
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_6.html#SEC77">6.1 RFC Headers in FTN Messages</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_6.html#SEC78">6.2 X Headers in RFC Messages</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"></TD></TR>
+</TABLE></BLOCKQUOTE>
+<P>
+
+<A NAME="RFC Headers"></A>
+<HR SIZE="6">
+<A NAME="SEC77"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_6.html#SEC76"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_6.html#SEC78"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_6.html#SEC76"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_6.html#SEC76"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_6.html#SEC77"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 6.1 RFC Headers in FTN Messages </H2>
+<!--docid::SEC77::-->
+<P>
+
+<A NAME="IDX6"></A>
+<A NAME="IDX7"></A>
+</P><P>
+
+FIDOGATE's <CODE>ftn2rfc</CODE> supports the following RFC headers at the
+start of an FTN message. RFC headers must be the first text lines,
+max. 3 empty lines before the RFC headers are allowed. Only one header
+line of each type is allowed.
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>From: <I>address</I></CODE>
+<DD>Sets From header line. If set and the <CODE>areas</CODE> flag <CODE>-g</CODE> is on,
+messages will not be gated, because they are considered comming from
+another FTN-RFC gateway.
+<P>
+
+<DT><CODE>Reply-To: <I>address</I></CODE>
+<DD>Sets Reply-To header line.
+<P>
+
+<DT><CODE>To: <I>address</I></CODE>
+<DD>Sets To header line.
+<P>
+
+<DT><CODE>Cc: <I>address</I></CODE>
+<DD>Sets Cc header line.
+<P>
+
+<DT><CODE>Bcc: <I>address</I></CODE>
+<DD>Sets Bcc header line.
+<P>
+
+<DT><CODE>Newsgroups: <I>groups</I></CODE>
+<DD>Sets Newsgroups header line. NOT YET IMPLEMENTED.
+<P>
+
+<DT><CODE>Sender: <I>address</I></CODE>
+<DD>Sets Sender header line. NOT YET IMPLEMENTED.
+<P>
+
+<DT><CODE>Content-Transfer-Encoding: 7bit | 8bit | quoted-printable</CODE>
+<DD>Sets content encoding type, overriding the default configured in
+<CODE>fidogate.conf</CODE> (<CODE>NetMail8bit</CODE>, <CODE>NetMailQuotedPrintable</CODE>)
+or <CODE>areas</CODE> (<CODE>-8</CODE>, <CODE>-Q</CODE>).
+<P>
+
+</DL>
+<P>
+
+<CODE>ftn2rfc</CODE> sends mail to all addresses listed in To, Cc, and Bcc. It
+support the RFC1036 standard address formats:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>user@do.main
+user@do.main (Real Name)
+Real Name &#60;user@do.main&#62;
+</pre></td></tr></table></P><P>
+
+Multiple addresses can be separated by a <CODE>,</CODE>.
+</P><P>
+
+<A NAME="X Headers"></A>
+<HR SIZE="6">
+<A NAME="SEC78"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_6.html#SEC77"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_6.html#SEC76"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_6.html#SEC76"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_6.html#SEC77"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 6.2 X Headers in RFC Messages </H2>
+<!--docid::SEC78::-->
+<P>
+
+<A NAME="IDX8"></A>
+<A NAME="IDX9"></A>
+</P><P>
+
+FIDOGATE's <CODE>rfc2ftn</CODE> supports the following X headers in RFC
+messages:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>X-Comment-To: <I>name</I></CODE>
+<DD>Use for the recipient's name in news articles.
+<P>
+
+<DT><CODE>X-Flags: <I>flags</I></CODE>
+<DD><DL COMPACT>
+<DT><CODE>c</CODE>
+<DD>Message is crash.
+<DT><CODE>p</CODE>
+<DD>Message is private (default for mail).
+<DT><CODE>h</CODE>
+<DD>Message is hold.
+<DT><CODE>f</CODE>
+<DD>Subject contains file attachment name.
+<DT><CODE>r</CODE>
+<DD>Sets return receipt request.
+<DT><CODE>m</CODE>
+<DD>Generates a FTN style <CODE>^MSGID</CODE>, i.e. <CODE>^AMSGID: </CODE><I>Z:N/F.P
+1234abcd</I>. In addition, no <CODE>^AREPLY</CODE> kludge is generated. THIS FLAG
+IS NOT RECOMMENDED FOR NORMAL OPERATION!!!
+<DT><CODE>n</CODE>
+<DD>Do not generate a From line, and the <CODE>^AREPLYADDR</CODE>, <CODE>REPLYTO</CODE>
+kludges.
+</DL>
+<P>
+
+</DL>
+<P>
+
+<A NAME="Index"></A>
+<HR SIZE="6">
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_6.html#SEC76"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_6.html#SEC77"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<BR>  
+<FONT SIZE="-1">
+This document was generated
+by <I>Martin Junius</I> on <I>August, 26  2004</I>
+using <A HREF="http://www.mathematik.uni-kl.de/~obachman/Texi2html
+"><I>texi2html</I></A>
+
+</BODY>
+</HTML>

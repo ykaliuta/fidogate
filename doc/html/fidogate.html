@@ -1,0 +1,211 @@
+<HTML>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- Created on August, 26  2004 by texi2html 1.64 -->
+<!-- 
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Olaf Bachmann <obachman@mathematik.uni-kl.de>
+Send bugs and suggestions to <texi2html@mathematik.uni-kl.de>
+ 
+-->
+<HEAD>
+<TITLE>FIDOGATE: FIDOGATE</TITLE>
+
+<META NAME="description" CONTENT="FIDOGATE: FIDOGATE">
+<META NAME="keywords" CONTENT="FIDOGATE: FIDOGATE">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META NAME="Generator" CONTENT="texi2html 1.64">
+
+</HEAD>
+
+<BODY LANG="" BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#FF0000">
+
+<A NAME="SEC_Top"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H1>FIDOGATE</H1><A NAME="IDX1"></A>
+</P><P>
+
+This manual documents how to install and use FIDOGATE. It is the first
+step toward a concise documentation. Alas, writing documentation is a
+somewhat tedious business, so this manual is far from complete.
+</P><P>
+
+<BLOCKQUOTE><TABLE BORDER=0 CELLSPACING=0> 
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_1.html#SEC1">1. Introduction to FIDOGATE</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_2.html#SEC6">2. Compiling and installing FIDOGATE</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC15">3. FIDOGATE Programs</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">FIDOGATE programs and scripts</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC61">4. FIDOGATE Config Files</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">FIDOGATE config files</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_5.html#SEC71">5. Basic Configuration</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Basic configuration</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_6.html#SEC76">6. FIDOGATE Usage</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">FIDOGATE usage</TD></TR>
+</TABLE>
+
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_7.html#SEC79">Index</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"></TD></TR>
+</TABLE>
+
+<br>
+&nbsp;--&nbsp;The&nbsp;Detailed&nbsp;Node&nbsp;Listing&nbsp;---
+<br>
+
+<br>
+Compiling&nbsp;and&nbsp;installing&nbsp;FIDOGATE
+<br>
+
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_2.html#SEC7">2.1 The <CODE>config.h</CODE> Header File</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">The config.h header file</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_2.html#SEC8">2.2 The <CODE>config.make</CODE> Makefile Configuration</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">The config.make Makefile configuration</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_2.html#SEC9">2.3 Compiling and Installing FIDOGATE</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Compiling and installing FIDOGATE</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_2.html#SEC10">2.4 Integrating FIDOGATE and the Mail/News System</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Integrating FIDOGATE and the mail/news system</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_2.html#SEC11">2.5 Testing the FIDOGATE Installation</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Testing FIDOGATE operation</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_2.html#SEC14">2.6 Connecting to FIDONET</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"></TD></TR>
+</TABLE>
+
+<br>
+Utilities
+<br>
+
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC16">3.1 ftnaf -- Areafix</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Areafix mail processor</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC17">3.2 ftnafmail -- Areafix Mail Frontend</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Areafix mail setuid frontend</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC18">3.3 ftnafpkt -- Areafix packet processor</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Areafix packet processor</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC19">3.4 ftnafutil -- Areafix utility</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Areafix utility</TD></TR>
+</TABLE>
+
+<br>
+Character&nbsp;set&nbsp;translation&nbsp;table&nbsp;compiler:
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC20">3.5 charsetc -- Character set translation table compiler</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Character set translation table compiler</TD></TR>
+</TABLE>
+
+<br>
+FFX&nbsp;programs&nbsp;and&nbsp;scripts:
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC21">3.6 ffx -- Remote Execution via Fido Mailer</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Remote execution via Fido mailer</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC22">3.7 ffxmail -- ffx Frontend for Sending Mail</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"><CODE>ffx</CODE> frontend for sending mail</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC23">3.8 ffxnews -- ffx Frontend for Sending News</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"><CODE>ffx</CODE> frontend for sending news</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC24">3.9 ffxqt -- Execute ffx Requests</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Execute <CODE>ffx</CODE> requests</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC25">3.10 ffxrmail -- Rmail Command for FFX</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"><CODE>rmail</CODE> command for <CODE>ffxqt</CODE></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC26">3.11 runffx -- Script for Running FFX Programs</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for running FFX programs</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC27">3.12 send-ffx -- Script for Processing News via FFX</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for processing news via FFX</TD></TR>
+</TABLE>
+
+<br>
+Gateway&nbsp;programs&nbsp;and&nbsp;scripts:
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC28">3.13 ftn2rfc -- FTN-Internet Gateway Program</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Fido-Internet gateway program</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC29">3.14 ftnin -- Frontend for <CODE>ftn2rfc</CODE></A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Frontend for <CODE>ftn2rfc</CODE></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC30">3.15 ftninpost -- <CODE>ftnin</CODE> Post-processing Script</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"><CODE>ftnin</CODE> post-processing script</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC31">3.16 ftninrecomb -- <CODE>ftnin</CODE> Recombining Script</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"><CODE>ftnin</CODE> recombining script</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC32">3.17 ftnmail -- <CODE>rfc2ftn</CODE> Setuid Frontend</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"><CODE>rfc2ftn</CODE> setuid frontend</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC33">3.18 rfc2ftn -- Internet-Fido Gateway Program</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Internet-Fido gateway program</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC34">3.19 rungate -- Script for Running Gateway Programs</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for running gateway programs</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC35">3.20 send-fidogate -- Script for Processing News via FIDOGATE</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for processing news via FIDOGATE</TD></TR>
+</TABLE>
+
+<br>
+Ticker&nbsp;programs:
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC36">3.21 ftnhatch -- Hatch new file into file area</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Hatch new file into file area</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC37">3.22 ftntick -- Process incoming TIC files</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Process incoming TIC files</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC38">3.23 ftntickpost -- ftntick Post-processing Script</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"><CODE>ftntick</CODE> post-processing script</TD></TR>
+</TABLE>
+
+<br>
+Tosser&nbsp;programs&nbsp;and&nbsp;scripts:
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC39">3.24 ftn2ftn -- FTN-FTN NetMail Gateway Program</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">FTN-FTN NetMail gateway</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC40">3.25 ftnexpire -- Utility for expiring MSGID history database</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Utility to expire MSGID history database</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC41">3.26 ftnpack -- Pack Fido ArcMail Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Pack (ArcMail) Fido mail packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC42">3.27 ftnroute -- Route Fido Mail Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Route Fido mail packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC43">3.28 ftntoss -- Toss Fido Mail Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Toss/remap/rewrite Fido mail packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC44">3.29 runin -- Script for Processing Inbound Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for processing inbound packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC45">3.30 runmail -- Script for Processing Gateway Mail Output Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for processing gateway mail output packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC46">3.31 runnews -- Script for Processing Gateway News Output Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for processing gateway news output packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC47">3.32 runout -- Script for Processing Miscellaneous Output Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for processing miscellaneous output packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC48">3.33 runtoss -- Script for Running the Tosser Programs</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for running the tosser programs</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC49">3.34 rununpack -- Script for Unpacking Inbound ArcMail Archives</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for unpacking inbound arcmail archives</TD></TR>
+</TABLE>
+
+<br>
+Utilties:
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC50">3.35 ftnbsy -- Create/delete Binkley Busy Filess</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Create/delete Binkley busy files</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC51">3.36 ftnconfig -- Retrieve information from FIDOGATE config files</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Retrieve information from FIDOGATE config files</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC52">3.37 ftnfattach -- Outbound file attaches</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Binkley outbound file attach utility</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC53">3.38 ftnflo -- Process Binkley Outbound FLO Files and Attachments</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Process Binkley outbound FLO files and attachments</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC54">3.39 ftnlock -- Create/Remove Lock Files</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Create/delete lock files</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC55">3.40 ftnlog -- Write Message to Log File</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Write message to log file</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC56">3.41 ftnoutpkt -- Create Fido Message Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Create output Fido message packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC57">3.42 ftnseq -- Command Line Interface to Sequencer Files</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Access sequencer file</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC58">3.43 pktdebug -- FTN mail packet debugger</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">FTN mail packet debugger</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC59">3.44 pktmore -- Pager frontend for <CODE>pktdebug</CODE></A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Pager frontend for <CODE>pktdebug</CODE></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC60">3.45 sumcrc -- CRC Checksum Utility</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">CRC checksum utility</TD></TR>
+</TABLE>
+
+<br>
+FIDOGATE&nbsp;Config&nbsp;Files
+<br>
+
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC62">4.1 Main Configuration File</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Main configuration file</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC63">4.2 <CODE>hosts</CODE> FTN Address to Host Name Conversion</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">hosts FTN address to host name conversion</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC64">4.3 <CODE>aliases</CODE> User Aliases</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">aliases user aliases</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC65">4.4 <CODE>areas</CODE> FTN Area to Newsgroup Conversion</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">areas FTN area to newsgroup conversion</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC66">4.5 Bounce Messages of <CODE>ftn2rfc</CODE></A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Bounce messages of <CODE>ftn2rfc</CODE></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC67">4.6 <CODE>passwd</CODE> Password Config File</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">passwd password config file</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC68">4.7 <CODE>routing</CODE> Config File</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">routing file for <CODE>ftntoss</CODE> and <CODE>ftnroute</CODE></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC69">4.8 <CODE>packing</CODE> Config File</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">packing file for <CODE>ftnpack</CODE></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC70">4.9 <CODE>areas.bbs</CODE> EchoMail Distribution</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">areas.bbs EchoMail distribution</TD></TR>
+</TABLE>
+
+<br>
+Basic&nbsp;Configuration
+<br>
+
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_5.html#SEC72">5.1 Sendmail Configuration</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Sendmail configuration</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_5.html#SEC73">5.2 Example Point Configuration</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Example point configuration</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_5.html#SEC74">5.3 Example Configuration with 2 Point Addresses</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Example configuration with 2 point addresses</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_5.html#SEC75">5.4 Example Leaf Node configuration</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Example leaf node configuration</TD></TR>
+</TABLE>
+
+<br>
+FIDOGATE&nbsp;Usage
+<br>
+
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_6.html#SEC77">6.1 RFC Headers in FTN Messages</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_6.html#SEC78">6.2 X Headers in RFC Messages</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"></TD></TR>
+</TABLE></BLOCKQUOTE>
+<P>
+
+<HR SIZE=1>
+<BR>  
+<FONT SIZE="-1">
+This document was generated
+by <I>Martin Junius</I> on <I>August, 26  2004</I>
+using <A HREF="http://www.mathematik.uni-kl.de/~obachman/Texi2html
+"><I>texi2html</I></A>
+
+</BODY>
+</HTML>

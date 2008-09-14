@@ -1,0 +1,903 @@
+<HTML>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- Created on August, 26  2004 by texi2html 1.64 -->
+<!-- 
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Olaf Bachmann <obachman@mathematik.uni-kl.de>
+Send bugs and suggestions to <texi2html@mathematik.uni-kl.de>
+ 
+-->
+<HEAD>
+<TITLE>FIDOGATE: Installation</TITLE>
+
+<META NAME="description" CONTENT="FIDOGATE: Installation">
+<META NAME="keywords" CONTENT="FIDOGATE: Installation">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META NAME="Generator" CONTENT="texi2html 1.64">
+
+</HEAD>
+
+<BODY LANG="" BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#FF0000">
+
+<A NAME="SEC6"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_1.html#SEC5"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC7"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_1.html#SEC1"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC7"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H1> 2. Compiling and installing FIDOGATE </H1>
+<!--docid::SEC6::-->
+<P>
+
+<A NAME="IDX3"></A>
+</P><P>
+
+<BLOCKQUOTE><TABLE BORDER=0 CELLSPACING=0> 
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_2.html#SEC7">2.1 The <CODE>config.h</CODE> Header File</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">The config.h header file</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_2.html#SEC8">2.2 The <CODE>config.make</CODE> Makefile Configuration</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">The config.make Makefile configuration</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_2.html#SEC9">2.3 Compiling and Installing FIDOGATE</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Compiling and installing FIDOGATE</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_2.html#SEC10">2.4 Integrating FIDOGATE and the Mail/News System</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Integrating FIDOGATE and the mail/news system</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_2.html#SEC11">2.5 Testing the FIDOGATE Installation</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Testing FIDOGATE operation</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_2.html#SEC14">2.6 Connecting to FIDONET</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"></TD></TR>
+</TABLE></BLOCKQUOTE>
+<P>
+
+This chapter describes the FIDOGATE configuration and installation.  You
+must also create and edit the config files to be installed in the
+CONFIGDIR directory, <CODE>fidogate.conf</CODE>, <CODE>areas</CODE>, <CODE>hosts</CODE>,
+<CODE>passwd</CODE>, <CODE>routing</CODE>, <CODE>packing</CODE>, <CODE>aliases</CODE> according
+to your setup (see the examples subdirectory).
+</P><P>
+
+The chapter on config files describes them in detail.
+</P><P>
+
+<A NAME="config.h"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC7"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC8"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC7"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 2.1 The <CODE>config.h</CODE> Header File </H2>
+<!--docid::SEC7::-->
+<P>
+
+Normally, if you want to compile a standard version of FIDOGATE on one
+of the supported platforms, it is <I>not</I> necessary to change anything
+in this file. Most things can be configured or overridden in
+<CODE>config.make</CODE> (compile-time) or <CODE>fidogate.conf</CODE> (run-time).
+</P><P>
+
+If you really want to edit <CODE>config.h</CODE>, here are the gory details:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>LOCAL_FTN_ADDRESSES</CODE>
+<DD>Generate "local" FTN addresses: <I>User_Name%p.f.n.z@hostname.domain</I>
+instead of <I>User_name@p.f.n.z.domain</I>.
+<P>
+
+<DT><CODE>DO_BSY_FILES</CODE>
+<DD>Create Binkley-style busy files while accessing the Binkley outbound.
+<P>
+
+<DT><CODE>NFS_SAFE_LOCK_FILES</CODE>
+<DD>Create lock / bsy files in an NFS-safe way.
+<P>
+
+<DT><CODE>AMIGADOS_4D_OUTBOUND</CODE>
+<DD>Use AmigaDOS-style outbound file names.
+<P>
+
+<DT><CODE>MAXMSGSIZE</CODE>
+<DD>Maximum size of FIDO messages generated by <CODE>rfc2ftn</CODE>, larger
+messages will be split. Alas, less than 16K seems to be the only safe
+setting. This is the default value.
+<P>
+
+<DT><CODE>FTN_INVALID_DOMAIN</CODE>
+<DD>Domain address to be used for invalid FTN addresses.
+<P>
+
+<DT><CODE>FACILITY</CODE>
+<DD>syslog facility used if <CODE>Logfile</CODE> is set to "syslog".
+<P>
+
+<DT><CODE>CHARSET_STDFTN</CODE>
+<DD>Default charset for Fido messages.
+<P>
+
+<DT><CODE>CHARSET_STD7BIT</CODE>
+<DD>Default charset for RFC messages with 7bit encoding.
+<P>
+
+<DT><CODE>ALIASES_ARE_LOCAL</CODE>
+<DD>Addresses found in the <CODE>aliases</CODE> config file are rewritten so
+that the sender's address is the gateway.
+<P>
+
+<DT><CODE>PASSTHRU_NETMAIL</CODE>
+<DD>Passthru operation for NetMail: if the sender of the message is an FTN
+address, the origin address of the resulting FTN message will be that
+FTN address. WARNING: enabled only if you really know what you're doing!
+<P>
+
+<DT><CODE>PASSTHRU_ECHOMAIL</CODE>
+<DD>Passthru operation for EchoMail: X-FTN-Tearline, X-FTN-Origin,
+X-FTN-Seen-By, X-FTN-Path headers will be used for tear line, * Origin,
+SEEN-BY, ^APATH, when gating from Internet to FTN. WARNING: enabled only
+if you really know what you're doing!
+<P>
+
+<DT><CODE>AI_1</CODE>
+<DD><DT><CODE>AI_3</CODE>
+<DD><DT><CODE>AI_5</CODE>
+<DD><DT><CODE>AI_6</CODE>
+<DD><DT><CODE>AI_8</CODE>
+<DD>Configuration for Andy Igoshin's patches, see
+<CODE>contrib/fidogate-4.3a3-ai-pl9.1/README.ai</CODE> for
+details. <CODE>AI_2,4,7</CODE> are now fully integrated.
+<P>
+
+</DL>
+<P>
+
+System dependent configuration:
+</P><P>
+
+This configuration contains several groups of #define/#undef. First, the
+definitions for a standard POSIX UNIX, followed by #ifdef'ed definitions
+for SunOS, Linux, FreeBSD, Interactive UNIX, MSDOS DJGPP, NextStep,
+GNU-WIN32.
+</P><P>
+
+If you want to port FIDOGATE to a new system, please add a #ifdef'ed
+section similar to the already existing ones.
+</P><P>
+
+The gory details:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>HAS_FCNTL_LOCK</CODE>
+<DD>Define, if the system support fcntl() file locking.
+<P>
+
+<DT><CODE>HAS_GETTIMEOFDAY</CODE>
+<DD>Define, if the system has the gettimeofday() function.
+<P>
+
+<DT><CODE>HAS_TM_GMTOFF</CODE>
+<DD>Define, if the system has a tm_gmtoff field in struct tm.
+<P>
+
+<DT><CODE>HAS_SYSEXITS_H</CODE>
+<DD>Define, if the system support the <CODE>sysexits.h</CODE> header file.
+<P>
+
+<DT><CODE>HAS_TM_ZONE</CODE>
+<DD>Define, if the system has a tm_zone field in struct tm.
+<P>
+
+<DT><CODE>HAS_STRFTIME</CODE>
+<DD>Define, if the system has the Standard-C strftime() function.
+<P>
+
+<DT><CODE>HAS_TZNAME</CODE>
+<DD>Define, if the system has <CODE>extern char *tzname[2]</CODE>.
+<P>
+
+<DT><CODE>HAS_STRCASECMP</CODE>
+<DD>Define, if the system has the <CODE>strcasecmp()</CODE> and
+<CODE>strncasecmp()</CODE> functions.
+<P>
+
+<DT><CODE>HAS_STRICMP</CODE>
+<DD>Define, if the system has the <CODE>stricmp()</CODE> and
+<CODE>strnicmp()</CODE> functions.
+<P>
+
+<DT><CODE>HAS_STERROR</CODE>
+<DD>Define, if the system has the <CODE>strerror()</CODE> function.
+<P>
+
+<DT><CODE>DO_BINARY</CODE>
+<DD>Define, if files must be opened in binary mode.
+<P>
+
+<DT><CODE>DO_DOSIFY</CODE>
+<DD>Define, if filenames must be converted to DOS, OS2-style <CODE>\</CODE>.
+<P>
+
+<DT><CODE>RECEIVED_BY_MAILER</CODE>
+<DD>Define, if extra Received lines are inserted by the mail system,
+currently only used for NeXT.
+<P>
+
+<DT><CODE>HAS_SYSLOG</CODE>
+<DD>Define, if syslogd and the library function <CODE>syslog()</CODE>,
+<CODE>vsyslog()</CODE> are suppored.
+<P>
+
+<DT><CODE>HAS_SNPRINTF</CODE>
+<DD>Define, if <CODE>snprintf()</CODE> and <CODE>vsnprintf()</CODE> are supported.
+<P>
+
+<DT><CODE>HAS_HARDLINKS</CODE>
+<DD>Define, if the system supports file systems with hard links and the
+library function <CODE>link()</CODE>.
+<P>
+
+<DT><CODE>HAS_POSIX_REGEX</CODE>
+<DD>Define, if the system supports the POSIX regex functions regcomp(),
+regexec() etc.
+<P>
+
+</DL>
+<P>
+
+Define only one of <CODE>HAS_TM_ZONE</CODE>, <CODE>HAS_STRFTIME</CODE>,
+<CODE>HAS_TZNAME</CODE>, and also only one of <CODE>HAS_STRCASECMP</CODE>,
+<CODE>HAS_STRICMP</CODE>.
+</P><P>
+
+<I>THE FOLLOWING DEFINES SHOULD REALLY BE LEFT AS IS!!!</I>
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>MSGID_FIDONET_DOMAIN</CODE>
+<DD>Default domain for standard FIDO addresses (zone 1--6). Used for
+Message-IDs only, so DO NOT CHANGE.
+<P>
+
+<DT><CODE>PACKET_MODE</CODE>
+<DD><DT><CODE>BSY_MODE</CODE>
+<DD><DT><CODE>FLO_MODE</CODE>
+<DD><DT><CODE>DATA_MODE</CODE>
+<DD><DT><CODE>DIR_MODE</CODE>
+<DD><DT><CODE>CONF_MODE</CODE>
+<DD>Permissions for files processed by FIDOGATE.
+<P>
+
+<DT><CODE>FTN_RFC_HEADERS</CODE>
+<DD>RFC headers recognized at the beginning of FTN messages.
+<P>
+
+<DT><CODE>RFC_LVL_1_HEADERS</CODE>
+<DD>RFC headers put into FTN messages for RFC level 1.
+<P>
+
+<DT><CODE>R_MODE</CODE>
+<DD><DT><CODE>W_MODE</CODE>
+<DD><DT><CODE>A_MODE</CODE>
+<DD><DT><CODE>RP_MODE</CODE>
+<DD><DT><CODE>WP_MODE</CODE>
+<DD><DT><CODE>AP_MODE</CODE>
+<DD>Modes (<CODE>fopen()</CODE>) for opening files.
+<P>
+
+<DT><CODE>DATE_LOG</CODE>
+<DD><DT><CODE>DATE_DEFAULT</CODE>
+<DD><DT><CODE>DATE_NEWS</CODE>
+<DD><DT><CODE>DATE_MAIL</CODE>
+<DD><DT><CODE>DATE_FROM</CODE>
+<DD><DT><CODE>DATE_FTS_0002</CODE>
+<DD><DT><CODE>DATE_TICK_PATH</CODE>
+<DD><DT><CODE>DATE_VIA</CODE>
+<DD><DT><CODE>DATE_SPLIT</CODE>
+<DD>Date format strings.
+<P>
+
+<DT><CODE>PRODUCT_CODE</CODE>
+<DD>FIDO product code used by <CODE>rfc2ftn</CODE>.
+<P>
+
+<DT><CODE>MAXADDRESS</CODE>
+<DD>Maximum number of <CODE>Address</CODE> and <CODE>Zone</CODE> statements in
+<CODE>config</CODE> file.
+<P>
+
+<DT><CODE>MAXDOSDRIVE</CODE>
+<DD>Maximum number of <CODE>DosDrive</CODE> statements in <CODE>config</CODE> file.
+<P>
+
+<DT><CODE>MAXPATH</CODE>
+<DD>Maximum length of a pathname in FIDOGATE.
+<P>
+
+<DT><CODE>MAXINETADDR</CODE>
+<DD>Maximum length of the address part of an Internet address in FIDOGATE.
+<P>
+
+<DT><CODE>MAXUSERNAME</CODE>
+<DD>Maximum length of the user name part of an Internet address in FIDOGATE.
+<P>
+
+<DT><CODE>MAXOPENFILES</CODE>
+<DD>Maximum number of packet files concurrently opened by tosser
+programs. The maximum possible value is operating system and
+configuration dependent, see UNIX ulimits.
+<P>
+
+</DL>
+<P>
+
+<A NAME="config.make"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC8"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC7"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC9"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC7"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 2.2 The <CODE>config.make</CODE> Makefile Configuration </H2>
+<!--docid::SEC8::-->
+<P>
+
+This file is included in all FIDOGATE Makefiles.
+</P><P>
+
+A special convention is used for defining FIDOGATE configuration macros: 
+macro name starting with <CODE>DEFAULT_</CODE> are used by the compilation
+process to automatically generate C code.
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>DEFAULT_V_<I>option</I></CODE>
+<DD>Creates a Makefile macro definition, substitutes <I>&#60;option&#62;</I> in shell
+and perl scripts, creates a compile-time C <CODE>#define
+DEFAULT_</CODE><I>option</I> in <CODE>paths.h</CODE>, a run-time configuration option
+<I>option</I> in <CODE>fidogate.conf</CODE>, and makes FIDOGATE evaluate the
+environment variable <CODE>FIDOGATE_</CODE><I>option</I>.
+<P>
+
+<DT><CODE>DEFAULT_F_<I>option</I></CODE>
+<DD>Creates a Makefile macro definition, substitutes <I>&#60;option&#62;</I> in shell
+and perl scripts, creates a compile-time C <CODE>#define
+DEFAULT_</CODE><I>option</I> in <CODE>paths.h</CODE>. No run-time override!
+<P>
+
+<DT><CODE>DEFAULT_A_<I>option</I></CODE>
+<DD>Creates a <I>%X</I> abbreviation (can be used at the start of file names)
+for <I>option</I>.
+<P>
+
+</DL>
+<P>
+
+Be very carefull not to <B>remove</B> any of the FIDOGATE standard macros
+and don't touch the standard abbreviations in this file!!!
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>DEFAULT_V_CONFIGDIR</CODE>
+<DD>Directory for config files.
+<P>
+
+<DT><CODE>DEFAULT_V_LIBDIR</CODE>
+<DD>Directory for FIDOGATE's internal programs.
+<P>
+
+<DT><CODE>DEFAULT_V_BINDIR</CODE>
+<DD>Directory for user programs and scripts.
+<P>
+
+<DT><CODE>DEFAULT_V_LOGDIR</CODE>
+<DD>Directory for log files.
+<P>
+
+<DT><CODE>DEFAULT_V_VARDIR</CODE>
+<DD>Directory for <CODE>areas.bbs</CODE>, <CODE>history</CODE>.
+<P>
+
+<DT><CODE>DEFAULT_V_LOCKDIR</CODE>
+<DD>Directory for lock files.
+<P>
+
+<DT><CODE>DEFAULT_V_SPOOLDIR</CODE>
+<DD>Internal spool directory (temporary files).
+<P>
+
+<DT><CODE>DEFAULT_V_BTBASEDIR</CODE>
+<DD>BinkleyTerm-style outbound base directory. This is the base directory,
+not the actual zone outbound directory.
+<P>
+
+<DT><CODE>DEFAULT_V_INBOUND</CODE>
+<DD>BinkleyTerm-style inbound directory.
+<P>
+
+<DT><CODE>DEFAULT_V_PINBOUND</CODE>
+<DD>BinkleyTerm-style protected inbound directory.
+<P>
+
+<DT><CODE>DEFAULT_V_UUINBOUND</CODE>
+<DD>BinkleyTerm-style inbound directory for the <CODE>recvuu</CODE> script.
+<P>
+
+<DT><CODE>DEFAULT_V_FTPINBOUND</CODE>
+<DD>BinkleyTerm-style FTP inbound directory.
+<P>
+
+<DT><CODE>DEFAULT_V_ACL</CODE>
+<DD>Access control list for AI patches (not used for standard FIDOGATE 
+distribution).
+<P>
+
+<DT><CODE>DEFAULT_V_ALIASES</CODE>
+<DD>Configuration file for aliases.
+<P>
+
+<DT><CODE>DEFAULT_V_AREAS</CODE>
+<DD>Configuration file for areas/newsgroups gateway.
+<P>
+
+<DT><CODE>DEFAULT_V_HOSTS</CODE>
+<DD>Configuration file for registered hosts.
+<P>
+
+<DT><CODE>DEFAULT_V_PASSWD</CODE>
+<DD>Configuration file for passwords.
+<P>
+
+<DT><CODE>DEFAULT_V_PACKING</CODE>
+<DD>Configuration file for ArcMail packer (<CODE>ftnpack</CODE>).
+<P>
+
+<DT><CODE>DEFAULT_V_ROUTING</CODE>
+<DD>Configuration file for NetMail/EchoMail routing (<CODE>ftntoss</CODE>,
+<CODE>ftnroute</CODE>). 
+<P>
+
+<DT><CODE>DEFAULT_V_HISTORY</CODE>
+<DD>MSGID history file for dupe check.
+<P>
+
+<DT><CODE>DEFAULT_V_LOGFILE</CODE>
+<DD>Default log file.
+<P>
+
+<DT><CODE>DEFAULT_V_CHARSETMAP</CODE>
+<DD>Character set mapping table.
+<P>
+
+<DT><CODE>DEFAULT_F_NEWSETCDIR</CODE>
+<DD>INN directory: config files
+<P>
+
+<DT><CODE>DEFAULT_F_NEWSVARDIR</CODE>
+<DD>INN directory: active, history files.
+<P>
+
+<DT><CODE>DEFAULT_F_NEWSLIBDIR</CODE>
+<DD>INN directory: scripts.
+<P>
+
+<DT><CODE>DEFAULT_F_NEWSSPOOLDIR</CODE>
+<DD>INN directory: news spool.
+<P>
+
+<DT><CODE>DEFAULT_F_IFMAILDIR</CODE>
+<DD>Ifcico/ifmail directory.
+<P>
+
+<DT><CODE>DEFAULT_F_CONFIG_GATE</CODE>
+<DD><DT><CODE>DEFAULT_F_CONFIG_MAIN</CODE>
+<DD><DT><CODE>DEFAULT_F_CONFIG_FFX</CODE>
+<DD>FIDOGATE main configuration file <CODE>fidogate.conf</CODE>.
+<P>
+
+<DT><CODE>DEFAULT_F_SEQ_MAIL</CODE>
+<DD><DT><CODE>DEFAULT_F_SEQ_NEWS</CODE>
+<DD><DT><CODE>DEFAULT_F_SEQ_MSGID</CODE>
+<DD><DT><CODE>DEFAULT_F_SEQ_PKT</CODE>
+<DD><DT><CODE>DEFAULT_F_SEQ_SPLIT</CODE>
+<DD><DT><CODE>DEFAULT_F_SEQ_FF</CODE>
+<DD><DT><CODE>DEFAULT_F_SEQ_TOSS</CODE>
+<DD><DT><CODE>DEFAULT_F_SEQ_PACK</CODE>
+<DD><DT><CODE>DEFAULT_F_SEQ_TICK</CODE>
+<DD>Sequencer files.
+<P>
+
+<DT><CODE>DEFAULT_F_LOCK_HISTORY</CODE>
+<DD>Lock file for history access.
+<P>
+
+<DT><CODE>DEFAULT_F_OUTRFC_MAIL</CODE>
+<DD><DT><CODE>DEFAULT_F_OUTRFC_NEWS</CODE>
+<DD><DT><CODE>DEFAULT_F_OUTPKT</CODE>
+<DD><DT><CODE>DEFAULT_F_OUTPKT_MAIL</CODE>
+<DD><DT><CODE>DEFAULT_F_TOSS_TOSS</CODE>
+<DD><DT><CODE>DEFAULT_F_TOSS_ROUTE</CODE>
+<DD><DT><CODE>DEFAULT_F_TOSS_PACK</CODE>
+<DD><DT><CODE>DEFAULT_F_TOSS_BAD</CODE>
+<DD><DT><CODE>DEFAULT_F_OUTPKT_NEWS</CODE>
+<DD>Internal spool directories (temporary files).  If these directories are
+different from the default ones, the commands for the
+<CODE>install-dirs</CODE> target of <CODE>Makefile</CODE> must be changed as well.
+<P>
+
+<DT><CODE>DEFAULT_F_TICK_HOLD	= %B/tick</CODE>
+<DD>Outbound hold directory for TIC files.
+<P>
+
+<DT><CODE>DEFAULT_A_CONFIGDIR</CODE>
+<DD><DT><CODE>DEFAULT_A_LIBDIR</CODE>
+<DD><DT><CODE>DEFAULT_A_BINDIR</CODE>
+<DD><DT><CODE>DEFAULT_A_LOGDIR</CODE>
+<DD><DT><CODE>DEFAULT_A_VARDIR</CODE>
+<DD><DT><CODE>DEFAULT_A_LOCKDIR</CODE>
+<DD><DT><CODE>DEFAULT_A_SPOOLDIR</CODE>
+<DD><DT><CODE>DEFAULT_A_BTBASEDIR</CODE>
+<DD><DT><CODE>DEFAULT_A_INBOUND</CODE>
+<DD><DT><CODE>DEFAULT_A_PINBOUND</CODE>
+<DD><DT><CODE>DEFAULT_A_UUINBOUND</CODE>
+<DD>Abbreviations for configured directories.
+<P>
+
+<DT><CODE>PERL</CODE>
+<DD>Full path name of perl executable.
+<P>
+
+<DT><CODE>SENDMAIL_CF_DIR</CODE>
+<DD>Directory where the sendmail m4 configuration files are installed
+(<CODE>/usr/lib/sendmail-cf</CODE> on RedHat Linux systems).
+<P>
+
+<DT><CODE>INFODIR</CODE>
+<DD>Directory for installing info documentation files.
+<P>
+
+<DT><CODE>HTMLDIR</CODE>
+<DD>Directory for installing HTML documentation files.
+<P>
+
+<DT><CODE>HTMLLOGDIR</CODE>
+<DD>Directory for installing CGI files.
+<P>
+
+</DL>
+<P>
+
+<DL COMPACT>
+
+<DT><CODE>M4</CODE>
+<DD>m4 macro processor (for compiling sendmail cf files).
+<P>
+
+<DT><CODE>OWNER</CODE>
+<DD>Owner of FIDOGATE files.
+<P>
+
+<DT><CODE>GROUP</CODE>
+<DD>Group of FIDOGATE files.
+<P>
+
+<DT><CODE>PERM_PROG</CODE>
+<DD>Permissions for installing programs.
+<P>
+
+<DT><CODE>PERM_DATA</CODE>
+<DD>Permissions for installing data files.
+<P>
+
+<DT><CODE>PERM_SETUID</CODE>
+<DD>Permissions for installing setuid <CODE>OWNER</CODE> programs.
+<P>
+
+<DT><CODE>PERM_DIR</CODE>
+<DD>Permissions for installing directories.
+<P>
+
+<DT><CODE>CC</CODE>
+<DD>C compiler.
+<P>
+
+<DT><CODE>YACC</CODE>
+<DD><CODE>yacc</CODE> or a clone like <CODE>bison -y</CODE>.
+<P>
+
+<DT><CODE>AR</CODE>
+<DD><CODE>ar</CODE> monkey ... (@!#$%&#38;... ouch!) ... librarian.
+<P>
+
+<DT><CODE>RANLIB</CODE>
+<DD>Library utitility, if needed.
+<P>
+
+<DT><CODE>DEBUG</CODE>
+<DD>Optimize or debugging flags for compiling.
+<P>
+
+<DT><CODE>INCLUDE</CODE>
+<DD>C include (-I) options.
+<P>
+
+<DT><CODE>CFLAGS</CODE>
+<DD>Flags for compiling FIDOGATE.
+<P>
+
+<DT><CODE>LFLAGS</CODE>
+<DD>Flags for linking FIDOGATE.
+<P>
+
+<DT><CODE>LIBS</CODE>
+<DD>Libraries for linking FIDOGATE, including the FIDOGATE library
+<CODE>libfidogate.a</CODE>.
+<P>
+
+<DT><CODE>INSTALL</CODE>
+<DD>Install program.
+<P>
+
+<DT><CODE></CODE>
+<DD>Set to <CODE>.exe</CODE> for MSDOS, OS2, Win32.
+<P>
+
+<DT><CODE>INSTALL_PROG</CODE>
+<DD>Install command for installing programs.
+<P>
+
+<DT><CODE>INSTALL_DATA</CODE>
+<DD>Install command for installing data files.
+<P>
+
+<DT><CODE>INSTALL_SETUID</CODE>
+<DD>Install command for installing setuid programs.
+<P>
+
+<DT><CODE>INSTALL_DIR</CODE>
+<DD>Install command for installing directories.
+<P>
+
+<DT><CODE>PREFIX</CODE>
+<DD>Extra prefix directory for <CODE>make install</CODE>.
+<P>
+
+<DT><CODE>LIB</CODE>
+<DD>Name of the FIDOGATE library.
+<P>
+
+</DL>
+<P>
+
+<A NAME="Compiling"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC9"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC8"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC10"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC7"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 2.3 Compiling and Installing FIDOGATE </H2>
+<!--docid::SEC9::-->
+<P>
+
+Compile the beast by entering
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>make depend
+make
+</pre></td></tr></table></P><P>
+
+Alternatively an optimized version can be compiled with
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>make DEBUG=-O2
+</pre></td></tr></table></P><P>
+
+If everything works, you must create the necessary directories:
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>make install-dirs
+</pre></td></tr></table>Then install all FIDOGATE programs:
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>make install
+</pre></td></tr></table></P><P>
+
+Next you must create the configuration files in (default)
+<CODE>/etc/fidogate</CODE>. Have a look at the various configuration in
+directory <CODE>examples/</CODE> and use them to build your own configuration.
+</P><P>
+
+<A NAME="Integration"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC10"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC9"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC11"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC7"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 2.4 Integrating FIDOGATE and the Mail/News System </H2>
+<!--docid::SEC10::-->
+<P>
+
+<DL COMPACT>
+
+<DT><CODE>scripts/inn</CODE>
+<DD>Scripts for INN.
+<P>
+
+<DT><CODE>scripts/cnews</CODE>
+<DD>Scripts for CNews.
+<P>
+
+<DT><CODE>sendmail/cf</CODE>
+<DD>Sendmail V8 configuration files (m4) and example .mc files for
+FIDOGATE: Fido.DE domain gateway morannon, orodruin, point setup.
+<P>
+
+</DL>
+<P>
+
+Much more concise instructions should be here!!! ;-)
+</P><P>
+
+<A NAME="Testing"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC11"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC10"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC12"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC14"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 2.5 Testing the FIDOGATE Installation </H2>
+<!--docid::SEC11::-->
+<P>
+
+<HR SIZE="6">
+<A NAME="SEC12"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC11"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC13"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC7"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H3> 2.5.1 <CODE>Tosser</CODE> </H3>
+<!--docid::SEC12::-->
+<P>
+
+...
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC13"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC12"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC14"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC7"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H3> 2.5.2 <CODE>Gateway</CODE> </H3>
+<!--docid::SEC13::-->
+<P>
+
+...
+</P><P>
+
+<A NAME="Connecting"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC14"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC13"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC11"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC6"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC7"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 2.6 Connecting to FIDONET </H2>
+<!--docid::SEC14::-->
+<P>
+
+FIDOGATE does NOT include a FIDO mailer, so you have to transfer FIDO
+mail to and from the UNIX system by some other means.
+</P><P>
+
+If you want everything running on the UNIX system, you need a FIDO
+mailer for UNIX. Currently, this choice is limited to
+<UL>
+<LI>BinkleyTerm
+<LI>ifcico
+<LI>BinkD
+</UL>
+<P>
+
+I don't know what the current state of BinkleyTerm for Unix/Linux is,
+but ifcico and BinkD are working very well for me. See the FIDOGATE home 
+page at <CODE>http://www.fido.de/fidogate/</CODE> for links.
+</P><P>
+
+Another solution is a separate PC running DOS or OS/2 and BinkleyTerm as
+a mailer. The Fido.DE gateway currently comprises a LINUX PC for the
+gateway/tosser and Samba server, and an OS/2 PC running BinkleyTerm for
+the analog phone and ISDN lines. The BinkleyTerm outbound is kept on the
+LINUX server, so the OS/2 PC and the gateway have access to it.
+</P><P>
+
+<A NAME="Programs"></A>
+</P><P>
+
+<HR SIZE="6">
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC11"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC7"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<BR>  
+<FONT SIZE="-1">
+This document was generated
+by <I>Martin Junius</I> on <I>August, 26  2004</I>
+using <A HREF="http://www.mathematik.uni-kl.de/~obachman/Texi2html
+"><I>texi2html</I></A>
+
+</BODY>
+</HTML>

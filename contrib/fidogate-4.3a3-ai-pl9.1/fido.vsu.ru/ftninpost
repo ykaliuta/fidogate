@@ -1,0 +1,182 @@
+#!/usr/bin/perl
+#
+# $Id: ftninpost,v 1.3 2002/08/04 02:22:52 dyff Exp $
+#
+# Postprocessor for ftnin, feeds output of ftn2rfc to rnews and sendmail.
+# Call via ftnin's -x option or run after ftn2rfc. Replaces old fidorun
+# script.
+#
+
+require "getopts.pl";
+&Getopts('vL:S:I:');
+
+# defaults
+$LIBDIR   = "/usr/local/lib/fidogate";
+$SPOOLDIR = "/var/spool/fido";
+$INDIR    = "/var/spool/fido/in";
+$PINDIR    = "/var/spool/fido/pin";
+
+
+# options
+undef @options;
+if($opt_L) {
+    $LIBDIR   = $opt_L;
+    push(@options, "-L$LIBDIR");
+}
+if($opt_S) {
+    $SPOOLDIR = $opt_S;
+    push(@options, "-S$SPOOLDIR");
+}
+$INDIR    = $opt_I if($opt_I);
+if($opt_v) {
+    push(@options, "-v");
+}
+
+# get config.gate parameters
+$SENDMAIL = `$LIBDIR/ftnconfig -c $LIBDIR/config.gate -l FTNInSendmail`;
+$RNEWS    = `$LIBDIR/ftnconfig -c $LIBDIR/config.gate -l FTNInRnews`;
+$RECOMB   = `$LIBDIR/ftnconfig -c $LIBDIR/config.gate -l -t FTNInRecombine`;
+
+if(! $SENDMAIL) {
+    print STDERR "ftninpost:config.gate:FTNInSendmail not specified\n";
+    exit 1;
+}
+if(! $RNEWS) {
+    print STDERR "ftninpost:config.gate:FTNInRnews not specified\n";
+    exit 1;
+}
+
+print
+    "sendmail  = $SENDMAIL\n",
+    "rnews     = $RNEWS\n",
+    "recombine = $RECOMB\n"
+    if($opt_v);
+
+# command lists
+@sendmail = split(' ', $SENDMAIL);
+@rnews    = split(' ', $RNEWS);
+# remove -f%s option from sendmail command if present
+# (compatibility with old configurations)
+$fidx = -1;
+for($i=0; $i<=$#sendmail; $i++) {
+    $fidx = $i if($sendmail[$i] eq "-f%s");
+}
+if($fidx > -1) {
+    splice(@sendmail, $fidx, 1);
+    print "sendmail  = @sendmail\n" if($opt_v);
+}
+
+
+
+# ----- main -----------------------------------------------------------------
+
+# do recombining of split messages
+if($RECOMB) {
+    @cmd = ("$LIBDIR/ftninrecomb");
+    push(@cmd, @options);
+    print "Running @cmd\n" if($opt_v);
+    system @cmd;
+}
+
+# mail
+$dir = "$INDIR/tmpmail";
+
+opendir(DIR, "$dir") || die "ftninpost: can't open $dir\n";
+@files = grep(/\.msg$/, readdir(DIR));
+closedir(DIR);
+
+for $f (sort @files) {
+    &do_file(1, "$dir/$f");
+}
+
+$dir = "$PINDIR/tmpmail";
+
+opendir(DIR, "$dir") || die "ftninpost: can't open $dir\n";
+@files = grep(/\.msg$/, readdir(DIR));
+closedir(DIR);
+
+for $f (sort @files) {
+    &do_file(1, "$dir/$f");
+}
+
+
+# news
+$dir = "$INDIR/tmpnews";
+
+opendir(DIR, "$dir") || die "ftninpost: can't open $dir\n";
+@files = grep(/\.msg$/, readdir(DIR));
+closedir(DIR);
+
+for $f (sort @files) {
+    &do_file(0, "$dir/$f");
+}
+
+$dir = "$PINDIR/tmpnews";
+
+opendir(DIR, "$dir") || die "ftninpost: can't open $dir\n";
+@files = grep(/\.msg$/, readdir(DIR));
+closedir(DIR);
+
+for $f (sort @files) {
+    &do_file(0, "$dir/$f");
+}
+
+
+# ----- do_file() - process mail message or news batch -----------------------
+
+sub do_file {
+    local($mail, $file) = @_;
+    local($ret);
+
+    if($mail) {
+	# Mail
+	@cmd = @sendmail;
+	$from = &get_sender($file);
+	push(@cmd, "-f$from") if($from);
+    }
+    else {
+	# News
+	@cmd = @rnews;
+    }
+
+    print "CMD: @cmd\n" if($opt_v);
+
+    # Save STDIN, open $file as new STDIN
+    open(SAVE, "<&STDIN") || die "ftninpost: can't save STDIN\n";
+    open(STDIN, "$file") || die "ftninpost: can't open STDIN with $file\n";
+
+    # Run
+    $ret = system(@cmd) >> 8;
+
+    # Restore STDIN
+    close(STDIN);
+    open(STDIN, "<&SAVE") || die "ftninpost: can't restore STDIN\n";
+
+    if($ret == 0) {
+	print "SUCCESS\n" if($opt_v);
+	unlink($file) || die "ftninpost: can't unlink $file\n";
+    }
+    else {
+	print "ERROR\n" if($opt_v);
+	rename($file, $bad) || die "ftninpost: can't move $file -> $bad\n";
+    }
+}
+
+
+
+# ----- get_sender() - get envelope sender for mail --------------------------
+
+sub get_sender {
+    local($file) = @_;
+
+    open(FILE, "$file") || die "ftninpost: can't open $file\n";
+    $_ = <FILE>;
+    close(FILE);
+
+    if( /^From ([^ ]+) / ) {
+	return $1;
+    }
+    else {
+	return "";
+    }
+}

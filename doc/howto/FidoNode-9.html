@@ -1,0 +1,332 @@
+<HTML>
+<HEAD>
+<TITLE>Linux Fido-Node HOWTO: Datein im Verzeichniss vom Admin-user</TITLE>
+</HEAD>
+<BODY>
+<A HREF="FidoNode-8.html">Zurück</A>
+<A HREF="FidoNode-10.html">Weiter</A>
+<A HREF="FidoNode.html#toc9">Inhaltsverzeichnis</A>
+<HR>
+<H2><A NAME="s9">9. Datein im Verzeichniss vom Admin-user</A></H2>
+
+
+<P>Die Dateien die beim Admin-User im Verzeichniss liegen sind groessten Teils
+nur Vereinfachungen. </P>
+<P>Also ich habe folgende Dateien ins Verzeichniss gelinkt.
+<HR>
+<PRE>
+cd /home/fido
+ln -s /usr/local/lib/fidogate/areas.bbs
+ln -s /usr/local/lib/fidogate/fareas.bbs
+ln -s /usr/local/lib/fidogate/packing
+ln -s /usr/local/lib/fidogate/passwd
+ln -s /usr/local/lib/fidogate/routing
+ln -s /usr/local/lib/fidogate/ftn2rfc
+ln -s /usr/local/lib/fidogate/ftnaf
+ln -s /usr/local/lib/fidogate/ftnfattach
+ln -s /usr/local/lib/fidogate/ftnhatch
+ln -s /usr/local/lib/fidogate/ftntick
+ln -s /usr/local/lib/fidogate/rfc2ftn
+ln -s /usr/local/lib/fidogate/runin
+
+ln -s /etc/ifcico/config
+ln -s /etc/ifcico/passworts
+ln -s /usr/local/bin/ifcico/ifcico
+ln -s /usr/local/bin/ifcico/ifindex
+ln -s /usr/local/bin/ifcico/ifstat
+</PRE>
+<HR>
+</P>
+<P>Um bei meinem Hub meine Mails zu holen verwende ich das Skript 
+<CODE>ifmail/misc/contrib/ifpoll</CODE> in STARK gekuerzter Fassung.
+Es liegt in beim admin-user im Verzeichniss und wird per CRON um 04:50
+ausgefuehrt. (Gekuerzt habe ich es deshalb weil die Ausgaben in 
+<CODE>/fido/log/ifdebug</CODE> bzw auf <CODE>tty7</CODE> voellig ausreichend sind.)
+<HR>
+<PRE>
+#!/bin/sh
+#
+# /home/fido/ifpollhub
+#
+# gekuerzte Fassung von Matthias Schniedermeyer
+#
+# fuer Cry in the Darkness
+#
+
+# how often should i try to call NODE?
+MaxTry=20
+
+Node=&quot;f602.n2432.z2&quot;
+
+# delay between outgoing calls in seconds
+DELAY=60
+
+# loop until ifcico could connect the node or MaxTry is encountered
+#
+i=1; errlv=1
+while let 'i &lt;= MaxTry' && let 'errlv != 0'
+do
+        #
+        # start ifcico in master mode ..
+        #
+        ~/ifcico -r 1 $Node
+        errlv=$?
+        if [ $errlv != &quot;0&quot; ]; then
+                if [ $i != $MaxTry ]; then
+                        sleep $DELAY
+                fi
+                let i=i+1
+        fi
+done
+</PRE>
+<HR>
+</P>
+<P>Von diesem Script habe ich noch eine 2 Fassung.
+<HR>
+<PRE>
+#!/bin/sh
+#
+# /home/fido/ifpollhub2
+#
+# gekuerzte Fassung von Matthias Schniedermeyer
+#
+# fuer Cry in the Darkness
+#
+
+if [ -f /var/spool/fnet/outbound/00000005.* ]; then
+
+  # how often should i try to call NODE?
+  MaxTry=20
+
+  Node=&quot;f602.n2432.z2&quot;
+
+  # delay between outgoing calls in seconds
+  DELAY=60
+
+  # loop until ifcico could connect the node or MaxTry is encountered
+  #
+  i=1; errlv=1
+  while let 'i &lt;= MaxTry' && let 'errlv != 0'
+  do
+          #
+          # start ifcico in master mode ..
+          #
+          ~/ifcico -r 1 $NODE
+          errlv=$?
+          if [ $errlv != &quot;0&quot; ]; then
+                  if [ $i != $MaxTry ]; then
+                          sleep $DELAY
+                  fi
+                  let i=i+1
+          fi
+  done
+
+fi
+</PRE>
+<HR>
+
+Dies Script liegt auch beim admin-user im  Verzeichniss und wird per CRON 
+um 00:00 aufgerufen und pollt nur dann beim Hub wenn auch wirklich ein Packet 
+fuer ihn vorhanden ist. (Um den richtigen Dateinamen herrauszubekommen muss 
+man aber warten bis ein Packet fuer den "Chef" im outbound liegt und sich den
+Dateinamen merken. Es ist naemlich IMMER der gleiche. (Mit Aussnahme der 
+Extension, die ist Wochentags abhaengig))</P>
+<P>Jetzt muessen aber auch Packete die von Points hochgeladen wurden eingetosst
+werden. Dafuer habe ich folgendes Script geschrieben das auch beim admin-user
+im Verzeichniss liegt und per CRON alle 5 Minuten aufgerufen wird.
+<HR>
+<PRE>
+#!/bin/sh
+#--------------------------------------------
+ls /var/spool/fnet/in/*.mo* &&gt;/dev/null && ~/runin
+ls /var/spool/fnet/in/*.tu* &&gt;/dev/null && ~/runin
+ls /var/spool/fnet/in/*.we* &&gt;/dev/null && ~/runin
+ls /var/spool/fnet/in/*.th* &&gt;/dev/null && ~/runin
+ls /var/spool/fnet/in/*.fr* &&gt;/dev/null && ~/runin
+ls /var/spool/fnet/in/*.sa* &&gt;/dev/null && ~/runin
+ls /var/spool/fnet/in/*.su* &&gt;/dev/null && ~/runin
+ls /var/spool/fnet/in/*.pkt &&gt;/dev/null && ~/runin
+
+ls /var/spool/fnet/in/*.MO* &&gt;/dev/null && ~/runin
+ls /var/spool/fnet/in/*.TU* &&gt;/dev/null && ~/runin
+ls /var/spool/fnet/in/*.WE* &&gt;/dev/null && ~/runin
+ls /var/spool/fnet/in/*.TH* &&gt;/dev/null && ~/runin
+ls /var/spool/fnet/in/*.FR* &&gt;/dev/null && ~/runin
+ls /var/spool/fnet/in/*.SA* &&gt;/dev/null && ~/runin
+ls /var/spool/fnet/in/*.SU* &&gt;/dev/null && ~/runin
+ls /var/spool/fnet/in/*.PKT &&gt;/dev/null && ~/runin
+#-------------------------------------------------
+
+# Ticker -------------------------------------------
+ls /var/spool/fnet/in/*.tic &&gt;/dev/null && ~/ftntick
+#---------------------------------------------------
+
+
+#E-Mail -----------------------------------------------------
+if [ -f /fido/fnet/outbound/0980025d.pnt/00000063.hut ]; then
+        ~/ftnin
+        ~/ftninpost
+fi
+#------------------------------------------------------------
+
+
+#-----------------------------------------------------------------
+if [ -f /var/spool/fnet/outbound/0980025d.pnt/00000062.hut ]; then
+        ~/ftn2rfc -i /var/spool/fnet/outbound/0980025d.pnt/00000062.hut
+        for pack in /var/spool/fnet/in/mail/*.msg
+        do
+                ~/ftnaf -m -r &lt; $pack &gt; message.body
+                username=`grep &quot;From &quot; $pack | cut -d ' ' -f 2`
+                cat message.header message.body &gt; message
+                ~/rfc2ftn -O /var/spool/fnet/in $username &lt; message
+                rm message message.body $pack
+                ~/runin
+        done
+fi
+#-----------------------------------------------------------------
+</PRE>
+<HR>
+</P>
+<P>Dies Script ist jetzt aber starker Tobac als werde ich versuche es zu 
+erklaeren. </P>
+<P>Im ersten Abschnitt wird geprueft ob ein Packet im inbound liegt
+und wenn ja dann wird <CODE>runin</CODE> gestarted. (runin entpackt die Packete
+und started dann den tosser.)</P>
+<P>Der zweite Abschnitt prueft ob Tic-Files vorhanden sind und started 
+gegebenfalls den File-ticker.</P>
+<P>Der dritte Abschnitt sorgt dafuer das die E-Mails, die an den Gate-Point
+geschrieben wurden, ins I-Net verschickt werden.</P>
+<P>Der vierte Abschnitt ist mein "Ersatz" fuer Sendmail. Es verarbeitet Mails
+an den Areafix und schickt die Repleys zurueck.</P>
+<P>(Die "fehlende" Datei <CODE>message.header</CODE> sieht so aus.
+<HR>
+<PRE>
+Subject: Areafix
+From: Areafix@p0.f605.n2432.z2.fidonet.org
+
+
+Deine Mail an Areafix ergab:
+</PRE>
+<HR>
+</P>
+<P>Ein Sonderfall bei mir ist ja, das ich nur die Areas beim Hub bestellt habe
+die auch wirklich von den Points gelesen werden. (Spart bares Geld!)
+Dafuer musste ich mir aber ein paar Gedanken machen und bis Fidogate das kann
+(Wurde von Martin in die TODO-Liste aufgenommen) behelfe ich mir mit folgendem
+Script + C Programm.
+<HR>
+<PRE>
+/* Check if an area in areas.bbs is subscribed or not */
+
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+FILE *areas, *new, *sub;
+
+int main (void)
+{
+   char zeile[200];
+   int test;
+   int count;
+   char node[]=&quot;605&quot;;
+
+   areas = fopen (&quot;areas.bbs&quot;, &quot;r&quot;);
+   new = fopen (&quot;areas.new&quot;, &quot;w&quot;);
+   sub = fopen (&quot;sub&quot;, &quot;w&quot;);
+
+   fgets (zeile, 199, areas);
+   fputs (zeile, new);
+   fgets (zeile, 199, areas);
+
+   while (!feof (areas))
+   {
+      if (zeile[1] == 45)
+      {
+         test = (int) strstr (zeile, node);
+         if (test)
+         {
+            zeile[1] = 43;
+            count = 3;
+            while (!(zeile[count] == 32))
+            {
+               fputc (zeile[count], sub);
+               count += 1;
+            }
+            fputc (10, sub);
+
+         }
+      }
+      else
+      {
+         test = (int) strstr (zeile, node);
+         if (!(test))
+         {
+            zeile[1] = 45;
+            count = 3;
+            fputc (45, sub);
+            while (!(zeile[count] == 32))
+            {
+               fputc (zeile[count], sub);
+               count += 1;
+            }
+            fputc (10, sub);
+
+         }
+      }
+
+      fputs (zeile, new);
+      fgets (zeile, 199, areas);
+   }
+
+   fclose (areas);
+   fclose (new);
+   fclose (sub);
+   return 0;
+}
+</PRE>
+<HR>
+
+Und das passende Script dazu.
+<HR>
+<PRE>
+if [ ! -s sub ]; then
+        ~/check
+fi
+if [ -s sub ]; then
+        mv areas.new /usr/local/lib/fidogate/areas.bbs
+        cat Areafix sub | ~/rfc2ftn -t
+        cd /var/spool/fnet/outbound
+        a=`ls *.pkt`
+        mv $a 0980025a.cut
+        cd /fido/fido
+fi
+if [ -f areas.new ]; then
+rm areas.new
+fi
+rm sub
+</PRE>
+<HR>
+
+Und die <CODE>Areafix</CODE>
+<HR>
+<PRE>
+Subject: &lt;Hier das Passwort hinschreiben!!&gt;
+To: Areafix@p0.f600.n2432.z2.fidonet.org
+From: Cry in the darkness@p0.f605.n2432.z2.fidonet.org
+
+</PRE>
+<HR>
+</P>
+<P>Ich weiss das das alles ein BISSCHEN unuebersichtlich und ohne Kommentare ist.
+Wie gesagt das ist die Uebergangsloesung bis Fidogate das "von selbst" regelt.</P>
+
+<P>So das wars was bei meinem Admin-User im Verzeichniss liegt.</P>
+
+
+
+<HR>
+<A HREF="FidoNode-8.html">Zurück</A>
+<A HREF="FidoNode-10.html">Weiter</A>
+<A HREF="FidoNode.html#toc9">Inhaltsverzeichnis</A>
+</BODY>
+</HTML>

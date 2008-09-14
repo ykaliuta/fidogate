@@ -1,0 +1,169 @@
+#:ts=8
+#
+# FIDOGATE config file main AKA
+#
+# Fido.DE domain gateway
+#
+# Format:  keyword arg ...
+#          keyword and args may be put in double quotes "..."
+#
+
+#
+# Include common stuff (%L = LIBDIR)
+#
+include		%L/config.common
+
+
+#
+# FTN addresses
+#
+Address		2:5025/8
+Address		21:9025/8
+
+#
+# AREAS.BBS EchoMail distribution list
+#
+AreasBBS	%L/areas.bbs
+
+
+#
+# FAREAS.BBS file distribution list
+#
+FAreasBBS	%L/fareas.bbs
+
+
+#
+# ftnaf: CC of reply mails
+#
+CCMail		fidoadm@vsu.ru
+
+
+#
+# OPTIONAL for tosser
+#
+# Kill empty NetMails addressed to one of our AKAs
+# (default: processed normally)
+#
+KillEmpty
+
+#
+# Kill EchoMail for unknown areas
+# (default: saved in bad packet)
+#
+KillUnknown
+
+#
+# Kill routed EchoMail
+# (default: saved in bad packet)
+#
+#KillRouted
+
+#
+# Kill insecure EchoMail (sender not listed in areas.bbs)
+# (default: saved in bad packet)
+#
+#KillInsecure
+
+#
+# Log sender/recipient of all NetMail messages
+#
+LogNetMail
+Track
+
+#
+# Check ^APATH for our own address
+#
+CheckPath
+
+#
+# Kill EchoMail with circular ^APATH (looking for our own AKA),
+# if CheckPath is enabled
+# (default: saved in bad packet)
+#
+#KillCircular
+
+#
+# Enable dupe check using MSGID history database
+#
+DupeCheck
+
+#
+# Number of days a MSGID entry stays in the history database
+# (decimal fraction allowed)
+#
+MaxHistory 60
+
+#
+# Kill dupe messages
+#
+#KillDupe
+
+#
+# Kill messages without ^AMSGID
+#
+#KillNoMSGID
+
+
+#
+# Zonegate configuration for EchoMail
+#
+#		Address to	Add to SEEN-BYs
+#		----------	---------------
+#ZoneGate	2:123/456	123/456 2452/110
+#ZoneGate	2:789/999	789/999 2452/110
+#ZoneGate	1:105/42	105/42 2452/110
+
+#
+# Add extra nodes to SEEN-BY
+#
+#		Area		Nodes
+#		----		-----
+#AddToSeenBy	ABLED           2:24/24
+#AddToSeenBy	ABLENEWS	2:24/24
+
+#
+# Delete SEEN-BY
+#
+DeleteSeenBy 50/128
+
+#
+# Delete PATH
+#
+DeletePath 50/128
+
+#
+# Default outbound flavor for files forwarded by ftntick
+#
+TickFlav	"Hold"
+
+#
+# Default outbound flavor for file attaches by ftnfattach
+#
+FAttachFlav	"Hold"
+
+#
+# Directory for old files replaced by ftntick with new versions
+#
+#TickReplacedDir	"/pub/fido/oldfiles"
+
+
+#
+# Maximum number of messages to toss before closing output packets/
+# exiting ftntoss.
+#
+MaxMsg		400
+
+#
+# Maximum number of concurrently open files (OS dependent)
+#
+MaxOpenFiles	40
+
+#
+# Maximum size of ArcMail archives (KByte)
+#
+MaxArc		300
+
+#
+# Minimum free disk space for runtoss (KByte)
+#
+MinDiskFree	10240

@@ -1,0 +1,116 @@
+Document: FSC-0043
+Version:  002
+Date:     30-Aug-90
+
+
+
+
+     Some Hints on Recognizing Control Lines in FidoNet(r) Message Text
+                                 FSC-0043
+                              1990 August 30
+
+
+
+
+Status of this document:
+
+This FSC contains information of value to the general FidoNet(r) community.
+Distribution of this document is subject to the restrictions listed in the
+copyright paragraph below.
+
+Fido and FidoNet are registered marks of Tom Jennings and Fido Software.
+
+Copyright 1989-90, Randy Bush.  All rights reserved.  A right to distribute
+only without modification and only at no charge is granted.  Under no
+circumstances is this document to be reproduced or distributed as part of or
+packaged with any product or other sales transaction for which any fee is
+charged.  Any and all other reproduction or excerpting requires the explicit
+written consent of the author.
+
+
+Implementors have had problems interpreting message text, both in netmail and
+echomail.  While the clues are usually to be found in some doucment or another,
+there seems to be a need to collect hints for some confusing aspects.  This
+informal documents attempts to address that need.
+
+
+Filter out all <lf>s and 'soft' <cr>s and <lf>s.  They are surplus and will
+only confuse the rest of your code.
+
+All control lines have their sentinels at the beginning of a line.  [ Note
+that an * Origin: line has a leading significant blank. ]
+
+Do not process quoted control lines or control sentinels preceeded by blanks,
+tabs, ...
+
+If you become confused, then bounce or sidetrack the message to a hold area
+for human intervention.  Don't try to rescue the situation.  None will notice
+when you succeed, and many will flame whan you fail.
+
+A message is either netmail or echomail.  I.e. no ^aINTL, ^aFMPT, or ^aTOPT
+controls should be found or generated when there is an AREA: line or when in an
+echo area. Thus, echomail can not be routed across zones, but this is not a big
+loss.
+
+Private netmail replies to echomail are netmail, i.e. may have ^aINTL etc.,
+and may not have AREA: line, SEEN-BY:, or ^aPATH: lines.  They may have a tear
+line and an origin line.
+
+^aEID lines are as in Opus 1.03.  Other forms are not to be generated, and,
+if found, may be safely disgarded.
+
+An AREA: line must be the first non ^a line in the text.
+
+The echomail control info is a four-part package at the end of the text.  It
+should not be, but occasionally is, followed by one or more ^a control lines.
+The four parts of an echomail trailer are:
+
+  o a tear line, "---" and some very short text identifying the original echo
+    processor.  Eg.
+        --- Brag 3.14
+
+  * note that some internetworking gateware may place a # Origin: line between
+    the tear line and the * Origin: line to indicate the true other network
+    address, whatver that may be.  The content of a # Origin: line is free to
+    be specified by the other network(s).  An example might be as follows:
+         # Origin: Political Statement (FishNet:914@201)
+
+  o one * Origin: line, being " * Origin: " ends in "(" [Z:] N "/" N [.P] ")"
+    of FidoNet node of origin or the gate from FidoNet to another network
+         * Origin: <signature> (1:105/301)
+
+  o as many SEEN-BY: lines as necessary, each being "SEEN-BY:" followed by one
+    or more
+        " " <net> "/" <node>
+    sequences.  Note that SEEN-BY: lines do not end in <space>.
+
+    The net/node numbers in SEEN-BY: lines are sorted net major.  Within a
+    single SEEN-BY: line, net numbers are sticky, so the N/N is usually
+    abbreviated to N, Eg. 
+        SEEN-BY: 105/6 10 15 16 27 41 42 300 301 141/42 491
+
+  o as many ^aPATH: lines as necessary, each being <ctrl-A> "PATH:" followed
+    by one or more
+        " " <net> "/" <node>
+    sequences.  The N/N in ^aPATH: lines are specifically not sorted.  Net
+    numbers are also sticky in ^aPATH: lines, eg.
+        PATH: 105/301 6 42
+
+Remember that traffic costs much money, and do not create text unnecessary to
+FidoNet as a whole.
+
+I did not invent this, so don't blame me.  I'm just trying to write it down.
+
+And, lastly, try not to be inventive.  While the free-form syntax of this
+embedded stuff does provide fleibility and power, it also leaves a lot of room
+to make disgusting messes.  Compromise, cooperation, and a minimizalist touch
+are essential.
+
+Randy Bush
+FidoNet: 1:105/6 1:105/42
+Internet: randy@psg.com    randy@m2xenix.uucp
+uucp: { uunet, qiclab, bucket }!m2xenix!randy
+
+---
+
+Fido and FidoNet are registered marks of Tom Jennings and Fido Software.

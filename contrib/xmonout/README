@@ -1,0 +1,61 @@
+
+This software is without warranty, use it at your own risk. It seems to be
+working here, but I have no idea how you are set up. If it doesn't work ...
+Fix it! This software is freely available. Please leave my name on it
+though.
+
+You need both perl and tcl/tk to run these things. If your path to them is
+different than mine you will have to edit that at the top of these files
+too.
+
+xmonout
+
+	This is an outbound monitor for a binkley style outbound on a linux
+system such as you might find if you use fidogate and ifcico as a mailer. It
+puts a small 4 line scrollable box in the top left corner of your X display
+that shows what out bound mail you have for which systems. If you double
+click on one of the entries, it will call xoutfix with that node number. The
+outbound monitor updates about every 10 minutes.
+
+	
+xoutfix
+
+	This lets you play with the outbound files a bit. You can change
+*.flo files or *.out files flavours, redo the flo file which gets rid of
+entries for non-existant entries, you can remove entries, you can delete
+entries, you can send a file to the inbound directory if you like (it is the
+easiest way to deal with a missconfiguration that you have now fixed), or
+you can send a file to a system.
+
+monout
+
+	run by xmonout to get it's updates.
+
+setup and installation
+	
+	not very nice right now... to much stuff coded into the files. You
+have to edit each of the scripts for your system.
+
+	monout - your outbound has to be set at the top. This is you base
+		outbound. Then at the very end of the file you can set up
+		individual outbound directories (one for each zone)
+
+	xmonout - close to the top 'set program' should be set to the
+		directory you keep these files 
+
+	xoutfix - outbound is your base outbound directory, inbound is your
+		inbound and program is where these files are kept... also
+		we expect to find ftnfattach from fidogate. (if you don't
+		use the send function you don't need it)
+
+	Makefile - edit the directories to match what you put in for program
+		in the other files.
+
+run make and then when you start up X you can run xmonout to have an
+outbound monitor. 
+
+I'm just learning how to use tcl/tk so this may not be the best coding...
+
+Hope it's useful to you.
+
+Len

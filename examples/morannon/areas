@@ -1,0 +1,418 @@
+#:ts=8
+#
+# $Id: areas,v 4.7 2002/08/05 23:49:12 dyff Exp $
+#
+# Echomail area <-> News newsgroup conversion
+#
+# Options:
+#     -a Z:N/F.P         Alternate address for this area
+#     -z ZONE            Alternate zone AKA for this area
+#     -d DISTRIBUTION    Distribution header for this newsgroups
+#     -o ORIGIN          * Origin line for this area
+#     -g                 No gated messages
+#     -l                 Only local crosspostings
+#     -x                 No crosspostings
+#     -8                 Messages with 8bit ISO-8859-1 charset
+#     -H                 Names match entire hierarchy, names are translated
+#     -!                 Don't gate area/newsgroup [hierarchy]
+#     -R LVL             ^ARFC header level
+#     -m MAXSIZE         MaxMsgSize for this area (0 = infinity)
+#     -X "Xtra: xyz"     Add extra RFC headers (multiple -X allowed)
+#
+# All fields may be quoted in "...", order is import, first area/newsgroup
+# found matches!
+#
+# Format:
+#
+# area                        newsgroup                     [-option]
+# ------------------------    --------------------------    ---------
+
+#
+# Local
+#
+HIPPO.LOCAL             hippo.local             -d local -8
+HIPPO.TEST              hippo.test              -d local  -o "TEST from morannon.fido.de" -8
+#
+# Fido.DE
+#
+FIDO.DE                 fido.de                 -H -z 242    -o "Fido.DE Domain-Administration" -8
+#
+# RWTH
+#
+RWTH.GENERAL            rwth.general            -z 242 -8
+RWTH.TEST               rwth.test               -z 242 -8
+RWTH.VORTRAEGE          rwth.vortraege          -z 242 -8
+RWTH.DIALUP		rwth.dialup		-z 242 -8
+#
+# Areas gated between Usenet and FIDO groups
+# These areas must be placed *BEFORE* the Z242 Usenet areas!
+#
+OECHER				oecher.talk -8         
+OECHER.FLOHMARKT		oecher.flohmarkt -8    
+OECHER.KOMMERZ			oecher.kommerz -8       
+OECHER.WOHNUNGSMARKT		oecher.wohnungsmarkt -8 
+OECHER.KULTUR			oecher.kultur -8        
+OECHER.FLAME			oecher.flame -8         
+OECHER.COMPUTER			oecher.computer -8      
+OECHER.NEWFILES			oecher.newfiles -8      
+OECHER.TEST			oecher.test -8
+#
+# FIDONET areas - German
+#
+# # Auskommentierte Areas: Moderator wuenscht kein Gating in's Internet
+#
+386.GER                                 fido.ger.pc386           -x -8
+4DOS.GER                                fido.ger.pc4dos          -x -8
+ABLED.GER                               fido.ger.abled           -x -8
+AFNA.GER                                fido.ger.afna            -x -8
+AFNA_ECHO.GER                           fido.ger.afna_echo       -x -8
+AMIGA.GER                               fido.ger.amiga           -x -8
+AMIGA_MARKT.GER                         fido.ger.amiga_markt     -x -8
+AMIHARD.GER                             fido.ger.amihard         -x -8
+AMIPROG.GER                             fido.ger.amiprog         -x -8
+ANNOUNCE.024                            fido.ger.announce        -x -8
+ANTIFA.GER                              fido.ger.antifa          -x -8
+ARCHIMEDES.GER                          fido.ger.archimedes      -x -8
+AREXX.GER                               fido.ger.arexx           -x -8
+ASM86.GER                               fido.ger.asm86           -x -8
+ASTPGMRS.GER                            fido.ger.astpgmrs        -x -8
+ASTRO.GER                               fido.ger.astro           -x -8
+ASTRONOMIE.GER                          fido.ger.astronomie      -x -8
+ATARI.GER                               fido.ger.atari           -x -8
+ATARI_DTP.GER                           fido.ger.atari_dtp       -x -8
+ATARI_EXPERT.GER                        fido.ger.atari_expert    -x -8
+AUGE.GER                                fido.ger.auge            -x -8
+AUTO.GER                                fido.ger.auto            -x -8
+AUTOREN.GER                             fido.ger.autoren         -x -8
+AVIATION.GER                            fido.ger.aviation        -x -8
+BASIC.GER                               fido.ger.basic           -x -8
+BINKLEY.GER                             fido.ger.binkley         -x -8
+BMHITCH.GER                             fido.ger.bmhitch         -x -8
+BOERSE.GER                              fido.ger.boerse          -x -8
+BOOK.GER                                fido.ger.book            -x -8
+BOWLING.GER                             fido.ger.bowling         -x -8
+BTX.GER                                 fido.ger.btx             -x -8
+BUND.GER                                fido.ger.bund            -x -8
+CADCAM.GER                              fido.ger.cadcam          -x -8
+CB-FUNK.GER                             fido.ger.cb-funk         -x -8
+CCC.GER                                 fido.ger.ccc             -x -8
+CCITT-FAX.GER                           fido.ger.ccitt-fax       -x -8
+CDROM.GER                               fido.ger.cdrom           -x -8
+CHAUVI.GER                              fido.ger.chauvi          -x -8
+CHEMIE.GER                              fido.ger.chemie          -x -8
+CHIPPIE.GER                             fido.ger.chippie         -x -8
+CIS.GER                                 fido.ger.cis             -x -8
+CLIPPER.GER                             fido.ger.clipper         -x -8
+COHERENT.GER                            fido.ger.coherent        -x -8
+COMMS.GER                               fido.ger.comms           -x -8
+COMPILERBAU.GER                         fido.ger.compilerbau     -x -8
+COMP_OLD.GER                            fido.ger.comp_old        -x -8
+CONTROL.GER                             fido.ger.control         -x -8
+CPM.GER                                 fido.ger.cpm             -x -8
+CROSSPOINT.GER                          fido.ger.crosspoint      -x -8
+CXL.GER                                 fido.ger.cxl             -x -8
+CYBERSPACE.GER                          fido.ger.cyberspace      -x -8
+C_ECHO.GER                              fido.ger.c_echo          -x -8
+C_PLUSPLUS.GER                          fido.ger.c_plusplus      -x -8
+DARC.GER                                fido.ger.darc            -x -8
+DBASE.GER                               fido.ger.dbase           -x -8
+DBRIDGE.GER                             fido.ger.dbridge         -x -8
+DCC.GER                                 fido.ger.dcc             -x -8
+DEC.GER                                 fido.ger.dec             -x -8
+DESQVIEW.GER                            fido.ger.desqview        -x -8
+DFUE.GER                                fido.ger.dfue            -x -8
+DTP.GER                                 fido.ger.dtp             -x -8
+EBBAUSER.GER                            fido.ger.ebbauser        -x -8
+ECONOMY.GER                             fido.ger.economy         -x -8
+EDITOR.GER                              fido.ger.editor          -x -8
+EFT.GER                                 fido.ger.eft             -x -8
+EISENBAHN.GER                           fido.ger.eisenbahn       -x -8
+ELEKTRONIK.GER                          fido.ger.elektronik      -x -8
+EPA.GER                                 fido.ger.epa             -x -8
+EROTIKA.GER                             fido.ger.erotika         -x -8
+ETECHNIK.GER                            fido.ger.etechnik        -x -8
+FAHRRAD.GER                             fido.ger.fahrrad         -x -8
+FANTASY.GER                             fido.ger.fantasy         -x -8
+FASTECHO.GER                            fido.ger.fastecho        -x -8
+FCO.GER                                 fido.ger.fco             -x -8
+FDECHO.GER                              fido.ger.fdecho          -x -8
+#FIDOGUIDE.GER                           fido.ger.fidoguide      -x -8
+FIDOSOFT.GER                            fido.ger.fidosoft        -x -8
+FLEA.GER                                fido.ger.flea            -x -8
+FORTH.GER                               fido.ger.forth           -x -8
+FRAUEN.GER                              fido.ger.frauen          -x -8
+FRUST.GER                               fido.ger.frust           -x -8
+GARTEN.GER                              fido.ger.garten          -x -8
+GATEWAYS.GER                            fido.ger.gateways        -x -8
+GAY.GER                                 fido.ger.gay             -x -8
+GECHO.GER                               fido.ger.gecho           -x -8
+GEM.GER                                 fido.ger.gem             -x -8
+GENEALOGY.GER                           fido.ger.genealogy       -x -8
+GFABASIC.GER                            fido.ger.gfabasic        -x -8
+GOLDBETA.GER                            fido.ger.goldbeta        -x -8
+GOLDED.GER                              fido.ger.golded          -x -8
+GRAFIK.GER                              fido.ger.grafik          -x -8
+GREENP.GER                              fido.ger.greenp          -x -8
+GRENZWIS.GER                            fido.ger.grenzwis        -x -8
+HANDHELD.GER                            fido.ger.handheld        -x -8
+HARDROCK.GER                            fido.ger.hardrock        -x -8
+HARDWARE.GER                            fido.ger.hardware        -x -8
+HAUSTIERE.GER                           fido.ger.haustiere       -x -8
+HESSEN.GER                              fido.ger.hessen          -x -8
+HESSISCH.GER                            fido.ger.hessisch        -x -8
+HIFI.GER                                fido.ger.hifi            -x -8
+HP48SX.GER                              fido.ger.hp48sx          -x -8
+HST.GER                                 fido.ger.hst             -x -8
+HS_MODEMS.GER                           fido.ger.hs_modems       -x -8
+IBM.GER                                 fido.ger.ibm             -x -8
+IMAGINE.GER                             fido.ger.imagine         -x -8
+IMAIL_HELP.GER                          fido.ger.imail_help      -x -8
+INFORMATIK.GER                          fido.ger.informatik      -x -8
+ISDN.GER                                fido.ger.isdn            -x -8
+JOKES.GER                               fido.ger.jokes           -x -8
+KIRCHE.GER                              fido.ger.kirche          -x -8
+KOCHEN.GER                              fido.ger.kochen          -x -8
+KOMMERZ.GER                             fido.ger.kommerz         -x -8
+KONSOLEN.GER                            fido.ger.konsolen        -x -8
+KONTAKT.GER                             fido.ger.kontakt         -x -8
+LAN.GER                                 fido.ger.lan             -x -8
+LANDROCK.GER                            fido.ger.landrock        -x -8
+LANTASTIC.GER                           fido.ger.lantastic       -x -8
+LINUX.GER                               fido.ger.linux           -x -8
+LITERAT.GER                             fido.ger.literat         -x -8
+MAC.GER                                 fido.ger.mac             -x -8
+MACEV.GER                               fido.ger.macev           -x -8
+MAGIE.GER                               fido.ger.magie           -x -8
+MAILBOX.GER                             fido.ger.mailbox         -x -8
+MAXIMUS.GER                             fido.ger.maximus         -x -8
+MEDIZIN.GER                             fido.ger.medizin         -x -8
+MIDI.GER                                fido.ger.midi            -x -8
+MINIX.GER                               fido.ger.minix           -x -8
+MITFAHR.GER                             fido.ger.mitfahr         -x -8
+MODEM.GER                               fido.ger.modem           -x -8
+MODULA-2.GER                            fido.ger.modula-2        -x -8
+MOTORRAD.GER                            fido.ger.motorrad        -x -8
+MOVIE.GER                               fido.ger.movie           -x -8
+MSDOS5XX.GER                            fido.ger.msdos5xx        -x -8
+MUSIK.GER                               fido.ger.musik           -x -8
+MUSIKER.GER                             fido.ger.musiker         -x -8
+NETZWESEN.GER                           fido.ger.netzwesen       -x -8
+NET_DEV.GER                             fido.ger.net_dev         -x -8
+NEWFILES.GER                            fido.ger.newfiles        -x -8
+NEXT.GER                                fido.ger.next            -x -8
+NFES.GER                                fido.ger.nfes            -x -8
+NL.GER                                  fido.ger.nl              -x -8
+NOVELL.GER                              fido.ger.novell          -x -8
+ON-TOUR.GER                             fido.ger.on-tour         -x -8
+ONGAME.GER                              fido.ger.ongame          -x -8
+OOPS.GER                                fido.ger.oops            -x -8
+OPEN_ACCESS.GER                         fido.ger.open_access     -x -8
+OS2.GER                                 fido.ger.os2             -x -8
+OS2.MDOS.GER                            fido.ger.os2.mdos        -x -8
+OS2.PROG.GER                            fido.ger.os2.prog        -x -8
+OS2.WIN.GER                             fido.ger.os2.win         -x -8
+OS2BBS.GER                              fido.ger.os2.bbs         -x -8
+OS2NEW.GER                              fido.ger.os2.new         -x -8
+PARAGON.GER                             fido.ger.paragon         -x -8
+PASCAL.GER                              fido.ger.pascal          -x -8
+PASCAL.TV.GER                           fido.ger.pascal.tv       -x -8
+PC_GEOS.GER                             fido.ger.pc_geos         -x -8
+PEP.GER                                 fido.ger.pep             -x -8
+PERFECT.GER                             fido.ger.perfect         -x -8
+PGMRS.GER                               fido.ger.pgmrs           -x -8
+PHILO.GER                               fido.ger.philo           -x -8
+PHOTO.GER                               fido.ger.photo           -x -8
+PINBALL.GER                             fido.ger.pinball         -x -8
+POLITIK.GER                             fido.ger.politik         -x -8
+POLIZEI.GER                             fido.ger.polizei         -x -8
+PRINTER.GER                             fido.ger.printer         -x -8
+PRODUKTE.GER                            fido.ger.produkte        -x -8
+QUICKBBS.GER                            fido.ger.quickbbs        -x -8
+RA-ECHO.GER                             fido.ger.ra-echo         -x -8
+RA.GER                                  fido.ger.ra              -x -8
+RAETSEL.GER                             fido.ger.raetsel         -x -8
+RA_UTIL.GER                             fido.ger.ra_util         -x -8
+RECHT.GER                               fido.ger.recht           -x -8
+REQUEST.GER                             fido.ger.request         -x -8
+REQUEST.OS2.GER                         fido.ger.request.os2     -x -8
+RHODAN.GER                              fido.ger.rhodan          -x -8
+ROCKWELL.GER                            fido.ger.rockwell        -x -8
+RODGAU.GER                              fido.ger.rodgau          -x -8
+RPG.GER                                 fido.ger.rpg             -x -8
+SAT.GER                                 fido.ger.sat             -x -8
+SCHACH.GER                              fido.ger.schach          -x -8
+SCHULE.GER                              fido.ger.schule          -x -8
+SCIFI.GER                               fido.ger.scifi           -x -8
+SEX.GER                                 fido.ger.sex             -x -8
+SHAREWARE.GER                           fido.ger.shareware       -x -8
+SHORTWAVE.GER                           fido.ger.shortwave       -x -8
+SOUNDKARTEN.GER                         fido.ger.soundkarten     -x -8
+SPARC.GER                               fido.ger.sparc           -x -8
+SPIELE.GER                              fido.ger.spiele          -x -8
+SPORT.GER                               fido.ger.sport           -x -8
+SPRACHE.GER                             fido.ger.sprache         -x -8
+SQUISH.GER                              fido.ger.squish          -x -8
+STARTREK.GER                            fido.ger.startrek        -x -8
+STORAGE.GER                             fido.ger.storage         -x -8
+ST_EMUL.GER                             fido.ger.st_emul         -x -8
+ST_FIDO.GER                             fido.ger.st_fido         -x -8
+SUPERBBS.GER                            fido.ger.superbbs        -x -8
+TANZEN.GER                              fido.ger.tanzen          -x -8
+TELEFON.GER                             fido.ger.telefon         -x -8
+#TEX.GER                                 fido.ger.tex            -x -8
+TIERE.GER                               fido.ger.tiere           -x -8
+TOLKIEN.GER                             fido.ger.tolkien         -x -8
+TRACKM.GER                              fido.ger.trackm          -x -8
+TRANSAMIGA.GER                          fido.ger.transamiga      -x -8
+TRANSPUTER.GER                          fido.ger.transputer      -x -8
+TRAPIDO.GER                             fido.ger.trapido         -x -8
+TWILIGHT.GER                            fido.ger.twilight        -x -8
+UFGATE.GER                              fido.ger.ufgate          -x -8
+UFO.GER                                 fido.ger.ufo             -x -8
+UMS.GER                                 fido.ger.ums             -x -8
+UMWELT.GER                              fido.ger.umwelt          -x -8
+UNIX.GER                                fido.ger.unix            -x -8
+URLAUB.GER                              fido.ger.urlaub          -x -8
+VDOS5XX.GER                             fido.ger.vdos5xx         -x -8
+VENTURA.GER                             fido.ger.ventura         -x -8
+VIRUS.GER                               fido.ger.virus           -x -8
+WEIN.GER                                fido.ger.wein            -x -8
+WILDCAT.GER                             fido.ger.wildcat         -x -8
+WIN32.GER                               fido.ger.win32           -x -8
+WINDOWS.GER                             fido.ger.windows         -x -8
+WINDOWS.PROG.GER                        fido.ger.windows.prog    -x -8
+WINDOWS.TP.GER                          fido.ger.windows.tp      -x -8
+WINDOWS.VB.GER                          fido.ger.windows.vb      -x -8
+WIN_APPS.GER                            fido.ger.win_apps        -x -8
+WISSEN.GER                              fido.ger.wissen          -x -8
+YUPPIE.GER                              fido.ger.yuppie          -x -8
+ZIVI.GER                                fido.ger.zivi            -x -8
+ZYXEL.GER                               fido.ger.zyxel           -x -8
+#
+CFOS_HELP                               fido.ger.cfos-help       -x -8
+#:ts=8
+#                                       
+# FIDONET areas - international
+#                                       
+BINKLEY			fido.int.binkley	-x -8
+C_ECHO			fido.int.c		-x -8
+C_PLUSPLUS		fido.int.c++		-x -8
+MUFFIN			fido.int.maximus	-x -8
+NET_DEV			fido.int.net-dev	-x -8
+TUB			fido.int.squish		-x -8
+#
+# FIDONET areas - Sysops only
+#
+SYSOP.242                               fido.sysop.net242 -8
+SYSOPS.GER                              fido.sysop.ger -8
+ENET.SYSOP                              fido.sysop.enet -8
+OECHER.SYSOPS                           fido.sysop.oecher -8
+OECHER.BACKBONE                         fido.sysop.oecher.backbone -8
+OECHER.BACKBONE.ECHOSTAT                fido.sysop.oecher.backbone.echostat -8
+2452.NODES                              fido.sysop.net2452.nodes -8
+2452.POLICY                             fido.sysop.net2452.policy -8
+#
+# FIDONET areas - Restricted
+#
+MODERATOR.GER                           fido.restr.ger.moderator -8
+GATE-BAU.GER                            fido.restr.ger.gate-bau -8
+#                                       
+# Usenet - single groups
+#                                       
+ALT.3D                        alt.3d                        -z 242 -g -8
+ALT.COMP.PERIPHS.MAINBOARD.ASUS alt.comp.periphs.mainboard.asus -z 242 -g -8
+ALT.DRUGS                     alt.drugs                     -z 242 -g -8
+ALT.DRUGS.CAFFEINE            alt.drugs.caffeine            -z 242 -g -8
+ALT.EMULATORS.IBMPC.APPLE2    alt.emulators.ibmpc.apple2    -z 242 -g -8
+ALT.FAN.DOUGLAS_ADAMS         alt.fan.douglas-adams         -z 242 -g -8
+ALT.FAN.FRANK_ZAPPA           alt.fan.frank-zappa           -z 242 -g -8
+ALT.FAN.LETTERMAN             alt.fan.letterman	            -z 242 -g  -8
+ALT.FAN.MONTY_PYTHON          alt.fan.monty-python          -z 242 -g -8
+ALT.FAN.PRATCHETT             alt.fan.pratchett             -z 242 -g -8
+ALT.FAN.TOLKIEN               alt.fan.tolkien               -z 242 -g -8
+ALT.FOLKLORE.COMPUTERS        alt.folklore.computers        -z 242 -g -8
+ALT.GAMES.COMMAND_N_CONQUER   alt.games.command-n-conq	    -z 242 -g -8
+ALT.GAMES.DESCENT             alt.games.descent             -z 242 -g -8
+ALT.GAMES.VIDEO.CLASSIC       alt.games.video.classic       -z 242 -g -8
+ALT.GRAPHICS                  alt.graphics                  -z 242 -g -8
+ALT.GRAPHICS.CTL              alt.graphics.ctl              -z 242 -g -8
+ALT.GRAPHICS.PIXUTILS         alt.graphics.pixutils         -z 242 -g -8
+ALT.INTERNET.SERVICES         alt.internet.services         -z 242 -g -8
+ALT.MARRIAGE-MINDED.WOMEN     alt.marriage-minded.women	    -z 242 -g -8
+ALT.RELIGION.COMPUTERS        alt.religion.computers        -z 242 -g -8
+ALT.RELIGION.EMACS            alt.religion.emacs            -z 242 -g -8
+ALT.SECURITY                  alt.security                  -z 242 -g -8
+ALT.SECURITY.INDEX            alt.security.index            -z 242 -g -8
+ALT.SECURITY.KEYDIST          alt.security.keydist          -z 242 -g -8
+ALT.SECURITY.PGP              alt.security.pgp              -z 242 -g -8
+ALT.SECURITY.RIPEM            alt.security.ripem            -z 242 -g -8
+ALT.SHARED_REALITY.STARTREK.KLINGON alt.shared-reality.startrek.klingon -z 242 -g -8
+ALT.STARTREK.CARDASSIAN       alt.startrek.cardassian  	    -z 242 -g -8
+ALT.STARTREK.CREATIVE	      alt.startrek.creative    	    -z 242 -g -8
+ALT.STARTREK.KLINGON	      alt.startrek.klingon     	    -z 242 -g -8
+ALT.STARTREK.USS_AMAGOSA      alt.startrek.uss-amagosa 	    -z 242 -g -8
+ALT.TALK.ESPERANTO            alt.talk.esperanto            -z 242 -g -8
+ALT.TASTELESS                 alt.tasteless                 -z 242 -g -8
+ALT.TASTELESS.JOKES           alt.tasteless.jokes           -z 242 -g -8
+ALT.TV.SIMPSONS               alt.tv.simpsons               -z 242 -g -8
+ALT.TV.SIMPSONS.ITCHY_SCRATCHY alt.tv.simpsons.itchy-scratchy -z 242 -g -8
+ALT.TV.STAR_TREK.VOYAGER      alt.tv.star-trek.voyager 	    -z 242 -g -8
+ALT.TV.TWIN_PEAKS             alt.tv.twin-peaks             -z 242 -g -8
+ALT.WEDDING                   alt.wedding		    -z 242 -g -8
+ALT.WINSOCK                   alt.winsock                   -z 242 -g -8
+#
+BIT.LISTSERV.WP50_L           bit.listserv.wp50-l           -z 242 -g -8
+BIT.LISTSERV.WPCORP_L         bit.listserv.wpcorp-l         -z 242 -g -8
+BIT.LISTSERV.WPWIN_L          bit.listserv.wpwin-l          -z 242 -g -8
+#
+MISC.BOOKS.TECHNICAL          misc.books.technical          -z 242 -g -8
+#
+NEWS.ANSWERS                  news.answers                  -z 242 -g -8
+#
+TALK.PHILOSOPHY.MISC          talk.philosophy.misc          -z 242 -g -8
+#:ts=8
+#
+ALT.2600		alt.2600		-z 242 -g -H -8
+ALT.CD_ROM 		alt.cd-rom 		-z 242 -g -H -8
+ALT.CULT_MOVIES 	alt.cult-movies 	-z 242 -g -H -8
+ALT.CYBERPUNK 		alt.cyberpunk 		-z 242 -g -H -8
+ALT.HUMOR.		alt.humor.		-z 242 -g -H -8
+ALT.SATELLITE.		alt.satellite.		-z 242 -g -H -8
+ALT.TV.X_FILES          alt.tv.x-files          -z 242 -g -H -8
+#
+# comp.*,comp.sources.*,!comp.binaries.*
+COMP.BINARIES.		comp.binaries.		-H -! -8
+COMP.SOURCES.		comp.sources.		-z 242 -g -H -m 0 -8
+COMP.			comp.			-z 242 -g -H -8
+#
+#GNU.EMACS.SOURCES	gnu.emacs.sources	-z 242 -g    -m 0 -8
+GNU.			gnu.			-z 242 -g -H -8
+#
+MISC.JOBS.		misc.jobs.		-z 242 -g -H -8
+MISC.IMMIGRATION.	misc.immigration.	-z 242 -g -H -8
+#
+NEWS.ANNOUNCE		news.announce		-z 242 -g -H -8
+NEWS.LISTS		news.lists		-z 242 -g -H -8
+#
+# rec.*
+REC.			rec.			-z 242 -g -H -8
+#
+SCI.			sci.			-z 242 -g -H -8
+#
+SOC.			soc.			-z 242 -g -H -8
+#
+# de.*,!de.alt.binaries.*
+DE.ALT.BINARIES.	de.alt.binaries.	-H -! -8
+DE.			de.			-z 242 -g -H -8
+#
+LINUX.			linux.			-z 242 -g -H -8
+
+
+
+
+
+
+
+
+
+

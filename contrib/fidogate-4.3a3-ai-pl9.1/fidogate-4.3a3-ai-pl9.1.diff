@@ -1,0 +1,2381 @@
+diff -urN --exclude=*.ORIG fidogate-4.3a3/config.make fidogate-4.3a3-ai-pl9.1/config.make
+--- fidogate-4.3a3/config.make	Fri May  1 19:16:41 1998
++++ fidogate-4.3a3-ai-pl9.1/config.make	Wed Jun 24 18:16:38 1998
+@@ -69,6 +69,7 @@
+ DEFAULT_V_UUINBOUND	= $(DEFAULT_V_BTBASEDIR)/uuin
+ DEFAULT_V_FTPINBOUND	= $(DEFAULT_V_BTBASEDIR)/ftpin
+ 
++DEFAULT_V_ACL		= %C/acl
+ DEFAULT_V_ALIASES	= %C/aliases
+ DEFAULT_V_AREAS		= %C/areas
+ DEFAULT_V_HOSTS		= %C/hosts
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/charset/charset.map fidogate-4.3a3-ai-pl9.1/src/charset/charset.map
+--- fidogate-4.3a3/src/charset/charset.map	Tue Apr  7 16:21:54 1998
++++ fidogate-4.3a3-ai-pl9.1/src/charset/charset.map	Thu Jun 25 16:07:19 1998
+@@ -54,7 +54,6 @@
+ alias	ibmpc		x-ibmpc
+ alias	pc-8		x-ibmpc
+ alias	mac		x-mac
+-alias	alt		x-alt
+ 
+ 
+ # ----------------------------------------------------------------------------
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/charset/russian.map fidogate-4.3a3-ai-pl9.1/src/charset/russian.map
+--- fidogate-4.3a3/src/charset/russian.map	Tue Apr  7 16:21:54 1998
++++ fidogate-4.3a3-ai-pl9.1/src/charset/russian.map	Thu Jun 25 16:08:28 1998
+@@ -5,16 +5,825 @@
+ #
+ 
+ #
+-# Russian, contributed by Vladimir Ivaschenko <hazard.bsn@poboxes.com>
++# Russian
+ #
++alias	x-cp866		cp866
++alias	x-cp1251	cp1251
++alias	koi8-u		koi8-r
++alias	alt		cp866
++alias	x-alt		cp866
++
+ 
+ # ----------------------------------------------------------------------------
+-table	x-alt		koir-8
+-##FIXME:add map##
++#       Channel map for translation CP866 codes to KOI8-R codes
++#	(Russian language)
++#
++table	cp866	koi8-r
++map     \x80    \xE1
++map     \x81    \xE2
++map     \x82    \xF7
++map     \x83    \xE7
++map     \x84    \xE4
++map     \x85    \xE5
++map     \x86    \xF6
++map     \x87    \xFA
++map     \x88    \xE9
++map     \x89    \xEA
++map     \x8A    \xEB
++map     \x8B    \xEC
++map     \x8C    \xED
++map     \x8D    \xEE
++map     \x8E    \xEF
++map     \x8F    \xF0
++map     \x90    \xF2
++map     \x91    \xF3
++map     \x92    \xF4
++map     \x93    \xF5
++map     \x94    \xE6
++map     \x95    \xE8
++map     \x96    \xE3
++map     \x97    \xFE
++map     \x98    \xFB
++map     \x99    \xFD
++map     \x9A    \xFF
++map     \x9B    \xF9
++map     \x9C    \xF8
++map     \x9D    \xFC
++map     \x9E    \xE0
++map     \x9F    \xF1
++map     \xA0    \xC1
++map     \xA1    \xC2
++map     \xA2    \xD7
++map     \xA3    \xC7
++map     \xA4    \xC4
++map     \xA5    \xC5
++map     \xA6    \xD6
++map     \xA7    \xDA
++map     \xA8    \xC9
++map     \xA9    \xCA
++map     \xAA    \xCB
++map     \xAB    \xCC
++map     \xAC    \xCD
++map     \xAD    \xCE
++map     \xAE    \xCF
++map     \xAF    \xD0
++map     \xB0    \x80
++map     \xB1    \x81
++map     \xB2    \x82
++map     \xB3    \x83
++map     \xB4    \x84
++map     \xB5    \x85
++map     \xB6    \x86
++map     \xB7    \x87
++map     \xB8    \x88
++map     \xB9    \x89
++map     \xBB    \x8B
++map     \xBC    \x8C
++map     \xBD    \x8D
++map     \xBE    \x8E
++map     \xBF    \x8F
++map     \xC0    \x90
++map     \xC1    \x91
++map     \xC2    \x92
++map     \xC3    \x93
++map     \xC4    \x94
++map     \xC5    \x95
++map     \xC6    \x96
++map     \xC7    \x97
++map     \xC8    \x98
++map     \xC9    \x99
++map     \xCA    \x9A
++map     \xCB    \xBF
++map     \xCC    \x9C
++map     \xCD    \x9D
++map     \xCE    \x9E
++map     \xCF    \x9F
++map     \xD0    \xB9
++map     \xD1    \xA1
++map     \xD2    \xA2
++map     \xD3    \xB0
++map     \xD4    \xA4
++map     \xD5    \xA5
++map     \xD6    \xA6
++map     \xD7    \xA7
++map     \xD8    \xA8
++map     \xD9    \xA9
++map     \xDA    \xAA
++map     \xDB    \xAB
++map     \xDC    \xAC
++map     \xDD    \xAD
++map     \xDE    \xAE
++map     \xDF    \xAF
++map     \xE0    \xD2
++map     \xE1    \xD3
++map     \xE2    \xD4
++map     \xE3    \xD5
++map     \xE4    \xC6
++map     \xE5    \xC8
++map     \xE6    \xC3
++map     \xE7    \xDE
++map     \xE8    \xDB
++map     \xE9    \xDD
++map     \xEA    \xDF
++map     \xEB    \xD9
++map     \xEC    \xD8
++map     \xED    \xDC
++map     \xEE    \xC0
++map     \xEF    \xD1
++map     \xF0    \xB3
++map     \xF1    \xA3
++map     \xF2    \xB2
++map     \xF3    \xB1
++map     \xF4    \xB4
++map     \xF5    \xB5
++map     \xF6    \xB6
++map     \xF7    \xB7
++map     \xF8    \xB8
++map     \xF9    \xA0
++map     \xFA    \x8A
++map     \xFB    \xBB
++map     \xFC    \xBC
++map     \xFD    \xBD
++map     \xFE    \xBE
++map     \xFF    \x9B
+ 
+ 
+ # ----------------------------------------------------------------------------
+-table	koir-8		x-alt
+-##FIXME:add map##
++#       Channel map for translation KOI8-R codes to CP866 codes
++#	(Russian language)
++#	Due to fidonet wieredness, capital Russian EN translates to 
++#	latin 'H'.
++#
++table	koi8-r	cp866
++map     \x80    \xB0
++map     \x81    \xB1
++map     \x82    \xB2
++map     \x83    \xB3
++map     \x84    \xB4
++map     \x85    \xB5
++map     \x86    \xB6
++map     \x87    \xB7
++map     \x88    \xB8
++map     \x89    \xB9
++map     \x8A    \xFA
++map     \x8B    \xBB
++map     \x8C    \xBC
++map     \x8D    \xBD
++map     \x8E    \xBE
++map     \x8F    \xBF
++map     \x90    \xC0
++map     \x91    \xC1
++map     \x92    \xC2
++map     \x93    \xC3
++map     \x94    \xC4
++map     \x95    \xC5
++map     \x96    \xC6
++map     \x97    \xC7
++map     \x98    \xC8
++map     \x99    \xC9
++map     \x9A    \xCA
++map     \x9B    \xFF    # High-bit Escape to Rubout
++map     \x9C    \xCC
++map     \x9D    \xCD
++map     \x9E    \xCE
++map     \x9F    \xCF
++map     \xA0    \xD0
++map     \xA1    \xD1
++map     \xA2    \xD2
++map     \xA3    \xF1    # yo
++map     \xA4    \xD4
++map     \xA5    \xD5
++map     \xA6    \xD6
++map     \xA7    \xD7
++map     \xA8    \xD8
++map     \xA9    \xD9
++map     \xAA    \xDA
++map     \xAB    \xDB
++map     \xAC    \xDC
++map     \xAD    \xDD
++map     \xAE    \xDE
++map     \xAF    \xDF
++map     \xB0    \xD3    # Changed, because yo
++map     \xB1    \xF3    #
++map     \xB2    \xF2
++map     \xB3    \xF0    # YO
++map     \xB4    \xF4
++map     \xB5    \xF5
++map     \xB6    \xF6
++map     \xB7    \xF7
++map     \xB8    \xF8
++map     \xB9    \xD0
++#map    \xBA    \xFA
++map     \xBB    \xFB
++map     \xBC    \xFC
++map     \xBD    \xFD
++map     \xBE    \xFE
++map     \xBF    \xCB    #
++map     \xC0    \xEE    # yu
++map     \xC1    \xA0    # a
++map     \xC2    \xA1    # b
++map     \xC3    \xE6    # c
++map     \xC4    \xA4    # d
++map     \xC5    \xA5    # e
++map     \xC6    \xE4    # f
++map     \xC7    \xA3    # g
++map     \xC8    \xE5    # h
++map     \xC9    \xA8    # i
++map     \xCA    \xA9    # iy
++map     \xCB    \xAA    # k
++map     \xCC    \xAB    # l
++map     \xCD    \xAC    # m
++map     \xCE    \xAD    # n
++map     \xCF    \xAE    # o
++map     \xD0    \xAF    # p
++map     \xD1    \xEF    # ya
++map     \xD2    \xE0    # r
++map     \xD3    \xE1    # s
++map     \xD4    \xE2    # t
++map     \xD5    \xE3    # u
++map     \xD6    \xA6    # zh
++map     \xD7    \xA2    # v
++map     \xD8    \xEC    # m znak
++map     \xD9    \xEB    # y
++map     \xDA    \xA7    # z
++map     \xDB    \xE8    # sh
++map     \xDC    \xED    # ae
++map     \xDD    \xE9    # sch
++map     \xDE    \xE7    # ch
++map     \xDF    \xEA    # t znak
++map     \xE0    \x9E    # YU
++map     \xE1    \x80    # A
++map     \xE2    \x81    # B
++map     \xE3    \x96    # C
++map     \xE4    \x84    # D
++map     \xE5    \x85    # E
++map     \xE6    \x94    # F
++map     \xE7    \x83    # G
++map     \xE8    \x95    # H
++map     \xE9    \x88    # I
++map     \xEA    \x89    # IY
++map     \xEB    \x8A    # K
++map     \xEC    \x8B    # L
++map     \xED    \x8C    # M
++map     \xEE    \x48    #  changed for Fidonet \x8D    # N
++map     \xEF    \x8E    # O
++map     \xF0    \x8F    # P
++map     \xF1    \x9F    # YA
++map     \xF2    \x90    # R
++map     \xF3    \x91    # S
++map     \xF4    \x92    # T
++map     \xF5    \x93    # U
++map     \xF6    \x86    # ZH
++map     \xF7    \x82    # V
++map     \xF8    \x9C    # M znak
++map     \xF9    \x9B    # Y
++map     \xFA    \x87    # Z
++map     \xFB    \x98    # SH
++map     \xFC    \x9D    # AE
++map     \xFD    \x99    # SCH
++map     \xFE    \x97    # CH
++map     \xFF    \x9A    # T znak
+ 
+ 
++# ----------------------------------------------------------------------------
++#       Channel map for translation CP866 codes to ISO-8859-5 codes
++#	(Russian language)
++#
++table	cp866	iso-8859-5
++map     \x80    \xF4
++map     \x81    \xC3
++map     \x82    \xF0
++map     \x83    \xF6
++map     \x84    \xF1
++map     \x85    \xF5
++map     \x86    \xF3
++map     \x87    \xF2
++map     \x88    \xB0
++map     \x89    \xB1
++map     \x8A    \xB2
++map     \x8B    \xB3
++map     \x8C    \xB4
++map     \x8D    \xB5
++map     \x8E    \xB6
++map     \x8F    \xB7
++map     \x90    \xB8
++map     \x91    \xB9
++map     \x92    \xBA
++map     \x93    \xBB
++map     \x94    \xBC
++map     \x95    \xBD
++map     \x96    \xBE
++map     \x97    \xBF
++map     \x98    \xC0
++map     \x99    \xC1
++map     \x9A    \xC2
++map     \x9B    \xF7
++map     \x9C    \xC4
++map     \x9D    \xC5
++map     \x9E    \xC6
++map     \x9F    \xC7
++map     \xA0    \xC8
++map     \xA1    \xC9
++map     \xA2    \xCA
++map     \xA3    \xCB
++map     \xA4    \xCC
++map     \xA5    \xCD
++map     \xA6    \xCE
++map     \xA7    \xCF
++map     \xA8    \xD0
++map     \xA9    \xD1
++map     \xAA    \xD2
++map     \xAB    \xD3
++map     \xAC    \xD4
++map     \xAD    \xD5
++map     \xAE    \xD6
++map     \xAF    \xD7
++map     \xB0    \x80
++map     \xB1    \x81
++map     \xB2    \x82
++map     \xB3    \x83
++map     \xB4    \x84
++map     \xB5    \x85
++map     \xB6    \x86
++map     \xB7    \x87
++map     \xB8    \x88
++map     \xB9    \x89
++map     \xBA    \x8A
++map     \xBB    \x8B
++map     \xBC    \x8C
++map     \xBD    \x8D
++map     \xBE    \x8E
++map     \xBF    \x8F
++map     \xC0    \x90
++map     \xC1    \x91
++map     \xC2    \x92
++map     \xC3    \x93
++map     \xC4    \x94
++map     \xC5    \x95
++map     \xC6    \x96
++map     \xC7    \x97
++map     \xC8    \x98
++map     \xC9    \x99
++map     \xCA    \x9A
++map     \xCB    \x9B
++map     \xCC    \x9C
++map     \xCD    \x9D
++map     \xCE    \x9E
++map     \xCF    \x9F
++map     \xD0    \xA0
++map     \xD1    \xA1
++map     \xD2    \xA2
++map     \xD3    \xA3
++map     \xD4    \xA4
++map     \xD5    \xA5
++map     \xD6    \xA6
++map     \xD7    \xA7
++map     \xD8    \xA8
++map     \xD9    \xA9
++map     \xDA    \xAA
++map     \xDB    \xAB
++map     \xDC    \xAC
++map     \xDD    \xAD
++map     \xDE    \xAE
++map     \xDF    \xAF
++map     \xE0    \xE0
++map     \xE1    \xE1
++map     \xE2    \xE2
++map     \xE3    \xE3
++map     \xE4    \xE4
++map     \xE5    \xE5
++map     \xE6    \xE6
++map     \xE7    \xE7
++map     \xE8    \xE8
++map     \xE9    \xE9
++map     \xEA    \xEA
++map     \xEB    \xEB
++map     \xEC    \xEC
++map     \xED    \xED
++map     \xEE    \xEE
++map     \xEF    \xEF
++map     \xF0    \xD8
++map     \xF1    \xD9
++map     \xF2    \xDA
++map     \xF3    \xDB
++map     \xF4    \xDC
++map     \xF5    \xDD
++map     \xF6    \xDE
++map     \xF7    \xDF
++map     \xF8    \xF8
++map     \xF9    \xF9
++map     \xFA    \xFA
++map     \xFB    \xFB
++map     \xFC    \xFC
++map     \xFD    \xFD
++map     \xFE    \xFE
++map     \xFF    \xFF
++
++
++# ----------------------------------------------------------------------------
++#       Channel map for translation ISO-8859-5 codes to CP866 codes
++#	(Russian language)
++#	Due to fidonet wieredness, capital Russian EN translates to 
++#	latin 'H'.
++#
++table	iso-8859-5	cp866
++map     \x80    \xB0
++map     \x81    \xB1
++map     \x82    \xB2
++map     \x83    \xB3
++map     \x84    \xB4
++map     \x85    \xB5
++map     \x86    \xB6
++map     \x87    \xB7
++map     \x88    \xB8
++map     \x89    \xB9
++map     \x8A    \xBA
++map     \x8B    \xBB
++map     \x8C    \xBC
++map     \x8D    \xBD
++map     \x8E    \xBE
++map     \x8F    \xBF
++map     \x90    \xC0
++map     \x91    \xC1
++map     \x92    \xC2
++map     \x93    \xC3
++map     \x94    \xC4
++map     \x95    \xC5
++map     \x96    \xC6
++map     \x97    \xC7
++map     \x98    \xC8
++map     \x99    \xC9
++map     \x9A    \xCA
++map     \x9B    \xCB
++map     \x9C    \xCC
++map     \x9D    \xCD
++map     \x9E    \xCE
++map     \x9F    \xCF
++map     \xA0    \xD0
++map     \xA1    \xD1
++map     \xA2    \xD2
++map     \xA3    \xD3
++map     \xA4    \xD4
++map     \xA5    \xD5
++map     \xA6    \xD6
++map     \xA7    \xD7
++map     \xA8    \xD8
++map     \xA9    \xD9
++map     \xAA    \xDA
++map     \xAB    \xDB
++map     \xAC    \xDC
++map     \xAD    \xDD
++map     \xAE    \xDE
++map     \xAF    \xDF
++map     \xB0    \x88
++map     \xB1    \x89
++map     \xB2    \x8A
++map     \xB3    \x8B
++map     \xB4    \x8C
++map     \xB5    \x48    #  changed for Fidonet \x8D    # N
++map     \xB6    \x8E
++map     \xB7    \x8F
++map     \xB8    \x90
++map     \xB9    \x91
++map     \xBA    \x92
++map     \xBB    \x93
++map     \xBC    \x94
++map     \xBD    \x95
++map     \xBE    \x96
++map     \xBF    \x97
++map     \xC0    \x98
++map     \xC1    \x99
++map     \xC2    \x9A
++map     \xC3    \x81
++map     \xC4    \x9C
++map     \xC5    \x9D
++map     \xC6    \x9E
++map     \xC7    \x9F
++map     \xC8    \xA0
++map     \xC9    \xA1
++map     \xCA    \xA2
++map     \xCB    \xA3
++map     \xCC    \xA4
++map     \xCD    \xA5
++map     \xCE    \xA6
++map     \xCF    \xA7
++map     \xD0    \xA8
++map     \xD1    \xA9
++map     \xD2    \xAA
++map     \xD3    \xAB
++map     \xD4    \xAC
++map     \xD5    \xAD
++map     \xD6    \xAE
++map     \xD7    \xAF
++map     \xD8    \xF0
++map     \xD9    \xF1
++map     \xDA    \xF2
++map     \xDB    \xF3
++map     \xDC    \xF4
++map     \xDD    \xF5
++map     \xDE    \xF6
++map     \xDF    \xF7
++map     \xE0    \xE0
++map     \xE1    \xE1
++map     \xE2    \xE2
++map     \xE3    \xE3
++map     \xE4    \xE4
++map     \xE5    \xE5
++map     \xE6    \xE6
++map     \xE7    \xE7
++map     \xE8    \xE8
++map     \xE9    \xE9
++map     \xEA    \xEA
++map     \xEB    \xEB
++map     \xEC    \xEC
++map     \xED    \xED
++map     \xEE    \xEE
++map     \xEF    \xEF
++map     \xF0    \x82
++map     \xF1    \x84
++map     \xF2    \x87
++map     \xF3    \x86
++map     \xF4    \x80
++map     \xF5    \x85
++map     \xF6    \x83
++map     \xF7    \x9B
++map     \xF8    \xF8
++map     \xF9    \xF9
++map     \xFA    \xFA
++map     \xFB    \xFB
++map     \xFC    \xFC
++map     \xFD    \xFD
++map     \xFE    \xFE
++map     \xFF    \xFF
++
++
++# ----------------------------------------------------------------------------
++#       Channel map for translation CP866 codes to CP1251 codes
++#	(Russian language)
++#
++table	cp866	cp1251
++map     \x80    \xF4
++map     \x81    \xC3
++map     \x82    \xF0
++map     \x83    \xF6
++map     \x84    \xF1
++map     \x85    \xF5
++map     \x86    \xF3
++map     \x87    \xF2
++map     \x88    \xB0
++map     \x89    \xB1
++map     \x8A    \xB2
++map     \x8B    \xB3
++map     \x8C    \xB4
++map     \x8D    \xB5
++map     \x8E    \xB6
++map     \x8F    \xB7
++map     \x90    \xB8
++map     \x91    \xB9
++map     \x92    \xBA
++map     \x93    \xBB
++map     \x94    \xBC
++map     \x95    \xBD
++map     \x96    \xBE
++map     \x97    \xBF
++map     \x98    \xC0
++map     \x99    \xC1
++map     \x9A    \xC2
++map     \x9B    \xF7
++map     \x9C    \xC4
++map     \x9D    \xC5
++map     \x9E    \xC6
++map     \x9F    \xC7
++map     \xA0    \xC8
++map     \xA1    \xC9
++map     \xA2    \xCA
++map     \xA3    \xCB
++map     \xA4    \xCC
++map     \xA5    \xCD
++map     \xA6    \xCE
++map     \xA7    \xCF
++map     \xA8    \xD0
++map     \xA9    \xD1
++map     \xAA    \xD2
++map     \xAB    \xD3
++map     \xAC    \xD4
++map     \xAD    \xD5
++map     \xAE    \xD6
++map     \xAF    \xD7
++map     \xB0    \xD8
++map     \xB1    \xD9
++map     \xB2    \xDA
++map     \xB3    \xDB
++map     \xB4    \xDC
++map     \xB5    \xDD
++map     \xB6    \xDE
++map     \xB7    \xDF
++map     \xB8    \xF8
++map     \xB9    \xF9
++map     \xBA    \xFA
++map     \xBB    \xFB
++map     \xBC    \xFC
++map     \xBD    \xFD
++map     \xBE    \xFE
++map     \xBF    \xFF
++map     \xC0    \x80
++map     \xC1    \x81
++map     \xC2    \x82
++map     \xC3    \x83
++map     \xC4    \x84
++map     \xC5    \x85
++map     \xC6    \x86
++map     \xC7    \x87
++map     \xC8    \x88
++map     \xC9    \x89
++map     \xCA    \x8A
++map     \xCB    \x8B
++map     \xCC    \x8C
++map     \xCD    \x8D
++map     \xCE    \x8E
++map     \xCF    \x8F
++map     \xD0    \x90
++map     \xD1    \x91
++map     \xD2    \x92
++map     \xD3    \x93
++map     \xD4    \x94
++map     \xD5    \x95
++map     \xD6    \x96
++map     \xD7    \x97
++map     \xD8    \x98
++map     \xD9    \x99
++map     \xDA    \x9A
++map     \xDB    \x9B
++map     \xDC    \x9C
++map     \xDD    \x9D
++map     \xDE    \x9E
++map     \xDF    \x9F
++map     \xE0    \xA0
++map     \xE1    \xA1
++map     \xE2    \xA2
++map     \xE3    \xA3
++map     \xE4    \xA4
++map     \xE5    \xA5
++map     \xE6    \xA6
++map     \xE7    \xA7
++map     \xE8    \xA8
++map     \xE9    \xA9
++map     \xEA    \xAA
++map     \xEB    \xAB
++map     \xEC    \xAC
++map     \xED    \xAD
++map     \xEE    \xAE
++map     \xEF    \xAF
++map     \xF0    \xE0
++map     \xF1    \xE1
++map     \xF2    \xE2
++map     \xF3    \xE3
++map     \xF4    \xE4
++map     \xF5    \xE5
++map     \xF6    \xE6
++map     \xF7    \xE7
++map     \xF8    \xE8
++map     \xF9    \xE9
++map     \xFA    \xEA
++map     \xFB    \xEB
++map     \xFC    \xEC
++map     \xFD    \xED
++map     \xFE    \xEE
++map     \xFF    \xEF
++
++
++# ----------------------------------------------------------------------------
++#       Channel map for translation CP1251 codes to CP866 codes
++#	(Russian language)
++#	Due to fidonet wieredness, capital Russian EN translates to 
++#	latin 'H'.
++#
++table	cp1251	cp866
++map     \x80    \xC0
++map     \x81    \xC1
++map     \x82    \xC2
++map     \x83    \xC3
++map     \x84    \xC4
++map     \x85    \xC5
++map     \x86    \xC6
++map     \x87    \xC7
++map     \x88    \xC8
++map     \x89    \xC9
++map     \x8A    \xCA
++map     \x8B    \xCB
++map     \x8C    \xCC
++map     \x8D    \xCD
++map     \x8E    \xCE
++map     \x8F    \xCF
++map     \x90    \xD0
++map     \x91    \xD1
++map     \x92    \xD2
++map     \x93    \xD3
++map     \x94    \xD4
++map     \x95    \xD5
++map     \x96    \xD6
++map     \x97    \xD7
++map     \x98    \xD8
++map     \x99    \xD9
++map     \x9A    \xDA
++map     \x9B    \xDB
++map     \x9C    \xDC
++map     \x9D    \xDD
++map     \x9E    \xDE
++map     \x9F    \xDF
++map     \xA0    \xE0
++map     \xA1    \xE1
++map     \xA2    \xE2
++map     \xA3    \xE3
++map     \xA4    \xE4
++map     \xA5    \xE5
++map     \xA6    \xE6
++map     \xA7    \xE7
++map     \xA8    \xE8
++map     \xA9    \xE9
++map     \xAA    \xEA
++map     \xAB    \xEB
++map     \xAC    \xEC
++map     \xAD    \xED
++map     \xAE    \xEE
++map     \xAF    \xEF
++map     \xB0    \x88
++map     \xB1    \x89
++map     \xB2    \x8A
++map     \xB3    \x8B
++map     \xB4    \x8C
++map     \xB5    \x48    #  changed for Fidonet \x8D    # N
++map     \xB6    \x8E
++map     \xB7    \x8F
++map     \xB8    \x90
++map     \xB9    \x91
++map     \xBA    \x92
++map     \xBB    \x93
++map     \xBC    \x94
++map     \xBD    \x95
++map     \xBE    \x96
++map     \xBF    \x97
++map     \xC0    \x98
++map     \xC1    \x99
++map     \xC2    \x9A
++map     \xC3    \x81
++map     \xC4    \x9C
++map     \xC5    \x9D
++map     \xC6    \x9E
++map     \xC7    \x9F
++map     \xC8    \xA0
++map     \xC9    \xA1
++map     \xCA    \xA2
++map     \xCB    \xA3
++map     \xCC    \xA4
++map     \xCD    \xA5
++map     \xCE    \xA6
++map     \xCF    \xA7
++map     \xD0    \xA8
++map     \xD1    \xA9
++map     \xD2    \xAA
++map     \xD3    \xAB
++map     \xD4    \xAC
++map     \xD5    \xAD
++map     \xD6    \xAE
++map     \xD7    \xAF
++map     \xD8    \xB0
++map     \xD9    \xB1
++map     \xDA    \xB2
++map     \xDB    \xB3
++map     \xDC    \xB4
++map     \xDD    \xB5
++map     \xDE    \xB6
++map     \xDF    \xB7
++map     \xE0    \xF0
++map     \xE1    \xF1
++map     \xE2    \xF2
++map     \xE3    \xF3
++map     \xE4    \xF4
++map     \xE5    \xF5
++map     \xE6    \xF6
++map     \xE7    \xF7
++map     \xE8    \xF8
++map     \xE9    \xF9
++map     \xEA    \xFA
++map     \xEB    \xFB
++map     \xEC    \xFC
++map     \xED    \xFD
++map     \xEE    \xFE
++map     \xEF    \xFF
++map     \xF0    \x82
++map     \xF1    \x84
++map     \xF2    \x87
++map     \xF3    \x86
++map     \xF4    \x80
++map     \xF5    \x85
++map     \xF6    \x83
++map     \xF7    \x9B
++map     \xF8    \xB8
++map     \xF9    \xB9
++map     \xFA    \xBA
++map     \xFB    \xBB
++map     \xFC    \xBC
++map     \xFD    \xBD
++map     \xFE    \xBE
++map     \xFF    \xBF
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/common/Makefile fidogate-4.3a3-ai-pl9.1/src/common/Makefile
+--- fidogate-4.3a3/src/common/Makefile	Sun May  3 16:46:36 1998
++++ fidogate-4.3a3-ai-pl9.1/src/common/Makefile	Tue Jun 23 12:56:29 1998
+@@ -16,7 +16,8 @@
+ include $(TOPDIR)/rules.make
+ 
+ 
+-OBJS		= address.o \
++OBJS		= acl.o \
++		  address.o \
+ 		  aliases.o \
+ 		  areas.o \
+ 		  areasbbs.o \
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/common/acl.c fidogate-4.3a3-ai-pl9.1/src/common/acl.c
+--- fidogate-4.3a3/src/common/acl.c	Thu Jan  1 03:00:00 1970
++++ fidogate-4.3a3-ai-pl9.1/src/common/acl.c	Tue Jun 23 15:02:19 1998
+@@ -0,0 +1,269 @@
++/*****************************************************************************
++ * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
++ *
++ * $Id: fidogate-4.3a3-ai-pl9.1.diff,v 1.3 2002/08/04 02:22:52 dyff Exp $
++ *
++ *****************************************************************************/
++
++#include "fidogate.h"
++
++
++
++/*
++ * Local prototypes
++ */
++static Acl  *acl_parse_line	(char *);
++static int   acl_do_file	(char *);
++static char *acl_lookup		(char *);
++static void  pna_notify_init	(char *);
++
++
++/*
++ * ACL list
++ */
++static Acl *acl_list = NULL;
++static Acl *acl_last = NULL;
++
++static char **pna_notify_list = NULL;
++static char **ngrp_pat_list = NULL;
++
++
++
++static Acl *acl_parse_line(char *buf)
++{
++    Acl *p;
++
++    char *f, *n;
++	
++    f = strtok(buf,  " \t");	/* E-Mail address pattern */
++    n = strtok(NULL, " \t");	/* Newsgroup pattern */
++    if(f==NULL || n==NULL)
++	return NULL;
++    
++    if(strieq(f, "include"))
++    {
++	acl_do_file(n);
++	return NULL;
++    }
++
++    if(strieq(f, "PostingNotAllowedNotify"))
++    {
++	pna_notify_init(n);
++	return NULL;
++    }
++    
++    p = (Acl *)xmalloc(sizeof(Acl));
++    p->next      = NULL;
++    p->email_pat = xmalloc(strlen(f) + 1);
++    p->ngrp_pat  = xmalloc(strlen(n) + 1);
++    strcpy(p->email_pat, f);
++    strcpy(p->ngrp_pat, n);
++	
++    debug(15, "acl: %s       %s", p->email_pat, p->ngrp_pat);
++
++    return p;
++}
++
++
++
++static int acl_do_file(char *name)
++{
++    FILE *fp;
++    Acl *p;
++
++    debug(14, "Reading ACL file %s", name);
++    
++    fp = fopen_expand_name(name, R_MODE_T, FALSE);
++    if(!fp)
++	return ERROR;
++    
++    while(cf_getline(buffer, BUFFERSIZE, fp))
++    {
++	p = acl_parse_line(buffer);
++	if(!p)
++	    continue;
++	
++	/* Put into linked list */
++	if(acl_list)
++	    acl_last->next = p;
++	else
++	    acl_list       = p;
++	acl_last       = p;
++    }
++    
++    fclose(fp);
++
++    return OK;
++}
++
++
++void acl_init(void)
++{
++    acl_do_file( cf_p_acl() );
++}
++
++
++char *acl_lookup(char *email)
++{
++    Acl  *p;
++    char *ngrp = NULL;
++    
++    for(p=acl_list; p; p=p->next)
++    {
++	if(wildmat(email, p->email_pat))
++	    ngrp = p->ngrp_pat;
++    }
++
++    debug(7, "acl_lookup(): From=%s, ngrp=%s", email, ngrp);
++    
++    return ngrp;
++}
++
++
++void acl_ngrp(RFCAddr rfc_from)
++{
++    char  email[MAXINETADDR];
++
++    strcpy(email, rfcaddr_to_asc(&rfc_from, FALSE));
++    list_init(&ngrp_pat_list, acl_lookup(email));
++}
++
++
++int acl_ngrp_lookup(char *list)
++{
++    static char **ngrp_list = NULL;
++
++    list_init(&ngrp_list, list);
++    return list_match(FALSE, ngrp_pat_list, ngrp_list);
++}
++
++
++
++void pna_notify_init(char *list)
++{
++    list_init(&pna_notify_list, list);
++}
++
++
++int pna_notify(char *email)
++{
++    static char **email_list = NULL;
++
++    list_init(&email_list, email);
++    return list_match(FALSE, pna_notify_list, email_list);
++}
++
++
++
++/*=================================================================*/
++/* This is part of INN 1.7.2                                       */
++/* Modify by Andy Igoshin                                          */
++
++/* =()<#define DISPOSE(p)		free((@<POINTER>@ *)p)>()= */
++#define DISPOSE(p)		free((void *)p)
++
++#define NEW(T, c)			\
++	((T *)xmalloc((unsigned int)(sizeof (T) * (c))))
++
++/*
++**  <ctype.h> usually includes \n, which is not what we want.
++*/
++#define ISWHITE(c)			((c) == ' ' || (c) == '\t')
++
++
++
++/*
++**  Parse a string into a NULL-terminated array of words; return number
++**  of words.  If argvp isn't NULL, it and what it points to will be
++**  DISPOSE'd.
++*/
++int
++Argify(line, argvp)
++    char		*line;
++    char		***argvp;
++{
++    register char	**argv;
++    register char	*p;
++    register int	i;
++
++    if (*argvp != NULL) {
++	DISPOSE(*argvp[0]);
++	DISPOSE(*argvp);
++    }
++
++    /*  Copy the line, which we will split up. */
++    while (ISWHITE(*line))
++	line++;
++    i = strlen(line);
++    p = NEW(char, i + 1);
++    (void)strcpy(p, line);
++
++    /* Allocate worst-case amount of space. */
++    for (*argvp = argv = NEW(char*, i + 2); *p; ) {
++	/* Mark start of this word, find its end. */
++	for (*argv++ = p; *p && !ISWHITE(*p); )
++	    p++;
++	if (*p == '\0')
++	    break;
++
++	/* Nip off word, skip whitespace. */
++	for (*p++ = '\0'; ISWHITE(*p); )
++	    p++;
++    }
++    *argv = NULL;
++    return argv - *argvp;
++}
++
++
++
++/*
++**  Parse a newsgroups line, return TRUE if there were any.
++*/
++int list_init(char ***argvp, char *list)
++{
++    register char	*p;
++
++    if(!list)
++	return FALSE;
++
++    for (p = list; *p; p++)
++	if (*p == ',')
++	    *p = ' ';
++
++    return Argify(list, argvp) != 0;
++}
++
++
++
++/*
++**  Match a list of newsgroup specifiers against a list of newsgroups.
++**  func is called to see if there is a match.
++*/
++int list_match(register int match, char **Pats, char **list)
++{
++    register int	i;
++    register char	*p;
++
++    if (!Pats)
++    	return FALSE;
++    if (!list)
++    	return FALSE;
++    if (Pats[0] == NULL)
++	return FALSE;
++
++    for ( ; *list; list++) {
++	for (i = 0; (p = Pats[i]) != NULL; i++) {
++	    if (p[0] == '!') {
++		if (wildmat(*list, ++p))
++		    match = FALSE;
++	    }
++	    else if (wildmat(*list, p))
++		match = TRUE;
++	}
++    }
++
++    if (match)
++	return TRUE;
++
++    return FALSE;
++}
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/common/address.c fidogate-4.3a3-ai-pl9.1/src/common/address.c
+--- fidogate-4.3a3/src/common/address.c	Sun Feb  1 21:51:19 1998
++++ fidogate-4.3a3-ai-pl9.1/src/common/address.c	Tue Jun 23 12:53:30 1998
+@@ -56,6 +56,9 @@
+ char address_error[256];
+ 
+ 
++#ifdef AI_6
++static char **addr_is_local_pats = NULL;
++#endif
+ 
+ /*
+  * Set/get HostsRestricted mode
+@@ -127,6 +130,26 @@
+ }
+ 
+ 
++#ifdef AI_1
++/*
++ * verify_host_flag(): Verify FTN host flag
++ *
++ */
++int verify_host_flag(Node *node, int flag)
++{
++    Host *h;
++
++    SHUFFLEBUFFERS;
++
++    h = hosts_lookup(node, NULL);
++
++    if(h)				/* Address found in HOSTS */
++    {
++	return h->flags & flag ? TRUE : FALSE;
++    }
++    return FALSE;
++}
++#endif
+ 
+ /*
+  * inet_to_ftn(): convert Internet address to FTN address
+@@ -281,6 +304,34 @@
+     return  rfc.addr[0] == '\0'  ||  stricmp(rfc.addr, cf_fqdn()) == 0;
+ }
+ 
++#ifdef AI_6
++void addr_is_local_xpost_init(char *addr)
++{
++    list_init(&addr_is_local_pats, addr);
++}
++
++
++int addr_is_local_xpost(char *addr)
++{
++    RFCAddr rfc;
++    int ailx;
++    static char **addr_list = NULL;
++    
++    if(!addr)
++	return FALSE;
++
++    rfc = rfcaddr_from_rfc(addr);
++    
++    debug(7, "addr_is_local_xpost(): From=%s FQDN=%s",
++	  rfcaddr_to_asc(&rfc, TRUE), cf_fqdn());
++    ailx = rfc.addr[0] == '\0'  ||  stricmp(rfc.addr, cf_fqdn()) == 0;
++    if (!ailx) {
++	list_init(&addr_list, addr);
++	ailx = list_match(FALSE, addr_is_local_pats, addr_list);
++    }
++    return ailx;
++}
++#endif
+ 
+ 
+ /*
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/common/aliases.c fidogate-4.3a3-ai-pl9.1/src/common/aliases.c
+--- fidogate-4.3a3/src/common/aliases.c	Sun Jan 18 20:49:09 1998
++++ fidogate-4.3a3-ai-pl9.1/src/common/aliases.c	Tue Jun 23 12:53:30 1998
+@@ -62,6 +62,9 @@
+     Alias *p;
+     char *u, *n, *f;
+     Node node;
++#ifdef AI_2
++    char *un, *ud;
++#endif
+     
+     u = xstrtok(buf,  " \t");	/* User name */
+     n = xstrtok(NULL, " \t");	/* FTN node */
+@@ -85,11 +88,27 @@
+     p = (Alias *)xmalloc(sizeof(Alias));
+     p->next     = NULL;
+     p->node     = node;
++#ifndef AI_2
+     p->username = strsave(u);
++#else
++    un = xstrtok(u,  "@");	/* User name */
++    ud = xstrtok(NULL, " \t");	/* User domain */
++    p->username = strsave(un);
++    p->userdom = ud ? strsave(ud) : NULL;
++#endif
+     p->fullname = strsave(f);
+     
++#ifndef AI_2
+     debug(15, "aliases: %s %s %s", p->username, 
+ 	  node_to_asc(&p->node, TRUE), p->fullname);
++#else
++    if(p->userdom)
++	debug(15, "aliases: %s@%s %s %s", p->username, p->userdom,
++	      node_to_asc(&p->node, TRUE), p->fullname);
++    else
++	debug(15, "aliases: %s %s %s", p->username, 
++	      node_to_asc(&p->node, TRUE), p->fullname);
++#endif
+ 
+     return p;
+ }
+@@ -167,6 +186,49 @@
+     return NULL;
+ }
+ 
++#ifdef AI_2
++Alias *alias_lookup_strict(Node *node, char *username, char *fullname)
++{
++    Alias *a;
++
++    for(a=alias_list; a; a=a->next)
++    {
++	if(username)
++	    if(!stricmp(a->username, username) && node_eq(node, &a->node))
++		return a;
++	if(fullname)
++	    if(!stricmp(a->fullname, fullname) && node_eq(node, &a->node))
++		return a;
++    }
++    for(a=alias_list; a; a=a->next)
++    {
++	if(username)
++	    if(!stricmp(a->username, username) && node_np_eq(node, &a->node))
++		return a;
++	if(fullname)
++	    if(!stricmp(a->fullname, fullname) && node_np_eq(node, &a->node))
++		return a;
++    }
++
++    return NULL;
++}
++
++Alias *alias_lookup_userdom(Node *node, RFCAddr *rfc, char *fullname)
++{
++    Alias *a;
++
++    if(!rfc)
++	return NULL;
++
++    for(a=alias_list; a; a=a->next)
++    {
++	if( a->userdom && (!stricmp(a->username, rfc->user) && !stricmp(a->userdom, rfc->addr)) )
++	    return a;
++    }
++
++    return NULL;
++}
++#endif
+ 
+ 
+ /*
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/common/bounce.c fidogate-4.3a3-ai-pl9.1/src/common/bounce.c
+--- fidogate-4.3a3/src/common/bounce.c	Sun Jan 18 12:47:41 1998
++++ fidogate-4.3a3-ai-pl9.1/src/common/bounce.c	Tue Jun 23 12:53:30 1998
+@@ -52,7 +52,10 @@
+ int print_file_subst(FILE *in, FILE *out, Message *msg, char *rfc_to, Textlist *body)
+ {
+     int c;
+-    
++#ifdef AI_8
++    char *hg;
++#endif
++
+     while((c = getc(in)) != EOF)
+     {
+ 	if(c == '%') 
+@@ -78,6 +81,20 @@
+ 		fputs( rfc_to, out);					break;
+ 	    case 'M':			/* Message */
+ 		tl_print(body, out);				break;
++#ifdef AI_8
++	    case 'A':			/* RFC From: */
++		if((hg = header_getcomplete("From")))
++		    fputs( hg, out);					break;
++	    case 'D':			/* RFC Date: */
++	    	if((hg = header_get("Date")))
++		    fputs( hg, out);					break;
++	    case 'N':			/* RFC Newsgroups: */
++		if((hg = header_get("Newsgroups")))
++		    fputs( hg, out);					break;
++	    case 'S':			/* RFC Subject: */
++		if((hg = header_get("Subject")))
++		    fputs( hg, out);					break;
++#endif
+ 	    }
+ 	}
+ 	else 
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/common/hosts.c fidogate-4.3a3-ai-pl9.1/src/common/hosts.c
+--- fidogate-4.3a3/src/common/hosts.c	Sun Jan 18 20:49:09 1998
++++ fidogate-4.3a3-ai-pl9.1/src/common/hosts.c	Tue Jun 23 12:54:11 1998
+@@ -126,6 +126,13 @@
+ 	    /* -d */
+ 	    p->flags |= HOST_DOWN;
+ 	}
++#ifdef AI_1
++	if(!strcmp(o, "-a"))
++	{
++	    /* -a */
++	    p->flags |= HOST_ADDR;
++	}
++#endif
+     }
+ 
+     debug(15, "hosts: %s %s %02x", node_to_asc(&p->node, TRUE),
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/common/message.c fidogate-4.3a3-ai-pl9.1/src/common/message.c
+--- fidogate-4.3a3/src/common/message.c	Sun May  3 16:46:37 1998
++++ fidogate-4.3a3-ai-pl9.1/src/common/message.c	Tue Jun 23 13:18:23 1998
+@@ -42,7 +42,7 @@
+     int c;
+     
+     while( (c = *line++) )
+-	if( !(c & 0x60) )
++	if( !(c & 0xe0) )
+ 	{
+ 	    if(crlf || (c!='\r' && c!='\n'))
+ 		fprintf(out, "^%c", '@' + c);
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/common/mime.c fidogate-4.3a3-ai-pl9.1/src/common/mime.c
+--- fidogate-4.3a3/src/common/mime.c	Sun Jan 18 12:47:51 1998
++++ fidogate-4.3a3-ai-pl9.1/src/common/mime.c	Wed Jun 24 13:09:09 1998
+@@ -59,6 +59,11 @@
+ 
+ 
+ 
++#ifdef AI_9
++int	mime_qp_soft_endline;	/* flag for decoding soft endlines in QP */
++				/* (Rule#5 in RFC1521)                   */
++#endif
++
+ /*
+  * Dequote string with MIME-style quoted-printable =XX
+  */
+@@ -77,11 +82,27 @@
+ 		    s += 2;
+ 		    continue;
+ 		}
++#ifndef AI_9
+ 		if(s[1]=='\n'                ||		/* =<LF> */
+ 		   (s[1]=='\r' && s[2]=='\n')  )	/* this as well */
++#else
++		else if(s[1]=='\n')			/* =<LF> */
++#endif
+ 		{
++#ifndef AI_9
+ 		    d[i] = 0;
+ 		    break;
++#else
++		    mime_qp_soft_endline = i;
++		    s++;
++		    return d;		    
++		}
++		else if(s[1]=='\r' && s[2]=='\n')	/* this as well */
++		{
++		    mime_qp_soft_endline = i;
++		    s += 2;
++		    return d;		    
++#endif
+ 		}
+ 	    }
+ 
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/common/node.c fidogate-4.3a3-ai-pl9.1/src/common/node.c
+--- fidogate-4.3a3/src/common/node.c	Sun Jan 18 12:47:52 1998
++++ fidogate-4.3a3-ai-pl9.1/src/common/node.c	Tue Jun 23 12:54:11 1998
+@@ -182,6 +182,12 @@
+ 	a->node == b->node && a->point ==b->point   ;
+ }
+ 
++int node_np_eq(Node *a, Node *b)
++{
++    return
++	a->zone == b->zone && a->net ==b->net && a->node == b->node;
++}
++
+ 
+ 
+ /*
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/gate/ftn2rfc.c fidogate-4.3a3-ai-pl9.1/src/gate/ftn2rfc.c
+--- fidogate-4.3a3/src/gate/ftn2rfc.c	Wed May 13 00:12:31 1998
++++ fidogate-4.3a3-ai-pl9.1/src/gate/ftn2rfc.c	Wed Jun 24 18:08:44 1998
+@@ -239,6 +239,24 @@
+     return FALSE;
+ }
+ 
++#ifdef AI_5
++/*
++ * Check for 8bit characters in any string
++ */
++int check_8bit_s(char *s, int len)
++{
++    char *p;
++
++    if(!s)
++	return FALSE;
++
++    for(p=s; (int)(p-s)<len && *p!='\0'; p++)
++	if(*p & 0x80)
++	    return TRUE;
++
++    return FALSE;
++}
++#endif
+ 
+ 
+ /*
+@@ -466,7 +484,14 @@
+ 	 * Check for 8bit characters in message body. If none are
+ 	 * found, don't use the quoted-printable encoding or 8bit.
+ 	 */
++#ifndef AI_5
+ 	if(!check_8bit(&body.body))
++#else
++	if( !(check_8bit(&body.body)                         ||
++	      check_8bit_s(body.origin, sizeof(body.origin)) ||
++	      check_8bit_s(body.tear, sizeof(body.tear))     ||
++	      check_8bit_s(msg.subject, sizeof(msg.subject))) )
++#endif
+ 	    cvt8 &= ~(AREA_QP | AREA_8BIT);
+ 	
+ 	/*
+@@ -632,11 +657,27 @@
+ 
+ 	    debug(7, "Checking for alias: %s",
+ 		  rfcaddr_to_asc(&addr_from, TRUE));
++#ifndef AI_2
+ 	    a = alias_lookup(&msg.node_orig, NULL, addr_from.real);
++#else
++	    a = alias_lookup_strict(&msg.node_orig, NULL, addr_from.real);
++#endif
+ 	    if(a)
+ 	    {
++#ifndef AI_2
+ 		debug(7, "Alias found: %s %s %s", a->username,
+ 		      node_to_asc(&a->node, FALSE), a->fullname);
++#else
++		if(a->userdom)
++		{
++		    debug(7, "Alias found: %s@%s %s %s", a->username, a->userdom,
++			  node_to_asc(&a->node, FALSE), a->fullname);
++		    BUF_COPY(addr_from.addr, a->userdom);
++		}
++		else
++		    debug(7, "Alias found: %s %s %s", a->username,
++		          node_to_asc(&a->node, FALSE), a->fullname);
++#endif
+ 		BUF_COPY(addr_from.user, a->username);
+ #ifdef ALIASES_ARE_LOCAL
+ 		BUF_COPY(addr_from.addr, cf_fqdn());
+@@ -649,11 +690,27 @@
+ 	    
+ 	    debug(7, "Checking for alias: %s",
+ 		  rfcaddr_to_asc(&addr_to, TRUE));
++#ifndef AI_2
+ 	    a = alias_lookup(cf_addr(), NULL, addr_to.real);
++#else
++	    a = alias_lookup_strict(&msg.node_to, NULL, addr_to.real);
++#endif
+ 	    if(a)
+ 	    {
++#ifndef AI_2
+ 		debug(7, "Alias found: %s %s %s", a->username,
+ 		      node_to_asc(&a->node, FALSE), a->fullname);
++#else
++		if(a->userdom)
++		{
++		    debug(7, "Alias found: %s@%s %s %s", a->username, a->userdom,
++			  node_to_asc(&a->node, FALSE), a->fullname);
++		    BUF_COPY(addr_to.addr, a->userdom);
++		}
++		else
++		    debug(7, "Alias found: %s %s %s", a->username,
++		          node_to_asc(&a->node, FALSE), a->fullname);
++#endif
+ 		BUF_COPY(mail_to, a->username);
+ 	    }
+ 	    else
+@@ -913,7 +970,11 @@
+ 	tl_appendf(&theader, "From: %s\n", from_line);
+ 	if(reply_to_line)
+ 	    tl_appendf(&theader, "Reply-To: %s\n", reply_to_line);
++#ifndef AI_5
+ 	msg_xlate_line(buffer, sizeof(buffer), msg.subject, 0);
++#else
++	msg_xlate_line(buffer, sizeof(buffer), msg.subject, cvt8);
++#endif
+ 	tl_appendf(&theader, "Subject: %s\n", buffer);
+ 	tl_appendf(&theader, "Message-ID: %s\n", id_line);
+ 	
+@@ -954,7 +1015,11 @@
+ 	if(use_origin_for_organization && body.origin)
+ 	{
+ 	    strip_crlf(body.origin);
++#ifndef AI_5
+ 	    msg_xlate_line(buffer, sizeof(buffer), body.origin, 0);
++#else
++	    msg_xlate_line(buffer, sizeof(buffer), body.origin, cvt8);
++#endif
+ 	    if((p = strrchr(buffer, '(')))
+ 		*p = 0;
+ 	    strip_space(buffer);
+@@ -988,13 +1053,21 @@
+ 	if(x_ftn_T  &&  body.tear && !strncmp(body.tear, "--- ", 4))
+ 	{
+ 	    strip_crlf(body.tear);
++#ifndef AI_5
+ 	    msg_xlate_line(buffer, sizeof(buffer), body.tear, 0);
++#else
++	    msg_xlate_line(buffer, sizeof(buffer), body.tear, cvt8);
++#endif
+ 	    tl_appendf(&theader, "X-FTN-Tearline: %s\n", buffer+4);
+ 	}
+ 	if(!use_origin_for_organization  &&  x_ftn_O  &&  body.origin)
+ 	{
+ 	    strip_crlf(body.origin);
++#ifndef AI_5
+ 	    msg_xlate_line(buffer, sizeof(buffer), body.origin, 0);
++#else
++	    msg_xlate_line(buffer, sizeof(buffer), body.origin, cvt8);
++#endif
+ 	    p = buffer + strlen(" * Origin: ");
+ 	    while(is_blank(*p))
+ 		p++;
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/gate/rfc2ftn.c fidogate-4.3a3-ai-pl9.1/src/gate/rfc2ftn.c
+--- fidogate-4.3a3/src/gate/rfc2ftn.c	Tue Apr  7 16:21:58 1998
++++ fidogate-4.3a3-ai-pl9.1/src/gate/rfc2ftn.c	Wed Jun 24 13:17:53 1998
+@@ -64,6 +64,12 @@
+ 
+ 
+ 
++#ifdef AI_9
++extern int	mime_qp_soft_endline;
++#endif
++
++
++
+ /*
+  * Prototypes
+  */
+@@ -86,8 +92,13 @@
+ int	snd_message		(Message *, Area *, RFCAddr, RFCAddr, char *,
+ 				 long, char *, int, MIMEInfo *);
+ int	print_tear_line		(FILE *);
++#if defined(AI_1) || defined(AI_2)
++int	print_origin		(FILE *, char *, Node);
++int	print_local_msgid	(FILE *, Node);
++#else
+ int	print_origin		(FILE *, char *);
+ int	print_local_msgid	(FILE *);
++#endif
+ int	print_via		(FILE *);
+ int	sendmail_t		(long);
+ void	short_usage		(void);
+@@ -102,6 +113,11 @@
+ 
+ static int maxmsg = 0;			/* Process maxmsg messages */
+ 
++#if defined(AI_1) || defined(AI_2)
++static int alias_extended = FALSE;
++#endif
++char in_dir[MAXPATH];
++
+ static int default_rfc_level = 0;	/* Default ^ARFC level for areas    */
+ 
+ static int no_from_line	= FALSE;	/* NoFromLine          */
+@@ -112,6 +128,11 @@
+ static int dont_use_reply_to = FALSE;	/* DontUseReplyTo      */
+ static int replyaddr_ifmail_tx = FALSE;	/* ReplyAddrIfmailTX   */
+ static int check_areas_bbs = FALSE;	/* CheckAreasBBS       */
++#ifdef AI_7
++static int use_xmailer_for_tearline     = FALSE; /* config.gate: UseXMailerForTearline       */
++static int use_useragent_for_tearline   = FALSE; /* config.gate: UseUseragentForTearline     */
++static int use_xnewsreader_for_tearline = FALSE; /* config.gate: UseXNewsreaderForTearline   */
++#endif
+ 
+ 
+ 
+@@ -390,6 +411,12 @@
+     return addr_is_local( header_getcomplete("From") );
+ }
+ 
++#ifdef AI_6
++int rfc_is_local_xpost(char *email)
++{
++    return addr_is_local_xpost(email);
++}
++#endif
+ 
+ 
+ /*
+@@ -619,7 +646,11 @@
+      */
+     debug(5, "Name for alias checking: %s", to);
+ 
++#ifndef AI_2
+     if((alias = alias_lookup(node, to, NULL)))
++#else
++    if( (alias = alias_lookup(node, to, NULL)) && !alias->userdom )
++#endif
+     {
+ 	debug(5, "Alias found: %s %s %s", alias->username,
+ 	      node_to_asc(&alias->node, TRUE), alias->fullname);
+@@ -734,6 +765,9 @@
+     static char name[MSG_MAXNAME];
+     Node n;
+     int ret;
++#ifdef AI_2
++    Alias *alias;
++#endif
+ 
+     *name = 0;
+     *node = cf_n_addr();
+@@ -749,6 +783,41 @@
+ 	*node = n;
+ #endif /**PASSTHRU_NETMAIL**/
+ 
++#ifdef AI_2
++    /*
++     * Check for email alias
++     */
++    debug(5, "Name for alias checking: %s", rfc->user);
++
++    if( (alias = alias_lookup(node, rfc->user, NULL)) && !alias->userdom )
++    {
++	debug(5, "Alias found: %s %s %s", alias->username,
++	      node_to_asc(&alias->node, TRUE), alias->fullname);
++	strcpy(name, alias->fullname);
++
++	*node = alias->node;
++	
++	return name;
++    }
++
++    alias_extended = FALSE;
++
++    debug(5, "E-mail for alias checking: %s", rfcaddr_to_asc(rfc, FALSE));
++
++    if((alias = alias_lookup_userdom(NULL, rfc, NULL)))
++    {
++	alias_extended = TRUE;
++
++	debug(5, "Alias found: %s@%s %s %s", alias->username, alias->userdom,
++	      node_to_asc(&alias->node, TRUE), alias->fullname);
++	strcpy(name, alias->fullname);
++
++	*node = alias->node;
++	
++	return name;
++    }
++#endif
++
+     /*
+      * If no real name, apply name conversion
+      */
+@@ -948,6 +1017,12 @@
+ 	Area *pa;
+ 	int xpost_flag;
+ 
++#ifdef AI_8
++	acl_ngrp(rfc_from);
++#endif
++#ifdef AI_6
++	from_is_local = rfc_is_local_xpost(rfcaddr_to_asc(&rfc_from, FALSE));
++#endif
+ #ifdef NO_CONTROL
+ 	/*
+ 	 * Check for news control message
+@@ -1006,6 +1081,26 @@
+ 		    }
+ 		}
+ 
++#ifdef AI_8
++		if(acl_ngrp_lookup(pa->group))
++		{
++		    debug(5, "Posting from address `%s' to group `%s' - o.k.",
++			    rfcaddr_to_asc(&rfc_from, FALSE), pa->group);
++		}
++		else
++		{
++		    if(pna_notify(rfcaddr_to_asc(&rfc_from, FALSE)))
++		    {
++			log("BOUNCE: Postings from address `%s' to group `%s' not allowed - skipped, sent notify",
++			    rfcaddr_to_asc(&rfc_from, FALSE), pa->group);
++			bounce_mail("acl", &rfc_from, &msg, pa->group, &body);
++		    }
++		    else
++			log("BOUNCE: Postings from address `%s' to group `%s' not allowed - skipped",
++			    rfcaddr_to_asc(&rfc_from, FALSE), pa->group);
++		    continue;
++		}
++#endif
+ 		/* Check message size limit */
+ 		limitsize = pa->limitsize;
+ 		if(limitsize>0 && size>limitsize)
+@@ -1079,6 +1174,11 @@
+     int mime_qp = 0;			/* quoted-printable flag */
+     int rfc_level = default_rfc_level;
+     int x_flags_n=FALSE, x_flags_m=FALSE, x_flags_f=FALSE;
++#if defined(AI_1) || defined(AI_2)
++    Node ftn_from;
++
++    mail_sender(&rfc_from, &ftn_from);
++#endif
+ 
+     /*
+      * X-Flags settings
+@@ -1168,7 +1268,20 @@
+ 	while(p)
+ 	{
+ 	    /* Decode all MIME-style quoted printables */
++#ifndef AI_9
+ 	    mime_dequote(buffer, sizeof(buffer), p->line, mime_qp);
++#else
++	    int line_offset = 0;
++	    do
++	    {
++		mime_dequote(buffer+line_offset, sizeof(buffer)-line_offset, p->line, mime_qp);
++		if(mime_qp_soft_endline)
++		{
++		    line_offset += mime_qp_soft_endline;
++		    p = p->next;
++		}
++	    } while (mime_qp_soft_endline);
++#endif
+ 	    lsize += strlen(buffer) + 1 /* additional CR */;
+ 	    if(lsize > maxsize) {
+ 		split++;
+@@ -1226,7 +1339,11 @@
+ 	    }
+ 	}	
+ 	else
++#if defined(AI_1) || defined(AI_2)
++	    print_local_msgid(sf, ftn_from);
++#else
+ 	    print_local_msgid(sf);
++#endif
+ 	
+ 	if((header = header_getcomplete("References")) ||
+ 	   (header = header_getcomplete("In-Reply-To")))
+@@ -1242,7 +1359,11 @@
+ 	}
+     }
+     else
++#if defined(AI_1) || defined(AI_2)
++	print_local_msgid(sf, ftn_from);
++#else
+ 	print_local_msgid(sf);
++#endif
+ 
+     if(!no_fsc_0035)
+ 	if(!x_flags_n)
+@@ -1254,9 +1375,27 @@
+ 	    else
+ 		fprintf(sf, "\001REPLYADDR %s\r\n",
+ 			rfcaddr_to_asc(&rfc_from, TRUE));
++#if defined(AI_1) || defined(AI_2)
++	    if(
++#ifdef AI_1
++	       verify_host_flag(&ftn_from,HOST_ADDR)
++#endif
++#ifdef AI_2
++	       || alias_extended
++#endif
++	       )
++		fprintf(sf, "\001REPLYTO %s %s\r\n",
++			node_to_asc(&ftn_from, FALSE),
++			msg->name_from);
++	    else
++		fprintf(sf, "\001REPLYTO %s %s\r\n",
++		        node_to_asc(cf_addr(), FALSE),
++		        msg->name_from);
++#else
+ 	    fprintf(sf, "\001REPLYTO %s %s\r\n",
+ 		    node_to_asc(cf_addr(), FALSE),
+ 		    msg->name_from);
++#endif
+ 	}
+ 
+     if(x_flags_f)
+@@ -1385,7 +1524,20 @@
+     while(p)
+     {
+ 	/* Decode all MIME-style quoted printables */
++#ifndef AI_9
+ 	mime_dequote(buffer, sizeof(buffer), p->line, mime_qp);
++#else
++	int line_offset = 0;
++	do
++	{
++	    mime_dequote(buffer+line_offset, sizeof(buffer)-line_offset, p->line, mime_qp);
++	    if(mime_qp_soft_endline)
++	    {
++		line_offset += mime_qp_soft_endline;
++		p = p->next;
++	    }
++	} while (mime_qp_soft_endline);
++#endif
+ 	pkt_put_line(sf, buffer);
+ 	lsize += strlen(buffer) + 1 /* additional CR */;
+ 	if(split && lsize > maxsize) {
+@@ -1400,7 +1552,11 @@
+ 		    origin = organization;
+ 		else
+ 		    origin = cf_p_origin();
++#if defined(AI_1) || defined(AI_2)
++		print_origin(sf, origin, ftn_from);
++#else
+ 		print_origin(sf, origin);
++#endif
+ 	    }
+ 	    /* End of message */
+ 	    putc(0, sf);
+@@ -1427,7 +1583,11 @@
+ 	    origin = organization;
+ 	else
+ 	    origin = cf_p_origin();
++#if defined(AI_1) || defined(AI_2)
++	print_origin(sf, origin, ftn_from);
++#else
+ 	print_origin(sf, origin);
++#endif
+     }
+     else
+ 	print_via(sf);
+@@ -1447,8 +1607,16 @@
+ #ifdef PASSTHRU_ECHOMAIL
+     char *p;
+ 
++#ifndef AI_7
+     if( (p = header_get("X-FTN-Tearline")) )
+ 	fprintf(fp, "\r\n--- %s\r\n", p);
++#else
++    if( (p = header_get("X-FTN-Tearline")) ||
++      ( use_xmailer_for_tearline     && (p = header_get("X-Mailer"))   ) ||
++      ( use_useragent_for_tearline   && (p = header_get("User-Agent"))   ) ||
++      ( use_xnewsreader_for_tearline && (p = header_get("X-Newsreader")) ) )
++    	fprintf(fp, "\r\n--- %s\r\n", p);
++#endif
+     else
+ #endif
+ 	fprintf(fp, "\r\n--- FIDOGATE %s\r\n", version_global());
+@@ -1461,7 +1629,11 @@
+ /*
+  * Generate origin, seen-by and path line
+  */
++#if defined(AI_1) || defined(AI_2)
++int print_origin(FILE *fp, char *origin, Node ftn_from)
++#else
+ int print_origin(FILE *fp, char *origin)
++#endif
+ {
+     char buf[80];
+     char bufa[30];
+@@ -1474,7 +1646,21 @@
+      * Origin line
+      */
+     BUF_COPY(buf , " * Origin: ");
++#if defined(AI_1) || defined(AI_2)
++    if(
++#ifdef AI_1
++       verify_host_flag(&ftn_from,HOST_ADDR)
++#endif
++#ifdef AI_2
++       || alias_extended
++#endif
++       )
++	BUF_COPY(bufa, node_to_asc(&ftn_from, TRUE));
++    else
++	BUF_COPY(bufa, node_to_asc(cf_addr(), TRUE));
++#else
+     BUF_COPY(bufa, node_to_asc(cf_addr(), TRUE));
++#endif
+ 
+ #ifdef PASSTHRU_ECHOMAIL
+     if( (p = header_get("X-FTN-Origin")) )
+@@ -1561,13 +1747,34 @@
+ /*
+  * Generate local `^AMSGID:' if none is found in message header
+  */
++#if defined(AI_1) || defined(AI_2)
++int print_local_msgid(FILE *fp, Node ftn_from)
++#else
+ int print_local_msgid(FILE *fp)
++#endif
+ {
+     long msgid;
+ 
+     msgid = sequencer(DEFAULT_SEQ_MSGID);
+-    fprintf(fp, "\001MSGID: %s %08ld\r\n",
+-	    node_to_asc(cf_addr(), FALSE), msgid);
++
++#if defined(AI_1) || defined(AI_2)
++    if(
++#ifdef AI_1
++	verify_host_flag(&ftn_from,HOST_ADDR)
++#endif
++#ifdef AI_2
++	|| alias_extended
++#endif
++    )
++	fprintf(fp, "\001MSGID: %s %08ld\r\n",
++		node_to_asc(&ftn_from, FALSE), msgid);
++ else
++	fprintf(fp, "\001MSGID: %s %08ld\r\n",
++		node_to_asc(cf_addr(), FALSE), msgid);
++#else
++	fprintf(fp, "\001MSGID: %s %08ld\r\n",
++		node_to_asc(cf_addr(), FALSE), msgid);
++#endif
+ 
+     return ferror(fp);
+ }
+@@ -1653,6 +1860,7 @@
+     fprintf(stderr, "usage:   %s [-options] [user ...]\n\n", PROGRAM);
+     fprintf(stderr, "\
+ options: -b --news-batch              process news batch\n\
++         -I --in-dir name             set input packet directory\n
+          -B --binkley DIR             set Binkley outbound directory\n\
+          -f --batch-file FILE         read batch file for list of articles\n\
+          -i --ignore-hosts            do not bounce unknown host\n\
+@@ -1686,6 +1894,9 @@
+     int b_flag=FALSE, t_flag=FALSE;
+     char *f_flag=NULL;
+     char *B_flag=NULL;
++#ifdef AI_8
++    char *I_flag=NULL;
++#endif
+     char *O_flag=NULL;
+     char *c_flag=NULL;
+     char *a_flag=NULL, *u_flag=NULL;
+@@ -1699,6 +1910,7 @@
+     static struct option long_options[] =
+     {
+ 	{ "news-batch",   0, 0, 'b'},	/* Process news batch */
++	{ "in-dir",       1, 0, 'I'},	/* Set inbound packets directory */
+ 	{ "binkley",      1, 0, 'B'},	/* Binkley outbound base dir */
+ 	{ "batch-file",   1, 0, 'f'},	/* Batch file with news articles */
+ 	{ "out-packet-file",1,0,'o'},	/* Set packet file name */
+@@ -1727,7 +1939,7 @@
+ 
+     
+ 
+-    while ((c = getopt_long(argc, argv, "bB:f:o:m:niO:w:Wtvhc:a:u:",
++    while ((c = getopt_long(argc, argv, "bB:I:f:o:m:niO:w:Wtvhc:a:u:",
+ 			    long_options, &option_index     )) != EOF)
+ 	switch (c) {
+ 	/***** rfc2ftn options *****/
+@@ -1737,6 +1949,10 @@
+ 	    newsmode = TRUE;
+ 	    private  = FALSE;
+ 	    break;
++	case 'I':
++	    /* Inbound packets directory */
++	    I_flag = optarg;
++	    break;
+ 	case 'B':
+ 	    B_flag = optarg;
+ 	    break;
+@@ -1818,6 +2034,13 @@
+ 
+     cf_debug();
+ 
++    /* Process local options */
++    BUF_EXPAND(in_dir, I_flag ? I_flag : cf_p_pinbound());
++
++    /* Initialize mail_dir[], news_dir[] output directories */
++    BUF_EXPAND(mail_dir, DEFAULT_OUTRFC_MAIL);
++    BUF_EXPAND(news_dir, DEFAULT_OUTRFC_NEWS);
++
+     /*
+      * Process optional config statements
+      */
+@@ -1942,7 +2165,30 @@
+ 	    exit(EX_USAGE);
+ 	}
+     }
+-    
++#ifdef AI_7
++    if(cf_get_string("UseXMailerForTearline", TRUE))
++    {
++	debug(8, "config: UseXMailerForTearline");
++	use_xmailer_for_tearline = TRUE;
++    }
++    if(cf_get_string("UseUseragentForTearline", TRUE))
++    {
++	debug(8, "config: UseUseragentForTearline");
++	use_useragent_for_tearline = TRUE;
++    }
++    if(cf_get_string("UseXNewsreaderForTearline", TRUE))
++    {
++	debug(8, "config: UseXNewsreaderForTearline");
++	use_xnewsreader_for_tearline = TRUE;
++    }
++#endif
++#ifdef AI_6
++    if( (p = cf_get_string("AddressIsLocalForXPost", TRUE)) )
++    {
++	debug(8, "config: AddressIsLocalForXPost %s", p);
++	addr_is_local_xpost_init(p);
++    }
++#endif    
+ 
+     /*
+      * Process local options
+@@ -1964,6 +2210,9 @@
+     passwd_init();
+     if(check_areas_bbs)
+ 	areasbbs_init(areas_bbs);
++#ifdef AI_8
++    acl_init();
++#endif
+ 
+     /* Switch stdin to binary for reading news batches */
+ #ifdef OS2
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/include/packet.h fidogate-4.3a3-ai-pl9.1/src/include/packet.h
+--- fidogate-4.3a3/src/include/packet.h	Sun Jan 18 12:48:04 1998
++++ fidogate-4.3a3-ai-pl9.1/src/include/packet.h	Tue Jun 23 14:41:05 1998
+@@ -65,6 +65,7 @@
+ #define MSG_MAXDATE	20
+ #define MSG_MAXNAME	36
+ #define MSG_MAXSUBJ	72
++#define MSG_MAXORIG	72
+ 
+ /* AttributeWord bits according to FTS-0001 */
+ #define MSG_PRIVATE	0x0001			/* Private */
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/include/prototypes.h fidogate-4.3a3-ai-pl9.1/src/include/prototypes.h
+--- fidogate-4.3a3/src/include/prototypes.h	Sun May  3 16:56:07 1998
++++ fidogate-4.3a3-ai-pl9.1/src/include/prototypes.h	Tue Jun 23 12:54:12 1998
+@@ -30,6 +30,18 @@
+  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+  *****************************************************************************/
+ 
++#ifdef AI_8
++/* acl.c */
++void	acl_init		(void);
++void	acl_ngrp		(RFCAddr);
++int	acl_ngrp_lookup		(char *);
++int	pna_notify		(char *);
++#endif
++#if defined(AI_6) || defined(AI_8)
++int	list_init		(char ***, char *);
++int	list_match		(register int, char **, char **);
++#endif
++
+ /* address.c */
+ extern int i_flag;
+ extern char address_error[];
+@@ -42,10 +54,21 @@
+ Node   *inet_to_ftn		(char *);
+ int	addr_is_local		(char *);
+ int	addr_is_domain		(char *);
++#ifdef AI_6
++int 	addr_is_local_xpost	(char *);
++void	addr_is_local_xpost_init(char *);
++#endif
++#ifdef AI_1
++int	verify_host_flag	(Node *, int);
++#endif
+ 
+ /* aliases.c */
+ void	alias_init		(void);
+ Alias  *alias_lookup		(Node *, char *, char *);
++#ifdef AI_2
++Alias  *alias_lookup_strict	(Node *, char *, char *);
++Alias  *alias_lookup_userdom	(Node *, RFCAddr *, char *);
++#endif
+ 
+ /* areas.c */
+ void	areas_maxmsgsize	(long);
+@@ -353,6 +376,7 @@
+ char   *node_to_asc	        (Node *, int);
+ char   *node_to_pfnz	        (Node *, int);
+ int	node_eq			(Node *, Node *);
++int	node_np_eq		(Node *, Node *);
+ void	node_clear		(Node *);
+ void	node_invalid		(Node *);
+ int	asc_to_node_diff	(char *, Node *, Node *);
+@@ -514,7 +538,7 @@
+ int	wildmatch		(char *, char *, int);
+ 
+ /* xalloc.c */
+-#define BUFFERSIZE		(16*1024)	/* Global buffer */
++#define BUFFERSIZE		(32*1024)	/* Global buffer */
+ extern char buffer[BUFFERSIZE];
+ 
+ void   *xmalloc			(int);
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/include/structs.h fidogate-4.3a3-ai-pl9.1/src/include/structs.h
+--- fidogate-4.3a3/src/include/structs.h	Sat May 23 23:23:33 1998
++++ fidogate-4.3a3-ai-pl9.1/src/include/structs.h	Tue Jun 23 12:54:12 1998
+@@ -54,6 +54,9 @@
+     struct st_alias *next;
+     Node node;
+     char *username;
++#ifdef AI_2
++    char *userdom;
++#endif
+     char *fullname;
+ } Alias;
+ 
+@@ -135,7 +138,21 @@
+ 
+ #define HOST_POINT	1	/* Addresses with pX point address */
+ #define HOST_DOWN	2	/* Temporary down */
++#ifdef AI_1
++#define HOST_ADDR	4	/* Real Fidonet address in .pkt file. 
++                                   Like key '-a' in command line rfc2ftn    */
++#endif
+ 
++#ifdef AI_8
++/*
++ * Acl
++ */
++typedef struct st_acl {	        /* acl entry */
++    struct st_acl *next;	/*     for linked list */
++    char	  *email_pat;	/*     E-Mail address pattern */
++    char          *ngrp_pat;	/*     Newsgroup pattern */
++} Acl;
++#endif
+ 
+ 
+ /*
+diff -urN --exclude=*.ORIG fidogate-4.3a3/src/toss/ftntoss.c fidogate-4.3a3-ai-pl9.1/src/toss/ftntoss.c
+--- fidogate-4.3a3/src/toss/ftntoss.c	Sat May 23 23:23:34 1998
++++ fidogate-4.3a3-ai-pl9.1/src/toss/ftntoss.c	Tue Jun 23 12:54:12 1998
+@@ -49,6 +49,10 @@
+  */
+ void	addtoseenby_init	(void);
+ void	zonegate_init		(void);
++#ifdef AI_3
++void	deleteseenby_init	(void);
++void	deletepath_init		(void);
++#endif
+ int	lon_to_kludge		(Textlist *, char *, LON *);
+ int	lon_to_kludge_sorted	(Textlist *, char *, LON *);
+ int	toss_echomail		(Message *, MsgBody *, LON *, LON *, LON *);
+@@ -197,7 +201,97 @@
+     }
+ }
+ 
++
++
++#ifdef AI_3
++/*
++ * DeleteSeenBy list
++ */
++typedef struct st_deleteseenby
++{
++    LON deleteseenby;				/* Nodes to delete from SEEN-BY */
++    struct st_deleteseenby *next;
++}
++DeleteSeenBy;
++
++static DeleteSeenBy *deleteseenby_first = NULL;
++static DeleteSeenBy *deleteseenby_last  = NULL;
++
++
++
++/*
++ * Init DeleteSeenBy list from config file
++ */
++void deleteseenby_init(void)
++{
++    char *s;
++    DeleteSeenBy *p;
++    
++    for(s = cf_get_string("DeleteSeenBy",TRUE);
++	s && *s;
++	s = cf_get_string("DeleteSeenBy",FALSE) )
++    {
++	debug(8, "config: deleteseenby %s", s);
++	
++	p = (DeleteSeenBy *)xmalloc(sizeof(DeleteSeenBy));
++	p->next = NULL;
++	lon_init(&p->deleteseenby);
++	lon_add_string(&p->deleteseenby, s);
++
++	if(deleteseenby_first)
++	    deleteseenby_last->next = p;
++	else
++	    deleteseenby_first = p;
++	deleteseenby_last = p;
++    }
++}
++    
++
++
++/*
++ * DeletePath list
++ */
++typedef struct st_deletepath
++{
++    LON deletepath;				/* Nodes to delete from PATH */
++    struct st_deletepath *next;
++}
++DeletePath;
++
++static DeletePath *deletepath_first = NULL;
++static DeletePath *deletepath_last  = NULL;
++
++
++
++/*
++ * Init DeletePath list from config file
++ */
++void deletepath_init(void)
++{
++    char *s;
++    DeletePath *p;
+     
++    for(s = cf_get_string("DeletePath",TRUE);
++	s && *s;
++	s = cf_get_string("DeletePath",FALSE) )
++    {
++	debug(8, "config: deletepath %s", s);
++	
++	p = (DeletePath *)xmalloc(sizeof(DeletePath));
++	p->next = NULL;
++	lon_init(&p->deletepath);
++	lon_add_string(&p->deletepath, s);
++
++	if(deletepath_first)
++	    deletepath_last->next = p;
++	else
++	    deletepath_first = p;
++	deletepath_last = p;
++    }
++}
++#endif
++
++
+ 
+ /*
+  * Zonegate list
+@@ -642,6 +736,56 @@
+ 
+ 
+ 
++#ifdef AI_3
++/*
++ * SEEN-BY remove processing
++ */
++void do_deleteseenby(LON *seenby)
++{
++    LNode *p;
++    LON *ln;
++
++    ln = &deleteseenby_first->deleteseenby;
++
++    lon_debug(9, "do_deleteseenby(): List of SEEN-BYs for removing: ", ln, FALSE);
++
++    for(p=ln->first; p; p=p->next)
++    {
++        if( lon_search(seenby, &p->node) )
++	{
++	    debug(7, "do_deleteseenby(): Found SEEN-BY for removing: %s", node_to_asc(&p->node, FALSE));
++	    lon_remove(seenby, &p->node);
++	}
++    }
++}
++
++
++
++/*
++ * PATH remove processing
++ */
++void do_deletepath(LON *path)
++{
++    LNode *p;
++    LON *ln;
++
++    ln = &deleteseenby_first->deleteseenby;
++    
++    lon_debug(9, "do_deletepath(): List of PATH for removing: ", ln, FALSE);
++
++    for(p=ln->first; p; p=p->next)
++    {
++        if( lon_search(path, &p->node) )
++	{
++	    debug(7, "do_deletepath(): Found PATH for removing: %s", node_to_asc(&p->node, FALSE));
++	    lon_remove(path, &p->node);
++	}
++    }
++}
++#endif
++
++
++
+ /*
+  * Process EchoMail message
+  */
+@@ -842,6 +986,12 @@
+     if(addto)
+ 	do_seenby(&seenby, &addto->add, NULL);
+ 
++#ifdef AI_3
++    /* Delete nodes from SEEN-BY */
++    if(deleteseenby_first)
++	do_deleteseenby(&seenby);
++#endif
++
+     /* If not passthru area and not from our own address (point gateway
+      * setup with Address==Uplink), add our own address to new          */
+     if(! p_flag                               &&
+@@ -852,6 +1002,12 @@
+     /* Add our address to end of ^APATH, if not already there */
+     do_path(&path);
+ 
++#ifdef AI_3
++    /* Delete nodes from PATH */
++    if(deletepath_first)
++	do_deletepath(&path);
++#endif
++
+     /* After */
+     lon_debug(9, "SEEN-BY: ", &seenby, FALSE);
+     lon_debug(9, "Path   : ", &path,   FALSE);
+@@ -1638,6 +1794,10 @@
+ 
+     zonegate_init();
+     addtoseenby_init();
++#ifdef AI_3
++    deleteseenby_init();
++    deletepath_init();
++#endif
+ 
+     /*
+      * Process local options

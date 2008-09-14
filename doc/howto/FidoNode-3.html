@@ -1,0 +1,1084 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<TITLE>Linux Fido-Node HOWTO: Installtion der Programme</TITLE>
+</HEAD>
+<BODY>
+<A HREF="FidoNode-4.html">Weiter</A>
+<A HREF="FidoNode-2.html">Zurück</A>
+<A HREF="FidoNode.html#toc3">Inhalt</A>
+<HR>
+<H2><A NAME="s3">3. Installtion der Programme</A></H2>
+
+<P>
+<P>
+<H2><A NAME="ss3.1">3.1 Meine Beispielkonfiguration</A>
+</H2>
+
+<P>
+<P>Ich werde hier als Beispiel meine eigene Node-Konfiguration
+fuer das FTN-Netz Fido (Zone 2) und Linux-Net (v2) (Zone 44) nehmen. Ich habe dabei 
+folgende Adressen:
+<UL>
+<LI>2:2432/605 (Fido)</LI>
+<LI>44:4932/100 (Linux-Net)</LI>
+</UL>
+
+Darunter laufen 2 ISDN-Lines und 1 V34+ Modem. Da ich "nur" einen 
+ISDN-Anschluss habe koennen "nur" 2 Lines gleichzeitg belegt werden, was aber
+in meinen Augen keinen Nachteil dastellt.
+<P>Mit gaten habe ich noch nicht soviel Erfahrung und so kann ich im Moment nur
+das E-Mail &lt;-> NM gaten beschreiben (Und das noch nicht "erschlagend" weil
+ich nicht genau weis warum es den funktioniert :-) )!
+<P>
+<P>
+<H2><A NAME="ss3.2">3.2 Vorbereitungen</A>
+</H2>
+
+<P>
+<P>Als erstes sollte der user fido und die Gruppe fido angelegt werden. (Das muss
+alles als <CODE>root</CODE> gemacht werden!)
+Dazu laed man die Datei <CODE>/etc/passwd</CODE> in einen beliebigen Editor
+und schreibt am einfachsten diese Zeile hinein
+<PRE>
+fido:*:1500:200:FidoNet:/home/fido:/bin/bash
+</PRE>
+
+(Falls Shadow-Passwoerter benutzt werden noch in der Datei <CODE>/etc/shadow</CODE>
+eine Zeile hinzugefuegt werden.
+<PRE>
+fido:*:9983:0:10000::::
+</PRE>
+ 
+als naechstes ist die <CODE>/etc/group</CODE> dran
+<PRE>
+fido::200:fido,root
+</PRE>
+
+Jetzt muss man nurnoch (als root) <CODE>passwd fido</CODE> eingeben und ein 
+Passwort eintragen.
+<P>Als naechstes muessen wir noch das Home-Verzeichniss des admin-Users anlegen.
+<PRE>
+mkdir /home/fido
+</PRE>
+
+Und natuerlich sollte ihm das Verzeichniss auch gehoeren.
+<PRE>
+chown fido.fido /home/fido
+</PRE>
+<P>
+<P>
+<P>
+<H2><A NAME="ss3.3">3.3 Fidogate</A>
+</H2>
+
+<P>
+<P>Ich beziehe mich hier auf Version 4.2.10, bei aelteren Versionen sind
+einige der Konfigurationsmoeglichkeiten noch nicht vorhanden.
+<P>Zunaechst ist jetzt <CODE>fidogate/config.h</CODE> zu editieren. Ich habe
+folgende Aenderungen an der Orginal-Datei vorgenommen: (das ist nicht
+die komplette Datei, sondern nur die Zeilen die ich geaendert habe!)
+<PRE>
+#define OUTDIR          "in"            /* rfc2ftn: output .pkt's */
+#ifdef SECURE           /* Secure permissions */
+# define PACKET_MODE    0600            /* Mode for outbound packets */
+# define BSY_MODE       0644            /* Mode for BSY files */
+# define FLO_MODE       0600            /* Mode for FLO files */
+# define DATA_MODE      0600            /* Mode for ffx data files */
+# define DIR_MODE       0700            /* Mode for directories */
+# define CONF_MODE      0600            /* Mode for written config files */
+#else                   /* Open permissions */
+# define PACKET_MODE    0666            /* Mode for outbound packets */
+# define BSY_MODE       0666            /* Mode for BSY files */
+# define FLO_MODE       0666            /* Mode for FLO files */
+# define DATA_MODE      0666            /* Mode for ffx data files */
+# define DIR_MODE       0777            /* Mode for directories */
+# define CONF_MODE      0666            /* Mode for written config files */
+#endif
+</PRE>
+
+Man sollte aus den Kommentaren von <CODE>config.h</CODE> erkennen, was das
+bedeuten soll. Das Outbound-Directory heisst bei mir aus alter
+Gewohnheit <CODE>outbound</CODE> und nicht nur <CODE>out</CODE>. Man kann das
+problemlos umbenennen, muss nur insgesamt konsistent bleiben. Weiterhin
+habe ich die Permissions noch auf meinen Geschmack abgeaendert.
+<P>Als naechstes sind noch einige Aenderungen in <CODE>fidogate/config.make</CODE> 
+vorzunehmen:
+<PRE>
+BINDIR          = /usr/local/bin/fidogate
+LIBDIR          = /usr/local/lib/fidogate
+SPOOLDIR        = /var/spool/fnet
+LOGDIR          = /var/log/fido
+OUTBOUND        = /var/spool/fnet/outbound
+INBOUND         = /var/spool/fnet/in
+PINBOUND        = /var/spool/fnet/in
+UUINBOUND       = /var/spool/fnet/in
+IFMAILDIR       = /usr/local/bin/ifcico
+
+OWNER           = fido
+GROUP           = fido
+DEBUG           = -O2 -s -fomit-frame-pointer
+</PRE>
+
+Im <CODE>fidogate/src/Makefile</CODE> unter install-dirs solltest Du noch
+<CODE>$(SPOOLDIR)/out</CODE> in
+<CODE>$(SPOOLDIR)/outbound</CODE> aendern.
+<P>Damit werden die Verzeichnisse an meine Verzeichnis-Struktur angepasst
+und <CODE>fido.fido</CODE> wird User von FidoGate. Spaeter wird auch
+<CODE>ifcico</CODE> unter dem User <CODE>fido.fido</CODE> arbeiten.
+<P>Nun solltest Du als <CODE>root</CODE> in <CODE>fidogate/src</CODE> folgende
+Kommandos ausfuehren: 
+<PRE>
+make depend
+make all
+make install-dirs
+make install
+</PRE>
+
+Anschliessend stehen alle benoetigten Dateien in
+<CODE>/usr/local/bin/fidogate</CODE>. Jetzt musst du natuerlich noch einige
+Anpassungen an Dein System vornehmen. Hier zunaechst mal ein komplettes
+<CODE>/usr/local/lib/fidogate/config.common</CODE>, welches die globalen
+Konfigurationsdaten enthaelt:
+<HR>
+<PRE>
+#:ts=8
+#
+# /usr/local/lib/fidogate/config.common
+#
+# FIDOGATE config file common stuff,
+# included by config.gate, config.main
+#
+# Cry in the Darkness
+#
+# Format:  keyword arg ...
+#          keyword and args may be put in double quotes "..."
+#
+
+# Directories: lib, spool, BinkleyTerm-style outbound base dir (without
+# the .../out.xxx), BinkleyTerm-style inbound dir
+#
+# lib, spool defaults are defined in config.h
+#
+LibDir          /usr/local/lib/fidogate
+SpoolDir        /var/spool/fnet
+LogDir          /var/log/fido
+Outbound        /var/spool/fnet
+Inbound         /var/spool/fnet/in
+
+#
+# Internet address
+#
+Hostname        citd
+Domain          .owl.de
+# Optional domain name for entries in HOSTS file
+HostsDomain     .owl.de
+
+#
+# Zones and domains, the outbound directory is relative to the one
+# specified with `Outbound'.
+#
+#               zone    Inet domain     FTN domain      Outbound
+#               ----    -----------     ----------      --------
+Zone            default .fidonet.org    fidonet         -
+Zone            1       .fido.sub.de    fidonet         outbound.001
+Zone            2       .fido.sub.de    fidonet         outbound
+Zone            3       .fido.sub.de    fidonet         outbound.003
+Zone            4       .fido.sub.de    fidonet         outbound.004
+Zone            5       .fido.sub.de    fidonet         outbound.005
+Zone            6       .fido.sub.de    fidonet         outbound.006
+Zone            44      .linuxnet.de    fidonet         outbound.02c
+#
+# OPTIONAL:
+#
+# MSDOS client drive to UNIX server directory translation. This allows
+# FIDOGATE running on a UNIX system and BinkleyTerm on an MSDOS PC.
+#
+#DosDrive       H:      /home
+#DosDrive       I:      /var/spool
+#DosDrive       I:      /usr/spool
+#DosDrive       P:      /u1
+#DosDrive       Q:      /u2
+</PRE>
+<HR>
+
+<CODE>config.gate</CODE> soll auch seine Beachtung erhalten:
+<HR>
+<PRE>
+#:ts=8
+#
+# /fido/fidogate/config.gate
+#
+# FIDOGATE config file gateway programs
+#
+# Cry in the Darkness
+#
+# Format:  keyword arg ...
+#          keyword and args may be put in double quotes "..."
+
+#
+# Include common stuff (%L = LIBDIR)
+#
+include         %L/config.common
+
+#
+# FTN addresses - there must be a corresponding `uplink' statement
+# for each `address' statement
+#
+#               real
+#               ----
+Address         2:2432/605.99
+Address         44:4932/100.99
+
+Uplink          2:2432/605
+Uplink          44:4932/900
+
+#
+# Default origin line for EchoMail messages
+#
+Origin          " Cry in the Darkness Paderborn-Sande "
+
+#
+# Organization header for News
+#
+Organization    "Cry in the Darkness"
+
+#
+# Use text from * Origin line for Organization header
+#
+UseOriginForOrganization
+
+#
+# Use text from Organization header for * Origin line
+#
+UseOrganizationForOrigin
+
+#
+# Don't generate From: line, FSC-0035 kludges
+# MUST be set for FIDOGATE points (no real gateway)
+#
+#NoFromLine
+
+#
+# FTN - Internet gateway. If set, Internet mail will be routed via FTN
+# and this gateway.
+#
+#Gateway                242:4900/99
+
+#
+# Don't gate messages with unknown zone in ^AMSGID (known zones are defined
+# in config.common).
+#
+KillUnknownMSGIDZone
+
+#
+# Don't gate messages without a valid ^AMSGID (or similar)
+#
+KillNoMSGID
+
+#
+# Generate `User.Name@do.main' instead of `User_Name@do.main'
+#
+#DotNames
+
+#
+# X-FTN header:
+#
+#     f    X-FTN-From
+#     t    X-FTN-To
+#     T    X-FTN-Tearline
+#     O    X-FTN-Origin
+#     V    X-FTN-Via
+#     D    X-FTN-Domain
+#     S    X-FTN-Seen-By
+#     P    X-FTN-Path
+#
+X-FTN           ftTOVDP
+
+#
+# Maximum size of FTN messages (default value)
+#
+#MaxMsgSize             15000
+MaxMsgSize             32000
+
+#
+# MAUS gateway support:
+#
+# If set, convert addresses for `User_Name@XY.MAUSDomain' to
+# `User Name % XY @ MAUSGate' for the Fido-MAUS gateway.
+#
+#MAUSDomain              .maus.de
+#MAUSGate                2:2452/101.6
+
+#
+# CC of bounced messages
+#
+BounceCCMail            ms@citd.owl.de
+
+#
+# Send mail from message trackers to
+#
+#TrackerMail             ms@citd.owl.de
+
+#
+# Newsgroup for unknown FTN areas
+#
+FTNJunkGroup            fido.junk
+
+#
+# NOTE 1: real gateways should *not* disable FSC0035/47 kludges, the
+#         From: line is obsoleted by both ^ARFC-Xxxx kludges and
+#         FSC0035 and not necessarily needed.
+#
+# NOTE 2: points without Internet connectivity (using FIDOGATE for
+#         Fido only) should set
+#             RFCLevel 0
+#             NoFromLine
+#             NoFSC0035
+#
+#
+# Default ^ARFC level
+#     0  -  no ^ARFC-Xxxx kludges
+#     1  -  ^ARFC-Xxxx kludges for some headers (config.h, RFC_LVL_1_HEADERS)
+#     2  -  ^ARFC-Xxxx kludges for all headers
+#
+RFCLevel                1
+
+#
+# Parameters for ftnin/ftninpost/ftninrecomb
+#
+# sendmail program path and parameters
+#
+#    %s is replaced with the envelope sender
+#
+FTNInSendmail   /usr/sbin/sendmail -oee -oi -f%s -oMrFTN -t
+
+#
+# rnews program path
+#
+FTNInRnews      /usr/bin/rnews
+
+#
+# run ftninrecomb
+#
+#FTNInRecombine
+
+#
+# Use 8bit ISO-8859-1 characters when gating from FTN to RFC
+#
+NetMail8bit
+</PRE>
+<HR>
+<P>Hierzu jetzt noch ein Kommentar. Mit dem gaten habe ich noch so meine
+Verstaendnissprobleme. Ich habe hin und wieder an dieser Datei mal
+rumgespielt, muss aber zugeben das ich nie genau wusste was ich getan habe.
+Fuer die Richtigkeit dieser Datei kann ich also GARKEINE Garantie uebernehmen!
+<P><CODE>config.main</CODE> ist wie folgt anzupassen:
+<HR>
+<PRE>
+#:ts=8
+#
+# /usr/local/lib/fidogate/config.main
+#
+# FIDOGATE config file main AKA
+#
+# Cry in the Darkness
+#
+# Format:  keyword arg ...
+#          keyword and args may be put in double quotes "..."
+#
+
+#
+# Include common stuff (%L = LIBDIR)
+#
+include         %L/config.common
+
+#
+# FTN addresses
+#
+Address         2:2432/605
+Address         44:4932/100
+ 
+#
+# AREAS.BBS EchoMail distribution list
+#
+AreasBBS        /usr/local/lib/fidogate/areas.bbs
+
+#
+# FAREAS.BBS file distribution list
+#
+FAreasBBS       /usr/local/lib/fidogate/fareas.bbs
+
+#
+# ftnaf: CC of reply mails
+#
+CCMail          ms@citd.owl.de
+
+#
+# OPTIONAL for tosser
+#
+# Kill empty NetMails addressed to one of our AKAs
+#
+KillEmpty
+
+#
+# Kill EchoMail for unknown areas
+#
+KillUnknown
+
+#
+# Kill routed EchoMail
+#
+#KillRouted
+
+#
+# Log sender/recipient of all NetMail messages
+#
+LogNetMail
+
+#
+# Check ^APATH for our own address
+#
+CheckPath
+
+#
+# Enable dupe check using MSGID history database
+#
+DupeCheck
+
+#
+# Number of days a MSGID entry stays in the history database
+# (decimal fraction allowed)
+#
+MaxHistory 14
+
+#
+# Kill dupe messages
+#
+KillDupe
+
+#
+# Zonegate configuration for EchoMail
+#
+#               Address to      Add to SEEN-BYs
+#               ----------      ---------------
+#ZoneGate       2:123/456       123/456 2452/110
+#ZoneGate       2:789/999       789/999 2452/110
+#ZoneGate       1:105/42        105/42 2452/110
+
+#
+# Add extra nodes to SEEN-BY
+#
+#               Area            Nodes
+#               ----            -----
+#AddToSeenBy    ABLED           2:24/24
+#AddToSeenBy    ABLENEWS        2:24/24
+</PRE>
+<HR>
+<P>Da wir aber einen Node betreiben wollen ist das noch laengst nicht alles. Da
+haben wir noch die <CODE>/usr/local/lib/fidogate/areas.bbs</CODE> (Das hier ist aber jetzt
+nur der Anfang der Datei. Als Beispiel sollte es ausreichen.
+<HR>
+<PRE>
+## Diese Zeile MUSS als Kompatiblitaetsgruenden leer bleiben!
+#+ DARKNESS.POINTS -z 2 2:2432/605.1 .2 .3 .4
+#+ DARKNESS.INFO -z 2 2:2432/605.1 .2 .3 .4
+#+ DARKNESS.NEWFILES -z 2 2:2432/605.1 .2 .3 .4
+#- 0130.GER -z 2 2:2432/600
+#- 1LIVE.GER -z 2 2:2432/600
+#- 24000.GER -z 2 2:2432/600
+#+ 2432.HUB.600 -z 2 2:2432/600 605.1 .5 .21
+#+ 2432.NODES -z 2 2:2432/600 605.1 .21
+#+ 2432.NODES.INFO -z 2 2:2432/600 605.1 .21
+#+ 2432.POINTS -z 2 2:2432/600 605.5 .21
+#- 2432.TALK -z 2 2:2432/600
+#- 386.GER -z 2 2:2432/600
+#- 4DOS -z 2 2:2432/600
+#- 4DOS.GER -z 2 2:2432/600
+#- 666.GER -z 2 2:2432/600
+#- 80XXX -z 2 2:2432/600
+#- ABFAHRER.GER -z 2 2:2432/600
+#- ALLFIX.GER -z 2 2:2432/600
+#- ALLFIX_HELP -z 2 2:2432/600
+#- AL_BUNDY.GER -z 2 2:2432/600
+#- AMNESTY.GER -z 2 2:2432/600
+#- ANNOUNCE.024 -z 2 2:2432/600
+#- ANTIFA.GER -z 2 2:2432/600
+</PRE>
+<HR>
+<P>Die ersten 3 Bretter sind meine lokalen Bretter, die anderen bekomme ich von
+meinem Hub. Bei mir habe ich noch einen Sonderfall. Da ich keine Lust habe
+immer alle Bretter zu pollen habe ich nur die bestellt die auch wirklich
+gelesen werden. Die Bretter die bestellt sind, sind mir einem "+" markiert
+die Bretter mit einem "-" sind nicht bestellt, aber vorbereitet fuer den Fall
+das sie bestellt werden.
+<P>Fuer das Zustellen der Node &amp; Pointdiffs gibts dann noch die 
+<CODE>/usr/local/lib/fidogate/fareabs.bbs</CODE>
+<HR>
+<PRE>
+# Diese Zeile muss leer bleiben!
+/zip/node NODEDIFF 2:2432/600 605.2 .3 .4
+/zip/node 24000 2:2432/600 605.2 .3 .4
+</PRE>
+<HR>
+<P>Als naechstes kommen wir zur <CODE>/etc/routing</CODE> Datei.
+<HR>
+<PRE>
+remap 2:2432/605.0 2:2432/605.01 "Matthias Schniedermeyer"
+remap 2:2432/605.0 2:2432/605.02 "Demo-Point 1"
+remap 2:2432/605.0 2:2432/605.03 "Demo-Point 2"
+remap 2:2432/605.0 2:2432/605.04 "Demo-Point 3"
+remap 44:4932/100.0 44:4932/100.01 "Matthias Schniedermeyer
+
+# Alle Mail an Areafix auf .98 umleiten
+remapto 2:2432/605 2:2432/605.98 "Areafix"
+
+# Alle sonstigen Mails an 2:2432/605 auf meinen Point umleiten.
+remap 2:2432/605.0 2:2432/605.1  "*"
+
+# Alle Mails an meinen Node des Trek-Net auf meinen Point umleiten.
+remapto 44:4932/100.0 44:4932/100.1 "*"
+ 
+# Netmail routing
+NetMail
+
+# Mails fuer Points auf Hold legen.
+send  hold 2:2432/605.*
+send  hold 44:4932/100.*
+
+# Mails im Linux-Net an meinen Linux-Net Host weiterleiten.
+route normal 44:4932/0 44:*
+
+# Alle anderen Mails fuers Fido (Zonen 1-6) zum Hub weiterleiten.
+route normal 2:2432/600 1:* 2:* 3:* 4:* 5:* 6:*
+
+# Echomail routing
+EchoMail
+sendmove hold   2:2432/605.*
+sendmove hold   44:4932/100.*
+# Mails fuer Points auf Hold legen.
+sendmove normal *
+</PRE>
+<HR>
+<P>Dann habe wir noch eine <CODE>/usr/local/lib/fidogate/packing</CODE> Datei
+<HR>
+<PRE>
+# /usr/local/lib/fidogate/packing
+#
+# FIDOGATE ftnpack config file
+#
+# Commands:
+#
+#     arc    NAME  "/PATH/PROG %s %s"
+#     prog   NAME  "/PATH/PROG %s"
+#
+#     pack   NAME  NODES
+#     rpack  NAME  TARGET NODES
+#     fpack  NAME  TARGET NODES
+#
+
+arc     zip     "/usr/bin/zip -gkjq %s %s"
+arc     rar     "/usr/local/bin/rar a -ep -s -m3 -inul %s %s"
+
+prog    gate    "/fido/fidogate/ftn2rfc %s"
+
+######## P A C K I N G #######################################################
+
+pack    noarc   2:2432/605.1
+pack    noarc   44:4932/100.1
+pack    rar     2:2432/605.3
+pack    zip     *
+</PRE>
+<HR>
+<P>Alles Mails an Points werden mit ZIP gepackt. Meine Mails werden nicht gepackt,
+weil es schwachsinnig waehre. Weitere Ausnahme ist .3 dessen Mails werden mit
+<CODE>rar</CODE> gepackt.
+<P>Aber damit sind wir immer noch nicht durch. Jetzt kommt die letzte Datei
+<CODE>/usr/local/lib/fidogate/passwd</CODE>
+<HR>
+<PRE>
+ff      2:2432/600      GEHEIM
+ff      44:4932/0       GEHEIM
+
+af      2:2432/605.00   GEHEIM          "Matthias Schniedermeyer"
+af      2:2432/605.01   GEHEIM          "Matthias Schniedermeyer"
+af      2:2432/605.02   GEHEIM          "Demo-Point 1"
+af      2:2432/605.03   GEHEIM          "Demo-Point 2"
+af      2:2432/605.04   GEHEIM          "Demo-Point 3"
+</PRE>
+<HR>
+<P>Jetzt sind wir mit Fidogate erstmal fertig. :-)
+<P>
+<P>
+<H2><A NAME="ss3.4">3.4 AreaFix</A>
+</H2>
+
+<P>
+<P>Zuerst muss man sich ueberlegen in welches Verzeichniss man das Programm
+entpacken will. Ich habe das Programm direkt ins Verzeichniss des Admin-Users
+gelegt. Das muss aber jeder selber wissen, das einzig wichtige ist das alle
+3 Dateien (areafix.pl, fido.pli &amp; fidoconfig) im gleichen Verzeichniss
+sein muessen. (Die Beispiel <CODE>fidoconfig</CODE> aus dem Packet von 
+<CODE>areafix.tgz</CODE> bitte nicht benutzten weil da die Pfade so sind wie 
+ich sie bei mir habe und nicht wie ich sie in der Howto Beschreibe!)
+<P>Hier ein Beispiel fuer die <CODE>fidoconfig</CODE>
+<P>
+<HR>
+<PRE>
+# Config File for Programms which use "fido.pli"
+
+# AKA from Sysop. (Needed for the "From" Command)
+sysop 2:2432/605.1
+
+# Main AKA
+mainaka 2:2432/605
+
+# Other AKAs
+aka 44:4932/100
+
+# Uplinks
+uplink 2:2432/600
+uplink 44:4932/0
+
+# Passwords for Areafix (For Uplink)
+passwd 2:2432/600  GEHEIM
+passwd 44:4932/0   GEHEIM
+
+# Wo ist die Areas.bbs von Fidogate?
+areasbbs /usr/local/lib/fidogate/areas.bbs
+
+# Wo ist die config.common von Fidogate?
+configcommon /usr/local/lib/fidogate/config.common
+
+# Wo ist die packing von Fidogate?
+packing /usr/local/lib/fidogate/packing
+
+# Welche Packete sollen abgearbeitet werden
+toparse 2:2432/605.98
+toparse 44:4932/100.98
+
+# Wo soll das Sende-Packet hingeschoben werden?
+tosendfile /var/spool/fnet/in/areafix.pkt
+
+# Wo ist das Anfangsverzeichniss des Outbounds?
+outbegin /var/spool/fnet
+
+# Tearline for Messages
+tearline Areafix .6beta
+
+#Testmode
+test 0
+</PRE>
+<HR>
+<P>Hier muessen nur die Angaben der eigenen AKA, des Uplinks, zu welchen Point
+die Areafix-Mails umgeleitet worden sind und natuerlich die Passwoerter fuer
+die Uplinks, eingetragen werden.
+<P>
+<P>
+<P>
+<H2><A NAME="ss3.5">3.5 Ifcico</A>
+</H2>
+
+<P>
+<P>Ich beziehe mich hier auf die aktuelle Version von ifcico, welche sich
+im Paket <CODE>ifmail-2.10</CODE> findet.
+<P>Zunaechst muss man das globale Compiler-Konfigurations-File
+<CODE>ifmail/CONFIG</CODE> editieren. Ich fuehre hier einfach mal alle bei
+mir noetigen Aenderungen auf: 
+<PRE>
+CONFIGFILE  = "/etc/ifcico/config"
+DEBUGFILE   = "/var/log/fido/ifdebug"
+LOGFILE     = "/var/log/fido/logifmail"
+PUBDIR      = "/var/spool/fnet/request"
+OPTS        = -DHAS_STATFS -DSTATFS_IN_VFS_H -DHAS_SETSID -DHAS_NDBM_H \
+                -DDONT_HAVE_TM_GMTOFF -DHAS_TERMIOS_H -DASCII_LOCKFILES \
+                -DHAS_FSYNC -DHAS_IOCTL_H -DHAS_REGEX_H -DHAS_TCP \
+                -DFORCEINTL -DHAS_SYSLOG -DNEED_UUCPFROM -DNEED_BSY \
+                -DREGEX_NEED_CARET -DSLAVE_SENDS_NAK_TOO -DNEED_FORK \
+                -DBELEIVE_ZFIN -DSLAVE_SENDS_NAK_TOO
+BINDIR = /usr/local/bin/ifcico
+OWNER = fido
+GROUP = fido
+MODE = 0700
+SMODE = 4700
+</PRE>
+
+Jetzt sollte man noch das Verzeichnis <CODE>/home/ifcico</CODE>
+anlegen (User fido, Group fido) und kann dann mit 
+<PRE>
+make depend
+make all
+make install
+</PRE>
+
+die Programmdateien in <CODE>/usr/local/bin/ifcico</CODE> installieren. Da wir
+ifcico als User fido, und nicht wie "normal" als User uucp, benutzten muessen
+wir noch dem Verzeichnoss <CODE>/var/lock</CODE> die richtigen rechte geben.
+<PRE>
+chown root.fido /var/lock
+</PRE>
+
+(Wer SuSe benutzt sollte noch in <CODE>/etc/permissions</CODE> die entsprechende
+Zeile aendern!)
+<P>Nun muss man noch das <CODE>config</CODE>-File von ifcico installieren. Ein
+Beispiel findet man in <CODE>ifmail/misc/config</CODE>. Diese kopiert man
+nun nach <CODE>/etc/ifcico/ifcico</CODE> und editiert es passend. Hier mal wieder 
+was bei mir draus geworden ist.
+<HR>
+<PRE>
+# /etc/ifcico/config
+# Cry in the Darkness
+
+# Log file name. Overrides compile-time default.
+logfile         /var/log/fido/iflog
+
+# Debug file name. Overrides compile-time default.
+debugfile       /var/log/fido/ifdebug
+
+# Debugging verbosity level (is overidden by -x key). Default is 0.
+verbose                 b
+
+# Main address:
+address         2:2432/605
+
+# AKAs:
+address         44:4932/100
+
+# Passwords: Hier koennen die Passwords direkt stehen oder man lagert sie in
+# eine externe Datei aus, welche dem User fido gehoert und die Permissions
+# 600 hat, damit niemand die Passwords lesen kann.
+include                /etc/ifcico/passworts
+
+# Directory for incoming packets/files:
+inbound         /var/spool/fnet/in
+# Directories for "listed" and "protected" sessions
+listinbound     /var/spool/fnet/in
+protinbound     /var/spool/fnet/in
+
+# Directory for outgoing packets (default domain and zone):
+# other zones will be like "/fido/fnet/outb.003",
+# other domains will be like "/fido/fnet/&lt;domain>.&lt;zone>"
+outbound        /var/spool/fnet/outbound
+
+# Directory from which the file requests are satisfied
+public          /var/spool/fnet/request
+
+# Directory with executables to satisfy "magic" file requests
+# if requested a file present in this directory, it will be
+# executed and stdout sent to the remote system.  If the file
+# is not executable, it is read line by line and the lines are
+# processed as if they were received file requests (recusively).
+# Execution of commands may compromize security!  You are warned.
+magic           /etc/ifcico/magic
+
+# Erste Nodeliste:
+# Es wird nach nl_short.xxx gesucht und die neueste Version verwendet.
+# nl_short generiere ich manuell aus der kompletten Nodeliste, da mir das
+# Compilieren der kompletten Liste zu lange dauert.
+nodelist        /var/spool/fnet/nodelist/nl_short
+
+# Weitere Nodelisten der anderen Zonen:
+# (Achtung: ifindex hat noch einen Bug, der zu einem Core fuehrt, falls eine
+#  Nodenummer doppelt auftritt, wie z.B. bei Verwengung von nodelist und
+#  r24classic)
+#               filename        originating address
+nodelist        linuxnet
+
+# Sequencer file (used to generate unique IDs)
+sequencer       /var/spool/fnet/seq
+
+# An dieser Stelle stehen im Beispiel-Config-File (ifmail/misc/config) noch
+# diverse Erlaeuterungen und Optionen, die ich groesstenteils nicht verwende
+# und daher hier nicht auffuehre. Man sollte sich die Moeglichkeiten jedoch
+# dort mal ansehen.
+
+# Ich verwende hier als Beispiel ISDN. Praktisch ist das man nicht die gleichen
+# Ports nehmen muss, wie die auf denen Mgetty liegt.
+ModemPort       ttyI2
+
+# Nun die Konvertierung der Telefonnummern. Ganz habe ich das noch nicht
+# verstanden, aber folgendes sollte (mit der entsprechenden eigenen Vorwahl)
+# fuer ganz Deutschland korrekt sein. Fuer Spezialfaelle sollte man sich ggf.
+# nochmal ifmail/misc/config ansehen.
+
+PhoneTrans      49-5254-        /
+PhoneTrans      49-     /       0
+PhoneTrans      /       00
+
+# Hier ist der passende Reset-String fuer ISDN     
+ModemReset ATZ&amp;E5961&amp;B512\r\n\d
+#               ^^^^
+# Hier musst du deine MSN eintragen die beim angerufenen erscheinen soll.
+
+
+# Pulswahl:
+ModemDial ATDT\T\r
+ModemHangup     ATH\r
+ModemOK         OK
+
+# Statt einem einfachen "CONNECT" gebe ich viele Connect-Strings an, um
+# nachher im Logfile sehen zu koennen, mit welcher Geschwindigkeit connected
+# wurde.
+ModemConnect    CONNECT\s64000
+ModemConnect    CONNECT
+ModemError      BUSY
+ModemError      NO\sCARRIER
+ModemError      NO\sDIALTONE
+ModemError      NO\sANSWER
+ModemError      RING\r
+ModemError      ERROR
+
+# Timeouts to wait for "OK" and "CONNECT", cannot be prefixed by logical
+# expression.
+TimeoutReset    3
+TimeoutConnect  90
+
+# Hier stehen noch weitere Konfigurationsmoeglichkeiten fuer Inbound-Calls.
+# Da ich keine Inbound-Calls zulasse, habe ich den Teil hier auch nicht
+# aufgefuehrt, fuer weiter Infos siehe ifmail/misc/config.
+
+# EMSI data for this node
+Name            Cry in the Darkness
+Location        Paderborn-Sande
+SysOp           Matthias Schniedermeyer
+Phone           +49 5254 5961
+Speed           9600
+Flags           XA,X75,V34+
+</PRE>
+<HR>
+
+Die dazu passende passworts. (gekuerzt. Sollte als Beispiel reichen)
+<HR>
+<PRE>
+password        2:2432/600      GEHEIM
+password        2:2432/601      GEHEIM
+password        2:2432/602      GEHEIM
+
+password        44:4932/0       GEHEIM
+
+password        2:2432/605.01   GEHEIM
+password        2:2432/605.02   GEHEIM
+password        2:2432/605.03   GEHEIM
+password        2:2432/605.04   GEHEIM
+</PRE>
+<HR>
+<P>
+<P>
+<H2><A NAME="ss3.6">3.6 Mgetty</A>
+</H2>
+
+<P>
+<P>Ich beziehe mich hier auf die derzeit aktuelle 1.1er Serie.
+<P>Als erstes kopiert man die datei <CODE>policy.h-dist</CODE> nach <CODE>policy.h</CODE>
+<P>Dann kann man mit dem editieren beginnen. Hier die Aenderungen die ich daran
+vorgekommen habe
+<HR>
+<PRE>
+#define DEVICE_OWNER    "fido"
+#define DEVICE_GROUP    "fido"
+#define FILE_MODE 0600
+#define LOG_PATH "/var/log/fido/log_mg.%s"
+#define DEFAULT_PORTSPEED       115200
+#define MODEM_INIT_STRING       "ATS0=0"
+#define MODEM_CHECK_TIME -1
+#define DEFAULT_MODEMTYPE "data"
+</PRE>
+<HR>
+
+Jetzt muss man noch eine Zeile im <CODE>Makefile</CODE> aendern. Schliesslich
+wollen wir ja FIDO Unterstuetzung. :-)
+<HR>
+<PRE>
+CFLAGS=-O2 -Wall -pipe -DFIDO
+</PRE>
+<HR>
+
+Danach kann man Mgetty compilieren und installieren mit
+<PRE>
+make
+make install
+</PRE>
+
+In <CODE>/usr/local/etc/mgetty+sendfax</CODE> wurden bei der Installation mehrere
+Konfigurations-Dateien angelegt die man noch ein bisschen veraendern muss.
+Zuerst <CODE>login.config</CODE>
+<HR>
+<PRE>
+/FIDO/  fido    fido    /usr/local/bin/ifcico/ifcico @
+</PRE>
+<HR>
+
+Dann noch <CODE>mgetty.config</CODE>. Da die Aenderungen ein bisschen umfangreicher
+sind, ist hier die ganze Datei.
+<HR>
+<PRE>
+#
+# mgetty configuration file
+#
+# Cry in the darkness
+#
+
+# set the global debug level to "4" (default from policy.h)
+debug 4
+
+# access the modem(s) with 115200 bps
+speed 115200
+
+port ttyI0
+  direct n
+  init-chat "" atz&amp;e5961&amp;b512 OK
+  speed 115200
+  data-only y
+  port-owner fido
+  port-group fido
+  port-mode 0600
+
+port ttyI1
+  direct n
+  init-chat "" atz&amp;e5961&amp;b512 OK
+  speed 115200
+  data-only y
+  port-owner fido
+  port-group fido
+  port-mode 0600
+
+port ttyS1
+  direct n
+  init-chat "" ATZ OK ATM0 OK ATS0=0 OK
+  speed 115200
+  data-only y
+  port-owner fido
+  port-group fido
+  port-mode 0600
+</PRE>
+<HR>
+<P>Noch ein Kommentar zu den Init-Strings. Bei ISDN muss man bei &amp;e5961 die
+Rufnummer einstellen auf die reagiert werden soll. (Bei mit 5961)
+<P>Jetzt kommen wir langsam zu haarigen Teil der Konfiguration. Mgetty muss jetzt
+in <CODE>/etc/inittab</CODE> eingetragen werden, damit auch die Points anrufen
+koennen. Dazu fuegen wir ans Ende der Datei die folgenden Zeilen an.
+<HR>
+<PRE>
+I0:123:respawn:/usr/local/sbin/mgetty ttyI0
+I1:123:respawn:/usr/local/sbin/mgetty ttyI1
+S1:123:respawn:/usr/local/sbin/mgetty ttyS1
+</PRE>
+<HR>
+
+Wo wir schonmal dabei sind die inittab zu aendern wuerde ich noch folgende
+zwei Zeilen hinzufuegen.
+<HR>
+<PRE>
+7:123:respawn:/usr/bin/tail -n 50 -f /var/log/fido/ifdebug >/dev/tty7
+8:123:respawn:/usr/bin/tail -n 50 -f /var/log/fido/log-in >/dev/tty8
+</PRE>
+<HR>
+
+Damit kriegt man die Debug-Files von ifcico und fidogate auf tty7 und tty8
+angezeit. Ist SEHR praktisch!
+<P>
+<P>
+<H2><A NAME="ss3.7">3.7 sendmail V8</A>
+</H2>
+
+<P>
+<P>Da ich keine anderweitigen Erfahrungen habe, kann ich nur empfehlen sendmail
+von der jeweiligen Distribution zu nehmen.
+<P>Jetzt zur sendmail.cf
+<P>Da ich mit sendmail usw keine gesteigerten Erfahrungen habe kann ich nur
+beschreiben wie es mir gelungen ist, es zum rennen zu kriegen.
+<P>Ein (fast) kompletter Satz von Configdatei fuer sendmail sind im 
+Fidogate-Archiv enthalten.
+Erstmal habe ich die Dateien
+<CODE>linux.uucp.mc</CODE> von meiner Distri und 
+<CODE>fidogate/sendmail/cf/morannon.mc</CODE> genommen und "verkuppelt". Meine 
+Mails gehen ueber UUCP ins I-Net, deshalb habe ich die entsprechende .mc 
+Datei von meiner Destri genommen und sie um den Fido-Part von 
+<CODE>morannon.mc</CODE> erweitert.
+Hier das Ergebniss der Aktion.
+<HR>
+<PRE>
+#:ts=8
+#
+# $Id: FidoNode-3.html,v 1.3 1998/01/02 14:49:37 mj Exp $
+#
+# Fido.DE domain gateway morannon.fido.de sendmail V8 configuration
+#
+
+include(`../m4/cf.m4')
+VERSIONID(`$Id: FidoNode-3.html,v 1.3 1998/01/02 14:49:37 mj Exp $')
+OSTYPE(linux)
+
+define(`confCF_VERSION', `citd-1.0')
+
+define(`confDEF_USER_ID', `daemon:daemon')dnl
+define(`PROCMAIL_MAILER_PATH', `/usr/bin/procmail')dnl
+define(`QUEUE_DIR', `/var/mqueue')dnl
+define(`SMART_HOST', `uucp-dom:devnull.owl.de')dnl
+define(`confTRUSTED_USERS', `wwwrun')dnl
+define(`UUCP_MAILER_MAX', 10000000)dnl
+
+FEATURE(local_procmail)dnl
+FEATURE(nodns)dnl
+FEATURE(nocanonify)dnl
+FEATURE(mailertable,hash /etc/mail/mailertable.db)
+FEATURE(always_add_domain)dnl
+
+MAILER(local)dnl
+MAILER(procmail)dnl
+MAILER(smtp)dnl
+MAILER(uucp)dnl
+MAILER(ftn)dnl
+
+LOCAL_CONFIG
+# More trusted users
+Tnews
+Tfido
+
+LOCAL_NET_CONFIG
+</PRE>
+<HR>
+<P>Jetzt fehlen nurnoch ein paar Eintraege in <CODE>/etc/aliases</CODE> und 
+<CODE>/usr/local/lib/fidogate/aliases</CODE>. Zuerst <CODE>/etc/aliases</CODE>
+<HR>
+<PRE>
+dp1: Demo Point 1@p2.f605.n2432.z2.fidonet.org
+dp2: Demo Point 2@p3.f605.n2432.z2.fidonet.org
+dp3: Demo Point 3@p4.f605.n2432.z2.fidonet.org
+</PRE>
+<HR>
+
+Nachdem man die datei veraender hat MUSS man immer <CODE>newaliases</CODE> einmal
+starten.
+Und jetzt <CODE>/usr/local/lib/fidogate/aliases</CODE>
+<HR>
+<PRE>
+dp1              2:2432/605.2            "Demo Point 1"
+dp2              2:2432/605.3            "Demo Point 2"
+dp3              2:2432/605.4            "Demo Point 3"
+</PRE>
+<HR>
+
+Man MUSS genau aufpassen das die beiden Alias-Dateien uebereinstimmen, sonst
+stimmt z.B. die Absender-Adresse nicht! 
+So jetzt steht dem Mailen nichts mehr im Weg. Mail I-Net -> Fido funktionieren
+ohne weitere zutun. Mails Fido -> I-Net sind dagegen nur durch einen kleinen
+"Umstand" moeglich. Man muss an den in <CODE>/usr/local/lib/fidogate/config.gate</CODE>
+angegebenen "Gate-Point" schreiben. Und in die erste Zeile des Bodys
+<HR>
+<PRE>
+to: &lt;Empfaenger-Email-Adresse>
+</PRE>
+<HR>
+
+hineinschreiben.
+<P>
+<P>
+<P>
+<P>
+<HR>
+<A HREF="FidoNode-4.html">Weiter</A>
+<A HREF="FidoNode-2.html">Zurück</A>
+<A HREF="FidoNode.html#toc3">Inhalt</A>
+</BODY>
+</HTML>

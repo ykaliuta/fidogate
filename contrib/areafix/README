@@ -1,0 +1,233 @@
+Fidogate-Areafix Ersatz v0.6beta
+--------------------------------
+
+1. Intro
+--------
+
+Hi Leute. Hier ist eine Test-Version meines Areafix-Ersatzes fuer Fidogate.
+
+Meiner Meinug nach koennen nicht mehr alzuviele Bugs im Programm lauern. :-)
+(Bei mir funktioniert das Programm auf jedenfall)
+
+Wie man an der Versionsnummer sehen kann. Kann sich bis zur 1.0 Version noch
+VIEL tun.
+
+1.1 Changes
+-----------
+
++ Neu
+! Bugfix
+
+0.5beta -> 0.6beta
+
++ Wenn "from:" oder "to:" in einer Zeile vorkommt wird die Zeile uebersprungen
+! Die Meldung "Unknown Area" kam zu oft.
++ Handling von Level & Key (-l -k)
++ Automatisches bestellen/abbestellen von Areas beim Uplink
+
+0.6beta -> 0.6.2beta
+(Von Thomas Winter gefunden)
+
+! Tippfehler
+! Fehlende Eintraege in der fidoconfig
+
+0.6.2beta -> 0.6.5beta
+
+! Grober Denkfehler beseitigt.
++ Externe Hilfe
+
+0.6.5beta -> 0.6.6beta
+
+! Tippfehler
+! Sinnloses print
++ Script "checkareasbbs.pl" das das automatische bestellen/abbstellen von
+  Areas beim Uplink auch ohne meinen Areafix zur Verfuegung stellt. Einfach
+  hin und wieder starten.
+
+0.6.6beta -> 0.7beta
+
++ Einbindung der restlichen Kommandos (-# -r -a -d)
++ Einbau der Filefix Funktionalitaet
+! Ein paar kleinere Umstrukturierungen
+! Sortierungsbug in der Sortierungsregel behoben
+! Ein paar "schlummernde" Bugs beseitigt.
+! Texte alle auf Deutsch geaendert. War ein ziemliches Kundelmuddel aus Deutsch
+  und English
+
+0.7beta -> 0.7.1beta
+
+! Durch einen Tippfehler funktionierte der Areafix gar nicht. Herzlichen Dank
+  an Martin Hochwallner. (Bei mir in der Box ist SEHR selten Areafix-Aktivitaet
+  deshalb war mir das nicht frueher aufgefallen.)
+
+2. Kleiner Hinweis
+------------------
+
+Die Installations ist (relativ) einfach. Erstmal sollte man die Dateien dem
+richtigen User gehoeren (Normalerweise uucp.uucp. (Bzw wenn das System nach 
+meiner Node-HOWTO installiert worden ist fido.fido)
+
+chown uucp.uucp *
+bzw
+chown fido.fido *
+
+3. Die Datei fidoconfig
+-----------------------
+
+Danach muss man die fidoconfig an seine Beduerfniss anpassen.
+
+Zuersteinamal ist da die "Mainaka" und die AKA-Liste. Das sollte ja noch jeder
+verstehen koennen. :-)
+
+mainaka <HauptAKA>
+
+aka <naechste AKA>
+aka <uebernachste AKA>
+usw
+
+Dann muss man angeben unter welcher Nummer der Sysop schreibt. (Ist fuer
+das Kommando %from Erforderlich)
+
+Die AKAs & Pws fuer die Uplinks wird auch gebraucht. (Fuers das automatische 
+bestellen/abbestellen von Areas)
+
+uplink <AKAfromUplink>
+passwd <AKA> Passwort
+
+Weiterhin braucht der areafix ein paar Dateien von Fidogate
+
+areasbbs	(Das ist die Datei um die sich alles dreht.)
+passwdfile      (Passwort-File von Fidogate. Hinweis zum Format siehe 3.5)
+configcommon	(Wird zum herausbekommen des richtigen Verzeichniss benoetigt)
+packing		(Fuer das Kommando %compess)
+helpfile        (Fuer den Hilfe-Text der bei %help geschickt werden soll)
+datadir         (Verzeichniss wo die Sequencer-Datei fuer die Msgid 
+                 gespeichert werden kann.)
+
+Am Ende gibt man noch die Points an an die die Mails, die fuer den Areafix 
+bestimmt sind, umgeleitet worden sind.
+
+toparse 2:2432/605.98
+toparse 37:109/980.98
+usw..
+
+Als letztes muss noch die Datei angegeben werden in die die Antwortmail
+geschrieben wird.
+
+tosendfile /fido/fnet/in/areafix.pkt
+
+(Wenn das File vorhanden ist, wird solange gewartet bis das File irgendwann
+weg ist!!!!!!!!!!)
+
+Dann kann man noch die Tearline angeben die das Programm benutzen soll
+
+tearline <Irgendwas>
+
+Und als letztes kann man noch den Test-Mode zum lokalen Testen einschalten.
+(Sollte normalerweise auf 0 stehen!)
+
+test 1
+
+
+4. Was man an Fidogate noch aendern muss
+----------------------------------------
+
+Als erstes ist ein Eintrag in der Routing fuer den Areafix noetig.
+
+remapto 2:2432/605 2:2432/605.98 "areafix"
+
+Damit werden alle Mail an den Areafix in den Points 98 umgeleitet.
+(Die Zeile
+send  hold 2:2432/605.*
+sollte wohl obligatorisch sein!)
+
+Danach muss man noch in der packing der Packer fuer den Point auf "noarc" 
+gestellt werden
+
+pack    noarc   2:2432/605.98
+
+Das Format der areas.bbs MUSS wie folgt sein.
+
+(Nicht bestellt Areas haben "#-" als erstes, bestellte haben "#+")
+#- <Areaname> -z <zonennummer> [ -l <level> -k <key> ] <uplink> <downlinks>
+z.B.
+
+#+ LINUX.GER -z 2 2:2432/600 605.1 .2 .20
+
+(Im Moment fehlen noch ein paar Switches. Die einzigen derzeit unterstuetzen
+sind -z -l -k. Wenn andere Switches benutzt werden duerfte es zu Fehlern
+kommen.)
+
+5. Dann ist dann noch
+----------------------------
+Jetzt muss man nurnoch dafuer sorgen das areafix.pl aufgerufen wird. Ich
+habe dafuer in mein toss Script folgende Zeile reingehaengt. (toss-Script
+siehe Node-Howto)
+
+if [ -f /fido/fnet/outbound/0980025d.pnt/00000062.hut ]; then
+./areafix
+fi
+
+6. Was kann dieser Areafix eigentlich alles?
+--------------------------------------------
+
+LINUX.GER	(Linux.ger hinzufuegen)
+LINU?.*		(Die ueblichen Wildcards gehen latuernich auch)
+add LINUX.GER	(Und die Ueblichen Kommandors dafuer gehen auch)
++LINUX.GER	(dito)
+
+-LINUX.GER      (Linux.ger abbestellen)
+DEL, DELETE, ERASE LINUX.GER (dito)
+
+%list		(Liste der bestellbaren Areas (bestellte sind mit * markiert))
+%query		(Liste der bestellten Areas)
+%unlinked	(Liste der nicht bestellten Areas)
+%compess ?      (Liste der verfuegbaren Packer aus packing)
+%compess <packer> (Umstellen des Packers)
+%from <node>    (Der Sysop kann sich in einen Points "verwandeln")
+%help		(Wird irgendwann man die Hilfe ausgeben)
+
+Der scherz mit "-q -l -u" an des Passwort anhaengen klappt auch.
+
+Areas die vorher nocht nicht beim Uplink bestellt worden sind, aber durch
+eine Point bestellt worden sind werden beim Uplink bestellt. (Aber nur wenn
+die Area in der areas.bbs vorhanden und mit "#-" als abbestellt markiert ist!)
+Die andere Richtung wird auch unterstuetzt! (Areas werden abbestellt wenn 
+niemand sie liesst!)
+
+7. Was im Moment noch fehlt
+---------------------------
+
+%avail
+%info
+to be continued
+
+8. Hinweis zu checkareasbbs.pl
+------------------------------
+
+Wer das Script "trocken" ohne den Areafix benutzten moechte SOLLTE vor dem
+ersten Start folgendes machen
+
+a) ALLE (Vorest NUR EchoMail-) Areas bei den Uplinks abbestellen
+b) Die Areas.bbs so abaendern das die Zeilen so aussehen
+
+#- <Areaname> -z <zonennummer> [ -l <level> -k <key> ] <uplink> <downlinks>
+z.B.
+
+#- LINUX.GER -z 2 2:2432/600 605.1 .2 .20
+
+Danach checkareasbbs.pl starten. Alle Areas die von irgendwelchen Downlinks
+bestellt worden sind werden dann bei den entsprechenden Uplinks bestellt.
+Danach wuerde die obrige Zeile so aussehen
+
+#+ LINUX.GER -z 2 2:2432/600 605.1 .2 .20
+
+9. Ich glaube das wars
+----------------------
+
+Bugsreports/Patches/Hilfe ist immer gern willkommen!
+
+Schreibt an Matthias Schniedermeyer 2:2432/605
+oder per E-Mail ms@citd.owl.de
+
+(c) ist "normal" sprich das Proggie liegt unter der GPL

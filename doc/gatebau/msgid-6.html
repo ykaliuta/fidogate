@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="SGML-Tools 1.0.7">
+ <TITLE>MSGID / Message-ID Conversion for Fido-Internet Gateways : Splitting Messages </TITLE>
+ <LINK HREF="msgid-7.html" REL=next>
+ <LINK HREF="msgid-5.html" REL=previous>
+ <LINK HREF="msgid.html#toc6" REL=contents>
+</HEAD>
+<BODY>
+<A HREF="msgid-7.html">Next</A>
+<A HREF="msgid-5.html">Previous</A>
+<A HREF="msgid.html#toc6">Contents</A>
+<HR>
+<H2><A NAME="s6">6. Splitting Messages </A></H2>
+
+<P>
+<P>Due to the limitation of some FTN programs, it is necessary to split messages larger than 16K (to be on the safe side, 13-14K is a reasonable value for the max. size of the message _body_) when gating to FTN.
+<P>To prevent messages from vanishing in the bit bucket, the ^AMSGID must be different for the split parts. Due to the brain damage of most FTN dupe checkers it's also necessary to modify the subject line.  The proposed technique is to increment the `abcd1234' hex number by 1 for subsequent messages, i.e. the value computed as above for part 1, +1 for part 2, +2 for part 3, and so on. The hex number in ^AREPLY is not modified.
+<P>The subject of part 1 is unmodified, for subsequent parts the part number is prepended to the subject, string "nn: ".
+<P>To indicate the splitting, a ^ASPLIT kludge according to FSC-0047 is used before the first line of the message body part:   
+<PRE>
+^ASPLIT: date      time     @net/node    nnnnn pp/xx +++++++++++ 
+</PRE>
+<P>e.g. 
+<PRE>
+^ASPLIT: 30 Mar 90 11:12:34 @494/4       123   02/03 +++++++++++ 
+</PRE>
+<P>There is exactly one empty line after the message body part, before the "---" tear line or the first ^AVia line.  Example:   
+<PRE>
+Subject: This is a 3 part message 
+Message-ID: &lt;IBNTXSD@methan.chemie.fu-berlin.de&gt; 
+ 
+FTN Area: GATEWAYS.GER 
+ 
+--&gt; 
+Subj: This is a 3 part message 
+^AMSGID: &lt;IBNTXSD@methan.chemie.fu-berlin.de&gt; 22f000eb 
+^ASPLIT: 30 Mar 90 11:12:34 @494/4       00000 01/03 +++++++++++ 
+ 
+Subj: 02: This is a 3 part message 
+^AMSGID: &lt;IBNTXSD@methan.chemie.fu-berlin.de&gt; 22f000ec 
+^ASPLIT: 30 Mar 90 11:12:34 @494/4       00000 02/03 +++++++++++ 
+ 
+Subj: 03: This is a 3 part message 
+^AMSGID: &lt;IBNTXSD@methan.chemie.fu-berlin.de&gt; 22f000ed 
+^ASPLIT: 30 Mar 90 11:12:34 @494/4       00000 03/03 +++++++++++ 
+</PRE>
+<HR>
+<A HREF="msgid-7.html">Next</A>
+<A HREF="msgid-5.html">Previous</A>
+<A HREF="msgid.html#toc6">Contents</A>
+</BODY>
+</HTML>

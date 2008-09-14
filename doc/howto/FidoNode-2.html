@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<TITLE>Linux Fido-Node HOWTO: Benoetigte Programme</TITLE>
+</HEAD>
+<BODY>
+<A HREF="FidoNode-3.html">Weiter</A>
+<A HREF="FidoNode-1.html">Zurück</A>
+<A HREF="FidoNode.html#toc2">Inhalt</A>
+<HR>
+<H2><A NAME="s2">2. Benoetigte Programme</A></H2>
+
+<P>
+<P>
+<H2><A NAME="ss2.1">2.1 FidoGate </A>
+</H2>
+
+<P>
+<P>Dies ist die Gateway-Software, welche Fido-Messages in
+Usenet-News/Mail konvertiert. Die aktuelle Release ist Version 4.2.10.
+<P>Das Programm wird von Martin Junius (<CODE>mj@fido.de</CODE>, 2:2452/110)
+entwickelt.
+<P>Die aktuellste Version findet man immer in <CODE>
+<A HREF="ftp://ftp.fido.de/pub/fidogate/">ftp.fido.de:/pub/fidogate/</A></CODE> und gewoehnlich etwas spaeter
+auch auf <CODE>
+<A HREF="ftp://sunsite.unc.edu/pub/Linux/system/Fido/">sunsite.unc.edu:/pub/Linux/system/Fido/</A></CODE>. Weiterhin kann
+man das Programm auch bei Martin requesten (2:2452/110 HST, 2:2452/111
+ISDN).  Fuer weitere Informationen kann auch ein Blick auf die
+FidoGate-Webpage unter <CODE>
+<A HREF="http://www.fido.de/fidogate/">http://www.fido.de/fidogate/</A></CODE> nicht schaden.
+<P>
+<P>
+<H2><A NAME="ss2.2">2.2 IFcico</A>
+</H2>
+
+<P>
+<P>Dies ist ein Mailer aehnlich Binkley-Term, der allerdings mehr
+Unix-like ist, d.h. er wartet nicht aktive (unter Dos stoert das ja
+nicht) und orientiert sich auch ansonsten an uucico von UUCP. ifcico
+ist im Paket IFmail enthalten. Die aktuelle Version ist 2.12.
+<P>Von ifcico gibt es noch eine inoffizielle 3.0 Version. Diese Version beherscht
+das Hydra Protokoll und arbeitet bei mir problemlos. Deshalb kann ich nur
+empfehlen die 3.0 Version zu nehmen. Ich nehme dafuer die Version von
+Christian Meerhof die man unter <CODE>http://www.edvz.sbg.ac.at/~cmeerw/ifcico/</CODE>
+bekommen kann. Zeit Zeit ist das 3.0-cm.alpha-2.2.
+<P>
+<P>Das Programm wird von Eugene Crosser (<CODE>crosser@average.org</CODE>,
+2:5020/230) entwickelt.
+<P>IFmail enthaelt neben ifcico auch eine eigene Gateway-Software, aber
+ich favourisiere stattdessen FidoGate und beschreibe hier auch nur die
+Konfiguration mit FidoGate. 
+<P>Die aktuellste Version wird regelmaessig von Eugene nach 
+<CODE>
+<A HREF="ftp://tsx-11.mit.edu/pub/linux/sources/usr.bin/">tsx-11.mit.edu:/pub/linux/sources/usr.bin/</A></CODE> und
+<CODE>
+<A HREF="ftp://sunsite.unc.edu/pub/Linux/system/Fido/">sunsite.unc.edu:/pub/Linux/system/Fido/</A></CODE> hochgeladen.
+Weitere Informationen findet man auf der Ifmail-Webpage unter
+<CODE>
+<A HREF="http://www.average.org/ifmail/">http://www.average.org/ifmail/</A></CODE>.
+<P>
+<P>
+<H2><A NAME="ss2.3">2.3 MGetty</A>
+</H2>
+
+<P>
+<P>Mgetty ist im Grunde "nur" ein Programm was dazu dient einen Port auf einen
+Anruf hin zu ueberwachen und ihn gegebenenfalls anzunehmen um dann zu
+entscheiden welches Programm danach gestartet werden muss.
+<P>Das Programm wird von Gert Doering (<CODE>gert@greenie.muc.de</CODE>) entwickelt.
+<P>Mgetty enthaelt nebenbei auch noch ein paar andere nuetzliche Programm
+hauptsaechlich sind das Programm um und fuers Faxen (dafuer ist es auch
+eigentlich gedacht!) und einen "Anrufbeantworter" fuer Voice-Modems und ISDN.
+<P>Die Web-Seite von Mgetty ist <CODE>
+<A HREF="http://www.leo.org/~doering/mgetty/index.html">http://www.leo.org/~doering/mgetty/index.html</A></CODE>
+<P>
+<P>
+<H2><A NAME="ss2.4">2.4 Packer</A>
+</H2>
+
+<P>
+<P>Manche Packer finden sich schon in den Distributionen. Falls spezielle
+Packer fehlen, kann man sich diese auf diversen Servern besorgen, die
+wie <CODE>
+<A HREF="ftp://sunsite.unc.edu/pub/Linux/utils/compress/">sunsite.unc.edu:/pub/Linux/utils/compress/</A></CODE> ein
+spezielles Packer-Verzeichnis besitzen.
+<P>
+<DL>
+<DT><B>ZIP</B><DD><P>unzip51 entpackt auch die das neue ZIP-Format. Es gibt
+inzwischen auch ein zip, das wieder nach dem neuen Format
+packt.
+<DT><B>ARJ</B><DD><P>unarj241 entpackt ARJ-Archive, allerdings gibt es dazu unter
+Linux keinen Packer.
+<DT><B>LZH</B><DD><P>lha exisitert auch als Linux-Port.
+<DT><B>ARC</B><DD><P>Alter, aber wichtiger Packer, denn die meisten Nodelisten
+sind mit arc gepackt. Es existiert mindestens ein Linux-Port. 
+<DT><B>RAR</B><DD><P>rar existiert in der Version 2.01 als Linux-Port
+</DL>
+<P>
+<P>
+<H2><A NAME="ss2.5">2.5 Mail-Transport-Agent (MTA)</A>
+</H2>
+
+<P>
+<P>Hier hat man im wesentlichen die Wahl zwischen Sendmail V8, Qmail und Smail.
+smail ist das kleinere simplere Paket, welches leider einige kleinere
+Bugs hat, waehrend Sendmail V8 auf den ersten Blick sehr unangenehm zu
+konfigurieren ist. Allerdings gibt es inzwischen eine Konfiguration
+mit dem Macro-Prozessor M4, welche die Konfiguration enorm vereinfacht
+und wenn man seine anfaengliche Scheu abgelegt hat, stellt man fest,
+dass die Konfiguration nicht komplizierter als die von smail ist.
+Allerdings ist Sendmail um einiges maechtiger als smail. Ueber QMail kann 
+ICH(!) nicht viel sagen ausser das es die ganzen Sicherluecken, die sendmail 
+hat/hatte, garnicht erst aufkommen laesst. Und das es sehr einfach zu
+konfigurieren sein SOLL. Beschreiben werde ich hier nur Sendmail V8.
+<P>
+<P>
+<P>
+<H3>Sendmail V8</H3>
+
+<P>
+<P>Die aktuelle Version von Sendmail V8 ist 8.8.8, allerdings sollten mit
+Versionen >=8.6.9 auch keine groesseren Probleme auftauchen. 
+<P>
+<P>
+<P>
+<H2><A NAME="ss2.6">2.6 Areafix</A>
+</H2>
+
+<P>
+<P>Weil mir der Areafix, der bei Fidogate enthalten ist, in einigen Punken nicht
+gefallen hat oder nicht ueber ausreichend Funktionen verfuegt. Habe ich einen
+eigenen Areafix geschrieben, der zwar nur mit Fidogate zusammen funktioniert,
+aber den Areafix von Fidogate aber vollstaendig ersetzt. 
+<P>Dieser Areafix kann bei mir unter dem Namen <CODE>areafix.tgz</CODE> requestet
+werden. Im folgenden werde ich davon ausgehen das dieses Programm benutzt
+wird.
+<P>
+<P>
+<P>
+<HR>
+<A HREF="FidoNode-3.html">Weiter</A>
+<A HREF="FidoNode-1.html">Zurück</A>
+<A HREF="FidoNode.html#toc2">Inhalt</A>
+</BODY>
+</HTML>

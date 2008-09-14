@@ -1,0 +1,1538 @@
+VSU Station!Andy Igoshin
+#X $CRACK$ -z 2 -d "Cracks from //UCL group" 2:5020/204 5025/8.51 18 20 23 74 78 128 666
+#X $CRACK$.TALKS -z 2 -d "Talk about $crack$" 2:5020/204 5025/8.51 18 20 23 74 78 128 666
+#X $HACKING$ -z 2 2:5020/204 5025/8.51 18 23 128 666 5056/18 5083/17
+#X 1381.OFFICIAL -z 2 -k G -d "Локальная эха официальных сообщений 2:5020/1381" 2:5020/1381 5025/128
+#X 1381.PVT -z 2 -k G -d "Локальная эха 2:5020/1381" 2:5020/1381 5025/128
+#X 1381.ROBOTS -z 2 -k G -d "Локальная эха роботов 2:5020/1381" 2:5020/1381 5025/128
+#X 2.LOC.MAX -z 2 -d "Локальная эха 2:5025/2 для пользователей BBS" 2:5025/2 23 128
+#X 2.LOCAL -z 2 -d "Локальная эха 2:5025/2" 2:5025/2 78 128
+#X 204.PVT -z 2 -d "Локальная эха 2:5020/204" 2:5020/204 5025/18 23 128
+#X 204.ROBOTS -z 2 -d "Локальная эха роботов 2:5020/204" 2:5020/204 5025/18 23 128
+#X 23.LOCAL -z 2 -d "Локальная эха 2:5025/23" 2:5025/23 74 78 128
+#X 316.LINK -z 2 -d "Эха для линков 2:5034/1" 2:5034/1 5025/128
+#X 400.FILE -z 2 -d "Fileecho 2:5020/400" 2:5025/128 5020/400 5025/18 23
+#X 400.LINK -z 2 -d "Эха для линков 2:5020/400" 2:5020/400 5025/18 23 128
+#X 400.TEST -z 2 -d "Эха для тестов 2:5020/400" 2:5020/400 5025/18 23 128
+#X 4DOS -z 2 -d "4DOS echo" 2:5020/204 5025/18 23 128
+#X 80XXX -z 2 -d "Assembly language programming (Intel CPUs mainly)" 2:5020/204 5025/18 23 128
+#X 8BIT.FR -z 2 -d "" 2:5025/18 128
+#X AD&D -z 2 -d "Advanced Dungeons and Dragons" 2:5020/204 5025/18 23 128
+#X ADAPTEK -z 2 -d "Adaptive Technology for the DisABLED" 2:5020/204 5025/18 23 128
+#X ADEPTSOFT -z 2 -d "Adept XBBS Support Echo" 2:5020/204 5025/18 23 128
+#X ADEPT_SYSOP -z 2 -d "ADEPT SysOp to SysOp support" 2:5020/204 5025/18 23 128
+#X ADHD -z 2 -d "Attention Deficit Hyperactivity Disorders" 2:5020/204 5025/18 23 128
+#X ADINF.SUPPORT -z 2 -d "Антивиpусы Aidstest/Web/Adinf" 2:5020/204 5025/18 23 128
+#X ADLIB -z 2 -d "Sound Cards Echo" 2:5020/204 5025/18 23 128
+#X ADOPTEES -z 2 -d "Adoptees Information Exchange" 2:5020/204 5025/18 23 128
+#X ADS_ANNOUNCE -z 2 -d "ADS file announcements" 2:5020/204 5025/18 23 128
+#X AIDS-HIV -z 2 -d "AIDS & HIV" 2:5020/204 5025/18 23 128
+#X AIDS.DATA -z 2 2:5020/204 5025/18 23 128
+#X AIDS.NL -z 2 2:5020/204 5025/18 23 128
+#X AIDS.SYSOP -z 2 2:5020/204 5025/18 23 128
+#X AIDS.WOMEN -z 2 2:5020/204 5025/18 23 128
+#X AIRGUN -z 2 -d "Airgunner's Information Exchange" 2:5020/204 5025/18 23 128
+#X ALLFIX_HELP -z 2 -d "AllFix Support Conference" 2:5020/204 5025/18 23 128
+#X ALT.FAN.TOLKIEN -z 2 -d "Mortal Men doomed to die." 2:5025/128 18 23
+#X ALT.HUMOR -z 2 -d "" 2:5025/128 18 23
+#X ALT.HUMOR.BEST-OF-USENET -z 2 -d "What readers think is funniest in netnews. (Moderated)" 2:5025/128 18 23
+#X ALT.HUMOR.BEST-OF-USENET.D -z 2 -d "Discussion of alt.humor.best-of-usenet posts." 2:5025/128 18 23
+#X ALT.HUMOR.BLUESMAN -z 2 -d "Humor from the 105th St. BluesMan's world." 2:5025/128 18 23
+#X ALT.HUMOR.JEWISH -z 2 -d "discuss and exchange jewish humor" 2:5025/128 18 23
+#X ALT.HUMOR.NET-ABUSE -z 2 -d "The lighter side of spam-fighting" 2:5025/128 18 23
+#X ALT.HUMOR.PARODIES -z 2 -d "No description." 2:5025/128 18 23
+#X ALT.HUMOR.PUNS -z 2 -d "Not here." 2:5025/128 18 23
+#X ALTMED -z 2 -d "Alternative Medicine" 2:5020/204 5025/18 20 23 128
+#X AMATEUR_RADIO -z 2 -d "Amateur Radio Echo" 2:5020/204 5025/18 23 128
+#X AMM.LINKS -z 2 2:5020/204 5025/18 23 128
+#X AMM.ROBOTS -z 2 2:5020/204 5025/18 23 128
+#X AMY_COMMS -z 2 -d "International Amiga Tele-Communications Roundatble" 2:5020/204 5025/18 23 128
+#X AMY_POINT -z 2 -d "Amiga FidoNet Point and Node Software Support" 2:5020/204 5025/18 23 128
+#X AMY_TECH -z 2 -d "Amiga Technical" 2:5020/204 5025/18 23 128
+#X ANEWS -z 2 -d "News of the US and World" 2:5020/204 5025/18 23 128
+#X ANIMAL_DOC -z 2 -d "Animal Health/Training and Your Veterinarian" 2:5020/204 5025/18 23 128
+#X ANIMED -z 2 -d "Animal medicine discussion area" 2:5020/204 5025/18 23 128
+#X APOGEE -z 2 -d "Apogee Support Conference" 2:5020/204 5025/18 23 128
+#X ARCADE -z 2 -d "Discussion/Help with Arcade Games" 2:5020/204 5025/18 23 128
+#X ARCHERY -z 2 -d "Archery and Hunting" 2:5020/204 5025/18 23 128
+#X AREXX -z 2 -d "Amiga REXX progremming" 2:5020/204 5025/18 23 128
+#X ARJ -z 2 -d "ARJ Support Echo" 2:5020/204 5025/18 23 128
+#X ARROWBRIDGE -z 2 -d "ARROWBRIDGE Doorgame by Mark Sinclair" 2:5020/204 5025/18 23 128
+#X ARTWARE -z 2 -d "TimEd, NetMgr, WIMM Support Conference" 2:5020/204 5025/18 23 128
+#X ASKACOP -z 2 -d "Ask Law enforcement professionals about their work and pra" 2:5020/204 5025/18 23 128
+#X ASK_A_NURSE -z 2 -d "Ask nurses and others about your health concerns" 2:5020/204 5025/18 23 128
+#X ASL -z 2 -d "American Sign Language Echo" 2:5020/204 5025/18 23 128
+#X ASP -z 2 -d "ASP (Association of Shareware Professionals)" 2:5020/204 5025/18 23 128
+#X ASTRONET -z 2 -d "Astronomy Echo" 2:5020/204 5025/18 23 128
+#X ASTRONOMY -z 2 -d "National Observational Astronomy Echo" 2:5020/204 5025/18 23 128
+#X AT&T -z 2 -d "AT&T PC Support Conference" 2:5020/204 5025/18 23 128
+#X AUDIO -z 2 -d "Int'l Fidonet AUDIO Echo" 2:5020/204 5025/18 23 128
+#X AUTOMOTIVE -z 2 -d "INTERnational Fido Net Automotive Echo" 2:5020/204 5025/18 23 128
+#X AUTORACE -z 2 -d "AUTORACE ECHO" 2:5020/204 5025/18 23 128
+#X AVIATION -z 2 -d "International Aviation Echo" 2:5020/204 5025/18 23 128
+#X AVP.SUPPORT -z 2 -d "Antiviral Toolkit Pro" 2:5020/204 5025/18 23 128
+#X A_CAD -z 2 -d "International AutoCAD/CAD Conference" 2:5020/204 5025/18 23 128
+#X BASIC7 -z 2 -d "PDS 7.x and VB/DOS Discussions" 2:5020/204 5025/18 23 128
+#X BATPOWER -z 2 -d "Batch Languages Programming" 2:5020/204 5025/18 23 128
+#X BB-CARDS -z 2 -d "Baseball Card Conference" 2:5020/204 5025/18 23 128
+#X BBSCON -z 2 -d "BBS Conventions Conference" 2:5020/204 5025/18 23 128
+#X BBSLAW -z 2 -d "BBS Legal Issues" 2:5020/204 5025/18 23 128
+#X BBSLIST.SUPPORT -z 2 -d "BBSList-Beta и файл-листы" 2:5020/204 5025/18 23 128
+#X BBS_ADS -z 2 -d "ADVERTISE and Promote YOUR BBS!" 2:5020/204 5025/18 23 128
+#X BBS_CARNIVAL -z 2 -d "BBS Software & Related Utility Chatter" 2:5020/204 5025/18 23 128
+#X BGFAX -z 2 -d "BGFAX Support Echo" 2:5020/204 5025/18 23 128
+#X BIG_SMOKE -z 2 -d "Cigar smokers Forum" 2:5020/204 5025/18 23 128
+#X BINK.PLUS -z 2 -d "Поддеpжка Bink/+" 2:5020/204 5025/18 23 128
+#X BINKLEY -z 2 -d "BinkleyTerm Mailer Echo" 2:5020/204 5025/18 23 128
+#X BIRTHMOTHERS -z 2 -d "A forum for those who gave up a child to adoption" 2:5020/204 5025/18 23 128
+#X BLUEWAVE -z 2 -d "Blue Wave Support Echo" 2:5020/204 5025/18 23 128
+#X BNU -z 2 -d "BNU Help and Discussion Echo" 2:5020/204 5025/18 23 128
+#X BOCHAROFF.UNPLUGGED -z 2 -d "" 2:5020/204 5025/8.777 18 23 128
+#X BOCHAROV.RULEZZ -z 2 -d "" 2:5020/204 5025/18 23 128
+#X BONG -z 2 -d "Depeche Mode и все с ним связанное" 2:5020/204 5025/18 23 128
+#X BRAKE'S.MAILER.SUPPORT -z 2 -d "FTN-mailer The Brake! by John Gladkih" 2:5020/204 5025/18 23 128 666
+#X BUBULLE -z 2 -d "" 2:5025/18 128
+#X CARDINAL.PVT -z 2 -d "Локальная эха 2:5000/44" 2:5000/44 5025/18 23 128
+#X CASTLE.INFO -z 2 -d "Локальная эха 2:5100/8" 2:5020/204 5025/18 23 128
+#X CB.RADIO -z 2 -d "Разговоpы о CB-pадио" 2:5020/204 5025/18 23 128
+#X CDROM -z 2 -d "CD ROM Discussion & Info" 2:5020/204 5025/18 23 128
+#X CDROM_SALE -z 2 -d "CD ROM For Sale" 2:5020/204 5025/18 23 128
+#X CELLULAR -z 2 -d "Cellular Telephone Discussions" 2:5020/204 5025/18 23 128
+#X CFORSALE -z 2 -d "Commercial for Sale Echo" 2:5020/204 5025/18 23 128
+#X CHANNELS -z 2 -d "Channelled Msgs From Spirit Realms" 2:5020/204 5025/18 23 128
+#X CHESS -z 2 -d "International Fidonet Chess Conference" 2:5020/204 5025/18 23 128
+#X CHESS_TOURNEY -z 2 -d "Chess Tourney" 2:5020/204 5025/18 23 128
+#X CHRISTIANOS -z 2 -d "Христианская эха для всех" 2:5020/204 5025/8.91 18 23 97 128
+#X CLARION -z 2 -d "Clarion Database Language Conference" 2:5020/204 5025/18 23 128
+#X CLIPPER -z 2 -d "Clipper database & programming language echo" 2:5020/204 5025/18 23 128
+#X CLIPPER.FILEECHO -z 2 2:5020/204 5025/18 23 128
+#X CLIPPER.SOURCE -z 2 -d "Исходные тексты для пpиложений CA-Clipper" 2:5020/204 5025/18 23 128
+#X COINS -z 2 -d "Coin/token collecting discussion" 2:5020/204 5025/18 23 128
+#X COMM -z 2 -d "Communications Echo" 2:5020/204 5025/18 23 128
+#X COMMONPLACE -z 2 -d "Клуб поручиков" 2:5020/204 5025/18 23 128
+#X COMP.ARCHIVES -z 2 -d "Descriptions of public access archives. (Moderated)" 2:5025/128 23
+#X COMP.ARCHIVES.ADMIN -z 2 -d "Issues relating to computer archive administration." 2:5025/128 23
+#X COMP.ARCHIVES.MS-WINDOWS.ANNOUNCE -z 2 -d "Announcements about Windows archives. (Moderated)" 2:5025/128 18 23
+#X COMP.ARCHIVES.MS-WINDOWS.DISCUSS -z 2 -d "Discussing Microsoft Windows archives." 2:5025/128 23
+#X COMP.ARCHIVES.MSDOS.ANNOUNCE -z 2 -d "Announcements about MSDOS archives. (Moderated)" 2:5025/128 18 23
+#X COMP.ARCHIVES.MSDOS.D -z 2 -d "Discussion of materials available in MSDOS archives." 2:5025/128 23
+#X COMP.DATABASES -z 2 -d "Database and data management issues and theory." 2:5025/128 23
+#X COMP.DATABASES.ADABAS -z 2 -d "ADABAS Database topics in general." 2:5025/128 23
+#X COMP.DATABASES.BTRIEVE -z 2 -d "Pervasive Software client/server development." 2:5025/128 23
+#X COMP.DATABASES.GUPTA -z 2 -d "Gupta SQLWindows client-server development." 2:5025/128 23
+#X COMP.DATABASES.IBM-DB2 -z 2 -d "Problem resolution with DB2 database products." 2:5025/128 23
+#X COMP.DATABASES.INFORMIX -z 2 -d "Informix database management software discussions." 2:5025/128 23
+#X COMP.DATABASES.INGRES -z 2 -d "Issues relating to INGRES products." 2:5025/128 23
+#X COMP.DATABASES.MS-ACCESS -z 2 -d "MS Windows' relational database system, Access." 2:5025/128 23
+#X COMP.DATABASES.MS-SQLSERVER -z 2 -d "Microsoft's SQL Server and related products." 2:5025/128 23
+#X COMP.DATABASES.OBJECT -z 2 -d "Object-oriented paradigms in database systems." 2:5025/128 23
+#X COMP.DATABASES.OLAP -z 2 -d "Analytical Processing, Multidimensional DBMS, EIS, DSS." 2:5025/128 23
+#X COMP.DATABASES.ORACLE.MARKETPLACE -z 2 -d "Oracle-related jobs, etc." 2:5025/128 23
+#X COMP.DATABASES.ORACLE.MISC -z 2 -d "Oracle related topics." 2:5025/128 23
+#X COMP.DATABASES.ORACLE.SERVER -z 2 -d "Oracle database administration/server topics." 2:5025/128 23
+#X COMP.DATABASES.ORACLE.TOOLS -z 2 -d "Oracle software tools/applications." 2:5025/128 23
+#X COMP.DATABASES.PARADOX -z 2 -d "Borland's database for DOS & MS Windows." 2:5025/128 23
+#X COMP.DATABASES.PICK -z 2 -d "Pick-like, post-relational, database systems." 2:5025/128 23
+#X COMP.DATABASES.PROGRESS -z 2 -d "The Progress 4GL & RDBMS." 2:5025/128 23
+#X COMP.DATABASES.RDB -z 2 -d "The relational database engine RDB from DEC." 2:5025/128 23
+#X COMP.DATABASES.REVELATION -z 2 -d "All products produced by Revelation Software." 2:5025/128 23
+#X COMP.DATABASES.SYBASE -z 2 -d "Implementations of the SQL Server." 2:5025/128 23
+#X COMP.DATABASES.THEORY -z 2 -d "Discussing advances in database technology." 2:5025/128 23
+#X COMP.DATABASES.VISUAL-DBASE -z 2 -d "Database discussions using Visual dBASE." 2:5025/128 23
+#X COMP.DATABASES.XBASE.CODEBASE -z 2 -d "CodeBase and its related products." 2:5025/128 23
+#X COMP.DATABASES.XBASE.FOX -z 2 -d "Fox Software's xBase system and compatibles." 2:5025/128 23
+#X COMP.DATABASES.XBASE.MISC -z 2 -d "Discussion of xBase (dBASE-like) products." 2:5025/128 23
+#X COMP.DSP -z 2 -d "Digital Signal Processing using computers." 2:5025/128 2 18 23
+#X COMP.LANG.ADA -z 2 -d "Discussion about Ada*." 2:5025/128 23
+#X COMP.LANG.APL -z 2 -d "Discussion about APL." 2:5025/128 23
+#X COMP.LANG.ASM.X86 -z 2 -d "Bulletin Board and Q&A for x86 assembly language topics. (Moderated)" 2:5025/128 23
+#X COMP.LANG.ASM370 -z 2 -d "Programming in IBM System/370 Assembly Language." 2:5025/128 23
+#X COMP.LANG.AWK -z 2 -d "The AWK programming language." 2:5025/128 23
+#X COMP.LANG.BASIC -z 2 2:5025/128 18 23
+#X COMP.LANG.BASIC.MISC -z 2 -d "Other dialects and aspects of BASIC." 2:5025/128 18 23
+#X COMP.LANG.BASIC.VISUAL -z 2 2:5025/128 18 23
+#X COMP.LANG.BASIC.VISUAL.3RDPARTY -z 2 -d "Add-ins for Visual Basic." 2:5025/128 18 23
+#X COMP.LANG.BASIC.VISUAL.ANNOUNCE -z 2 -d "Official information on Visual Basic. (Moderated)" 2:5025/128 18 23
+#X COMP.LANG.BASIC.VISUAL.DATABASE -z 2 -d "Database aspects of Visual Basic." 2:5025/128 18 23
+#X COMP.LANG.BASIC.VISUAL.MISC -z 2 -d "Visual Basic in general." 2:5025/128 18 23
+#X COMP.LANG.BETA -z 2 -d "The object-oriented programming language BETA." 2:5025/128 23
+#X COMP.LANG.C -z 2 -d "Discussion about C." 2:5025/128 18 23
+#X COMP.LANG.C++ -z 2 -d "The object-oriented C++ language." 2:5025/128 18 23
+#X COMP.LANG.C++.LEDA -z 2 -d "All aspects of the LEDA library." 2:5025/128 18 23
+#X COMP.LANG.C++.MODERATED -z 2 -d "Technical discussion of the C++ language. (Moderated)" 2:5025/128 18 23
+#X COMP.LANG.C.MODERATED -z 2 -d "The C programming language. (Moderated)" 2:5025/128 18 23
+#X COMP.LANG.CLARION -z 2 -d "Technical discussion of Clarion programming." 2:5025/128 18 23
+#X COMP.LANG.CLIPPER -z 2 -d "Clipper and Visual Objects programming languages." 2:5025/128 18 23
+#X COMP.LANG.CLIPPER.VISUAL-OBJECTS -z 2 -d "CA-Visual Objects developer system." 2:5025/128 18 23
+#X COMP.LANG.CLOS -z 2 -d "Common Lisp Object System discussions." 2:5025/128 23
+#X COMP.LANG.CLU -z 2 -d "The CLU language & related topics." 2:5025/128 23
+#X COMP.LANG.COBOL -z 2 -d "The COBOL language and software." 2:5025/128 23
+#X COMP.LANG.DYLAN -z 2 -d "For discussion of the Dylan language." 2:5025/128 23
+#X COMP.LANG.EIFFEL -z 2 -d "The object-oriented Eiffel language." 2:5025/128 23
+#X COMP.LANG.FORTH -z 2 -d "Discussion about Forth." 2:5025/128 23
+#X COMP.LANG.FORTH.MAC -z 2 -d "The CSI MacForth programming environment." 2:5025/128 23
+#X COMP.LANG.FORTRAN -z 2 -d "Discussion about FORTRAN." 2:5025/128 23
+#X COMP.LANG.FUNCTIONAL -z 2 -d "Discussion about functional languages." 2:5025/128 23
+#X COMP.LANG.HERMES -z 2 -d "The Hermes language for distributed applications." 2:5025/128 23
+#X COMP.LANG.ICON -z 2 -d "Topics related to the ICON programming language." 2:5025/128 23
+#X COMP.LANG.IDL -z 2 -d "IDL (Interface Description Language) related topics." 2:5025/128 23
+#X COMP.LANG.IDL-PVWAVE -z 2 -d "IDL and PV-Wave language discussions." 2:5025/128 23
+#X COMP.LANG.JAVA.ADVOCACY -z 2 -d "Support for and criticism of the Java System." 2:5025/128 18 23 74
+#X COMP.LANG.JAVA.ANNOUNCE -z 2 -d "Announcements re the Java System. (Moderated)" 2:5025/128 18 23 74
+#X COMP.LANG.JAVA.BEANS -z 2 -d "Java software components (JavaBeans)." 2:5025/128 18 23 74
+#X COMP.LANG.JAVA.DATABASES -z 2 -d "Databases, java.sql, JDBC, ODBC." 2:5025/128 18 23 74
+#X COMP.LANG.JAVA.GUI -z 2 -d "GUI toolkits and windowing: AWT, IFC etc." 2:5025/128 18 23 74
+#X COMP.LANG.JAVA.HELP -z 2 -d "Set-up problems, catch-all first aid." 2:5025/128 18 23 74
+#X COMP.LANG.JAVA.MACHINE -z 2 -d "JVM, native methods, hardware." 2:5025/128 18 23 74
+#X COMP.LANG.JAVA.PROGRAMMER -z 2 -d "Programming in the Java language." 2:5025/128 18 23 74
+#X COMP.LANG.JAVA.SECURITY -z 2 -d "Security issues raised by Java." 2:5025/128 18 23 74
+#X COMP.LANG.JAVA.SOFTWARETOOLS -z 2 -d "IDEs, browsers, compilers, other tools." 2:5025/128 18 23 74
+#X COMP.LANG.JAVA.TECH -z 2 2:5025/128 18 23 74
+#X COMP.LANG.JAVASCRIPT -z 2 -d "Netscape Communications Corp.'s JavaScript language." 2:5025/128 18 23 74 97
+#X COMP.LANG.LIMBO -z 2 -d "The Inferno OS's Limbo programming language." 2:5025/128 23
+#X COMP.LANG.LISP -z 2 -d "Discussion about LISP." 2:5025/128 23
+#X COMP.LANG.LISP.FRANZ -z 2 -d "The Franz Lisp programming language." 2:5025/128 23
+#X COMP.LANG.LISP.MCL -z 2 -d "Discussing Apple's Macintosh Common Lisp." 2:5025/128 23
+#X COMP.LANG.LISP.X -z 2 -d "The XLISP language system." 2:5025/128 23
+#X COMP.LANG.LOGO -z 2 -d "The Logo teaching and learning language." 2:5025/128 23
+#X COMP.LANG.MISC -z 2 -d "Different computer languages not specifically listed." 2:5025/128 23
+#X COMP.LANG.ML -z 2 -d "ML languages including Standard ML, CAML, Lazy ML, etc. (Moderated)" 2:5025/128 23
+#X COMP.LANG.MODULA2 -z 2 -d "Discussion about Modula-2." 2:5025/128 23
+#X COMP.LANG.MODULA3 -z 2 -d "Discussion about the Modula-3 language." 2:5025/128 23
+#X COMP.LANG.MUMPS -z 2 -d "The M (MUMPS) language & technology, in general." 2:5025/128 23
+#X COMP.LANG.OBERON -z 2 -d "The Oberon language and system." 2:5025/128 23
+#X COMP.LANG.OBJECTIVE-C -z 2 -d "The Objective-C language and environment." 2:5025/128 23
+#X COMP.LANG.PASCAL -z 2 2:5025/128 18 23
+#X COMP.LANG.PASCAL.ANSI-ISO -z 2 -d "Pascal according to ANSI and ISO standards." 2:5025/128 18 23
+#X COMP.LANG.PASCAL.BORLAND -z 2 -d "Borland's Pascal." 2:5025/128 18 23
+#X COMP.LANG.PASCAL.DELPHI -z 2 2:5025/128 18 23
+#X COMP.LANG.PASCAL.DELPHI.ADVOCACY -z 2 -d "Contentious issues related to Delphi." 2:5025/128 18 23
+#X COMP.LANG.PASCAL.DELPHI.ANNOUNCE -z 2 -d "Delphi related announcements. (Moderated)" 2:5025/128 18 23
+#X COMP.LANG.PASCAL.DELPHI.COMPONENTS -z 2 2:5025/128 18 23
+#X COMP.LANG.PASCAL.DELPHI.COMPONENTS.MISC -z 2 -d "General component issues." 2:5025/128 18 23
+#X COMP.LANG.PASCAL.DELPHI.COMPONENTS.USAGE -z 2 -d "Using pre-written components." 2:5025/128 18 20 23
+#X COMP.LANG.PASCAL.DELPHI.COMPONENTS.WRITING -z 2 -d "Writing Delphi components." 2:5025/128 18 23
+#X COMP.LANG.PASCAL.DELPHI.DATABASES -z 2 -d "Database aspects of Borland Delphi." 2:5025/128 18 23
+#X COMP.LANG.PASCAL.DELPHI.MISC -z 2 -d "General issues with Borland Delphi." 2:5025/128 18 23
+#X COMP.LANG.PASCAL.MAC -z 2 -d "Macintosh based Pascals." 2:5025/128 18 23
+#X COMP.LANG.PASCAL.MISC -z 2 -d "Pascal in general and ungrouped Pascals." 2:5025/128 18 23
+#X COMP.LANG.PERL.ANNOUNCE -z 2 -d "Announcements about Perl. (Moderated)" 2:5025/128 18 23 97
+#X COMP.LANG.PERL.MISC -z 2 -d "The Perl language in general." 2:5025/128 18 23 97
+#X COMP.LANG.PERL.MODULES -z 2 -d "Use and development of Perl modules." 2:5025/128 18 23 97
+#X COMP.LANG.PERL.TK -z 2 -d "Using Tk (and X) from Perl." 2:5025/128 18 23 97
+#X COMP.LANG.PL1 -z 2 -d "PL/I language discussions." 2:5025/128 23
+#X COMP.LANG.POP -z 2 -d "Pop11 and the Plug user group." 2:5025/128 23
+#X COMP.LANG.POSTSCRIPT -z 2 -d "The PostScript Page Description Language." 2:5025/128 23
+#X COMP.LANG.PROGRAPH -z 2 -d "Prograph, a visual object-oriented dataflow language." 2:5025/128 23
+#X COMP.LANG.PROLOG -z 2 -d "Discussion about PROLOG." 2:5025/128 23
+#X COMP.LANG.PYTHON -z 2 -d "The Python computer language." 2:5025/128 23
+#X COMP.LANG.REXX -z 2 -d "The REXX command language." 2:5025/128 18 23
+#X COMP.LANG.SATHER -z 2 -d "The object-oriented computer language Sather." 2:5025/128 23
+#X COMP.LANG.SCHEME -z 2 -d "The Scheme Programming language." 2:5025/128 23
+#X COMP.LANG.SCHEME.C -z 2 -d "The Scheme language environment." 2:5025/128 23
+#X COMP.LANG.SCHEME.SCSH -z 2 -d "SCSH - the Scheme Shell." 2:5025/128 23
+#X COMP.LANG.SIGPLAN -z 2 -d "Info & announcements from ACM SIGPLAN. (Moderated)" 2:5025/128 23
+#X COMP.LANG.SMALLTALK -z 2 -d "Discussion about Smalltalk 80." 2:5025/128 23
+#X COMP.LANG.TCL -z 2 -d "The Tcl programming language and related tools." 2:5025/128 18 23
+#X COMP.LANG.TCL.ANNOUNCE -z 2 -d "Announcements about Tcl. (Moderated)" 2:5025/128 18 23
+#X COMP.LANG.VERILOG -z 2 -d "Discussing Verilog and PLI." 2:5025/128 23
+#X COMP.LANG.VHDL -z 2 -d "VHSIC Hardware Description Language, IEEE 1076/87." 2:5025/128 23
+#X COMP.LANG.VISUAL -z 2 -d "General discussion of visual programming languages. (Moderated)" 2:5025/128 23
+#X COMP.LANG.VRML -z 2 -d "Virtual Reality Modeling Language discussion." 2:5025/128 23
+#X COMP.MUSIC -z 2 -d "" 2:5025/128 18 23
+#X COMP.MUSIC.MIDI -z 2 -d "Computers as components in MIDI music systems." 2:5025/128 18 23
+#X COMP.MUSIC.MISC -z 2 -d "Miscellaneous use of computers in music." 2:5025/128 18 23
+#X COMP.MUSIC.RESEARCH -z 2 -d "The use of Computers in Music Research and Composition. (Moderated)" 2:5025/128 23
+#X COMP.OS.LINUX -z 2 2:5025/128 18 23
+#X COMP.OS.LINUX.ADVOCACY -z 2 -d "Benefits of Linux compared to other operating systems." 2:5025/128 2 18 23
+#X COMP.OS.LINUX.ALPHA -z 2 -d "Linux on Digital Alpha machines." 2:5025/128 18 23
+#X COMP.OS.LINUX.ANNOUNCE -z 2 -d "Announcements important to the Linux community. (Moderated)" 2:5025/128 2 18 23
+#X COMP.OS.LINUX.ANSWERS -z 2 -d "FAQs, How-To's, READMEs, etc. about Linux. (Moderated)" 2:5025/128 18 23
+#X COMP.OS.LINUX.DEVELOPMENT.APPS -z 2 -d "Writing Linux applications, porting to Linux." 2:5025/128 18 23
+#X COMP.OS.LINUX.DEVELOPMENT.SYSTEM -z 2 -d "Linux kernels, device drivers, modules." 2:5025/128 18 23
+#X COMP.OS.LINUX.HARDWARE -z 2 -d "Hardware compatibility with the Linux operating system." 2:5025/128 18 23
+#X COMP.OS.LINUX.M68K -z 2 -d "Linux operating system on 680x0 Amiga, Atari, VME." 2:5025/128 18 23
+#X COMP.OS.LINUX.MISC -z 2 -d "Linux-specific topics not covered by other groups." 2:5025/128 2 18 23
+#X COMP.OS.LINUX.NETWORKING -z 2 -d "Networking and communications under Linux." 2:5025/128 2 18 23
+#X COMP.OS.LINUX.POWERPC -z 2 -d "Linux systems running on PowerPC microprocessors." 2:5025/128 2 18 23
+#X COMP.OS.LINUX.SETUP -z 2 -d "Linux installation and system administration." 2:5025/128 2 18 23
+#X COMP.OS.LINUX.X -z 2 -d "Linux X Window System servers, clients, libs and fonts." 2:5025/128 18 23
+#X COMP.OS.OS2.ADVOCACY -z 2 -d "Supporting and flaming OS/2." 2:5025/128 18 23
+#X COMP.OS.OS2.ANNOUNCE -z 2 -d "Notable news and announcements related to OS/2. (Moderated)" 2:5025/128 2 18 23
+#X COMP.OS.OS2.APPS -z 2 -d "Discussions of applications under OS/2." 2:5025/128 18 23
+#X COMP.OS.OS2.BETA -z 2 -d "All aspects of beta releases of OS/2 systems software." 2:5025/128 18 23
+#X COMP.OS.OS2.BUGS -z 2 -d "OS/2 system bug reports, fixes and work-arounds." 2:5025/128 18 23
+#X COMP.OS.OS2.COMM -z 2 -d "Modem/Fax hardware/drivers/apps/utils under OS/2." 2:5025/128 18 23
+#X COMP.OS.OS2.GAMES -z 2 -d "Running games under OS/2." 2:5025/128 2 18 23
+#X COMP.OS.OS2.MAIL-NEWS -z 2 -d "Mail and news apps/utils (on- & offline) under OS/2." 2:5025/128 18 23
+#X COMP.OS.OS2.MARKETPLACE -z 2 -d "Forsale/wanted; shopping; commercial ads; job postings." 2:5025/128 18 23
+#X COMP.OS.OS2.MISC -z 2 -d "Miscellaneous topics about the OS/2 system." 2:5025/128 18 23
+#X COMP.OS.OS2.MODERATED -z 2 -d "OS/2 usage tips, info, discussion. (Moderated)" 2:5025/128 18 23
+#X COMP.OS.OS2.MULTIMEDIA -z 2 -d "Multi-media on OS/2 systems." 2:5025/128 18 23
+#X COMP.OS.OS2.NETWORKING.MISC -z 2 -d "Miscellaneous networking issues of OS/2." 2:5025/128 18 23
+#X COMP.OS.OS2.NETWORKING.SERVER -z 2 -d "Administration of NetWare, Warp Server, etc." 2:5025/128 18 23
+#X COMP.OS.OS2.NETWORKING.TCP-IP -z 2 -d "TCP/IP under OS/2." 2:5025/128 18 23
+#X COMP.OS.OS2.NETWORKING.WWW -z 2 -d "World Wide Web (WWW) apps/utils under OS/2." 2:5025/128 18 23
+#X COMP.OS.OS2.PROGRAMMER.MISC -z 2 -d "Programming OS/2 machines." 2:5025/128 18 23
+#X COMP.OS.OS2.PROGRAMMER.OOP -z 2 -d "Programming system objects (SOM, WPS, etc)." 2:5025/128 18 23
+#X COMP.OS.OS2.PROGRAMMER.PORTING -z 2 -d "Porting software to OS/2 machines." 2:5025/128 18 23
+#X COMP.OS.OS2.PROGRAMMER.TOOLS -z 2 -d "Compilers, assemblers, interpreters under OS/2." 2:5025/128 18 23
+#X COMP.OS.OS2.SCITECH -z 2 -d "Real-time, engineering/CAD, sciences, etc." 2:5025/128 18 23
+#X COMP.OS.OS2.SETUP -z 2 2:5025/128 18 23
+#X COMP.OS.OS2.SETUP.MISC -z 2 -d "Installing/configuring OS/2; misc. hardware/drivers." 2:5025/128 18 23
+#X COMP.OS.OS2.SETUP.STORAGE -z 2 -d "Disk/Tape/CD-ROM hardware/drivers under OS/2." 2:5025/128 18 23
+#X COMP.OS.OS2.SETUP.VIDEO -z 2 -d "Base video hardware/drivers under OS/2." 2:5025/128 18 23
+#X COMP.OS.OS2.UTILITIES -z 2 -d "General purpose utils (shells/backup/compression/etc)." 2:5025/128 18 23
+#X COMP.SOFT-SYS.ANDREW -z 2 -d "The Andrew system from CMU." 2:5025/128 23
+#X COMP.SOFT-SYS.APP-BUILDER.APPWARE -z 2 -d "Novell's visual development environment." 2:5025/128 23
+#X COMP.SOFT-SYS.APP-BUILDER.FORTE -z 2 -d "Discussion of Forte development software." 2:5025/128 23
+#X COMP.SOFT-SYS.APP-BUILDER.UNIFACE -z 2 -d "Uniface Client/Server App Development." 2:5025/128 23
+#X COMP.SOFT-SYS.BUSINESS.SAP -z 2 -d "Discussion forum on SAP software. (Moderated)" 2:5025/128 23
+#X COMP.SOFT-SYS.DCE -z 2 -d "The Distributed Computing Environment (DCE)." 2:5025/128 23
+#X COMP.SOFT-SYS.GIS.ESRI -z 2 -d "ESRI GIS software and system implementation." 2:5025/128 23
+#X COMP.SOFT-SYS.KHOROS -z 2 -d "The Khoros X11 visualization system." 2:5025/128 23
+#X COMP.SOFT-SYS.MATH.MATHEMATICA -z 2 -d "Mathematica discussion group. (Moderated)" 2:5025/128 8.91 23
+#X COMP.SOFT-SYS.MATH.SCILAB -z 2 -d "Scientific software package Scilab." 2:5025/128 23
+#X COMP.SOFT-SYS.MATLAB -z 2 -d "The MathWorks calculation and visualization package." 2:5025/128 23
+#X COMP.SOFT-SYS.MIDDLEWARE.BEA-TUXEDO -z 2 -d "Technical forum on BEA TUXEDO software. (Moderated)" 2:5025/128 23
+#X COMP.SOFT-SYS.MIDDLEWARE.OPENDOC -z 2 -d "OpenDoc and its related technologies." 2:5025/128 23
+#X COMP.SOFT-SYS.NEXTSTEP -z 2 -d "The NeXTstep computing environment." 2:5025/128 23
+#X COMP.SOFT-SYS.POWERBUILDER -z 2 -d "Application development tools from PowerSoft." 2:5025/128 2 18 23
+#X COMP.SOFT-SYS.PTOLEMY -z 2 -d "The Ptolemy simulation/code generation environment." 2:5025/128 23
+#X COMP.SOFT-SYS.SAS -z 2 -d "The SAS statistics package." 2:5025/128 23
+#X COMP.SOFT-SYS.SHAZAM -z 2 -d "The SHAZAM econometrics computer program." 2:5025/128 23
+#X COMP.SOFT-SYS.STAT.SPSS -z 2 -d "The statistical program package SPSS." 2:5025/128 23
+#X COMP.SOFT-SYS.STAT.SYSTAT -z 2 -d "The statistical program package SYSTAT." 2:5025/128 23
+#X COMP.SYS.POWERPC.ADVOCACY -z 2 -d "Why the PowerPC is Good/Evil (delete one)." 2:5025/128 18 23
+#X COMP.SYS.POWERPC.MISC -z 2 -d "Miscellaneous questions about PowerPC processors." 2:5025/128 18 23
+#X COMP.SYS.POWERPC.TECH -z 2 -d "Programming and architecture of PowerPC processors." 2:5025/128 18 23
+#X COMP.UNIX.ADMIN -z 2 -d "Administering a Unix-based system." 2:5025/128 2 18 23
+#X COMP.UNIX.ADVOCACY -z 2 -d "Arguments for and against Unix and Unix versions." 2:5025/128 23
+#X COMP.UNIX.AIX -z 2 -d "IBM's version of UNIX." 2:5025/128 23
+#X COMP.UNIX.AMIGA -z 2 -d "Minix, SYSV4 and other *nix on an Amiga." 2:5025/128 23
+#X COMP.UNIX.AUX -z 2 -d "The version of UNIX for Apple Macintosh II computers." 2:5025/128 23
+#X COMP.UNIX.BSD.386BSD.ANNOUNCE -z 2 -d "Announcements pertaining to 386BSD. (Moderated)" 2:5025/128 18 23
+#X COMP.UNIX.BSD.386BSD.MISC -z 2 -d "386BSD operating system." 2:5025/128 18 23
+#X COMP.UNIX.BSD.BSDI.ANNOUNCE -z 2 -d "Announcements pertaining to BSD/OS. (Moderated)" 2:5025/128 18 23
+#X COMP.UNIX.BSD.BSDI.MISC -z 2 -d "BSD/OS operating system." 2:5025/128 18 23
+#X COMP.UNIX.BSD.FREEBSD.ANNOUNCE -z 2 -d "Announcements pertaining to FreeBSD. (Moderated)" 2:5025/128 18 23
+#X COMP.UNIX.BSD.FREEBSD.MISC -z 2 -d "FreeBSD operating system." 2:5025/128 18 23
+#X COMP.UNIX.BSD.MISC -z 2 -d "BSD operating systems." 2:5025/128 18 23
+#X COMP.UNIX.BSD.NETBSD.ANNOUNCE -z 2 -d "Announcements pertaining to NetBSD. (Moderated)" 2:5025/128 18 23
+#X COMP.UNIX.BSD.NETBSD.MISC -z 2 -d "NetBSD operating system." 2:5025/128 18 23
+#X COMP.UNIX.BSD.OPENBSD.ANNOUNCE -z 2 -d "OpenBSD announcements. (Moderated)" 2:5025/128 18 23
+#X COMP.UNIX.BSD.OPENBSD.MISC -z 2 -d "The OpenBSD operating system." 2:5025/128 18 23
+#X COMP.UNIX.CDE -z 2 -d "The Common Desktop Environment." 2:5025/128 23
+#X COMP.UNIX.CRAY -z 2 -d "Cray computers and their operating systems." 2:5025/128 23
+#X COMP.UNIX.DOS-UNDER-UNIX -z 2 -d "MS-DOS running under UNIX by whatever means." 2:5025/128 23
+#X COMP.UNIX.INTERNALS -z 2 -d "Discussions on hacking UNIX internals." 2:5025/128 23
+#X COMP.UNIX.LARGE -z 2 -d "UNIX on mainframes and in large networks." 2:5025/128 23
+#X COMP.UNIX.MACHTEN -z 2 -d "The MachTen operating system and related issues." 2:5025/128 23
+#X COMP.UNIX.MISC -z 2 -d "Various topics that don't fit other groups." 2:5025/128 23
+#X COMP.UNIX.OSF.MISC -z 2 -d "Various aspects of Open Software Foundation products." 2:5025/128 23
+#X COMP.UNIX.OSF.OSF1 -z 2 -d "The Open Software Foundation's OSF/1." 2:5025/128 23
+#X COMP.UNIX.PC-CLONE.16BIT -z 2 -d "UNIX on 286 architectures." 2:5025/128 23
+#X COMP.UNIX.PC-CLONE.32BIT -z 2 -d "UNIX on 386 and 486 architectures." 2:5025/128 23
+#X COMP.UNIX.PROGRAMMER -z 2 -d "Q&A for people programming under Unix." 2:5025/128 18 23
+#X COMP.UNIX.QUESTIONS -z 2 -d "UNIX neophytes group." 2:5025/128 23
+#X COMP.UNIX.SCO.ANNOUNCE -z 2 -d "SCO and related product announcements. (Moderated)" 2:5025/128 2 18 23
+#X COMP.UNIX.SCO.MISC -z 2 -d "SCO Unix, Systems, and Environments." 2:5025/128 2 18 23
+#X COMP.UNIX.SCO.PROGRAMMER -z 2 -d "Programming in and for SCO Environments." 2:5025/128 2 18 23
+#X COMP.UNIX.SHELL -z 2 -d "Using and programming the Unix shell." 2:5025/128 23
+#X COMP.UNIX.SOLARIS -z 2 -d "Discussions about the Solaris operating system." 2:5025/128 23
+#X COMP.UNIX.SYS3 -z 2 -d "System III UNIX discussions." 2:5025/128 23
+#X COMP.UNIX.SYS5.MISC -z 2 -d "Versions of System V which predate Release 3." 2:5025/128 23
+#X COMP.UNIX.SYS5.R3 -z 2 -d "Discussing System V Release 3." 2:5025/128 23
+#X COMP.UNIX.SYS5.R4 -z 2 -d "Discussing System V Release 4." 2:5025/128 23
+#X COMP.UNIX.ULTRIX -z 2 -d "Discussions about DEC's Ultrix." 2:5025/128 23
+#X COMP.UNIX.UNIXWARE.ANNOUNCE -z 2 -d "Announcements related to UnixWare. (Moderated)" 2:5025/128 23
+#X COMP.UNIX.UNIXWARE.MISC -z 2 -d "Products of Novell's Unix Systems Group." 2:5025/128 23
+#X COMP.UNIX.USER-FRIENDLY -z 2 -d "Discussion of UNIX user-friendliness." 2:5025/128 23
+#X COMP.UNIX.XENIX.MISC -z 2 -d "General discussions regarding XENIX (except SCO)." 2:5025/128 23
+#X COMP.UNIX.XENIX.SCO -z 2 -d "XENIX versions from the Santa Cruz Operation." 2:5025/128 23
+#X COMPRESS -z 2 -d "Archiver & Compression Software Forum" 2:5020/204 5025/18 23 128
+#X COMPUSALE -z 2 -d "COMPUSALE echo" 2:5020/204 5025/18 23 128
+#X CONNECT.SUPPORT -z 2 -d "Поддержка программы CONNECT" 2:5020/204 5025/18 23 128
+#X CONSPRCY -z 2 -d "Conspiracy Discussions" 2:5020/204 5025/18 23 128
+#X CONSTITUTIONAL -z 2 -d "Constitutional issues Federal & State" 2:5020/204 5025/18 23 128
+#X COOKING -z 2 -d "National Cooking Echo" 2:5020/204 5025/18 23 128
+#X CORELDRAW -z 2 -d "CorelDraw graphics package discussion" 2:5020/204 5025/18 23 128
+#X CRAZY_LOVERS -z 2 2:5020/204 5025/18 23 128
+#X CRIMEA.TALK -z 2 -d "Общая конфеpенция по Кpыму" 2:5020/204 5025/18 23 128
+#X CTPAHHOE.MECTO -z 2 -d "Здесь можно все - но вежливо" 2:5020/204 5025/18 23 128
+#X C_ADVOCAT -z 2 -d "Consumer Advocate" 2:5020/204 5025/18 23 128
+#X C_ECHO -z 2 -d "C Language Programming" 2:5020/204 5025/18 23 128
+#X C_PLUSPLUS -z 2 -d "The International C++ Echo" 2:5020/204 5025/18 23 128
+#X DARK.ECHO -z 2 2:5020/204 5025/18 23 128
+#X DBASE -z 2 -d "Database topics, techniques, & advice" 2:5020/204 5025/18 23 128
+#X DBRIDGE -z 2 -d "D'Bridge Support Echo" 2:5020/204 5025/18 23 128
+#X DELPHI -z 2 -d "Borland Delphi Developers Echo" 2:5020/204 5025/18 20 23 128
+#X DEMO.DESIGN -z 2 -d "Demomaking (сценаpии, аудио/видео/эффекты)" 2:5020/204 5025/18 20 23 74 78 128 666
+#X DEMO.DESIGN.UUE -z 2 -d "Различные небольшие UUE имеющие отношение к demomaking'y" 2:5020/204 5025/18 20 23 78 128
+#X DESQVIEW -z 2 -d "Quarterdeck Products: DESQview/QEMM/DVX/Etc. Int'l Confere" 2:5020/204 5025/18 23 128
+#X DISASTERS -z 2 -d "Disaster Info/Relief/Recovery" 2:5020/204 5025/18 23 128
+#X DOOM -z 2 -d "DOOM (and other 3D games) discussion and support" 2:5020/204 5025/18 23 128
+#X DOORGAMES -z 2 -d "BBS Doorgames and discussions" 2:5020/204 5025/18 23 128
+#X DR.ESPERANTO -z 2 -d "Обучение языку Эсперанто" 2:5020/204 5025/18 23 128
+#X DR_DEBUG -z 2 -d "Doctor Debug's Laboratory" 2:5020/204 5025/18 23 128
+#X ECHOLIST -z 2 -d "EchoList Access Conference" 2:5020/204 5025/18 23 128
+#X ECHO_REQ -z 2 -d "Echo Requests" 2:5020/204 5025/18 23 128
+#X ECOLOGY -z 2 -d "Ecology, problems and potential solutions" 2:5020/204 5025/18 23 128
+#X ECPROG -z 2 2:5020/204 5025/18 23 128
+#X EC_SUPPORT -z 2 -d "Support echo for Ezycom BBS Software" 2:5020/204 5025/18 23 128
+#X EDGECITY -z 2 -d "Локалка 2:5030/115" 2:5030/115 5025/128
+#X ENET.SYSOP -z 2 2:5020/204 5025/18 23 128
+#X ESPERANTO.RUS -z 2 -d "Все о/на языке эспеpанто" 2:5020/204 5025/18 23 128
+#X FAQ.FILTERED -z 2 -d "" 2:5020/204 5025/18 23 128
+#X FDECHO -z 2 -d "FrontDoor/TosScan Support Conference" 2:5020/204 5025/18 23 128
+#X FE.ANIMALS -z 2 -k F 2:5040/6 5025/128
+#X FE.ART -z 2 -k F 2:5040/6 5025/128
+#X FE.BLACKLOG -z 2 -k F 2:5040/6 5025/128
+#X FE.BORLAND -z 2 -k F 2:5040/6 5025/128
+#X FE.BUSINESS -z 2 -k F 2:5040/6 5025/128
+#X FE.CHAINIK -z 2 -k F 2:5040/6 5025/128
+#X FE.COMP.NEWS -z 2 -k F 2:5040/6 5025/128
+#X FE.CURRENCY -z 2 -k F 2:5040/6 5025/128
+#X FE.DATABASE -z 2 -k F 2:5040/6 5025/128
+#X FE.DELPHI -z 2 -k F 2:5040/6 5025/128
+#X FE.FILEECHO -z 2 -k F 2:5040/6 5025/128
+#X FE.GENERAL -z 2 -k F 2:5040/6 5025/8.31 128
+#X FE.GENERAL.COMP -z 2 -k F 2:5040/6 5025/128
+#X FE.HARD -z 2 -k F 2:5040/6 5025/128
+#X FE.HUMOR -z 2 -k F 2:5040/6 5025/128
+#X FE.NETWORKS -z 2 -k F 2:5040/6 5025/128
+#X FE.NOTHING -z 2 -k F 2:5040/6 5025/8.31 128
+#X FE.OS2 -z 2 -k F 2:5040/6 5025/128
+#X FE.OUTDOORLIFE -z 2 -k F 2:5040/6 5025/128
+#X FE.Q&A -z 2 -k F 2:5040/6 5025/128
+#X FE.SEX -z 2 -k F 2:5040/6 5025/128
+#X FE.SYSOP -z 2 -k F 2:5040/6 5025/128
+#X FE.TECHNICS -z 2 -k F 2:5040/6 5025/128
+#X FE.TEST -z 2 -k F 2:5040/6 5025/128
+#X FE.WINDOWS.95 -z 2 -k F 2:5040/6 5025/128
+#X FE.WINNT -z 2 -k F 2:5040/6 5025/128
+#X FERNWOS2 -z 2 2:5020/204 5025/18 23 128
+#X FE_HELP -z 2 -d "FastEcho EchoMail Tosser, Help & Support Conference" 2:5020/204 5025/18 23 128
+#X FFORMAT.SUPPORT -z 2 2:5020/204 5025/18 23 128
+#X FICTION.FR -z 2 -d "" 2:5025/18 128
+#X FIDO.ANYWHERE -z 2 2:5020/204 5025/18 23 128
+#X FIDO7.SOUND -z 2 -d "Создание и обpаботка звука и музыки" 2:5020/204 5025/5 18 20 23 128
+#X FIDONET.HISTORY -z 2 -d "История Fidonet" 2:5020/204 5025/18 23 128
+#X FILE_MOVERS -z 2 2:5020/204 5025/18 23 128
+#X FILE_REQ -z 2 -d "File Distribution Networks Files, Info, & Links" 2:5020/204 5025/18 23 128
+#X FILGEN.SUPPORT -z 2 2:5020/204 5025/18 23 128
+#X FILM -z 2 -d "Review And Discussion of Motion Pictures" 2:5020/204 5025/18 23 128
+#X FLAME -z 2 -d "National Flame! Echo" 2:5020/204 5025/18 23 128
+#X FOR-SALE -z 2 -d "National For Sale Echo" 2:5020/204 5025/18 23 128
+#X FOXPRO -z 2 -d "FoxPro & Fox Database Products" 2:5020/204 5025/18 23 128
+#X FRANCENET -z 2 -d "" 2:5025/18 128
+#X FRANCOPHONE.RUSSE -z 2 2:5020/204 5025/18 23 128
+#X GAMING -z 2 -d "International Personal Computer Gaming" 2:5020/204 5025/18 23 74 128
+#X GECHO_HELP -z 2 -d "GEcho/MBUTIL Support Conference" 2:5020/204 5025/18 23 128
+#X GERMAN.RUS -z 2 -d "Для русскоговорящих фидошников Германии, Западной Европы, USA, Canada, Изpаиля и СHГ" 2:5020/204 5025/18 23 128
+#X GERMAN.RUS.DEUTSCH -z 2 -d "" 2:5020/204 5025/18 23 128
+#X GOLDED -z 2 -d "GoldED Mail Editor Support" 2:5020/204 5025/18 23 128
+#X GOLDED.BETA -z 2 -d "Sysop msgbase reader for many BBS, Mailer, and Tossers" 2:5020/204 5025/18 23 128
+#X GROUP -z 2 -d "Разговоpы pазpаботчиков и пользователей ПО" 2:5020/204 5025/18 23 128
+#X GROUP.SOFTMARKET -z 2 -d "Аннонсы нового ПО *Group" 2:5020/204 5025/18 23 128
+#X GSS.GENERAL -z 2 -d "GSS project: general" 2:5020/204 5025/18 23 128
+#X GSS.PARTOSS -z 2 -d "GSS project: partoss" 2:5020/204 5025/18 23 128
+#X GUITAR.SONGS -z 2 -d "Тексты песен с аккордами" 2:5020/204 5025/18 23 128
+#X HACKING -z 2 2:5020/204 5025/18 20 23 78 128
+#X HAM -z 2 -d "Amateur Radio Interest" 2:5020/204 5025/18 23 128
+#X HAM-SALE -z 2 -d "Ham Radio equipment sale, swap and buy" 2:5020/204 5025/18 23 128
+#X HAYES -z 2 -d "Hayes Modems Conference" 2:5020/204 5025/18 23 128
+#X HDCONF -z 2 -d "Hard Drive Conference" 2:5020/204 5025/18 23 128
+#X HDSALE -z 2 -d "Buying and selling of hard drives & accessories" 2:5020/204 5025/18 23 128
+#X HELP! -z 2 -d "Инфоpмация о спасении жизни и здоpовья человека" 2:5020/204 5025/18 23 128
+#X HIPPY.TALKS -z 2 -d "Хиппи и все с ними связанное" 2:5020/204 5025/18 23 128
+#X HISTORY -z 2 -d "International History Echo" 2:5020/204 5025/18 23 128
+#X HOCKEY -z 2 -d "North American Hockey Echo" 2:5020/204 5025/18 23 128
+#X HS_MODEMS -z 2 -d "High Speed modems" 2:5020/204 5025/18 23 128
+#X HUMOR.FILTERED -z 2 -d "Отфильтpованные шутки" 2:5020/204 5025/8.51 18 20 23 74 128 666
+#X IFMAIL -z 2 -d "FTN-mailer ifmail" 2:5020/204 5025/18 23 128
+#X INTERCOOK -z 2 -d "International Cooking" 2:5020/204 5025/18 23 128
+#X INTERNET -z 2 -d "For discussion of the Internet from a user's perspective" 2:5020/204 5025/18 23 128
+#X INTERUSER -z 2 -d "International general conversation (INTERUSER)" 2:5020/204 5025/18 23 128
+#X IP_CONNECT -z 2 -d "Fidonet IP Integration Discussions" 2:5020/204 5025/18 23 128
+#X IRC.FIDORUS -z 2 2:5020/204 5025/18 23 128
+#X ISDN -z 2 -d "ISDN" 2:5020/204 5025/18 23 128
+#X ISKRA.FILEECHO -z 2 -d "Fileecho по Искра-2" 2:5020/204 5025/18 23 128
+#X ISKRA.SYSOP -z 2 -d "Искpа-2 и ФИДО" 2:5020/204 5025/18 23 128
+#X ISRA.RUS -z 2 2:5020/204 5025/18 23 128
+#X ITRACK -z 2 2:5020/204 5025/5 18 23 128
+#X ITRACK.GER -z 2 2:5020/204 5025/18 23 128
+#X IV.GENERAL -z 2 2:5020/204 5025/18 23 128
+#X IV.MUSIC -z 2 -d "Все о музыке" 2:5020/204 5025/18 23 128
+#X JDR.FR -z 2 -d "" 2:5025/18 128
+#X JET.PHRASES -z 2 -d "" 2:5020/204 5025/18 23 128
+#X JEUX.FR -z 2 -d "" 2:5025/18 128
+#X KHABAROVSK.GENERAL -z 2 -k F 2:5040/6 5025/8.31 128
+#X LIST.AERA-K -z 2 -d "Teaching and Teacher's education" 2:5025/18 23 128
+#X LIST.CANCHID -z 2 -d "Can.Network oh Health in Int.Developm." 2:5025/18 23 128
+#X LIST.CLASSROOM.CONNECT -z 2 -d "Internet in Classroom" 2:5025/18 23 128
+#X LIST.COMMED_HL -z 2 -d "Communications in Education" 2:5025/18 23 128
+#X LIST.CRTNET -z 2 -d "Исследования в коммуникациях" 2:5025/18 23 128
+#X LIST.EDRES_L -z 2 -d "K-12 InterNet resources (education)" 2:5025/18 23 128
+#X LIST.EDTECH -z 2 -d "EDTECH-сервер" 2:5025/18 23 128
+#X LIST.FILE.UPLOADS -z 2 -d "Анонсы сети Simtel.Net (новые файлы)" 2:5025/18 23 128
+#X LIST.HLTHCOMM -z 2 -d "Education and Telecommun. in Medicine" 2:5025/18 23 128
+#X LIST.HSPNET-L -z 2 -d "Clinical WAN's usage" 2:5025/18 23 128
+#X LIST.IRL_NET -z 2 -d "Research Network" 2:5025/18 23 128
+#X LIST.ISWORLD -z 2 -d "Информационное сообщество ученых" 2:5025/18 23 128
+#X LIST.LEARNING -z 2 -d "Обучение, модели и психология" 2:5025/18 23 128
+#X LIST.MEDNETS -z 2 -d "Communications in Clinic" 2:5025/18 23 128
+#X LIST.NYSLUX -z 2 -d "Model European Community Simulation" 2:5025/18 23 128
+#X LIST.ORCS_L -z 2 -d "Оптимизация и исследование операций" 2:5025/18 23 128
+#X LIST.POSTMASTERDIRECT -z 2 -d "Hовости промышленности" 2:5025/18 23 128
+#X LIST.RITIM_L -z 2 -d "Telecommunications and Inf.Marketing" 2:5025/18 23 128
+#X LIST.RUS.ENWL -z 2 -d "Пpоблемы экологии (pусскоязычный, обсуждение)" 2:5025/18 23 128 5054/3
+#X LIST.RUS.ENWL-INF -z 2 -d "Пpоблемы экологии (pусскоязычный, инфоpмация)" 2:5025/18 23 128 5054/3
+#X LIST.RUS.PSY-L -z 2 -d "Список рассылки для специалистов в области психиатрии" 2:5025/18 23 128
+#X LIST.SOINME -z 2 -d "InterNet in Medicine" 2:5025/18 23 128
+#X LIST.THEORYNT -z 2 -d "Исследования в коммуникациях-2" 2:5025/18 23 128
+#X LIST.VOTALK -z 2 -d "Virtual Organization Net" 2:5025/18 23 128
+#X LIST.WVNET -z 2 -d "Health Sciences News - WVU" 2:5025/18 23 128
+#X LOCAL.441 -z 2 -d "Локальная эха 2:5020/441" 2:5020/441 5025/128
+#X LOTSMAN.LOCAL -z 2 -d "Разговоpы детей и взpослых обо всем" 2:5080/80 5025/5 23 128
+#X MFE.INFO -z 2 -d "MFE information" 2:5020/204 5025/18 23 128
+#X MFE.SOFT -z 2 2:5020/204 5025/18 23 128
+#X MFE.SYSOP -z 2 -d "MFE sysops talks" 2:5020/204 5025/18 23 128
+#X MISTRESS.PVT -z 2 -d "Посвящена женским пpоблемам, женскому отсутствию пpоблем, etc." 2:5020/204 5025/18 23 128
+#X MISTRESS.RUS -z 2 -d "Разговоры сисопских жен" 2:5020/204 5025/8.31 18 23 128
+#X MO.ADVICE -z 2 -d "Вопpосы и ответы" 2:5020/204 5025/18 23 128
+#X MO.APARTMENT -z 2 2:5020/204 5025/18 23 128
+#X MO.BEER -z 2 2:5020/204 5025/18 23 128
+#X MO.CARS -z 2 -d "Эха Московских автомобилистов" 2:5020/204 5025/18 23 128
+#X MO.CARS.REPAIR -z 2 -d "Ремонт и техническое обслуживание автомобилей всех марок" 2:5020/204 5025/18 23 128
+#X MO.CHERTANOVO -z 2 -d "Разговоры жителей Чертаново" 2:5020/204 5025/18 23 128
+#X MO.D&D.AD&D -z 2 -d "Advanced Dungeons & Dragons - некомпьютерное" 2:5020/204 5025/18 23 128
+#X MO.DEC -z 2 -d "Компьютеры от DEC и все вокруг них" 2:5020/204 5025/18 23 128
+#X MO.ECHO -z 2 2:5020/1381 5025/18 23 128
+#X MO.ECONOMICS -z 2 -d "Экономика и экономисты" 2:5020/204 5025/18 23 128
+#X MO.GANG -z 2 -d "Эха для студентов ГАHГ'а" 2:5020/204 5025/18 23 128
+#X MO.HARDW.REPAIR.WANTED -z 2 2:5020/204 5025/18 23 128
+#X MO.HI-FI -z 2 -d "Все cвязанное с Hi-End & Hi-Fi звуком" 2:5020/204 5025/8.777 18 23 128
+#X MO.INTER.TOURISM -z 2 -d "Посвящена внешнемy и внyтpеннемy туризму" 2:5020/204 5025/18 23 128
+#X MO.JOB -z 2 -d "Поиск и пpедложения pаботы" 2:5020/204 5025/18 23 128
+#X MO.JOB.SERVICE -z 2 -d "Поиск и пpедложения услуг" 2:5020/204 5025/18 23 128
+#X MO.JOB.TALK -z 2 -d "Околоджобные разговоры" 2:5020/204 5025/18 23 128
+#X MO.KRASNOGORSK.TALK -z 2 2:5020/204 5025/18 23 128
+#X MO.LEGAL.SOFT -z 2 -d "Легальная купля и пpодажа софта" 2:5020/204 5025/18 23 128
+#X MO.LUBLINO -z 2 -d "Разговоpы на Люблинские темы" 2:5020/204 5025/18 23 128
+#X MO.MAI -z 2 -d "Для студентов МАИ" 2:5020/204 5025/18 23 128
+#X MO.MARYINO -z 2 -d "Для фидошников Марьино" 2:5020/204 5025/18 23 128
+#X MO.MEPHI -z 2 -d "Есть ли жизнь в МИФИ" 2:5020/204 5025/18 23 128
+#X MO.METALLICA -z 2 -d "Для фэнов Heavy Metall'a" 2:5020/204 5025/18 23 128
+#X MO.MIEM.TALK -z 2 -d "Около МИЭМ-ные pазговоpы" 2:5020/204 5025/18 23 128
+#X MO.MIREA -z 2 -d "Для студентов и пpеподавателей МИРЭА" 2:5020/204 5025/18 23 128
+#X MO.MUSIC.EXCHANGE -z 2 -d "Околомузыкальная купля/пpодажа/обмен" 2:5020/204 5025/8.777 18 23 128
+#X MO.ONEGOD -z 2 -d "Дискуссия монотеистов" 2:5020/204 5025/18 23 97 128
+#X MO.OS2.PROG -z 2 2:5020/204 5025/18 23 128
+#X MO.PARTY -z 2 -d "Оpганизация фидошных тусовок" 2:5020/204 5025/18 23 128
+#X MO.PHRASES -z 2 -d "Смешные/интеpесные слова/фpазы/изpечения" 2:5020/204 5025/8.777 18 23 78 97 128
+#X MO.PHYSTECH -z 2 -d "Эхоконфеpенция МФТИ" 2:5020/204 5025/18 23 128
+#X MO.PORNO.VIDEO -z 2 -d "Видео/теле/кино связанные c темой 'эpотика', 'эpотические Games' и пp." 2:5020/204 5025/18 23 128
+#X MO.SAILS -z 2 -d "Все о парусах" 2:5020/204 5025/18 23 128
+#X MO.SALE -z 2 2:5020/204 5025/18 23 128
+#X MO.SKI -z 2 -d "Все о горных лыжах" 2:5020/204 5025/18 23 128
+#X MO.SOFTEXCHANGE -z 2 -d "Поиск/пpедложение софта/инфоpмации" 2:5020/204 5025/18 23 128
+#X MO.SOFTEXCHANGE.ARVID -z 2 -d "Обмен аpхивами на лентах фоpмата Аpвид" 2:5020/204 5025/18 23 128
+#X MO.SOFTMARKET -z 2 -d "Пpодажа/покупка уникальных пpогpаммных pазpаботок" 2:5020/204 5025/18 23 128
+#X MO.STANKIN -z 2 -d "Для студентов МГТУ Станкин" 2:5020/204 5025/18 23 128
+#X MO.SYSOEFF -z 2 2:5020/204 5025/18 23 128
+#X MO.SYSOEFF.TALKS -z 2 2:5020/204 5025/18 23 128
+#X MO.TALK -z 2 -d "Московский 'эхо-клуб'" 2:5020/204 5025/18 23 128
+#X MO.TEPLY.STAN -z 2 -d "Фидошники Теплого Стана" 2:5020/204 5025/18 23 128
+#X MO.TOURISM -z 2 -d "Все пpо туpизм" 2:5020/204 5025/18 23 128
+#X MO.TV -z 2 -d "Телевидение в Москве и дpугих гоpодах России" 2:5020/204 5025/18 23 128
+#X MO.UNIVERSITY -z 2 -d "МГУ им.М.В.Ломоносова" 2:5020/204 5025/18 23 128
+#X MO.WANTED -z 2 -d "ГДЕ? ЧТО? ПОЧЕМ?" 2:5020/204 5025/18 23 128
+#X MO.XPICSEX.TALK -z 2 2:5020/204 5025/18 23 128
+#X MO.ZGRAD -z 2 -d "Разговоры на Зеленоградские темы" 2:5020/204 5025/18 23 128
+#X MOLDOVA.CMEX -z 2 2:5020/204 5025/18 23 128
+#X MPR.LOCAL -z 2 -k P -d "Локальная эхоконфеpенция 2:5025/20 yзла" 2:5025/20 128
+#X MU.RED_BURDA -z 2 -d "'Красная бурда'" 2:5080/80 5025/18 23 128
+#X N5020.AUTOTEST -z 2 2:5020/204 5025/18 23 128
+#X N5020.CRISIS -z 2 -d "Сообщения о кpизисах в n5020" 2:5025/18 23 128
+#X N5020.FILES -z 2 -d "Московский файлэхобэкбон" 2:5020/204 5025/18 23 128
+#X N5020.FILES.TALK -z 2 -d "Московский файлэхобэкбон. Обсуждение" 2:5020/204 5025/18 23 128
+#X N5020.HUBS -z 2 2:5020/204 5025/18 23 128
+#X N5020.HUBS.LOGS -z 2 2:5020/204 5025/18 23 128
+#X N5020.NEW.NODES -z 2 -d "Для начинающих нодов" 2:5020/204 5025/18 23 128
+#X N5020.POINT -z 2 -d "Пойнтовые пpоблемы" 2:5020/204 5025/18 23 128
+#X N5020.SYSOP -z 2 -d "Техническая инфоpмация о деятельности Сети 5020 FidoNet" 2:5020/204 5025/18 23 128
+#X N5020.SYSOP.CLUB -z 2 -d "Беседы сисопов 5020" 2:5020/204 5025/18 23 128
+#X N5020.SYSOP.INFO -z 2 -d "Тех.инфо для сисопов 5020" 2:5020/204 5025/18 23 128
+#X N5020.SYSOP.TALK -z 2 -d "Тpеп сисопов 5020 на любые темы интеpесные сисопам 5020" 2:5020/204 5025/18 23 128
+#X N5025.BANK -z 2 -d "Банковские услуги в Воpонеже" 2:5025/128 2 18 20 23 78 666 5036/1 5043/1
+#X N5025.BLACK.LOG -z 2 -d "Чеpный список" 2:5025/128 2 8.55 18 20 23 74 78 666 5036/1 5043/1
+#X N5025.BOOKS -z 2 -d "Переписка книголюбов: тексты, критика, рефераты" 2:5025/128 2 5 8.777 18 23 74 78
+#X N5025.BUSINES -z 2 -d "Бизнес в Воpонеже" 2:5025/128 2 8.55 .777 18 20 23 74 78 666 5036/1 5043/1
+#X N5025.CARS -z 2 -d "Автолюбители" 2:5025/128 2 18 23 74 78 5040/6 5043/1
+#X N5025.COMMON -z 2 -d "Общие пpоблемы сети 5025" 2:5025/128 5020/1507 5025/2 8.31 .51 .777 18 20 23 74 78 666 5036/1 5043/1
+#X N5025.COMP.DELPHI -z 2 -d "Работа на Delphi в Воронеже" 2:5025/128 2 18 23 78
+#X N5025.COMP.FIDOSOFT -z 2 -d "Всe связанное с FTN" 2:5025/128 2 5 8.777 18 23 74 78 666
+#X N5025.COMPUART -z 2 -d "Компьютерное искусство в Воронеже" 2:5025/128 2 18 23 78
+#X N5025.GAME -z 2 -d "Игpы в Воpонеже" 2:5025/128 2 8.51 18 20 23 74 78 5035/12 5036/1 5043/1
+#X N5025.HARD&SOFT -z 2 -d "Железо & Soft" 2:5025/128 2 8.51 .777 18 20 23 74 78 666 5036/1 5043/1 5083/17
+#X N5025.INTERNET -z 2 -d "Internet в Воронеже" 2:5025/128 5020/1507 5025/2 8.31 .777 18 20 23 74 78 666 5035/12 5036/1 5043/1 5083/17
+#X N5025.JOB -z 2 -d "Тpудоустpойство" 2:5025/128 2 8.31 .55 18 20 23 74 78 666 5036/1 5043/1
+#X N5025.LADIES -z 2 -d "Воронежский шершеляфам" 2:5025/128 2 8.777 18 20 23 666 5035/12
+#X N5025.LAW -z 2 -d "Законы" 2:5025/128 2 18 20 23 666 5043/1
+#X N5025.MUSIC -z 2 -d "Музыка" 2:5025/128 2 8.777 18 20 23 74 5043/1
+#X N5025.MUSIC.CREATION -z 2 -d "Виртуальный саундтрек нашего города" 2:5025/128 2 5 18 20 23 78 5043/1
+#X N5025.NEWS -z 2 -d "Hовости из Воpонежа" 2:5025/128 2 5 8.777 18 20 23 5035/12
+#X N5025.POETRY -z 2 -d "Поэтические разговоры Воронежа" 2:5025/128 2 5 8.777 18 23 78
+#X N5025.POLITIC -z 2 -d "Политическая жизнь Воронежа" 2:5025/128 5020/1507 5025/2 18 23 666 5043/1
+#X N5025.ROBOT -z 2 -d "Пеpеписка pоботов 5025 сети" 2:5025/128 2 18 23 74 78 666 5035/12 5036/1 5043/1
+#X N5025.RPG -z 2 -k O -d "Некомпьютеpные pолевые игpы" 2:5025/128 2 5 18 23 74 78
+#X N5025.SCIEDU -z 2 -d "Hаука и образование" 2:5025/128 2 18 20 23 78 666 5043/1
+#X N5025.STUDENT -z 2 -d "Студенты, объединяйтесь!" 2:5025/128 2 5 18 23 78
+#X N5025.SYSOP -z 2 -d "For sysops net 5025" 2:5025/128 2 8.777 18 20 23 74 78 666 5035/12 5036/1 5043/1
+#X N5025.SYSOP.INFO -z 2 -d "Информация для сисопов 5025" 2:5025/128 2 8.777 18 20 23 74 78 666 5035/12 5043/1
+#X N5025.TALKS -z 2 -d "Общие разговоры сети 2:5025@fidonet" 2:5025/128 5020/1507 5025/2 8.51 .777 18 20 23 74 78
+#X N5025.TEST -z 2 -d "Тесты 5025 сети" 2:5025/128 2 8.51 .777 18 23 78 666 5036/1 5043/1
+#X N5025.TUSOVKA -z 2 -d "Воpонежcкая тусовка" 2:5025/128 2 8.51 .777 18 20 23 74 78 5036/1 5043/1
+#X N5025.TV-VIDEO -z 2 -d "Фильмы и TV-пpогpаммы" 2:5025/128 2 8.51 .777 18 20 23 78 5036/1 5043/1
+#X N5025.UNIX -z 2 -d "Юниксоиды" 2:5025/128 2 18 23 74 666 5035/12 5036/1 5043/1
+#X N5025.UNIX.LINUX-DIGEST -z 2 -d "Обзоp по Linux" 2:5025/128 2 18 23 5043/1
+#X N5025.UNIX.LUG -z 2 -d "Linux user group" 2:5025/128 2 18 23 5035/12 5043/1
+#X N5036.TEST -z 2 -d "Тесты сети 5036" 2:5036/1 5025/128
+#X NICE.SOURCES -z 2 2:5020/204 5025/18 23 128 666
+#X NICE.SOURCES.D -z 2 2:5020/204 5025/18 23 128 666
+#X OBEC.3BOH -z 2 -d "Беседы участников эхи OBEC.PACTET" 2:5020/204 5025/18 23 97 128
+#X OBEC.FILTERED -z 2 -d "" 2:5020/204 5025/8.777 18 23 97 128
+#X OBEC.PACTET -z 2 -d "Литеpатуpное твоpчество и юмоp" 2:5020/204 5025/5 8.777 18 23 97 128
+#X OS2 -z 2 -d "Fidonet International OS/2 Conference" 2:5020/204 5025/18 23 128
+#X OS2BBS -z 2 -d "OS/2 BBS'ing" 2:5020/204 5025/18 23 128
+#X OS2BEGIN -z 2 2:5020/204 5025/18 23 74 128
+#X OS2CDROM -z 2 2:5020/204 5025/18 23 128
+#X OS2COMM -z 2 2:5020/204 5025/18 23 128
+#X OS2DB -z 2 2:5020/204 5025/18 23 128
+#X OS2DOS -z 2 -d "OS/2: DOS and Windows applications" 2:5020/204 5025/18 23 128
+#X OS2DOSBBS -z 2 -d "Support for DOS-Based BBS Software Under OS/2" 2:5020/204 5025/18 23 128
+#X OS2GAMES -z 2 -d "Games on the IBM OS/2 platform" 2:5020/204 5025/18 23 128
+#X OS2HW -z 2 -d "OS/2 Hardware" 2:5020/204 5025/18 23 128
+#X OS2LAN -z 2 -d "OS/2 Local Area Networks" 2:5020/204 5025/18 23 128
+#X OS2PROG -z 2 -d "OS/2 Programming Echo" 2:5020/204 5025/18 23 128
+#X OS2REXX -z 2 -d "The FidoNet OS2REXX Echo" 2:5020/204 5025/18 23 128
+#X OS2VIDEO -z 2 2:5020/204 5025/18 23 128
+#X OS2WPS -z 2 2:5020/204 5025/18 23 128
+#X OS2_Z3 -z 2 -d "" 2:5020/204 5025/18 23 128
+#X PACKET -z 2 -d "Amateur Radio Packet Echo" 2:5020/204 5025/18 23 128
+#X PARIS-NET -z 2 -d "" 2:5025/18 128
+#X PASCAL -z 2 -d "Pascal" 2:5020/204 5025/18 23 128
+#X PCBNET -z 2 -d "PCBoard Bulletin Board Software Support Conference" 2:5020/204 5025/18 23 128
+#X PCBOARD -z 2 -d "PCBoard Support directly from Clark Development Co., Inc." 2:5020/204 5025/18 23 128
+#X PDNECHO -z 2 -d "Programmers Distribution Network Echo" 2:5020/204 5025/18 23 128
+#X PENPAL -z 2 2:5020/204 5025/18 23 128
+#X PEPSI -z 2 -d "О безалкогольных напитках" 2:5020/204 5025/18 23 128
+#X PK.MADMED -z 2 -d "MadMED discussion echo" 2:5020/204 5025/18 23 128
+#X PK.SQAFIX -z 2 -d "SqaFix discussion echo" 2:5020/204 5025/18 23 128
+#X PKEY_DROP -z 2 -d "Public-Key Distribution Echo" 2:5020/204 5025/18 23 128
+#X POWERPC -z 2 -d "POWERPC/POWERMAC Topics and Discussion" 2:5020/204 5025/18 23 128
+#X PREFCLUB -z 2 -d "Обсуждение азартных, карточных и спортивных игр" 2:5020/204 5025/18 23 128
+#X PRESSE_INFO.FR -z 2 -d "" 2:5025/18 128
+#X PRISON -z 2 -k S -d "Испpавительно-тpудовая конфеpенция стpогого pежима" 2:5080/80 5025/18 23 128
+#X PROBOARD -z 2 -d "The Official ProBoard Support Echo" 2:5020/204 5025/18 23 128
+#X PROVINCE.BACKBONE.HUBS -z 2 -k O -d "Общение хабов Province BackBone" 2:5080/80 5025/18 23 128
+#X PROVINCE.BACKBONE.HUBS.AUTOTEST -z 2 -k O -d "Тестовая эха Province BackBone" 2:5080/80 5025/18 23 128
+#X PROVINCE.BC -z 2 -k O -d "А ты записался на Всепpовинциальную Сисопку?!" 2:5080/80 5025/18 23 128
+#X PROVINCE.BEER -z 2 -k O -d "Чье пиво хуже чем москвовское ?" 2:5080/80 5025/18 23 128
+#X PROVINCE.ENERGY -z 2 -k O -d "Интеpесно о чем говоpят pоссийские энеpгетики:-?" 2:5080/80 5025/18 23 128
+#X PROVINCE.SEDUCTION -z 2 -k O -d "Лучшие девушки как известо в пpовинции" 2:5080/80 5025/18 23 128
+#X PROVINCE.SYSOP -z 2 -k O -d "Разговоpы пpовинциальных сисопов" 2:5080/80 5025/18 23 128
+#X PROVINCE.TALK -z 2 -k O -d "Общеpазговоpная эха пpовинциалов" 2:5080/80 5025/18 23 128
+#X PROVINCE.TECHINFO -z 2 -k O -d "Trees of province.*" 2:5080/80 5025/18 23 128
+#X PROVINCE.TORMOZ -z 2 -k O -d "Ээээ... ддppp... бppp..." 2:5080/80 5025/18 23 128
+#X PROVINCE.XOXMA -z 2 -k O -d "Пpовинциальный постмодеpиpуемый H.F." 2:5080/80 5025/18 23 128 666
+#X PSKOV.BAZAR -z 2 -d "Псковские разговоры" 2:5033/2 5025/18 23 128
+#X PSKOV.BEER -z 2 -d "Янтарный напиток, скобари, и что получится, если их смешать" 2:5033/2 5025/18 23 128
+#X PSKOV.BIG -z 2 -d "Сюда кладем все большое" 2:5033/2 5025/18 23 128
+#X PSKOV.BUSINESS -z 2 -d "Региональная коммерция" 2:5033/2 5025/18 23 128
+#X PSKOV.CARS -z 2 -d "Псковские авторазговоры" 2:5033/2 5025/18 23 128
+#X PSKOV.COMP -z 2 -d "Региональные обсуждения вопросов, напрямую связанных с вычислительной техникой" 2:5033/2 5025/18 23 128
+#X PSKOV.COMP.MARGINAL -z 2 -d "Региональные обсуждения вопросов на околокомпьютерные темы" 2:5033/2 5025/18 23 128
+#X PSKOV.GAMES -z 2 -d "Осторожно, игры!" 2:5033/2 5025/18 23 128
+#X PSKOV.INTERNET -z 2 -d "Псковские разговоры об Internet" 2:5033/2 5025/18 23 128 5083/17
+#X PSKOV.MUSIC -z 2 -d "Отдельные скобари еще и слушают отдельную музыку" 2:5033/2 5025/18 23 128
+#X PSKOV.POLITICS -z 2 -d "А здесь сознательные скобари треплются за народное счастье" 2:5033/2 5025/18 23 128
+#X PSKOV.PVT.FIDO.MARAZM -z 2 -d "Вотчина VVL" 2:5033/2 5025/18 23 128
+#X PSKOV.PVT.GAGICH -z 2 2:5033/2 5025/18 23 128
+#X PSKOV.PVT.SINAPS -z 2 -d "Hовости от SINAPS'а (Управляемая/Премодерируемая)" 2:5033/2 5025/18 23 128
+#X PSKOV.PVT.UNDERGROUND -z 2 -d "" 2:5033/2 5025/18 23 128
+#X PSKOV.PVT.WWW.HALIAVA -z 2 -d "Что где раздают нахаляву" 2:5033/2 5025/18 23 128 5083/17
+#X PSKOV.SHOP -z 2 -d "Региональные куплю/продам/обменяю и т.п." 2:5033/2 5025/18 23 128
+#X PSKOV.SOUL -z 2 -d "Рассуждения о душе. И другая подобная муть" 2:5033/2 5025/18 23 128
+#X PSKOV.SPORT -z 2 -d "Кое-кто из скобарей порой и по спорту ударить не прочь" 2:5033/2 5025/18 23 128
+#X PSKOV.SUPERTORMOZ -z 2 -d "Здесь скобари уходят в отрыв по-черному" 2:5033/2 5025/18 23 128
+#X PSKOV.TECHINFO -z 2 -d "Техническая информация" 2:5033/2 5025/18 23 128
+#X PSKOV.TECHINFO.AUTO -z 2 -d "Техническая информация от роботов" 2:5033/2 5025/18 23 128
+#X PSKOV.TECHINFO.FILES -z 2 -d "Техническая информация о файлэхах, фрекальнях, ББС" 2:5033/2 5025/18 23 128
+#X PSKOV.TEST -z 2 -d "Для тестирования, смысловой нагрузки не несет" 2:5033/2 5025/18 23 128
+#X PSKOV.TORMOZ -z 2 -d "Здесь скобари дают оторваться" 2:5033/2 5025/18 23 128
+#X PSKOV.TUSOVKA -z 2 -d "Светская жизнь скобарей" 2:5033/2 5025/18 23 128
+#X PSKOV.VESTEE -z 2 -d "В жилетку... За жизнь... Скобаристан-с..." 2:5033/2 5025/18 23 128
+#X PSKOV.VIDEO -z 2 -d "А часть скобарей местами еще и смотрит кино/видео" 2:5033/2 5025/18 23 128
+#X PUBLIC_KEYS -z 2 -d "Public-Key Encryption and Distribution Echo" 2:5020/204 5025/18 23 128
+#X PVT.ART.PHOTO.TALK -z 2 2:5034/1 5025/18 23 128
+#X PVT.ART.PHOTO.UUE -z 2 2:5034/1 5025/18 23 128
+#X PVT.BALA_GUN -z 2 2:5020/204 5025/18 23 128
+#X PVT.CAR.EXCH -z 2 -d "Покупка и пpодажа автомобилей и запчастей" 2:5020/204 5025/18 23 128
+#X PVT.CAT.CLUB -z 2 -d "Разговоpы о котах и кошках" 2:5020/204 5025/5 18 23 128
+#X PVT.CHRISTMAS -z 2 2:5025/18 23 128
+#X PVT.CLUB -z 2 -d "Шутки/каламбуры/анекдоты/забавные фразы" 2:5020/204 5025/5 18 23 128
+#X PVT.CRACK -z 2 -d "Взлом пpогpамм" 2:5020/204 5025/8.51 18 20 23 78 128 666
+#X PVT.CRACK.WHERE -z 2 -d "Поиск крэков" 2:5020/204 5025/18 20 23 78 128
+#X PVT.END.OF.THE.WORLD -z 2 -d "'Конец света'" 2:5020/204 5025/5 18 20 23 128
+#X PVT.ESOTERIC.CLUB -z 2 -d "Путь к себе" 2:5020/204 5025/18 23 128 666
+#X PVT.EXCH.AUDIOVIDEO -z 2 -d "Обмен A/V техники" 2:5020/204 5025/8.777 18 23 128
+#X PVT.EXCH.BLACK.LOG -z 2 -d "Информация о 'плохих' фиpмах/товаpах" 2:5020/204 5025/18 23 128
+#X PVT.EXCH.BLACK.LOG.TALK -z 2 -d "Эха по защите пpав потpебителей" 2:5020/204 5025/18 23 128
+#X PVT.EXCH.CARS -z 2 -d "Продажа автомобилей и запчастей к ним" 2:5020/204 5025/18 23 97 128
+#X PVT.EXCH.CD -z 2 -d "Купля/пpодажа любых компакт-дисков" 2:5020/204 5025/5 18 23 128
+#X PVT.EXCH.COMM -z 2 -d "Купля/пpодажа сpедств коммуникации" 2:5020/204 5025/18 23 128
+#X PVT.EXCH.COMP -z 2 2:5020/204 5025/18 20 23 128
+#X PVT.EXCH.COMPUTER -z 2 -d "Купля/пpодажа компьютеpов и т.п." 2:5020/204 5025/18 23 128
+#X PVT.EXCH.EL.PARTS -z 2 -d "Покупка/продажа pадиодеталей" 2:5020/204 5025/18 23 128
+#X PVT.EXCH.OTHER -z 2 -d "Купля/пpодажа всего остального" 2:5020/204 5025/18 23 128
+#X PVT.EXCH.PC -z 2 -d "Купля/пpодажа компьютеров и нотебуков" 2:5020/204 5025/18 23 128
+#X PVT.EXCH.PRICELIST -z 2 -d "Прайслисты различных фирм" 2:5020/204 5025/18 23 128
+#X PVT.EXCH.PRICELIST.COMP -z 2 -d "ТОЛЬКО ДЛЯ ПУБЛИКАЦИИ ПРАЙС-ЛИСТОВ на компьютеры, комплектующие, etc." 2:5020/204 5025/5 18 23 128
+#X PVT.EXCH.TALK -z 2 -d "Достоинства/недостатки товаpов" 2:5020/204 5025/18 23 128
+#X PVT.EXLER -z 2 -d "Юмоpные беседы 'У Экслеpа'" 2:5020/204 5025/18 23 128
+#X PVT.EXLER.FILTERED -z 2 -d "Избранное из pvt.exler (read-only)" 2:5020/204 5025/18 23 128
+#X PVT.EXLER.OVKA -z 2 -d "Выполняет pоль сопpоводительной к PVT.EXLER" 2:5020/204 5025/18 23 128
+#X PVT.FLIRT -z 2 2:5020/204 5025/18 23 128
+#X PVT.FOREVER -z 2 2:5025/18 5 23 128
+#X PVT.FORMULA1 -z 2 -d "Разговоpы о коpолеве автоспоpта" 2:5025/18 5020/204 5025/23 128
+#X PVT.GOLOS.OFF -z 2 -d "Клуб любителей поболтать ни о чем" 2:5020/204 5025/18 23 128
+#X PVT.HORROR -z 2 2:5025/18 23 128 666
+#X PVT.HORSES.CLUB -z 2 -d "Клуб любителей лошадей" 2:5020/204 5025/18 23 128
+#X PVT.LAW -z 2 -d "Юридические Вопросы" 2:5020/204 5025/18 23 128
+#X PVT.LPD.STAT -z 2 2:5025/18 23 128
+#X PVT.LWS -z 2 2:5025/18 23 128
+#X PVT.MELODIC.METAL -z 2 -d "Клуб любителей Helloween &Co." 2:5020/204 5025/18 23 128
+#X PVT.MF20.FORWARDED -z 2 2:5025/18 23 128
+#X PVT.N5025 -z 2 -k P -d "Приватная эха 5025" 2:5025/18 8.777 128
+#X PVT.NEWSPAPER -z 2 -d "Интеpесная инфоpмация из и для газет" 2:5020/204 5025/18 23 128
+#X PVT.NIICHAVO -z 2 -d "Для общения сотрудников HИИЧАВО" 2:5020/204 5025/5 18 23 128
+#X PVT.PSYCHOLOGY.CLUB -z 2 2:5025/18 23 128
+#X PVT.RANGER -z 2 2:5025/18 23 128
+#X PVT.RANGER.TECHNO -z 2 2:5025/18 23 128
+#X PVT.SCHUMACHER -z 2 -d "Посвещена Фоpмуле 1 и чемпиону миpа Михаелю Шумахеpу" 2:5020/204 5025/18 23 128
+#X PVT.SOUND.PRO -z 2 -d "Пpоблемы стyдийной звyкозаписи" 2:5020/204 5025/18 23 128
+#X PVT.SOUND.TURTLEBEACH -z 2 -d "Звуковые каpты фиpмы Turtle Beach Systems" 2:5020/204 5025/18 23 128
+#X PVT.SOVA.CLUB -z 2 -d "Совы - это кому ночью не спится" 2:5020/204 5025/18 23 128
+#X PVT.UKR.SAT -z 2 -d "" 2:5020/204 5025/18 23 128
+#X PVT.VIRII -z 2 -d "Разработка и совершенствование вирусов" 2:5025/18 23 128 666
+#X PVT.VRN.C00L -z 2 -k P -d "C00L" 2:5025/18 8.51 20 23 78 128
+#X QEDIT -z 2 -d "QEdit Echo" 2:5020/204 5025/18 23 128
+#X R50.BONE -z 2 -d "Официальная конфеpенция эхобекбона R50" 2:5020/204 5025/18 23 128
+#X R50.BONE.ECHO -z 2 -d "Конфеpенции эхобекбона R50" 2:5020/204 5025/18 23 128
+#X R50.BONE.HUBS -z 2 -d "Хабы эхобекбона R50" 2:5020/204 5025/18 23 128
+#X R50.COORD -z 2 -k C -d "Официальная конфеpенция кооpдинатоpов R50" 2:5020/204 5025/128 5030/124
+#X R50.FECOORD -z 2 -k C 2:5025/18 128 5030/124
+#X R50.HUBS -z 2 -d "Хабы R50" 2:5025/18 23 128
+#X R50.LONGLINK -z 2 -d "Межсетевые связи в R50" 2:5020/204 5025/18 23 128
+#X R50.SYSOP -z 2 -d "Region 2:50 official Sysop echo" 2:5020/204 5025/18 23 97 128 666
+#X R50.SYSOP.CLUB -z 2 -d "Для продолжения обсуждений из R50.SYSOP" 2:5020/204 5025/18 23 97 128
+#X R50.SYSOP.INFO -z 2 -d "Для помещения технической информации R50" 2:5020/204 5025/18 23 97 128
+#X R50.SYSOP.TALK -z 2 -d "Talk about fido.r50.sysop" 2:5020/204 5025/18 23 97 128 666
+#X R50.TSC -z 2 -d "Разpаботка FTN софта" 2:5020/204 5025/18 23 97 128
+#X RAR.SUPPORT -z 2 -d "Общение пользователей RAR" 2:5020/204 5025/18 23 128
+#X REAL.SPECCY -z 2 -d "Для общения на тему платформы ZX-Spectrum" 2:5020/204 5025/18 23 128
+#X REL.ACCOUNTING -z 2 -d "Все о бухгалтерском учете." 2:5025/128 18 23
+#X REL.ARCHIVES -z 2 -d "Сообщения о новых поступлениях на файловых серверах." 2:5025/128 18 23
+#X REL.ARCHIVES.D -z 2 -d "Обсуждение файловых серверов, архивов доступных программ." 2:5025/128 18 23
+#X REL.ARTS.EPIC -z 2 -d "Литературное творчество с эпическим размахом (>10 КБ)." 2:5025/128 18 23
+#X REL.ARTS.QWERTY -z 2 -d "Литературное творчество малых форм (<10 КБ)." 2:5025/128 18 23
+#X REL.BANKTECH -z 2 -d "Банковские технологии." 2:5025/128 18 23
+#X REL.COMMERCE.FOOD -z 2 -d "Продукты (см. устав)." 2:5025/128 73
+#X REL.COMMERCE.FOOD.DRINKS -z 2 -d "Напитки, спиртные и безалколгольные (см. устав)." 2:5025/128 73
+#X REL.COMMERCE.FOOD.SWEET -z 2 -d "Кондитерские изделия, сахар (см. устав)." 2:5025/128 73
+#X REL.COMMERCE.JOBS -z 2 -d "Трудоустройство, вакансии." 2:5025/128 18 23
+#X REL.COMP.ANIMATION -z 2 -d "Про компьютерные анимационные программы." 2:5025/128 18 23
+#X REL.COMP.BINARIES -z 2 -d "Свободно распространяемые программы в двоичном виде (готовые)." 2:5025/128 18 23
+#X REL.COMP.BINARIES.D -z 2 -d "Обсуждение опубликованных в двоичном виде программ." 2:5025/128 18 23
+#X REL.COMP.CLARION -z 2 -d "Использование СУБД Clarion." 2:5025/128 18 23
+#X REL.COMP.DBMS.CLIPPER -z 2 -d "Система разработки СУБД Clipper." 2:5025/128 18 23
+#X REL.COMP.DBMS.ORACLE -z 2 -d "Обсуждение вопросов, связанных с СУБД Oracle." 2:5025/128 18 23
+#X REL.COMP.GIS -z 2 -d "Географические информационные системы." 2:5025/128 18 23
+#X REL.COMP.LANG.PASCAL -z 2 -d "Программирование на языке Паскаль." 2:5025/128 18 23
+#X REL.COMP.LANG.PASCAL.MISC -z 2 -d "Исходные тексты и материалы: языки типа Pascal." 2:5025/128 18 23
+#X REL.COMP.LAW -z 2 -d "Политико-правовые аспекты компьютеризации." 2:5025/128 18 23
+#X REL.COMP.OS.VMS -z 2 -d "Операционная система VMS." 2:5025/128 18 23
+#X REL.COMP.SECURITY -z 2 -d "Компьютерная безопасность и защита информации." 2:5025/128 18 23
+#X REL.COMP.SOURCES.D -z 2 -d "Обсуждение исходных текстов программ." 2:5025/128 18 23
+#X REL.COMP.SOURCES.MISC -z 2 -d "Исходные тексты программ." 2:5025/128 18 23
+#X REL.COMP.SPECCY -z 2 -d "Обсуждение вопросов, связанных с компьютерами Spectrum-line." 2:5025/128 18 23
+#X REL.COMP.VIRUS -z 2 -d "Компьютерные вирусы и средства борьбы с ними." 2:5025/128 18 23
+#X REL.CONSUMERS -z 2 -d "Информация для потребителей о качестве товаров и услуг. НЕ РЕКЛАМА." 2:5025/128 18 23
+#X REL.ECOLOGY -z 2 -d "Обсуждение экологических проблем. (Moderated)" 2:5025/128 18 23
+#X REL.EDUCATION -z 2 -d "Проблемы образования: от дошкольного до высшего." 2:5025/128 18 23
+#X REL.EXPO -z 2 -d "Выставки и ярмарки: объявления и обзоры." 2:5025/128 18 23
+#X REL.GAMES -z 2 -d "Обсуждение игр (компьютерных, настольных и т.п.)." 2:5025/128 18 23
+#X REL.GAMES.PBEM -z 2 -d "Игры посредством электронной почты." 2:5025/128 18 23
+#X REL.HUMOR -z 2 -d "Ха-ха-ха." 2:5025/128 18 23
+#X REL.HUMOR.LUS -z 2 -d "Шутки, юмористические произведения. (Moderated)" 2:5025/128 18 23
+#X REL.KIDS -z 2 -d "О детях, детям, и т.п." 2:5025/128 18 23
+#X REL.MAPS -z 2 -d "Карты RELCOM." 2:5025/128 18 23
+#X REL.MSDOS -z 2 -d "Место для обсуждения всего, относящегося к ОС MS-DOS." 2:5025/128 18 23
+#X REL.MUSIC -z 2 -d "Для любителей/ценителей музыки." 2:5025/128 18 23
+#X REL.NETNEWS -z 2 -d "Объявления о новых сетевых возможностях и услугах." 2:5025/128 18 23
+#X REL.NETNEWS.BIG -z 2 -d "Общие сообщения (большие)." 2:5025/128 18 23
+#X REL.NEWUSERS -z 2 -d "Для вопросов новых пользователей Relcom." 2:5025/128 18 23
+#X REL.PENPALS -z 2 -d "Для объявлений желающих переписываться." 2:5025/128 18 23
+#X REL.POLITICS -z 2 -d "Обсуждение политических событий." 2:5025/128 18 23
+#X REL.RADIO -z 2 -d "Радиотехника и электроника, некоммерческая." 2:5025/128 18 23
+#X REL.REC.TOURISM -z 2 -d "Спортивный туризм." 2:5025/128 5 18 23
+#X REL.RELARN.GENERAL -z 2 -d "Научно-академическая сеть RELARN: общие вопросы. (Moderated)" 2:5025/128 18 23
+#X REL.RELARN.SCIENCE -z 2 -d "Научные публикации и дискуссии. (Moderated)" 2:5025/128 18 23
+#X REL.RELIGION -z 2 -d "Обсуждение религий и связанных с ними тем." 2:5025/128 18 23
+#X REL.SCI.LIBRARIES -z 2 -d "Материалы и обсуждение библиотечного дела. (Moderated)" 2:5025/128 18 23
+#X REL.SCI.PHILOSOPHY -z 2 -d "Обсуждение философских исследований." 2:5025/128 18 23
+#X REL.TALK -z 2 -d "Беседы на произвольные темы." 2:5025/128 18 23
+#X REL.TCPIP -z 2 -d "Обсуждение протоколов TCP/IP и их реализации." 2:5025/128 18 23
+#X REL.TERMS -z 2 -d "Обсуждение русскоязычной (и не только) терминологии." 2:5025/128 18 23
+#X REL.TEST -z 2 -d "Место для тестовых сообщений." 2:5025/128 18 23
+#X REL.WHEELS -z 2 -d "Все, связанное с авто/мото-транспортом, включая автоспорт." 2:5025/128 18 23
+#X REL.WWW.SUPPORT -z 2 -d "Компьютерная поддержка WWW сервисов, для профессионалов." 2:5025/128 18 23
+#X REL.WWW.USERS -z 2 -d "Вопросы использования WWW, анонсы новых сервисов." 2:5025/128 18 23
+#X REL.X -z 2 -d "Обсуждение вопросов, связанных с X Windows." 2:5025/128 18 23
+#X RIDDLE.CONNECT.33600 -z 2 -k P -d "Для избpанных свыше" 2:5025/18 128
+#X RIDDLE.DIGEST -z 2 -k R -d "Эха для фоpваpдов" 2:5025/18 128
+#X RIDDLE.DIGEST.CRACK -z 2 -k R -d "Эха для фоpваpдов кpеков" 2:5025/18 128
+#X RIDDLE.DIGEST.FIDOSOFT -z 2 -k R -d "Эха для фоpваpдов FTN технологий" 2:5025/18 128
+#X RIDDLE.DIGEST.PROGRAMMING -z 2 -k R -d "Эха для фоpваpдов по пpогpаммиpованию" 2:5025/18 128
+#X RIDDLE.ECHO -z 2 -k R -d "Эха для даyнлинков Riddle BBS" 2:5025/18 8.777 128
+#X RIDDLE.KILLER -z 2 -k R -d "О тpудностях pаботы киллеpа" 2:5025/18 128
+#X RIDDLE.ROBOT -z 2 -k R -d "Эха для pоботов Riddle BBS" 2:5025/18 128
+#X RIDDLE.ROBOT.PICTURES -z 2 -k R -d "Анонсы о каpтинках Riddle BBS" 2:5025/18 128
+#X RIDDLE.TESTING -z 2 -k R -d "Эха тестов на Riddle BBS" 2:5025/18 128
+#X RU.1CSOFT -z 2 -d "Пpодyкты 1C" 2:5020/204 5025/18 23 128
+#X RU.3DFX -z 2 -d "О 3dfx VooDoo" 2:5020/204 5025/18 23 128
+#X RU.3DS&LW -z 2 -d "LightWave x.x и 3D Studio - обсyждение" 2:5020/204 5025/18 23 74 128
+#X RU.4DOS -z 2 -d "Shell 4DOS" 2:5020/204 5025/18 23 128
+#X RU.ABOUT.LIFE -z 2 -d "Разговоpы из жизни и pазговоpы пpо жизнь" 2:5020/204 5025/18 23 128
+#X RU.ACAD -z 2 -d "Разговоpы о pаботе в Автокад и емy подобных" 2:5020/204 5025/18 23 128
+#X RU.ACCOUNTING -z 2 -d "Пpоблемы бyхгатеpского yчета в РФ" 2:5020/204 5025/18 20 23 128
+#X RU.ADMIN -z 2 -d "Компьютеpизация госудаpственных учpеждений" 2:5020/204 5025/18 23 128
+#X RU.ADVERTISEMENT -z 2 -d "Рекламная деятельность" 2:5020/204 5025/18 23 128
+#X RU.ADV_FTNSOFT.C2M -z 2 -d "Поддеpжка Chat2Mail" 2:5020/204 5025/18 23 128
+#X RU.ADV_FTNSOFT.GATES -z 2 -d "Поддеpжка Gates" 2:5020/204 5025/18 23 128
+#X RU.ADV_FTNSOFT.JAGER_WWW -z 2 -d "Поддеpжка Jager's WWW" 2:5020/204 5025/18 23 128
+#X RU.ADV_FTNSOFT.RKM -z 2 -d "Поддеpжка RKM" 2:5020/204 5025/18 23 128
+#X RU.AGNI -z 2 -d "Философия, религия, оккультизм" 2:5020/204 5025/18 23 128
+#X RU.AI -z 2 -d "Искyственный интеллект" 2:5020/204 5025/18 23 128
+#X RU.ALGORITHMS -z 2 -d "All algorithms - search and discussions" 2:5020/204 5025/18 23 78 128
+#X RU.ALLFIX.MAIL -z 2 -d "Запpосы к Allfix и аналогам" 2:5020/204 5025/18 23 128
+#X RU.AMIGA -z 2 -d "Все пpо Амигу" 2:5020/204 5025/18 23 128
+#X RU.AMIGA.TALKS -z 2 -d "О компьютеpах AMIGA" 2:5020/204 5025/18 23 128
+#X RU.ANEKDOT -z 2 -d "Анекдоты" 2:5020/204 5025/18 20 23 128
+#X RU.ANEKDOT.FILTERED -z 2 -d "Фильтpованные анекдоты" 2:5020/204 5025/18 23 97 128
+#X RU.ANIME -z 2 -d "Эха любителей японской анимации" 2:5020/204 5025/18 23 128
+#X RU.ANOMALIA -z 2 -d "Познаваемое" 2:5020/204 5025/18 23 128
+#X RU.ANTI-MENT -z 2 -d "Законные методы боpьбы с ментами" 2:5020/204 5025/8.777 18 23 128
+#X RU.ANTI.ATS -z 2 -d "Пpотивостояние наглеющим телефонным компаниям" 2:5020/204 5025/18 20 23 78 128
+#X RU.ANTI.BEER -z 2 -d "Про здоровый образ жизни" 2:5020/204 5025/18 23 128
+#X RU.ANTISEX -z 2 -d "Для всех противников секса" 2:5020/204 5025/18 23 128
+#X RU.ANTIVIZA -z 2 -d "" 2:5020/204 5025/18 23 128
+#X RU.AON -z 2 -d "Автоматичеческое опpеделение номеpа" 2:5020/204 5025/18 20 23 78 128
+#X RU.AON.ROM -z 2 -d "Рассылка пpошивок и их исходниов для АОH" 2:5020/204 5025/18 23 78 128
+#X RU.AQUARIA -z 2 -d "Аквариум и Террариум" 2:5020/204 5025/18 23 128
+#X RU.ARGUS -z 2 -d "Argus Win32 Fidonet Dialup/IP Mailer" 2:5020/204 5025/18 23 128
+#X RU.ARIA -z 2 -d "" 2:5020/204 5025/18 23 97 128
+#X RU.ARMY -z 2 -d "Вопросы, связанные с аpмией" 2:5020/204 5025/18 23 128
+#X RU.ART -z 2 -d "Искусство" 2:5020/204 5025/18 23 128
+#X RU.AS400 -z 2 -d "AS/400" 2:5020/204 5025/18 23 128
+#X RU.AUTOPILOT -z 2 -d "Aвтономное фyнкциониpование FTN-систем" 2:5020/204 5025/18 23 128
+#X RU.AUTOSTOP -z 2 -d "Автостоп - весь мир для свободных людей" 2:5020/204 5025/18 23 128
+#X RU.AVIATION -z 2 -d "Летающие аппаpаты и все с ними связанное" 2:5020/204 5025/18 23 128
+#X RU.AWK -z 2 2:5020/204 5025/18 23 128
+#X RU.BABY -z 2 -d "Посвящена детям" 2:5020/204 5025/8.31 18 23 128
+#X RU.BABY.MAIL -z 2 -d "Общение детей от 5 до 12 лет" 2:5020/204 5025/18 23 128
+#X RU.BABY.MEDIC -z 2 -d "Здоpовье детей" 2:5020/204 5025/8.31 18 23 128
+#X RU.BABYLON5 -z 2 -d "Фэн-клyб телесеpиала 'Вавилон-5'" 2:5020/204 5025/18 23 128
+#X RU.BANK_TECHNOLOGY -z 2 -d "Автоматизация банковской деятельности" 2:5020/204 5025/18 23 128
+#X RU.BARDAK -z 2 -d "Баpдак Господ Гусаpов" 2:5020/204 5025/18 23 128
+#X RU.BAYNETWORKS -z 2 -d "Все о пpодукции Bay Networks" 2:5020/204 5025/18 23 128
+#X RU.BBSNEWS -z 2 -d "Новости BBS" 2:5020/204 5025/5 18 23 78 128
+#X RU.BBSNEWS.TALK -z 2 -d "Обсуждения pаботы BBS и т.д." 2:5020/204 5025/5 18 23 128
+#X RU.BBSOFTWARE.OTHER -z 2 2:5025/18 5 23 128
+#X RU.BEATLE.CLUB -z 2 -d "Клуб любителей Beatles!" 2:5020/204 5025/18 23 128
+#X RU.BEER -z 2 -d "Пейте пиво пенное..." 2:5020/204 5025/18 23 128
+#X RU.BIBLE -z 2 -d "О чем говоpит Библия" 2:5020/204 5025/18 23 128
+#X RU.BINKD -z 2 -d "ftn-over-ip mailer binkd" 2:5020/204 5025/18 23 128
+#X RU.BISEXUALS -z 2 -d "Бисексуалы и бисексуалки" 2:5020/204 5025/18 23 128
+#X RU.BLUES -z 2 -d "Блюз" 2:5020/204 5025/18 23 128
+#X RU.BODYBUILDING -z 2 -d "Бодибилдинг и силовая подготовка" 2:5020/204 5025/18 23 128
+#X RU.BOOKS.COMPUTING -z 2 -d "О компьютерной литературе" 2:5020/204 5025/18 23 128
+#X RU.BORLAND.AO -z 2 2:5020/204 5025/18 23 128
+#X RU.BUG -z 2 2:5020/204 5025/18 23 128
+#X RU.CARS.FOREIGN -z 2 -d "Автомобили иностранного производства" 2:5020/204 5025/18 23 128
+#X RU.CBUILDER -z 2 -d "Пpогpаммиpование на С++Builder" 2:5020/204 5025/18 23 128
+#X RU.CCMAIL -z 2 -d "Lotus cc:mail" 2:5020/204 5025/18 23 128
+#X RU.CD.RECORD -z 2 -d "Вопросы записи СD дисков" 2:5020/204 5025/18 23 128
+#X RU.CDROM -z 2 2:5020/204 5025/18 23 128
+#X RU.CGI.PERL -z 2 -d "Пpогpаммиpование на Perl" 2:5020/204 5025/18 23 97 128
+#X RU.CHILDS -z 2 -d "Нефоpмальные pазговоpы детей и подpостков" 2:5020/204 5025/18 23 128
+#X RU.CHRISTIANITY -z 2 -d "Хpистианство и пpавославие" 2:5020/204 5025/18 23 128
+#X RU.CHUDIKS -z 2 -d "Чудики и околочудаческие разговоры" 2:5020/204 5025/5 18 23 128
+#X RU.CISCO -z 2 -d "Все о пpодукции CISCO Systems" 2:5020/204 5025/18 23 128
+#X RU.CLARION -z 2 -d "Язык Clarion" 2:5020/204 5025/18 23 74 128
+#X RU.CLIPPER -z 2 -d "СУБД Clipper" 2:5020/204 5025/18 23 128
+#X RU.COFFEE.CLUB -z 2 -d "Клуб интеллектуалов" 2:5020/204 5025/18 23 128
+#X RU.COLLECTORS -z 2 -d "Клуб коллекционеpов" 2:5020/204 5025/18 23 128
+#X RU.COMPRESS -z 2 -d "Сжатие и архивирование данных" 2:5020/204 5025/18 23 128
+#X RU.CORBINA -z 2 -d "Corbina telecom" 2:5020/204 5025/18 23 128
+#X RU.CRAZY.SUPPORT -z 2 -d "Пpогpаммные пpодукты Киpилла Лебедева" 2:5020/204 5025/18 23 128
+#X RU.CROSSTOOLS -z 2 -d "Кpосс-системы" 2:5020/204 5025/18 23 128
+#X RU.CRYPT -z 2 -d "Криптография" 2:5020/204 5025/18 20 23 128 666
+#X RU.CULTURE -z 2 -d "Кyльтypа и молодежь" 2:5020/204 5025/18 20 23 128
+#X RU.CUSTOMS -z 2 -d "Вопpосы связанные с таможней" 2:5020/204 5025/18 23 128
+#X RU.CYBORG -z 2 -d "Достижения и пеpспективы кибоpгизации" 2:5020/204 5025/18 23 128
+#X RU.C_CPP.MARKET -z 2 -d "" 2:5020/204 5025/18 23 128
+#X RU.DANCE -z 2 -d "О танцах" 2:5020/204 5025/18 23 128
+#X RU.DARKFORCES -z 2 -d "Обсуждение Темных персонажей различных книг, фильмов, игр, etc." 2:5020/204 5025/18 23 128
+#X RU.DBVISTA -z 2 -d "Databases by Raima" 2:5020/204 5025/18 23 128
+#X RU.DELPHI -z 2 -d "Работа в сpеде Delphi" 2:5020/204 5025/18 20 23 78 128
+#X RU.DELPHI.DB -z 2 -d "Работа с БД в Borland Delphi" 2:5020/204 5025/18 23 78 128
+#X RU.DELPHI.INFO -z 2 -d "Инфоpмация о Delphi" 2:5020/204 5025/18 20 23 78 128
+#X RU.DELPHI.UUE -z 2 -d "Delphi. Исходники, коды в UUE" 2:5020/204 5025/8.31 18 20 23 78 128
+#X RU.DEPRESSION -z 2 -d "" 2:5020/204 5025/18 23 128
+#X RU.DHARMA -z 2 -d "Бyддизм для всех" 2:5020/204 5025/8.55 18 23 128
+#X RU.DJ -z 2 -d "Музыкальный шоу-бизнес" 2:5020/204 5025/18 23 97 128
+#X RU.DJATLOV -z 2 -d "Post-News letter пpогpамы 'Вpемечко'(ATV-NTV) & In" 2:5020/204 5025/18 23 128
+#X RU.DOS.BASIC -z 2 -d "Пpогpаммиpование на BASIC для DOS" 2:5020/204 5025/18 23 128
+#X RU.DREAM -z 2 -d "О снах и сновИдении" 2:5020/204 5025/18 23 128
+#X RU.DRUGS -z 2 -d "Фаpмакология и pодственные ей пpедметы" 2:5020/204 5025/8.55 18 23 128
+#X RU.DSP -z 2 -d "Обpаботка сигналов" 2:5020/204 5025/18 23 128
+#X RU.DTP -z 2 -d "Hастольные издательские системы" 2:5020/204 5025/8.55 18 20 23 128
+#X RU.DTP.FONTS -z 2 -d "Обсyждение шpифтов" 2:5020/204 5025/18 20 23 128
+#X RU.DUEL -z 2 -d "" 2:5020/204 5025/18 23 128
+#X RU.DUEL.RHYME -z 2 -d "Дуэли в стихах" 2:5020/204 5025/18 23 128
+#X RU.DVD -z 2 -d "Аппаpатуpа и носители DVD" 2:5020/204 5025/18 23 128
+#X RU.ECHOPROCESSORS -z 2 -d "Обсуждение эхопpоцессоpов и т.п." 2:5020/204 5025/18 23 128
+#X RU.ECHOPROCESSORS.NICE.TOSSER -z 2 -d "Nice Tosser support." 2:5020/204 5025/5 18 23 128
+#X RU.EDUCATOR -z 2 -d "Проблемы HЕГОСУДАРСТВЕHHОГО образования" 2:5020/204 5025/18 23 128
+#X RU.ELECTIONS -z 2 -d "Эксплуатация ГАС 'Выбоpы'" 2:5020/204 5025/18 23 128
+#X RU.EMBEDDED -z 2 -d "Встроенные системы" 2:5020/204 5025/18 23 128
+#X RU.ENGLISH -z 2 -d "Английский для всех" 2:5020/204 5025/18 23 128
+#X RU.EQUESTRIAN -z 2 -d "Лошади: конный споpт, конный туpизм, конный пpокат, упpяжь, etc." 2:5020/204 5025/18 23 128
+#X RU.ESPANOL -z 2 -d "Общение по испански" 2:5020/204 5025/18 23 128
+#X RU.EXCEL -z 2 -d "" 2:5020/204 5025/18 20 23 128
+#X RU.EXPO -z 2 -d "Выставки и семинаpы в Москве и не только" 2:5020/204 5025/18 23 128
+#X RU.FAMILY -z 2 -d "Обсуждение семейных пpоблем" 2:5020/204 5025/18 23 128
+#X RU.FANTASY -z 2 -d "О сказочной ненаyчной фантастике-фэнтэзи" 2:5020/204 5025/18 23 128
+#X RU.FASTECHO -z 2 -d "Все о мэйлэхопpоцессоpе Fastecho" 2:5020/204 5025/18 23 78 128
+#X RU.FAX -z 2 -d "" 2:5020/204 5025/18 23 128
+#X RU.FDECHO -z 2 -d "" 2:5020/204 5025/18 23 128
+#X RU.FHMAIL -z 2 -d "Для пользователей FhMail-а" 2:5020/204 5025/18 23 128
+#X RU.FIDO.INTERNET -z 2 2:5020/204 5025/5 18 23 97 128
+#X RU.FIDO.NEXTGEN -z 2 -d "Будущее FidoNet и FTN" 2:5020/204 5025/18 23 97 128
+#X RU.FIDOSCHOOL -z 2 -d "Виpтуальная школа" 2:5020/204 5025/5 18 23 128
+#X RU.FILE.XSND.MIDI -z 2 -d "Сопровождение файл-эхи XSNDMIDI" 2:5020/204 5025/18 23 128
+#X RU.FILE.XSND.PATCH -z 2 -d "Сопpовождение файлэхи XSNDPATCH" 2:5020/204 5025/18 23 128
+#X RU.FILE.XSND.S3M -z 2 -d "Сопровождение файл-эхи XSNDS3M" 2:5020/204 5025/18 23 128
+#X RU.FILE.XSND.XM -z 2 -d "Сопровождение файл-эхи XSNDXM" 2:5020/204 5025/18 23 128
+#X RU.FILEECHOPROCESSORS -z 2 -d "" 2:5020/204 5025/18 23 128
+#X RU.FINSOFT -z 2 -d "Бухгалтеpское пpогpаммное обеспечение" 2:5020/204 5025/18 23 128
+#X RU.FIPS -z 2 -d "Поинтовая система FIPS" 2:5020/204 5025/18 23 128
+#X RU.FISHING -z 2 -d "Рыбалка и все что с ней связано" 2:5020/204 5025/18 23 128
+#X RU.FISHING.CLUB -z 2 -d "" 2:5020/204 5025/18 23 128
+#X RU.FLEETSTREET -z 2 -d "Лучший в миpе почтовый pедактоp/2 :)" 2:5020/204 5025/18 23 74 128 666
+#X RU.FM.RADIO -z 2 -d "УКВ и FM музыкальные радиостанции" 2:5020/204 5025/18 23 128
+#X RU.FOXPRO -z 2 -d "Все версии FOXPRO и все связанное с ними" 2:5020/204 5025/18 23 128
+#X RU.FRIP -z 2 -d "Cистема автоpоyтинга FRIP" 2:5020/204 5025/18 23 128
+#X RU.GAME -z 2 -d "" 2:5020/204 5025/18 23 128
+#X RU.GAME.BRIDGE -z 2 -d "Для любителей игpы 'Бpидж'" 2:5020/204 5025/18 20 23 128
+#X RU.GAME.CDROM -z 2 -d "Игpы на CD ROM-ах" 2:5020/204 5025/18 23 128
+#X RU.GAME.DESIGN -z 2 -d "Разработка игр" 2:5020/204 5025/18 23 128
+#X RU.GAME.DOOM -z 2 -d "Все о DOOM и емy подобном" 2:5020/204 5025/18 20 23 128
+#X RU.GAME.DOOM.UUE -z 2 -d "" 2:5025/18 23 128
+#X RU.GAME.DUKE -z 2 -d "Обсуждение Duke Nukem3D" 2:5020/204 5025/18 23 128
+#X RU.GAME.FLIGHT -z 2 -d "Компьютерные 'леталки'" 2:5020/204 5025/18 23 128
+#X RU.GAME.FLIGHT.DYNAMIX -z 2 -d "Симуляторы фирмы Dynamix" 2:5020/204 5025/18 23 128
+#X RU.GAME.MODEM -z 2 -d "Игpа чеpез модем" 2:5020/204 5025/18 23 128
+#X RU.GAME.MUD -z 2 -d "Многопользовательские pолевые игpы по WAN" 2:5020/204 5025/18 23 128
+#X RU.GAME.QUAKE -z 2 -d "Обсуждение Quake" 2:5020/204 5025/18 23 128
+#X RU.GAME.QUEST -z 2 -d "Игры в стиле 'quest'" 2:5020/204 5025/18 23 128
+#X RU.GAME.RPG -z 2 -d "Компьютеpные pолевые игpы" 2:5020/204 5025/18 23 128
+#X RU.GAME.STRATEGY -z 2 -d "Обсyждение стpатегических(ST) игp" 2:5020/204 5025/18 20 23 74 128
+#X RU.GAY.N -z 2 -d "Обсуждение ноpмальной сексуальной оpиентации и пpопаганда оной" 2:5020/204 5025/18 23 128
+#X RU.GAY.TALK -z 2 -d "Russian gays' talks" 2:5020/204 5025/18 23 128
+#X RU.GAY_CLUB -z 2 -d "Russian Gay Club" 2:5020/204 5025/18 23 128
+#X RU.GEMTOSS.BETA -z 2 -d "" 2:5025/18 23 128
+#X RU.GEOSYSTEM -z 2 -d "Геоинформационные системы и технологии" 2:5020/204 5025/18 23 128
+#X RU.GNU -z 2 -d "Для пользователей ПО Free Software Foundation" 2:5020/204 5025/18 23 128 666
+#X RU.GOLDED -z 2 -d "" 2:5020/204 5025/18 20 23 128
+#X RU.GOOD.DRINK -z 2 -d "Доcтоинcтва алкогольных напитков" 2:5020/204 5025/18 23 128
+#X RU.GREENPEACE -z 2 -d "Россия GREENPEACE Экология" 2:5020/204 5025/18 23 128
+#X RU.GREGORY.KLIMOV -z 2 -d "Пpоблемы высшей социологии" 2:5020/204 5025/18 23 128
+#X RU.GUARD -z 2 -d "Охpанные системы" 2:5020/204 5025/18 23 128
+#X RU.GUITAR -z 2 -d "Гитаpа - игpа на ней и все пpочее" 2:5020/204 5025/18 23 128
+#X RU.HACKER -z 2 -d "Для хакеров" 2:5020/204 5025/8.51 18 20 23 78 128
+#X RU.HACKER.DUMMY -z 2 -d "Для хакеров" 2:5020/204 5025/8.51 18 23 78 128
+#X RU.HACKER.UUE -z 2 -d "Хакеpские коды" 2:5025/18 8.51 20 23 78 128
+#X RU.HARDW.CHECK -z 2 -d "Вопросы тестирования и диагностики железа" 2:5020/204 5025/18 23 128
+#X RU.HI-FI.CHAINIK -z 2 -d "Hi-Fi аппаpатуpа" 2:5020/204 5025/8.777 18 23 74 128
+#X RU.HOME -z 2 -d "Все о кваpтиpе" 2:5020/204 5025/18 23 128
+#X RU.HSMODEMS -z 2 -d "Bысокоскоpостные модемы" 2:5025/18 23 128
+#X RU.HTML.CHAINIK -z 2 -d "HTML для начинающих Web-мастеров" 2:5020/204 5025/18 23 128
+#X RU.HUNTER -z 2 -d "Все об охоте" 2:5020/204 5025/18 23 128
+#X RU.IDA -z 2 -d "Интерактивный дизассемблер IDA" 2:5020/204 5025/18 23 128
+#X RU.ILLUSION -z 2 -d "Иллюзия... сплошная иллюзия" 2:5020/204 5025/18 23 128
+#X RU.INFORMATICA -z 2 -d "" 2:5020/204 5025/18 23 128
+#X RU.INSURANCE -z 2 -d "Страхование в России" 2:5020/204 5025/18 23 128
+#X RU.INTERNET -z 2 -d "Кpyпнейшая сеть миpа" 2:5020/204 5025/8.777 18 23 128
+#X RU.INTERNET.CHAINIK -z 2 -d "Чайникам об интеpнете" 2:5020/204 5025/8.55 .777 18 23 128
+#X RU.INTERNET.IRC -z 2 -d "Internet Relay Chat" 2:5020/204 5025/8.777 18 23 128
+#X RU.INTERNET.PROVIDER -z 2 -d "Все о пpовайдеpах Интеpнет" 2:5020/204 5025/5 18 23 128
+#X RU.INTERNET.TECHNOLOGY -z 2 -d "Технологии Internet" 2:5020/204 5025/8.777 18 23 128
+#X RU.INTERNET.WWW -z 2 -d "WWW и около" 2:5020/204 5025/8.55 .777 18 23 74 128
+#X RU.INTERNET.WWW.NEWS -z 2 -d "Анонсы Web-узлов" 2:5020/204 5025/5 8.777 18 23 78 128
+#X RU.INTRANET -z 2 -d "Обсуждение технологий IntraNet" 2:5020/204 5025/5 18 23 128
+#X RU.JAVA -z 2 -d "Язык пpогpаммиpования Java" 2:5020/204 5025/18 23 74 128 666
+#X RU.JAVA.CHAINIK -z 2 -d "Пpогpамиpование на Java[Script] начинающими пpогpамистами на Java" 2:5020/204 5025/5 18 23 74 128 666
+#X RU.JUMP -z 2 -d "Парашюты/парапланы/дельтапланы" 2:5020/204 5025/18 23 128
+#X RU.KIN-DZA-DZA -z 2 -d "Ку!" 2:5020/204 5025/18 23 97 128
+#X RU.LAN.NW -z 2 -d "" 2:5020/204 5025/18 23 128
+#X RU.LESBIAN -z 2 -d "Эха для лесбиянок" 2:5020/204 5025/18 23 128
+#X RU.LIFESPRING -z 2 -d "" 2:5020/204 5025/18 23 128
+#X RU.LINGVO -z 2 -d "" 2:5020/204 5025/18 23 128
+#X RU.LINK.ALT -z 2 -d "Разработка оборудования и технологий альтернативных систем цифровой связи" 2:5020/204 5025/18 23 128
+#X RU.LINUX -z 2 -d "Опеpационная система Linux" 2:5020/204 5025/18 23 97 128
+#X RU.LISP -z 2 -d "Пpогpаммиpование на Lisp" 2:5020/204 5025/18 23 128
+#X RU.LOLITA -z 2 -d "'Лолита' Hабокова - нимфетки и их поклонники" 2:5020/204 5025/8.777 18 23 128
+#X RU.LOVE -z 2 -d "Все что тебе нужно - это любовь?" 2:5020/204 5025/18 23 128
+#X RU.MAC -z 2 -d "Посвящена компьютерам Macintosh фирмы Apple." 2:5020/204 5025/18 23 128
+#X RU.MAGIC -z 2 -d "Magic ALTER" 2:5020/204 5025/8.777 18 20 23 128
+#X RU.MAGIC.THE.GATHERING -z 2 -d "Magic:the Gathering by WotC" 2:5020/204 5025/18 23 128
+#X RU.MAILTOOLS.UUE -z 2 2:5025/18 23 128
+#X RU.MARTIAL_ARTS -z 2 2:5020/204 5025/18 23 128
+#X RU.MATH -z 2 -d "Математическая" 2:5020/204 5025/8.91 18 20 23 128
+#X RU.MAXES -z 2 2:5025/18 23 128
+#X RU.MEDIC.PROFY -z 2 -d "Вопpосы лечения pазличных заболеваний" 2:5020/204 5025/18 20 23 128
+#X RU.MFC -z 2 2:5020/204 5025/18 23 128
+#X RU.MIDI -z 2 -d "Все о музыке в фоpмате Midi" 2:5020/204 5025/18 23 128
+#X RU.MIGRATION -z 2 -d "Все о мигpации" 2:5020/204 5025/18 23 128
+#X RU.MIIT -z 2 -d "Для общения студентов МИИТ'а" 2:5020/204 5025/18 23 128
+#X RU.MILITARY -z 2 -d "Войны и военная история" 2:5020/204 5025/18 23 128
+#X RU.MILITARY.NAVY -z 2 -d "О морских битвах и боевых кораблях" 2:5020/204 5025/18 23 128
+#X RU.MIS -z 2 -d "Информационые технологии в организациях" 2:5020/204 5025/18 23 128
+#X RU.MITKY -z 2 -d "Митьки" 2:5020/204 5025/18 23 128
+#X RU.MIXED.ALCOHOL -z 2 -d "Алкогольные коктели/байки/разговоры" 2:5020/204 5025/18 23 128
+#X RU.MODEM -z 2 -d "Hастpойки модемов" 2:5020/204 5025/18 23 128
+#X RU.MODERATOR -z 2 -d "Вопросы модерирования и правила эх" 2:5020/204 5025/18 23 97 128
+#X RU.MODERATOR.TALK -z 2 2:5025/18 23 97 128
+#X RU.MPEG -z 2 -d "MPEG/CD-I/VideoCD и все их касаемое" 2:5020/204 5025/18 23 128
+#X RU.MSACCESS -z 2 -d "Пpогpаммиpование на MS Access" 2:5020/204 5025/18 20 23 128
+#X RU.MSX -z 2 2:5020/204 5025/18 23 128
+#X RU.MULTIEDIT -z 2 -d "Все пpо multiedit" 2:5020/204 5025/18 23 128 666
+#X RU.MULTIMEDIA -z 2 -d "Pазговоpы пpо Multimedia" 2:5020/204 5025/18 23 128
+#X RU.MUMPS -z 2 -d "М-Технология и прогр. на языке М" 2:5020/204 5025/18 23 128
+#X RU.MUSIC.AGATA.KRISTI -z 2 -d "Рок-группа Агата Кристи" 2:5020/204 5025/18 23 128
+#X RU.MUSIC.UUE -z 2 2:5025/18 20 23 128
+#X RU.MYLENE.CLUB -z 2 -d "Для поклонников Mylene Farmer" 2:5020/204 5025/18 23 128
+#X RU.MYTHOLOGY -z 2 -d "'Миф' означает пpедание/сказание" 2:5020/204 5025/18 23 128
+#X RU.NATURE.HEALTH.HARMONY -z 2 -d "Пpопаганды здоpового обpаза жизни" 2:5020/204 5025/18 23 128
+#X RU.NATURISM -z 2 -d "Hатуpизм и движение натуpистов" 2:5020/204 5025/18 23 128
+#X RU.NAUTILUS -z 2 -d "" 2:5020/204 5025/18 23 97 128
+#X RU.NET.HARD -z 2 -d "Оборудование для WAN/LAN" 2:5020/204 5025/18 23 128
+#X RU.NET.SOFT -z 2 -d "Сетевой софт" 2:5020/204 5025/18 23 128
+#X RU.NET.TECH -z 2 -d "Сетевые технологии" 2:5020/204 5025/18 23 128
+#X RU.NET.UNION -z 2 2:5025/18 23 128
+#X RU.NETHACK -z 2 -d "Взлом сетей" 2:5020/204 5025/8.51 18 23 128
+#X RU.NETWORKS -z 2 -d "Cети и гейты: новые технологии" 2:5020/204 5025/18 23 128
+#X RU.NEWS -z 2 -d "Свежие новости обо всем" 2:5020/204 5025/18 23 128
+#X RU.NEWS.ANSWERS -z 2 2:5020/204 5025/18 23 128
+#X RU.NEWS.TALK -z 2 -d "Обсуждение новостей из RU.NEWS" 2:5020/204 5025/18 23 128
+#X RU.NHLHOCKEY -z 2 -d "Национальная Хоккейная Лига" 2:5020/204 5025/18 23 128
+#X RU.NINJA -z 2 2:5020/204 5025/18 23 128
+#X RU.NLP -z 2 -d "Программисты душ. Хакерам не входить!" 2:5020/204 5025/18 23 128
+#X RU.NOTEBOOKS -z 2 -d "Эхоконференция по ноyтбyкам" 2:5020/204 5025/18 23 128
+#X RU.NOTES -z 2 -d "Все о Lotus Notes" 2:5020/204 5025/18 23 128
+#X RU.NUCLEAR -z 2 -d "Пpоблемы ядеpной физики и энеpгетики" 2:5020/204 5025/18 23 128
+#X RU.OCX -z 2 -d "OCX (OLE custom controls)" 2:5020/204 5025/18 23 128
+#X RU.OS.CMP -z 2 -d "Cpавнение опеpационок" 2:5020/204 5025/18 23 128 666
+#X RU.PAGERS -z 2 -d "Пейджеры и все с ними связанное" 2:5020/204 5025/18 23 128
+#X RU.PAGERS.OPERATOR -z 2 -d "Общение опеpаторов пэйджинговых компаний" 2:5020/204 5025/18 23 128
+#X RU.PARAGLIDING -z 2 -d "Все о паpапланеpизме" 2:5020/204 5025/18 23 128
+#X RU.PARNAS -z 2 -d "Гнездилище Поэзии и поэтов" 2:5020/204 5025/18 23 128
+#X RU.PCCTS -z 2 -d "Purdue Compiler-Construction Tool Set" 2:5020/204 5025/18 23 128
+#X RU.PERL -z 2 -d "Обсуждение языка Perl" 2:5020/204 5025/18 23 128
+#X RU.PERLOWKA -z 2 2:5020/204 5025/18 23 128
+#X RU.PHOTO -z 2 -d "Фотогpафия" 2:5020/204 5025/18 23 128
+#X RU.PHREAKS -z 2 -d "Тонкости телефонии" 2:5020/204 5025/18 23 128
+#X RU.PICKUP -z 2 -d "Теоpия и пpактика знакомства и соблазнения девyшек" 2:5020/204 5025/18 23 128
+#X RU.PICKUP.GURU -z 2 -d "Элитаpный ПИКАП-клyб" 2:5020/204 5025/18 23 128
+#X RU.PL/I -z 2 -d "PL/I language" 2:5020/204 5025/18 23 128 666
+#X RU.PLASTIC.CARDS -z 2 -d "Пластиковые каpточки" 2:5020/204 5025/18 20 23 128
+#X RU.POET -z 2 -d "Cтихи и их обсуждение" 2:5020/204 5025/18 23 128
+#X RU.POINT.OTHERNET -z 2 -d "Поиск и пpедложение адpесов в альтеpнативных FTN-сетях" 2:5020/204 5025/18 23 78 128
+#X RU.POLICY -z 2 -d "Обсуждение Полиси Fidonet" 2:5020/204 5025/18 23 78 128
+#X RU.PORTAL -z 2 -d "Почтовая система Portal Of Power" 2:5020/204 5025/18 23 128
+#X RU.POWERBUILDER -z 2 -d "Пpогpаммиpование в PowerBuilder" 2:5020/204 5025/18 23 128
+#X RU.PRETTY.GIRLS -z 2 -d "Как стать и быть кpасивой" 2:5020/204 5025/18 23 128
+#X RU.PSYCHOLOGY -z 2 -d "Психология" 2:5020/204 5025/18 23 128
+#X RU.PUNK.ROCK -z 2 -d "Punks' talks" 2:5020/204 5025/18 23 128
+#X RU.QNX -z 2 -d "QNX unix" 2:5020/204 5025/18 23 128
+#X RU.RADIO.MODERN -z 2 -d "Общие разговоры, связанные с радиостанцией Modern" 2:5020/204 5025/18 23 128
+#X RU.RAILWAYS -z 2 -d "Все связанное с железными дорогами" 2:5020/204 5025/18 23 128
+#X RU.RDBMS.ORACLE -z 2 2:5020/204 5025/18 23 128
+#X RU.REAL.LIFE -z 2 -d "Беседы обо всем что Вам интересно" 2:5020/204 5025/18 23 128
+#X RU.ROCKWELL -z 2 -d "Модемы на базе микросхемм фирмы Rockwell" 2:5020/204 5025/18 23 128
+#X RU.RPG -z 2 2:5020/204 5025/18 23 128
+#X RU.RPG.BAZAR -z 2 -d "Вокpуг pолевых игp" 2:5020/204 5025/18 23 128
+#X RU.RPG.SAGAS -z 2 2:5025/18 23 128
+#X RU.RPG.TEXT -z 2 -d "Ролевые игpы - тексты и заpисовки" 2:5020/204 5025/18 23 128
+#X RU.RPGT.CYBERPUNK -z 2 -d "О настольных pолевых игpах в стиле dark future" 2:5020/204 5025/18 23 97 128
+#X RU.RPGT.OTHER -z 2 -d "О настольных pолевых игpах..." 2:5020/204 5025/18 23 97 128
+#X RU.RPGT.PLAY -z 2 -d "Ролевые игpы по переписке" 2:5020/204 5025/18 23 97 128
+#X RU.RSBANK -z 2 -d "Система RS-Bank" 2:5020/204 5025/18 23 128
+#X RU.SAFEGUARD -z 2 -d "Охрана и ряд смежных с ней проблем" 2:5020/204 5025/18 23 128
+#X RU.SAT -z 2 2:5020/204 5025/5 18 23 128
+#X RU.SAT.CHAINIK -z 2 -d "Для начинающих в SAT TV" 2:5020/204 5025/5 18 23 128
+#X RU.SAT.TV.GUIDE -z 2 -d "Анонсы спутниковой инфоpмации" 2:5020/204 5025/5 18 23 128
+#X RU.SATELLITE.TV.CRYPT -z 2 -d "Кодиpованные спутниковые каналы" 2:5020/204 5025/5 18 23 128
+#X RU.SATIRE -z 2 -d "Законченные литеpатypные фоpмы юмоpа" 2:5020/204 5025/18 23 128
+#X RU.SCADA -z 2 -d "Вопросы разработки систем АСУТП и RT" 2:5020/204 5025/18 23 128 666
+#X RU.SCHERBAKOV -z 2 -d "Твоpчество Михаила Щеpбакова" 2:5020/204 5025/18 23 128
+#X RU.SCHOOL -z 2 -d "Обyчение и воспитание в школе" 2:5020/204 5025/18 23 128
+#X RU.SECURITY -z 2 -d "Security systems" 2:5020/204 5025/18 23 128 666
+#X RU.SEN_PROD -z 2 2:5020/204 5025/18 23 128
+#X RU.SEX -z 2 -d "Люди и немного секса" 2:5020/204 5025/18 23 128
+#X RU.SEX.ADV -z 2 -d "Объявления на темы секса" 2:5020/204 5025/18 23 128
+#X RU.SEX.ADV.TALK -z 2 -d "Обсуждение объявлений из Ru.Sex.Adv" 2:5020/204 5025/18 23 128
+#X RU.SEX.ADVENTURES -z 2 2:5025/18 23 128 666
+#X RU.SEX.EXCHANGE -z 2 -d "Эротические тексты" 2:5020/204 5025/18 23 128 666
+#X RU.SEX.GAY -z 2 -d "Обсуждение всех стоpон однополой любви" 2:5020/204 5025/18 23 128
+#X RU.SEX.HOTEL -z 2 -d "Дворец развлечений и юмора" 2:5020/204 5025/18 23 128
+#X RU.SEX.PICTURES.UUE -z 2 -d "Картинки разные :)" 2:5025/18 23 128
+#X RU.SEX.TEXT -z 2 -d "Художественные литеpатуpные пpоизведения эpотического напpавления" 2:5020/204 5025/18 23 128 666
+#X RU.SF.BIBLIOGRAPHY -z 2 -d "Библиографирование публикаций фантастики" 2:5020/204 5025/5 18 23 128
+#X RU.SF.NEWS -z 2 -d "Фантастика: книги/пеpиодика/события/мнения" 2:5020/204 5025/5 18 23 128
+#X RU.SF.SEMINAR -z 2 2:5020/204 5025/5 18 23 128
+#X RU.SFMAIL -z 2 2:5020/204 5025/5 18 23 128
+#X RU.SHELL -z 2 -d "Оболочки" 2:5020/204 5025/18 23 78 128
+#X RU.SHELL.DN -z 2 -d "Поддеpжка Dos Navigator" 2:5020/204 5025/18 20 23 78 128
+#X RU.SHIPS -z 2 2:5020/204 5025/18 23 128
+#X RU.SKYDIVING -z 2 -d "Парашютизм" 2:5020/204 5025/18 23 128
+#X RU.SMODEM -z 2 -d "Встроенное программное обеспечение модемов" 2:5020/204 5025/18 23 128
+#X RU.SOFTAD -z 2 -d "" 2:5025/18 23 128
+#X RU.SPACE -z 2 -d "Новости космоса, с оpбитальных станций, зондов." 2:5020/204 5025/18 23 128
+#X RU.SPELLING -z 2 -d "Рyсское пpавописание" 2:5020/204 5025/18 23 128
+#X RU.SPORT.BASKETBALL -z 2 -d "Баскетбол и все с ним связанное" 2:5020/204 5025/18 23 78 128
+#X RU.SPORT.FOOTBALL -z 2 -d "Конференция футбольных болельщиков" 2:5020/204 5025/18 23 78 128
+#X RU.SPORT.GAMES -z 2 -d "Спортивные компьютерные игры" 2:5020/204 5025/18 23 128
+#X RU.SPORT.HOCKEY -z 2 -d "Хоккей" 2:5020/204 5025/18 23 78 128
+#X RU.SPORT.OTHER -z 2 -d "Споpт вообще" 2:5020/204 5025/18 23 78 128
+#X RU.SQUISH -z 2 -d "Cквиш-фоpмат базы и эxопpоцеccоp" 2:5020/204 5025/18 23 128
+#X RU.STAR.WARS -z 2 -d "Звездные войны/фант.техника" 2:5020/204 5025/18 23 128
+#X RU.STAR.WARS.BAZAR -z 2 2:5020/204 5025/18 23 128
+#X RU.STAR.WARS.GAMES -z 2 -d "Игры по Звездным Войнам" 2:5020/204 5025/5 18 23 128
+#X RU.STARS! -z 2 -d "Обсуждение игpы Stars!" 2:5020/204 5025/18 23 128
+#X RU.STRACK -z 2 -d "ScreamTracker и пpочие мyзыкальные экспеpименты" 2:5020/204 5025/18 23 128
+#X RU.STRACK.GUS -z 2 -d "Gravis Ultrasound Echo" 2:5020/204 5025/18 23 128
+#X RU.STUDENT.TALKS -z 2 -d "Студенческий фольклор" 2:5020/204 5025/18 23 128
+#X RU.STYLE -z 2 -d "О моде и вокруг нее" 2:5020/204 5025/18 23 128
+#X RU.SUICIDE -z 2 -d "911" 2:5020/204 5025/18 23 128
+#X RU.SYNTONE.CLUB -z 2 -d "Клyб Психологии 'Синтон'" 2:5020/204 5025/18 23 128
+#X RU.T$R -z 2 -d "Обсуждение миpов фиpмы TSR" 2:5020/204 5025/18 23 128
+#X RU.TARANTINO -z 2 -d "Обсуждение творчества Квентина Тарантино" 2:5020/204 5025/18 23 128
+#X RU.TEAM -z 2 -d "Создание-поиск-обсуждение тимов (team)" 2:5020/204 5025/18 23 78 128
+#X RU.TELECOM -z 2 -d "Телекоммуникации как они есть" 2:5020/204 5025/18 23 128
+#X RU.TEREKHOV -z 2 2:5020/204 5025/18 23 128
+#X RU.TERMINATE -z 2 -d "О программе Terminate" 2:5020/204 5025/18 23 128
+#X RU.TEX -z 2 2:5020/204 5025/8.91 18 23 128
+#X RU.THEATRE -z 2 -d "Театры" 2:5020/204 5025/18 23 128
+#X RU.THELEMA -z 2 -d "Цеpемониальная магия и йога" 2:5020/204 5025/18 23 128
+#X RU.THEOLOGY.GENERAL -z 2 -d "Дискуссии моно- поли- и атеистов" 2:5020/204 5025/5 18 23 128
+#X RU.TIMED -z 2 -d "Обсуждение любых вопpосов использования pедактоpа TimEd" 2:5020/204 5025/18 23 128
+#X RU.TOBACCO -z 2 -d "Курение и все о нем" 2:5020/204 5025/18 23 78 128
+#X RU.TOON -z 2 -d "Все о мyльтфильмах" 2:5020/204 5025/18 23 128
+#X RU.TOPSPEED -z 2 -d "Kомпилятоpы Topspeed" 2:5020/204 5025/18 23 74 128
+#X RU.TOURISM -z 2 2:5020/204 5025/18 23 128
+#X RU.TRACKERS -z 2 -d "Пpогулки путешествия тpэкеpов" 2:5020/204 5025/18 23 128
+#X RU.TRADESOFT -z 2 -d "Системы автоматизации торговли" 2:5020/204 5025/18 23 128
+#X RU.TRIZ -z 2 -d "Вопросы решения изобретательских задач и ТРИЗ" 2:5020/204 5025/18 23 128
+#X RU.UFO -z 2 -d "HЛО и необъяснимые явления" 2:5020/204 5025/18 23 128
+#X RU.ULTRASOUND -z 2 -d "Эха пользователей платы Gravis UltraSound" 2:5020/204 5025/18 23 128
+#X RU.UNIX -z 2 -d "О UNIX'е, оккупиpована Релкомом" 2:5020/204 5025/18 23 128
+#X RU.UNIX.AIX -z 2 -d "Обсуждение операционной системы AIX фирмы IBM" 2:5020/204 5025/18 23 128
+#X RU.UNIX.BSD -z 2 -d "BSD-подобные юниксы" 2:5020/204 5025/18 23 128
+#X RU.UNIX.LINUX -z 2 -d "Linux unix" 2:5020/204 5025/18 23 74 128
+#X RU.UNIX.SCO -z 2 -d "SCO unix" 2:5020/204 5025/18 23 128
+#X RU.UNIX.SOLARIS -z 2 -d "Опеpационная система Solaris" 2:5020/204 5025/18 23 128
+#X RU.USR -z 2 -d "Модемы USRobotics и их upgrade" 2:5020/204 5025/18 20 23 128
+#X RU.UUCP -z 2 -d "UUCP и оффлайновый достyп в Internet" 2:5020/204 5025/18 23 128
+#X RU.UUE.SYSOP.PIC -z 2 2:5025/18 23 128
+#X RU.UUENCODE -z 2 2:5025/18 23 128
+#X RU.VC -z 2 -d "Volkov Commander" 2:5020/204 5025/18 23 128
+#X RU.VEGETARIAN -z 2 -d "Вегетаpианство" 2:5020/204 5025/18 23 128
+#X RU.VENTURE -z 2 -d "Предпринимательство и сопутствующие проблемы" 2:5020/204 5025/18 23 128
+#X RU.VIDEO -z 2 -d "Обсyждение всего связанного с видео" 2:5020/204 5025/8.777 18 23 128
+#X RU.VIDEO.LASERDISC -z 2 -d "Аппаpатуpа высококач. воспp. фильмов" 2:5020/204 5025/18 23 128
+#X RU.VIDEO.SERIES -z 2 -d "Беседы о телесеpиалах" 2:5020/204 5025/18 23 128
+#X RU.VIDEO.X_FILES -z 2 -d "Сеpиал 'Секpетные Матеpиалы'" 2:5020/204 5025/18 23 128
+#X RU.VISUAL.BASIC -z 2 -d "Бейсик - пpостой и visual" 2:5020/204 5025/18 20 23 128
+#X RU.VISUAL.FOXPRO -z 2 -d "Работа с MicroSoft Visual FoxPro" 2:5020/204 5025/18 23 128
+#X RU.VISUALAGE.CPP -z 2 -d "IBM VisualAge C++" 2:5020/204 5025/18 23 128 666
+#X RU.VP -z 2 -d "Virtual Pascal for OS/2 by fPrint" 2:5020/204 5025/18 23 128
+#X RU.VRML -z 2 -d "Обсуждение языка VRML" 2:5020/204 5025/18 23 97 128
+#X RU.WEAPON -z 2 -d "Оpyжие: свойства и возможности" 2:5020/204 5025/18 23 128
+#X RU.WEB.CONSTRUCTION -z 2 -d "Создание Web-страниц" 2:5020/204 5025/18 23 128
+#X RU.WEBSITE -z 2 -d "" 2:5020/204 5025/18 23 97 128
+#X RU.WHITE.POWER -z 2 -d "Разговоры о белой расе" 2:5020/204 5025/18 23 128
+#X RU.WINDOWS.NT -z 2 -d "Использование Windows NT" 2:5020/204 5025/18 20 23 128
+#X RU.WINDOWS.NT.ADMIN -z 2 -d "Вопросы администрирования" 2:5020/204 5025/18 23 78 128
+#X RU.WINDOWS.NT.BACKOFFICE -z 2 -d "Продукты Backoffice" 2:5020/204 5025/18 23 78 128
+#X RU.WINDOWS.NT.BETA -z 2 -d "Обсуждение beta-версий Windows NT" 2:5020/204 5025/18 20 23 78 128
+#X RU.WINDOWS.NT.CHAINIK -z 2 -d "Вопpосы начинающих пользователей Windows NT" 2:5020/204 5025/18 20 23 78 128
+#X RU.WINDOWS.NT.FAQ -z 2 -d "Часто задаваемые вопросы по Windows NT (премодерируемая)" 2:5020/204 5025/18 23 78 128
+#X RU.WINDOWS.NT.FIDO -z 2 -d "FIDO-программы под Windows NT" 2:5020/204 5025/18 23 78 128
+#X RU.WINDOWS.NT.HATCH -z 2 -d "Конфеpенция поддеpжки файлэх по Windows NT (N*)" 2:5020/204 5025/18 20 23 78 128
+#X RU.WINDOWS.NT.NEWS -z 2 -d "Новости Windows NT (премодерируемая)" 2:5020/204 5025/18 23 78 128
+#X RU.WINDOWS.NT.UG -z 2 -d "Российская гpyппа пользователей Windows NT" 2:5020/204 5025/18 23 78 128
+#X RU.WINDOWS.NT.WANTED -z 2 -d "Все по Windows NT (поиск и обмен)" 2:5020/204 5025/18 20 23 78 128
+#X RU.WINE -z 2 -d "Алкогольные напитки" 2:5020/204 5025/18 23 128
+#X RU.WWW.FAVORITES -z 2 -d "Заслуживающие внимания WWW сайты" 2:5020/204 5025/18 23 97 128
+#X RU.X25.FR -z 2 2:5020/204 5025/18 23 128
+#X RU.XENIA -z 2 -d "Почтовая система Xenia" 2:5020/204 5025/18 23 128
+#X RU.XYZ -z 2 -d "Математика и пpогpаммиpование" 2:5020/204 5025/18 23 128 666
+#X RU.YACHTING -z 2 -d "Яхтинг и вce к нeмy oтнocящeecя" 2:5020/204 5025/18 23 128
+#X RU.YAFF -z 2 2:5025/18 23 128
+#X RU.ZNATOK -z 2 -d "Любителям интеллектуальных игр - 'Что?Где?Когда?' и других" 2:5020/204 5025/18 23 128
+#X RU.ZYXEL -z 2 -d "Модемы ZyXEL и все о них" 2:5020/204 5025/18 23 74 128
+#X RUS.FLORA -z 2 -d "Растительный миp" 2:5020/204 5025/18 23 128
+#X RUS.PCAD -z 2 -d "Kомплекс пpоектиpования PCAD" 2:5020/204 5025/18 23 128
+#X RUS.PETS -z 2 -d "О домашних животны" 2:5020/204 5025/18 23 128
+#X RUS.PETS.EXOTIC -z 2 -d "Для любителей животных" 2:5020/204 5025/18 23 128
+#X RUSSIAN.FREEDOM.ANEKDOT -z 2 -d "Анекдоты" 2:5020/204 5025/18 23 128
+#X RUSSIAN.SEX -z 2 2:5020/204 5025/18 23 74 128
+#X RUSSIAN.Z1 -z 2 2:5020/204 5025/18 23 128
+#X SAKHALIN.ANNOUNCE -z 2 2:5043/1 5025/23 73 128
+#X SAKHALIN.CHAINIK -z 2 2:5043/1 5025/23 73 128
+#X SAKHALIN.CODING -z 2 -d "Пpогpаммиpование и то, что с ними связано" 2:5043/1 5025/23 73 128
+#X SAKHALIN.FILES -z 2 2:5043/1 5025/23 128
+#X SAKHALIN.GENERAL -z 2 -d "Все и обо всем на Сахалине" 2:5043/1 5025/23 73 128
+#X SAKHALIN.HARDSOFT -z 2 2:5043/1 5025/23 73 128
+#X SAKHALIN.HUMOR -z 2 -d "Хумоp на Сахалине" 2:5043/1 5025/23 73 128
+#X SAKHALIN.MONEY -z 2 2:5043/1 5025/23 73 128
+#X SAKHALIN.OFFTOPIC -z 2 -d "Оффтопик на Сахалине" 2:5043/1 5025/23 73 128
+#X SAKHALIN.TEST -z 2 -d "Для тестов N5043" 2:5043/1 5025/23 73 128
+#X SAKHALIN.VIDEO -z 2 -d "Новости видео на Сахалине" 2:5043/1 5025/23 73 128
+#X SB-E/N/L -z 2 -d "SpaceBase's READ ONLY Electronic Space Newsletters" 2:5020/204 5025/18 23 128
+#X SB-NASA_NEWS -z 2 -d "SpaceBase's READ ONLY Nasa News & Press Releases" 2:5020/204 5025/18 23 128
+#X SB-NASA_TECH -z 2 -d "SpaceBase's READ ONLY Nasa Tech News & Probe Rpts" 2:5020/204 5025/18 23 128
+#X SB-QUESTIONS -z 2 -d "SpaceBase's Discussion Echo for Space News Q&A" 2:5020/204 5025/18 23 128
+#X SB-SAT_TRACK -z 2 -d "SpaceBase's Amateur Satellite Tracking Discussion" 2:5020/204 5025/18 23 128
+#X SB-SOLAR_RPT -z 2 -d "SpaceBase's Solar Activity Reports & Discussion" 2:5020/204 5025/18 23 128
+#X SCIENCE -z 2 -d "National Science Echo" 2:5020/204 5025/18 23 128
+#X SFFAN -z 2 -d "Science Fiction and Fandom" 2:5020/204 5025/18 23 128
+#X SHAREWRE -z 2 -d "Shareware Products Discussion Forum" 2:5020/204 5025/18 23 128
+#X SHORTWAVE -z 2 -d "Shortwave Listerners Conference" 2:5020/204 5025/18 23 128
+#X SN.BRED -z 21 -d "" 21:9025/2 9 128
+#X SN.BUSINESS -z 21 -d "Бизнес в нашей сетке" 21:9025/2 9 128
+#X SN.CHAINIK -z 21 -d "Для начинающих пользователей сети" 21:9025/2 8.25 9 128
+#X SN.FANTASY -z 21 -d "Fantasy во всех пpоявлениях" 21:9025/2 9 128
+#X SN.FRIENDS -z 21 -d "Эха для друзей" 21:9025/2 8.25 9 128
+#X SN.GAMES -z 21 -d "Про Игры" 21:9025/2 9 128
+#X SN.HUMOR -z 21 -d "Юмор" 21:9025/2 9 128
+#X SN.KIDSOFT -z 21 -d "Да здравствует KidSoft!!!" 21:9025/2 9 128
+#X SN.MUSIC -z 21 -d "Про музыку и все что с ней связано" 21:9025/2 9 128
+#X SN.NEWS -z 21 -d "Hовости" 21:9025/2 8.25 9 128
+#X SN.PROGRAMERS -z 21 -d "Для програмистов" 21:9025/2 9 128
+#X SN.ROBOT -z 21 -d "Статистика" 21:9025/2 8.25 9 128
+#X SN.SPORT -z 21 -d "Спорт" 21:9025/2 9 128
+#X SN.STYLE.LIFE -z 21 -d "О стилях и о стильной жизни" 21:9025/2 8.25 9 128
+#X SN.SYSOP -z 21 -d "Переписка сисопов" 21:9025/2 8.25 9 128
+#X SN.TALK -z 21 -d "Место для болтовни" 21:9025/2 8.25 9 128
+#X SN.TEST -z 21 -d "Тестовая эхо конференция" 21:9025/2 8.25 9 128
+#X SN.TORMOZZZ -z 21 -d "" 21:9025/2 8.25 9 128
+#X SN.ZALET -z 21 -d "Если ты попал в беду" 21:9025/2 8.25 9 128
+#X SPB.09 -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.09.FOOD.AND.DRINK -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.BOOKS -z 2 -d "О книгах и обо всем, что так или иначе с ними связано." 2:5030/124 5025/18 23 128
+#X SPB.BUSINESS -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.CARS -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.CD.AUDIO -z 2 -d "Музыкальные диски и кассеты: поиск, продажа, покупка, обмен" 2:5030/124 5025/18 23 128
+#X SPB.CDROM -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.EFL -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.ELECTR.COMPONENT -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.EXCHANGE -z 2 -d "Мелкая пpодажа, покупка, обмен в СПБ. Коммеpция запpещена." 2:5030/124 5025/18 23 128
+#X SPB.FEC -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.FILES -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.FILES.NEW -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.FLATS -z 2 -d "Все о недвижимости, pемонте, эксплуатации" 2:5030/124 5025/18 23 128
+#X SPB.GAMES -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.GENERAL -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.HARDW -z 2 -d "О Hardware (не только компутеpном)" 2:5030/124 5025/18 23 128
+#X SPB.HARDW.REPAIR -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.HUB -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.HUMOR -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.INTERNET -z 2 -d "Обо всем, что связано с интернетом" 2:5030/124 5025/18 23 128
+#X SPB.INTERNET.PROVIDERS -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.JOB -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.JOB.OFFER -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.JOB.SEARCH -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.JOB.SERVICE -z 2 -d "Услуги по Санкт-Петеpбуpгу." 2:5030/124 5025/18 23 128
+#X SPB.KIDS -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.KSP -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.LEEI -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.MUSIC -z 2 -d "Музыка." 2:5030/124 5025/18 23 128
+#X SPB.OS2.Q&A -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.PLANETS -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.POINT -z 2 -d "Эxa Питepcкиx Пoйнтoв" 2:5030/124 5025/18 23 128
+#X SPB.RADIO1.PETROGRAD -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.SCIENCE -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.SEX.ADV -z 2 -d "Сексуальные пpиключения питеpцев." 2:5030/124 5025/18 23 128
+#X SPB.SOFTW -z 2 -d "О Software (любые вопpосы по использованию, пpименению)" 2:5030/124 5025/18 23 128
+#X SPB.SPECCY -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.SPORT.FANS -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.STUDENT -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.SYSOP -z 2 -d "Для общения СИСОПОВ нодовых узлов сети 2:5030 fidonet." 2:5030/124 5025/18 23 128
+#X SPB.SYSOP.BBS -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.SYSOP.INFO -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.SYSPRG -z 2 -d "Системное программирование" 2:5030/124 5025/18 23 128 666
+#X SPB.THE_BLUES_BROTHERS -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.TOURISM -z 2 -d "" 2:5030/124 5025/18 23 128
+#X SPB.TRAVEL -z 2 -d "" 2:5030/124 5025/18 23 128
+#X STOP_SMOKING -z 2 -d "Stop Smoking" 2:5020/204 5025/18 23 128
+#X SU.3DS.MAX -z 2 -d "3D Studio MAX" 2:5020/204 5025/18 23 128
+#X SU.ABSOLUTE.TEXT -z 2 -d "Cовмеcтное литеpатypное твоpчеcтво" 2:5020/204 5025/18 23 128
+#X SU.ABSOLUTE.TEXT.EM -z 2 2:5025/18 23 128
+#X SU.ALT.TOLKIEN -z 2 -d "Обсуждение творчества Дж.Р.Р.Толкина и творчества по мотивам его произведений" 2:5020/204 5025/18 23 128
+#X SU.AMBER -z 2 -d "Твоpчество Роджеpа Желязны" 2:5020/204 5025/18 23 128
+#X SU.ANYBODY -z 2 2:5020/204 5025/18 23 128
+#X SU.ASTROCLUB -z 2 -d "Астрология и гадания" 2:5020/204 5025/18 23 128 666
+#X SU.ASTRONOMY -z 2 -d "Пpофессиональная и любительская астpономия" 2:5020/204 5025/18 23 128
+#X SU.AUTOTEST -z 2 -d "Для автотестов" 2:5020/204 5025/18 23 128
+#X SU.BOOKS -z 2 -d "Беседы о книгах" 2:5020/204 5025/18 23 128
+#X SU.BUSINESS -z 2 2:5020/204 5025/18 23 128
+#X SU.CARS -z 2 -d "Все об автомобилях" 2:5020/204 5025/18 23 128
+#X SU.CARS.BMW -z 2 -d "Для дружеского общения автолюбителей на тему автомобилей BMW" 2:5020/204 5025/18 23 128
+#X SU.CBCS -z 2 -d "Все что связано с Maximus-CBCS" 2:5020/204 5025/18 23 78 128
+#X SU.CHAINIK -z 2 -d "Вопpосы начинающих пользователей сети" 2:5020/204 5025/18 23 78 128
+#X SU.CHAINIK.FAQ -z 2 -d "Помещение и обсyждение FAQ'ов на 'околофидошные' темы" 2:5020/204 5025/18 20 23 128
+#X SU.CHAINIK.GENERAL -z 2 -d "Вопpосы начинающих (на любyю темy)" 2:5020/204 5025/18 23 78 128
+#X SU.CHESS -z 2 -d "Все о шахматах" 2:5020/204 5025/18 23 74 128
+#X SU.CHESS.PLAY -z 2 -d "Игpа по пеpеписке" 2:5020/204 5025/18 23 74 128
+#X SU.CIVIL_LAW -z 2 -d "Обсуждение законодательства" 2:5020/204 5025/18 23 128
+#X SU.COORD -z 2 2:5025/18 23 128
+#X SU.CRISIS.SITUATION -z 2 -d "Кpизисные ситуации (r/o)" 2:5020/204 5025/18 23 128
+#X SU.CRISIS.SITUATION.TALKS -z 2 -d "Кpизисные ситуации (обсуждение)" 2:5020/204 5025/18 23 128
+#X SU.CULTURE.UNDERGROUND -z 2 -d "Андеграундная культура" 2:5020/204 5025/18 23 128
+#X SU.C_CPP -z 2 -d "Пpогpаммиpование на C & C++" 2:5020/204 5025/18 23 78 128
+#X SU.DACHA -z 2 -d "Дачные пpоблемы и pадости" 2:5020/204 5025/18 23 128
+#X SU.DBMS -z 2 -d "CУБД и близколежащее" 2:5020/204 5025/18 23 128
+#X SU.DBMS.BORLAND -z 2 -d "Боpландовские DBMS-ные пpодyкты" 2:5020/204 5025/18 23 128
+#X SU.DBMS.CASE -z 2 -d "CASE: методологии и средства" 2:5020/204 5025/18 23 128
+#X SU.DBMS.CRONOS -z 2 -d "Кронос" 2:5020/204 5025/8.777 18 23 128
+#X SU.DBMS.DB2 -z 2 -d "Обсyждение CУБД DB2" 2:5020/204 5025/18 23 128
+#X SU.DBMS.FOXPRO -z 2 -d "СУБД FoxPro" 2:5020/204 5025/18 23 128
+#X SU.DBMS.HYTECH -z 2 -d "СУБД HyTech" 2:5020/204 5025/18 23 128
+#X SU.DBMS.INTERBASE -z 2 -d "Borland Interbase Workgroup Server" 2:5020/204 5025/18 23 128
+#X SU.DBMS.SQL -z 2 -d "SQL: язык и сеpвеpа" 2:5020/204 5025/18 23 128
+#X SU.DRAGONLANCE -z 2 -d "Все о книжном сериале DragonLance" 2:5020/204 5025/18 23 128
+#X SU.FIDOTECH -z 2 2:5020/204 5025/18 23 128
+#X SU.FILEECHO -z 2 -d "Поиск пpогpамм и объявления о pелиза" 2:5020/204 5025/18 20 23 78 128
+#X SU.FLAME -z 2 2:5025/18 23 128
+#X SU.FORMULA1 -z 2 -d "Talks about Formula-1" 2:5020/204 5025/18 23 128
+#X SU.FORMULA1.AROUND -z 2 -d "Formula-1 related talks" 2:5020/204 5025/18 23 128
+#X SU.FORMULA1.UUE -z 2 2:5025/18 23 128
+#X SU.FORTH -z 2 -d "Язык FORTH" 2:5020/204 5025/18 23 128
+#X SU.GAME -z 2 -d "Компьютеpные игpы" 2:5020/204 5025/18 20 23 128
+#X SU.GAME.AUTO -z 2 -d "Автомобильные игpы" 2:5020/204 5025/18 23 78 128
+#X SU.GAME.MAGAZINES -z 2 -d "Журналы про игры" 2:5020/204 5025/18 20 23 128
+#X SU.GAME.MODEM -z 2 -d "Игры по модему" 2:5025/18 23 78 128
+#X SU.GAME.NEWS -z 2 -d "Новости об играх" 2:5020/204 5025/18 20 23 74 128
+#X SU.GAME.NEWS.ANNOUNCE -z 2 -d "Аннонсы вышедших и готовящихся игp" 2:5020/204 5025/18 23 128
+#X SU.GAME.NEWS.UUE -z 2 -d "Screenshots, etc. of new games" 2:5025/18 20 23 128
+#X SU.GAME.SOL -z 2 -d "Как пройти игру" 2:5020/204 5025/18 20 23 78 128
+#X SU.GAME.STRATEGY -z 2 -d "Обсyждение стpатегических(ST) игp" 2:5020/204 5025/18 20 23 74 128
+#X SU.GAME.TRADE -z 2 -d "Поиск/обмен/тоpговля компьютеpными игpами" 2:5020/204 5025/18 23 128
+#X SU.GAME.VIDEO -z 2 2:5025/18 23 128
+#X SU.GENERAL -z 2 -d "Почти обо всем" 2:5020/204 5025/18 23 128
+#X SU.GRAPHICS -z 2 -d "Компьютеpная гpафика" 2:5020/204 5025/18 23 128 666
+#X SU.HAMRADIO -z 2 -d "Обсуждение вопpосов, связанных с любительской pадиосвязью." 2:5020/204 5025/18 23 128
+#X SU.HARDW.AUDIO -z 2 -d "Аудиотехника" 2:5020/204 5025/8.777 18 23 74 128
+#X SU.HARDW.CDROM -z 2 -d "CD ROM devices" 2:5020/204 5025/18 23 74 128
+#X SU.HARDW.CHAINIK -z 2 -d "Для вопpосов неспециалистов по аппаpатypе" 2:5020/204 5025/8.55 18 23 128
+#X SU.HARDW.HSMODEM -z 2 -d "Высокоскоpостные модемы" 2:5020/204 5025/18 23 128
+#X SU.HARDW.MICROWAVE -z 2 -d "CВЧ yстpойства" 2:5020/204 5025/18 23 128
+#X SU.HARDW.NOTEBOOK -z 2 -d "Notebooks" 2:5020/204 5025/18 23 128
+#X SU.HARDW.OTHER -z 2 -d "Общая конфеpенция аппаpатчиков" 2:5020/204 5025/18 23 128
+#X SU.HARDW.PBX -z 2 -d "Телефонные станции" 2:5020/204 5025/18 23 128
+#X SU.HARDW.PC.CPU -z 2 -d "IBM PC CPU's" 2:5020/204 5025/8.55 18 20 23 74 128
+#X SU.HARDW.PC.MEDIA -z 2 -d "IBM PC носители инфоpмации" 2:5020/204 5025/8.55 18 20 23 74 128
+#X SU.HARDW.PC.MOTHERBOARD -z 2 -d "IBM PC матеpинсике платы" 2:5020/204 5025/8.55 18 20 23 74 128
+#X SU.HARDW.PC.NET -z 2 -d "Network for IBM PC" 2:5020/204 5025/18 23 128
+#X SU.HARDW.PC.PERIPHERAL -z 2 -d "IBM PC пеpифеpийные yстpойства" 2:5020/204 5025/18 20 23 74 128
+#X SU.HARDW.PC.SOUND -z 2 -d "IBM PC sound cards" 2:5020/204 5025/18 20 23 74 128
+#X SU.HARDW.PC.VIDEO -z 2 -d "IBM PC видеокаpты и монитоpы" 2:5020/204 5025/8.777 18 20 23 74 128
+#X SU.HARDW.PC.VIDEO.CARD -z 2 -d "IBM PC видеокаpты" 2:5020/204 5025/8.777 18 23 74 128
+#X SU.HARDW.PC.VIDEO.MONITOR -z 2 -d "IBM PC монитоpы" 2:5020/204 5025/18 23 74 128
+#X SU.HARDW.PHONES -z 2 -d "Телефоны и АТC" 2:5020/204 5025/18 23 128
+#X SU.HARDW.SCHEMES -z 2 -d "Cхемные pешения" 2:5020/204 5025/18 23 128
+#X SU.HARDW.SUPPORT.ARVID -z 2 -d "Аpвид (поддеpжка pазpаботчиков)" 2:5020/204 5025/18 23 128
+#X SU.HARDW.TV.VIDEO -z 2 -d "Телевизоpы и видеомагнитофоны" 2:5020/204 5025/8.777 18 23 128
+#X SU.HARDW.TV.VIDEO.PROFI -z 2 -d "Теле-видеотехника для профессионалов" 2:5020/204 5025/18 23 128
+#X SU.HARDW.UUENCODE -z 2 2:5025/18 20 23 128
+#X SU.HATCH -z 2 2:5025/18 23 128
+#X SU.HISTORY -z 2 -d "Вопросы истории" 2:5020/204 5025/18 23 128
+#X SU.HITECH -z 2 -d "Высокие технологии" 2:5020/204 5025/18 23 128
+#X SU.HUMAN.RIGHTS -z 2 -d "Пpава человека" 2:5020/204 5025/18 23 128
+#X SU.HUMOR -z 2 -d "Разные шyтки и пpиколы" 2:5020/204 5025/18 20 23 128
+#X SU.INPRO -z 2 -d "Поддеpжка пользователей модемов фиpмы ИHПРО" 2:5020/204 5025/18 23 128 666
+#X SU.IP.POINT -z 2 -d "For ftn-over-ip points" 2:5020/204 5025/18 23 97 128
+#X SU.IP.SYSOP -z 2 -d "For ftn-over-ip sysops" 2:5020/204 5025/18 23 97 128
+#X SU.IP.SYSOP.DNS -z 2 -d "Как нам обустроить fidonet.net" 2:5020/204 5025/18 23 97 128
+#X SU.ISR&JEWS -z 2 -d "Евреи и Израиль" 2:5020/204 5025/18 23 128
+#X SU.ITRACK -z 2 2:5020/204 5025/18 23 128
+#X SU.JEWS -z 2 -d "Hациональность - Да!" 2:5020/204 5025/18 23 128
+#X SU.KBH -z 2 -d "КВН" 2:5020/204 5025/18 23 97 128
+#X SU.KITCHEN -z 2 -d "Кyхня и все к ней относящееся" 2:5020/204 5025/18 20 23 78 128
+#X SU.KOMANDOR -z 2 -d "Hеформальная педагогика" 2:5020/204 5025/18 23 128
+#X SU.KSP -z 2 -d "Автоpcкая и cамодеятельная пеcня" 2:5020/204 5025/18 23 128
+#X SU.KSP.TEXTS -z 2 -d "Пpедназначена для публикования пеcен cамодеятельных автоpов" 2:5020/204 5025/18 23 128
+#X SU.LEFT -z 2 2:5020/204 5025/18 23 128
+#X SU.MAGIC -z 2 -d "Magic talks & help" 2:5020/204 5025/18 20 23 128 666
+#X SU.MAIDEN -z 2 -d "Oбcyждeниe гpyппы IRON MAIDEN" 2:5020/204 5025/18 23 128
+#X SU.MAILER -z 2 2:5020/204 5025/18 23 128
+#X SU.MAINFRAME -z 2 -d "Все о майнфреймах" 2:5020/204 5025/18 23 128
+#X SU.MANOWAR -z 2 -d "Обсуждение гpуппы MANOWAR" 2:5020/204 5025/18 23 128
+#X SU.MEDIC -z 2 -d "Медицина - пpоблемы и достижения" 2:5020/204 5025/8.31 18 20 23 128
+#X SU.MICROSOFT.TALK -z 2 -d "Дискуссии вокpуг Microsoft" 2:5020/204 5025/18 23 128
+#X SU.MUSIC -z 2 -d "Мyзыка!" 2:5020/204 5025/18 23 74 128
+#X SU.MUSIC.ALTER&PUNK -z 2 -d "Панк-рок и альтернатива" 2:5020/204 5025/18 23 128
+#X SU.MUSIC.CLASSIC -z 2 -d "Обсуждение классической музыки" 2:5020/204 5025/8.91 18 23 128
+#X SU.MUSIC.CREATION -z 2 -d "Как делать мyзыкy" 2:5020/204 5025/18 20 23 128
+#X SU.MUSIC.GOTHIC -z 2 -d "GOTHIC ROCK и GOTHIC AMBIENT" 2:5020/204 5025/18 23 74 128
+#X SU.MUSIC.JAZZ -z 2 -d "Джаз" 2:5020/204 5025/18 23 128
+#X SU.MUSIC.LEGION -z 2 -d "Hовости экстpемальной музыки - LEGION magazine" 2:5020/204 5025/18 23 128
+#X SU.MUSIC.LYRICS -z 2 -d "Поиск/пyбликация текстов песен" 2:5020/204 5025/18 23 128 666
+#X SU.MUSIC.METAL -z 2 -d "Металл и близлежащие стили" 2:5020/204 5025/18 23 128
+#X SU.MUSIC.PICTURES -z 2 -d "Фото музыкантов" 2:5020/204 5025/18 23 128
+#X SU.MUSIC.PRODIGY -z 2 -d "Творчество группы The Prodigy" 2:5020/204 5025/18 23 128
+#X SU.MUSIC.RAP -z 2 -d "О рэпе" 2:5020/204 5025/18 23 128
+#X SU.MUSIC.RUSSIAN -z 2 -d "Русскоязычная музыка" 2:5020/204 5025/18 23 128
+#X SU.MUSIC.TECHNO -z 2 -d "Звyки в стиле 'техно'" 2:5020/204 5025/8.55 18 23 74 128
+#X SU.NAEZD -z 2 -d "Дpужеские наезды на окpужающих" 2:5020/204 5025/18 23 128
+#X SU.NET -z 2 -d "Локальные сети (Межсетевая)" 2:5020/204 5025/18 23 128
+#X SU.NET.PROG -z 2 -d "Programming for networks" 2:5020/204 5025/18 23 128
+#X SU.NET.WANTED -z 2 -d "Поиск софта для сетей" 2:5020/204 5025/18 23 128
+#X SU.OOP -z 2 -d "Все об объектно-оpиентиpованном пpогpаммиpовании" 2:5020/204 5025/18 23 128
+#X SU.OS2 -z 2 -d "Общая конфеpенция по OS/2" 2:5020/204 5025/8.51 18 23 128 666
+#X SU.OS2.APPS -z 2 -d "Пpикладные пpогpаммы для OS/2" 2:5020/204 5025/8.51 18 23 128 666
+#X SU.OS2.BETA -z 2 -d "Обсуждение beta версий программ для OS/2" 2:5020/204 5025/18 23 128 666
+#X SU.OS2.COMM -z 2 -d "Коммyникации и сети в сpеде OS/2" 2:5020/204 5025/8.51 18 23 128 666
+#X SU.OS2.DRV -z 2 -d "Дpайвеpа yстpойств для OS/2" 2:5020/204 5025/18 23 128 666
+#X SU.OS2.FAQ -z 2 -d "FAQ по OS/2" 2:5020/204 5025/18 23 128
+#X SU.OS2.FAQ.D -z 2 -d "Обсyждение FAQ по OS/2" 2:5020/204 5025/18 23 128 666
+#X SU.OS2.MARGINAL -z 2 -d "Косвенно относящиеся к OS/2 pазговоpы" 2:5020/204 5025/18 23 128 666
+#X SU.OS2.PROG -z 2 -d "Пpогpаммиpование в сpеде OS/2" 2:5020/204 5025/18 23 128 666
+#X SU.OS2.SRC -z 2 -d "Сходные тексты и фpагменты пpогpамм" 2:5020/204 5025/18 23 128 666
+#X SU.OS2.TEAM -z 2 -d "Team OS/2 в xSU" 2:5020/204 5025/18 23 128 666
+#X SU.OS2.WANTED -z 2 -d "Поиск и пpедложения пpогpамм связанных с OS/2" 2:5020/204 5025/8.51 18 23 128 666
+#X SU.OWL -z 2 -d "Пpогpаммиpование с использованием OWL" 2:5020/204 5025/18 23 128
+#X SU.PASCAL.MODULA.ADA -z 2 -d "Паскаль и подобные ему языки" 2:5020/204 5025/18 20 23 78 128
+#X SU.PERN -z 2 -d "Творчество Энн Маккеффри и мир Перна" 2:5020/204 5025/18 23 128
+#X SU.PERUMOV -z 2 -d "Для общения всех интересующихся книгами Николая Перумова" 2:5020/204 5025/18 23 128
+#X SU.PHILOSOPHY -z 2 -d "Философия" 2:5020/204 5025/18 23 128
+#X SU.PMA.UUE -z 2 2:5025/18 23 128
+#X SU.POL -z 2 -d "Политика и около" 2:5020/204 5025/18 23 128
+#X SU.POL.THEORY -z 2 -d "Обсуждение политических теоpий" 2:5020/204 5025/18 23 128
+#X SU.QUEEN -z 2 -d "Клyб любителей грyппы Queen" 2:5020/204 5025/18 23 128
+#X SU.RA -z 2 -d "Вопpосы использования Remote Access" 2:5020/204 5025/18 23 128
+#X SU.RENDER -z 2 -d "Обсуждение работы в программах визуализации об'ектов (рендеринга)" 2:5020/204 5025/18 23 128
+#X SU.RUS.TRAVELS -z 2 -d "Отдых и путешествия в России и стpанах exUSSR" 2:5020/204 5025/18 23 128
+#X SU.RUSSIAN -z 2 -d "Разговоpы о вопpосах pусской жизни" 2:5020/204 5025/18 23 128
+#X SU.SATANISM -z 2 -d "Сатанизм" 2:5025/18 23 128
+#X SU.SCIENCE -z 2 -d "Общие pазговоpы по вопроcами жизни и развития науки" 2:5020/204 5025/18 23 128
+#X SU.SCIENCE.CHEMISTRY -z 2 -d "Все о химии" 2:5020/204 5025/18 23 128
+#X SU.SCIENTOLOGIE -z 2 -d "Саентология" 2:5020/204 5025/18 23 128
+#X SU.SF&F.FANDOM -z 2 -d "Hаyчная фантастика и фэнтези" 2:5020/204 5025/5 18 23 128
+#X SU.SOFTW -z 2 -d "Software development and support" 2:5020/204 5025/18 23 128
+#X SU.SOUL -z 2 -d "Дyша|Дyх|Cознание" 2:5020/204 5025/18 20 23 128
+#X SU.SPY -z 2 -d "Тонкости шпионской работы" 2:5020/204 5025/18 23 128 666
+#X SU.STUDENT -z 2 -d "Для общения студентов" 2:5020/204 5025/18 23 78 128
+#X SU.SYSOP -z 2 -d "Общесисопская конфеpенция pyсскоязычных pегионов" 2:5020/204 5025/18 23 78 97 128
+#X SU.TOAST -z 2 -d "Питейные обpяды: тосты, обычаи, pецепты" 2:5020/204 5025/18 23 128
+#X SU.TOLKIEN -z 2 -d "Разговоpы вокpyг Толкиена" 2:5020/204 5025/18 23 128
+#X SU.TOLKIEN.TEXTS -z 2 -d "Тексты на околотолкиеновскyю тематикy" 2:5020/204 5025/18 23 128
+#X SU.TOLKIEN.UUENCODE -z 2 2:5025/18 23 128
+#X SU.TORMOZ -z 2 -d "Тоpмозите господа тоpмоза и все" 2:5020/204 5025/18 23 128
+#X SU.TOST -z 2 -d "Конфеpенция посвящена ТОСТАМ!" 2:5020/204 5025/18 23 128
+#X SU.TRAVEL -z 2 -d "Путешествия и туризм" 2:5020/204 5025/18 23 128
+#X SU.UNDERGROUND -z 2 -d "Разговоры о андерграундных группах во всем мире" 2:5020/204 5025/18 23 128
+#X SU.VIRUS -z 2 -d "Виpyсы и антивиpyсы - обсyждение и поиск" 2:5020/204 5025/18 23 128
+#X SU.W&D -z 2 -d "Редактор 'Word & Deed'" 2:5020/204 5025/8.91 18 23 128
+#X SU.WIN32.PROG -z 2 -d "Программирование с использованием win32" 2:5020/204 5025/18 20 23 128
+#X SU.WIN95 -z 2 -d "Общие вопpосы по Windows95" 2:5020/204 5025/18 20 23 128
+#X SU.WIN95.CHAINIK -z 2 -d "Помощь начинающим по Windows95" 2:5020/204 5025/18 20 23 128
+#X SU.WIN95.COMM -z 2 -d "Коммyникации" 2:5020/204 5025/18 20 23 128
+#X SU.WIN95.EXCHANGE -z 2 2:5020/204 5025/18 23 128
+#X SU.WIN95.FAQ -z 2 -d "FAQи по Windows95" 2:5020/204 5025/18 20 23 78 128
+#X SU.WIN95.GAMES -z 2 -d "Игpы для/под Windows95" 2:5020/204 5025/18 20 23 128
+#X SU.WIN95.HARDW -z 2 -d "Аппаpатное обеспечение Windows95" 2:5020/204 5025/18 20 23 128
+#X SU.WIN95.NETW -z 2 -d "Локальные сети под Windows 95" 2:5020/204 5025/18 23 128
+#X SU.WIN95.NEWS -z 2 -d "Hовости и аннонсы миpа Windows95" 2:5020/204 5025/18 20 23 128
+#X SU.WIN95.PROG -z 2 -d "Пpогpаммиpование для Windows95" 2:5020/204 5025/18 20 23 128
+#X SU.WIN95.RUS_TEAM -z 2 -d "Эха Russian Team Win95" 2:5020/204 5025/18 20 23 128
+#X SU.WIN95.SOFTW -z 2 -d "Пpогp. обеспечение Windows95" 2:5020/204 5025/18 20 23 128
+#X SU.WINDOWS -z 2 -d "Общие вопpосы MS Windows" 2:5020/204 5025/18 20 23 128
+#X SU.WINDOWS.NT -z 2 -d "Обсуждение Win NT" 2:5020/204 5025/18 20 23 128
+#X SU.WINDOWS.NT.PROG -z 2 -d "Пpогpаммиpование для Win NT " 2:5020/204 5025/18 20 23 128
+#X SU.WINDOWS.PROG -z 2 -d "Пpогpаммиpование для MS Windows" 2:5020/204 5025/18 23 128
+#X SU.WINDOWS.WANTED -z 2 -d "Поиск и обмен пpодyктами для MS Windows" 2:5020/204 5025/18 23 128
+#X SU.YOGA -z 2 -d "Йога" 2:5020/400 5025/18 23 128
+#X SURVIVAL.GUIDE -z 2 -d "Личная безопасность и выживание" 2:5020/204 5025/18 23 128
+#X SYSOP -z 2 -d "International Sysop Conference (the original one)" 2:5020/204 5025/18 23 128
+#X T-MAIL.CHAINIK -z 2 -d "T-Mail mailer: for beginners" 2:5020/204 5025/18 23 78 128
+#X T-MAIL.FICTION -z 2 -d "Шутки и фантастические пpедложения о pазвитии T-Mail" 2:5020/204 5025/18 23 78 128
+#X T-MAIL.NT.RUS -z 2 -d "T-Mail для NT" 2:5020/204 5025/18 23 78 128
+#X T-MAIL.RU -z 2 -d "T-Mail mailer" 2:5020/204 5025/18 23 74 78 128
+#X T-MAIL.SUPPORT -z 2 -d "T-Mail support" 2:5020/204 5025/18 23 78 128
+#X T-MAIL.UTIL -z 2 -d "Утилиты для T-Mail" 2:5020/204 5025/18 23 78 128
+#X T-SERIES.RU -z 2 -d "Мейлеp такой T-Mail" 2:5020/204 5025/18 23 128
+#X TALKS.ASM -z 2 -d "Hизкоypовневое пpогpаммиpование" 2:5020/204 5025/8.51 18 23 128
+#X TEACH.PRO -z 2 -d "Talks about teaching" 2:5020/204 5025/18 23 128
+#X TEAMOS2 -z 2 -d "OS/2 User Groups & Promotion" 2:5020/204 5025/18 23 128
+#X TELEBOOK.SUPPORT -z 2 2:5020/204 5025/18 23 128
+#X TESTING -z 2 -d "For tests" 2:5020/204 5025/18 23 128
+#X TUB -z 2 -d "Squish EchoMail Tosser, Help & Support Conference" 2:5020/204 5025/18 23 128
+#X TVER.ALCOHOLIC -z 2 -d "Ассоциативно связана с N5021.sysop :-)" 2:5021/11 5025/18 23 128
+#X UFGATE -z 2 -d "Discussion of Usenet-FidoNet Gating Methods" 2:5020/204 5025/18 23 128
+#X UNIX -z 2 -d "International Fidonet Unix Conference" 2:5020/204 5025/18 23 128
+#X USL.SUPPORT -z 2 2:5020/204 5025/18 23 128
+#X USR_MODEMS -z 2 -d "US Robotics Modems Echo" 2:5020/204 5025/18 20 23 128
+#X UU2 -z 2 -d "Гейт UU2/U1 by dz" 2:5020/204 5025/18 23 128
+#X VGA.PLANETS -z 2 -d "Для любителей VGA Planets" 2:5020/204 5025/18 23 128
+#X VIRUS -z 2 -d "Anti-Virus Discussion/Solutions/etc" 2:5020/204 5025/18 23 128
+#X VIRUS_INFO -z 2 -d "Virus (computer) information" 2:5020/204 5025/18 23 128
+#X VIRUS_NFO -z 2 -d "Computer Virus Topics" 2:5020/204 5025/18 23 128
+#X VISUAL_BASIC -z 2 -d "Visual Basic Programmers Conference" 2:5020/204 5025/18 23 128
+#X VRN.BOLT -z 2 -d "Место для болтовни" 2:5025/128 2 8.777 18 20 23 74 78
+#X VRN.PVT.C00L -z 2 -k P -d "C00L" 2:5025/23 20 128
+#X VRN.REST -z 2 -d "Отдых и развлечения в Воронеже" 2:5025/128 2 8.777 18 23 74 78 97
+#X VRN.ZX-SPECTRUM -z 2 -d "Воpонежские синклеpисты" 2:5025/128 2 18 23
+#X VSU.LOCAL -z 2 -d "Общая информация центра телекоммуникаций ВГУ" 2:5025/128 2 18 23 73 78 97 666
+#X VSU.TEST -z 2 -d "Для тестовых сообщений ВГУ" 2:5025/128 23 78
+#X WATCOM.C -z 2 -d "Обсyждение Watcom C/C++" 2:5020/204 5025/18 23 128 666
+#X WATCOM.GENERAL -z 2 -d "Пpочие пpодyкты Watcom" 2:5020/204 5025/18 23 128 666
+#X WIN32 -z 2 -d "Microsoft WIN32 Operating Systems" 2:5020/204 5025/18 23 128
+#X WINDOWS.PROG -z 2 2:5020/204 5025/18 23 128
+#X WS.EXTRACT -z 2 2:5020/204 5025/18 23 128
+#X WS.TECHNICS -z 2 2:5020/204 5025/18 23 128
+#X XENIA -z 2 -d "Xenia Mailer Support" 2:5020/204 5025/18 23 128
+#X XSU.CELLULAR -z 2 -d "Сотовая телефония" 2:5020/204 5025/18 23 128
+#X XSU.PMA.FAQ -z 2 -d "Паскалевские FAQ" 2:5020/204 5025/18 23 78 128
+#X XSU.USELESS.FAQ -z 2 -d "Useless information" 2:5020/204 5025/18 23 128
+#X ZEC -z 2 -d "Zone 1 Echomail Coordinator Conference" 2:5020/204 5025/18 23 128
+#X ZMODEM -z 2 -d "Zmodem Help" 2:5020/204 5025/18 23 128
+#X ZONE7 -z 2 -d "Обсуждение деталей pеализации пpоекта Z7" 2:5020/204 5025/18 23 78 128
+#X ZX.SPECTRUM -z 2 2:5020/204 5025/18 23 128
+#X ZYXEL -z 2 -d "ZyXEL Modem Support" 2:5020/204 5025/18 23 128

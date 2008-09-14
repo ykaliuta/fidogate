@@ -1,0 +1,69 @@
+ai-pl9.0, Fidogate 4.2.9, 12 Jun 1998, Andy Igoshin <ai@vsu.ru>
+
+Source is available at:
+ftp://ftp.vsu.ru/pub/linux/system/fido/fidogate-4.2.9-ai-pl9.0.tar.gz
+
+
+ 0. All changes are delimitered with corresponding #define's, which
+    allows one to switch separate features. This also makes the
+    changes localized and more clear.
+
+ 1. Added `-a' key to hosts file (see example). This key is necessary
+    in situations when a message from internet address, for which there
+    is a mapping in a `hosts' file to some fidonet address, is being sent
+    to fidonet area, the ^AREPLYTO and Origin fields should contain "real"
+    fidonet address, but not a gate's address. ^AMSGID is also generated
+    if Message-Id is absent in the original message, using "real" fidonet
+    address.
+    To switch this on, `#define AI_1' in config.h.
+
+ 2. Fixed alias problem in ftn2rfc.c module.
+    Fixed alias problem in aliases.c module.
+    Added extended aliases. New format of aliases file is backward
+    compatible with original format, i.e. the behavior for old configs
+    is exactly as for unmodified algorithm (as far as I was able to test :).
+    See README.ai.alias for more information.
+    To switch this on, `#define AI_2' in config.h.
+
+ 3. Added `DeleteSeenBy' and `DeletePath' variables to config.main file
+    (see example).
+    To switch this on, `#define AI_3' in config.h.
+
+ 4. Added UNICODE patch from Alexander E. Pevzner <pzz@pzz.msk.ru>.
+    Fixed UNICODE quoted-printable bug in message.c (Andy Igoshin <ai@vsu.ru>).
+    Fixed quoted-printable bug (added processing of Soft Line Breaks
+    (Rule #5 of RFC1521) - `=' at the end of QP-line) in rfc2ftn.c, mime.c,
+    unicode.c (Andy Igoshin <ai@vsu.ru>). To switch this on, `#define AI_9' in
+    config.h.
+    Fixed a bug of processing 8bit characters in `CHRS:' kludge in unicode.c
+    (these 8bit chars are illegal there, but without a fix ftn2rfc would crash
+    on some PKTs which have this broken CHRS). (Andy Igoshin <ai@vsu.ru>).
+
+ 5. Added check on 8bit in subject, origin and tearline.
+    To switch this on, `#define AI_5' in config.h.
+
+ 6. Added `AddressIsLocalForXPost' variable in config.common file
+    (see example). In this variable one can specify wildcards to determine
+    which users are allowed to crosspost to areas marked with `-l' flag
+    in `areas' file.
+    To switch this on, `#define AI_6' in config.h.
+
+ 7. Added `UseXMailerForTearline', `UseUseragentForTearline' and
+    `UseXNewsreaderForTearline' variables to config.gate file (see example).
+    This allows generation of `Tearline' field in .pkt files from field
+    `User-Agent:' or `X-Newsreader:' contained in RFC message (like
+    `X-FTN-Tearline:' header). Priority is: `X-FTN-Tearline:', `User-Agent:',
+    `X-Newsreader:' for news messages and `X-FTN-Tearline:', `X-Mailer:' for
+    mail messages. If these variables are not present in config.gate, we do
+    not process the corresponding fields in RFC message.
+    To switch this on, `#define AI_7' in config.h.
+
+ 8. Added ACL support. This feature allows one to describe the correspondence
+    between sender's email address and newsgroups to which this sender is
+    allowed to write. One can use wildcards as email and newsgroups. The
+    newsgroups list is in INN like style. See the comments in `acl' file in
+    the `examples' directory for further information. 
+    To switch this on, `#define AI_8' in config.h.
+
+
+				    Andy Igoshin  <ai@vsu.ru>

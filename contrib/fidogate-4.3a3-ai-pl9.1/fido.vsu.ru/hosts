@@ -1,0 +1,60 @@
+#:ts=8
+#
+# Listed nodes for fido.vsu.ru
+#
+# Fields:
+#
+# node        FTN address
+#
+# hostname    Host name in the local domain (config: HostsDomain, Domain)
+#             or fully qualified domain name (trailing `.') or `-' for
+#             listed node without host name.
+#
+# options     -p  Generate addresses with point, e.g. `p99.hippo.fido.de'
+#             -d  Node is currently down (can't receive mail)
+#             -a  Place real Fidonet address in ^AREPLYTO and Origin fields.
+#
+# node          hostname                        options      
+#-----          --------                        -------
+2:5025/8.22	khm.vsu.ru.			-a
+2:5025/8.22	ws0.vsu.ru.			-a
+2:5025/8.30	p30.f8.n5025.z2.fidonet.org.
+2:5025/8.31	p31.f8.n5025.z2.fidonet.org.
+2:5025/8.32	p32.f8.n5025.z2.fidonet.org.
+2:5025/8.33	val.vsu.ru.			-a
+2:5025/8.33	fi.val.vsu.ru.			-a
+2:5025/8.34	vvv.vsu.ru.			-a
+2:5025/8.36	p36.f8.n5025.z2.fidonet.org.
+2:5025/8.51	p51.f8.n5025.z2.fidonet.org.
+2:5025/8.55	p55.f8.n5025.z2.fidonet.org.
+2:5025/8.56	dunx1.ocs.drexel.edu		-a
+2:5025/8.60	p60.f8.n5025.z2.fidonet.org.
+2:5025/8.73	baza2.voronezh.su.		-a
+2:5025/8.91	p91.f8.n5025.z2.fidonet.org.
+2:5025/8.514	dec1.npi.msu.su.		-a
+#
+2:5025/8	vsu.ru.				-a
+2:5025/8	cc.vsu.ru.			-a
+2:5025/8	fido.vsu.ru.			-a
+2:5025/128	ftn-gate.vsu.ru.
+2:50/128	ftn-gate.vsu.ru.
+#
+# Our
+2:5025/8.128	ws3.vsu.ru.			-a
+2:5025/8.128	ws4.vsu.ru.			-a
+2:5025/8.128	ws8.vsu.ru.			-a
+2:5025/8.128	ctrl.vsu.ru.			-a
+#
+# Other
+2:5003/5	vorkuta.com.			-a
+2:5003/5	ovu.vorkuta.com.		-a
+#
+include /usr/local/lib/fidogate/etc/hosts.5025.17
+2:5025/23.1	vgts.ru.			-a
+include /usr/local/lib/fidogate/etc/hosts.5025.37
+2:5025/49	vsau.ru.			-a
+#
+2:5030/124.18	riddle.vsu.ru.
+#
+21:9025/8	schoolnet.vsu.ru.		-a
+21:9025/128	schoolnet-gate.vsu.ru.

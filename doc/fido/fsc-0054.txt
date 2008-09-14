@@ -1,0 +1,889 @@
+Document: FSC-0054
+Version:  004
+Date:     27-May-1991
+
+
+
+
+                           The CHARSET Proposal
+
+   A System-Independent Way of Transferring Special Characters, Character
+             Sets and Style Information in FIDO Messages.
+
+                              Fourth Release
+
+                               Duncan McNutt
+                             2:243/100@fidonet
+
+
+
+
+Status of this document:
+
+     This is a finished specification, it is used in several FIDO
+     products.
+
+     This FSC suggests a protocol for the FidoNet(r) community,
+     and requests discussion and suggestions for improvements.
+     Distribution of this document is unrestricted.
+
+     Fido and FidoNet are registered marks of Tom Jennings and Fido
+     Software.
+
+
+
+
+Contents:
+---------
+  Purpose
+  History
+  Pros & Cons
+  The Present System
+  The Proposed System
+  Technical Details
+  Examples
+  Summary
+  Implementation Sample
+  
+
+
+Purpose:
+--------
+
+This document is a proposal for a FIDO standard. 
+
+This document describes a method of allowing international and other
+non-standard ASCII characters to be transferred via a network and
+interpreted by the receiving systems.  It also allows for expansion to
+multiple character sets and character sets that require more than one
+byte storage space per character.  Further the capability to include
+style and font changes are part of this proposal.
+
+
+This proposal is based on the ISO standard character sets.  It defines
+a mechanism to switch between all of the defined ISO sets.  Further it
+defines switches that allow style and font changes.  The FSC-0054
+standard also coexists with the extensions of the ISO LATIN-1
+characters set as defined in FSC-0051.  FSC-0054 and FSC-0054 use the
+same identifier (CHRS: LATIN-1 2) to indicate the LATIN-1 character
+set.  FSC-0051 (draft 3 and above) defines the codes unused in LATIN-1
+for additional characters.  At present these are the numeric super and
+subscripts as well as Polish characters.
+
+
+History
+-------
+
+All in all the author is aware of 6 initial proposals for including
+additional characters in FIDO messages, most of them did not get the
+critical mass to achieve widespread use.  Three of them actually
+managed to get FSC numbers.  FSC-0054 and FSC-0051 effectivly merged as
+of this document.  FSC-0054 is backwardly compatible to FSC-0050.
+Another standard that was used in Denmark is no longer in discussion.
+
+The initial proposal was FSC-0050.  It had several drawbacks, most
+notably it was too limiting and it was based around a particular
+hardware platform.  Because of its implementation in Opus, FSC-0054
+tries to recognize the messages produced by that system.  There are
+several incompatible "flavors" of FSC-0050 floating around, so FSC-0054
+can not always produce perfect results when translating FSC-0050
+messages.  Implementations that allow for FSC-0050 can use the same
+code for FSC-0054 but may need to generate different kludges and will
+need to be expanded a to make full use of the extra features.
+
+A second proposal FSC-0051 had the advantage of hardware independance
+but lacked (on its own) expandability as it only allows for
+roman characters (ie: western languages).  Because the FSC-0051 and
+FSC-0054 methods both contain the LATIN-1 character set as the base set
+for western countries the authors agreed on a common identifier to
+allow the two systems to coexist.  FSC-0051 allows you to add Polish
+characters to the Latin-1 character set without necessiating complience
+to FSC-0054 Level 3.  FSC-0051 is mainly used in Sweden.
+
+The system described in this document gives the maximum in capability
+without breaking the FIDO message format.  It allows hardware
+independance and internationalization of FIDO software.
+
+To further enhance the capabilities of FIDO beyond what is described
+here a new message document format must be defined.  The author
+suggests this be done in connection with a type-3 format and that the
+Open Document Architecture (ODA) be included as the standard for that
+format.  ODA is the agreed standard for comercial mail systems and is
+being implemented by X.400 messaging systems.  Conformance to that
+standard would allow transfer between FIDO and other nets without
+translation.  ODA contains formatted text as well as graphics and
+sound.
+
+
+Pros and Cons:
+--------------
+
+
+Any form of non standard ASCII extension to the present messages
+must respect the following criteria.
+
+It should:
+  o  be simple
+  o  be backwards compatible
+  o  be expandable
+  o  be transparent
+  o  allow for multiple levels of support
+  o  allow for translation to the least common denominator
+
+Earlier proposals had several problems:
+
+  1) They inserted non ASCII characters in the PRESENT stream of
+     messages.
+
+  2) They did not allow for an easy to read "standard ASCII" represen-
+     tation on areas that do not support thier special encoding scheme.
+
+  3) They increased the size of messages by a larger amount than is
+     necessary.
+
+  4) They were hardware dependant.
+
+  5) The implementation sample were too slow to be effective (a minor
+      point).
+
+  6) They limited the possibilities.
+     They only allowed for a limited amount of graphic or other special
+     purpose characters.  They did not allow for character sets that
+     require storage space that are larger than one byte per
+     character.  They were not expandable.
+
+
+The advantages of the system proposed here are:
+
+It does not have any of the failings of the prior systems (points 1-5).
+
+  1) It does not insert any non ASCII characters in the present
+     stream of messages.
+
+  2) It allows for an easy to read standard ASCII representation.
+
+  3) It does not increase message size.  It only includes the charset
+     kludge in messages that use non-ascii characters (e.g.: Kanji).
+
+  4) The presented algorithm is efficient.
+
+  5) The presented algorithm is efficient.
+
+  6) It support ALL international characters as well as graphic and
+     other special characters.  It allows for character sets that
+     require storage space that is greater than one byte per character.
+     It allows for future expansion.
+
+
+  7) It allows for a simple method of converting non-standard
+     characters to standard ASCII in present systems.
+
+  8) It allows for character set coherence in message areas without
+     double processing.
+
+  9) It allows multiple levels of complience.
+
+  10) It concerns itself with gateway filtering of messages.
+
+  11) The implementation allows non "charset kludge" aware programs
+      to display and edit messages.
+
+  12) It concerns itself with network representation as well as
+      local storage.
+
+
+The present system:
+-------------------
+
+The present system "normally" only uses standard ASCII, unless an
+echomail conference moderator explicitly allows non ASCII characters. 
+If a user does not conform to this and writes non standard ASCII in
+a message, then other users with different systems get garbage on
+their screens.  This can be (and in some areas is) a major problem.
+
+At present there is no way to diplay non Roman characters in FIDO
+messages.
+
+
+
+The proposed system:
+--------------------
+
+The proposed system will be able to help with messages that do NOT have
+the CHARSET kludge in them on an area by area basis.  However manual
+intervention by the user will allow it to translate the alien codes to
+the local ASCII extensions.  It will also allow editors to more easily
+make standard ASCII representations of extended character sets.  Which
+hopefully will make more users conform to standard ASCII.
+
+For messages with the charset kludge the method described below
+allows using extended character sets.  There are multiple levels of
+support:
+
+Level 0: STANDARD message (no charset kludge).  This method adds an
+	 option to convert non standard ASCII to ASCII.  Level 0 is
+	 straight forward: don't change anything, except remapping non
+	 standard ASCII to ASCII.
+
+	 This should be the initial default for any CHARSET message
+	 writer.
+
+Level 1: INTERNATIONALIZATION, accents and other language specific
+	 characters are supported.  This is needed for echomail areas
+	 that go through gateways to other systems that have a limited
+	 character set.  Level 1 can be supported by ALL types of
+	 computers!  It translates the standard US ASCII codes to the
+	 foreign ISO codes and back.
+	 
+	 Most software only needs to READ this type of message.  This is
+	 easily done with the sample implementation that is available
+	 via SDS.  Most software should directly support level 2.
+
+Level 2: Support for Level 1 plus EXTENDED CHARACTERS, included are
+         graphic characters and special characters from other character
+         sets such as greek (for mathematical discussions for example).
+         This is intended to allow the different personal computer,
+         workstation, mini and mainframe users to converse in text mode.
+
+	 The default for level 2 messages should be the LATIN-1
+	 character set.  It is still compatible with the present stream
+	 of messages.
+         
+	 This is the most common level of support for most software.
+	 It is also what the sample implementation concerns itself with
+	 most.
+
+
+Level 3: Support for MULTIPLE CHARACTER SETS.  This requires a
+	 greater effort in implementation.  Level 3 is (of course) not
+	 backwards compatible.
+	 
+	 It is easiest to support level 3 if you use a pixel based
+	 display, it is probably not worth implementing on a text only
+	 display.  For example: if you have an X-Windows, Microsoft
+	 Windows, Macintosh or similar display then you should have no
+	 trouble implementing level 3.
+
+
+Level 4: Support for 16 BIT CHARACTER SETS.  Software authors
+	 that support products that are intended for use in Asia should
+	 concern themselves with this specification.
+
+
+The implementation algorithm which has been developed is a pop-in
+module that allows present message editor/display programs to offer
+Level 2 support for the 5 most popular systems (ASCII, IBM, APPLE, ISO
+Latin-1, VT100).  The Atari now uses the IBM character set, the Amiga
+and the VT200 displays use the ISO Latin-1 (ISO 8859-1) character set.
+This implementation is also usable as a filter for fast translation of
+messages in gateway software or for a packet translator.  See the notes
+at the end of this document for further details.
+
+Levels 1 & 2:
+
+Levels 1 and 2 are based on a remapping system. The following must
+be supported:
+
+  o  Level 1: remapping of non standard ASCII foreign characters,
+     remaps characters that are less than decimal 128.
+  o  Level 2: additional remapping of special characters and
+     graphic characters, remaps characters over decimal 127
+     (i.e.: characters with the most significant bit set).
+  o  [optional] a style mechanism (bold, underline...)
+  o  [optional] font switching (times, helvetica...)
+
+Characters below decimal 32 are reserved for special use (e.g.: the
+SOH character is used for message kludges).
+
+Note: Basically a lot of international message areas contain a certain
+amount of messages with international characters.  These characters
+have the same codes on all systems, they are most likely known to you
+through your printer manual, VT100 foreign symbols, or as IBM
+codepages.  The only reason these codes are not displayed correctly
+is that your message reader can not know which of these character
+sets is used.  Levels 1 and 2 will mark the message with an ID that will
+let your message reader change the environment in such a way that the
+characters are displayed correctly.
+
+The style mechanism and the font switching are fully transparent and
+backwards compatible.  Style changes are easy to support, even VT100
+and Hercules (on IBM-PCs) displays support underline and boldfaced
+characters.
+
+
+Remapping of foreign codes may take one of two forms selected by the
+user:
+  1) remap to character set supported by this system
+  2) remap to ASCII
+
+Level 1 remaps 98% on all systems, Level 2 remaps with a "best
+match" algorithm.  It may be that results are not perfect but they
+should be recognizable.  See the Technical Description below for some
+examples.
+
+
+Levels 3 & 4:
+
+Levels 3 and 4 require additional support that is non trivial. 
+However, it is not as complicated as it might seem at first. The
+following must be supported: 
+  o  a character set switching mechanism,
+  o  multiple character sets (roman, greek, cyrillic...),
+  o  character set remapping (fairly simple),
+  o  [optional] transliteration (not simple),
+
+Transliteration (converting words and symbols to another representa-
+tion or language) is an optional feature that is supported by some
+operating systems (OS/2 and Macintosh as well as some UNIX systems).
+Transliteration is not really part of this proposed standard but is
+mentioned to bring the technical possibility to mind.  If your
+operating system supports it then transliteration is usually just a
+simple function call, if it doesn't then forget it.
+
+
+Levels 5 & 6:
+
+Do not exist and are not (presently) proposed.  I was thinking about
+B&W bitmaps for level 5 and color graphics for level 6, however that
+is not suitable for Fido messages until ISDN becomes the standard
+medium of transport.  The physical (not logical) limit of 25000 bps
+on regular telephone systems is just not fast enough to allow the
+cost effective transfer of such large data amounts for a privately
+operating individual.  Even supposing a 10 to 1 compression of
+graphics, would not be nearly enough (color pictures could still
+easily be larger than 2 megabytes).
+
+
+
+Technical Description
+---------------------
+
+This description gives a complete specification of levels 0 through 4.
+If you have needs that go beyond the specification of levels 3 and 4 as
+they are put forward here then please write the author.
+
+As mentioned before the proposed method for levels 0 through 2 relies
+on remapping.  Remapping is fairly straight forward on almost all
+hardware plat- forms.  It is easiest on graphically oriented systems
+such as the UNIX X-Windows, Apple machines, Commodore Amiga, Atari ST
+and IBM Presentation Manager or Windows systems.  But even on text only
+displays such as IBM DOS, VT100 and Commodore 64 machines the most used
+characters are fairly easily available.  Helpful in this endeavor is
+that the foreign characters and additional special characters are often
+the same on different hardware platforms, even if they do not have the
+same ordinal value.  Examples are the ISO characters such as the
+English pound symbol and other common symbols such as the internatio-
+nal quotes ("<<" and ">>") or the Yen symbol.
+
+The proposed remapper remaps non standard ASCII characters to the
+character set options of the present system.  Remapping may be one
+character to one character, one character to two characters or one
+character to multiple characters.  The latter requires extra
+implementation effort.
+
+Example:
+  The uppercase "A" with the accent grave "`" above it, will remap on
+  all systems that support at least the ISO foreign characters or
+  similar character sets.  It will remap to the uppercase "A" in
+  standard ASCII.  The user could be allowed the option to view an
+  approximation of the original by displaying the "A" followed by the
+  "`", but this choice is left to the implementor.
+
+The following two kludges are proposed (<charset_kludge> and <char-
+set_change>).  The kludge syntax is described in BNF below, comments
+are in curly brackets, terminal symbols are in double quotes.
+
+Case is important.
+
+  <charset_kludge> ::= "^aCHARSET:" <charset_param>
+                       | "^aCHRS:" <charset_param>
+
+FSC-0054 only writes the CHRS kludge, but for backwards
+compatibility with older methods allows CHARSET as a valid kludge.
+
+Note: up to the end of the charset kludge, all characters must be
+standard ASCII.  Keywords are in English.
+
+  <charset_param> ::= <level_1_opt> "1" | <level_2_opt> "2" |
+                      <level_3_opt> "3" | <level_4_opt> "4"
+
+  <level_1_opt> ::=   "DUTCH" | "FINNISH" | "FRENCH"
+                      | "CANADIAN" | "GERMAN" | "ITALIAN"
+                      | "NORWEG"  | "PORTU" | "SPANISH"
+                      | "SWEDISH" | "SWISS" | "UK"
+
+Note: <level_1_opt> represents the 12 different ISO international
+replacement characters.  An 8 character limit applies, more charac-
+ters may be used by the kludge, but only the above must match.
+
+
+  <level_2_opt> ::=   "LATIN-1"
+                      | "ASCII" | "IBMPC" | "MAC" | "VT100"
+
+<level_2_opt> strings may not exceed 8 characters in length.
+
+The Amiga and the VT200, etc. use LATIN-1 extended characters. The
+LATIN-1 kludge is the same as in FSC-0051.  The LATIN-1 kludge is used
+for the transport medium in the Network.  The others are primarily for
+local storage.
+
+Note: the other level 2 options can be useful in translating incomming
+messages as well.  Example: an IBM system hosts Echomail areas that
+concern themselves with Amiga and Macintosh computers, even though the
+messages do not have a kludge the local system could translate them
+using FSC-0054 to make the extended codes of these machines readable to
+his local machine. VT100 is included for local translation of PC
+graphics for non-PC based clients. It should not appear on the
+network.
+
+
+  <level_3_opt> ::=   "Latin-1" | "Latin-2" | "Latin-3" | "Latin-4"
+                      | "Latin-5" | "Arabic" | "Cyrillic" | "Greek"
+                      | "Hebrew" | "Katakana
+
+
+Includes international character sets that can be displayed using not
+more than 224 (=256-32) characters, this consists of about 25 language
+sets.  The above are the most common.  If you are writing a product
+that requires one of the others please contact the me.
+
+Latin-1 is included because in level 3 you can switch character sets,
+in other words you can switch languages.  This is often the case in
+foreign languages, especially in thechnical discussions.  In Japanese
+for instance it would not be unusual to see characters from 4 different
+character sets.
+
+  <level_4_opt> ::=  " | "Hanzi" | "Kanji" | "Korean" | "UNICODE"
+
+Hanzi is also known as Chinese, Kanji as Japanese.  Leve 4 Options are
+16 bit characters sets.  This does not mean that messages are twice as
+large.  In japanese for example most words are represented with
+Katakana (8-bit) with the occasional Kanji character (16-bit) thrown
+in.
+
+For your reference, the ISO character sets are defined in the standards
+document ISO 8859.  Further Arabic is 8859-6, Cyrillic is 8859-5, Greek
+is 8859-7, Hebrew is 8859-8, Latin-5 is 8859-9, Latin-4 is 8859-4,
+Latin-3 is 8859-3, Latin-2 is 8859-2, Latin-1 is 8859-1, Katakana is
+JISX0201.1776-0.  For the level 4 options below Hanzi is GB2312.1980-0,
+Kanji is JISX0208.1983-0, Korean is KSC5601.1987-0.  Unicode is not yet
+an international standard, it is included for future compatibility.
+Your system software will support it if it passes ISO commitee boards.
+
+When you implement foreign character sets be sure you conform to the
+standards!  Several vendors have taken it upon themselves to define
+their own standards, partially this was done because no firm standards
+had been set at that date.  Most vendors are correcting thier character
+mappings to conform (e.g.: see Microsofts conversion to Latin-1 in
+Windows away from the IBM-PC character set).  I do not have all the
+documents in machine readable form, if you want to get references I
+suggest you go to your local library.  Don't wait until the last minute
+though as it is likely that your librarien will need to order some of
+the documents.
+
+Note: <level_3_opt> and <level_4_opt> strings "imply" additional
+changes.  Example the Arabic and Hebrew languages are written from
+right to left.  Some character sets may be the same but character
+ordering is different.  Character widths may vary to a large extent
+(including zero width characters).
+
+
+
+
+  <charset_change>::= "^aCHRC:" <switch>
+
+Note: use of the charset change kludge REQUIRES the charset kludge at
+the beginning of the message.  Also message readers supporting this
+kludge do not display a new-line if this kludge is encountered.
+
+  <switch> ::=        <level_2_switch> | <level_3_switch>
+                      <level_4_switch>
+
+  <level_2_switch>::= "D" {default, see below for explanation}
+                      | "F " <font_change> | "S " <style_change>
+
+
+The string "^aCHRC:D" is a resetting mechanism that turns on the
+default settings of the message displayer/editor, whatever they may
+be.  This string must be recognized by software that evaluates the
+style and font change switch.
+
+The It is assumed that the user is seeing some font that has a
+reasonable size suitable for his viewing needs.  Most printed texts
+are displayed in a serif 12 point, proportional font with no added
+style.  Most default settings come close to this representation.  On
+text only displays non-proportional fonts are the norm, however as
+no rule for the ordering of the displayed characters can be made, an
+assumption of a non homogeneous character display can be made.  In
+other words, one should not assume that characters are displayed in
+a fixed way, thats why we are have the <font_descrip> below.
+
+  <level_3_switch>::= <level_2_switch> | "L " <level_3_opt>
+                      | "C " <set_change>
+
+The character set change option can't be use in level 2 because of
+unsatisfacory display results on text only display hardware.  If you
+want to change the character set (not just font or style) then you must
+support level 3.
+
+  <level_4_switch>::= <level_2_switch> | <level_3_switch>
+                      | "L " <level_4_opt>
+
+  <font_change> ::=   <font_descrip> " " <font_family>
+
+  <font_family> ::=   NULL | {any number of fonts family names,
+                      examples: Times, Bookman or Helvetica}
+
+The font families can be just about any text string, of course if you
+have an esoteric font then it is unlikly that the recipient has it as
+well (especially in echomail).  It is suggested that the author
+recommends that the user use commonly available fonts.  Even if a
+particular font is not available to the reader the font descripter will
+approximate the display of the original message.
+
+  <font_descrip> ::=  <font_descrip1>
+                      | <font_descrip1> <font_descrip1>
+
+  <font_descrip1> ::= "S" {serif} | "N" {sans-serif}
+                      | "P" {proportional} | "O" {other}
+
+Note: font_family can be null, but font_descriptor must be there.
+
+  <style_change> ::=  <style_change> <style_change>
+                      | "b" {Bold}      | "i" {Italic}
+                      | "u" {Underline} | "C" {All caps}
+                      | "U" {double underline}
+                      | "n" {Narrow also known as Condensed}
+                      | "w" {Wide also known as Extended}
+                      | "s" {Subscript} | "S" {Superscript}
+                      | "O" {Outline}   | "h" {Shadow}
+
+Note: you may approximate different styles.  For example if you can
+only do underline then you can approximate double underline with
+underline.  Please do not approximate "All caps"!  All caps shows the
+All uppercase letters as large uppercase letters and all lower case
+letters as small uppercase letters.  If you simply convert all letters
+to uppercase you will misrepresent the intended style.
+
+
+Examples:
+---------
+
+Double quoted characters are message text.
+
+  1) "^aCHRS: GERMAN 1"
+       Means text contains German characters, but still uses 7 bit
+       character representation.
+
+  2) "^aCHRS: IBMPC 2"
+       Means the text contains IBM PC graphic or extended characters.
+       This would normally only appear in locally held messages.
+
+  3) "^aCHRS: LATIN-1 2"
+     "^aCHRC:u"
+     "Hi Joe,"
+     "^aCHRC:D"
+       Means the text contains LATIN-1 extended characters (not
+       dipslayed in this example) and that "Hi Joe," is underlined.
+       Also the "^aCHRC:" kludges do not result in new lines on
+       message readers that support these kludges.
+       The "CHRS: LATIN-1 2" is compatible with FSC-0051.
+
+  4) "^aCHRS: ASCII 2"
+       Means the text is standard ASCII, but hidden style and/or font
+       changes are contained therein.
+
+  5) "^aCHRS: Roman 3"
+       Means that a level three editor has created this text.  An
+       editor (with the roman character set, thats ours by the way)
+       that does not understand level 3 will only be able to read
+       this text if the string "^aCHRC:L xxx" (with xxx being
+       something other than Roman) is not contained in the text. 
+       Actually this should not happen as the Roman font is the
+       default and the above kludge implies that another language
+       character set is used somewhere in the text.
+
+Summary:
+--------
+
+Level 0:
+  This is the initial default mode for CHARSET software.
+
+  No additional work required.  However an implementor of CHARSET
+  should include the following feature: remap non standard ASCII to
+  ASCII.  This is Level 2 to ASCII remapping and is trivial to do.
+
+  No kludge is required.  No special handling is required.  The
+  messages are just as they always are, with a little less
+  non standard ASCII.
+
+
+Level 1:
+  This is similar to the optional Level 0 remapping but allows the
+  use of foreign characters which are found in the ISO character
+  sets.  Unfortunately the ISO foreign character sets are not
+  complete.  I decided to restrict the Level 1 to this subset to
+  assure that compatibility with virtually all hardware is garanteed.
+
+  The "^aCHRS: cccccccc 1" kludge is required.  One of two things can
+  happen:
+       (a) the message is entirely in ASCII (no kludge),
+           everybody can read it.
+       (b) the message contains ISO codes,
+            - the user has an older reader and does not have these
+            codes as his default codes, he gets a few garbage
+            characters (this is often the case at present).
+            - the user has an older reader and has these codes as his
+            default, he sees the message properly displayed (e.g.:
+            user has an IBM is reading a Swedish area, as he has the
+            Swedish codepage loaded; he will see things properly).
+            - the user has an editor that supports the charset
+            kludge, he sees the message properly displayed.
+
+
+Level 2:
+  Remaps characters above decimal 127 up to decimal 255 to the "best
+  match" character(s) available on the present system.  On graphic
+  based systems the use of a different font (e.g.: an IBM-PC font
+  on an Amiga) would give perfect display results.  For keyboard
+  entry the remapper is required to convert the local codes to the
+  codes required by the inteded target.
+  Example:  An Amiga user is reading an IBM echomail area.  The IBM
+            specific character set is allowed on this echo area.  For
+            best results a IBM character set font might be used to
+            display messages in the area.  Perhaps the software just
+            remaps the IBM characters to the appropriate Amiga
+            characters.  When the Amiga user enters text he may (a)
+            enter standard ASCII, (b) enter standard ASCII with Level
+            1 extensions, (c) enter characters in the IBM extended
+            character set.
+  The software may optionally support font changing and style
+  changes.  Font changes could be easiest to implement on graphically
+  oriented systems, text displays could change the color of text.
+
+  The "^aCHRS: xxxxx 2" kludge is required.
+
+
+Level 3 & 4:
+  The message is probably unreadable unless you have a level 3 (or
+  level 4) editor.  They are required for true international software
+  however.
+
+
+Implementation Sample:
+----------------------
+
+An easy and fast way to implement such a remapper is to use a look-
+up table mechanism.  The implementation described here is based on
+an expandable, data driven structure.  The following routines
+describe the READ routines.
+
+Function Charset_Kludge_Detected (Ptr_To_Text, Level)
+{This function implements the basic level 2 requirement}
+
+  If our character set then
+       print (Text)
+
+  If Level = 1 then
+       For each character in text
+            output( lookup_table [character] )
+
+  If Level = 2 then
+       If supported character set then
+            For each character in text
+                 If Kludge then
+                      skip it
+                      {we are not supporting style and font changes
+                      here}
+                 If character > 127 then
+                      output( lookup_table [character] )
+
+  If level = 3 then
+       exit with error
+       {we are being lazy here}
+
+End of Function Charset_Kludge_Detected.
+
+
+
+Function Output (character)
+{this is the core of the implementation.
+ It is also usable in slightly modified form as the write subroutine}
+
+  define:
+       lookup_table =
+            array [0...127 x 2] of type byte
+            { = array [127 elements] x [2 elements] }
+            {see below for exact definition}
+
+  case lookup_table [character][0] of
+
+       0...1:
+            { we have a single character replacement }
+            { IMPORTANT: graphic characters must have a 
+              single character match }
+            print (lookup_table [character][1])
+
+       32...127:
+            If lookup_table [character][1] >= 32 then
+                 { we have a two character replacement }
+                 { Examples: ae, oe, <<, Pt, pi, >=, etc. }
+                 print (lookup_table [character][0])
+                 print (lookup_table [character][0])
+            Else
+                 { reserved for implemtors use,
+                   e.g.: more than two character replacement? }
+
+       1...31:
+            { reserved for FSC use }
+
+  end of case
+
+
+End of Function Output.
+
+
+Lookup Table
+------------
+
+The lookup_tables are external (described below) files and have the
+following format:
+
+4 bytes:         identification
+2 bytes:         module version number
+2 byte:          level
+8 bytes:         reserved for future use (should be zero)
+8 bytes:         from charset
+8 bytes:         to charset
+256 bytes:       lookup table
+
+The identification is usually 0 (= FTSC set), numbers less than 65536
+are reserved for FSC use.  Implementation specific modules should
+use a timestamp (always the same number after it has been generated
+once) to mark them as non-standard modules.
+
+Module version number starts at zero and works upwards.  The first
+official release is "1".  The early sample implementations have version
+number "0".
+
+Level is the charset kludge level this module is intended for.
+
+From charset, is the character set this module translates from.
+To charset, is the character set this module translates to.
+Both are in C format (no leading length byte and filled up with
+zeros).
+
+The lookup table is a 127 element table with two bytes per element. 
+The following rules apply:
+  first byte = 0 or
+  first byte = 1:
+       second byte = 0: no output
+       second byte > 0: second byte is output
+  first byte < 32: reserved for FSC use
+  first byte > 31:
+       second byte > 31: output first & second byte
+       second byte < 32: implementation specific switch useable by
+                         programmer
+
+If the first byte is 1 in the lookup table, that is a marker to
+tell you that this character does not translate to the destination
+character set.  A "?" should be in the second byte.  Characters
+that are approximated with another character do NOT have a 1 as the
+first byte, they have a 0 in the first byte, or a printable character
+if it is a two character approximation.
+
+Note that you require two tables for each type of character set
+supported.  One to translate the alien characters to the local format
+and one to translate the local characters to the alien format.
+
+The advantage of this module system, is that additional "modules" can
+be added easily at a later date.  Example: the implementor of an
+Atari message editor has the following lookup tables: ASCII (requi-
+red), IBMPC, MAC and LATIN-1.  The user wants to take part in a UNIX
+echomail that allows VT100 codes, so he gets himself the required
+tables and binds them into the lookup table file.  The editor will
+now support the additional translations as it knows its capabilities
+by looking up the level and the kludge identifier in the lookup table
+file.  No code chaging was needed.
+
+External Mapping Files
+----------------------
+
+The lookup tables above are held in external files (READMAPS.DAT and
+WRITMAPS.DAT).  These files have the following format:
+
+1 byte:		machine architecture identifier
+3 bytes:	filler (should be zero)
+8 bytes:	charset this mapping file is for.
+Lookup tables:	described above
+
+The machine architecture identifier can have one of three values:
+0 = Sparc & 680x0
+1 = 80x86 & VAX
+2 = PDP-11
+these values reflect the byte ordering of those machines.
+
+The lookup tables should be ordered in the following way:
+	o Sort by level (lowest first)
+	o READMAPS.DAT:
+	   - sort by "from set"
+	   - each from can have 2 tables, the first is to the
+	     local characterset, the second is to ASCII
+	o WRITEMAPS.DAT:
+	   - sort by "to set"
+This allows fast binary tree searches to be done.
+
+The appropriate sort code (in C) is given below:
+
+int compare_read(r1, r2)
+CHARREC	*r1,
+	*r2;
+{
+    /* sort by level first */
+    if (r1->level < r2->level)
+        return(-1);
+    if (r1->level > r2->level)
+        return(1);
+    /* ASCII comes after local set (this is only for the read_maps) */
+    if(strncmp(r1->from_set, r2->from_set, 8) == 0)
+    {
+	if (strcmp(r1->to_set, "ASCII") == 0)
+	    return (1);
+	if (strcmp(r2->to_set, "ASCII") == 0)
+	    return(-1);
+    }
+    /* else sort alpha */
+    return(strncmp(r1->from_set, r2->from_set, 8));
+}
+
+int compare_write(r1, r2)
+CHARREC	*r1,
+	*r2;
+{
+    /* sort by level first */
+    if (r1->level < r2->level)
+        return(-1);
+    if (r1->level > r2->level)
+        return(1);
+    /* if from_set is the same sort the to_set */
+    if(strncmp(r1->from_set, r2->from_set, 8) == 0)
+	return (strncmp(r1->to_set, r2->to_set, 8));
+    /* else sort alpha */
+    return(strncmp(r1->from_set, r2->from_set, 8));
+}
+
+
+Together with this document there should be a sample implementation
+containing:
+  A complete set of level 1 maps.
+  A complete set of level 2 maps (IBM, MAC, VT100 and LATIN-1).
+  IBM, Mac and ASCII sample messages containing level 2 kludges, a 
+  german language level 1 message, a sample message reader and a sample
+  message writer.  A module checker and a mapping file creator.
+
+If you want the latest version (or the sample implementation is not
+included with this document) you can file request at 2:243/100 with the
+magic name CHARSET , 1:1/20 has a copy as well.  The file is also
+distirbuted via SDS.
+
+

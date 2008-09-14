@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<TITLE>Linux Fido-Node HOWTO: Files requesten</TITLE>
+</HEAD>
+<BODY>
+<A HREF="FidoNode-7.html">Weiter</A>
+<A HREF="FidoNode-5.html">Zurück</A>
+<A HREF="FidoNode.html#toc6">Inhalt</A>
+<HR>
+<H2><A NAME="s6">6. Files requesten</A></H2>
+
+<P>
+<P>Um Files zu requesten kann man das Perl Skript <CODE>ifreq</CODE> verwenden,
+welches sich im Verzeichnis <CODE>misc/contrib</CODE> von ifmail befindet. Mit 
+einigen DOS-Request-Prozessoren macht das noch Probleme,
+da an den Zeilenenden das Linefeed fehlt. Folgender Patch loest dieses
+Problem:
+<HR>
+<PRE>
+--- ifreq~      Sat Aug  6 14:41:28 1994
++++ ifreq       Sat Oct  8 12:05:09 1994
+@@ -73,7 +73,7 @@
+# open the flofile for appending
+open(FLOFILE, ">>" . $reqfile) || die "can't open $reqfile";
+while (@files) {
+-                       print (FLOFILE shift(@files), "\n");
++                       print (FLOFILE shift(@files), "\r\n");
+}
+close(FLOFILE);
+</PRE>
+<HR>
+<P>
+<P>
+<P>
+<HR>
+<A HREF="FidoNode-7.html">Weiter</A>
+<A HREF="FidoNode-5.html">Zurück</A>
+<A HREF="FidoNode.html#toc6">Inhalt</A>
+</BODY>
+</HTML>
