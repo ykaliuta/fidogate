@@ -1,5 +1,15 @@
 2008-06-29  Andrey Slusar  <anrays@gmail.com>
 
+	======= Release 5.2.4ds ========================
+	------- SVN tag R524 ---------------------------
+	* packages/freebsd/Makefile:
+	* packages/rpm/fidogate.spec:
+	* Changes.ru:
+	* version.h:
+	* configure.in: Update to 5.2.4
+
+2008-06-29  Andrey Slusar  <anrays@gmail.com>
+
 	* configure:
 	* configure.in:
 	Fix option `--enable-ai1'(thanks to Max N. Boyarov).

@@ -1,6 +1,7 @@
-Внимание! Это - девелоперская версия. Стабильную можно взять здесь:
-  cvs -z3 -d:pserver:anonymous@cvs.rusfidogate.sourceforge.net:/cvsroot/rusfidogate \
-  co fidogate-sta
+Version 5.2.4ds
+~~~~~~~~~~~~~~~
+- Проект переносится на http://code.google.com/p/fidogate5, версия 5.1
+  прекращает свое существование.
 
 Version 5.2.3ds
 ~~~~~~~~~~~~~~~
