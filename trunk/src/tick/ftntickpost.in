@@ -1,0 +1,84 @@
+#!<PERL5>
+#
+# $Id: ftntickpost.in,v 5.2 2004/11/23 00:50:41 anray Exp $
+#
+# Postprocessor for TIC files to be run by ftntick -x.
+# Currently only a skeleton.
+#
+<INCLUDE config.pl>
+
+# read config
+my $CONFIG = "<CONFIG_MAIN>";
+CONFIG_read($CONFIG);
+
+
+CONFIG_get("LOGDIR");
+
+my $PROGRAMM="ftntickpost";
+
+# File for announcements, FIXME!
+my $ANNFILE="<LOGDIR>/newfiles";
+ 
+die "usage: $PROGRAM FILE.TIC\n" if ($#ARGV != 0);
+
+&main ();
+exit 0;
+
+format HEAD =
+File          Size       Area             Origin         From
+============= ========== ================ ============== =================
+.
+
+format BODY =
+@<<<<<<<<<<<< @<<<<<<<<< @<<<<<<<<<<<<<<< @<<<<<<<<<<<<< @<<<<<<<<<<<<<<<<
+$tic{file}    $tic{size} $tic{area}   $tic{origin}  $tic{from}
+                         ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+			 $tic{desc}
+~~                       ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+			 $tic{desc}
+==========================================================================
+.
+
+sub main () 
+{
+    %tic = read_tic ($ARGV[0]);
+
+    if ( -f $ANNFILE) {
+	open (OUT, ">> $ANNFILE");
+	select (OUT);
+    } 
+    else {
+	open (OUT, ">> $ANNFILE") || die "$PROGRAMM: can't create $ANNFILE";
+	select (OUT);
+	$~=HEAD;
+        write ();
+    }
+
+    $tic{desc}=~tr/\x80-\xFF/\xE1\xE2\xF7\xE7\xE4\xE5\xF6\xFA\xE9\xEA\xEB\xEC\xED\xEE\xEF\xF0\xF2\xF3\xF4\xF5\xE6\xE8\xE3\xFE\xFB\xFD\xFF\xF9\xF8\xFC\xE0\xF1\xC1\xC2\xD7\xC7\xC4\xC5\xD6\xDA\xC9\xCA\xCB\xCC\xCD\xCE\xCF\xD0\x90\x91\x92\x81\x87\xB2\xB4\xA7\xA6\xB5\xA1\xA8\xAE\xAD\xAC\x83\x84\x89\x88\x86\x80\x8A\xAF\xB0\xAB\xA5\xBB\xB8\xB1\xA0\xBE\xB9\xBA\xB6\xB7\xAA\xA9\xA2\xA4\xBD\xBC\x85\x82\x8D\x8C\x8E\x8F\x8B\xD2\xD3\xD4\xD5\xC6\xC8\xC3\xDE\xDB\xDD\xDF\xD9\xD8\xDC\xC0\xD1\xB3\xA3\x99\x98\x93\x9B\x9F\x97\x9C\x95\x9E\x96\xBF\x9D\x94\x9A/;
+    $~=BODY;
+    write ();
+}
+
+sub read_tic {
+
+    my ($ticfile) = @_;
+    my ($key, $val);
+    my %v;
+
+    open (TIC, $ticfile) || die "$PROGRAM: can't open TIC file $tic: $!\n";
+    while(<TIC>) {
+	s/\r$//;
+	($key, $val) = split(' ', $_, 2);
+	$key=~tr/A-Z/a-z/;
+	
+	if($v{$key}) {
+	    $v{$key} .= " $val";
+	}
+	else {
+	    $v{$key} = $val;
+	}
+    }
+    close (TIC);
+
+    return %v;
+}

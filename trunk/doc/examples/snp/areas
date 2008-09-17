@@ -1,0 +1,31 @@
+#
+# Echomail area <-> News newsgroup conversion
+#
+# Options:
+#     -a Z:N/F.P         Alternate address for this area
+#     -z ZONE            Alternate zone AKA for this area
+#     -d DISTRIBUTION    Distribution header for this newsgroups
+#     -o ORIGIN          * Origin line for this area
+#     -g                 No gated messages
+#     -l                 Only local crosspostings
+#     -x                 No crosspostings
+#     -H                 Names match entire hierarchy, names are translated
+#     -!                 Don't gate area/newsgroup [hierarchy]
+#     -R LVL             ^ARFC header level
+#     -m MAXSIZE         set MaxMsgSize for this area (0 = infinity)
+#     -L LIMITSIZE       set LimitMsgSize for this area (0 = infinity)
+#     -X "Xtra: xyz"     Add extra RFC headers (multiple -X allowed)
+#     -8                 Convert to 8bit ISO-8859-1 charset
+#     -Q                 Convert to quoted-printable ISO-8859-1 charset
+#
+# All fields may be quoted in "...", order is import, first area/newsgroup
+# found matches!
+#
+# Format:
+#
+# area                        newsgroup                     [-option]
+# ------------------------    --------------------------    ---------
+
+BR.				ftn.br.				-8 -H -a 2:5020/1354.500
+
+""				ftn.				-8 -H -a 2:5020/1838

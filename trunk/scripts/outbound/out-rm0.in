@@ -1,0 +1,12 @@
+#!<SHELL>
+#
+# $Id: out-rm0.in,v 5.2 2004/11/23 00:50:39 anray Exp $
+#
+# Remove empty ArcMail archives in outbound
+#
+# Needs GNU find!
+#
+
+OUTBOUND="<BTBASEDIR>/out*"
+
+find $OUTBOUND -type f -size 0c -name '*.[mtwfs][aouehrs][0-9a-z]' -exec rm -f {} \; -print

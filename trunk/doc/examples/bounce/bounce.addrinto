@@ -1,0 +1,25 @@
+Subject: 
+
+   ----- Transcript of session follows -----
+
+Your mail
+
+   From: %f @ %F
+   To:   %t @ %T
+   Date: %d
+   Subj: %s
+
+addressed to Internet
+
+   To:   %R
+
+could not be delivered.
+
+Your site/node (or your boss node) is currently marked as DOWN and
+cannot receive/send mail from/to the Internet.
+
+For more information about this problem ask your sysop or
+FidoAdm @ 2:5020/1838 or fidoadm@intra.eu.org
+
+   ----- Message follows -----
+%M

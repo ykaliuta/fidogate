@@ -1,0 +1,21 @@
+.TH Leafnode-rnews 1 "Maint Laboratory" "Linux" "Maint Laboratory"
+.SH ИМЯ
+leafnode-rnews \- rnews для leafnode и fidogate
+.SH СИНТАКСИС
+rnews [-c] [-h] [-v] [файл]
+.SH ОПИСАНИЕ
+Позволяет получить сформированные сообщения для NNTP сервера leafnode.
+Новые сообщения могут быть получена из файла и если он не указан, то из файла 
+стандартного ввода. Сообщения должны разделятся "# !rnews ".
+.SH ОПЦИИ
+.TP
+.I -c
+проверка отброшенных в failed.posting сообщений
+.TP
+.I -v
+болтливый режим
+.TP
+.I -h
+помощь
+.SH СМОТРИ ТАКЖЕ
+m2news(1), leafnode(8), send-fidogate(1)
