@@ -1,0 +1,113 @@
+#
+# $Id: passwd.sample,v 5.2 2004/11/23 00:50:36 anray Exp $
+#
+# Sample PASSWD file for FIDOGATE
+#
+# Context "packet" - packet passwords for FIDOGATE.
+#
+packet	2:5030/468		XXXXXXXX
+packet	2:5030/872		XXXXXXXX
+packet	2:5030/889		XXXXXXXX
+packet	2:5030/953		XXXXXXXX
+packet	2:5030/962		XXXXXXXX
+packet	2:5030/1115		XXXXXXXX
+packet	2:5030/1284		XXXXXXXX
+packet	2:5030/1297		XXXXXXXX
+packet  2:5030/1393		XXXXXXXX
+packet	2:5030/1464		XXXXXXXX
+packet	2:5030/1469		XXXXXXXX
+packet	2:5030/1229.0		XXXXXXXX
+packet	2:5030/1229.5		XXXXXXXX
+packet	2:5030/1229.6		XXXXXXXX
+packet	2:5030/1229.7		XXXXXXXX
+packet	2:5030/1229.8		XXXXXXXX
+packet	2:5030/1229.9		XXXXXXXX
+packet	2:5030/1229.1		XXXXXXXX
+packet	2:5030/1229.10		XXXXXXXX
+packet  2:5030/1229.11		XXXXXXXX
+packet	2:5030/1229.15		XXXXXXXX
+packet	2:5030/1229.19		XXXXXXXX
+packet	2:5030/1229.25		XXXXXXXX
+packet	2:5030/1229.33		XXXXXXXX
+packet	2:5030/1229.77		XXXXXXXX
+packet	2:5030/1229.81		XXXXXXXX
+packet	2:5030/1229.82		XXXXXXXX
+packet	2:5030/1229.111		XXXXXXXX
+packet	2:5030/1229.115		XXXXXXXX
+packet	2:5030/1229.226		XXXXXXXX
+packet	2:5030/1229.256		XXXXXXXX
+packet	2:5030/1229.386		XXXXXXXX
+packet	2:5030/1229.777		XXXXXXXX
+#
+# Context "af" - areafix passwords for ftnaf
+#         "ff" - filefix passwords for ftnaf -F,
+#                tick passwords for ftnhatch, ftntick.
+#
+#					lvl key   name
+#					--- ---   ----
+
+af		2:5030/468	XXXXXXXX	5	ABC&$%	"areafix"
+ff		2:5030/468	XXXXXXXX	5	ABC&$%	"allfix"
+ff		2:5030/872	XXXXXXXX	5	B&%	"filefix"
+af		2:5030/872	XXXXXXXX	5	B&%	"areafix"
+af		2:5030/953	XXXXXXXX	5	C&%	"areafix"
+ff		2:5030/953	XXXXXXXX	5	C&%	"allfix"
+af		2:5030/889	XXXXXXXX	5	D&%	"areafix"
+ff		2:5030/889	XXXXXXXX	5	D&%	"allfix"
+
+
+af		2:5030/962	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1284	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1297	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1393	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1464	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1469	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.0	XXXXXXXX	4	ABC&$%	"I am"
+af		2:5030/1229.1	XXXXXXXX	4	ABC&$%	"I am"
+af		2:5030/1229.5	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.6	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.7	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.8	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.9	XXXXXXXX	1	AB&%	"SysOp"
+af		2:5030/1229.10	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.11	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.15	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.19	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.25	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.33	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.77	XXXXXXXX	4	AB&%	"SysOp" 
+af		2:5030/1229.81	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.82	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.111	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.115	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.226	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.256	XXXXXXXX	1	AB&%	"SysOp"
+af		2:5030/1229.386	XXXXXXXX	4	AB&%	"SysOp"
+af		2:5030/1229.777	XXXXXXXX	4	AB&%	"SysOp"
+ff		2:5030/962	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1284	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1297	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1393	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1464	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1469	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.0	XXXXXXXX	1	ABC&$%	"Sysop"
+ff		2:5030/1229.5	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.6	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.7	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.8	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.9	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.10	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.11	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.15	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.19	XXXXXXXX	4	AB&%	"Sysop"
+ff		2:5030/1229.25	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.33	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.77	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.81	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.82	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.111	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.115	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.226	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.256	XXXXXXXX	4	AB&%	"Sysop"
+ff		2:5030/1229.386	XXXXXXXX	1	AB&%	"Sysop"
+ff		2:5030/1229.777	XXXXXXXX	1	AB&%	"Sysop"

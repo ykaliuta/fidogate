@@ -1,0 +1,52 @@
+#
+# FIDOGATE Access Control List file
+#
+# This file describes the correspondence between sender's email address
+# and FTN address/newsgroups to which this sender is allowed to write. 
+# One can use wildcards as email and newsgroups. The newsgroups list 
+# is in INN like style.
+#
+# e-mail pattern	FTN address patterns
+# --------------	--------------------
+Netmail
+*			*
+gonza@techline.ru	*,!2:5074/99
+
+# e-mail pattern	newsgroup patterns
+# --------------	------------------
+EchoMail
+*			*
+
+#*			*,!fido.*,!vsu.*
+
+#*.fidonet.org		*,!to,!control,!junk,!fido.junk
+#*schoolnet.vsu.ru	*,!to,!control,!junk,!fido.junk
+
+#ai@vsu.ru		*,!to,!control,!junk,!fido.junk
+#iv@vsu.ru		*,!to,!control,!junk,!fido.junk
+#klg@vsu.ru		*,!to,!control,!junk,!fido.junk
+
+#zahar@ctrl.vsu.ru	*,!to,!control,!junk,!fido.junk
+#*@khm.vsu.ru		*,!to,!control,!junk,!fido.junk
+#*@val.vsu.ru		*,!to,!control,!junk,!fido.junk
+#*@vvv.vsu.ru		*,!to,!control,!junk,!fido.junk
+
+#*@vsau.ru		*,!to,!control,!junk,!fido.junk
+#*@vspu.ac.ru		fido.n5025.*
+
+#*@relex.ru		*,!to,!control,!junk,!fido.junk
+#*@vgts.ru		*,!to,!control,!junk,!fido.junk
+
+#
+# Notify about "posting not allowed". This option specifies wildcards for
+# addresses to which it is allowed to send notify messages about impossibility
+# of posting from this address to the newsgroups specified in this notify
+# message.
+# NOTE: use this option carefully; think twice before specifying a `*'
+# wildcard for it, because this can lead to sending notifies to all addresses
+# which appear in the newsgroup, if INN's newsfeeds file contains an error
+# (e.g. the exclude path is absent).
+#
+# By default, no notify is sending.
+#
+PostingNotAllowedNotify		*[@.]techline.ru

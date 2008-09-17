@@ -1,0 +1,5 @@
+!
+/home/ftp/fileecho/uoth UDOCLNX -z 2 -t 1017533704 -s S -u 2 2:5030/889 872 468 1229.11 1284 1393
+/home/ftp/fileecho/uoth USRCBSD -z 2 -t 1017533705 -s S -u 2 2:5030/889 872 468 1229.11 1284
+/home/ftp/fileecho/uoth UUTLLNX -z 2 -t 1017533704 -s S -u 2 2:5030/889 872 468 1229.11 1284 1393
+/home/ftp/fileecho/uoth UUTLBSD -z 2 -t 1017533704 -s S -u 2 2:5030/889 872 468 1229.11 1284

@@ -1,0 +1,219 @@
+#!/bin/sh
+# -*- Makefile -*-
+#
+# $Id: config.make.in,v 5.2 2004/11/23 00:50:36 anray Exp $
+#
+# FIDOGATE main configuration
+#
+
+##############################################################################
+#         C O N F I G   P A R A M E T E R S   D E F I N I T I O N S          #
+##############################################################################
+#
+# DEFAULT_* macros used by subst.pl:
+#
+#	DEFAULT_V_XXX	variable config parameter
+#			- default value define here
+#			- substitutes <XXX> in scripts
+#			- config file parameter XXX
+#			- C code cf_p_xxx(), cf_s_xxx() automatically generated
+#			- #define DEFAULT_XXX in paths.h
+#
+#	DEFAULT_F_XXX	fixed config parameter
+#			- default value define here
+#			- substitutes <XXX> in scripts
+#			- #define DEFAULT_XXX in paths.h
+#
+#	DEFAULT_A_XXX	abbreviation %X for config parameters
+#			- C, perl code automatically generated
+#
+# WARNING!!!
+# DON'T REMOVE ANY OF THE MACRO DEFINITIONS BELOW, THIS MAY BREAK FIDOGATE!!!!
+# 
+##############################################################################
+#
+# Directory		Compile-time		Run-time	Abbrev
+# ---------		------------		--------	------
+# Config		DEFAULT_CONFIGDIR	ConfigDir	%C
+# Main lib		DEFAULT_LIBEXECDIR	LibExecDir	%L
+# Admin utilities	DEFAULT_BINDIR		BinDir		%N
+# Log			DEFAULT_LOGDIR		LogDir		%G
+# Var lib		DEFAULT_VARDIR		VarDir		%V
+# Lock files		DEFAULT_LOCKDIR		LockDir		%K
+# Spool			DEFAULT_SPOOLDIR	SpoolDir	%S
+# Outbound/inbound base	DEFAULT_BTBASEDIR	BTBaseDir	%B
+#
+# Inbound		DEFAULT_INBOUND		Inbound		%I
+# Protected inbound	DEFAULT_PINBOUND	PInbound	%P
+#
+# INN config		DEFAULT_NEWSETCDIR
+# INN var lib		DEFAULT_NEWSVARDIR
+# INN main lib		DEFAULT_NEWSLIBDIR
+# INN spool		DEFAULT_NEWSSPOOL
+#
+# variable parameters, can be changed at run-time, DO NOT DELETE ANYTHING!!!
+
+prefix			= @prefix@
+exec_prefix		= @exec_prefix@
+
+DEFAULT_V_CONFIGDIR	= @sysconfdir@
+DEFAULT_V_LIBEXECDIR	= @libexecdir@
+DEFAULT_V_BINDIR	= @bindir@
+DEFAULT_V_LIBDIR	= ${prefix}/lib
+DEFAULT_V_LOGDIR	= @LOGDIR@
+DEFAULT_V_VARDIR	= @vardir@
+DEFAULT_V_LOCKDIR	= @LOCKDIR@
+DEFAULT_V_SPOOLDIR	= @SPOOLDIR@
+DEFAULT_V_BTBASEDIR	= @btbasedir@
+DEFAULT_V_NETMAILDIR	= @netmaildir@
+DEFAULT_V_INBOUND	= $(DEFAULT_V_BTBASEDIR)/in
+DEFAULT_V_PINBOUND	= $(DEFAULT_V_BTBASEDIR)/pin
+DEFAULT_V_UUINBOUND     = $(DEFAULT_V_BTBASEDIR)/uuin
+DEFAULT_V_FTPINBOUND    = $(DEFAULT_V_BTBASEDIR)/ftpin
+
+DEFAULT_V_ACL		= %C/acl
+DEFAULT_V_ALIASES	= %C/aliases
+DEFAULT_V_AREAS		= %C/areas
+DEFAULT_V_HOSTS		= %C/hosts
+DEFAULT_V_PASSWD	= %C/passwd
+DEFAULT_V_PACKING	= %C/packing
+DEFAULT_V_ROUTING	= %C/routing
+DEFAULT_V_SPYES		= %C/spyes
+DEFAULT_V_UPLINKS	= %C/uplinks
+DEFAULT_V_FTNACL	= %C/ftnacl
+DEFAULT_V_HISTORY	= %V/history
+DEFAULT_V_TIC_HISTORY	= %V/tic_hist
+DEFAULT_V_HUBROUTEDB	= %V/route
+DEFAULT_V_DBC_HISTORY	= %V/bdc
+DEFAULT_V_LOGFILE	= %G/log
+DEFAULT_V_CHARSETMAP	= %L/charset.bin
+
+
+# fixed parameters, DO NOT DELETE ANYTHING!!!
+
+# Path for put newsfeeds.fidogate
+DEFAULT_F_NEWSETCDIR	= @PATHETC@
+
+# Path to active file
+DEFAULT_V_NEWSVARDIR	= @PATHDB@
+
+# Path to innshellvars script (send-fidogate dependens)
+DEFAULT_V_NEWSLIBDIR	= @PATHNEWS@
+
+# Not used (feature instead send-fidogate script runinc function)
+DEFAULT_V_NEWSBINDIR	= @PATHBIN@
+
+# Path to outgouing from fidogate news messages
+DEFAULT_V_NEWSSPOOLDIR	= @PATHARTICLES@
+
+# Not used (feature instead send-fidogate script runinc function)
+DEFAULT_V_INN_BATCHDIR =  @PATHOUTGOING@
+
+
+# Single config file
+DEFAULT_F_CONFIG_GATE	= %C/fidogate.conf
+DEFAULT_F_CONFIG_MAIN	= %C/fidogate.conf
+
+
+DEFAULT_V_SEQ_MAIL	= %V/seq/mail
+DEFAULT_V_SEQ_NEWS	= %V/seq/news
+DEFAULT_V_SEQ_MSGID	= %V/seq/msgid
+DEFAULT_V_SEQ_PKT	= %V/seq/pkt
+DEFAULT_V_SEQ_SPLIT	= %V/seq/split
+DEFAULT_F_SEQ_FF	= %V/seq/ff
+DEFAULT_V_SEQ_TOSS	= %V/seq/toss
+DEFAULT_V_SEQ_PACK	= %V/seq/pack
+DEFAULT_V_SEQ_TICK	= %V/seq/tick
+
+DEFAULT_V_LOCK_HISTORY	= history
+DEFAULT_V_LOCK_DBC	= dbc
+DEFAULT_V_LOCK_TIC_HIST	= tic_hist
+
+DEFAULT_V_OUTRFC_MAIL	= %S/outrfc/mail
+DEFAULT_V_OUTRFC_NEWS	= %S/outrfc/news
+DEFAULT_V_OUTPKT	= %S/outpkt
+DEFAULT_V_OUTPKT_MAIL	= %S/outpkt/mail
+DEFAULT_V_OUTPKT_NEWS	= %S/outpkt/news
+
+DEFAULT_V_TOSS_TOSS	= %S/toss/toss
+DEFAULT_V_TOSS_ROUTE	= %S/toss/route
+DEFAULT_V_TOSS_PACK	= %S/toss/pack
+DEFAULT_V_TOSS_BAD	= %S/toss/bad
+
+DEFAULT_V_TICK_HOLD	= %B/tick
+
+
+
+# directory abbreviations, DO NOT CHANGE!!!
+DEFAULT_A_CONFIGDIR	= %C
+DEFAULT_A_LIBEXECDIR	= %L
+DEFAULT_A_BINDIR	= %N
+DEFAULT_A_LOGDIR	= %G
+DEFAULT_A_VARDIR	= %V
+DEFAULT_A_LOCKDIR	= %K
+DEFAULT_A_SPOOLDIR	= %S
+DEFAULT_A_BTBASEDIR	= %B
+DEFAULT_A_INBOUND	= %I
+DEFAULT_A_PINBOUND	= %P
+
+
+# The perl interpreter used by subst.pl and perl scripts
+PERL5			= @PERL5@
+
+# Shell, using by any scripts
+SHELL			= @SHELL@
+
+# Newsgroup to post reports to;
+# + inews full pathname and parameters;
+# + sendmail full pathname.
+#    This is optional and is used by log* scripts
+ANNOUNCE_GROUP = junk
+INEWS = @INEWS@ -h -S
+SENDMAIL = @SENDMAIL@ -t
+
+# Directory with new nodediffs (usually - location of the NODEDIFF fileecho);
+#  + location of archivers.
+#     This is optional and is used by nl-* scripts
+NODEDIFFDIR = /var/spool/fido/files/nodediff
+ARC_ARC     = @ARC@
+ARC_LHA     = @LHA@
+ARC_UNZIP   = @UNZIP@
+ARC_ZIP     = @ZIP@
+ARC_RAR     = @RAR@
+UUDECODE    = @UUDECODE@
+
+HOSTNAME    = @HOSTNAME@
+DOMAINNAME  = @DOMAINNAME@
+
+##############################################################################
+
+# The old names back again ... (to be out-phased)
+CONFIGDIR	= $(DEFAULT_V_CONFIGDIR)
+LIBEXECDIR	= $(DEFAULT_V_LIBEXECDIR)
+BINDIR		= $(DEFAULT_V_BINDIR)
+LIBDIR		= @libdir@
+SPOOLDIR	= $(DEFAULT_V_SPOOLDIR)
+LOGDIR		= $(DEFAULT_V_LOGDIR)
+OUTBOUND	= $(DEFAULT_V_BTBASEDIR)
+INBOUND		= $(DEFAULT_V_INBOUND)
+PINBOUND	= $(DEFAULT_V_PINBOUND)
+UUINBOUND	= $(DEFAULT_V_UUINBOUND)
+FTPINBOUND	= $(DEFAULT_V_FTPINBOUND)
+
+NEWSBINDIR	= $(DEFAULT_V_NEWSBINDIR)
+NEWSETCDIR	= $(DEFAULT_F_NEWSETCDIR)
+NEWSVARDIR	= $(DEFAULT_F_NEWSVARDIR)
+NEWSLIBDIR	= $(DEFAULT_F_NEWSLIBDIR)
+NEWSSPOOLDIR	= $(DEFAULT_F_NEWSSPOOLDIR)
+
+
+##############################################################################
+#           S Y S T E M   S P E C I F I C   D E F I N I T I O N S            #
+##############################################################################
+# GNU m4
+M4		= m4
+
+# Think twice before changing anything below!!!
+SEND_RFC2FTN    = @libexecdir@/@SRFC2FTN@
+BATCHER		= @BATCHER@
+RNEWS		= @RNEWS@

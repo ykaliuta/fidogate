@@ -1,0 +1,231 @@
+From: roland@p13.flokiste.fido.de (Roland Rosenfeld)
+Date: Fri, 07 Jan 1994 13:59:00 MET
+Newsgroups: fido.ger.linux
+Subject: Re: Mehrere Domains
+
+
+Moin Steffen!
+
+Steffen Weinreich (steve@bitbiter.peri.fido.de) wrote:
+
+> Wie kann ich vernueftig mehrere Domains auf einem System fahren?
+> Ich hier naemlich meine Fido-Adresse bitbiter.peri.fido.de,
+                                       ^^^^^^^^^^^^^^^^^^^^^ Was soll
+denn das fuer eine Adresse sein? Die gibt es weder in meinem noch in
+Martin Junius hosts-File... Folglich kann man darauf nicht antworten.
+Besser waere p22.peri.fido.de, das gibt es naemlich wirklich...
+
+> eine Adresse im HamNet '.hamnet.uucp', eine Adresse im SFNet
+> '.sfnet.uucp' 
+
+Wenn Du eine Adresse mit uucp hinten hast, sollte die weltweit
+einmalig und per UUCP auch direkt zu erreichen sein. Taeusche ich
+mich, wenn ich sage, dass das bei Dir nicht der Fall ist? 
+Daher wuerde ich an Deiner Stelle nur .hamnet bzw. .sfnet als Domains
+verwenden. 
+
+> und last but not least noch das domain '.ampr.org'. Wie bringe ich
+> jetzt sowohl Mail als auch News bei die richtige Adresse zu nutzen?
+
+Und nun nach dem ganzen Maekeln ;-) zur Beantwortung Deiner Frage.
+Leider wird das wohl wieder recht umfangreich...
+Zunaechst zur email:
+/usr/local/lib/smail/routers muss wie folgt aussehen (hier stark
+zusammengekuerzt, da ich in Wirklichkeit 8 Netze fahre):
+-------------------------------- schnipp -------------------------------
+smart_host:
+	driver = smarthost,
+	transport = uux
+
+fidode:
+	driver = pathalias,
+	transport = fidode;
+	file = /usr/local/lib/smail/paths.fidode,
+	proto = lsearch
+
+fido:
+	driver = pathalias,
+	transport = fido;
+	file = /usr/local/lib/smail/paths.fido,
+	proto = lsearch
+
+koelnnet:
+	driver = pathalias,
+	transport = koelnnet;
+	file = /usr/local/lib/smail/paths.koelnnet,
+	proto=lsearch
+-------------------------------- schnipp -------------------------------
+
+Dann mussen die path.*-Dateien wie folgt aussehen:
+path.fido:
+-------------------------------- schnipp -------------------------------
+.fidonet.org	p0.f503.n242.z2.fidonet.org!%s
+.z2		p0.f503.n242.z2.fidonet.org!%s
+.maus.de	p0.f503.n242.z2.fidonet.org!%s
+.fido.de	p0.f503.n242.z2.fidonet.org!%s
+-------------------------------- schnipp -------------------------------
+
+path.fidode:
+-------------------------------- schnipp -------------------------------
+.z242.fidode	p0.f4.n5000.z242.fidonet.org!%s
+.de		p0.f4.n5000.z242.fidonet.org!%s
+.edu		p0.f4.n5000.z242.fidonet.org!%s
+.com		p0.f4.n5000.z242.fidonet.org!%s
+.us		p0.f4.n5000.z242.fidonet.org!%s
+.uk		p0.f4.n5000.z242.fidonet.org!%s
+.gb		p0.f4.n5000.z242.fidonet.org!%s
+.net		p0.f4.n5000.z242.fidonet.org!%s
+.se		p0.f4.n5000.z242.fidonet.org!%s
+.fr		p0.f4.n5000.z242.fidonet.org!%s
+.org		p0.f4.n5000.z242.fidonet.org!%s
+.gov		p0.f4.n5000.z242.fidonet.org!%s
+.int		p0.f4.n5000.z242.fidonet.org!%s
+.mil		p0.f4.n5000.z242.fidonet.org!%s
+.nato		p0.f4.n5000.z242.fidonet.org!%s
+.net		p0.f4.n5000.z242.fidonet.org!%s
+.nl		p0.f4.n5000.z242.fidonet.org!%s
+.nz		p0.f4.n5000.z242.fidonet.org!%s
+.at		p0.f4.n5000.z242.fidonet.org!%s
+.au		p0.f4.n5000.z242.fidonet.org!%s
+.fi		p0.f4.n5000.z242.fidonet.org!%s
+.ch		p0.f4.n5000.z242.fidonet.org!%s
+.no		p0.f4.n5000.z242.fidonet.org!%s
+.ie		p0.f4.n5000.z242.fidonet.org!%s
+.su		p0.f4.n5000.z242.fidonet.org!%s
+-------------------------------- schnipp -------------------------------
+
+path.koelnnet:
+-------------------------------- schnipp -------------------------------
+.koelnnet f503.n111.z11.koelnnet!%s
+-------------------------------- schnipp -------------------------------
+
+Nun muss noch /usr/local/lib/smail/transports angepasst werden:
+-------------------------------- schnipp -------------------------------
+fido:	driver = pipe;
+	group = uucp,
+	cmd = "/usr/local/lib/fidogate/rfc2fido -a 2:242/503.13 -u 2:242/503 -O
+/usr/spool/fnet/outbound ${strip:user}", 
+	pipe_as_sender
+
+koelnnet:	driver = pipe;
+	group = uucp,
+	cmd = "/usr/local/lib/fidogate/rfc2fido -a 11:111/503.13 -u 11:111/503 -O
+/usr/spool/fnet/koelnnet.00b ${strip:user}", 
+	pipe_as_sender
+
+fidode:	driver = pipe;
+	group = uucp,
+	cmd = "/usr/local/lib/fidogate/rfc2fido -a 242:5000/4.13 -u 242:5000/4 -O
+/usr/spool/fnet/fidode.0f2 ${strip:user}", 
+	pipe_as_sender
+-------------------------------- schnipp -------------------------------
+cmd ist jeweils eine sehr lange Zeile  _ohne_ Zeilenumbruch. Das ist
+vermutlich bei der Uebertragung irgendwo zerschossen worden...
+
+Damit sollte die Mail an die verschiedenen Netze rausgehen...
+
+Kommen wir zu den News:
+Hier muss zunaechst /usr/local/lib/news/sys richtig configuriert sein:
+-------------------------------- schnipp -------------------------------
+ME:alt,comp,news,de,rec,fido,fidonet,kn,klt,sky,gernet,z-netz,maus,uni,mom,junk
+
+fidogate/p13.f503.n242.z2.fidonet.org:fido,de,comp,z-netz,maus,rec,alt,fidonet,!fido.de.z242/all:Lf:
+koelnnet/p13.f503.n242.z2.fidonet.org,p13.f503.n111.z11.koelnnet:kn/all:Lf:
+fidode/p13.f503.n242.z2.fidonet.org,p13.f4.n5000.z242.fidode:fido.de.z242/all:Lf:
+-------------------------------- schnipp -------------------------------
+Hier werden alle Echo-Areas, die mit fido, de, comp, z-netz, maus,
+rec, alt oder fidonet beginnen ueber meine Fido-Adresse verschickt
+(Ausnahme: fido.de.z242) und zwar ueber das "System" fidogate
+(Definition des Systems spaeter).
+Weiterhin weden alle Groups mit dem Beginn kn ueber koelnnet geroutet
+und mit Koelnnet-AKA versehen.
+Letztendlich wird noch die Newsgroup fido.de.z242 ueber fidode mit der
+neuen Z242-AKA verschickt.
+
+Interessant ist nun noch /usr/local/lib/news/bin/batch/viafido:
+-------------------------------- schnipp -------------------------------
+#! /bin/sh
+# Submit news batch to FIDOGATE's rfc2fido.
+#
+# The 'exec' cuts down the number of processes active for this simple case.
+
+case $1 in
+  fidogate) exec /usr/local/lib/fidogate/rfc2fido -b -n -a 2:242/503.13 -u
+2:242/503;;
+  koelnnet) exec /usr/local/lib/fidogate/rfc2fido -b -n -a 11:111/503.13 -u
+11:111/503 -O /usr/spool/fnet/koelnnet.00b;;
+  fidode) exec /usr/local/lib/fidogate/rfc2fido -b -n -a 242:5000/4.13 -u
+242:5000/4 -O /usr/spool/fnet/fidode.0f2;;
+esac;
+exit 1;
+-------------------------------- schnipp -------------------------------
+Hier bei sind fidogate), koelnnet) und fidode) jeweils nur 1 Zeile,
+der Zeilenumbruch ist leider bei der Uebertragung irgendwo
+aufgetreten...
+Wie man sieht werden die "Systeme", die in sys angegeben wurden, hier
+unterschieden und jeweils die richtige Adresse gesetzt, sowie der
+jeweilige Uplink gewaehlt (bei mir sind das die verschiedenen Adressen
+von meinem Boss). Ausserdem wird noch das jeweils passende
+Binkley-Outbound-Directory  mit angegeben.
+
+Es bleibt noch eine korrekte Konfiguration von Binkley. Hier ein
+Ausschnitt aus binkley.cfg:
+-------------------------------- schnipp -------------------------------
+Boss 2:242/503
+;
+; Domain <Netzname lang> <Netzname kurz (max 8 Zeichen)> <Name der Nodelist>
+Domain fidonet.org fidonet nodelist
+Domain koelnnet koelnnet koelnnet
+Domain fidode fidode fidode
+;
+; 		   Fakenet-Addresse--v        v--Telefon-Nummer vom Boss
+Address   2:242/503.13@fidonet.org 22503 02203-31231   ; Default address
+Address   2:242/503.13@fidonet.org
+Address   2:2450/300.13@fidonet.org
+Address	  11:111/503.13@koelnnet
+Address   242:5000/4.13@fidode
+;
+PrivateNet 22503
+-------------------------------- schnipp -------------------------------
+
+Weiterhin muessen fuer news und binkley noch einige Verzeichnisse
+existieren:
+
+drwxr-xr-x   2 uucp     uucp         1024 Jan  7 09:06
+/var/spool/fnet/fidode.0f2/
+drwxr-xr-x   2 uucp     uucp         1024 Jan  7 09:06
+/var/spool/fnet/koelnnet.00b/
+drwxr-xr-x   2 uucp     uucp         1024 Jan  7 09:06
+/var/spool/fnet/outbound/
+
+$ ll /var/spool/news/out.going/
+total 5
+drwxrwxr-x  10 news     news         1024 Jan  7 03:57 ./
+drwxrwxr-x  19 news     news         1024 Dec 18 00:52 ../
+drwxrwxr-x   2 news     news         1024 Jan  7 04:40 fidode/
+drwxrwxr-x   2 news     news         1024 Jan  7 03:40 fidogate/
+drwxrwxr-x   2 news     news         1024 Dec 28 00:55 koelnnet/
+
+Da faellt mir gerade ein, dass natuerlich auch noch run-batch
+erweitert werden muss:
+------------------------------------ schnipp -------------------------------
+#!/bin/sh
+#
+# Call newsrun, sendbatches
+#
+/usr/local/lib/news/bin/input/newsrun
+/usr/local/lib/news/bin/batch/sendbatches fidogate
+/usr/local/lib/news/bin/batch/sendbatches koelnnet
+/usr/local/lib/news/bin/batch/sendbatches fidode
+------------------------------------ schnipp -------------------------------
+
+Ich hoffe, ich habe nichts wichtiges vergessen...
+
+Tschoeeee
+
+	Roland
+
+-- 
+  * Roland_Rosenfeld@p13.flokiste.fido.de * Fido-Classic: 2:242/503.13 *
+
+

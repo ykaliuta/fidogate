@@ -1,0 +1,10 @@
+# special routes via SMTP
+westf.fido.de           smtp:[muenster.Westfalen.DE]
+.westf.fido.de          smtp:[muenster.Westfalen.DE]
+berlin.fido.de          smtp:[drawbridge.in-berlin.de]
+.berlin.fido.de         smtp:[drawbridge.in-berlin.de]
+
+# via FIDOGATE/rfc2ftn
+.z242.fido.de           ftni:gate.fido.de
+.z2.fidonet.org         ftni:gate.fido.de
+.fido.de                ftn:gate.fido.de

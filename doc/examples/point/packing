@@ -1,0 +1,37 @@
+#
+# $Id: packing,v 5.2 2004/11/23 00:50:37 anray Exp $
+#
+# FIDOGATE ftnpack config file
+#
+# Commands:
+#
+#     arc                 NAME  "/PATH/PROG %s %s"
+#     prog                NAME  "/PATH/PROG %s"
+#     progn               NAME  "/PATH/PROG %s"
+#
+#     (progn doesn't delete packet after running PROG)
+#  
+#     pack                NAME  NODES
+#     rpack               NAME  TARGET NODES
+#     fpack               NAME  TARGET NODES
+#     dirpack  DIRECTORY  NAME  NODES
+#     dirmove  DIRECTORY        NODES
+#
+
+arc     rar     "/usr/local/bin/rar a -m5 -y -md1024 -inul -o+ %s %s"
+arc     zip     "/usr/local/bin/zip -9gkjq %s %s"
+
+progn	gate	"/usr/local/fido/libexec/ftn2rfc -i -x /usr/local/fido/libexec/ftninpost -l %s"
+
+unarc   ZIP     "PK0x030x04"    "/usr/local/bin/unzip -ojL %s" "/usr/local/bin/unzip -l %s"
+unarc   RAR     "Rar!"          "/usr/local/bin/rar e -inul -o+ %s" "/usr/local/bin/rar l %s"
+
+######## P A C K I N G #######################################################
+
+EchoMail
+pack		gate	2:2499/999.9
+pack		zip	*
+
+NetMail
+pack		gate	2:2499/999.9
+pack		noarc	*

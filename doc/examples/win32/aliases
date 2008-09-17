@@ -1,0 +1,14 @@
+#:ts=8
+#
+#   $Id: aliases,v 5.2 2004/11/23 00:50:37 anray Exp $
+#
+# User name aliases
+#
+# username	FTN address		Full name
+# --------	-----------		---------
+root		2:2499/99		"Sysop"
+
+postmaster	2:2499/99		"Mail Delivery Subsystem"
+
+mj		2:2452/110.2		"Martin Junius"
+mj		242:1000/5		"Martin Junius"

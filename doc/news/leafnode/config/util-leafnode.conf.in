@@ -1,0 +1,56 @@
+#
+# (C) Maint Laboratory 2003-2004
+# Author: Elohin Igor'
+# e-mail: maint@unona.ru
+# fido  : 2:5070/222.52
+# URL   : http://maint.unona.ru
+
+[Config]
+
+# Порт news-сервера (leafnode)
+port = 119
+
+# Владелец leafnode
+leafnode owner = news
+
+# log файл для утилит  (util-leafnode)
+logfile = util-leafnode
+
+# каталог, где находиться log-файл (util-leafnode)
+util logdir = /var/log/leafnode
+
+# каталог outgoing в leafnode  (util-leafnode и leafnode)
+outgoing = /var/spool/news/out.going
+
+# каталог, куда сваливаются failed posting  (util-leafnode и leafnode)
+failed posting = /var/spool/news/failed.postings
+
+# входной каталог leafnode   (util-leafnode и leafnode)
+incoming = /var/spool/news/in.coming
+
+# каталог для дублированных news'ов (util-leafnode и leafnode)
+dupe post = /var/spool/news/dupe.post
+
+# каталог групп, на которые подписаны пользователи leafnode  (leafnode)
+interesting groups = /var/spool/news/interesting.groups
+
+# файл news групп  (util-leafnode и leafnode)
+groupinfo = /var/spool/news/leaf.node/groupinfo
+
+# файл локальных news групп  (util-leafnode и leafnode)
+local groupinfo = /etc/leafnode/local.groups
+
+# расположение файла active (для fidogate)
+active = /var/spool/news/active
+
+# путь к rfc2ftn (fidogate)
+rfc2ftn = /usr/local/libexec/rfc2ftn -n -v
+
+# програмулька убирающая заключительные Ctrl+D при переброске из news в fido
+delete_ctrl_d = /usr/local/bin/ctrld
+
+# группы новостей фидо на сервере. По ним создается файл active и 
+# происходит проверка перед отправкой send-fidogate. Если группы не
+# указаны, считается что все группы принадлежат фидо (util-leafnode)
+# fido groups = fido7, carbon, pvt
+

@@ -1,0 +1,11 @@
+# Robot type    Area pattern    Uplink          Robot name      Password
+# -----------   -------------   ----------      -----------     ---------
+af              /home/ftp/fileecho/spb_echo/13a6045b.bbs      	2:5030/468	AreaFix         XXXXXXXX	-k A
+af              /home/ftp/fileecho/spb_echo/13a60073.bbs      	2:5030/872	AreaFix         XXXXXXXX	-k B
+af              /home/ftp/fileecho/small_local/13a603b9.bbs    	2:5030/953	AreaFix         XXXXXXXX	-k C
+ff              USYSLNX,USRC,USRCLNX,UDOCLNX,USRCBSD,UUTLLNX,UUTLBSD,UDOC,UOTH	2:5025/889	FileFix         XXXXXXXX	-# -k D
+ff              /home/ftp/fileecho/spb_fecho/731.lst	2:5030/468	FileFix         XXXXXXXX	-k A
+ff              /home/ftp/fileecho/spb_fecho/966.lst	2:5030/872	FileFix         XXXXXXXX	-k B
+ff              /home/ftp/fileecho/spb_fecho/920.lst	2:5030/953	FileFix         XXXXXXXX	-k C
+
+

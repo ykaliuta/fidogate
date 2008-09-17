@@ -1,0 +1,514 @@
+#:ts=8
+#
+# Listed nodes for Fido.DE
+#
+# Fields:
+#
+# node        FTN address
+#
+# hostname    Host name in the local domain (config: HostsDomain, Domain)
+#             or fully qualified domain name (trailing `.') or `-' for
+#             listed node without host name.
+#
+# options     -p  Generate addresses with point, e.g. `p99.hippo.fido.de'
+#             -d  Node is currently down (can't receive mail)
+#
+# node          hostname                        options      
+#-----          --------                        -------
+242:1000/4	tweety.dfv.rwth-aachen.de.	
+#
+242:1000/1      hippo          
+242:1000/0      hippo          
+2:2452/110      hippo          
+242:1000/7      yftn           
+2:2452/108      yftn           
+242:1000/51     inncomm         -p
+242:1000/54     inncomm         -p
+242:1000/50     inncomm         -p
+2:2452/201      inncomm         -p
+242:4000/1      project        
+242:4000/0      project        
+242:4000/26     project        
+2:2440/225      project        
+2:2433/225      project        
+2:2433/226      project        
+242:2000/1      wharfrat        -p -d
+242:2000/0      wharfrat        -p -d
+2:2452/101      wharfrat        -p -d
+2:242/42        wharfrat        -p -d
+242:1000/53     os2box          -d
+2:242/5170      os2box          -d
+242:1000/300    ccwn           
+242:1000/302    ccwn           
+2:246/1401      ccwn           
+2:246/1400      ccwn           
+242:1000/401    oracle         
+242:1000/402    oracle         
+242:1000/400    oracle         
+2:2444/1116     oracle         
+242:1000/251    wildcat         -p
+242:1000/252    wildcat         -p
+242:1000/250    wildcat         -p
+2:244/1540      wildcat         -p
+2:244/1541      wildcat         -p
+242:1000/256    spam           
+2:244/1106      spam           
+242:1000/253    ambrosia       
+242:1000/254    ambrosia       
+2:244/1120      ambrosia       
+2:244/1121      ambrosia       
+242:1000/153    nirvana        
+242:1000/150    nirvana        
+2:2490/2121     nirvana        
+242:1000/14     wuivendriet    
+2:2452/121      wuivendriet    
+242:4000/6      suburbia       
+2:2443/1031     suburbia       
+2:2443/1032     suburbia       
+2:2443/1033     suburbia       
+242:1000/503    freefall       
+2:2452/301      freefall       
+242:1000/9      cwg            
+242:3001/101    cwg            
+242:3001/100    cwg            
+2:2452/158      cwg            
+2:2452/500      cwg            
+242:1000/15     zaphod         
+2:2453/30       zaphod         
+2:2402/330      zaphod         
+242:2000/20     traveller      
+2:2476/803      traveller      
+242:2000/2      wharfrat-isdn  
+254:2410/2      wharfrat-isdn  
+2:2452/102      wharfrat-isdn  
+2:242/41        wharfrat-isdn  
+242:1000/12     party          
+242:1000/13     party          
+2:2452/156      party          
+2:2452/157      party          
+242:1000/55     barracuda      
+2:2433/605      barracuda      
+2:2433/606      barracuda      
+2:2433/615      barracuda      
+242:1000/21     ks              -p
+2:2452/117      ks              -p
+242:1000/508    bitburger      
+2:2452/403      bitburger      
+242:1000/156    jdmbs          
+242:1000/157    jdmbs          
+242:1000/158    jdmbs          
+2:2490/2011     jdmbs          
+2:2490/2012     jdmbs          
+2:2490/2013     jdmbs          
+242:1000/2      hippo-isdn     
+2:2452/111      hippo-isdn     
+242:6000/301    newspoint      
+242:6000/300    newspoint      
+2:243/6006      newspoint      
+242:1000/506    renegade       
+2:2452/305      renegade       
+242:1000/501    saeubrenner    
+242:1000/502    saeubrenner    
+242:1000/500    saeubrenner    
+2:2452/401      saeubrenner    
+2:2452/402      saeubrenner    
+2:2452/1        saeubrenner    
+242:1000/510    highlands      
+242:1000/511    highlands      
+2:2452/351      highlands      
+242:1000/63     aero           
+242:1000/62     aero           
+242:1000/64     aero           
+2:2452/169      aero           
+2:2452/170      aero           
+2:2452/171      aero           
+242:1000/10     krynn           -p
+242:1000/11     krynn           -p
+242:3001/104    krynn           -p
+242:3001/105    krynn           -p
+2:2452/172      krynn           -p
+2:2452/196      krynn           -p
+242:2000/200    ibf            
+2:240/3007      ibf            
+2:240/3008      ibf            
+242:1000/553    citybox        
+242:1000/551    citybox        
+242:1000/552    citybox        
+242:1000/550    citybox        
+2:2457/315      citybox        
+2:2457/316      citybox        
+2:2457/317      citybox        
+242:6000/201    cavern         
+242:6000/200    cavern         
+242:6000/0      cavern         
+2:241/1170      cavern         
+2:241/1171      cavern         
+242:1000/259    pink           
+2:244/1502      pink           
+242:6000/283    big-blue2      
+242:6000/284    big-blue2      
+2:2449/184      big-blue2      
+2:2449/183      big-blue2      
+242:1001/1      granny         
+242:1001/2      granny         
+242:1001/3      granny         
+242:1001/0      granny         
+2:241/1090      granny         
+2:241/1091      granny         
+2:241/1092      granny         
+242:6000/401    desert         
+242:6000/400    desert         
+2:241/1130      desert         
+2:241/1131      desert         
+2:241/1132      desert         
+242:6000/224    gruft          
+242:6000/225    gruft          
+242:6000/226    gruft          
+2:241/1172      gruft          
+2:241/1173      gruft          
+242:4000/5      confidential.dssd
+2:2433/1104     confidential.dssd
+242:1000/323    starlight      
+2:246/1423      starlight      
+242:4000/18     pil.dssd       
+242:4000/19     pil.dssd       
+242:4000/20     pil.dssd       
+242:4000/21     pil.dssd       
+2:2433/1260     pil.dssd       
+2:2433/1261     pil.dssd       
+2:2433/1262     pil.dssd       
+2:2433/1263     pil.dssd       
+242:3700/1      rollo          
+242:3700/0      rollo          
+2:2437/210      rollo          
+2:2437/211      rollo          
+2:2437/212      rollo          
+242:3700/2      simbox         
+2:2437/213      simbox         
+242:3700/3      justice        
+2:2437/220      justice        
+242:4000/2      nub.dssd       
+2:2448/1400     nub.dssd       
+242:4000/3      kolbenfresser.dssd
+2:2433/445      kolbenfresser.dssd
+2:2433/446      kolbenfresser.dssd
+2:2433/447      kolbenfresser.dssd
+242:3000/4      prometheus     
+242:3000/0      prometheus     
+2:2454/119      prometheus     
+242:1000/607    mccs           
+242:1000/608    mccs           
+2:246/8100      mccs           
+242:1000/612    tsb             -p
+242:1000/609    tsb             -p
+242:1000/610    tsb             -p
+242:1000/611    tsb             -p
+2:246/8112      tsb             -p
+2:246/8113      tsb             -p
+2:246/8114      tsb             -p
+2:246/8115      tsb             -p
+242:1000/8      oldie           -p
+2:2452/260      oldie           -p
+242:1002/1      martec         
+242:1002/110    martec         
+242:1002/111    martec         
+242:1002/0      martec         
+2:2476/770      martec         
+242:1000/56     death          
+242:1000/57     death          
+2:2433/619      death          
+2:2433/618      death          
+242:6000/231    mogway         
+242:6000/232    mogway         
+2:246/2318      mogway         
+242:6000/215    katel          
+242:6000/217    katel          
+2:2437/15       katel          
+2:2437/16       katel          
+2:2437/17       katel          
+2:2437/18       katel          
+242:1000/351    ayn             -p
+242:1000/352    ayn             -p
+242:1000/353    ayn             -p
+242:1000/350    ayn             -p
+2:2487/8001     ayn             -p
+2:2487/8002     ayn             -p
+2:2487/8003     ayn             -p
+2:2487/8004     ayn             -p
+2:2487/8005     ayn             -p
+242:1000/354    ayn-ii          -p
+242:1000/355    ayn-ii          -p
+2:2487/8006     ayn-ii          -p
+242:1000/16     3lands          -p
+2:301/221       3lands          -p
+242:7000/704    wad.berlin      -p
+242:7000/1      wad.berlin      -p
+242:7000/0      wad.berlin      -p
+2:2410/704      wad.berlin      -p
+242:5900/1      pmns            -p
+242:5900/2      pmns            -p
+242:5900/3      pmns            -p
+242:5900/0      pmns            -p
+2:2426/4065     pmns            -p
+2:2426/4066     pmns            -p
+2:2426/4067     pmns            -p
+242:7000/710    dpk.berlin     
+2:2410/710      dpk.berlin     
+242:6000/252    boox            -p
+2:241/1052      boox            -p
+2:241/1053      boox            -p
+2:241/1054      boox            -p
+2:241/1058      boox            -p
+242:5000/1      medix          
+242:5000/2      medix          
+242:5000/0      medix          
+2:2437/33       medix          
+2:2437/34       medix          
+242:7000/700    maine.berlin   
+242:7000/708    maine.berlin   
+242:7000/709    maine.berlin   
+2:2410/700      maine.berlin   
+2:2410/708      maine.berlin   
+242:3000/16     gbt             -d
+242:3000/17     gbt             -d
+2:2454/105      gbt             -d
+2:2454/115      gbt             -d
+242:1000/5      orodruin       
+2:2452/110.2    orodruin       
+242:9000/200    joey            -d
+242:9000/201    joey            -d
+2:240/5100      joey            -d
+242:1000/504    cce            
+2:2452/440      cce            
+242:4900/99     sungate-ftn    
+2:2452/110.1    sungate-ftn    
+242:9000/102    xtc            
+2:240/5222      xtc            
+242:1001/500    mailonly       
+242:3800/500    mailonly       
+2:241/500       mailonly       
+2:241/501       mailonly       
+2:241/1069      mailonly       
+242:7000/305    median.berlin  
+242:7000/315    median.berlin  
+242:7000/398    median.berlin  
+2:2410/305      median.berlin  
+2:2410/315      median.berlin  
+2:2410/398      median.berlin  
+242:9000/500    ceres          
+2:240/3002      ceres          
+242:4000/2016   buntebox.dssd  
+242:4000/2017   buntebox.dssd  
+2:2444/2016     buntebox.dssd  
+2:2444/2017     buntebox.dssd  
+242:5000/6      hoernet         -d
+2:2437/58       hoernet         -d
+242:3800/570    uli            
+242:3800/1      uli            
+242:3800/0      uli            
+2:241/571       uli            
+242:6000/265    bbh            
+2:241/1065      bbh            
+2:241/1066      bbh            
+2:241/1067      bbh            
+2:241/1165      bbh            
+242:1000/360    mtm            
+2:2487/8060     mtm            
+242:4000/1608   bone           
+2:2433/1608     bone           
+2:2433/1609     bone           
+242:4700/1      turbo          
+242:4700/2      turbo          
+242:4700/3      turbo          
+242:4700/0      turbo          
+2:241/215       turbo          
+2:241/216       turbo          
+2:241/217       turbo          
+242:5000/8      kolbenfresser  
+242:5000/9      kolbenfresser  
+2:2437/67       kolbenfresser  
+2:2437/68       kolbenfresser  
+242:7000/224    pipe.berlin    
+242:7000/294    pipe.berlin    
+2:2410/224      pipe.berlin    
+2:2410/293      pipe.berlin    
+2:2410/294      pipe.berlin    
+242:5000/10     geobox3        
+2:2437/41       geobox3        
+242:5000/11     aigyptos       
+2:2437/40       aigyptos       
+242:5000/12     adkanet        
+242:5000/13     adkanet        
+2:2437/921      adkanet        
+2:2437/928      adkanet        
+242:9000/60     ccb-world      
+2:240/5067      ccb-world      
+2:240/5068      ccb-world      
+2:240/5069      ccb-world      
+242:7600/1      bland          
+242:7600/2      bland          
+242:7600/0      bland          
+2:2476/418      bland          
+242:9000/66     elbe           
+242:9000/67     elbe           
+242:9000/0      elbe           
+2:240/5032      elbe           
+2:240/5033      elbe           
+2:240/5043      elbe           
+242:5000/14     play           
+2:2437/131      play           
+2:2437/130      play           
+242:3700/7      quad           
+242:3700/8      quad           
+2:2437/222      quad           
+2:2437/228      quad           
+242:3800/599    pob            
+2:241/599       pob            
+242:7600/101    graphic        
+242:7600/102    graphic        
+242:7600/100    graphic        
+2:246/6070      graphic        
+242:7600/10     airline        
+242:7600/11     airline        
+2:2476/266      airline        
+2:2476/267      airline        
+242:9000/68     databyte        -d
+2:240/5051      databyte        -d
+2:240/5061      databyte        -d
+242:7000/1001   solo.berlin    
+242:7000/1049   solo.berlin    
+2:2410/1000     solo.berlin    
+2:2410/1001     solo.berlin    
+2:2410/1002     solo.berlin    
+2:2410/1048     solo.berlin    
+2:2410/1049     solo.berlin    
+242:6800/1      rheingold      
+242:6800/2      rheingold      
+242:6800/0      rheingold      
+2:2468/9952     rheingold      
+2:2468/9953     rheingold      
+242:6000/230    guardian       
+2:2432/230      guardian       
+2:2432/231      guardian       
+2:2432/232      guardian       
+242:3800/529    medibox        
+2:2437/429      medibox        
+242:9000/157    pcw            
+2:240/5257      pcw            
+2:240/5258      pcw            
+242:5000/15     spellbook      
+242:5000/16     spellbook      
+2:2437/6        spellbook      
+2:2437/7        spellbook      
+242:7000/1007   mystic.berlin  
+2:2410/1007     mystic.berlin  
+242:7600/12     pyramid        
+2:2476/110      pyramid        
+242:9700/1      unicorn        
+242:9700/2      unicorn        
+242:9700/0      unicorn        
+242:6800/100    the-box        
+242:6800/101    the-box        
+2:2468/9950     the-box        
+2:2468/9966     the-box        
+242:1001/4      cave           
+242:1001/5      cave           
+2:2461/161      cave           
+2:2461/162      cave           
+242:5000/7      infokomm       
+2:241/1135      infokomm       
+2:241/1136      infokomm       
+2:241/1137      infokomm       
+2:241/1138      infokomm       
+242:4700/4      dreamhold      
+2:240/5053      dreamhold      
+242:5000/17     shire          
+242:5000/18     shire          
+2:241/1104      shire          
+2:241/1105      shire          
+242:9000/143    ihc            
+2:240/5244      ihc            
+2:240/5243      ihc            
+242:4000/308    warlord        
+242:4000/309    warlord        
+242:4000/310    warlord        
+242:4000/300    warlord        
+2:2448/308      warlord        
+2:2448/309      warlord        
+2:2448/310      warlord        
+242:4000/1611   cyberhouse     
+242:4000/1612   cyberhouse     
+2:2433/1609.17  cyberhouse     
+2:2433/1608.17  cyberhouse     
+242:8000/1      duesti         
+242:8000/0      duesti         
+2:249/1010      duesti         
+242:7600/120    noname         
+2:246/6020      noname         
+242:4700/5      hotbox         
+242:4700/6      hotbox         
+2:241/235       hotbox         
+2:241/236       hotbox         
+242:7600/50     source         
+2:2474/500      source         
+2:2474/501      source         
+242:8000/2      leipziger      
+2:249/1030      leipziger      
+2:249/1031      leipziger      
+242:1000/505    esneunbox      
+2:2452/361      esneunbox      
+242:5200/449    the-freaks     
+242:5200/0      the-freaks     
+2:2449/449      the-freaks     
+242:1000/17     interactive    
+242:1000/18     interactive    
+242:1000/19     interactive    
+242:1000/20     interactive    
+2:2426/4080     interactive    
+2:2426/4081     interactive    
+242:6000/220    flux            -p
+2:241/1087      flux            -p
+242:1000/257    warp-in        
+2:244/1117      warp-in        
+242:7000/241    butro.berlin   
+2:2410/241      butro.berlin   
+242:1000/58     jojo           
+2:2452/206      jojo           
+242:4000/720    stuete         
+242:4000/721    stuete         
+242:4000/722    stuete         
+2:2433/720      stuete         
+2:2433/721      stuete         
+2:2433/722      stuete         
+242:5000/19     hanno          
+242:6800/120    nexus          
+242:1000/310    ftc            
+2:246/1022      ftc            
+242:8000/3      sachsengeos    
+2:249/1210      sachsengeos    
+242:5000/20     wb             
+242:5000/21     wb             
+2:2437/922      wb             
+2:2437/925      wb             
+2:2437/927      wb             
+242:5000/22     satanis        
+2:2437/929      satanis        
+242:1001/1000   ncp            
+2:241/1000      ncp            
+242:6800/122    morla           -p
+2:2468/5103     morla           -p
+242:1000/520    madmax         
+2:2452/420      madmax         
+242:5100/1      flokiste       
+242:5100/2      flokiste       
+242:5100/0      flokiste       
+2:2452/111      flokiste       
+2:2450/112      flokiste       
+242:7600/15     grisu          
+2:2476/412      grisu          
+242:1000/255    murmel         
+2:244/1367      murmel         
+242:3800/534    harbour        
+2:241/534       harbour        
+242:1000/22     outpost        
+2:2452/125      outpost        

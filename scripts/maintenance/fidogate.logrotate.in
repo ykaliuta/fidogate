@@ -1,0 +1,26 @@
+
+<LOGDIR>/log {
+    daily
+    rotate 7
+}
+
+<LOGDIR>/log-in {
+    daily
+    rotate 7
+}
+
+<LOGDIR>/log-out {
+    daily
+    rotate 7
+}
+
+<LOGDIR>/log-mail {
+    daily
+    rotate 7
+}
+
+<LOGDIR>/log-news {
+    daily
+    rotate 2
+}
+
