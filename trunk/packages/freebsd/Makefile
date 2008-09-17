@@ -1,11 +1,11 @@
 # New ports collection makefile for: fidogateds
-# Whom:                 Andrey Slusar <vasallia@ukr.net>
+# Whom:                 Andrey Slusar <anrays>
 # Date created:         9 Feb 2004
 # $FreeBSD$
 #
 
 PORTNAME=		fidogate
-PORTVERSION=		5.2.1
+PORTVERSION=		5.2.4
 CATEGORIES=		news mail
 MASTER_SITES=		${MASTER_SITE_SOURCEFORGE}
 MASTER_SITE_SUBDIR=	rusfidogate
