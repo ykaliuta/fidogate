@@ -1,0 +1,17 @@
+#
+# Listed nodes for gloom.intra.eu.org
+#
+# Fields:
+#
+# node        FTN address
+#
+# hostname    Host name in the local domain (config: HostsDomain, Domain)
+#             or fully qualified domain name (trailing `.') or `-' for
+#             listed node without host name.
+#
+# options     -p  Generate addresses with point, e.g. `p99.hippo.fido.de'
+#             -d  Node is currently down (can't receive mail)
+#             -a  Place real Fidonet address in ^AREPLYTO and Origin fields.
+#
+# node          hostname                        options      
+#-----          --------                        -------

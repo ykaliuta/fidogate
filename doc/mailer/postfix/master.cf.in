@@ -1,0 +1,12 @@
+# FIDOGATE ###################################################################
+#
+ftn	  unix	-	n	n	-	-	pipe
+    flags=F user=ftn argv=<LIBEXECDIR>/ftnmail -- $recipient
+ftni	  unix	-	n	n	-	-	pipe
+    flags=F user=ftn argv=<LIBEXECDIR>/rfc2ftn -i -- $recipient
+##    flags=F user=ftn argv=<LIBEXECDIR>/ftnmail -i -- $recipient
+ftna	  unix	-	n	n	-	-	pipe
+    flags=F user=ftn argv=<LIBEXECDIR>/rfc2ftn -a $nexthop -i -- $recipient
+##    flags=F user=ftn argv=<LIBEXECDIR>/ftnmail -a $nexthop -i -- $recipient
+ftno	  unix	-	n	n	-	-	pipe
+    flags=F user=ftn argv=<LIBEXECDIR>/ftnmail -a $nexthop -O outpkt/$nexthop -i -- $recipient

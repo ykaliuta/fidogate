@@ -1,0 +1,43 @@
+#
+# $Id: packing.sample.in,v 5.2 2004/11/23 00:50:36 anray Exp $
+#
+# FIDOGATE ftnpack config file
+#
+# Commands:
+#
+#     arc    NAME  "/PATH/PROG %s %s"
+#     prog   NAME  "/PATH/PROG %s"
+#
+#     pack   NAME  NODES
+#     rpack  NAME  TARGET NODES
+#     fpack  NAME  TARGET NODES
+#
+LastArcmailChars	17
+
+progn	gate	"<LIBEXECDIR>/ftn2rfc -i -x <LIBEXECDIR>/ftninpost -l %s"
+progn	areafix	"<LIBEXECDIR>/ftnafpkt -l %s"
+progn	filefix	"<LIBEXECDIR>/ftnafpkt -l -F %s"
+
+arc	zip	"<ARC_ZIP> -9gkjq %s %s"
+arc	arc	"<ARC_ARC> an %s %s"
+arc	lha	"<ARC_LHA> -aiq %s %s"
+arc	rar	"<ARC_RAR> a -m5 -y -md1024 -inul -o+ %s %s"
+
+unarc	ZIP	"PK0x030x04"	"<ARC_UNZIP> -ojL %s"		"<ARC_UNZIP> -l %s"
+unarc	RAR	"Rar!"		"<ARC_RAR> e -inul -o+ %s"	"<ARC_RAR> l %s"
+unarc	ARJ	"0x600xEA"	"unarj e %s"	"unarj l %s"
+unarc	ARC	"0x26"		"<ARC_ZIP> eo %s"		"<ARC_ZIP> l %s"
+unarc	LZH	"-lh"		"lha eif %s"	"lha l %s"
+unarc	ZOO	"ZOO"		"zoo e: %s"	"zoo l %s"
+
+######## P A C K I N G #######################################################
+
+EchoMail
+pack	gate	  2:5030/1229.0
+pack    zip       *
+
+NetMail
+pack    gate   	  2:5030/1229.0
+pack    areafix   2:5030/1229.9000
+pack    filefix   2:5030/1229.9001
+pack    noarc     *

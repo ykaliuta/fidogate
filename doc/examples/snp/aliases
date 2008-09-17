@@ -1,0 +1,24 @@
+#
+# User name aliases
+#
+# username	FTN address		Full name
+# --------	-----------		---------
+fidoadm		2:5020/1838.0		"Super User"
+fidoadm		2:5020/1354.500		"Super User"
+
+fidoadm		2:5020/1838.0		"Mail Delivery Subsystem"
+fidoadm		2:5020/1354.500		"Mail Delivery Subsystem"
+
+fidoadm		2:5020/1838.0		"FidoAdm"
+fidoadm		2:5020/1354.500		"FidoAdm"
+
+areafix		2:5020/1838.0		"Areafix"
+areamgr		2:5020/1838.0		"Areamgr"
+filefix		2:5020/1838.0		"Filefix"
+filemgr		2:5020/1838.0		"Filemgr"
+
+#Areafix-Daemon	2:5020/1838.0		"Areafix Daemon"
+#Filefix-Daemon	2:5020/1838.0		"Filefix Daemon"
+
+snp		2:5020/1838.0		"*"
+snp		2:5020/1354.500		"*"

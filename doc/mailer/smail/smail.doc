@@ -1,0 +1,150 @@
+From: klaus@elostar.ms.sub.org (Klaus Schaefers)
+Date: Sun, 4 Apr 1993 20:55:34 +0100 (MET DST)
+
+[...]
+o.k. normalerweise sind in den Smail eine router und eine transport - Konfi-
+guration fest eincompiliert. Diese Dateien ( routers , transports ) sind der
+Smail Source zu entnehmen, und abzuaendern.
+
+Danach stellt man sie ins X-SMAIL-LIBDIR-X , damit sie wirksam werden.
+
+Dabei muss man vorsichtig sein, da das vorhandensein einer routers die vor-
+kompilierten Router ungueltig macht. Das vorhandensein einer transports er-
+gaenzt dagegen die vorhandenen Transports.
+
+Falls man groessere Sachen vorhat, muss man wohl die Manpage 5 des Smail lesen.
+
+hier anhand der routers genauer:
+
+---cut---cut---
+
+# @(#)routers	1.3 7/8/88 00:45:03
+
+# This file defines the configuration of the router subsystem as
+# compiled into the smail binary.  By modifying the source files
+# conf/EDITME, src/config.h or src/default.c the actual internal
+# configuration can be changed.  Thus, this should be matched up
+# against thes files before assuming this is completely correct.
+
+[ some stuff deleted ] 
+
+# paths - route using a paths file, like that produced by the pathalias program
+paths:	driver = pathalias,		# general-use paths router
+	transport = uux;		# for matches, deliver over UUCP
+					# Klaus
+    file =/usr/local/lib/smail/paths,   # sorted file containing path info
+        # proto = bsearch,		# use a binary search
+	proto = lsearch,		# Klaus
+	optional,			# ignore if the file does not exist
+	domain = uucp			# strip ending ".uucp" before searching
+
+# uucp_neighbors - match neighbors accessible over UUCP
+uucp_neighbors:
+	driver = uuname,		# use a program which returns neighbors
+	transport = uux;
+
+	cmd = /usr/bin/uuname,		# specifically, use the uuname program
+	domain = uucp
+
+# smart_host - a partically specified smarthost director
+#
+# If the config file attribute smart_path is defined as a path from the
+# local host to a remote host, then hostnames not matched otherwise will
+# be sent off to the stated remote host.  The config file attribute
+# smart_transport can be used to specify a different transport.
+#
+# If the smart_path attribute is not defined, this router is ignored.
+smart_host:
+	driver = smarthost,		# special-case driver
+	transport = uux			# by default deliver over UUCP
+
+# fidonet.org by Klaus
+fido:
+	driver = pathalias,
+	transport = fido;
+	file = /usr/local/lib/smail/paths.fido,
+	proto = lsearch
+
+---cut---cut---
+
+der fido Eintrag bewirkt einen pathalias Router, der in der Datei 
+X-SMAIL-LIBDIR-X/path.fido einen StringSearch nach dem Zielsystem macht...
+In der transports Datei muss ein Eintrag fido den Transport bestimmen.
+
+[...]
+
+hier die transports Datei aus dem X-SMAIL-LIBDIR-X :
+
+---cut---cut---
+
+# @(#)transports	1.4 2/20/89 04:08:19
+
+# This file defines the configuration of the transport subsystem as
+# compiled into the smail binary.  By modifying the source files
+# conf/EDITME, src/config.h or src/default.c the actual internal
+# configuration can be changed.  Thus, this should be matched up
+# against thes files before assuming this is completely correct.
+
+# local - deliver mail to local users
+#
+# By default, smail will append directly to user mailbox files.
+local:	driver = appendfile,		# append message to a file
+
+[ some stuff deleted ]
+
+# smtp - deliver using SMTP over TCP/IP
+#
+# Connect to a remote host using TCP/IP and initiate an SMTP conversation
+# to deliver the message.  The smtp transport is included only if BSD
+# networking exists.
+#
+# NOTE:	This is hardly optimal, a backend should exist which can handle
+#	multiple messages per connection.
+#
+# ALSO:	It may be necessary to restrict max_addrs to 100, as this is the
+#	lower limit SMTP requires an implementation to handle for one
+#	message.
+smtp:	driver = tcpsmtp,
+	-max_addrs,
+	-max_chars;
+
+	short_timeout = 5m,		# timeout for short operations
+	long_timeout = 2h,		# timeout for longer SMTP operations
+	service = smtp			# connect to this service port
+
+# New Transport for *.fidonet.org by Klaus
+# fido ist ein pathalias_router
+fido :  driver = pipe;
+	group = uucp,			# tuned up by chris
+	cmd = "/usr/local/lib/fidogate/rfmail -p ${strip:user}",
+	pipe_as_sender,
+
+---cut---cut---
+
+in dieser Datei wird also nur festgelegt, wie die Mails an das auszufuehrende
+Programm gelangen. In unserem Falle wird die Mail mit einem normalen Kopf an
+den rfmail gepiped. Ja das war schon alles. Hier noch Sicherheitshalber die
+paths.fido aus dem X-SMAIL-LIBDIR_X :
+
+---cut---cut---
+
+urmel			p0.f55.n242.z2.fidonet.org!%s
+twist			p0.f400.n242.z2.fidonet.org!%s
+.fidonet.org		p0.f400.n242.z2.fidonet.org!%s
+
+---cut---cut---
+dortdrin braucht eigendlich NUR der Name des Fido Uplinks stehen. Da es sich
+aber um einen patalias Driver handelt, kann man noch allen moeglichen Kram
+reinschreiben.
+ 
+
+Falls Du noch Fragen hast, kannst Du ja nochmal mailen. Ich weiss , das ist 
+echt schwer zu erklaeren. Die Manpage 5 vom Smail hat an die 80 Seiten und
+ist auch nicht so toll geschrieben... :-)
+
+Gruss Klaus
+-- 
+  / \       klaus@elostar.ms.sub.org
+<< * >>	  n62274@pbhrzx.uni-paderborn.de
+  \ / 	Fidonet : 2:242/55.21  Realname Klaus Schaefers         
+

@@ -1,0 +1,335 @@
+Ftrack+FIDOGATE mini-HOWTO
+Serge N. Pokhodyaev, 2:5020/1838, snp@ru.ru
+
+$Id: FIDOGATE_ftrack,v 5.2 2004/11/23 00:50:38 anray Exp $
+
+Как прикрутить Ftrack к FIDOGATE
+______________________________________________________________________________
+
+Содержание
+
+
+1. Где взять?
+2. Компиляция smapi.
+3. Компиляция Ftrack.
+4. Инсталляция
+5. Настройка FIDOGATE
+6. Настройка FTrack
+
+______________________________________________________________________________
+
+
+
+1. Где взять?
+
+
+
+FTrack -- http://ufm.kgb.ru/
+smapi -- http://www.tichy.de/husky/download.html
+
+
+
+2. Компиляция smapi.
+
+
+
+Все нижесказанное относится к smapi-000313.
+
+% tar -xzvf smapi-latest.tar.gz -C /usr/local/src
+% cd /usr/local/src/smapi
+% ln -s makefile.lnx Makefile
+
+Теперь редактируем Makefile. Надо заменить пару строчек чтобы собиралась
+только библиотека .a (smapi нам понадобится только для Ftrack'а, поэтому
+для простоты можно обойтись статическими библиотеками). Необходимые изменения
+приведены в формате unified diff:
+
+===
+-COPT=  -O3 -fomit-frame-pointer -fstrength-reduce -fPIC
++COPT=  -O3 -fomit-frame-pointer -fstrength-reduce
+
+-ALL: $(TARGET) libsmapilnx.so.$(VER)
++ALL: $(TARGET)
+===
+
+% make
+
+
+
+3. Компиляция Ftrack.
+
+
+
+Все нижесказанное относится к ftrack 3.01 (release)
+
+% unzip ftr301.zip -d /usr/local/src/ftr301
+% cd /usr/local/src/ftr301
+
+Удаляем символы '\r' из исходников. Fucking DOS.
+Можно использовать, например, вот этот скрипт:
+
+begin 700 remove-cr.sh.gz
+M'XL("'<)5#D"`W)E;6]V92UC<BYS:`!MCL$*@D`41=>^K[A9,!"8M"[Z@Z"]
+MBMHXDX_TC8P6A/COI=#.S5V<>[F<[2:^L\1]361?H@=V@L&7TC?E8#!28'3M
+M$-Z\TZ;O61[8C<<II&#PB"JHU"N<9X3+G#D%[1N175;YDC3]KIT'@P4I`85E
+MJ1!)V1JH_2'1==9UJECK/FLXN;99^326&Z.*$RHWR_R-=TR5$T-?Z'(0:M@`
+"````
+`
+end
+
+% cd MakeFiles/linux
+
+Редактируем Makefile:
+
+===
+-LFLAGS= -s
++LFLAGS= -s -L../../../smapi
+===
+
+% make
+
+
+
+4. Инсталляция
+
+
+
+% mkdir /usr/local/lib/ftrack
+% cd /usr/local/lib/ftrack
+% cp /usr/local/src/ftr301b7/MakeFiles/linux/ftrack .
+% chown root.root ftrack
+% chmod 755 ftrack
+
+Кладем в /usr/local/lib/ftrack вот такой скрипт:
+
+=== ftrack-start ===
+#!/bin/sh
+
+libdir="/usr/local/lib/ftrack"
+etcdir="/usr/local/etc/ftrack"
+fgdir="/usr/local/lib/fidogate"
+outbound="/var/spool/fido/outb"
+uid="fido"
+
+########## End of configurable part ##########################################
+
+if [ "`id -un`" != "${uid}" ]; then
+	echo "Run as user ${uid}!"
+	exit 1
+fi
+
+# First unpack all mail
+${fgdir}/bin/rununpack in
+${fgdir}/bin/rununpack pin
+
+# Now track it
+${libdir}/ftrack -c ${etcdir}/ftrack.conf >/var/log/ftrack/stdout 2>&1
+
+if [ $? != 0 ]; then
+	echo Error! >&2
+	exit 1
+fi
+
+# Remove void string inside Vias
+for i in `find ${outbound} -name \*.\[hdoc\]ut`; do
+	bsyname="${outbound}/`basename ${i} | sed -e 's,\.[hdoc]ut$,,'`.bsy"
+	[ -f ${bsyname} ] && continue
+	touch ${bsyname}
+	perl -e 'while(<>) { $_ =~ s,(^\r)(\001Via ),$2,; print; }' <${i} >${i}_
+	touch -r ${i} ${i}_
+	mv -f ${i}_ ${i}
+	rm ${bsyname}
+done
+
+# Fix permissions
+chmod -R go-rw ${outbound}
+===
+
+% mkdir /usr/local/etc/ftrack
+% mkdir /var/spool/fido/ftrack/in_bad
+% mkdir /var/spool/fido/ftrack/in_insecure
+% mkdir /var/spool/fido/ftrack/in_secure
+% mkdir /var/spool/fido/ftrack/out
+% chown -R fido.fido /var/spool/fido/ftrack
+
+
+
+5. Настройка FIDOGATE
+
+
+
+Никакой настройки не требуется :) Если у вас работало до установки ftrack,
+то будет работать и после. Единственное -- нужно пускать скрипт ftrack-start
+до запуска runin или rungate, а также не нужно больше пускать скрипты runmail
+и runout, т.к. вся работа с нетмейлом (кроме гейтования) переходит к ftrack'у
+
+
+
+6. Настройка FTrack
+
+
+
+Ниже приведен реальный конфиг (автора данного HOWTO), совсем не обязательно,
+что правильный :) Но вначале описание схемы работы. Вначале FTrack сканирует
+несколько директорий, а именно: парольный и  непарольный аутбаунды и
+директории, в которые кладутся сгейтованные FIDOGATE'ом сообщения. При
+сканировании эхомейл игнорируется, а нетмейл конвертируется в формат *.msg и
+перемещается в директории `/var/spool/fido/ftrack/in_insecure' или
+`/var/spool/fido/ftrack/in_secure'. Затем происходит обработка нетмейла,
+находящегося в этих директориях, после чего он перемещается в директорию
+`/var/spool/fido/ftrack/out' для последующего роутинга.
+
+=== ftrack.conf ===
+\ \\\\\\\\\\ My addresses \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+Address: 2:5020/1838
+    aka: 2:5020/1354.500 2:5020/1354.*
+
+SysopName: "Serge N. Pokhodyaev"
+Origin: "none"
+
+FileInbound: "/var/spool/fido/inb-protected"
+Outbound: "/var/spool/fido/outb"
+UseASO
+
+TrafficLog: "/var/log/ftrack/traffic"
+\ TrafficLogTemplate: "/usr/local/etc/ftrack/traflog.tpl"
+LogFile: "/var/log/ftrack/log"
+\ LogLevel: 5
+LogLevel: 2
+
+UseNewVIA
+LoopStr: "2:5020/1838 @"
+
+UseOwnZone
+ForceINTL
+BadMessages: move "/var/spool/fido/ftrack/in_bad"
+
+CheckPoints: Never
+
+NodelistPath: "/var/spool/fido/nl.d"
+Nodelist: "net5020.ndl" 2
+Nodelist: "pnt5020.ndl" 2
+IndexFile: "/var/spool/fido/nl.d/ftrack_index"
+MaxNodelistAge: 60
+
+\ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+\ Insecure...
+ScanDir: "##/var/spool/fido/inb"
+    KludgeMask: "AREA:*" * *
+    Action: Ignore
+    Mask: * * * * * *
+    Action: Move "/var/spool/fido/ftrack/in_insecure"
+ScanDir: "##/var/spool/fido/inb-listed"
+    KludgeMask: "AREA:*" * *
+    Action: Ignore
+    Mask: * * * * * *
+    Action: Move "/var/spool/fido/ftrack/in_insecure"
+
+\ Secure ...
+ScanDir: "##/var/spool/fido/inb-protected"
+    KludgeMask: "AREA:*" * *
+    Action: Ignore
+    Mask: * * * * * *
+    Action: Move "/var/spool/fido/ftrack/in_secure"
+ScanDir: "##/var/spool/fido/outpkt"
+    KludgeMask: "AREA:*" * *
+    Action: Ignore
+    Mask: * * * * * *
+    Action: Move "/var/spool/fido/ftrack/in_secure"
+ScanDir: "##/var/spool/fido/outpkt/mail"
+    Mask: * * * * * *
+    Action: Move "/var/spool/fido/ftrack/in_secure"
+
+\ \\\\\\\\\\ Inbound insecure netmail \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+ScanDir: "/var/spool/fido/ftrack/in_insecure"
+\ Все мыло для меня направляем на роутинг (предварительно вставив предупреждение)
+    Mask: * * * 2:5020/1838.1 * *
+    Mask: * * * 2:5020/1838.0 * *
+    Mask: * * * 2:5020/1354.500 * *
+    Action: AddNote "/usr/local/etc/ftrack/tmpl/insecure_to_me"
+    Action: Move "/var/spool/fido/ftrack/out"
+\ Все остальное шлем на 2:5020/1838.0
+    Mask: * * * * * *
+    Action: NewMsg "/usr/local/etc/ftrack/tmpl/copy_to_me" "/var/spool/fido/ftrack/out" "FTrack" @ "Serge N. Pokhodyaev" 2:5020/1838.0 "Insecure netmail" *
+    Action: Delete
+
+\ \\\\\\\\\\ Inbound secure netmail \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+ScanDir: "/var/spool/fido/ftrack/in_secure"
+
+\ Ни отправителя, ни получателя нет в нодлисте -- прибиваем
+\    Mask: * !# * !# * *
+\    Action: NewMsg "/usr/local/etc/ftrack/tmpl/copy_to_me" "/var/spool/fido/ftrack/out" "FTrack" @ "Serge N. Pokhodyaev" 2:5020/1838.0 "Bad from and to" *
+\    Action: Delete
+
+\ Отправителя нет в нодлисте -- отлуп
+\    Mask: * !# * * * *
+\    Action: NewMsg "/usr/local/etc/ftrack/tmpl/copy_to_me" "/var/spool/fido/ftrack/out" "FTrack" @ "Serge N. Pokhodyaev" 2:5020/1838.0 "Bad from" *
+\    Action: NewMsg "/usr/local/etc/ftrack/tmpl/badfrom" "/var/spool/fido/ftrack/out" "FTrack" @ % % "Bad source address" *
+\    Action: Delete
+
+\ Получателя нет в нодлисте -- отлуп
+\    Mask: * * * !# * *
+\    Action: NewMsg "/usr/local/etc/ftrack/tmpl/copy_to_me" "/var/spool/fido/ftrack/out" "FTrack" @ "Serge N. Pokhodyaev" 2:5020/1838.0 "Bad to" *
+\    Action: NewMsg "/usr/local/etc/ftrack/tmpl/badto" "/var/spool/fido/ftrack/out" "FTrack" @ $ $ "Bad destination address" *
+\    Action: Delete
+
+\ Луп обнаружили -- отлуп
+    Mask: * # * # * +7
+    Action: NewMsg "/usr/local/etc/ftrack/tmpl/copy_to_me" "/var/spool/fido/ftrack/out" "FTrack" @ "Serge N. Pokhodyaev" 2:5020/1838.0 "Routing loop detected" *
+    Action: NewMsg "/usr/local/etc/ftrack/tmpl/loop" "/var/spool/fido/ftrack/out" "FTrack" @ $ $ "Routing loop detected" *
+    Action: Delete
+
+\ Все мыло для меня направляем на роутинг
+    Mask: * * * 2:5020/1838.1 * *
+    Mask: * * * 2:5020/1838.0 * *
+    Mask: * * * 2:5020/1354.500 * *
+    Action: Move "/var/spool/fido/ftrack/out"
+
+\ На мыло для поинтов шлем отлупы, т.к. поинтов нет.
+    Mask: * * * 2:5020/1838.* * *
+    Action: NewMsg "/usr/local/etc/ftrack/tmpl/no_point" "/var/spool/fido/ftrack/out" "FTrack" @ $ $ "No such point" *
+    Action: Delete
+
+\ Все остальное направляем на роутинг
+    Mask: * * * * * *
+    Action: Move "/var/spool/fido/ftrack/out"
+
+ScanDir: @AfterRoute
+
+\ Ответим на ARQ
+    Mask: * * * * * +b
+    Action: NewMsg "/usr/local/etc/ftrack/tmpl/audit" "/var/spool/fido/ftrack/out" "FTrack" @ $ $ "Audit receipt" *
+
+\ \\\\\\\\\\ Тут мыло, готовое для роутинга \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+ScanDir: "/var/spool/fido/ftrack/out"
+\ Для меня
+    Mask: * * * 2:5020/1838.1 * *
+    Action: Rewrite * * * 2:5020/1838.0 * *
+    Mask: * * * 2:5020/1838.0 * *
+    Mask: * * * 2:5020/1354.500 * *
+    Action: route hold %
+\ Мои линки
+    Mask: * * * 2:5020/278.* * *
+    Mask: * * * 2:5020/1124.* * *
+    Mask: * * * 2:5020/1354.* * *
+    Mask: * * * 2:5020/3500.* * *
+    Mask: * * * 2:5020/7100.* * *
+    Action: route normal %.0
+\ Остальной фидонет (зоны с 1 по 6)
+    Mask: * * * 1:*/*.* * *
+    Mask: * * * 2:*/*.* * *
+    Mask: * * * 3:*/*.* * *
+    Mask: * * * 4:*/*.* * *
+    Mask: * * * 5:*/*.* * *
+    Mask: * * * 6:*/*.* * *
+    Action: route normal 2:5020/278.0
+\ Всякие левонеты
+    Mask: * * * * * *
+    Action: NewMsg "/usr/local/etc/ftrack/tmpl/no_zone" "/var/spool/fido/ftrack/out" "FTrack" @ % % "No such zone" *
+    Action: Delete
+===

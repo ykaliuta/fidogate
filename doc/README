@@ -1,0 +1,157 @@
+
+  $Id: README,v 5.2 2004/11/23 00:50:36 anray Exp $
+
+
+   Copyright (C) 2001-2002, Dmitry Fedotov
+								-*- text -*-
+
+Send your wishes, bug reports and patches to the addresses provided in the end
+of this file.
+
+===============================================================================
+
+Latest version of fidogate you can give from:
+
+	http://fidogate.spb.ru/download
+	ftp://dig.pp.ru/archive/tools/ftn
+
+    or from CVS:
+
+	cvs.fidogate.sourceforge.net
+
+===============================================================================
+1.  Compiling and installing
+
+    Before begining compile necessary unpack fidogate
+      
+	tar xIvf fidogate-X.X.X.tar.bz2
+      
+or if it packed by gzip:
+      
+	tar xzvf fidogate-X.X.X.tar.gz
+      
+    Enter to created directory and run configure script with necessary parameters.
+Check validate created configs `config.h' and `build/config.make'.
+
+1.1.	CONFIG.H
+
+1.2.	CONFIG.MAKE
+
+Run "make depend" (здесь и далее имеется в виду GNU make). Далее "make",
+"make install", "make install-config".
+
+
+2.  Файлы конфигурации и их описание.
+
+    У fidogate имеется ряд конфигурационных файлов:
+
+    2.1		acl
+    2.2		aliases
+    2.3		areas
+    2.4		fidogate.conf
+    2.5		ftnacl
+    2.6		hosts
+    2.7		packing
+    2.8		passwd
+    2.9		routing
+    2.10	spyes
+    2.11	uplinks
+    
+    2.12	areas.bbs
+    2.13	fareas.bbs
+    
+    Для связывания с Mail-Transport-Agent (MTA):
+
+    3.1		sendmail:
+		    ftn.m4
+		    mailertables
+
+    3.2		postfix:
+		    master.cf
+		    transport
+    3.3
+		exim:
+
+    3.4
+		qmail:
+
+    3.5
+		smail:
+
+    For linked with InterNetNews (INN):
+
+    4.1		newsfeeds
+
+    5.1		Description for any programs
+
+<to be contenued>
+
+===============================================================================
+
+===============================================================================
+
+Thanks, just the list of those who found bugs, sent requests and patches:
+
+1. Alexei Takaseev, 2:5071/22, taf@ilim.ru
+2. Leonid Kilasoniya, 2:5022/68
+3. Vladimir Lyapkin, 2:5022/47
+5. Oleg Artemjev, 2:5020/1354
+6. Alexander V. Popaduck, 2:5026/45.1
+7. Dmitry Astapov, 2:463/218
+8. Valentin Nechayev, netch@carrier.kiev.ua
+9. Dmitriy Yermakov, 2:5030/1115
+10. Pavel V. Knyazev, 2:5010/148.18, pasha@surnet.ru
+11. Oleg Derevenetz, 2:5025/3.4
+12. Eugene Panov, 2:5083/62, panov@mail.com
+13. Alexander Belkin, 2:5020/2120
+14. Sergey Samoyloff, 2:5074/9
+15. Alexey Wasilyev, 2:5053/40.1
+16. Dmitry Strokov, 2:50/617.1
+17. Valery Shishkov, 2:5040/9
+18. Dmitry Budanov, 2:5052/4
+19. Gena Makhomed, 2:4631/20
+20. Иван Березко, IBeriozko@nsi.ru
+21. Vitaliy T. Morarian, 2:4626/13
+22. Dmitry Fedotov, 2:5030/1229
+23. Vitaly Kuharev, 2:5058/49
+24. Maxi Rovnich, 2:5030/872
+25. Konstantin Petrenko, 2:5006/14
+26. Edward L. Vasilyev, 2:5066/68
+27. Tony Leontyev, 2:5020/517
+28. Andrew Taranik, 2:5090/4.0
+29. Sergei Oberemchuk, 2:463/768
+30. Alex Gromov, 2:5020/4400, alexgrom@ncplg.msk.ru
+31. Sean Rima, 2:263/950, Sean.Rima@tcob1.net
+32. Michael Kulinich, 2:5015/176
+33. Anton Myachin, 2:5010/203.1
+34. Yuri Khachaturian, 2:5020/975
+35. Alex Fokin, 2:5063/59.1
+36. Alex Kushnaryov, help@vopli.com
+37. Artur Komarov, 2:5020/1987
+38. Yura Yashchenko, 2:4643/10
+39. Maxim Timofeyev, 2:5030/763
+40. Alexey Lebedeff, 2:5030/2140.13
+41. Nikita S. Sychevsky 2:5030/468.17
+42. Alexey Promokhov, ayp@ayp.msk.ru
+43. Pavel V. Kaygorodov, pasha@inasan.rssi.ru
+44. Victor Gnevashev, 2:5024/50
+45. Alexander Mikhalchenko, 2:5055/255.55
+46. Sergey Kartashoff, 2:461/74.2
+
+    Also express one's gratitude to Serge N. Pokhodyaev and of course gratitude
+to Martin Junius to begin develop this software.
+
+If I forgot to mention someone -- remind me by mail :)
+
+===============================================================================
+
+Author of based patch: Serge N. Pokhodyaev (well refuse from it)
+
+E-mail:	sysop@f1838.n5020.z2.fidonet.org (preferrable); snp@ru.ru
+FTN:	2:5020/1838
+
+Продолжает эту нелегкую деятельность Dmitry Fedotov (жалобы и предложения
+следует слать ему т.е. мне :))
+
+FTN:	2:5030/1229
+E-mail:	dyff@fidogate.spb.ru

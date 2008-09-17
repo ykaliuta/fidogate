@@ -1,0 +1,36 @@
+#:ts=8
+#
+# $Id: areas.sample,v 5.2 2004/11/23 00:50:36 anray Exp $
+#
+# Echomail area <-> News newsgroup conversion
+#
+# Options:
+#     -a Z:N/F.P         Alternate address for this area
+#     -z ZONE            Alternate zone AKA for this area
+#     -d DISTRIBUTION    Distribution header for this newsgroups
+#     -o ORIGIN          * Origin line for this area
+#     -g                 No gated messages
+#     -l                 Only local crosspostings
+#     -x                 No crosspostings
+#     -8                 Messages with 8bit ISO-8859-1 charset
+#     -H                 Names match entire hierarchy, names are translated
+#     -!                 Don't gate area/newsgroup [hierarchy]
+#     -R LVL             ^ARFC header level
+#     -m MAXSIZE         MaxMsgSize for this area (0 = infinity)
+#     -X "Xtra: xyz"     Add extra RFC headers (multiple -X allowed)
+#
+# All fields may be quoted in "...", order is import, first area/newsgroup
+# found matches!
+#
+# Format:
+#
+# area                        newsgroup                     [-option]
+# ------------------------    --------------------------    ---------
+
+#
+# Local
+#
+CORE.LOCAL		fido.core.local		-8 -H -z 2 -a 2:5030/1229
+SMALL&IMP.LOCAL		fido.smaill.and.imp.local	-8 -H -z 2 -a 2:5030/1229
+RU.FIDO&FSB		fido.ru.fido.and.fsb	-8 -H -z 2 -a 2:5030/1229
+""			fido.			-8 -H -z 2 -a 2:5030/1229

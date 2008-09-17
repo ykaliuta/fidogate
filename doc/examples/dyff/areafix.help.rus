@@ -1,0 +1,48 @@
+Help файл для Areafix/Filefix, FIDOGATE
+
+Шаблон письма:
+
+  To:      AreaFix Z:N/F.P
+       или AreaMgr Z:N/F.P
+       или FileFix Z:N/F.P
+       или FileMgr Z:N/F.P
+  Subject: PASSWORD [-l] [-q]
+                          ^^-- аналогично команде QUERY
+                     ^^------- аналогично команде LIST
+
+Команды в теле письма, необходим префикс % в начале:
+
+	listall		список всех имеющихся конференций.
+	list		список выписанных у аплинка конференций
+    			и к которым возможна подписка запрашивающего адреса.
+	avail		список не выписанных у аплинка конференций и к которым
+			возможна подписка запрашивающего адреса.
+	query		список выписанных конференций.
+	unlinked	список не выписанных конференций.
+	from Z:N/F.P PASSWORD	указать адрес и соответствующий пароль
+	passwd Z:N/F.P PASSWORD
+	password Z:N/F.P PASSWORD
+	+AREA		подписаться к конференции
+	AREA
+	subscribe AREA
+	sub AREA
+	-AREA		отписаться от конференции
+	unsubscribe AREA
+	unsub AREA
+	passive		установить режим passive для всех выписанных конференций
+	pause		т.е. временно отписаться (до команды active) от них
+	passive AREA	установить для AREA режим passive
+	pause AREA
+	active		снять режим passive
+	resume
+	active AREA     снять режим passive для AREA
+	resume AREA
+	&AREA [-опции]	создать новую конференцию
+	new AREA [-опции]
+	create AREA [-опции]
+	~AREA		удалить конференцию
+	delete AREA
+	help		запросить help файл
+
+    имена AREA регистро-независимые и в некоторых случаях поддерживаются шаблоны
+    в них * ? [a-z] [abc], e.g. COMP.OS.*, [A-D]*.GER

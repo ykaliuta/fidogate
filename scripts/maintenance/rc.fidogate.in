@@ -1,0 +1,13 @@
+#!<SHELL>
+#
+# $Id: rc.fidogate.in,v 5.2 2004/11/23 00:50:39 anray Exp $
+#
+# FIDOGATE boot cleanup
+#
+
+# Remove lock files
+rm -f <LOCKDIR>/*
+
+# Remove .tmp files
+rm -f <SPOOLDIR>/outpkt/*.tmp <SPOOLDIR>/outpkt/*/*.tmp
+rm -f <SPOOLDIR>/toss/*/*.tmp

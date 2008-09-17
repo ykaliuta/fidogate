@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [ $# -ne 1 ]; then
+    echo "usage: mklinks /usr/lib/sendmail-cf"
+    exit 1
+fi
+
+CF="$1"
+DIRS="domain feature hack m4 mailer ostype sh siteconfig"
+
+cp $CF/README .
+
+for d in $DIRS; do
+    [ -d $d ] || mkdir $d
+    ln -sf $CF/$d/* $d
+done

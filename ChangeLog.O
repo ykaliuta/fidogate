@@ -1,0 +1,3570 @@
+1998-10-18  Martin Junius  <mj@fido.de>
+
+	======= Release 4.3a5 ================================================
+	------- CVS tag R43a5 ------------------------------------------------
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/ftn2rfc.c (unpack): fixed AI_2 alias lookup code for
+ 	  recipient addresses.
+
+	* test/tc.aliases/run: modified.
+
+	* test/cf/aliases: added aliases for new tc.aliases test case.
+
+	* src/gate/ftn2rfc.c (unpack): set msg.node_from/node_to.point = 0 
+	  for NetMail. 
+
+	* src/toss/ftntoss.c (unpack): set msg.node_to.point = 0 for
+ 	  NetMail.
+
+	* src/toss/runtoss.pl: dito.
+
+	* src/toss/rununpack.pl (run_arc): call to log() changed to
+	  &log(), avoiding problems with log() math function.
+
+	* ANNOUNCE (Internet): updated.
+
+	------- CVS ci -------------------------------------------------------
+
+	* examples/orodruin/gate.conf: added NewsPathTail.
+
+	* src/gate/ftn2rfc.c (main): new config NewsPathTail, description
+	  see comment there.
+	  (unpack): use news_path_tail instead of fixed "not-for-mail" for 
+	  constructing Path header.
+
+1998-09-23  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/config.c (struct st_addr): added gateaddr field for
+	  new-style GateAddress config.
+	  (cf_debug): debug gateaddr field.
+	  (cf_check_gate): modified to check #Uplink or #GateAddress.
+	  (cf_do_line): implemented new GateAddress config option.
+	  (cf_i_am_a_gateway_prog): if any GateAddress is set, shuffle
+	  addr, uplink, gateaddr, so that the new main address is gateaddr 
+	  and the new uplink is the addr.
+
+	* src/toss/ftntoss.c (do_echomail): if AddOtherAKA is set, add all 
+	  AKAs for the current zone to SEEN-BY. This implements an idea
+	  from Andy Igoshin.
+
+	* src/include/fidogate.h (FIRST, NEXT): added #define's.
+
+	* src/toss/ftntoss.c (main): new config option "AddOtherAKA".
+
+	* src/toss/rununpack.pl: dito.
+
+1998-09-22  Martin Junius  <mj@fido.de>
+
+	* src/toss/runtoss.pl: dito, use strict.
+
+1998-09-21  Martin Junius  <mj@fido.de>
+
+	* src/gate/ftninrecomb.pl: dito, but not using strict.
+
+	* src/gate/ftninpost.pl: dito.
+
+	* src/ffx/ffxrmail.pl: modified to follow Perl5 style, use strict.
+	  Implemented safe method to open pipe to sendmail.
+
+	* config.pl: declare all vars as "my".
+
+1998-09-19  Martin Junius  <mj@fido.de>
+
+	* src/common/message.c (msg_body_parse_echomail): added log()
+	  message for severe errors (no ^APATH or SEEN-BY).
+
+	* src/toss/ftntoss.c (unpack): set msg.node_from.point = 0, not
+	  using point address from packet to avoid problems when packet from 
+	  a point address contains a message from a node address (^AFMPT
+	  will always be set if from a point).
+
+Sun Jul 19 13:17:56 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* version.h (ALPHA): set to 5 (version 4.3a5).
+
+	* src/gate/rfc2ftn.c (main): dito.
+
+	* src/gate/ftnin.c (main): dito.
+
+	* src/gate/ftn2rfc.c (main): add call to cf_i_am_a_gateway_prog().
+
+	* src/common/config.c (cf_i_am_a_gateway_prog): new function to be
+	  called by gateway programs (ftn2rfc, rfc2ftn, ftnin, ftnmail) to
+	  set proper addresses.
+
+	* fidogate.lsm: updated.
+
+	* ANNOUNCE: updated.
+
+Sun Jul 12 13:07:58 1998  Martin Junius  <mj@fido.de>
+
+	======= Release 4.3a4 ================================================
+	------- CVS ci, tag R43a4 --------------------------------------------
+
+	* ANNOUNCE: updated.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/ftn2rfc.c (unpack): implemented processing of
+ 	  area->charset field containing charset mapping for the current
+ 	  area.
+
+	* src/areafix/ftnafutil.c (do_areasbbs): only unsubscribe, if
+	  state contains "S"; areas which should processed by ftnafutil
+	  must either be marked with state "S" or "U".
+
+	* src/charset/russian.map: new charset mapping from ai.
+
+Sat Jul 11 21:58:34 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/acl.c: added #ifdef AI_8 wrapper for complete module.
+
+	* src/gate/rfc2ftn.c: fixed some of the patches, removed -I,
+	  in_dir code.
+
+	* config.h (HAS_HARDLINKS): new #define, controls support of
+	  hardlinks by the file system and the operating
+	  system. Rearranged system-specific config.
+	  (AI_*): #define's controlling AI patches.
+
+	* contrib/fidogate-4.3a3-ai-pl9.1/: new dir with the complete
+	  patch and documentation from Andy Igoshin.
+
+	* all: applied patches contributed by Andy Igoshin <ai@vsu.ru>.
+
+Fri Jul 10 19:39:29 1998  Martin Junius  <mj@fido.de>
+
+	* scripts/nodelist/nl-autoupd.pl (latest): new function replaces
+	  running external program "latest".
+
+Mon Jul  6 22:20:00 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* version.h (ALPHA): set to 4 (version 4.3a4).
+
+	* test/tc.*: check all test case to yield "OK" with tr.verify.
+
+	* test/mk.verify: use tr.grepvar.
+
+	* test/tr.verify: use tr.grepvar.
+
+	* test/tr.grepvar: new perl script to unify test case verification.
+
+Sun May 24 22:11:29 1998  Martin Junius  <mj@fido.de>
+
+	* src/gate/ftn2rfc.c (unpack): if area charset or
+	  NetMailCharsetDefault is not defined, use default_charset_def as
+	  the value for cs_def.
+
+Sat May 23 21:02:18 1998  Martin Junius  <mj@fido.de>
+
+	======= Release 4.3a3 ================================================
+	------- CVS ci, tag R43a3 --------------------------------------------
+
+	* sendmail/mailer/ftn.m4: dito.
+
+	* sendmail/mailer/ffx.m4: default path updated to new config.
+
+	* src/common/areas.c (areas_parse_line): implemented -C DEF:IN:OUT
+	  charset option.
+	  (area_build): use struct assignment for copying, avoids problems
+	  when new fields area added to struct Area.
+
+	* src/include/structs.h (Area): added charset field.
+
+Sun May 17 16:38:18 1998  Martin Junius  <mj@fido.de>
+
+	* scripts/misc/areasbbssync.pl: new script, syncronizing
+	  newsgroups in active (INN) and areas.bbs (FIDOGATE).
+
+	* src/areafix/areafix.help: added CREATE command.
+
+	* src/areafix/areafix.c (areafix_do_cmd): allow CREATE as an
+	  alternate name for the NEW command.
+
+	* scripts/misc/Makefile (PROGS): added areasbbssync, make morannon
+	  target (uses TOPDIR/examples/morannon/config.make.morannon for
+	  compiling scripts).
+
+	* examples/morannon/config.make.morannon: new config.make with old
+	  directory structure for morannon.fido.de.
+
+Tue May 12 22:09:27 1998  Martin Junius  <mj@fido.de>
+
+	* src/toss/ftntoss.c (unpack_file): dito.
+
+	* src/areafix/pkttmpl.c (do_file): dito.
+
+	* src/areafix/ftnafpkt.c (do_file): change to log() message.
+
+	* src/ffx/ffxqt.c (do_ffx): removed "to %s" from log() message. 
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/ftn2rfc.c (unpack): change output charset to
+	  CHARSET_STD7BIT (us-ascii) for converting Fido headers.
+
+Tue May  5 19:35:03 1998  Martin Junius  <mj@fido.de>
+
+	* src/gate/ftnin.c (do_packets): processing FLO files with *.pkt
+	  started, idea contributed by
+	  <Jens_Elsner@p666.f206.n2437.z2.fidonet.org>.
+	  (exec_ftn2rfc): use BUF_COPY, BUF_APPEND.
+	  (do_flo_line): new function processing entry from FLO file.
+	  (do_packets): implemented FLO file processing.
+
+Sun May  3 10:27:29 1998  Martin Junius  <mj@fido.de>
+
+	* src/gate/ftn2rfc.c: various changes to comment formatting.
+
+	------- CVS ci -------------------------------------------------------
+
+	* test/tc.8bit/run: adapted to new config options.
+
+	* src/gate/ftn2rfc.c (unpack): set cs_out to CHARSET_STD7BIT, if
+	  output forced to 7bit (cvt8=0).
+	  (unpack): strsave(), strtok() destroys charset option.
+	  (main): split config option DefaultCharset, NetMailCharset using
+	  strtok().
+	  (unpack): cs_def/in/out code rewritten.
+
+	* test/tc.8bit/config*: added DefaultCharset/NetMailCharset.
+
+	* src/gate/ftn2rfc.c (unpack): use new CHARSET_STDFTN, CHARSET_STD7BIT.
+
+	* config.h (CHARSET_DEFAULT_IBMPC): removed.
+	  (CHARSET_STDFTN): new #define for input charset, if
+	  DefaultCharset is not set in gate.conf.
+	  (CHARSET_STD7BIT): new #define for 7bit output charsed, used if
+	  DefaultCharset is not set or output is forced to 7bit encoding.
+
+	* src/gate/ftn2rfc.c (main): added charset_init().
+	  (main): added DefaultCharset, NetMailCharset config options.
+	  (unpack): get and set input/output charset.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/ftn2rfc.c (unpack): some more fixes to get it compiled.
+
+	* src/gate/ftn2rfc.c (check_chrs): removed.
+	  (unpack): started using new charset code.
+
+	* src/common/rfcaddr.c (rfcaddr_from_ftn): use new charset_map_c().
+
+	* src/common/message.c (msg_xlate_line): use new charset_map_c().
+
+	* src/charset/charset.c: renamed new.c.
+
+	* src/charset/Makefile (CHARSETMAP): added compilation of charset.bin.
+
+	* src/common/Makefile (OBJS): removed charset.o, now in src/charset/.
+
+	* src/charset/new.c (charset_init): new function initializing
+	  charset mapping tables.
+	  (charset_chrs_name): new function retrieving charset name from
+	  FSC-0054 ^ACHRS/CHARSET.
+
+	* scripts/maintenance/logcheck.pl: include relay on if -r is set,
+	  avoids duplicate entries for report without relay.
+
+Fri May  1 14:17:28 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/packet.c (pkt_set_forcefmpt0): return type changed to
+	  void.
+	  (pkt_set_forceintl): dito.
+
+	------- CVS ci -------------------------------------------------------
+
+	* config.make (DEFAULT_V_CHARSETMAP): added new config option.
+
+	* examples/orodruin/common.conf: added CHARSETMAP example.
+
+	* examples/orodruin/gate.conf: added DefaultCharset,
+	  NetMailCharset configuration examples.
+
+	* examples/orodruin/common.conf: added LogLevel example.
+
+	* src/toss/runtoss.pl: added LogLevel config option for syslog
+	  level (default: notice). 
+
+	* src/toss/rununpack.pl (run_arc): less ugly substitution of %a in
+	  archiver command.
+	  Added LogLevel config option for syslog level (default: notice).
+
+	* src/toss/runtoss.pl (log): dito.
+	  (df_prog): less ugly substitution of %p in DiskFreeProg.
+
+	* src/toss/rununpack.pl (log): fixed bug, @text was not written to
+	  logfile without -v.
+
+Wed Apr 29 21:52:27 1998  Martin Junius  <mj@fido.de>
+
+	* src/charset/new.c: new module for future charset.c code, for now
+	  living here.
+	  (charset_table_new): moved from charsetc.c
+	  (charset_alias_new): moved from charsetc.c
+	  (charset_write_bin): moved from charsetc.c
+	  (charset_read_bin): new function reading binary charset map file.
+	  (charset_qpen): new function converting char to MIME
+	  quoted-printable encoding =XX.
+	  (charset_map_c): new function mapping single character using the
+	  currently installed mapping table.
+	  (charset_set_in_out): set the currently installed mapping table.
+	  (main): test main() for testcharset.
+
+Tue Apr 28 20:53:57 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* version.h (ALPHA): changed to 3, version 4.3a3.
+
+	* config.h (FTN_FORCE_INTL): #define removed.
+
+	* src/common/packet.c (pkt_set_forcefmpt0): new function to
+	  force_fmpt0 flag (default: FALSE).
+	  (pkt_set_forceintl): new function to set force_intl flag
+	  (default: TRUE).
+	  (pkt_put_msg_hdr): removed #ifdef FTN_FORCE_INTL, use
+	  force_intl, force_fmpt0 flags.
+
+Mon Apr 27 21:41:21 1998  Martin Junius  <mj@fido.de>
+
+	* src/areafix/ftnafutil.c (do_areasbbs): subscribe/unsubscribe,
+	  don't try request if no "uplink" entry in passwd (avoids log
+	  messages).
+	  (do_mail): additional argument pwd, passing passwd lookup from
+	  do_areasbbs(). 
+
+Sat Apr 25 21:09:54 1998  Martin Junius  <mj@fido.de>
+
+	* src/toss/runtoss.pl (log): dito.
+
+	* src/toss/rununpack.pl (log): syslog support commented, currently
+	  problems with perl not finding stdarg.ph.
+
+	* examples/orodruin/common.conf: added LogFacility example.
+
+	* src/toss/rununpack.pl: dito.
+
+	* src/toss/runtoss.pl: use <CONFIG_MAIN>.
+	  New config LogFacility, facility for syslog support.
+	  (log): implemented syslog support, using Sys::Syslog.
+
+	* src/toss/rununpack.pl: use <CONFIG_MAIN>.
+
+Sun Apr 19 10:52:30 1998  Martin Junius  <mj@fido.de>
+
+	* test/tc.point2/run: adapted to new configuration.
+
+	* src/areafix/Makefile (install): fixed missing $.
+
+	======= Release 4.3a2 ================================================
+
+	------- CVS ci, tag R43a2 --------------------------------------------
+
+	* examples/orodruin/passwd: added "uplink" password example.
+
+	* src/areafix/ftnafutil.c (do_mail): use pwd->args as recipient
+	  name if non-empty.
+
+Sat Apr 18 18:22:34 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* test/cf/passwd: added uplink passwords.
+
+	* src/areafix/ftnafutil.c (do_mail): new function sending mail to
+	  Areafix at uplink.
+	  (usage): added -O --out-dir option.
+	  (main): implemented -O --out-dir.
+
+	* test/tc.af3/run: new test case for ftnafutil.
+
+	* src/common/areasbbs.c (areasbbs_remove): new function removing
+	  area from areas.bbs list.
+
+	* src/areafix/ftnafutil.c (do_areasbbs): new function doing the
+	  actual areas.bbs processing.
+
+	* src/areafix/areafix.c (areafix_set_changed): new function
+	  setting areas_bbs_changed flag to TRUE.
+
+Wed Apr 15 21:23:12 1998  Martin Junius  <mj@fido.de>
+
+	* src/areafix/Makefile: added ftnafutil.
+
+	* src/areafix/ftnafutil.c: new utility program for Areafix.
+
+	* src/areafix/ftnaf.c (main): if areafix_do_cmd() fails, exit with
+	  return code EX_DATAERR.
+
+Tue Apr 14 22:03:08 1998  Martin Junius  <mj@fido.de>
+
+	* src/toss/rununpack.pl (run_arc): don't remove extracted files,
+	  when extract command fails. There may be some usable packets
+	  after all.
+
+Sat Apr 11 16:19:20 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* test/tc.*: updated run, run.verify.
+	
+	* ANNOUNCE: updated.
+
+	* src/areafix/areafix.c (areafix_do_cmd): implemented "comment"
+	  command, noop.
+	  (cmd_sub): if p->state is 'U', add note saying that area is not
+	  subscribed at our uplink.
+	  (cmd_sub): if area has no uplink, don't allow subscription.
+
+	* test/tc.af2/areas.bbs: added area BLAH.GER with state -s U
+
+	* test/tc.tosskill/run: dito.
+
+	* test/tc.toss6/run: dito.
+
+	* test/tc.toss5/run: dito.
+
+	* test/tc.toss4/run: dito.
+
+	* test/tc.toss3/run: dito.
+
+	* test/tc.toss2/run: dito.
+
+	* test/tc.toss1/run: adapted to new configuration.
+
+	* src/common/misc.c (run_system): run BUF_EXPAND() on command.
+
+Fri Apr 10 19:23:46 1998  Martin Junius  <mj@fido.de>
+
+	* src/common/areasbbs.c (areasbbs_print): added output of state field.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/areafix/areafix.c (cmd_new): use new areasbbs_new().
+
+	* src/common/areasbbs.c (areasbbs_new): renamed to
+	  areasbbs_parse_line(). 
+	  (areasbbs_new): new function allocating and initializing
+	  AreasBBS struct.
+	  (areasbbs_parse_line): use new areasbbs_new(), implemented
+	  -s STATE option.
+
+	* src/include/structs.h (AreasBBS): added new state field to
+	  struct to be used by Areafix.
+
+	* src/common/log.c (FACILITY): #define moved to config.h
+
+Tue Apr  7 12:39:49 1998  Martin Junius  <mj@fido.de>
+
+	* test/tc.lock/run2: new test for ftnbsy.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/binkley.c (bink_bsy_create): use lock_lockfile_nfs()
+	  or lock_lockfile_id().
+
+	* src/common/lock.c (lock_lockfile_nfs): arg dir removed, arg name
+	  is complete path.
+	  (unlock_lockfile_nfs): dito.
+	  (lock_program_id): modified to use new lock_lockfile_nfs().
+	  (lock_program): dito.
+	  (unlock_program): dito.
+
+	* src/charset/charsetc.c (is_x/odigit): moved to misc.c
+
+	* src/common/binkley.c (bink_bsy_create_all): removed.
+	  (bink_bsy_delete_all): removed.
+
+	* src/gate/ftnin.c (do_packets): moved bsy file handling to this
+	  function, locking only the node which is currently processed.
+	  (main): removed calls to bink_bsy_create/delete_all().
+
+	* src/charset/charset.map: added mapping tables as previously
+	  defined in charset.c:xtab[][][].
+
+	* src/common/charset.c (main): added #ifdef TEST main() for
+	  dumping xtab table in format suitable for charsetc.
+
+	* src/charset/charsetc.c (charset_parse_c): new function parsing
+	  string with character definition, C, \NNN (octal), \xNN (hex).
+	  (is_xdigit): new function, signed-safe variant of isxdigit().
+	  (is_odigit): new function checking for octal digit.
+	  (charset_do_line): implement standard map command.
+
+Sun Apr  5 14:18:18 1998  Martin Junius  <mj@fido.de>
+
+	* src/toss/runin,mail,news,out.sh: runtoss/rununpack live in BINDIR.
+
+	* src/gate/rfc2ftn.c (main): if old position file batch.pos is
+	  found, read offset from this file and reposition in batch file.
+
+	* scripts/inn/send-fidogate.sh: directly use new rfc2ftn with -f,
+	  -m options.
+
+	* src/gate/rfc2ftn.c (usage): new option -f --batch-file.
+	  (main): implemented -f option. If f_flag is set, open file with
+ 	  list of news articles. Each line contains the filename of the news
+ 	  article (INN newsfeeds flags Tf,Wn) as the first word, which is
+	  opened, read and processed by snd_mail().
+	  (usage): new option -m -maxmsg.
+	  (snd_message): count number of written messages, if maxmsg is
+	  set, close and reopen packet after maxmsg messages.
+	  (main): every POS_INTERVAL article line, get the current offset
+	  in the batch file and write to batch.pos file.
+
+Fri Apr  3 19:59:19 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/include/structs.h (CharsetAlias,Table): moved to here.
+
+	* src/charset/charsetc.c (CharsetAlias): new struct for holding
+	  charset alias data.
+	  (CharsetTable): new struct for holding charset mapping data.
+	  (charset_table_new_link): new function allocating new
+	  CharsetTable and putting it into the linked list.
+	  (charset_alias_new_link): new function allocating new
+	  CharsetAlias and putting it into the linked list.
+	  (charset_do_line): new function processing line in charset.map
+	  file.
+	  (charset_do_file): new function reading charset.map file.
+	  (charset_write_bin): new function writing binary charset.bin file.
+	  (compile_map): new function, read, compile, write map.
+
+	* src/common/log.c (log_file): set logname to "-" for
+	  stdout/stderr, "syslog" for syslog. Otherwise 1st call to log()
+	  will reset the explizit settings by calling log_file() with
+	  config settings.
+
+	* src/common/config.c (scf_line): static var removed.
+	  (cf_lineno_get): new function returning current line number in
+	  config file.
+	  (cf_lineno_set): new function setting current line number in
+	  config file, returning old setting.
+
+	* src/util/Makefile (install): added ftnoutpkt.
+
+Wed Apr  1 20:54:24 1998  Martin Junius  <mj@fido.de>
+
+	* src/gate/rfc2ftn.c (main): use CheckAreasBBS only in newsmode.
+
+	* examples/orodruin/gate.conf: added CheckAreasBBS example.
+
+	* test/tc.gate4/run: added test run with check.conf setting
+	  CheckAreasBBS. 
+
+	* examples/orodruin/toss.conf: dito.
+
+	* test/cf/toss.conf: AreasBBS, FAreasBBS moved to common.conf.
+
+	* src/gate/rfc2ftn.c (main): new config statement
+	  CheckAreasBBS. If set, read areas.bbs.
+	  (check_downlinks): new function, lookup area in areas.bbs and
+	  return number of downlinks.
+	  (snd_mail): if check_areas_bbs is set, skip messages for areas
+	  without downlinks in areas.bbs.
+
+Sun Mar 29 14:20:05 1998  Martin Junius  <mj@fido.de>
+
+	* scripts/outbound/out-rmbsy.sh (OUT): use BTBASEDIR from config,
+	  removed bsy files in all outbound subdirs.
+
+Sun Mar 22 14:04:13 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* scripts/maintenance/logsendmail.pl: major changes, now only needs
+	  one pass thru the log, added support for mail and news.
+
+	* scripts/maintenance/logdaily.sh: added running logcheck,
+	  logsendmail. 
+
+	* scripts/maintenance/logsendmail.pl: new, renamed version of old
+	  sendmailstat.pl.
+
+	* scripts/maintenance/logcheck.pl: adapted to new log entry
+	  created by sendmail 8.8.7.
+
+Tue Mar 17 19:45:55 1998  Martin Junius  <mj@fido.de>
+
+	* src/areafix/areafix.c (areafix_auth_check): don't destroy pwd->args.
+	  (cmd_passwd): use new areafix_auth_check().
+	  (cmd_new): allow -z ZONE option.
+
+	* test/tc.af/run: added test for NEW/DELETE from mail interface.
+
+	* src/areafix/areafix.c (authorized_create): renamed to
+	  authorized_new. 
+	  (authorized_delete): new flag.
+	  (cmd_delete): check new flag.
+	  (areafix_auth_init): new function initializing authorized* flags.
+	  (areafix_auth_check): new function unifying authorization check
+	  for node and password.
+	  (areafix_do): use new areafix_auth_check().
+	  (areafix_auth_check): key containing & allows NEW area command,
+	  key containing ~ allows DELETE area command.
+
+Sun Mar 15 09:03:54 1998  Martin Junius  <mj@fido.de>
+
+	* src/toss/runtoss.pl: continue loop after sleep if ftntoss
+	  returns 2.
+
+Sat Mar 14 10:56:51 1998  Martin Junius  <mj@fido.de>
+
+	* src/charset/charsetc.c: started charset compiler code.
+
+	* src/charset/charset.map: first version of charset mapping table
+	  in text format.
+
+	* src/Makefile (SUBDIRS): added charset/.
+
+	* src/charset/Makefile: new Makefile.
+
+	* src/charset/: new directory containing utilities and mapping
+	  tables for character sets.
+
+	* doc/index.html: removed reference to Fido-Point-*.
+
+	* doc/Fido-Point-*: removed, too obsolete to be useful anymore.
+
+Sun Mar  8 17:05:55 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* test/tc.af/run: adapted to changes in Areafix commands.
+
+	* examples/orodruin/toss.conf: added example for AreaFixHelp.
+
+	* src/areafix/areafix.c (cmd_help): rewritten to use new
+	  areafix.help text file, new config AreaFixHelp for location.
+	  (CMD_ADD): renamed to CMD_SUB.
+	  (CMD_REMOVE): renamed to CMD_UNSUB.
+	  (CMD_CREATE): renamed to CMD_NEW.
+	  (CMD_DELETE): new, remove area (delete AREA, ~AREA).
+	  (areafix_do_cmd): changes to command names, new command delete,
+	  see also areafix.help.
+	  (cmd_add): renamed to cmd_sub().
+	  (cmd_remove): renamed to cmd_unsub().
+	  (cmd_create): renamed to cmd_new().
+
+	* src/areafix/Makefile (install): added areafix.help -> LIBDIR.
+
+	* src/areafix/areafix.help: new help file for areafix.
+
+	* src/toss/runtoss.pl: $PROGRAM is runtoss.
+
+Sat Mar  7 16:15:17 1998  Martin Junius  <mj@fido.de>
+
+	* src/toss/rununpack.pl (log): fixed output to log file if option
+	  -v is not set.
+
+	------- CVS ci -------------------------------------------------------
+
+	* config.make (DF): removed, obsoleted by new runtoss.
+
+	* config.pl (CONFIG_get1): check environment FIDOGATE_XXX first.
+
+	* test/tc.rununpack/run: added runtoss test.
+
+	* src/toss/Makefile (PROGS): rundf no longer needed.
+	  (install): dito.
+
+	* examples/orodruin/toss.conf: added example for new runtoss
+	  configuration. 
+
+	* src/toss/runtoss.pl: complete rewrite of runtoss.sh using perl,
+	  supports new DiskFreeMin, DiskFreeMethod, DiskFreeProgram
+	  configuration in toss.conf.
+
+Fri Mar  6 22:57:43 1998  Martin Junius  <mj@fido.de>
+
+	* test/tc.rununpack/run: new test case for new rununpack.
+
+	* src/toss/rununpack.pl: complete rewrite of rununpack.sh using
+	  perl with internal archive type recognition and improved error
+	  handling. 
+
+	* src/toss/Makefile (install): magic no longer needed.
+
+Wed Feb 25 09:45:16 1998  Martin Junius  <mj@fido.de>
+
+	* test/tc.gate1/run: removed -L option from ftninpost.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/ftninrecomb.pl: dito.
+
+	* src/gate/ftninpost.pl: use <INCLUDE config.pl>, removed -L, -S
+	  options. 
+
+	* subst.pl (do_file): output #!PERL only for first file.
+
+	* src/ffx/Makefile: scripts depend on subst.pl and config.pl.
+
+	* src/ffx/ffxrmail.pl: use <INCLUDE config.pl>, removed -L option.
+
+	* rules.make: use new subst.pl option -tTOPDIR.
+
+	* subst.pl (do_file): <INCLUDE file> reads file from TOPDIR.
+
+	* src/Makefile (all): removed config.pl target and installation.
+
+	* config.pl: will be include by <INCLUDE config.pl>.
+
+	* src/config.plt: moved to main dir.
+
+	* subst.pl (do_file): new function, read file, substitute, write
+	  to STDOUT. Replaces substitution code in old main
+	  loop. Implemented new <INCLUDE file>.
+
+Tue Feb 24 18:24:11 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* examples/abis.abra.de,namib.north.de: new config examples for
+	  4.3a1 from Andreas Braukmann <andy@abra.de>.
+	
+	* cvsupd: new utility, run CVS update.
+
+	------- CVS ci -------------------------------------------------------
+
+	* version.h (ALPHA): set to 2 (4.3a2).
+
+	* examples/abis.abra.de,namib.north.de: deleted.
+	
+	* cvsdeldir: new utility, delete directory tree from CVS repository.
+
+Mon Feb 23 18:10:44 1998  Martin Junius  <mj@fido.de>
+
+	* src/toss/Makefile (install): added runout.
+
+Sun Feb 22 15:59:19 1998  Martin Junius  <mj@fido.de>
+
+	======= Release 4.3a1 ================================================
+
+	------- CVS ci, tag R43a1a -------------------------------------------
+
+	* src/common/tmps.c: added to CVS repository, was missing.
+	
+	------- CVS ci, tag R43a1 --------------------------------------------
+
+	* ANNOUNCE: updated.
+
+	* README: updated.
+
+	------- CVS ci -------------------------------------------------------
+
+	* sendmail/mailer/ftn.m4: changed to use ftnmail instead of rfc2ftn.
+
+	* src/gate/Makefile (PROGS): added ftnmail.
+	  (install): install ftnmail setuid, rfc2ftn non-setuid.
+
+	* src/gate/ftnmail.c: new program, setuid frontend for rfc2ftn,
+	  limiting options to -a, -i, -O (with check) for security reasons.
+
+	* src/gate/rfc2ftn.c (main): --write-crash is -W.
+
+	* examples/README: added warning.
+
+	------- CVS ci -------------------------------------------------------
+
+	* examples/orodruin/README: update of configuration examples using
+	  new config files, added README.
+
+Fri Feb 20 18:43:18 1998  Martin Junius  <mj@fido.de>
+
+	* scripts/run/runpoll.sh: added runtoss outpkt.
+
+Thu Feb 19 15:04:57 1998  Martin Junius  <mj@fido.de>
+
+	* contrib/areafix/: update from Matthias Schniedermeyer
+	  <ms@citd.owl.de>.
+
+	* src/tick/ftnhatch.c (CREATOR): Created string without revision no.
+
+	------- CVS ci -------------------------------------------------------
+
+	* test/tc.tick/run: new config.
+
+	* test/tc.passthru/run: new config.
+
+	* src/areafix/areafix.c (rewrite_areas_bbs): log() changes to
+	  areas.bbs. 
+	  (cmd_vacation): added log().
+	  (cmd_listall): dito.
+	  (cmd_list): dito.
+	  (cmd_query): dito.
+	  (cmd_unlinked): dito.
+	  (cmd_help): dito.
+	  (cmd_passwd): dito.
+
+	* src/toss/ftnpack.c (new_arc): second argument name removed, now
+	  does the xstrtok() itself.
+	  (packing_parse_line): some parsing code rewritten to make
+	  integration of new commands more easy.
+	  (packing_parse_line): r-arc may be NULL.
+
+	* test/tc.packprog/run: new config, testing more function of ftnpack.
+
+	* test/tc.nomsgid/run: new config.
+
+	* test/tc.ml/run: new config.
+
+	* src/toss/ftnpack.c (parse_pack): implemented progn.
+	  (packing_parse_line): implemented dirmove, progn.
+	  (do_pack): pack->arc may be NULL.
+	  (pkttime_name): new dir argument, if NULL out_dir[] is used as
+	  the directory for the packet file name, else this argument.
+	  (packing_pkt_name): renamed old function pkttime_name().
+	  (do_dirpack): implemented dirmove (PACK_MOVE).
+	  (do_prog): last argument changed to Packing *, implemented progn
+	  (PACK_PROGN).
+
+	* src/include/structs.h (PACK_PROGN): #define for new progn command.
+
+	* src/toss/ftnpack.c (parse_pack): implemented dirmove.
+
+	* src/include/structs.h (PACK_MOVE): #define for new dirmove command.
+
+Wed Feb 18 18:49:11 1998  Martin Junius  <mj@fido.de>
+
+	* src/areafix/ftnaf.c (s_ftnaddr_print_pfnz): new function, output
+	  FTNAddr as User_Name@p.f.n.z.domain.
+
+	* src/areafix/areafix.c (areafix_do): clear/set authorized node.
+
+	* src/areafix/ftnaf.c (do_mail): use FTNAddr function, send reply
+	  to FTN address if X-FTN-From header is present.
+	  (mailer_open): get mailer program from toss.conf:AreafixMailer,
+	  toss.conf:CCMail changed to AreafixCC.
+
+	* src/areafix/areafix.c (authorized_node): new global var for
+	  storing node address from authorization.
+	  (areafix_auth_node): new function returning authorized node.
+
+Sat Feb 14 17:28:53 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/toss/runnews.sh (FIDOGATE_LOGFILE): log file must be %G/...
+
+	* src/toss/runmail.sh (FIDOGATE_LOGFILE): log file must be %G/...
+
+	* src/toss/runout.sh: new script, tossing output from ftnafpkt,
+	  ftnoutpkt. 
+
+	* test/tc.af2/run: test case for ftnafpkt.
+
+	* src/areafix/areafix.c (cmd_add): output format changed.
+	  (cmd_remove): dito.
+
+	* src/areafix/ftnafpkt.c (do_netmail): if r_flag is not set, send
+	  reply via outpkt_netmail().
+
+	* src/areafix/areafix.c: major changes to all functions, now using
+	  areafix_printf() for output either to stdout or the textlist.
+	  (areafix_stdprintf): new function, stdout output.
+
+Fri Feb 13 18:11:44 1998  Martin Junius  <mj@fido.de>
+
+	* src/areafix/ftnaf.c (do_mail): rewritten to send output in
+	  Textlist out to mailer.
+
+	* src/areafix/areafix.c (areafix_tlprintf): new function, printf
+	  output to Textlist areafix_otl.
+
+	* src/areafix/ftnafpkt.c: new program, Areafix processing FTN
+	  packets.
+
+	* src/areafix/areafix.c (areafix_do): changed function to use
+	  Textlist with command lines (no longer read from stdin).
+
+Thu Feb 12 21:23:17 1998  Martin Junius  <mj@fido.de>
+
+	* test/tc.af2/run: new Areafix test case (testpkttmpl for now).
+
+	* src/areafix/Makefile (testpkttmpl): added target for test program
+
+	* src/areafix/pkttmpl.c: new module, template (skeleton) for
+	  processing packet files from command line or input directory.
+
+Sat Feb  7 18:42:34 1998  Martin Junius  <mj@fido.de>
+
+	* src/Makefile (SUBDIRS): added areafix dir.
+
+	------- CVS ci -------------------------------------------------------
+
+	* test/tc.af/run: ftnaf now lives in ../../src/areafix.
+
+	* src/areafix/ftnaf.c (main): more adaptions.
+
+	* src/areafix/areafix.c (areafix_areasbbs): name of areas.bbs file.
+	  (areafix_set_areasbbs): set name of areas.bbs file.
+	  (areafix_auth_cmd): set authentication for command line.
+	  (areafix_name): return name (Areafix/Filefix).
+	  (areafix_output): set output file.
+	  (areafix_do): main processing of areafix command from stdin.
+
+	* src/areafix/ftnaf.c (main): handle n_flag locally.
+	  (do_mail): main part of function moved to areafix_do().
+
+	* src/areafix/areafix.c (areafix_init): new function initializing
+	  common Areafix configuration.
+
+	* src/areafix/areafix.c,ftnaf.c: many function moved from ftnaf.c
+	  to areafix.c.
+	
+Wed Feb  4 20:00:05 1998  Martin Junius  <mj@fido.de>
+
+	* src/areafix/areafix.c: new module, will contain common Areafix
+	  function now in ftnaf.c.
+
+	* src/areafix/: new subdir for Areafix programs.
+
+	* src/toss/Makefile: ftnaf targets removed.
+
+	* src/toss/ftnaf.c,ftnafmail.c: moved to src/af/.
+
+	* src/common/textlist.c (tl_print): return type changed to int,
+	  returns ferror(fp).
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/ftnaddr.c (ftnaddr_parse): if no address after @, set
+	  node address to 0:0/0.0.
+
+	* src/common/outpkt.c (outpkt_netmail): new function, creates new
+	  packet in OUTPKT with message header msg and text body tl,
+	  additional argument program for program name in ^AVia line.
+
+	* src/common/textlist.c (tl_print_x): new function, outputs
+	  complete textlist with extra EOL string.
+
+	* test/tc.outpkt/run: new test case for ftnoutpkt.
+
+Mon Feb  2 21:23:24 1998  Martin Junius  <mj@fido.de>
+
+	* src/util/ftnoutpkt.c: new utility creating OUTPKT packet with
+	  message from stdin.
+
+	* src/common/ftnaddr.c (ftnaddr_parse): if no address after @, use
+	  default local address.
+
+Sun Feb  1 17:57:27 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/ftnaddr.c (ftnaddr_init): new function, init FTNAddr.
+	  (ftnaddr_invalid): new function, invalidate FTNAddr.
+
+	* src/common/tmps.c (s_stripsize): resize temp string to actual
+	  length.
+	  (s_stripsize): dito, s_ variant.
+
+	* src/common/address.c (ftn_to_inet_pfnz): renamed to
+	  s_ftn_to_inet_pfnz(), uses temp string.
+	  (s_ftn_to_inet_pfnz): call tmps_stripsize().
+
+	* src/common/ftnaddr.c (ftnaddr_parse): new function, parsing
+	  string into FTNAddr.
+	  (s_ftnaddr_print): new function, output FTNAddr using temp string.
+
+	* src/common/misc.c (str_copy_range): new function, copying string
+	  until limit pointer.
+
+	* src/common/ftnaddr.c: new module, functions for handling FTNAddr
+	  structs.
+
+	* test/tc.history/run1,2: new configuration.
+
+	* test/tc.gateway/run: new configuration.
+
+	* test/tc.gatenode/run: new configuration.
+
+	* test/tc.flo/run: new configuration.
+
+	* test/tc.ffx/run: new configuration.
+
+	* test/tc.bounce2/run: new configuration.
+
+	* test/tc.bounce/run: new configuration.
+
+	* test/tc.boss/run: new configuration.
+
+Sat Jan 31 18:00:56 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* test/tc.aliases/run: new configuration.
+
+	* test/tc.8bit/config*,run: new configuration.
+
+	* src/common/Makefile (OBJS): removed bufstring.o.
+
+	* src/common/bufstring.c: removed, obsoleted by new temp string
+	  functions. 
+
+	* src/gate/ftn2rfc.c (unpack): buf_sprintf() replaced with s_printf().
+	  (unpack): added calls to s_freeall(), hopefully (;-) we don't
+	  have a memory leak.
+
+	* src/common/tmps.c (s_printf): implemented using vsnprintf() if
+	  available, vsprintf() if not.
+	  (tmps_printf): dito.
+
+	* config.h (HAS_SNPRINTF): new #define for snprintf(), vsnprintf().
+
+	* src/common/tmps.c (tmps_realloc): implemented.
+	  (tmps_find): new function finding char * in list of temp strings.
+	  (s_realloc): implemented.
+	  (tmps_printf): new function, sprintf() with result in temp string.
+	  (tmps_copy): new function, copy of char * in temp string.
+	  (s_printf): new function, s_ variant of tmps_printf().
+	  (s_copy): new function, s_ variant of temps_copy().
+
+	* src/common/version.c (version_global): version number changed to
+	  4.3aX or 4.3bX for alpha and beta versions, same length as
+	  normal 4.3.X.
+
+Wed Jan 28 22:02:38 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/address.c (ftn_to_inet_pfnz): new function,
+	  converting node to p.f.n.z.do.main-style Internet address (no host
+	  names!) using temp string.
+
+	* src/include/structs.h (TmpS): moved to structs.h.
+	  (FTNAddr): new struct for FTN addresses User Name @ Z:N/F.P
+
+	* src/common/tmps.c (fatal): new function for fatal error message
+	  and exit.
+
+	* src/common/Makefile (testtmps): added testtmps target.
+	  (OBJS): added tmps.o
+
+	* src/common/tmps.c: new modules, functions for handling temporary
+	  strings, shall replace shuffle.h.
+	  (TmpS): new struct for holding temporary strings.
+	  (tmps_alloc): allocate new temporary string, init to 0.
+	  (tmps_free): free temporary string.
+	  (tmps_freeall): free all temporary strings.
+	  (s_alloc): same as tmps_alloc(), returns char *.
+	  (s_free): same as tmps_free(), uses char *.
+	  (s_freeall): same as tmps_freeall().
+
+Sun Jan 25 10:24:22 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* test/tc.gate11/run: dito.
+
+	* test/tc.gate10/run: dito.
+
+	* test/tc.gate9/run: dito.
+
+	* test/tc.gate8/run: dito.
+
+	* test/tc.gate7/run: dito.
+
+	* test/tc.gate6/run: dito.
+
+	* test/tc.gate5/run: dito.
+
+	* test/tc.gate4/run: dito.
+
+	* test/tc.gate3/run: dito.
+
+	* test/tc.gate2/run: adapted to new configuration, added run.verify.
+
+	* src/common/wildmat.c (main): use fgets().
+
+	* src/common/Makefile (check): added testdir target.
+
+	* src/common/dir.c (dir_open): expand %X in dirname.
+	  (dir_search): dito.
+
+Sat Jan 24 12:33:39 1998  Martin Junius  <mj@fido.de>
+
+	* sendmail/cf/Makefile (M4OPTIONS): don't set confFIDOGATE_OUTDIR,
+	  now automatically done by rfc2ftn.
+
+	* src/ffx/ffxrmail.pl: use new config.pl configuration.
+
+	* src/util/ftnconfig.c (do_para): apply BUF_EXPAND() to parameter,
+	  only print 1st parameter value found.
+
+	* subst.pl: fixed macro expansion for DEFAULT_X_XXX.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/util/ftnlog.c (main): removed -L, -S options.
+
+	* src/util/ftnflo.c (main): removed -L, -S options.
+
+	* src/util/ftnfattach.c (main): removed -L, -S options.
+
+	* src/util/ftnconfig.c (main): removed -L, -S options.
+
+	* src/util/ftnbsy.c (main): removed -L, -S options.
+
+	* src/tick/ftnhatch.c (main): removed -L, -S options.
+
+	* src/ffx/ffxbatch.c: removed.
+
+	* src/ffx/ffxrun.sh: removed.
+
+	* scripts/run/runpoll.sh: some changes.
+
+	* src/toss/rununpack.sh added FTPINBOUND.
+
+	* src/toss/runtoss.sh: added FTNINBOUND, outpkt/news.
+
+	* src/toss/runmail.sh: modified.
+
+	* src/toss/runout.sh: renamed to runmail.sh
+
+	* src/toss/runin.sh: check directories, added FTPINBOUND.
+
+	* src/toss/rundf.sh: <DF> from config.make.
+
+	* subst.pl: substitute all macros defined in config.make.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/ftninpost.pl: pass -c option to ftninrecomb.
+
+	* src/gate/ftninrecomb.pl: adapted to new configuration, using
+	  config.pl. 
+
+	* src/gate/ftninpost.pl: pass -L, -S options to ftninrecomb, use
+	  config parameter FTNInRecombine for program name.
+
+	* test/tc.route/run: adapted to new configuration.
+
+	* test/tc.af/run: adapted to new configuration.
+
+	* src/toss/ftnaf.c (main): removed -L, -S options.
+
+	* test/tr.verify: renamed tr.check -> tr.verify.
+
+	* test/tc.gate1/run.verify: verify file created for test case.
+
+	* src/*/*.c: all references to old #define's from config.h
+	  replaced with DEFAULT_XXX.
+
+	* src/gate/ftninpost.pl: $OUTRFC_MAIL/NEWS can now be retrieved
+	  from config.
+
+	* config.h (SEQ*,LOCK*,OUT*,TOSS*,TICK*): all #defines moved as
+	  DEFAULT_F_XXX to config.make.
+
+	* subst.pl: modified to use new DEFAULT_* semantics, -C,-H,-E
+	  generate C code only for variable parameters.
+
+	* config.make (DEFAULT_*): new semantics for DEFAULT_* macros:
+	  DEFAULT_V_XXX defines a variable parameter (C code generated)
+	  DEFAULT_F_XXX defines a fixed parameter
+	  DEFAULT_A_XXX defines an abbreviation %X for XXX
+
+	* Makefile: config.pl rules moved to src/Makefile.
+
+	* config.pl/plt: moved to src/.
+
+Fri Jan 23 20:19:05 1998  Martin Junius  <mj@fido.de>
+
+	* test/tc.gate1/run: added ftninpost test.
+
+	* config.plt: new perl routines for reading FIDOGATE config files,
+	  will be compiled to config.pl, which is require'd in perl scripts.
+
+	* src/gate/ftninpost.pl: rewrite using new config.pl routines for
+	  reading FIDOGATE config file.
+
+	* test/tc.gate1/rdummy: dummy script.
+
+	* test/tr.clean: adapted to new configuration.
+
+	* test/tc.gate1/config: adapted to new configuration.
+
+	* test/tc.gate1/run: adapted to new configuration.
+
+	* test/tr.init: adapted to new configuration.
+
+	* src/gate/ftn2rfc.c (main): default input directory in PINBOUND.
+
+Tue Jan 20 21:02:19 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* scripts/misc/senduu.sh: changed command line parameter,
+	  user@domain first, then node addresses (multiple now allowed).
+
+	* test/tc.lock/run: new test case for ftnlock utility, run1 must
+	  be started manually.
+
+	* src/util/ftnlock.c (main): removed -L, -S options.
+
+	* src/common/lock.c (unlock/lock_lockfile_nfs): #ifdef
+	  NFS_SAFE_LOCK_FILES around functions.
+	  (lock_program_id): #ifdef NFS_SAFE_LOCK_FILES use
+	  lock_lockfiles_nfs(). 
+	  (lock_program): dito.
+	  (unlock_program): dito, use unlock_lockfiles_nfs().
+	  (lock_lockfile_nfs): always remove unique file before returning.
+	  (unlock_lockfile_nfs): unlink unique file removed.
+
+Sun Jan 18 09:31:56 1998  Martin Junius  <mj@fido.de>
+
+	* src/common/lock.c (lock_lockfile): removed.
+	  (lock_lockfile_nfs): new function, NFS-safe variant of creating
+	  a lock file, see man 2 open.
+	  (unlock_lockfile_nfs): new function, remove for NFS-safe variant.
+
+	* config.h (NFS_SAFE_LOCK_FILES): new #define enabling NFS-safe
+	  lock file code.
+
+	* src/common/passwd.c (passwd_do_file): open name instead of PASSWD.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/rfc2ftn.c (snd_mail): From, Reply-To header may be
+	  empty, use "<>" instead of NULL pointer for log() messages.
+
+	* config.h (ALIASES...ROUTING): obsolete, removed.
+
+	* src/toss/ftntoss.c (main): use cf_p_routing().
+
+	* src/toss/ftnroute.c (main): use cf_p_routing().
+
+	* src/toss/ftnpack.c (main): use cf_p_packing().
+
+	* src/common/passwd.c (passwd_init): use cf_p_passwd().
+
+	* src/common/hosts.c (hosts_init): use cf_p_hosts().
+
+	* src/common/areas.c (areas_init): use cf_p_areas().
+
+	* src/common/aliases.c (alias_init): use cf_p_aliases().
+
+	* src/toss/ftnexpire.c (main): removed -L, -S options.
+
+	* src/toss/ftnpack.c (main): removed -L, -S options, default input
+	  directory is TOSS_ROUTE, default output directory is TOSS_PACK.
+
+	* src/toss/ftnroute.c (main): removed -L, -S options, default
+	  input directory is TOSS_TOSS, default output directory is
+	  TOSS_ROUTE. 
+
+	* src/tick/ftntick.c (main): new in_dir[], default is PINBOUND.
+	  (do_tic): use in_dir[].
+	  (process_tic): dito.
+
+	* src/toss/ftntoss.c (main): removed -L, -S options.
+	  (main): default inbound directory is PINBOUND, default output
+	  directory is TOSS_TOSS (SPOOLDIR/toss/toss).
+
+	* src/common/tick.c (tick_send): BUF_EXPAND TICK_HOLD.
+
+	* config.h (TOSS_*): changed for new directory structure.
+
+	* src/toss/ftn2ftn.c (main): default pkt_outdir() is OUTPKT.
+	  (main): removed -L, -S options.
+
+	* config.h (OUTPKT): common PKT output directory for various programs.
+
+	------- CVS ci -------------------------------------------------------
+
+	* Makefile (INSTALLDIRS): new directories.
+
+	* src/gate/rfc2ftn.c (main): removed -L, -S options.
+	  (main): default pkt_outdir() is OUTPKT_MAIL/NEWS for mail/news
+	  mode.
+
+	* config.h (OUTPKT_*): PKT output directory definitions for rfc2ftn.
+
+	* src/common/mail.c (mail_open): changed file extension to .rfc.
+
+	* src/gate/ftnin.c (main): removed -L, -S options.
+	  (exec_ftn2rfc): debug() level changed to 2.
+	  (do_packets): dito.
+
+	* src/gate/ftn2rfc.c (main): default input directory is PINBOUND,
+	  mail_dir[], news_dir[] set to OUTRFC_MAIL, OUTRFC_NEWS.
+
+	* src/gate/ftn2rfc.c (main): removed -L, -S options.
+
+	* src/toss/ftnroute.c (main): use BUF_EXPAND().
+
+	* src/toss/ftntoss.c (main): use BUF_EXPAND().
+
+	* src/gate/ftnin.c (main): use BUF_EXPAND().
+
+	* src/gate/ftn2rfc.c (main): use BUF_EXPAND().
+
+	* src/ffx/ffxqt.c (parse_ffxcmd): use BUF_EXPAND().
+	  (do_ffx): use BUF_EXPAND().
+
+	* src/common/packet.c (pkt_outdir): use BUF_EXPAND().
+	  (pkt_baddir): use BUF_EXPAND().
+
+	* src/common/log.c (log_file): use BUF_EXPAND(), set
+	  use_syslog=FALSE for non-syslog cases.
+
+	* src/common/fopen.c (fopen_expand_name): use BUF_EXPAND().
+
+	* src/common/lock.c (lock_program_id): use cf_p_lockdir().
+	  (lock_program): dito.
+	  (unlock_program): dito.
+
+	* config.h (SEQ_*): all sequencer files seq.xxx changed to %V/seq/xxx.
+
+	* src/util/ftnseq.c (main): removed -L, -S options, added FALSE
+	  argument to sequencer_nx().
+
+	* src/common/sequencer.c (sequencer): log() message changed.
+	  (sequencer_nx): add new err_abort argument. If TRUE, write log()
+	  message and exit() in case of error.
+	  (sequencer): simplified, just calls sequencer_nx().
+
+	* config.h (SEQ_MQ): removed.
+
+	* src/common/config.c (cf_debug): removed output of LIBDIR,
+	  SPOOLDIR, LOGDIR.
+
+	* src/ffx/ffxqt.c (main): removed -L, -S options.
+	  Use PINBOUND as input directory.
+	  (do_ffx): apply str_expand_name() to PINBOUND.
+
+	* src/tick/ftntick.c (main): removed -L, -S options.
+	  Use PINBOUND as input directory.
+
+	* src/common/log.c (log): if log file can't be opened, add errno
+	  and error text to stderr message.
+
+	------- CVS ci -------------------------------------------------------
+
+	* test/cf/*.conf: adapted to new config.
+
+	* config.make (DEFAULT_CONFIG_*): changed config file names
+	  gate.conf, toss.conf, ffx.conf, the common configuration will be
+	  in common.conf.
+
+	------- CVS ci -------------------------------------------------------
+
+	* test/tc.8bit/run: adapted to new config.
+
+	* src/common/config.c (cf_initialize): #include "cf_env.c" for
+	  reading FIDOGATE_xxx environment variables.
+	  (cf_initialize): if any program is installed setuid, disable
+	  environment variables.
+
+	* src/common/Makefile (cf_env.mak): added automatic generation of
+	  cf_env.c, included by config.c:cf_initialize().
+
+	* subst.pl: new option -E generates environment reading code for
+	  config.c:cf_initialize(). 
+
+	* src/common/config.c (cf_initialize): environment var FIDOGATE
+	  sets CONFIGDIR.
+
+	* src/common/log.c (log): issue WARNING message, if open of
+	  logfile fails.
+
+	------- CVS ci -------------------------------------------------------
+
+	* config.h (CONFIG_*): removed, replaced with DEFAULT_CONFIG_*
+
+	* src/common/fopen.c (libfopen/spoolfopen): removed
+	  (fopen_expand_name): if err_abort is FALSE, issue WARNING
+	  message.
+
+	* src/common/bounce.c (bounce_mail): open bounce template in CONFIGDIR.
+
+	* src/common/fopen.c (fopen_expand_name): added new argument
+	  err_abort. TRUE: function exists with error log() message if file
+	  can't be opened.
+	  (xfopen): simplied using new fopen_expand_name().
+
+	* src/common/gettime.c (GetTimeInfo): #if's modified to get rid of
+	  DONT_HAVE_...
+
+	* *: replaced DO_HAVE_xxx with HAS_xxx
+
+	* src/common/log.c: USE_SYSLOG removed, use HAS_SYSLOG only.
+
+	* src/common/misc.c (str_expand_name): changed to use new table of
+	  abbreviations and cf_p_xxx() functions generated by subst.pl -A.
+
+	* src/common/Makefile (cf_abbrev.mak): added automatic generation
+	  of cf_abbrev.c by running subst.pl -A.
+
+Sat Jan 17 14:01:22 1998  Martin Junius  <mj@fido.de>
+
+	* subst.pl: option -A generates %X abbreviation table C code for
+	  misc.c:abbrev_table[]
+
+	* config.make (ABBREV_*): added definitions for %X abbreviations.
+
+	* src/toss/ftnafmail.c (main): added initialization of cmd[].
+
+	* src/common/config.c (cf_p_*): removed those now automatically
+	  generated by subst.pl from DEFAULT_*
+
+	* config.h (CONFIG_*/DEF_*): moved as DEFAULT_* to config.make.
+
+	* subst.pl (cf_funcs_c): don't write macros without DEFAULT_ prefix.
+
+	* src/common/config.c: removed replaced functions. 
+
+	* src/*: replaced:
+	  cf_set_outbound() -> cf_s_btbasedir()
+	  cf_outbound()     -> cf_p_btbasedir()
+	  cf_set_inbound()  -> cf_s_inbound()
+	  cf_inbound()      -> cf_p_inbound()
+	  cf_origin         -> cf_p_origin()
+	  cf_organization   -> cf_p_organization()
+	  cf_set_libdir()   -> cf_s_libdir()
+	  cf_set_spooldir() -> cf_s_spooldir()
+	  cf_set_logdir()   -> cf_s_logdir()
+	  cf_libdir()	    -> cf_p_libdir()
+	  cf_spooldir()	    -> cf_p_spooldir()
+	  cf_logdir()	    -> cf_p_logdir()
+	
+Tue Jan 13 21:01:34 1998  Martin Junius  <mj@fido.de>
+
+	* config.make (BINDIR et al.): changed old macros to reference new
+	  DEFAULT_* configuration values.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/misc.c (str_expand_name): implemented all new %X's.
+
+	* src/common/config.c (cf_p_inbound et al.): removed functions
+	  now in cf_funcs.c.
+	  (cf_do_line): removed config keys now in cf_funcs.c
+	  (cf_initialize): removed init of libdir/spooldir/logdir.
+
+	* src/common/Makefile: added cf_funcs.c source files,
+	  create/modified the same way as cf_funcs.h.
+
+	* src/include/fidogate.h: added #include "cf_funcs.h".
+
+	* src/include/Makefile: create/modified cf_funcs.h the same
+	  way as paths.h by running subst.pl.
+
+	* subst.pl: added more options:
+	  -H generates cf_funcs.h with cf_[ps]_NAME() prototypes for all
+	     config values DEFAULT_NAME defined in config.make.
+	  -C generates cf_funcs.c with code for these functions.
+
+Sat Jan 10 20:40:07 1998  Martin Junius  <mj@fido.de>
+
+	* subst.pl: new version, uses DEFAULT_* macros defined in
+	  config.make, new option -h to write paths.h.
+
+	* config.make (DEFAULT_*): introduced new configuration macros,
+	  will be used for the new subst.pl
+
+	------- CVS ci -------------------------------------------------------
+
+Sat Jan  3 11:41:17 1998  Martin Junius  <mj@fido.de>
+
+	* contrib/xmonout/: new outbound monitor with Tk interface
+	  contributed by Len Ovens <root@studio.cbbs.org>, slightly modified
+	  for my setup.
+
+	* scripts/nodelist/nl-autoupd.pl: wrap around 365 at end of year.
+
+	------- CVS ci -------------------------------------------------------
+
+	* config.h (HAS_SYSLOG): new #define for controlling OS support of
+	  openlog(), syslog(), vsyslog().
+
+	* src/common/log.c (log_file): if log file is "syslog", set
+	  use_syslog flag.
+	  (log): modified to use (v)syslog() for log messages if
+	  use_syslog is set. Facility is LOG_LOCAL0, priority is LOG_NOTICE.
+	  (debug): dito, priority LOG_DEBUG.
+
+	* config.h (USE_SYSLOG): added new configuration #define.
+
+	* src/common/log.c (log_program): also use environment variable
+	  FIDOGATE_LOGFILE.
+
+	* contrib/areafix/: update.
+
+Fri Jan  2 15:32:58 1998  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* contrib/areafix/: new contribution, alternate Areafix from
+	  Matthias Schniedermeyer.
+
+	* contrib/: new directory for stuff contributed by FIDOGATE users.
+
+	* doc/howto/: added new version of Matthias Schniedermeyer's
+	  Node-Howto incl. SGML source.
+
+	------- CVS ci -------------------------------------------------------
+
+	* version.h: changed to 4.3.0alpha1, actually not that different
+	  from 4.2.9.
+
+	* doc/dirs.html: updated and extended.
+
+Wed Dec 31 13:40:15 1997  Martin Junius  <mj@fido.de>
+
+	* doc/fidogate.texi (Routing): changed WARNING notice for special
+	  send hold node-address behaviour.
+	  (Example Node): fixed example send hold for node configuration.
+
+	* test/tc.route/routing: added send hold test for 2:2471/2415.*
+
+Tue Dec 30 21:16:29 1997  Martin Junius  <mj@fido.de>
+
+	* scripts/maintenance/sendmailstat.pl: removed extra output for
+	  *.rwth-aachen.de, *.sub.org.
+
+	* scripts/maintenance/logcheck.pl: added logging of relay attempts
+	  (ruleset check_rcpt).
+
+	* sendmail/cf/morannon-check.mc: same.
+
+	* sendmail/cf/orodruin-check.mc: added HACK(check_rcpt4) to
+	  protect against being misused as a SPAM relay.
+
+Mon Dec 29 19:04:38 1997  Martin Junius  <mj@fido.de>
+
+	* src/gate/ftninrecomb.pl (unsplit_mail): when parsing X-SPLIT
+	  also accept 10 +'s or more than 11 (GIGO is broken here).
+
+Sun Dec 14 17:45:40 1997  Martin Junius  <mj@fido.de>
+
+	* src/common/config.c (cf_check_gate): check, that # of Address
+	  statements is > 0, fixed log() message for #Address != #Uplink.
+
+Sat Dec 13 22:49:17 1997  Martin Junius  <mj@fido.de>
+
+	* scripts/maintenance/logcheck.pl: dito.
+
+	* scripts/maintenance/logreport.pl: changed default newsgroup to
+	  fido.de.lists. 
+
+Sun Nov 23 17:47:14 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* doc/dirs.html: new HTML file documentation the new directory
+	  structure for FIDOGATE 4.3.0.
+
+	* doc/index.html: new HTML index for files in doc directory.
+
+	* examples/morannon/config.*: updated morannon config files for
+	  new FIDOGATE 4.2.9 release.
+
+Sat Nov 22 18:32:02 1997  Martin Junius  <mj@fido.de>
+
+	* scripts/maintenance/logcheck.pl: spelling correction.
+
+	* test/tc.tosskill/run: disabled dupe check for test case
+	  (config1, config2).
+
+	======= Release 4.2.9 ================================================
+	------- CVS ci, tag R429 ---------------------------------------------
+
+Thu Nov 20 18:47:24 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* doc/howto/FidoNode*.html: update by Matthias Schniedermeyer
+	  <ms@citd.owl.de>.
+
+	* fidogate.lsm: updated.
+
+	* doc/fidogate.texi (ftnaf): added documentation for create and
+ 	  vacation commands.
+	  (runtoss/rununpack): due to ever changing type parameter added
+ 	  reference to source code.
+
+Sun Nov 16 15:20:41 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* doc/fidogate.texi (ftntoss): documented -d --no-dupecheck option.
+
+	* src/toss/ftntoss.c (main): implemented no -d --no-dupecheck
+	  option, disabled dupe check from command line (if enabled in
+	  config.main).
+
+	* src/toss/runtoss.sh: if ftntoss returns busy, sleep 1 min and
+	  try again.
+
+	* ANNOUNCE: update.
+
+	* doc/fidogate.texi (Areas.bbs): added new option -d DESC, -#, -r,
+	  and "..."
+
+	* src/common/areasbbs.c (areasbbs_add_string): new local static
+	  function, modified version of node.c:lon_add_string().
+	  (areasbbs_new): rewrote function to use xstrtok() and a better
+	  parsing for the options, adding -# and -r without an
+	  argument. Descriptions now can contains spaces if enclosed in "".
+	  (areasbbs_print): re-enabled output of -d "TEXT".
+
+	* src/common/node.c (lon_add_string): return ret, not OK.
+
+	* test/tc.af/run: added more verbose output, created run.verify
+	  for tr.check comparison.
+
+	* src/toss/ftnaf.c (do_command): added debug() output.
+	  (rewrite_areas_bbs): changed debug() level to 4.
+
+	* test/tr.check: new script, comparing run output against verify file.
+
+	------- CVS ci -------------------------------------------------------
+
+	* scripts/run/runpoll.sh: added runtoss outpkt/mail.
+
+	* scripts/run/run2.sh: removed ffx processing.
+
+	* scripts/run/run1.sh: removed ffx processing.
+
+	* scripts/run/runffx.sh: new script, joining ffx processing from
+	  run1 and run2.
+
+	* src/toss/runmail.sh: new script, wrapper for runtoss outpkt/mail.
+
+	* src/toss/runtoss.sh: added outpkt/mail processing type for mail
+	  packets converted by rfc2ftn in mail mode.
+
+	* Makefile (INSTALLDIRS): added SPOOLDIR/outpkt/mail.
+
+	* sendmail/cf/morannon-check.mc: updated version.
+
+	* sendmail/mailer/ftn.m4 (FTN_MAILER_ARGS,ARGSI,ARGSA): added -O
+	  confFIDOGATE_OUTDIR to all mailer args, if macro is defined.
+	  (FTN_MAILER_ARGSO): changed output directory to %S/outpkt/$h.	  
+
+	* sendmail/cf/Makefile (M4OPTIONS): added new macro setting
+ 	  confFIDOGATE_LIBDIR, confFIDOGATE_OUTDIR. Set confFIDOGATE_OUTDIR
+ 	  to %S/outpkt/mail to enable separate processing of mail and new
+ 	  packets converted by rfc2ftn.
+
+	* rules.make (%.cf): changed to use M4OPTIONS macro.
+
+Sun Nov  9 12:41:23 1997  Martin Junius  <mj@fido.de>
+
+	* ANNOUNCE: older changes moved to README, removed mailing list
+	  advertisment 
+
+	* README: updated.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/areasbbs.c (areasbbs_new): back to strtok(),
+	  xstrtok() is not yet working properly.
+	  (areasbbs_print): currently don't output -d DESC.
+
+	* src/toss/ftnaf.c (cmd_listall): improved description output.
+	  (cmd_list): improved description output.
+
+	* src/util/ftnflo.c (do_flo): commented log() info message.
+
+	* scripts/maintenance/logcheck.pl: first digit of day may be space.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/toss/ftnaf.c (cmd_create): added new -d DESC option, using
+	  xstrtok() to allow "text".
+	  (cmd_listall): add area description to output.
+	  (cmd_list): add area description to output.
+
+	* src/common/areasbbs.c (areasbbs_new): implemented new -d DESC
+	  option, using xstrtok() to allow "text".
+	  (areasbbs_print): added -d DESC output.
+
+	* src/include/structs.h (AreasBBS): added new desc(ription) field.
+
+	* src/toss/ftnpack.c (do_pack): added log() message for programm
+	  execution. 
+
+	* test/tc.packprog/run: new test case, ftnpack program execution
+	  via the prog definition in packing.
+
+	* test/ti.pkt-toss/: input packets for tc.tosskill/run.
+
+	* test/tc.tosskill/run: new test case, ftntoss behaviour for
+	  circular path, insecure, routed, unknown area EchoMail.
+
+	------- CVS ci -------------------------------------------------------
+
+	* examples/orodruin/: some updates.
+
+	* doc/fidogate.texi (ftn2rfc): documented -i and -n options.
+
+	* src/gate/ftn2rfc.c (usage): new option -n --no-remove.
+	  (main): implemented -n --no-remove.
+	  (main): if unpack_file() or run_system() fails, exit with
+	  EXIT_ERROR (1).
+	  (unpack_file): if n_flag is set, don't unlink() packet file,
+	  don't call rename_bad(), return ERROR instead.
+
+	* version.h (PATCHLEVEL): set to 9 (version 4.2.9).
+
+Sun Nov  2 15:40:37 1997  Martin Junius  <mj@fido.de>
+
+	======= Release 4.2.8 ================================================
+	------- CVS ci, tag R428 ---------------------------------------------
+
+	* README: update, changes 4.2.2+ moved to ANNOUNCE.
+
+	* ANNOUNCE: update, all changes 4.2.2+.
+
+Sat Nov  1 15:13:28 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* fidogate.lsm: updated.
+
+	* ANNOUNCE (Internet): updated.
+
+	* examples/orodruin/routing: added bossroute example.
+
+	* doc/fidogate.texi (Routing): documented xroute (not yet
+	  implemented) and bossroute.
+
+	* src/toss/ftnroute.c (do_cmd): CMD_BOSSROUTE implemented. If
+	  r->flav matches packet flavour, then the packet will be routed
+	  to the boss node (point = 0).
+
+	* test/tc.route/run: new test case for ftnroute.
+
+	* src/toss/ftnroute.c (do_cmd): added CMD_XROUTE, CMD_BOSSROUTE.
+
+	* src/common/routing.c (parse_cmd): new commands "xroute",
+	  "bossroute". 
+
+	* src/include/structs.h (CMD_BOSSROUTE): new routing command.
+
+	* scripts/filebase/fb-filelist.pl: new version, lists file areas
+	  read from FIDOGATE's fareas.bbs.
+
+Sun Oct 26 11:07:42 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* ANNOUNCE: updated.
+
+	* version.h (PATCHLEVEL): set to 8 (version 4.2.8)
+
+	------- CVS ci -------------------------------------------------------
+
+	* test/tc.bounce2/run: new test case, bounces by ftn2rfc.
+
+	* src/common/bounce.c (bounce_header): must use mail_file('m') for
+	  bounce_cc_mail.
+
+	* test/tc.gateway/run: new test case for ^AGATEWAY, X-Gateway.
+
+	* src/gate/rfc2ftn.c (snd_message): output ^AGATEWAY kludge, using
+	  X-Gateway header if present.
+
+	* src/gate/ftn2rfc.c (unpack): if ^AGATEWAY is present in FTN
+	  message, add FIDOGATE entry in front and output as X-Gateway
+	  header. Removed ".." from X-Gateway header.
+
+Wed Oct 22 21:14:20 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* scripts/maintenance/logdaily.sh: new script for daily log
+	  maintenance, running logcheck for last rotated sendmail maillog.
+
+	* scripts/maintenance/logcheck.pl: added news postings and mail
+	  features like logreport.pl.
+
+Tue Oct 21 22:25:37 1997  Martin Junius  <mj@fido.de>
+
+	* scripts/maintenance/logcheck.pl: new scripts generating report
+	  of sendmail's check_mail reject activities.
+
+Sun Oct 19 18:16:34 1997  Martin Junius  <mj@fido.de>
+
+	* test/tc.aliases/run: new tests for aliases.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/rfc2ftn.c (main): implemented new ReplyAddrIfMailTX
+	  config option.
+	  (snd_message): if replyaddr_ifmail_tx is set, generate
+	  ^AREPLYADDR <user@do.main>.
+
+	* doc/fidogate.texi (Config): documented new ReplyAddrIfMailTX.
+
+Tue Oct 14 19:28:20 1997  Martin Junius  <mj@fido.de>
+
+	======= Release 4.2.7 ================================================
+	------- CVS ci, tag R427 ---------------------------------------------
+
+	* doc/fidogate.texi (Config): documented RFCAddrMode.
+
+	* src/gate/ftn2rfc.c (main): dito.
+
+	* src/gate/rfc2ftn.c (main): new config.gate option RFCAddrMode,
+	  setting mode for rfcaddr_to_asc(), see below.
+
+	* src/common/rfcaddr.c (rfcaddr_mode): new function setting
+	  rfcaddr_to_asc() mode:
+	      0 = user@do.main (Real Name)
+	      1 = Real Name <user@do.main>
+	      2 = user@do.main
+	  (rfcaddr_to_asc): if addr_mode==1, then use the format
+	      Real Name <user@do.main>
+	  for RFC addresses with real name.
+
+Mon Oct 13 20:32:58 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* fidogate.lsm: updated.
+
+	* ANNOUNCE: updated.
+
+	* src/tick/ftntick.c (process_tic): fixed unknown_tick_area
+	  processing, don't replace, don't forward file to downlink. The
+	  file will be just moved to the unknown area directory.
+
+	* src/common/areasbbs.c (areasbbs_init): strip_crlf(buffer) after
+	  reading line from file.
+
+	* test/tc.tick/run: added test6.tic with unkown file area.
+
+	* examples/orodruin/config.main: dito.
+
+	* test/cf/config.main: added UnknownTickArea.
+
+	* src/tick/ftntick.c (process_tic): if unknown_tic_area is set,
+	  try to use this area, if area from TIC file can't be found.
+
+	* doc/fidogate.texi (Config): documented new UnknownTickArea.
+
+	* src/tick/ftntick.c (main): new config.main option
+	  UnknownTickArea, sets entry from fareas.bbs to be used for
+	  unknown areas.
+
+	* src/common/tick.c (tick_get): if Desc is empty, set to "--no
+	  description--".
+
+	* src/tick/ftntick.c (add_files_bbs): changed "--no description--"
+	  text (actually, this won't be use, but anyway ...)
+
+Sun Oct 12 00:02:28 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* doc/fidogate.texi (Config): documented DontUseReplyTo.
+
+	* examples/win32/config.gate: added XFlagsPolicy a, DontUseReplyTo
+	  for test configuration.
+
+	* ANNOUNCE: updated.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/rfc2ftn.c (snd_mail): check x_flags_policy for
+	  processing X-Flags, log all X-Flags going thru rfc2ftn.
+	  (main): added DontUseReplyTo config.gate command.
+	  (rfc_sender): don't try to get real name from Reply-To header,
+	  if DontUseReplyTo is set.
+
+	* doc/fidogate.texi (Config): documented XFlagsPolicy.
+
+	* src/gate/rfc2ftn.c (snd_message): new vars x_flags_f, x_flags_m,
+	  x_flags_n for corresponding X-Flags settings.
+	  (snd_message): don't output ^ARFC headers, if x_flags_n is set.
+	  (main): new config.gate command XFlagsPolicy,
+	      n, N, 0    -    No X-Flags processing at all,
+	      s, S, 1    -    X-Flags processing for local sender,
+	      a, A, 2    -    X-Flags processing for all.
+
+	* src/toss/history.c: added #include "getopt.h" for test program.
+
+	* examples/win32/: added various example configuration files and
+	  README.WIN32 for WIN32 binary test distribution.
+
+	* examples/win32/config.make: use -O2.
+
+	* doc/fidogate.texi (Introduction): new mailing list.
+
+	------- CVS ci -------------------------------------------------------
+
+	* doc/howto/: added Fido-Node-HOWTO contributed by
+	  Matthias Schniedermeyer <ms@citd.owl.de> (not yet complete).
+
+Sat Oct 11 19:39:08 1997  Martin Junius  <mj@fido.de>
+
+	* fidogate.lsm: updated.
+
+	* ANNOUNCE: updated size.
+
+	------- CVS ci, tag R427test -----------------------------------------
+
+	* ANNOUNCE: updated.
+
+	------- CVS ci -------------------------------------------------------
+
+	* doc/fidogate.texi (Config files): added include command for all
+	  config files.
+	  (Config): new FTNInSendmail configuration.
+
+	* src/common/log.c (strerror): #ifndef DO_HAVE_STRERROR around
+	  this function.
+
+	* config.h (DO_HAVE_STRERROR): added new configuration #define for
+	  Standard C function strerror() (not necessarily available on
+	  older Unix variants like SunOS).
+
+	* doc/qmail.txt: added comments from Frank Drolshagen
+	  <Frank_Drolshagen@p1.f6369.n244.z2.fidonet.org>.
+
+	* doc/fidogate.texi (Config files): added FIDOGATE env var.
+	  (ftn2rfc): added -1 --single-articles option.
+	  (Config): added SingleArticles.
+	  (Example Point 2): added packer configuration help.
+
+	* src/toss/Makefile (install): dito.
+
+	* src/tick/Makefile (install): dito.
+
+	* src/gate/Makefile (install): dito.
+
+	* src/ffx/Makefile (install): dito.
+
+	* scripts/run/Makefile (install): dito.
+
+	* scripts/nodelist/Makefile (install): dito.
+
+	* scripts/maintenance/Makefile (install): dito.
+
+	* scripts/inn/Makefile (install): dito.
+
+	* doc/html/Makefile (install): dito.
+
+	* doc/gatebau/Makefile (install): dito.
+
+	* doc/Makefile (install): dito.
+
+	* Makefile (install): added PREFIX to install destinations.
+
+	* config.make: added PREFIX macro.
+
+Fri Oct 10 20:39:54 1997  Martin Junius  <mj@fido.de>
+
+	* src/gate/ftninpost.pl: fixed run ftninrecomb, using system with
+	  @cmd list.
+
+Sun Oct  5 13:10:17 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* sendmail/hack/: added HACKs from Claus Assman, see
+	  sendmail/README.check. 
+
+	* sendmail/: some documentation for check-HACKs by
+	  Claus Assmann <ca@informatik.uni-kiel.de>, HTML files and m4
+	  configuration files from
+	  http://www.informatik.uni-kiel.de/~ca/email/check.html
+
+	* sendmail/cf/Makefile: added *-check, removed install-* targets.
+
+	* sendmail/cf/junk: example filter data.
+
+	* sendmail/cf/orodruin-check.mc: dito.
+
+	* sendmail/cf/morannon-check.mc: new config file using check_mail3
+	  to check for SPAM.
+
+	* doc/rfc/: added new directory with mail/news message format
+	  related RFCs. 
+
+	* config.h (RFC_LVL_1_HEADERS): added Return-Path (envelope sender).
+
+Fri Oct  3 14:10:39 1997  Martin Junius  <mj@fido.de>
+
+	* README: new mailing list.
+
+	* sendmail/cf/morannon.mc: dito.
+
+	* sendmail/cf/orodruin.mc: added majordomo aliases, added
+	  majordomo to list of trusted users.
+
+Thu Sep 25 21:09:40 1997  Martin Junius  <mj@fido.de>
+
+	* src/toss/rununpack.sh: same.
+
+	* src/toss/runtoss.sh: allow input directory as argument to
+	  runtoss (must start with /).
+
+Sat Sep 20 09:10:03 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* version.h (PATCHLEVEL): set to 7 (version 4.2.7).
+
+Sat Sep 13 22:31:49 1997  Martin Junius  <mj@fido.de>
+
+	* src/common/routing.c (routing_parse_line): type variable must be
+	  static, it will be changed by the NetMail/EchoMail routing
+	  commands. 
+
+Wed Aug 20 22:22:31 1997  Martin Junius  <mj@fido.de>
+
+	======= Release 4.2.6 ================================================
+	------- CVS ci, tag R426 ---------------------------------------------
+
+	* ANNOUNCE: update.
+
+	* fidogate.lsm: update.
+
+	* README: update.
+
+	* examples/README: update.
+
+	* examples/win32/: new example dir for win32 configuration,
+	  containing modified config.make.
+
+	* */Makefile (veryclean): added veryclean target to all of them.
+
+	* Makefile (install-dirs): new target, checking directory for
+	  existence before creating it, added BINDIR and INFODIR.
+
+	* test/tc.passthru/run: fixed using in/tmpnews.
+
+	* test/tc.nomsgid/run: fixed using in/tmpnews, only first message
+	  file from in/tmpnews.
+
+	* test/tc.bounce/run: added exit 0 to continue loop in Makefile.
+
+Sun Aug 17 11:26:47 1997  Martin Junius  <mj@fido.de>
+
+	* src/tick/ftntick.c (add_files_bbs): empty change to "-no
+	  description-". 
+
+	* src/common/tick.c (tick_get): if arg is NULL, set to "".
+	  (tick_put): check tic->desc.first.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/include/structs.h (AREASBBS_READONLY): new #define for
+	  read-only areas.
+
+	* src/common/areasbbs.c (areasbbs_add): new function adding entry
+	  to areas.bbs list in memory.
+
+	* src/toss/ftnaf.c (main): init output for command line operation.
+
+	* test/tc.af/run: added test for create, vacation commands.
+
+	* src/toss/ftnaf.c (main): authorized_create is TRUE when called
+	  from command line.
+	  (main): use BUF_APPEND().
+	  (cmd_help): updated help text.
+	  (CMD_CREATE): new command.
+	  (CMD_VACATION): new command.
+	  (do_command): implemented create, vacation commands.
+	  (cmd_vacation): new function implementing vacation command.
+	  (cmd_create): new function implementing create command.
+
+	* src/gate/rfc2ftn.c (snd_mail): mime_deheader() subj before
+	  calling snd_message().
+
+	* test/tc.gate7/run: added test with MIME umlauts in Subject.
+
+	* src/toss/ftntoss.c (rename_bad): changed log() message.
+
+	* src/gate/ftn2rfc.c (rename_bad): changed log() message.
+
+	* src/gate/ftninpost.pl: improved post processing script, now
+	  passing command line options as an array to system, avoiding
+	  potential problems with shell meta characters (and improving
+	  security of course).
+
+Thu Aug 14 21:50:49 1997  Martin Junius  <mj@fido.de>
+
+	* test/tc.tick/run: added new test5.tic (Desc empty).
+
+	* src/tick/ftntick.c (add_files_bbs): check that tic->desc isn't
+	  empty. 
+
+Wed Aug 13 19:23:47 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/passwd.c (passwd_parse_line): same for passwd.
+	  (passwd_do_file): same for passwd.
+	  (passwd_init): same for passwd.
+
+	* src/common/hosts.c (hosts_parse_line): same for hosts.
+	  (hosts_do_file): same for hosts.
+	  (hosts_init): same for hosts.
+
+	* src/common/aliases.c (alias_parse_line): same for aliases.
+	  (alias_do_file): same for aliases.
+	  (alias_init): same for aliases.
+
+	* src/toss/ftnpack.c (packing_parse_line): same for packing.
+	  (packing_do_file): same for packing.
+	  (packing_init): same for packing.
+
+	* src/common/routing.c (routing_parse_line): new function parsing
+	  routing command line from file, additionally implementing the new
+	  "include" command.
+	  (routing_do_file): new function doing the file processing for
+	  the routing config file.
+	  (routing_init): changed to call new routing_do_file().
+	  debug() level changed to 15.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/areas.c (areas_parse_line): new function doing the
+	  line parsing part of the old areas_init() function, additionally
+	  implementing an "include" command.
+	  (areas_do_file): new function doing the file processing part of
+	  the old areas_init() function.
+	  (areas_init): changed to call new areas_do_file().
+
+	* src/include/node.h (st_node): added flags field to Node struct.
+	  (NODE_*): #define's for node flags.
+
+Mon Aug 11 21:23:06 1997  Martin Junius  <mj@fido.de>
+
+	* README: added some rules for supplying patches.
+
+Sun Aug 10 18:18:41 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/ftn2rfc.c (unpack): pass 'm' / 'n' to mail_*().
+
+	* src/common/bounce.c (bounce_mail): pass 'm' to mail_*().
+
+	* src/common/mail.c (mail_kill): removed.
+	  (mail_name): added sel argument.
+	  (mail_file): same.
+	  (mail_close): same.
+
+	* src/common/bounce.c (bounce_header): pass 'm' to mail_*().
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/ftninrecomb.pl: same.
+
+	* src/gate/ftninpost.pl: use new in/tmpmail, in/tmpnews.
+
+	* test/tc.gate1/run: added test run with ftn2rfc -1.
+
+	* test/tr.init: create new in/tmpmail, in/tmpnews.
+
+	* src/gate/ftn2rfc.c (unpack): removed early open of news output file.
+	  (unpack): new output file code, also support single news article
+	  files.
+
+	* src/common/mail.c (mail_open): added new sel argument, sel='m'
+	  creates mail file, sel='n' creates news file.
+
+	* config.h (INDIR_MAIL): changed to tmpmail.
+	  (INDIR_NEWS): change to tmpnews.
+
+	* src/common/mail.c: news_dir[] moved from ftn2rfc.c to mail.c.
+
+	* src/gate/ftn2rfc.c (unpack): added area name to "skipping
+	  message from gateway ..." log().
+	  (usage): new -1 --single-articles option.
+	  (main): implemented -1 --single-articles option, also enabled by
+	  config.gate SingleArticles.
+
+Sun Aug  3 09:47:38 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* ANNOUNCE: update.
+
+	* scripts/nodelist/nl-diff.pl: fixed severe error in CRC check,
+	  the too well known = versus ==. :-(
+
+	* scripts/nodelist/nl-check.pl: new script checking CRC of nodelist.
+
+	* src/common/config.c (cf_initialize): use environment var
+	  FIDOGATE to initialize scf_libdir[], use BUF_COPY().
+	  (cf_do_line): use BUF_COPY(), BUF_APPEND().
+	  (cf_set_libdir): same.
+	  (cf_set_spooldir): same.
+	  (cf_set_logdir): same.
+	  (cf_unix_xlate): make comparison case-insensitive.
+
+	* test/tc.tick/run: added TIC test with missing file.
+
+	* src/toss/ftntoss.c (do_netmail): changed log() message.
+
+Fri Jul 25 22:01:56 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* version.h (PATCHLEVEL): set to 6 (version 4.2.6).
+
+	* doc/info2txt.pl: changed name to .pl.
+
+	* doc/Makefile (fidogate.txt): use $(PERL) to run info2txt.pl
+	  script, #! path name may be wrong while compiling.
+
+	* config.make.WIN32: updated. Please note that path names do not
+	  contain a drive. If a drive must be specified, use the //D/PATH
+	  notation, because D:/PATH will fail for executing programs and
+	  scripts.
+
+	* src/*/Makefile (install): updated install targets to include
+	  $(EXE) macro for program files.
+
+	* config.make: INSTALL defines install program, EXE defines
+	  program file name extension (.exe for MSDOS, OS2, WIN32).
+
+	* src/common/misc.c (is_digit): new signed char-safe version of
+	  isdigit() to prevent possible problems with <ctype.h>
+	  implementations. 
+
+	* src/*/*.c: replaced all calls to isdigit() with is_digit().
+
+	* src/include/prototypes.h: use #ifdef DO_DOSIFY to enable
+	  str_dosify() in DOSIFY_IF_NEEDED() macro.
+
+	* config.h (DO_DOSIFY): new #define for enabling
+ 	  DOSIFY_IF_NEEDED() macro.
+
+	* src/common/lock.c (lock_fd): replace old #ifdef with #ifndef
+	  DO_HAVE_FCNTL_LOCK.
+	  (unlock_fd): same.
+
+	* config.h (DO_HAVE_FCNTL_LOCK): new #define for file locking with
+	  fcntl(), see lock.c.
+	  Standard #define for POSIX UNIX before system specific #define. 
+
+Sun Jul 20 16:56:51 1997  Martin Junius  <mj@fido.de>
+
+	* scripts/nodelist/latest.pl: several changes to be used with
+	  nl-autoupd. 
+
+	* scripts/nodelist/nl-autoupd.pl: new script for automatically
+ 	  searching and applying nodediffs (not yet complete).
+
+Tue Jul  8 20:14:14 1997  Martin Junius  <mj@fido.de>
+
+	======= Release 4.2.5 ================================================
+	------- CVS ci, tag R425 ---------------------------------------------
+
+	* ANNOUNCE: updated.
+
+	* fidogate.lsm: updated.
+
+	* scripts/run/runpoll.sh: run ffxqt directly, not ffxrun.
+
+	------- CVS ci -------------------------------------------------------
+
+	* examples/orodruin/config.gate: changed FTNInSendmail.
+
+	* src/ffx/ffxrmail.pl: added -L, -S options. FFXRmailSendmail
+	  config statement will be used for the sendmail command.
+
+	* examples/orodruin/config.ffx: added FFXRmailSendmail.
+
+	* sendmail/mailer/ftn.m4: add -- before $u to all rfc2ftn command
+	  line, preventing possible problems with -some@thing.
+
+Tue Jul  1 21:28:35 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/include/prototypes.h (DOSIFY_IF_NEEDED): fixed typo, define
+ 	  macro to str_dosify(s) for MSDOS/OS2. This shouldn't be needed
+	  for the GNU-WIN32 port, as the system() function should be happy
+	  with '/'s in program names.
+
+Sun Jun 29 12:30:27 1997  Martin Junius  <mj@fido.de>
+
+	* src/gate/ftn2rfc.c (unpack_file): changed log() message.
+
+Sat Jun 28 18:04:34 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/rfc2ftn.c (snd_message): if Content-Transfer-Encoding
+	  is QUOTED-PRINTABLE, change it to 8BIT.
+
+	* config.h (RFC_LVL_1_HEADERS): added MIME-Version, Content-Type,
+	  Content-Transfer-Encoding, Next-Attachment.
+
+	* src/common/log.c (log): set debugfile to stderr if NULL.
+	  (debug): set debugfile to stderr if NULL. debugfile is now
+ 	  initialized with NULL to avoids portability problems with stderr
+ 	  not being const.
+
+	* src/toss/ftnaf.c (do_mail): set output to stdout, if not
+	  connected to mailer pipe. output is now initialized with NULL to
+	  avoids portability problems with stdout not being const.
+
+	* config.make.WIN32: config.make for GNU-WIN32.
+
+	* config.h: added GNU-WIN32 port (#ifdef __CYGWIN32__)
+
+Fri Jun 27 21:31:00 1997  Martin Junius  <mj@fido.de>
+
+	* sendmail/ostype/aux.m4: removed, name conflicts with
+	  MSDOS/Windows95. 
+
+	* ANNOUNCE: updated, changes < 4.2.4 moved to README.
+
+	* fidogate.lsm: updated.
+
+	* README: added porting information, including the new GNU-WIN32
+ 	  port.
+
+	* version.h (PATCHLEVEL): set to 5 (version 4.2.5).
+
+	* src/util/ftnflo.c (do_flo): replace truncate() with
+	  open(,O_TRUNC) because it is not a POSIX function.
+
+Mon Jun 23 21:23:41 1997  Martin Junius  <mj@fido.de>
+
+	* scripts/run/runpoll.sh: use rununpack/runtoss directly, not runin.
+
+Sun Jun 22 12:13:12 1997  Martin Junius  <mj@fido.de>
+
+	* scripts/maintenance/rc.fidogate.sh: renamed old rc.fidonet.sh.
+
+	======= Release 4.2.4 ================================================
+	------- CVS ci, tag R424 ---------------------------------------------
+
+	* ANNOUNCE: updated.
+
+	* README: updated.
+
+	* fidogate.lsm: updated.
+
+	* scripts/nodelist/template.html: sample template.html for nl-html.
+
+	* scripts/nodelist/html-tmpl.pl: perl support functions for nl-html.
+
+	* scripts/nodelist/nl-html.pl: totally new version of nodelist to
+	  HTML converter.
+
+Sat Jun 21 22:00:23 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/rfc2ftn.c (mail_receiver): add address_error[] string
+	  to BOUNCE message.
+
+	* test/tc.bounce/run: new test case for rfc2ftn BOUNCE messages.
+
+	* scripts/run/runpoll.sh: run runin before ffxrun.
+
+	* scripts/run/run1.sh: formatting changes, added send-ffx, ftnpack
+	  -f 242:1000/5.
+
+	* scripts/run/run2.sh: formatting changes, added ftntick.
+
+	* src/tick/ftntick.c (process_tic): check that old file (Replaces)
+	  exists before copying it to TickReplacedDir.
+
+Wed Jun 11 22:33:01 1997  Martin Junius  <mj@fido.de>
+
+	* src/toss/rununpack.sh: changed $INPUT/tmp directory to
+	  $INPUT/tmpunpack to avoid conflicts with ifcico's inbound tmp
+	  directory.
+
+Sun Jun  8 10:25:22 1997  Martin Junius  <mj@fido.de>
+
+	* scripts/nodelist/nl-del.pl: new options -l, -c, usage text.
+
+	------- CVS ci -------------------------------------------------------
+
+	* doc/fidogate.texi (config.h): new PASSTHRU_ECHOMAIL description.
+
+	* config.h (PASSTHRU_NETMAIL): default: switched off.
+	  (PASSTHRU_ECHOMAIL): default: switched off.
+
+	* test/tc.passthru/run: new test case for PASSTHRU_ECHOMAIL.
+
+	* src/gate/rfc2ftn.c (print_tear_line): implemented
+	  PASSTHRU_ECHOMAIL, tear line from X-FTN-Tearline header.
+	  (print_origin): implemented PASSTHRU_ECHOMAIL, using
+	  X-FTN-Origin, X-FTN-Seen-By, X-FTN-Path headers. ftntoss must be
+	  run afterwards to sort / compact SEEN-BY and ^APATH.
+
+	* config.h (PASSTHRU_ECHOMAIL): now implemented.
+
+	* src/common/rfcheader.c (rfcheader_geth): new function unifying
+	  the various *header_get*().
+	  (header_geth): new wrapper function for rfcheader_geth(), using
+	  Textlist header.
+	  (main): added TEST main program.
+
+	* src/: started to integrate PASSTHRU_ECHOMAIL patches contributed
+	  by Jean-Louis Noel <jln@stben.be>.
+
+	* examples/: update to new fgatecfg.tgz by Andreas Braukmann.
+
+Sun Jun  1 18:04:04 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* version.h (PATCHLEVEL): set to 4 (version 4.2.4).
+
+	* ANNOUNCE: updated.
+
+	* config.make: added CFLAGS, LFLAGS for NextStep.
+
+	* src/common/rfcheader.c (header_hops): if RECEIVED_BY_MAILER is
+	  defined, ignore those Received lines while counting.
+
+	* config.h (DO_HAVE_SYSEXISTS_H): fixed silly spellung mistuk.
+	  (__Next__): added port to NextStep 3.3 contributed by
+	  <Holger_Graudejus@p17.f6666.n245.z2.fidonet.org>.
+	  (RECEIVED_BY_MAILER): new #define used by header_hops().
+
+Sun May 18 21:05:57 1997  Martin Junius  <mj@fido.de>
+
+	* test/tc.gatenode/config.gate: special for test case.
+
+	* test/tc.gatenode/run: new test case, tosser and gateway under
+	  the same *node* address.
+
+Wed May 14 19:59:28 1997  Martin Junius  <mj@fido.de>
+
+	* fidogate.lsm: some corrections.
+
+	* ANNOUNCE: some corrections.
+
+	======= Release 4.2.3 ================================================
+	------- CVS ci, tag R423 ---------------------------------------------
+
+	* fidogate.lsm: updated.
+
+	* ANNOUNCE: updated.
+
+	* version.h (PATCHLEVEL): set to 3 (version 4.2.3).
+
+	* src/common/tick.c (tick_get): convert area name to upper case.
+
+	* src/common/areasbbs.c (areasbbs_lookup): make comparison
+	  case-insensitive using stricmp().
+
+Sun May 11 21:23:01 1997  Martin Junius  <mj@fido.de>
+
+	* sendmail/cf/morannon.mc: added FEATURE(local_procmail), updated
+	  confCF_VERSION to 4.4.
+
+	======= Release 4.2.2 ================================================
+	------- CVS ci, tag R422 ---------------------------------------------
+
+	* fidogate.lsm: updated.
+
+	* ANNOUNCE: updated.
+
+	* test/tc.nomsgid/run: use new test packet.
+
+	* test/ti.pkt-misc/t-gw-nomsgid.pkt: new test packet.
+
+	------- CVS ci -------------------------------------------------------
+
+	* examples/abis.abra.de, nambi.north.de: updated example
+	  configuration files from Andreas Braukmann <andy@Abra.DE>.
+
+Sat May 10 22:33:13 1997  Martin Junius  <mj@fido.de>
+
+	* src/toss/rununpack.sh: use unzip -ojL for unpacking ZIP archives.
+
+	* src/ffx/ffxqt.c (exec_ffx): use dir_search() to find data file,
+	  ignoring case.
+
+	------- CVS ci -------------------------------------------------------
+
+	* ANNOUNCE (Subject): updated.
+
+	* config.h (FTN_RFC_HEADERS): added "Header-To:", "Header-Cc"
+	  generated by rfc2ftn for mailing lists.
+
+Thu May  8 22:42:08 1997  Martin Junius  <mj@fido.de>
+
+	* src/gate/ftn2rfc.c (unpack): changed to call new msgid_default().
+	  (unpack): check for ^AMSGID: <NOMSGID_...> and don't gate
+	  it. This is a message originally from Fido without a MSGID, then
+	  gated to RFC and gated back to FTN without removing the
+	  <NOMSGID_...> Message-ID generated by the 1st gateway.
+
+	* src/common/msgid.c (msgid_default): new argument Message *msg
+	  replacing single fields.
+
+	* test/tc.ml/run: new test case for mails from mailing lists.
+
+	* src/gate/rfc2ftn.c (snd_message): changes to RFC text header
+	  inclusion, the From and Reply-To line now shows the original RFC
+	  headers. Previously, the From contained the return address which
+	  could be the one from Reply-To. Additionally, if the Sender or
+	  Resent-From header is present (very likely a mailing list), the
+	  original RFC To and Cc headers will be included as Header-To and
+	  Header-Cc.
+
+Thu May  1 11:22:21 1997  Martin Junius  <mj@fido.de>
+
+	* doc/gatebau/msgid.lyx: updated version number, date.
+
+	* doc/gatebau/post-html.pl: new post processing script for sgml2html.
+
+	* doc/qmail.txt: posting from LINUX.GER describing how to
+	  interface qmail to FIDOGATE.
+
+	* src/toss/rununpack.sh: added RAR support.
+
+	* src/toss/magic: added RAR support.
+
+Sun Apr 27 09:56:05 1997  Martin Junius  <mj@fido.de>
+
+	* src/toss/ftnexpire.c (main): added start/stop time.
+	  (main): statistics moved main(), added time and ids/s.
+
+	* src/toss/ftntoss.c (main): moved start time after initialization.
+
+	* src/ffx/ffxqt.c (do_ffx): small change to log() message.
+
+	------- CVS ci -------------------------------------------------------
+
+	* ANNOUNCE: updated.
+
+	* src/common/log.c (strerror): added new #ifndef __FreeBSD__ for
+	  sys_errlist[] declaration.
+
+	* config.h: added new #ifdef __FreeBSD__ section.
+
+	* config.make (INSTALL_*): added -c to make old BSD install happy.
+
+	* src/toss/ftntoss.c (do_echomail): add message sender/recipient
+	  to SEEN-BY if not already there. Hopefully avoids problems with
+	  EchoMail if sender doesn't do SEEN-BYs as we expect them.
+	  (do_echomail): message from current AKA is not insecure.
+
+	* version.h (PATCHLEVEL): set to 2 (version 4.2.2).
+
+	* ANNOUNCE: "Changes in ..." moved to README.
+
+Sat Apr 19 10:38:58 1997  Martin Junius  <mj@fido.de>
+
+	* doc/fidogate.texi (Example Point 2): areas.bbs must have an
+	  entry in the 1st col.
+
+	* Makefile (install): install ANNOUNCE into HTMLDIR.
+
+	======= Release 4.2.1 ================================================
+	------- CVS ci, tag R421 ---------------------------------------------
+
+	* scripts/maintenance/logmaint.sh: complete rewrite using
+	  functions from newsyslog.sh.
+
+	* ANNOUNCE: updated.
+
+	* fidogate.lsm: updated.
+
+	* src/toss/rununpack.sh: yet another fix to the rename loop.
+
+Fri Apr 18 15:14:04 1997  Martin Junius  <mj@fido.de>
+
+	* src/toss/rununpack.sh: fixed rename loop, remove unpack.out.
+
+	* src/gate/rfc2ftn.c (snd_message): don't print_local_msgid(), if
+	  msgid_rfc_to_fido() returns NULL.
+
+	* test/tc.nomsgid/run: new test case for Message-ID: <NOMSGID_...>.
+
+	------- CVS ci -------------------------------------------------------
+
+	* doc/fidogate.texi (Programs): added %X.
+	  (Config files): added %X.
+	  (ftnpack): added -f --ffx.
+	  (Config): added LimitMsgSize.
+	  (Areas): added -L.
+	  (config.h): added DO_HAVE_SYSEXITS_H.
+	  (Usage): added new usage chapter.
+	  (RFC Headers in FTN Messages): added new section documenting the
+ 	  RFC header in FTN messages.
+	  (X Headers in RFC Messages): added new section documenting the
+	  X-Comment-To and X-Flags headers.
+
+	* src/util/ftnflo.c (do_flo): use new run_system().
+
+	* src/toss/ftnpack.c (do_arcmail): use new run_system().
+	  (do_prog): use new run_system().
+
+	* src/gate/ftn2rfc.c (main): use new run_system().
+
+	* src/ffx/ffxqt.c (exec_ffx): use new run_system().
+
+	* src/ffx/ffx.c (ffx): use new run_system().
+
+	* src/ffx/ffxbatch.c (pack_batch): use new run_system().
+
+	* src/gate/ftnin.c (do_packets): used new run_system().
+	  (exec_ftn2rfc): use new run_system().
+
+	* src/common/misc.c (run_system): new wrapper function for
+	  system(), runs DOSIFY_IF_NEEDED and extract exit code.
+
+	* src/include/prototypes.h (DOSIFY_IF_NEEDED): new macro
+	  translates to str_dosify() only if MSDOS or OS2 are defined.
+
+	* src/gate/ftnin.c (main): removed MSDOS/OS2 code for cmd[], will
+	  be handled by str_dosify() before running system().
+
+	------- CVS ci -------------------------------------------------------
+
+	* sendmail/README.FIDOGATE: updated.
+
+	* sendmail/: updated config files to sendmail-cf 8.8.5, rebuild
+	  sample .cf files.
+
+	* src/gate/ftn2rfc.c (check_valid_domain): new function checking
+	  for valid Internet domain name string, [a-zA-Z0-9.-]+.
+	  (unpack): if address in the FTN to field are allowed, check for
+	  user@do.main or user%do.main with a valid Internet domain
+	  address and put into mail_to[]. Avoids "..." around the address.
+	  Several strncpy()'s replaced with BUF_COPY().
+
+	* src/toss/rununpack.sh: move all files in tmp directory to ..,
+	  not just *.pkt's. Rename file from ArcMail packet to <1..n>file,
+	  if it already exists in the inbound directory.
+
+Sat Apr 12 09:22:58 1997  Martin Junius  <mj@fido.de>
+
+	* scripts/run/run2.sh: some changes.
+
+	* scripts/run/run1.sh: some changes.
+
+	* config.make (IFMAILDIR): added ifmail directory.
+
+	------- CVS ci -------------------------------------------------------
+
+	* scripts/inn/viaffx: use $batch on ffx command line, set to "-b $1".
+
+	* scripts/run/runpoll: using new send-ffx-b, ffxbatch replaced
+	  with ftnpack -f.
+
+	* src/toss/ftnpack.c (main): if ffx_flag, using directory pattern
+	  "f???????*".
+
+	* test/tc.ffx/ffxmail: special ffxmail for test case.
+
+	* test/tc.ffx/run: new test case, testing ffx + new ftnpack -f.
+
+	* src/toss/ftnpack.c (main): if ffx_flag is set, create/delete BSY
+	  file for address ffx_node (option -f --ffx Z:N/F.P).
+	  (do_file): if ffx_flag, set packet from/to = AKA/ffx_node,
+	  pkt_file = NULL.
+	  (main): create lock/BSY file *before* reading directory.
+	  (do_dirpack): if ffx_flag, don't create/delete BSY file.
+	  (do_pack): only create/delete BSY file for arcnode, if ffx_flag
+	  is not set or arcnode != ffx_node.
+	  (do_pack): if ffx_flag, always use do_arcmail().
+	  (do_pack): only fclose(file), if file != NULL.
+	  (do_arcmail): only rename/copy packet file, if not ffx_flag.
+
+	* src/ffx/ffxbatch.c (main): use EXIT_xxxx codes.
+
+	* src/toss/ftnpack.c (main): use BUF_EXPAND(), BUF_COPY().
+	  (main): added Z:N/F.P address argument to -f --ffx.
+
+	* examples/orodruin/config.common: added %X description.
+
+	* src/common/misc.c (str_expand_name): now %G = LogDir, added %O =
+	  Outbound, %I = Inbound, %P = PInbound, %U = UUInbound.
+
+	* src/toss/ftnpack.c (usage): new option -f --ffx.
+	  (main): new option -f --ffx, sets ffx_flag.
+
+	------- CVS ci -------------------------------------------------------
+
+	* version.h (PATCHLEVEL): set to 1 (version 4.2.1).
+
+	* src/common/misc.c (str_dosify): new function converting string
+	  with filename from UNIX `/' to MSDOS `\'.
+
+	* src/common/binkley.c (bink_out_name): implemented
+	  AMIGADOS_4D_OUTBOUND. 
+
+	* src/toss/ftnpack.c (arcmail_name): implemented
+	  AMIGADOS_4D_OUTBOUND. 
+
+	* config.h (AMIGADOS_4D_OUTBOUND): new #define to enable
+	  4D outbound filenames for AmigaDOS mailers, Z.N.F.P.flo /
+	  Z.N.F.P.mo0. Patches supplied by James McOrmond <jam@jammys.net>.
+
+Thu Apr 10 20:52:03 1997  Martin Junius  <mj@fido.de>
+
+	* config.h (FTN_RFC_HEADERS): added ":" to last two strings.
+
+	* examples/orodruin/hosts: updated.
+
+	* examples/morannon/routing: updated.
+
+	* examples/morannon/hosts: updated.
+
+	* examples/morannon/aliases: updated, Fido.DE user aliases
+	  removed.
+	
+	* ANNOUNCE: updated.
+
+	* fidogate.lsm: updated.
+
+	* test/tc.gate6/run: added exit 0 to continue in make check.
+
+	======= Release 4.2.0 ================================================
+
+	* Intermediate release for installing at morannon.fido.de, not
+	  entirely suitable for public release.
+
+	------- CVS ci, tag R420 ---------------------------------------------
+
+Sun Mar 30 16:45:38 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/ftn2rfc.c (unpack): if no 8bit characters are found in
+	  the message body, don't use ISO-8859-1/8BIT either.
+
+	* examples/morannon/: update of configuration files.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/toss/ftntoss.c (main): for statistics, the minimum time is
+	  1s for the tosser run to avoid division by 0 errors.
+
+	* src/util/pktdebug.c (main): implemented new -s --short
+	  option. The new short format display only the filename, the
+	  packet sender/recipient, and the number of NetMail/EchoMail
+	  messages in the packet.
+
+	* test/tc.boss/run: new test case, boss node tosser processing
+	  EchoMail from/to points.
+
+	------- CVS ci -------------------------------------------------------
+
+	* examples/README: added new example dirs.
+
+	* examples/namib.north.de: same.
+
+	* examples/abis.abra.de: added new example configuration directory
+	  from Andreas Braukmann's <andy@Abra.DE> fgate.tgz package.
+
+Sat Mar 29 20:43:04 1997  Martin Junius  <mj@fido.de>
+
+	* src/tick/ftntick.c (process_tic): no error if unlink(old_name)
+	  fails, the file to be replaced may not exist.
+
+Fri Mar 28 10:48:20 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/areas.c (area_build): copy limitsize.
+
+	* test/tc.gate6/run: added test with config2, setting LimitMsgSize.
+
+	* examples/orodruin/config.gate: added LimitMsgSize example.
+
+	* examples/orodruin/areas: added -L to description in comment.
+
+	* examples/orodruin/config.gate: added LimitMsgSize example.
+
+	* src/include/sysexits.h: removed, #define's move to fidogate.h.
+
+	* src/include/fidogate.h (EX_*): if DO_HAVE_SYSEXITS_H is defined
+	  use sysexits.h system header file, else use the local
+	  definitions here.
+
+	* src/gate/rfc2ftn.c (main): new LimitMsgSize config option.
+	  (print_origin): use BUF_COPY(), str_append(), BUF_APPEND().
+	  (snd_mail): check message size against limit, bounce/don't gate
+	  if limit is exceeded.
+
+	* src/common/areas.c (areas_init): added code for -L LIMITSIZE
+	  option, use atol() for long values.
+	  (areas_limitmsgsize): new function to set default limitmsgsize.
+	  (areas_get_limitmsgsize): new function to get default limitmsgsize.
+
+	* src/include/structs.h (Area): added limitsize field for -L option.
+
+Wed Mar 26 21:26:18 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/ftn2rfc.c (unpack): only set cc_line, bcc_line, if
+	  there is a To: line in the message body. Avoids problems with
+	  Fido type CC: lines.
+	  (check_8bit): new function checking for 8bit characters in Textlist.
+	  (unpack): check for 8bit characters in message body. If none are
+	  found, don't use the quoted-printable encoding.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/ftn2rfc.c (unpack): check for Content-Transfer-Encoding
+	  in RFC headers or ^ARFC kludges and set cvt8 flag accordingly.
+
+	* config.h (FTN_RFC_HEADERS): added Content-Transfer-Encoding.
+
+	* scripts/maintenance/newsyslog.sh: rewrite, first rename log
+	  files, then restart the daemons, then compress the old log
+	  files. In particular crond doesn't like its log file being
+	  compressed while still opened by crond.
+
+Sun Mar 23 10:24:56 1997  Martin Junius  <mj@fido.de>
+
+	* src/tick/ftntick.c (process_tic): Replaces handling done before
+	  moving new file from inbound to file area. Avoids deleting the
+	  new file, if the file name and Replaces name are the same.
+	  (move): added log() for copy_file() errors.
+	  (process_tic): added log() for Replaces handling errors.
+	  (process_tic): added log() for Replaces operation.
+
+	* src/common/tick.c (tick_get): use lon_add_string(), SeenBy may
+	  contain more than one FTN address.
+
+Sun Feb 23 11:53:39 1997  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/message.c (msg_body_parse_echomail): missing PATH
+	  line is not an error.
+
+	* examples/orodruin/config.main: added EchoMail4D, NoEmptyPath
+	  examples. 
+
+	* test/tc.toss1/config2: test config with KillOld.
+
+	* test/tc.toss1/config1: test config with EchoMail4D, NoEmptyPath.
+
+	* test/tc.toss1/run: added test run with EchoMail4D setting.
+
+	* src/toss/ftntoss.c (node_eq3d): renamed to node_eq_echo().
+	  (node_eq3da): renamed to node_eq_echo().
+	  (lon_search3d): renamed to lon_search_echo_pa().
+	  (main): added NoEmptyPath config option.
+	  (lon_to_kludge): if echomail4d is TRUE, don't strip point addresses.
+	  (lon_to_kludge_sorted): same.
+	  (lon_to_kludge): return number of entries in output.
+	  (lon_to_kludge_sorted): same.
+	  (addtoseenby_init): replaced strncpy0()/strncat0() with
+	  BUF_COPY()/BUF_APPEND().
+	  (lon_to_kludge): same.
+	  (lon_to_kludge_sorted): same.
+	  (do_echomail): if no_empty_path is TRUE and number of entries is
+	  PATH is 0 (stripped because it's a point address) then don't
+	  create an empty PATH line.
+
+	* doc/fidogate.texi (Config): added EchoMail4D.
+
+	* src/toss/ftntoss.c (seenby_eq): renamed to node_eq3d().
+	  (node_eq2d): new function, compare node ignoring zone and point.
+	  (seenby_search): renamed to lon_search3d().
+	  (do_echomail): call do_4point(), replacing old code.
+	  (do_4dpoint): new function doing special processing if message
+	  originates from a 4d point.
+	  (lon_first): return first entry in LON.
+	  (node_eq3d): check for NULL pointer.
+	  (node_eq2d): check for NULL pointer.
+	  (do_4dpoint): rewritten, changing the SEEN-BY / PATH entries to
+	  full 3d/4d addresses if message comes from 
+	  (node_eq2d): rename to node_eq3a().
+	  (node_eq3da): only ignore point field, if a->point == 0.
+	  (main): added EchoMail4D config option.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/toss/ftntoss.c (pkts_in, pkts_bytes): new global statistics.
+	  (main): addded more statistics output: number of packets, time,
+	  Kbyte/s, msgs/s.
+	  (unpack_file): update pkts_in, pkts_bytes for each file.
+
+Sun Feb 16 11:27:47 1997  Martin Junius  <mj@fido.de>
+
+	* doc/fidogate.texi (Config): added KillSplit, KillOld.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/log.c (log): use new date_buf() with own buf[] for
+	  output of log date to avoid problems if a call to date() is in
+	  the argument list of log().
+
+	* src/common/date.c (date_buf): new version of old date()
+	  function, new argument passing pointer to string buffer.
+	  (date): wrapper around date_buf(), using static buf[] for
+	  compatibility with old date().
+
+	* src/toss/ftntoss.c (unpack): if EchoMail, parse * Origin line.
+
+	* config.h (DATE_FTS_0001): added date() definition for FTS-0001
+	  message header date string.
+
+	* test/tc.toss1/run: added tosser run with KillOld.
+
+	* test/tc.toss1/config: special local config with KillOld.
+
+	* src/toss/ftntoss.c: max_history, max_sec, now_sec, exp_sec
+	  variables added as in ftnexpire.c.
+	  (main): retrieve MaxHistory config value.
+	  (unpack_file): update now_sec, max_sec, exp_sec for every packet
+	  file.
+	  (do_echomail): if kill_old is set, check message date. Messages
+	  older than exp_sec will be treated as dupes.
+
+	* version.h (VERSION, PATCHLEVEL): set to version 4.2.0.
+
+	* src/toss/ftntoss.c (main): added KillOld config option, sets
+	  kill_old flag.
+
+	* src/gate/ftn2rfc.c (main): added KillSplit config option, sets
+	  kill_split flag.
+	  (unpack): if kill_split is set, skip all messages with a ^ASPLIT
+	  kludge. This option helps to avoid dupes generated by the
+	  PKTSORT utility, which splits large messages, but put the
+	  original ^AMSGID in the part 2-n.
+
+	* examples/orodruin/config.main: added KillOld example.
+
+	* examples/orodruin/config.gate: added KillSplit example.
+
+Sun Feb  9 10:40:31 1997  Martin Junius  <mj@fido.de>
+
+	======= Release 4.1.6 ================================================
+	------- CVS ci, tag R416 ---------------------------------------------
+
+	* fidogate.lsm: update.
+
+	* README: update.
+
+	* ANNOUNCE: update.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/ftnin.c (main): use '\' for OS2 and MSDOS when creating
+	  ftn2rfc cmd[] string.
+
+	* test/tc.gate11/config: set UseFTNToAddress.
+
+	* test/tc.gate11/run: new test case, netmail processed by ftn2rfc.
+
+	------- CVS ci -------------------------------------------------------
+
+	* version.h (PATCHLEVEL): set to 6.
+
+	* doc/fidogate.texi (Config): added UseFTNToAddress.
+
+	* examples/morannon/config.gate: same.
+
+	* examples/orodruin/config.gate: added UseFTNToAddress with some
+	  description. 
+
+	* src/gate/ftn2rfc.c (unpack): if use_ftn_to_address is TRUE
+	  append @addr_to.addr, else append @cf_fqdn().
+	  (main): process UseFTNToAddress config option.
+
+Sat Feb  8 10:29:35 1997  Martin Junius  <mj@fido.de>
+
+	* src/gate/rfc2ftn.c (snd_message): use header_getcomplete() for
+	  Message-ID / References to process continuation lines.
+
+Thu Feb  6 19:41:16 1997  Martin Junius  <mj@fido.de>
+
+	* README: added warning for using old release 3.9.7 configuration
+ 	  files and scripts.
+
+Sat Jan 18 18:27:27 1997  Martin Junius  <mj@fido.de>
+
+	* README, ANNOUNCE: updated mailing list subscribe/unsubscribe.
+
+	* examples/README: new README for examples directory.
+
+Sun Jan  5 11:16:09 1997  Martin Junius  <mj@fido.de>
+
+	* scripts/maintenance/newsyslog.sh: rewrite of script, now
+	  compressing old log files.
+
+Wed Jan  1 11:19:14 1997  Martin Junius  <mj@fido.de>
+
+	* ANNOUNCE, README: some changes.
+
+Tue Dec 31 13:42:37 1996  Martin Junius  <mj@fido.de>
+
+	* src/common/misc.c (str_last): return s[l].
+
+	* scripts/nodelist/Makefile (PROGS): added nl-2routing.
+
+	* scripts/nodelist/nl-2routing.pl: added new script contributed by
+	  Andreas Braukmann <andy@AbrA.DE>, converts nodelist to hub routing.
+
+Sun Dec 29 13:14:46 1996  Martin Junius  <mj@fido.de>
+
+	* scripts/misc/senduu.sh: fixed senduumail.
+
+	======= Release 4.1.5 ================================================
+	------- CVS ci, tag R415 ---------------------------------------------
+
+	* ANNOUNCE: updated.
+
+	* README: updated.
+
+Fri Dec 27 22:58:56 1996  Martin Junius  <mj@fido.de>
+
+	* scripts/misc/senduu.sh: rewritten to use the ftnflo utility.
+
+	* src/util/Makefile (install): install ftnfattach, ftnflo in LIBDIR.
+
+	* scripts/misc/Makefile (PROGS): added senduumail.
+
+	* scripts/misc/senduumail.sh: new script for sending single file
+	  as uuencoded mail.
+
+Thu Dec 26 16:58:24 1996  Martin Junius  <mj@fido.de>
+
+	* fidogate.lsm: updated.
+
+	* ANNOUNCE: updated.
+
+	* version.h (PATCHLEVEL): set to 5.
+
+Tue Dec 24 18:53:58 1996  Martin Junius  <mj@fido.de>
+
+	* sendmail/mailer/ftn.m4: removed ') after FTN_MAILER_ARGSA. Damn
+	  copy&paste! ;-)
+
+	* doc/gatebau/Makefile (install): must install msgid*.html.
+
+Sun Dec 22 10:48:09 1996  Martin Junius  <mj@fido.de>
+
+	* test/tc.gate7/config: added to CVS repository.
+
+	======= Release 4.1.4 ================================================
+	------- CVS ci, tag R414 ---------------------------------------------
+
+	* ANNOUNCE: updated.
+
+	* fidogate.lsm: updated.
+
+	------- CVS ci -------------------------------------------------------
+
+	------- CVS ci -------------------------------------------------------
+
+	* sendmail/cf.ORIG/: removed entire directory.
+
+	* doc/fidogate.texi (Sendmail): added sendmail configuration section.
+
+	* doc/gatebau/Makefile: new Makefile for doc/gatebau/
+	  sub-directory, creating HTML, LaTeX, plain text documentation
+	  from SGML files.
+
+	* doc/Makefile (SUBDIRS): added gatebau sub-directory.
+
+Sat Dec 21 00:04:34 1996  Martin Junius  <mj@fido.de>
+
+	* doc/fidogate.texi (Example Point 2): more information based on
+ 	  input from Stephan Zellerhoff <stephan@poi.westfalen.de>
+
+Fri Dec 20 09:47:56 1996  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* fidogate.lsm: updated.
+
+	* ANNOUNCE: updated.
+
+	* sendmail/mailer/ftn.m4 (Mftna): changed FTN_MAILER_ARGSA to only
+	  set -a and -u, not the output directory.
+	  (Mftno): like ftna, but also sets -O output directory (same as
+	  old ftna).
+
+	* sendmail/cf/orodruin.mc: adapted to new RedHat release.
+
+	* sendmail/cf.ORIG/obj/: removed entire directory.
+
+	* sendmail/*: updated with new files from RedHat 4.0 / sendmail
+	  8.8.4 configuration.
+
+Tue Dec 17 15:42:11 1996  Martin Junius  <mj@fido.de>
+
+	* version.h (PATCHLEVEL): set to 4.
+
+	------- CVS ci -------------------------------------------------------
+
+	* Updated copyright and address information in all source files.
+
+	* doc/gatebau/msgid.sgml: LinuxDoc SGML version generated by LyX.
+
+	* doc/gatebau/msgid.lyx: new version of msgid.doc converted to LyX.
+
+	* doc/gatebau/: added new directory for "Gatebau" standard documents.
+
+	* doc/msgid.doc: updated address, some editorial changes.
+
+Fri Dec  6 08:16:28 1996  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/rfc2ftn.c (rfc_parse): if node==NULL return OK after
+	  MAUS parsing.
+	  (mail_receiver): call rfc_parse() with gw==FALSE for EchoMail.
+
+	* test/tc.gate7/run: added EchoMail tests with Gateway
+ 	  242:4900/99.
+
+	* test/tc.gate7/config: added local config file setting Gateway
+	  address. 
+
+	* test/tc.gate7/run: added test with X-Comment-To: ().
+
+Tue Dec  3 21:22:34 1996  Martin Junius  <mj@fido.de>
+
+	======= Release 4.1.3 ================================================
+	------- CVS ci, tag R413 ---------------------------------------------
+
+	* examples/morannon/config.common: same.
+
+	* examples/orodruin/config.common: added PInbound, UUInbound.
+
+	* fidogate.lsm: updated.
+
+	* README: updated.
+
+	* ANNOUNCE (Subject): updated for new release.
+
+Mon Dec  2 20:04:10 1996  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* doc/fidogate.texi (config.h): updated, DEF_HISTORY.
+	  (Config): added History.
+
+	* examples/orodruin/config.common: added History to example.
+
+	* src/toss/history.c (hi_init): use new cf_p_history().
+
+	* src/toss/ftnexpire.c (do_expire): use new cf_p_history() to get
+	  complete history database file name.
+
+	* src/include/prototypes.h (BUF_EXPAND): new wrapper for
+	  str_expand_name(). 
+
+	* src/common/config.c (cf_p_history): new function retrieving
+	  History value from config file (default DEF_HISTORY).
+
+	* config.h (DEF_HISTORY): old HISTORY changed to new default
+	  value. Can be overwritten with History in config file.
+
+	* src/toss/ftnexpire.c (do_expire): use dbzagain() to initialize
+	  new history database. This should solve the performance problem.
+
+Sun Dec  1 11:29:54 1996  Martin Junius  <mj@fido.de>
+
+	* test/tc.history/rndmsgid: script for random msgid generation.
+
+	* src/toss/history.c (main): new -t TIME option.
+	  (hi_write_t): modified low-level version of hi_write(), taking
+	  additional time of entry in history database.
+	  (hi_write): use new hi_write_t().
+	  (main): if no msgid on command line, read from stdin.
+
+	* test/tc.history/run: new test case for history database.
+
+	* src/toss/history.c (main): changed printf()s to debug().
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/routing.c (parse_pkt_name): added sanity check for
+	  grade/type/flavor taken from packet file name. If type or flavor
+	  is invalid use default -/-/Normal.
+
+	* src/common/binkley.c (flav_to_asc): return "Normal" for unknown
+	  flavor code.
+
+	* doc/fidogate.texi (ftnpack): added -F / and appropriate
+	  warning.
+
+Sat Nov 30 14:35:27 1996  Martin Junius  <mj@fido.de>
+
+	* src/toss/ftnpack.c (do_noarc): call bink_attach() with mode==0,
+	  not trying to delete the attachment.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/toss/runtoss.sh: outf uses FADIR=-F/
+
+	* src/toss/ftnpack.c (do_noarc): if -F / is specified, treat file
+	  attachment in subject as complete path, don't use
+	  dir_search().
+
+	------- CVS ci -------------------------------------------------------
+
+	* config.h (FTN_RFC_HEADERS): added "Sender" to list of recognized
+	  RFC headers.
+
+	* test/tc.gate10/run: new test case, Sender for mailing lists.
+
+	* src/gate/rfc2ftn.c (snd_message): add Sender line, if RFC
+	  headers Sender or Resent-From are present. Typically, this will
+	  be the case with mailing lists.
+
+	* scripts/run/runpoll.sh: use runtoss outf.
+
+	* src/toss/runtoss.sh: added new toss name "outf", running the
+	  tosser for the rfc2ftn outbound with file attachments.
+
+	* src/toss/runin.sh: add $$ to ftnlock command line.
+
+	------- CVS ci -------------------------------------------------------
+
+	* config.h (RFC_LVL_1_HEADERS): added "Sender", "Resent-From".
+
+	* src/common/lock.c: all debug() levels set to 7.
+
+	* doc/fidogate.texi (ftnlock): updated.
+
+	* src/util/ftnlock.c (usage): new option -w --wait, new optional
+	  parameter id.
+	  (main): implemented new option -w --wait, use new
+	  lock_program_id() with optional command line parameter id. This
+	  allow scripts using the ftnlock utility to write the script PID
+	  to the lock file, not the PID of the called ftnlock, e.g. by
+	  executing ftnlock abcd $$.
+
+	* src/common/lock.c (lock_lockfile_id): new version of old
+	  lock_lockfile() function, using new id argument. If id!=NULL,
+	  this string will be put into the lockfiles, else the PID.
+	  (lock_lockfile): use new lock_lockfile_id() with id==NULL.
+	  (lock_program_id): new variant of lock_program(), passing new
+	  arg id to lock_lockfile_id().
+	  (lock_program): use lock_lockfile_id() wiht id==NULL.
+
+Fri Nov 29 22:17:54 1996  Martin Junius  <mj@fido.de>
+
+	* src/toss/rununpack.sh (SPOOL): fixed to use same var name as
+	  runtoss.
+
+	------- CVS ci -------------------------------------------------------
+
+	* examples/morannon, orodruin: updated example config files.
+	
+	* version.h (PATCHLEVEL): set to 3.
+
+Mon Nov 25 19:34:09 1996  Martin Junius  <mj@fido.de>
+
+	* src/gate/ftn2rfc.c (get_from): try to parse ^AREPLYADDR as an
+	  FTN address. If it is an FTN address, don't return as Internet
+	  address. 
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/toss/runout.sh (LOGDIR): use ftnconfig.
+
+	* src/toss/runin.sh (LOGDIR): use ftnconfig.
+
+	* src/util/ftnconfig.c (do_para): added =inbound, =pinbound,
+	  =uuinbound, =outbound to fixed parameters.
+
+	* src/toss/rununpack.sh: same.
+
+	* src/toss/runtoss.sh (SPOOL, OUTBOUND, INBOUND, PINBOUND,
+	  UUINBOUND): use ftnconfig to get values.
+
+	* src/util/ftnconfig.c (do_para): added =libdir, =spooldir,
+	  =logdir to list of fixed parameters.
+
+	* src/common/config.c (cf_origin, cf_organzation, cf_set_outbound,
+	  cf_outbound, cf_set_inbound, cf_inbound)): removed.
+	  (cf_do_line): removed special treatment for Origin,
+	  Organization, Inbound, Outbound parameters (are now normal
+	  string parameters).
+
+	* src/include/prototypes.h
+	  (cf_set_outbound): #define'd to cf_s_outbound(). 
+	  (cf_outbound): #define'd to cf_p_outbound().
+	  (cf_set_inbound): #define'd to cf_s_pinbound().
+	  (cf_inbound): #define'd to cf_p_pinbound().
+	  (cf_origin): #define'd to cf_p_origin().
+	  (cf_organization): #define'd to cf_p_organization().
+
+	* src/common/config.c (cf_p_s_pinbound): new version of old
+	  cf_p_inbound(), allowing to set pval.
+	  (cf_p_pinbound): use new cf_p_s_pinbound().
+	  (cf_s_pinbound): new function setting PInbound value.
+	  (cf_p_s_outbound): new function get/set Outbound value.
+	  (cf_p_outbound): get Outbound parameter value.
+	  (cf_s_outbound): set Outbound parameter value.
+	  (cf_p_organization): new function get Organization parameter value.
+	  (cf_p_origin): new function get Origin parameter value.
+
+Sun Nov 17 12:47:41 1996  Martin Junius  <mj@fido.de>
+
+	======= Release 4.1.2 ================================================
+	------- CVS ci, tag R412 ---------------------------------------------
+
+	* fidogate.lsm: updated.
+
+	* ANNOUNCE: updated.
+
+	* src/gate/ftn2rfc.c (unpack): initialize cvt8=0 for NetMail.
+	  (unpack_file): remove debug() message, same as log().
+
+	* src/common/kludge.c (kludge_getn): modified version of old
+	  kludge_get() with new arg first. first==TRUE gets first kludge
+	  from list, first==FALSE gets next one.
+	  (kludge_get): use kludge_getn() with first==TRUE.
+
+	* src/gate/ftn2rfc.c (unpack): don't delete when calling
+	  kludge_pt_intl(). 
+
+Wed Nov 13 22:14:55 1996  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* version.h (PATCHLEVEL): set to 2.
+
+	* src/common/message.c (msg_xlate_line): must translate '=' to
+	  '=3D' if using the MIME quoted-printable encoding.
+	  (msg_xlate_line): AREA_QP has priority over AREA_8BIT.
+
+	* test/tc.8bit/run: added another test mail, body2.
+
+Sun Nov 10 11:37:44 1996  Martin Junius  <mj@fido.de>
+
+	* src/toss/ftntoss.c (do_echomail): changed format of dupe log()
+	  messages. 
+
+	* ANNOUNCE, fidogate.lsm: updated file size.
+
+	======= Release 4.1.1 ================================================
+	------- CVS ci, tag R411 ---------------------------------------------
+
+	* sendmail/cf/: rebuild .cf files.
+
+	* mksubst.pl: removed.
+
+	* README: updated.
+
+	* fidogate.lsm: updated.
+
+	* ANNOUNCE: updated for release 4.1.1
+
+Sat Nov  9 17:26:07 1996  Martin Junius  <mj@fido.de>
+
+	* src/toss/ftnaf.c (do_mail): ignore stuff aftern "-- " line
+	  (start of signature).
+
+	* src/toss/ftnafmail.c (main): initialize filefix = FALSE.
+
+	* src/gate/ftninpost.pl: check that FTNInSendmail and FTNInRnews
+	  is specified in config.gate.
+
+	------- CVS ci -------------------------------------------------------
+
+	* doc/fidogate.texi (Programs): added ftnafmail.
+	  (ftnafmail): new node describing new ftnafmail program.
+
+	* src/util/pktdebug.c (main): call kludge_pt_intl() to retrieve
+	  complete address information.
+
+	* src/toss/ftntoss.c (unpack): same.
+
+	* src/toss/ftnroute.c (do_packet): same, removed #if 0 code.
+
+	* src/toss/ftn2ftn.c (unpack): same.
+
+	* src/gate/ftn2rfc.c (unpack): changed call to kludge_pt_intl().
+
+	* src/common/kludge.c (kludge_pt_intl): new arg del, only call
+	  tl_delete() if del == TRUE.
+	  (kludge_pt_intl): strsave() ^AINTL line before running strtok().
+
+	* src/gate/rfc2ftn.c (sendback): added va_end().
+
+	* src/common/textlist.c (tl_appendf): added va_end().
+
+	* src/common/log.c (log): added call to va_end().
+	  (debug): error message, no output if no_debug == TRUE. Added
+	  call to va_end().
+
+	* src/common/config.c (cf_initialize): check for real uid !=
+	  effective uid (setuid installed FIDOGATE programs) and set
+	  no_debug=TRUE in this case.
+
+	* src/toss/Makefile (install): install ftnaf as normal binary,
+	  ftnafmail as setuid.
+
+	* src/toss/ftnafmail.c: new setuid wrapper for ftnaf. Used for
+	  sending mail to Areafix/Filefix.
+
+	* src/toss/ftnaf.c (main): removed -x --exec-program option,
+	  security problems.
+	  (run_script): removed.
+	  (cmd_add): removed call to run_script().
+
+Fri Nov  1 13:25:29 1996  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* doc/fidogate.texi (Example Point): added that EchoMail4D is
+	  reqired.
+
+	* src/toss/ftntoss.c (do_echomail): moved tl_clear() for SEEN-BY,
+	  PATH after path check, so that bad messages still contain the
+	  original SEEN-BYs and PATH.
+
+	* sendmail/mailer/ftn.m4: mailer ftna runs
+	      rfc2ftn -a $h -u $h -O %S/out/$h 
+	  writing output packets in a separate directory. This requires
+	  running the tosser afterwards because from/to addresses of the
+	  packet are the same ($h).
+    	
+	* src/gate/ftn2rfc.c (main): use str_expand_name() for -I.
+
+	* src/toss/ftnpack.c (main): same + use BUF_COPY3(), also for -O.
+
+	* src/toss/ftnroute.c (main): same + use BUF_COPY3().
+
+	* src/toss/ftntoss.c (main): use str_expand_name() for -I.
+
+	* src/common/packet.c (pkt_outdir): use str_expand_name(), so that
+	  %S/%L/%O can be used.
+	  (pkt_baddir): same.
+
+	* src/toss/runtoss.sh: added -p for "runtoss out".
+
+	* doc/fidogate.texi (ftntoss): added -p --passthru option.
+
+	* src/toss/ftntoss.c (usage): new -p --passthru option.
+	  (main): implemented -p --passthru.
+	  (do_echomail): only toss for own address if p_flag is FALSE.
+
+	* doc/fidogate.texi (Example Point 2): new section for setup with
+	  2 point addresses. Not yet complete.
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/gate/rfc2ftn.c (rfc_parse): new argument gw, if TRUE enables
+	  cf_gateway() checking and address/name replacement.
+	  (mail_receiver): call rfc_parse() with gw=TRUE.
+	  (mail_sender): call rfc_parse() with gw=FALSE, fixing the bug
+	  that also the sender was set to UUCP when Gateway Z:N/F.P was
+	  enabled in config.gate.
+
+	* test/tc.gate9/run (Subject): new test case for "Gateway" config
+	  statement. 
+
+Mon Oct 28 22:04:56 1996  Martin Junius  <mj@fido.de>
+
+	* test/tc.point2/run: new test case to setup with 2 different
+	  point addresses and 2 different uplinks.
+
+Sun Oct 27 13:33:33 1996  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* test/tc.8bit/run: new test case for testing char conversion
+ 	  quoted-printable -> rfc2ftn -> ftn2rfc ->
+ 	  ascii/8bit/quoted-printable.
+
+	* src/common/charset.c (xtab[][][]): improved ISO LATIN-1 ->
+	  ASCII/8BIT/QP conversion table.
+
+	* src/toss/rununpack.sh: check that an archiver program for the
+	  archiver type was found.
+
+	* src/common/config.c (cf_p_aliases, areas, hosts, passwd,
+	  packing, routing): char buf[] replaced with
+	  char *pval.
+	  (cf_p_inbound): new function returning config Inbound.
+	  (cf_p_pinbound): new function returning config PInbound,
+	  fallback is Inbound.
+	  (cf_p_uuinbound): new function returning config UUInbound,
+	  fallback is Inbound.
+
+	* doc/fidogate.texi (Areas): added -Q.
+	  (Config): added NetMail8bit, NetMailQuotedPrintable.
+	  (Config): changed Inbound, PInbound, added UUInbound.
+
+	* config.h (CHARSET_8BIT): removed.
+
+Tue Oct 22 20:52:14 1996  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* src/common/rfcaddr.c (rfcaddr_from_ftn): call charset_xlate()
+	  with cidx=0.
+
+	* src/common/charset.c (charset_xlate): additional arg cidx, used
+	  as index for xtab[][][].
+
+	* src/common/message.c (msg_xlate_line): call charset_xlate() with
+	  new arg cidx.
+
+	* src/common/charset.c (xtab): extended to 3d array, left index is
+	  type of conversion 0=US-ASCII, 1=ISO-8859-1 8BIT, 2=ISO-8859-1 QP.
+
+	* src/common/message.c (msg_xlate_line): new cvt8 argument.
+
+	* src/gate/ftn2rfc.c (news_msg): initialize all Area fields.
+	  (netmail_8bit, netmail_qp): new flags for config.gate
+	  "NetMail8bit", "NetMailQuotedPrintable".
+	  (main): get "NetMail8bit", "NetMailQuotedPrintable" from config.gate.
+	  (unpack): output MIME-Version, Content-Type,
+	  Content-Transfer-Encoding headers dependend on cvt8 flag
+	  settings (AREA_8BIT | AREA_QP).
+	  (unpack): moved check for mail or news before message body
+	  conversion (must set cvt8 before).
+	  (unpack): pass cvt8 / 0 as additional parameter to msg_xlate_line().
+
+	* src/common/areas.c (areas_init): implemented -Q option.
+
+	* src/include/structs.h (AREA_QP): new #define for -Q option.
+
+Sun Oct 20 10:53:14 1996  Martin Junius  <mj@fido.de>
+
+	------- CVS ci -------------------------------------------------------
+
+	* test/tc.gate6/run: added test with a large mail message >660K to
+	  test for correct computation of number of split messages.
+
+	* version.h (PATCHLEVEL): set to 1.
+
+	* src/gate/rfc2ftn.c (snd_mail): initialize from_is_local = FALSE.
+	  (snd_message): run same algorithm to compute number of parts as
+	  done for the actual splitting.
+
+	* src/common/address.c (addr_is_domain): moved debug() after var
+	  settings. 
+
+	* src/ffx/ffxrmail.pl: if the From_ line does not contain an
+	  envelope sender, set to news@localhost.
+
+	* doc/fidogate.texi (ftnpack): added -F --file-dir option.
+
+	======================================================================
+
+	* Started new ChangeLog after release of 4.1.0, old ChangeLog
+	  renamed to ChangeLog.O.

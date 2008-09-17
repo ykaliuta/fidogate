@@ -1,0 +1,28 @@
+.TH Leafnode-m2news 1 "Maint Laboratory" "Linux" "Maint Laboratory"
+.SH ИМЯ
+leafnode-mail2news \- Mail2News для leafnode
+.SH СИНТАКСИС
+m2news -n newsgroup [-s subject] [-h] [-v] [файл]
+.SH ОПИСАНИЕ
+Позволяет отправить почтовое сообщение в новости для NNTP сервера leafnode.
+Новое сообщение может быть получено из файла и если он не указан, то из файла 
+стандартного ввода. 
+.SH ОПЦИИ
+.TP
+.I -n newsgroups
+группа новостей
+.TP
+.I -n subject
+описание сообщения, если не устраивает старое
+.TP
+.I -d
+текущая дата вместо описания сообщения
+.TP
+.I -v
+болтливый режим
+.TP
+.I -h
+помощь
+.SH СМОТРИ ТАКЖЕ
+rnews(1), leafnode(8), send-fidogate(1)
+

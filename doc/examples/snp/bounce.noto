@@ -1,0 +1,32 @@
+Subject: Returned mail: No valid To line found in message
+
+   ----- Transcript of session follows -----
+
+Your mail
+
+   From: %f @ %F
+   To:   %t @ %T
+   Date: %d
+   Subj: %s
+
+didn't contain a To line at the very beginning of the message.
+Therefore it could not be delivered.
+
+Please insert a line similar to
+
+   To: user@host.do.main
+
+next time!
+
+If your message contains a "To:" line, the most common errors are
+additional (empty) lines before the "To:" line, extra spaces before
+"To:" or using "To :".
+
+If you want to send mail to a local user at this system please omit
+the To line and put the user or real name into the FIDO header.
+
+For more information about this gateway and fido.vsu.ru send a mail to
+FidoAdm @ 2:5020/1838 or fidoadm@intra.eu.org
+
+   ----- Message follows -----
+%M

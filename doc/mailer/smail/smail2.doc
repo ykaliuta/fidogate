@@ -1,0 +1,118 @@
+From @uniol.uucp:feivel!fix!kai@incom.rhein-main.de Thu Dec  2 05:46:35 1993
+Return-Path: <@uniol.uucp:feivel!fix!kai@incom.rhein-main.de>
+Received: by sungate.fido.de (4.1/mj-2.4)
+	id AA13024; Thu, 2 Dec 93 05:46:20 +0100
+Received: by dfv.rwth-aachen.de (4.1/dfvr.2.3)
+	id AA18543; Thu, 2 Dec 93 02:11:17 +0100
+Received: from rnihd by subnet.sub.net with UUCP id <2070-2>; Thu, 2 Dec 1993 02:05:20 +0100
+Received: from artcom0 by rnihd.rni.sub.org with uucp
+	 id m0p532C-000FRrC; Thu, 2 Dec 93 01:40 GMT
+Received: by artcom0.north.de (SMail-2.5X)
+	id AA09763; 1 Dec 93 00:20:13 MEZ (Wed)
+Received: by arbi.informatik.uni-oldenburg.de (smail3.1.18 + xalias);
+	Tue, 30 Nov 93 23:10 CET
+Received: by ki1.chemie.fu-berlin.de (Smail3.1.28.1)
+	  from mail.rhein-main.de (193.141.47.242) with smtp
+	  id <m0p4dD1-0000YZC>; Tue, 30 Nov 93 23:06 MET
+Received: from odb.rhein-main.de by mail.rhein-main.de with smtp
+	(Smail3.1.28.1 #8) id m0p4c8v-0001cUC; Tue, 30 Nov 93 22:57 MET
+Received: from in.rhein-main.de by odb.rhein-main.de with cbsmtp
+	(Smail3.1.28.1 #22) id m0p4dAF-0000URC; Tue, 30 Nov 93 23:03 MET
+Received: by incom.rhein-main.de (/\==/\ Smail3.1.25.1 #25.24)
+	id <m0p4aNG-0000o4C@incom.rhein-main.de>; Tue, 30 Nov 93 20:04 MET
+Received:  from fix by feivel.kmk.rhein-main.de (UUPC/extended 1.12b) with UUCP;
+           Tue, 30 Nov 1993 13:08:59 CET
+Received: by fix.kmk.rhein-main.de (Smail3.1.28.1 #20)
+	id m0p4TdY-0003Y2C; Tue, 30 Nov 93 12:52 MET
+Message-Id: <m0p4TdY-0003Y2C@fix.kmk.rhein-main.de>
+From: kai@fix.kmk.rhein-main.de (Kai Kretschmann)
+Subject: SMail Anbindung (fwd)
+To: fgate-users@gondor.gun.de (fgateU)
+Date: 	Tue, 30 Nov 1993 12:52:55 +0100
+Cc: mj@sungate.fido.de (Martin Junius)
+X-Pgp-Keyid: 1024/DCBF15
+X-Pgp-Fingerprint: 07 F0 BF 7A 57 55 FE B4  09 C5 A5 0E D0 44 EA 20
+X-Mailer: ELM [version 2.4 PL21]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Content-Length: 2983      
+Status: RO
+
+Hallo Gaters,
+
+Ich  habe  mal mit meinem   SMail herumgespielt.  Dabei  habe  ich die
+Anbindung an FidoGate etwas anders geloest, wie in den Readme's von MJ
+beschrieben wird. Die relevanten Auszüge der  diversen Files sind hier
+mal aufgelistet. Zu meinem System aber noch ein paar Angaben:
+
+Ich   habe  eine lokale Subdomain  ".kmk.rhein-main.de"   und gate für
+einzelne lokale Fido-Nodes und Points.
+
+Der Unix-Rechner heißt "fix.kmk.rhein-main.de".
+
+Eine Fido-Unterdomain ".fido.kmk.rhein-main.de"  wird  definiert.  Der
+Fido-Partner           zu     meinem        Unixsystem             ist
+"feivel.fido.kmk.rhein-main.de".
+
+Von Fido aus gesehen generiert ein virtueller Point 2 die Nachrichten,
+also gilt bei mir noch der Alias:
+
+	fix.kmk.rhein-main.de = p2.feivel.fido.kmk.rhein-main.de
+
+Das habe  ich  mit Hilfe eines lokalen  Nameservers  gelöst, kann aber
+auch einfach z.B. in /etc/hosts stehen.
+
+SMail benutzt den router "forces" für lokal erzwungene Routing-Angaben
+die statisch definiert   werden. Dafür wird  mit dem Pathalias-Treiber
+nach   allen ".fido.kmk.rhein-main.de"   gesucht. Die Transportmethode
+wird im Erfolgsfall über eine Tabelle nachgeschlagen.
+
+Ich finde das  ganze nutzt die Fähigkeiten von  SMail besser,  wie die
+Lösung über das  Shellscript "match_fido.sh".  Ich  denke mal es  wird
+auch effektiver sein,(?) da nur in Tabellen nachgesehen werden muß und
+nicht erst ein Script jedesmal startet.
+
+Anregungen und Verbesserungen sind willkommen, es kann aber auch gerne
+in eines der Readme's übernommen  werden. Dann allerdings lieber nicht
+mit meinen Domains, sondern mit etwas fiktivem.
+
+====================[routers]=========================
+
+forces:
+        driver = pathalias,             # router to search paths file
+        always,				# Auf jeden Fall benutzen(?)
+        method = table;                 # transports are in this file
+        file = maps/force.path,         # file containing force path info
+        proto = lsearch,                # use the linear search
+        domain = kmk.rhein-main.de,     # strip trailing domain before lookup
+        reopen                          # close when not being used
+
+====================[maps/force.path]==================
+
+.fido           p2.feivel.fido!%s
+.zyxel          p2.feivel.fido!%s
+.gernet         p2.feivel.fido!%s
+
+====================[methods/table]====================
+
+p2.feivel.fido                          fido            # fido
+
+====================[transporst]=======================
+
+fido:           from, return_path,
+                driver = pipe;
+
+                group = uucp,
+                cmd = "/usr/local/lib/fidonet/rfc2fido -v $input_addr",
+                pipe_as_sender
+
+PS:   Das erste mal  Abschicken kann  u.U. eine  leere Mail verursacht
+haben, sorry.
+
+-- 
+Kai Kretschmann,
+  >>>   FidoNet:  2:248/312, 21:100/5729, 16:100/6006    <<<
+  >>>   Internet: kai@fix.kmk.rhein-main.de              <<<
+  >>>   FAX/BBS:  +49-6172-305379                        <<<
+

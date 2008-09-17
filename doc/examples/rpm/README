@@ -1,0 +1,17 @@
+-*- Indented-Text -*-
+
+This directory contains configuration files the binary rpm:
+
+/etc/fidogate:
+    fidogate.conf
+    
+    aliases
+    areas
+    hosts
+    packing
+    passwd
+    routing
+
+/var/lib/fidogate:
+    areas.bbs
+    fareas.bbs
