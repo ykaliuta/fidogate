@@ -198,9 +198,6 @@ int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
     int i;
     int outpos = 0;
     char *delim = NULL;
-
-    debug(6, "MIME: %s: %d chars to encode (%s): %s",
-	  __FUNCTION__, len, encoding);
     
     padding = (B64_ENC_CHUNK - len % B64_ENC_CHUNK) % B64_ENC_CHUNK;
     
@@ -277,8 +274,6 @@ int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
 
     if(encoding != NULL)
         strcat(buf, MIME_HEADER_CODE_END);
-
-    debug(6, "MIME: %s: encoded: %s", __FUNCTION__, buf);
 
     xfree(delim);
     return OK;
