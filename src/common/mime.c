@@ -190,7 +190,7 @@ int mime_qptoint(char c)
 #define B64_ENC_CHUNK 3
 #define B64_NLET_PER_CHUNK 4
 
-int mime_enheader(char **dst, char *src, size_t len, char *encoding)
+int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
 {
     int buflen, delimlen = 0;
     char *buf = NULL;

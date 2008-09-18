@@ -303,7 +303,7 @@ AC_ARG_ENABLE(aliases-local,
 
 AC_ARG_ENABLE(ai1,
 [  --enable-ai1		Add -a option to HOSTS entries, useful only with PASSTHRU NET/ECHOMAIL],
-    AC_DEFINE(ALIASES_ARE_LOCAL),)
+    AC_DEFINE(AI_1),)
 
 AC_ARG_ENABLE(best-aka,
 [  --disable-best-aka	disable best AKA select],
