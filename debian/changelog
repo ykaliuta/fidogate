@@ -1,3 +1,12 @@
+fidogate (5.2.3ds+cvs20080629-1) unstable; urgency=low
+
+  * New upstream snapshot
+  * Fix option `--enable-ai1'(thanks to Max N. Boyarov).
+  * Fix another initialization to avoid segfault on free(3)
+  * Fix type for buffer(Thanks to Zhenya Kaliuta).
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Thu, 18 Sep 2008 22:32:00 +0300
+
 fidogate (5.2.3ds+cvs20071013-2) unstable; urgency=low
 
   * Added 06enheader-debug.dpatch
