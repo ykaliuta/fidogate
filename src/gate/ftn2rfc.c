@@ -452,6 +452,38 @@ int msg_format_buffer(char *buffer, Textlist *tlist)
     return 0;
 }
 
+struct encoding_state {
+    int cvt8;
+    char *cs_out;
+    Textlist *theader;
+};
+
+static int encode_header(Textline *tl, void *arg)
+{
+    struct encoding_state *state = arg;
+    char *line = tl->line;
+    char *tmpbuf = NULL;
+    char *p;
+    int size;
+    
+    if((is_7bit(line, strlen(line))) || (!(state->cvt8 & AREA_HB64)))
+	return OK;
+    
+    p = strstr(line, ": ");
+    if (p == NULL)
+	return OK;
+
+    size = strlen(p + 2);
+    mime_enheader(&tmpbuf, p + 2, size, state->cs_out);
+
+    size += (p - line) + 2 + strlen(tmpbuf) + 2;
+    tl->line = xrealloc(line, size);
+    strcpy(tl->line + (p + 2 - line), tmpbuf);
+    strcat(tl->line, "\n");
+    xfree(tmpbuf);
+    
+    return OK;
+}
 
 
 /*
@@ -495,8 +527,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
     MIMEInfo *mime;
     char *mime_ver, *mime_type, *mime_enc;
     char *carbon_group = NULL;
-
-
+    struct encoding_state en_state;
+    
     /*
      * Initialize
      */
@@ -1335,19 +1367,9 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	
 	if ( NULL == msgbody_rfc_subject )
 	{
-            char *tmpbuf;
 	    msg_xlate_line(buffer, sizeof(buffer), msg.subject,
 			   cvt8 & AREA_QP, ignore_soft_cr);
-            if((! is_7bit(buffer, strlen(buffer))) && (cvt8 & AREA_HB64))
-            {
-                mime_enheader(&tmpbuf, buffer, strlen(buffer), cs_out);
-                tl_appendf(&theader, "Subject: %s\n", tmpbuf);
-                xfree(tmpbuf);
-            }
-            else
-            {
-                tl_appendf(&theader, "Subject: %s\n", buffer);
-            }
+	    tl_appendf(&theader, "Subject: %s\n", buffer);
 	}
 	else
 	{
@@ -1665,6 +1687,12 @@ carbon:
 	    
 	tl_appendf(&theader, "\n");
 
+	en_state.cvt8 = cvt8;
+	en_state.cs_out = cs_out;
+	en_state.theader = &theader;
+	
+	tl_for_each(&theader, encode_header, &en_state);
+	
 	/* Write header and message body to output file */
 	if(area)
 	{
