@@ -1,5 +1,7 @@
 2008-09-21  Andrey Slusar  <anrays@gmail.com>
 
+	* src/gate/ftn2rfc.c: A hack to encode all non-7bit headers
+	(patch from Yauheni Kaliuta).
 	* acinclude.m4: Update to new aclocal(tested on 1.10.1).
 	* src/toss/Makefile.am: Remove runinc individual CFLAGS.
 	* src/charset/Makefile.am: Update to new automake(tested on 1.10.1).
