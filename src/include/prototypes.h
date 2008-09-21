@@ -623,6 +623,7 @@ void	tl_addtl		(Textlist *, Textlist *);
 Textline* tl_get		(Textlist *, char *, int);
 char*	tl_get_str		(Textlist *, char *, int);
 int	tl_copy			(Textlist *, Textlist *);
+int	tl_for_each		(Textlist *, int (*)(Textline *, void *), void *);
 /* tick.c */
 int	copy_file		(char *, char *, char *);
 void	tick_init		(Tick *);
