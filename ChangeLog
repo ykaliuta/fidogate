@@ -1,3 +1,11 @@
+2008-09-21  Andrey Slusar  <anrays@gmail.com>
+
+	* acinclude.m4: Update to new aclocal(tested on 1.10.1).
+	* src/toss/Makefile.am: Remove runinc individual CFLAGS.
+	* src/charset/Makefile.am: Update to new automake(tested on 1.10.1).
+	* autogen.sh: Add script for build configure, Makefiles and
+	others autotool-files.
+
 2008-09-17  Andrey Slusar  <anrays@gmail.com>
 
 	======= Release 5.2.4ds ========================

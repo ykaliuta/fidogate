@@ -16,7 +16,7 @@ endif
 AM_CFLAGS		= -Wall
 
 libexec_PROGRAMS	= charsetc
-libexec_DATA		= charset.bin
+libexec_EXTRA		= charset.bin
 
 charset.bin:
 	./charsetc -v charset.map charset.bin

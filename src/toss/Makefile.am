@@ -15,8 +15,6 @@ endif
 
 AM_CFLAGS		= -Wall
 
-runinc_CFLAGS		= -g -O3
-
 bin_PROGRAMS		= ftnexpire runinc ngoper
 libexec_PROGRAMS	= ftn2ftn ftnpack ftnroute ftntoss
 libexec_SCRIPTS		= report_traffic
