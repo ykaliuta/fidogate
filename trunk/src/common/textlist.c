@@ -277,3 +277,17 @@ int tl_copy(Textlist *dst, Textlist *src)
 	tl_append(dst, p->line);
     return OK;
 }
+
+int tl_for_each(Textlist *list, int (*func)(Textline *, void *), void *arg)
+{
+    Textline *p;
+    int r;
+
+    for(p = list->first; p != NULL; p = p->next)
+    {
+	r = func(p, arg);
+	if (r != OK)
+	    return r;
+    }
+    return OK;
+}
