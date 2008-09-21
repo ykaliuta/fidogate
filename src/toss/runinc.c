@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id$
+ * $Id: runinc.c,v 5.5 2007/10/13 16:56:02 anray Exp $
  *
  * Processing inbound packets
  *
@@ -62,7 +62,7 @@
 #endif
 
 #define PROGRAM		"runinc"
-#define VERSION		"$Revision$"
+#define VERSION		"$Revision: 5.5 $"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 void* subs(char *str,char *macro,char *expand);

@@ -1,5 +1,5 @@
 #
-#    $Id$
+#    $Id: Makefile.am,v 5.4 2006/10/31 21:24:58 anray Exp $
 #
 #    Makefile for FIDOGATE src/common/
 #

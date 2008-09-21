@@ -1,6 +1,6 @@
 #!<PERL5>
 #
-# $Id$
+# $Id: logcheck.in,v 5.2 2004/11/23 00:50:39 anray Exp $
 #
 # Create report for sendmail check_mail/rcpt/relay rejects
 #
@@ -11,7 +11,7 @@ use FileHandle;
 
 
 my $PROGRAM     = 'logcheck';
-my $VERSION     = '1.0 $Revision$ ';
+my $VERSION     = '1.0 $Revision: 5.2 $ ';
 
 <INCLUDE config.pl>
 

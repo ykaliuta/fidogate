@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id$
+ * $Id: packet.h,v 5.4 2006/10/27 09:22:58 anray Exp $
  *
  * Packet structure
  *

@@ -1,7 +1,7 @@
 Summary: Fido-Internet Gateway and Fido Tosser
 Name: fidogate
-Version: 5.2.0ds
-Release: alpha1
+Version: 5.2.4ds
+Release: stable
 Copyright: GPL
 Group: Fidonet/Gate
 Source0: http://node126.narod.ru/fidogate%{version}-%{release}.tar.bz2

@@ -1,6 +1,6 @@
 #:ts=8
 #
-#    $Id$
+#    $Id: Makefile.am,v 5.2 2004/11/23 00:50:41 anray Exp $
 #
 #    Makefile for FIDOGATE src/toss/
 #
@@ -14,8 +14,6 @@ LDADD			= $(top_srcdir)/src/common/libfidogate.la
 endif
 
 AM_CFLAGS		= -Wall
-
-runinc_CFLAGS		= -g -O3
 
 bin_PROGRAMS		= ftnexpire runinc ngoper
 libexec_PROGRAMS	= ftn2ftn ftnpack ftnroute ftntoss

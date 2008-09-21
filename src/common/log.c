@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id$
+ * $Id: log.c,v 5.3 2006/10/09 21:32:21 anray Exp $
  *
  * Log and debug functions
  *

@@ -1,6 +1,6 @@
 #:ts=8
 #
-#    $Id$
+#    $Id: Makefile.am,v 5.2 2004/11/23 00:50:38 anray Exp $
 #
 #    Makefile for FIDOGATE scripts/
 #

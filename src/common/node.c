@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id$
+ * $Id: node.c,v 5.2 2004/11/23 00:50:40 anray Exp $
  *
  * Conversion Node structure <-> Z:N/F.P / pP.fF.nN.zZ
  *

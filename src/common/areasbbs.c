@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id$
+ * $Id: areasbbs.c,v 5.3 2006/12/28 17:51:39 anray Exp $
  *
  * Function for processing AREAS.BBS EchoMail distribution file.
  *

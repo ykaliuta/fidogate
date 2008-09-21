@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id$
+ * $Id: msgid.c,v 5.3 2006/10/27 09:22:58 anray Exp $
  *
  * MSGID <-> Message-ID conversion handling. See also ../doc/msgid.doc
  *

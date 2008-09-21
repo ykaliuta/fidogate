@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id$
+ * $Id: areafix.c,v 5.11 2008/06/24 21:11:54 zotrix Exp $
  *
  * Common Areafix functions
  *

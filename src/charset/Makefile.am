@@ -1,6 +1,6 @@
 #:ts=8
 #
-#    $Id$
+#    $Id: Makefile.am,v 5.2 2004/11/23 00:50:39 anray Exp $
 #
 #    Makefile for FIDOGATE src/charset/
 #
@@ -16,7 +16,7 @@ endif
 AM_CFLAGS		= -Wall
 
 libexec_PROGRAMS	= charsetc
-libexec_DATA		= charset.bin
+libexec_EXTRA		= charset.bin
 
 charset.bin:
 	./charsetc -v charset.map charset.bin

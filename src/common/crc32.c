@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id$
+ * $Id: crc32.c,v 5.2 2004/11/23 00:50:40 anray Exp $
  *
  * Compute 32 bit CRC value
  *

@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id$
+ * $Id: mime.c,v 5.11 2007/12/21 19:52:26 anray Exp $
  *
  * MIME stuff
  *

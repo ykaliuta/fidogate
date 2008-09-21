@@ -2,7 +2,7 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id$
+ * $Id: ftntoss.c,v 5.10 2007/04/07 20:04:09 anray Exp $
  *
  * Toss FTN NetMail/EchoMail
  *
@@ -40,7 +40,7 @@
 
 
 #define PROGRAM 	"ftntoss"
-#define VERSION 	"$Revision$"
+#define VERSION 	"$Revision: 5.10 $"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 /*
