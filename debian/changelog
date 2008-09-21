@@ -1,3 +1,10 @@
+fidogate (5.2.4ds~svn20080921-1) unstable; urgency=low
+
+  * Removed 07all-headers-mime.dpatch
+  * New upstream release, 5.2.4ds~svn20080921 
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Sun, 21 Sep 2008 19:43:18 +0300
+
 fidogate (5.2.3ds+cvs20080629-2) unstable; urgency=low
 
   * 07all-headers-mime.dpatch added
