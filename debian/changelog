@@ -1,3 +1,9 @@
+fidogate (5.2.4ds~svn20080930-2) unstable; urgency=low
+
+  * charset.bin workaround
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Tue, 30 Sep 2008 21:48:30 +0300
+
 fidogate (5.2.4ds~svn20080930-1) unstable; urgency=low
 
   * New upstream snapshot
