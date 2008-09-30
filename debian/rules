@@ -49,6 +49,7 @@ build: build-stamp
 build-stamp: patch-stamp configure-stamp
 	dh_testdir
 	$(MAKE)
+	$(MAKE) -C src/charset charset.bin
 	touch $@
 
 clean: unpatch
@@ -83,7 +84,8 @@ install: build
 			$(BUILDROOT)/etc/postfix/master.cf-$(PACKAGE)
 	install -m 644 doc/mailer/postfix/transport \
 			$(BUILDROOT)/etc/postfix/transport-$(PACKAGE)
-
+	install -m 644 src/charset/charset.bin \
+			$(BUILDROOT)/usr/lib/fidogate
 
 binary-all: build install
 	dh_testdir

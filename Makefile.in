@@ -723,7 +723,7 @@ installdirs:
 	done; \
 	if test `id -u` -eq 0 && test -n "${OWNER}" && test -n "${GROUP}"; then \
 	for d in $(FDESTDIR); do \
-	chown ${OWNER}:${GROUP} $(DESTDIR)$$d || exit 1; \
+#	chown ${OWNER}:${GROUP} $(DESTDIR)$$d || exit 1; \
 	echo "chown ${OWNER}:${GROUP} $(DESTDIR)$$d"; \
 	done; \
 	fi

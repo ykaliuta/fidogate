@@ -9558,9 +9558,9 @@ LIBTOOL='$(SHELL) $(top_builddir)/libtool'
 exec 5>>./config.log
 
 
-INSTALL_PROGRAM='${INSTALL} -g ${GROUP} -o ${OWNER} -m 755'
-INSTALL_SCRIPT='${INSTALL} -g ${GROUP} -o ${OWNER} -m 755'
-INSTALL_DATA='${INSTALL} -g ${GROUP} -o ${OWNER} -m 640'
+INSTALL_PROGRAM='${INSTALL}  -m 755'
+INSTALL_SCRIPT='${INSTALL}  -m 755'
+INSTALL_DATA='${INSTALL}  -m 640'
 
 { $as_echo "$as_me:$LINENO: checking whether sys/types.h defines makedev" >&5
 $as_echo_n "checking whether sys/types.h defines makedev... " >&6; }
