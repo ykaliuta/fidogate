@@ -544,6 +544,8 @@ install-data-am:
 
 install-dvi: install-dvi-am
 
+install-exec-am: install-binPROGRAMS install-libexecPROGRAMS
+
 install-html: install-html-am
 
 install-info: install-info-am
@@ -553,8 +555,6 @@ install-man:
 install-pdf: install-pdf-am
 
 install-ps: install-ps-am
-
-installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 	-rm -rf ./$(DEPDIR)
@@ -594,7 +594,7 @@ uninstall-am: uninstall-binPROGRAMS uninstall-libexecPROGRAMS
 	uninstall-am uninstall-binPROGRAMS uninstall-libexecPROGRAMS
 
 
-install-exec-am:
+installcheck-am:
 	chmod 4755 $(DESTDIR)$(libexecdir)/ftnafmail$(EXEEXT)
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

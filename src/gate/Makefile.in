@@ -543,6 +543,8 @@ install-data-am:
 
 install-dvi: install-dvi-am
 
+install-exec-am: install-libexecPROGRAMS install-libexecSCRIPTS
+
 install-html: install-html-am
 
 install-info: install-info-am
@@ -552,8 +554,6 @@ install-man:
 install-pdf: install-pdf-am
 
 install-ps: install-ps-am
-
-installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 	-rm -rf ./$(DEPDIR)
@@ -600,7 +600,7 @@ $(libexec_SCRIPTS):
 clean-am:
 	rm -f $(libexec_SCRIPTS)
 
-install-exec-am:
+installcheck-am:
 	chmod 4755 $(DESTDIR)$(libexecdir)/ftnmail$(EXEEXT)
 	@if test -e $(srcdir)/ftnnews$(EXEEXT); then \
 	chmod 4750 $(DESTDIR)$(libexecdir)/ftnnews$(EXEEXT); \
