@@ -456,6 +456,8 @@ info: info-am
 
 info-am:
 
+install-data-am:
+
 install-dvi: install-dvi-am
 
 install-exec-am: install-libexecPROGRAMS
@@ -469,8 +471,6 @@ install-man:
 install-pdf: install-pdf-am
 
 install-ps: install-ps-am
-
-installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 	-rm -rf ./$(DEPDIR)
@@ -515,8 +515,8 @@ charset.bin:
 clean-am:
 	rm -f charset.bin
 
-install-data-am:
-	chmod 644 $(DESTDIR)$(libexecdir)/charset.bin
+installcheck-am:
+	chmod 0644 $(DESTDIR)$(libexecdir)/charset.bin
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

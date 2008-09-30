@@ -619,6 +619,9 @@ install-data-am:
 
 install-dvi: install-dvi-am
 
+install-exec-am: install-binPROGRAMS install-libexecPROGRAMS \
+	install-libexecSCRIPTS
+
 install-html: install-html-am
 
 install-info: install-info-am
@@ -628,8 +631,6 @@ install-man:
 install-pdf: install-pdf-am
 
 install-ps: install-ps-am
-
-installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 	-rm -rf ./$(DEPDIR)
@@ -678,7 +679,7 @@ report_traffic:
 clean-am:
 	rm -f report_traffic
 
-install-exec-am:
+installcheck-am:
 	if test `id -u` -eq 0; then \
 	chown news $(DESTDIR)$(bindir)/ngoper; \
 	fi
