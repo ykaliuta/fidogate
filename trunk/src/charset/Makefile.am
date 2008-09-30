@@ -24,5 +24,5 @@ charset.bin:
 clean-am:
 	rm -f charset.bin
 
-install-data-am:
-	chmod 644 $(DESTDIR)$(libexecdir)/charset.bin
+installcheck-am:
+	chmod 0644 $(DESTDIR)$(libexecdir)/charset.bin

@@ -31,7 +31,7 @@ report_traffic:
 clean-am:
 	rm -f report_traffic
 
-install-exec-am:
+installcheck-am:
 	if test `id -u` -eq 0; then \
 	chown news $(DESTDIR)$(bindir)/ngoper; \
 	fi

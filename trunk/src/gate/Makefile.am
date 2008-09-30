@@ -31,7 +31,7 @@ $(libexec_SCRIPTS):
 clean-am:
 	rm -f $(libexec_SCRIPTS)
 
-install-exec-am:
+installcheck-am:
 	chmod 4755 $(DESTDIR)$(libexecdir)/ftnmail$(EXEEXT)
 	@if test -e $(srcdir)/ftnnews$(EXEEXT); then \
 	chmod 4750 $(DESTDIR)$(libexecdir)/ftnnews$(EXEEXT); \
