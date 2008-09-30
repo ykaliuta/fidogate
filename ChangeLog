@@ -1,3 +1,11 @@
+2008-09-30  Andrey Slusar  <anrays@gmail.com>
+
+	* src/areafix/Makefile.am:
+	* src/charset/Makefile.am:
+	* src/gate/Makefile.am:
+	* src/toss/Makefile.am:
+	Change `install-exec-am' to `installcheck-am' for fix install.
+
 2008-09-21  Andrey Slusar  <anrays@gmail.com>
 
 	* src/include/prototypes.h:

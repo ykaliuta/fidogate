@@ -23,5 +23,5 @@ ftnafutil_SOURCES	= ftnafutil.c areafix.c
 ftnafmail_SOURCES	= ftnafmail.c areafix.c
 ftnafpkt_SOURCES	= ftnafpkt.c areafix.c
 
-install-exec-am:
+installcheck-am:
 	chmod 4755 $(DESTDIR)$(libexecdir)/ftnafmail$(EXEEXT)
