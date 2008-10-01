@@ -4,6 +4,8 @@ Priority: optional
 Maintainer: Zhenja Kaliuta <y.kaliuta@gmail.com>
 Build-Depends: dpatch, debhelper (>= 5), autotools-dev, bison
 Standards-Version: 3.6.1
+Vcs-Git: git://git.kaliuta.org/fidogate
+Vcs-Browser: http://git.kaliuta.org/fidogate
 
 Package: fidogate
 Architecture: any
