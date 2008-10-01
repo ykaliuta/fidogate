@@ -1,3 +1,7 @@
+2008-10-01  Andrey Slusar  <anrays@gmail.com>
+
+	* configure.in: Fix `Unrecognized options' warnings.
+
 2008-09-30  Andrey Slusar  <anrays@gmail.com>
 
 	* src/areafix/Makefile.am:
