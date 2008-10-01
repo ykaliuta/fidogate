@@ -6,6 +6,7 @@ dnl
 AC_REVISION([$Revision: 5.5 $])
 AC_PREREQ(2.53)
 AC_INIT([fidogate],[5.2.4ds],[anrays@gmail.com])
+AC_DISABLE_OPTION_CHECKING
 AM_CONFIG_HEADER([config.h])
 AC_CONFIG_SRCDIR([src/common/config.c])
 AC_CONFIG_AUX_DIR([build])
