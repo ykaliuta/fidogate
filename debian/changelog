@@ -4,8 +4,9 @@ fidogate (5.2.4ds~svn20081001-2) unstable; urgency=low
   * Move creation of [f]areas.bbs to postinst
   * Added Copyright notice
   * Use chrpath to delete rpath from .so
+  * Install upstream changelog correctly 
 
- -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Fri, 03 Oct 2008 00:45:55 +0300
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Fri, 03 Oct 2008 00:54:30 +0300
 
 fidogate (5.2.4ds~svn20081001-1) unstable; urgency=low
 
