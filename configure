@@ -601,6 +601,7 @@ PACKAGE_VERSION='5.2.4ds'
 PACKAGE_STRING='fidogate 5.2.4ds'
 PACKAGE_BUGREPORT='anrays@gmail.com'
 
+enable_option_checking=no
 ac_unique_file="src/common/config.c"
 ac_default_prefix=/usr/local/fido
 # Factoring default headers for most tests.
@@ -2028,6 +2029,8 @@ ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
 
 
 ac_config_headers="$ac_config_headers config.h"
@@ -9337,7 +9340,7 @@ test x"$silent" = xyes && libtool_flags="$libtool_flags --silent"
 case "$host" in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 9340 "configure"' > conftest.$ac_ext
+  echo '#line 9343 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
