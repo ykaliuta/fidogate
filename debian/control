@@ -19,6 +19,7 @@ Description: Internet-Fidonet gateway
 
 Package: fidogate-dbg
 Architecture: any
+Priority: extra
 Depends: fidogate (= ${Source-Version})
 Description: Internet-Fidonet gateway, debug files
  Fidogate branch with good cyrillic support and advanced features.
@@ -27,6 +28,7 @@ Description: Internet-Fidonet gateway, debug files
 
 Package: fidogate-doc
 Architecture: all
+Section: doc
 Description: documentation for fidogate
  Fidogate branch with good cyrillic support and advanced features.
  .
