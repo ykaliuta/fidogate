@@ -67,6 +67,8 @@ install: build
 
 	$(MAKE) DESTDIR=$(BUILDROOT) install
 
+	chrpath -d $(BUILDROOT)/usr/lib/libfidogate.so.*
+
 	cat $(BUILDROOT)/usr/lib/fidogate/send-fidogate | \
 		sed 's|log/fidogate|log/news|g' > \
 			$(BUILDROOT)/usr/bin/send-fidogate
