@@ -2,7 +2,7 @@
 ## 99-unnamed.dpatch by Yauheni Kaliuta <y.kaliuta@gmail.com>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+## DP: Inable iconv, not implemented in configure yet
 
 @DPATCH@
 diff --git a/config.h.in b/config.h.in

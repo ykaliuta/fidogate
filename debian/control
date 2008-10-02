@@ -1,9 +1,9 @@
 Source: fidogate
 Section: net
 Priority: optional
-Maintainer: Zhenja Kaliuta <y.kaliuta@gmail.com>
+Maintainer: Yauheni Kaliuta <y.kaliuta@gmail.com>
 Build-Depends: dpatch, debhelper (>= 5), autotools-dev, bison, chrpath
-Standards-Version: 3.6.1
+Standards-Version: 3.8.0
 Vcs-Git: git://git.kaliuta.org/fidogate
 Vcs-Browser: http://git.kaliuta.org/fidogate
 
@@ -20,7 +20,7 @@ Description: Internet-Fidonet gateway
 Package: fidogate-dbg
 Architecture: any
 Priority: extra
-Depends: fidogate (= ${Source-Version})
+Depends: fidogate (= ${binary:Version})
 Description: Internet-Fidonet gateway, debug files
  Fidogate branch with good cyrillic support and advanced features.
  .
