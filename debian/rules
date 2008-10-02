@@ -74,9 +74,6 @@ install: build
 			$(BUILDROOT)/usr/bin/send-fidogate
 	chmod +x $(BUILDROOT)/usr/bin/send-fidogate
 
-	touch $(BUILDROOT)/var/lib/$(PACKAGE)/areas.bbs
-	touch $(BUILDROOT)/var/lib/$(PACKAGE)/fareas.bbs
-
 	install -d $(BUILDROOT)/usr/share/sendmail/cf/mailer
 	install -m 644 doc/mailer/sendmail/mailer/ftn.m4 \
 		$(BUILDROOT)/usr/share/sendmail/cf/mailer

@@ -46,6 +46,9 @@ EOF
 	    done 
 	fi
 
+	touch /var/lib/$PACKAGE/areas.bbs
+	touch /var/lib/$PACKAGE/fareas.bbs
+
 # Fix permissions
 	chown -R ftn:ftn /etc/$PACKAGE
 	chown ftn:ftn /var/lock/$PACKAGE/ \
