@@ -1,3 +1,12 @@
+fidogate (5.2.4ds~svn20081001-1) unstable; urgency=low
+
+  * New upstream snapshot
+  * Fix 'Unrecognized options' warnings
+  * Autoreconf
+  * debian/control: added Vcs information
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Fri, 03 Oct 2008 00:12:08 +0300
+
 fidogate (5.2.4ds~svn20080930-2) unstable; urgency=low
 
   * charset.bin workaround
