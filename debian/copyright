@@ -4,8 +4,10 @@ Sat,  5 Oct 2002 23:44:46 +0300.
 It was taken from cvs:
 
 cvs -z3 -d:pserver:rusfidogate.cvs.sf.net/cvsroot/rusfidogate co fidogate
+Current SVN URL: http://fidogate5.googlecode.com/svn
 
-Author:  Dmitry Fedotov <Dmitry_Fedotov@f1229.n5030.z2.fidonet.org>
+Copyright (C) 1990-2002 Martin Junius <mj@fidogate.org>
+
 Current maintainer: Andrey Slusar  <anrays@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
