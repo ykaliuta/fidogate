@@ -5,8 +5,9 @@ fidogate (5.2.4ds~svn20081001-2) unstable; urgency=low
   * Added Copyright notice
   * Use chrpath to delete rpath from .so
   * Install upstream changelog correctly 
+  * Fixing more lintian warnings 
 
- -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Fri, 03 Oct 2008 00:54:30 +0300
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Fri, 03 Oct 2008 01:03:51 +0300
 
 fidogate (5.2.4ds~svn20081001-1) unstable; urgency=low
 
