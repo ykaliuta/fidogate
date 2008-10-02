@@ -1,3 +1,9 @@
+fidogate (5.2.4ds~svn20081001-2) unstable; urgency=low
+
+  * Fixing lintian
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Fri, 03 Oct 2008 00:23:29 +0300
+
 fidogate (5.2.4ds~svn20081001-1) unstable; urgency=low
 
   * New upstream snapshot
