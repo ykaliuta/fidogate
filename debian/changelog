@@ -1,3 +1,9 @@
+fidogate (5.2.4ds~svn20081122-1) unstable; urgency=low
+
+  * In fidogate.conf added option AmigaStyleOutbound 
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Sat, 22 Nov 2008 13:53:06 +0200
+
 fidogate (5.2.4ds~svn20081001-2) unstable; urgency=low
 
   * Fixing lintian
