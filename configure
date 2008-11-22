@@ -814,7 +814,6 @@ with_group
 enable_local_ftn_addr
 enable_dobsy_files
 enable_nfs_safe_lock
-enable_amiga_out
 with_maxmsg_size
 with_ftn_invalid_domain
 with_syslog_facility
@@ -1506,7 +1505,6 @@ Optional Features:
   --enable-local-ftn-addr use local FTN addres
   --disable-dobsy-files   create Binkley-style BSY
   --enable-nfs-safe-lock  create lock files/BSY files in an NFS-safe way
-  --enable-amiga-out      create 4D outbound filenames for AmigaDOS mailers
   --enable-aliases-local  rewrite addresses found in ALIASES so that the sender's address is the gateway address
   --enable-ai1		Add -a option to HOSTS entries, useful only with PASSTHRU NET/ECHOMAIL
   --disable-best-aka	disable best AKA select
@@ -9340,7 +9338,7 @@ test x"$silent" = xyes && libtool_flags="$libtool_flags --silent"
 case "$host" in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 9343 "configure"' > conftest.$ac_ext
+  echo '#line 9341 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -10511,15 +10509,6 @@ fi
 if test "${enable_nfs_safe_lock+set}" = set; then
   enableval=$enable_nfs_safe_lock; cat >>confdefs.h <<\_ACEOF
 #define NFS_SAFE_LOCK_FILES 1
-_ACEOF
-
-fi
-
-
-# Check whether --enable-amiga-out was given.
-if test "${enable_amiga_out+set}" = set; then
-  enableval=$enable_amiga_out; cat >>confdefs.h <<\_ACEOF
-#define AMIGADOS_4D_OUTBOUND 1
 _ACEOF
 
 fi

@@ -117,12 +117,6 @@
 #undef NFS_SAFE_LOCK_FILES
 
 /*
- * Create 4D outbound filenames for AmigaDOS mailers,
- * Z.N.F.P.flo / Z.N.F.P.mo0
- */
-#undef AMIGADOS_4D_OUTBOUND
-
-/*
  * Default max. message size for FIDO. Due to some more brain damage
  * in FIDONET programs we have to split larger messages into several
  * smaller ones. May be set with the -M option in AREAS or MaxMsgSize

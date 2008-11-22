@@ -146,9 +146,6 @@ configure скрипт. В исключительных случаях требуется непосредственное
 `NFS_SAFE_LOCK_FILES '(--enable-nfs-safe-lock)
     Создавать лок/bsy файлы в NFS-safe way (см. man 2 open).
 
-`AMIGADOS_4D_OUTBOUND'(--enable-amiga-out)
-    Использовать Amiga-style аутбоунд.
-    
 `MAXMSGSIZE'(--with-maxmsg-size=SIZE)
     Максимальный размер FIDO письма, гинерируемого rfc2ftn. Письма
     большего размера режутся на части. Значение должно быть более 16K.
@@ -714,6 +711,8 @@ Zone	4	.fidonet.org		fidonet		out.004
 Zone	5	.fidonet.org		fidonet		out.005
 Zone	6	.fidonet.org		fidonet		out.006
 
+# Использовать ASO
+#AmigaStyleOutbound
 
 ##############################################################################
 # A R E A F I X   C O N F I G U R A T I O N                                  #

@@ -1,6 +1,6 @@
 dnl $Id: configure.in,v 5.5 2008/06/29 07:20:39 anray Exp $
 dnl
-dnl Copyright (c) 2003-2004 Andrey Slusar <anrays@gmail.com>
+dnl Copyright (c) 2003-2008 Andrey Slusar <anrays@gmail.com>
 dnl Copyright (c) 2003-2004 Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 dnl
 AC_REVISION([$Revision: 5.5 $])
@@ -265,10 +265,6 @@ AC_ARG_ENABLE(dobsy-files,
 AC_ARG_ENABLE(nfs-safe-lock,
 [  --enable-nfs-safe-lock  create lock files/BSY files in an NFS-safe way],
     AC_DEFINE(NFS_SAFE_LOCK_FILES),)
-
-AC_ARG_ENABLE(amiga-out,
-[  --enable-amiga-out      create 4D outbound filenames for AmigaDOS mailers],
-    AC_DEFINE(AMIGADOS_4D_OUTBOUND),)
 
 AC_ARG_WITH(maxmsg-size,
 [  --with-maxmsg-size=SIZE set max. message size for FIDO [14000]],
