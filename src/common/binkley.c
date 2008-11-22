@@ -98,30 +98,37 @@ char *bink_out_name(Node *node)
 {
     static char buf[MAXPATH];
     char *out, *outbound;
-    
-#ifndef AMIGADOS_4D_OUTBOUND
-    out = cf_zones_out(node->zone);
-#else
-    out = cf_zones_out(0);
-#endif
+    int aso = FALSE;
+
+    if (cf_get_string("AmigaStyleOutbound", TRUE) != NULL)
+	aso = TRUE;
+
+    if (aso)
+	out = cf_zones_out(0);
+    else
+	out = cf_zones_out(node->zone);
+
     if(!out)
 	return NULL;
     outbound = cf_p_btbasedir();
     if(!outbound)
 	return NULL;
 
-#ifdef AMIGADOS_4D_OUTBOUND
-    str_printf(buf, sizeof(buf), "%s/%s/%d.%d.%d.%d.",
-	       outbound, out, node->zone,
-	       node->net, node->node, node->point);
-#else    
-    if(node->point > 0)
-	str_printf(buf, sizeof(buf), "%s/%s/%04x%04x.pnt/0000%04x.",
-		   outbound, out, node->net, node->node, node->point);
+    if (aso)
+    {
+	str_printf(buf, sizeof(buf), "%s/%s/%d.%d.%d.%d.",
+		   outbound, out, node->zone,
+		   node->net, node->node, node->point);
+    }
     else
-	str_printf(buf, sizeof(buf), "%s/%s/%04x%04x.",
-		   outbound, out, node->net, node->node);
-#endif /**AMIGADOS_4D_OUTBOUND**/
+    {
+	if(node->point > 0)
+	    str_printf(buf, sizeof(buf), "%s/%s/%04x%04x.pnt/0000%04x.",
+		       outbound, out, node->net, node->node, node->point);
+	else
+	    str_printf(buf, sizeof(buf), "%s/%s/%04x%04x.",
+		       outbound, out, node->net, node->node);
+    }
 
     return buf;
 }
@@ -427,16 +434,22 @@ int bink_mkdir(Node *node)
     char buf[MAXPATH];
     char *base;
     size_t rest;
-    
+    int aso = FALSE;
+	
+    if (cf_get_string("AmigaStyleOutbound", TRUE) != NULL)
+	aso = TRUE;
+
     /*
      * Outbound dir + zone dir
      */
     BUF_COPY2(buf, cf_p_btbasedir(), "/");
-#ifndef AMIGADOS_4D_OUTBOUND
-    if((base = cf_zones_out(node->zone)) == NULL)
-#else
-    if((base = cf_zones_out(0)) == NULL)
-#endif
+
+    if (aso)
+	base = cf_zones_out(0);
+    else
+	base = cf_zones_out(node->zone);
+	    
+    if (base == NULL)
 	return ERROR;
     BUF_APPEND(buf, base);
     base = buf + strlen(buf);
@@ -451,26 +464,26 @@ int bink_mkdir(Node *node)
 	}
 	chmod(buf, DIR_MODE);
     }
-    
-#ifndef AMIGADOS_4D_OUTBOUND
-    /*
-     * Point directory for point addresses
-     */
-    if(node->point > 0)
+
+    if (! aso)
     {
-	str_printf(base, rest, "/%04x%04x.pnt", node->net, node->node);
-	if(check_access(buf, CHECK_DIR) == ERROR)
+	/*
+	 * Point directory for point addresses
+	 */
+	if(node->point > 0)
 	{
-	    if(mkdir(buf, DIR_MODE) == -1)
+	    str_printf(base, rest, "/%04x%04x.pnt", node->net, node->node);
+	    if(check_access(buf, CHECK_DIR) == ERROR)
 	    {
-		fglog("$WARNING: can't create dir %s", buf);
-		return ERROR;
+		if(mkdir(buf, DIR_MODE) == -1)
+		{
+		    fglog("$WARNING: can't create dir %s", buf);
+		    return ERROR;
+		}
+		chmod(buf, DIR_MODE);
 	    }
-	    chmod(buf, DIR_MODE);
 	}
     }
-#endif /**AMIGADOS_4D_OUTBOUND**/
-
     return OK;
 }
 

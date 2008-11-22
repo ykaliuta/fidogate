@@ -958,6 +958,7 @@ int main(int argc, char **argv)
     int repack_time = -1;
     char *pkt_name;
     char pattern[16];
+    int aso = FALSE;
     
     int option_index;
     static struct option long_options[] =
@@ -1059,6 +1060,9 @@ int main(int argc, char **argv)
     if(M_flag)
 	outpkt_set_maxopen(atoi(M_flag));
 
+    if (cf_get_string("AmigaStyleOutbound", TRUE) != NULL)
+	aso = TRUE;
+
     /*
      * Process local options
      */
@@ -1106,52 +1110,60 @@ int main(int argc, char **argv)
 
 	repack_mode = TRUE;
 
-#ifdef AMIGADOS_4D_OUTBOUND
-	if( (base = cf_out_get(0)) == NULL )
+	if (aso)
 	{
-	    fglog("$ERROR: can't open directory %s/%s", btbase, base);
-	    exit_free();
-	    exit(EX_OSERR);
-	}
-	else
-#else
-	for(c=0; (base = cf_out_get(c)) != NULL; c++)
-#endif
-	{
-	    BUF_COPY3(buf, btbase, "/", base);
 
-	    if(do_repack(buf, pattern, repack_time) == ERROR)
+	    if( (base = cf_out_get(0)) == NULL )
 	    {
-		debug(1, "error processing %s", buf);
-#ifndef AMIGADOS_4D_OUTBOUND
-		continue;
-#endif
-	    }
-#ifndef AMIGADOS_4D_OUTBOUND
-	    /* Open and read directory */
-	    if(dir_open(buf, "?????????.pnt", TRUE) == ERROR)
-	    {
-		fglog("$ERROR: can't open directory %s", buf);
+		fglog("$ERROR: can't open directory %s/%s", btbase, base);
 		exit_free();
 		exit(EX_OSERR);
 	    }
 	    else
 	    {
-		char *buf2;
-		for(buf2=dir_get(TRUE); buf2; buf2=dir_get(FALSE))
+		BUF_COPY3(buf, btbase, "/", base);
+
+		if(do_repack(buf, pattern, repack_time) == ERROR)
 		{
-		    if(do_repack(buf2, pattern, repack_time) == ERROR)
-		    {
-			ret = EXIT_ERROR;
-			break;
-		    }
-	    	}
-		dir_close();
-		if(ret == EXIT_ERROR)
-		    break;
+		    debug(1, "error processing %s", buf);
+		}
 	    }
-#endif /* !AMIGADOS_4D_OUTBOUND */
 	}
+	else /* non-aso */
+	{
+	    for(c=0; (base = cf_out_get(c)) != NULL; c++)
+	    {
+		BUF_COPY3(buf, btbase, "/", base);
+
+		if(do_repack(buf, pattern, repack_time) == ERROR)
+		{
+		    debug(1, "error processing %s", buf);
+		    continue;
+		}
+		/* Open and read directory */
+		if(dir_open(buf, "?????????.pnt", TRUE) == ERROR)
+		{
+		    fglog("$ERROR: can't open directory %s", buf);
+		    exit_free();
+		    exit(EX_OSERR);
+		}
+		else
+		{
+		    char *buf2;
+		    for(buf2=dir_get(TRUE); buf2; buf2=dir_get(FALSE))
+		    {
+			if(do_repack(buf2, pattern, repack_time) == ERROR)
+			{
+			    ret = EXIT_ERROR;
+			    break;
+			}
+		    }
+		    dir_close();
+		    if(ret == EXIT_ERROR)
+			break;
+		}
+	    }
+	} /* non-aso */
 	/* Lock file */
 
 	if(l_flag)

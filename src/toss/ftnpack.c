@@ -396,11 +396,14 @@ char *arcmail_name(Node *node, char *dir)
     char *wk, *base;
     TIMEINFO ti;
     struct tm *tm;
-#ifndef AMIGADOS_4D_OUTBOUND
     int d1, d2;
-#endif
     size_t rest;
 
+    int aso = FALSE;
+
+    if (cf_get_string("AmigaStyleOutbound", TRUE) != NULL)
+	aso = TRUE;
+    
     cf_set_zone(node->zone);
 
     if(dir)
@@ -413,12 +416,13 @@ char *arcmail_name(Node *node, char *dir)
     else
     {
 	/* Outbound dir + zone dir */
-#ifndef AMIGADOS_4D_OUTBOUND
-	if((base = cf_zones_out(node->zone)) == NULL)
-#else
-	if((base = cf_zones_out(0)) == NULL)
-#endif
-	    return NULL;
+	if (aso)
+	    base = cf_zones_out(0);
+	else
+	    base = cf_zones_out(node->zone);
+	
+	if (base == NULL)
+		return NULL;
 	BUF_COPY4(buf, cf_p_btbasedir(), "/", base, "/");
     }
     base = buf + strlen(buf);
@@ -434,29 +438,32 @@ char *arcmail_name(Node *node, char *dir)
     /*
      * Create name of archive file
      */
-#ifdef AMIGADOS_4D_OUTBOUND
-    str_printf(base, rest, "%d.%d.%d.%d.%s", node->zone, node->net,
-	       node->node, node->point, wk);
-#else    
-    if(node->point > 0)
+    if (aso)
     {
-	d1 = 0;
-	d2 = (cf_main_addr()->point - node->point) & 0xffff;
-
-	if(dir)
-	    str_printf(base, rest, "%04x%04x.%s", d1, d2, wk );
-	else
-	    str_printf(base, rest, "%04x%04x.pnt/%04x%04x.%s",
-		       node->net, node->node, d1, d2, wk );
+	str_printf(base, rest, "%d.%d.%d.%d.%s", node->zone, node->net,
+		   node->node, node->point, wk);
     }
     else
     {
-	d1 = (cf_main_addr()->net  - node->net ) & 0xffff;
-	d2 = (cf_main_addr()->node - node->node) & 0xffff;
-	
-	str_printf(base, rest, "%04x%04x.%s", d1, d2, wk);
+	if(node->point > 0)
+	{
+	    d1 = 0;
+	    d2 = (cf_main_addr()->point - node->point) & 0xffff;
+	    
+	    if(dir)
+		str_printf(base, rest, "%04x%04x.%s", d1, d2, wk );
+	    else
+		str_printf(base, rest, "%04x%04x.pnt/%04x%04x.%s",
+			   node->net, node->node, d1, d2, wk );
+	}
+	else
+	{
+	    d1 = (cf_main_addr()->net  - node->net ) & 0xffff;
+	    d2 = (cf_main_addr()->node - node->node) & 0xffff;
+	    
+	    str_printf(base, rest, "%04x%04x.%s", d1, d2, wk);
+	}
     }
-#endif /**AMIGADOS_4D_OUTBOUND**/
     
     return buf;
 }
