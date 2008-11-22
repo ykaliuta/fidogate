@@ -151,7 +151,8 @@ Zone	4	.fidonet.org		fidonet		out.004
 Zone	5	.fidonet.org		fidonet		out.005
 Zone	6	.fidonet.org		fidonet		out.006
 
-
+# Use ASO instead BSO
+AmigaStyleOutbound
 
 ##############################################################################
 # A R E A F I X   C O N F I G U R A T I O N                                  #

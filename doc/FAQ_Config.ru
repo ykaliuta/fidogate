@@ -318,7 +318,6 @@ Subject: FIDOGATE
               --with-vardir=/var/db/fidogate \
               --with-spooldir=/var/spool/fido/gate \
               --with-btbasedir=/var/spool/fido/bt \
-              --enable-amiga-out \
               --disable-desc-dir
   -----------------
 

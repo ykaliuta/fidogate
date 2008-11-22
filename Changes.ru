@@ -2,6 +2,8 @@ Version 5.2.4ds
 ~~~~~~~~~~~~~~~
 - Проект переносится на http://code.google.com/p/fidogate5, версия 5.1
   прекращает свое существование.
+- В fidogate.conf добавлена опция AmigaStyleOutbound, при наличии которой
+  используется ASO вместо BSO. Также с configure убрана `--enable-amiga-out'.
 
 Version 5.2.3ds
 ~~~~~~~~~~~~~~~
