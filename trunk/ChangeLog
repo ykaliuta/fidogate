@@ -1,3 +1,17 @@
+2008-11-22  Andrey Slusar  <anrays@gmail.com>
+
+	* src/common/binkley.c:
+	* src/toss/ftnpack.c:
+	* src/toss/ftnroute.c:
+	* acconfig.h:
+	* configure.in:
+	* doc/examples/dyff/fidogate.conf.sample.in:
+	* doc/FAQ_Config.ru:
+	* doc/README.ru:
+	In fidogate.conf added option AmigaStyleOutbound - use ASO instead
+	BSO and removed configure option `--enable-amiga-out'(patch from
+	Yauheni Kaliuta).
+
 2008-10-01  Andrey Slusar  <anrays@gmail.com>
 
 	* configure.in: Fix `Unrecognized options' warnings.
