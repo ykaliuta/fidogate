@@ -209,6 +209,12 @@ while(<P>) {
 	${$1} = $2;
     }
 
+    if( /^\s*([A-Za-z0-9_]*PACKAGE)\s*=\s*(.*)/ ) {
+	print "subst: $1=$2\n" if($opt_v);
+	no strict `refs`;
+	${$1} = $2;
+    }
+
     if( /^\s*DEFAULT_F_([A-Z0-9_]+)\s*=\s*(.*)\s*$/ ) {
 	
 	print "subst: $1=$2\n" if($opt_v);
