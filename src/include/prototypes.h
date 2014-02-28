@@ -314,7 +314,6 @@ void	unlock_path		(char *);
 
 /* log.c */
 extern int verbose;
-extern int no_debug;
 
 char   *strerror		(int);
 void	fglog			(const char *, ...)

@@ -715,7 +715,6 @@ void cf_initialize(void)
      */
     if(getuid() != geteuid())
     {
-	no_debug = TRUE;
 	return;
     }
     
