@@ -132,6 +132,8 @@ Ensure(fglog_outputs_after_log_program_log_file_syslog)
 Ensure(fglog_outputs_after_log_file_syslog_log_program)
 {
     expect(mock_openlog,
+	   when(ident, is_equal_to_string(default_name)));
+    expect(mock_openlog,
 	   when(ident, is_equal_to_string(custom_name)));
     expect(mock_vsyslog,
 	   when(priority, is_equal_to(LOG_NOTICE)));

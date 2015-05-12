@@ -1,32 +1,18 @@
 
-static void log_init_globals()
-{
-    verbose = 0;
-    no_debug = FALSE;
-    logname[0] = '\0';
-    logfile = NULL;
-    strcpy(logprog, default_name);
-    debugfile = NULL;
-#if defined(HAVE_SYSLOG) && defined(HAVE_SYSLOG_H)
-    use_syslog   = FALSE;
-    must_openlog = TRUE;
-#endif
-}
-
 const char *log_get_program(void)
 {
-    return logprog;
+    return the_logger.strid;
 }
 
 const char *log_get_filename(void)
 {
-    return logname;
+    return the_logger.logfile_fullname;
 }
 
 #if defined(HAVE_SYSLOG) && defined(HAVE_SYSLOG_H)
 int log_is_use_syslog(void)
 {
-    return use_syslog;
+    return the_logger.ops == &syslog_ops;
 }
 #else
 int log_is_use_syslog(void)
@@ -40,6 +26,11 @@ int log_get_verbose(void)
     return verbose;
 }
 
+void log_suppress_debug(void)
+{
+    the_logger.suppress_debug = TRUE;
+}
+
 void log_set_verbose(int v)
 {
     verbose = v;
@@ -47,16 +38,24 @@ void log_set_verbose(int v)
 
 const char *log_get_log_filename(void)
 {
-    return logname;
+    return the_logger.logfile_fullname;
 }
 
 void log_set_log_filename(const char *s)
 {
-    strncpy(logname, s, sizeof(logname));
-    logname[sizeof(logname) - 1] = '\0';
+    char *n = the_logger.logfile_fullname;
+    int size = sizeof(the_logger.logfile_fullname);
+
+    strncpy(n, s, size);
+    n[size - 1] = '\0';
+}
+static void log_init_globals()
+{
+    verbose = 0;
+    the_logger.suppress_debug = FALSE;
+    the_logger.logfile_fullname[0] = '\0';
+    the_logger.logfile = NULL;
+    strcpy(the_logger.strid, default_name);
+    the_logger.debugfile = NULL;
 }
 
-void log_suppress_debug(void)
-{
-    no_debug = TRUE;
-}

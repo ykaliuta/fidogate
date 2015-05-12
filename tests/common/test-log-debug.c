@@ -51,13 +51,11 @@ Ensure(debug_stub_no_debug) {
     int level = -1;
 
     exp = create_no_debug_exp();
-    always_expect(mock_fprintf,
+    always_expect(mock_vfprintf,
 		  when(stream, is_equal_to(fp)),
 		  when(res_str, is_equal_to_string(exp)));
-    never_expect(mock_vfprintf);
     never_expect(mock_fflush);
 
-    /* some global state init */
     log_file("stderr");
     log_suppress_debug();
 

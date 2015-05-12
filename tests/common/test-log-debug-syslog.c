@@ -28,15 +28,12 @@ Ensure(debug_stub_no_debug_syslog) {
 
     exp = create_no_debug_exp();
 
-    /* looks like here is the problem in the original code, no open */
-    always_expect(mock_syslog,
+    expect(mock_openlog);
+    always_expect(mock_vsyslog,
 		  when(priority, is_equal_to(exp_priority)));
     always_expect(mock_vfprintf,
 		  when(stream, is_equal_to(NULL)),
 		  when(res_str, is_equal_to_string(exp)));
-
-    never_expect(mock_openlog);
-    never_expect(mock_vsyslog);
 
     log_file("syslog");
     log_suppress_debug();
