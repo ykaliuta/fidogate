@@ -444,7 +444,7 @@ char *mime_deheader(char *d, size_t n, char *s)
 		tmp_len = p - (s + strlen(MIME_HEADER_CODE_START));
 		if(tmp_len > MIME_MAX_ENC_LEN)
 		{
-		    fglog("ERROR: charset name's length too long, %d. Do not recode", tmp_len);
+		    fglog("ERROR: charset name's length too long, %zd. Do not recode", tmp_len);
 		    is_new_decoder = 0;
 		}
 		strncpy(charset, s + strlen(MIME_HEADER_CODE_START), tmp_len);
