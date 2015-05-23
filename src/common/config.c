@@ -417,53 +417,6 @@ char *cf_getline(char *buffer, int len, FILE *fp)
     return NULL;
 }
 
-
-int get_uline(char **bufout, FILE *fp)
-{
-    char buf[30];
-    int  lbuf, lbufout = 0, tmp;
-    short first = 0;
-
-
-    while( fgets( buf, 30, fp ) ) {
-
-	if( !(lbuf = strlen( buf ) ) )
-	    continue;
-
-	if( !first ) {
-	    lbufout = lbuf+1;
-	    *bufout = ( char * )xmalloc( lbufout );
-	    first = 1;
-	} else {
-	    lbufout += lbuf;
-	    *bufout = ( char * )xrealloc( *bufout, lbufout );
-	}
-
-	if( buf[lbuf - 1] == '\n' )
-	    lbuf--;
-
-	memccpy( *bufout+( lbufout-lbuf+1 ), buf, '\0', lbuf );
-	bufout[lbufout-1] = '\0';
-	if( buf[lbuf] == '\n' )	{
-	    for( ; lbuf >= 0; lbuf-- ) {
-		tmp = lbufout-lbuf;
-		if( bufout[tmp] == " " || bufout[tmp] == "\t" )
-		    continue;
-		if(bufout[tmp] == "\\")
-		{
-		    first = 2;
-		}
-		    break;
-	    }
-	    if(first != 2)
-		break;
-	}
-    }
-    return lbufout;
-}
-
-
-
 /*
  * Process line from config file
  */
