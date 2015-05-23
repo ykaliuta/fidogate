@@ -474,7 +474,8 @@ static int encode_header(Textline *tl, void *arg)
 	return OK;
 
     size = strlen(p + 2);
-    mime_enheader(&tmpbuf, p + 2, size, state->cs_out);
+    mime_enheader(&tmpbuf, (unsigned char *)p + 2,
+		  size, state->cs_out);
 
     size += (p - line) + 2 + strlen(tmpbuf) + 2;
     tl->line = xrealloc(line, size);
