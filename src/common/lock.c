@@ -48,6 +48,7 @@ int check_stale_lock(char *name)
     char buff[32];
     pid_t pid;
     FILE *fp;
+    char *ret;
 
     if((fp = fopen(name,"r")) == NULL)
     {
@@ -56,8 +57,14 @@ int check_stale_lock(char *name)
 	 else
 	      return LOCKFILE_ERROR;
     }
-    fgets(buff,sizeof(buff),fp);
+    ret = fgets(buff,sizeof(buff),fp);
     fclose(fp);
+
+    if (ret == NULL)
+    {
+	    fglog("$ERROR: cannot read lock file");
+	    return LOCKFILE_ERROR;
+    }
 
     if(strlen(buff) > 0)
 	 pid=(pid_t) atoi(buff);
