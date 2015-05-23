@@ -235,7 +235,7 @@ int header_read_list(Textlist *body, Textlist *header)
     for(line = body->first; line != NULL; line = line->next)
     {
 	strncpy(buf, line->line, BUFFERSIZE-1);
-	buf[BUFFERSIZE] = '\0';
+	buf[BUFFERSIZE - 1] = '\0';
 	if(*buf == '\r' || *buf == '\n')
 	    break;
 	strip_crlf(buf);
