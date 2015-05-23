@@ -158,13 +158,15 @@ void tl_append(Textlist *list, char *s)
 void tl_appendf(Textlist *list, char *fmt, ...)
 {
     static char buf[4096];
+#ifdef HAVE_SPRINTF
     int n;
+#endif
     va_list args;
 
     va_start(args, fmt);
 
 #ifndef HAVE_SPRINTF
-    n = vsnprintf(buf, sizeof(buf), fmt, args);
+    vsnprintf(buf, sizeof(buf), fmt, args);
 #else
     n = vsprintf(buf, fmt, args);
     if(n >= sizeof(buf))
