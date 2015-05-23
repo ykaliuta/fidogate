@@ -105,6 +105,9 @@ int is_blank(int c)
 
 Ensure(config_inits)
 {
+    int env_owr = 1;
+
+    setenv("FIDOGATE", "/tmp/mock-fidogate-dir", env_owr);
     expect(cf_s_configdir);
 
     cf_initialize();
