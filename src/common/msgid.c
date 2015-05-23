@@ -479,13 +479,12 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
  */
 char *s_msgid_convert_origid(char *origid)
 {
-    char *s, *p, *id, *part;
+    char *s, *p, *id;
     TmpS *tmps;
 
     s    = strsave(origid);
 
     id   = s;
-    part = NULL;
     p    = strrchr(s, '>');
     if(!p)
     {
@@ -502,7 +501,6 @@ char *s_msgid_convert_origid(char *origid)
 	 */
 	*p++ = 0;
 	while(is_space(*p)) p++;
-	part = p;
     }
 
     /*
