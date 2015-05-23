@@ -1,0 +1,5 @@
+
+BIN := test-$(patsubst Makefile.inc.%,%,$(lastword $(MAKEFILE_LIST)))
+
+BINS += $(BIN)
+SRCS += $(BIN).c

@@ -1,7 +1,6 @@
 
 TOP_SRC := ../../src
 
-BIN := tests
 INCS := $(TOP_SRC)/include
 INCS += $(TOP_SRC)/common
 INCS += $(TOP_SRC)/..
@@ -12,7 +11,11 @@ CFLAGS += $(patsubst %,-I%,$(INCS))
 
 LDFLAGS += -lcgreen
 
-SRCS := tests.c test-log.c
+BINS :=
+SRCS :=
+
+include Makefile.inc.*
+
 OBJS := $(patsubst %.c,%.o,$(SRCS))
 
 all: build-all run-all
@@ -20,17 +23,18 @@ all: build-all run-all
 .PHONY: build-all run-all
 
 run-all: build-all
-	./$(BIN)
+	@for i in $(BINS); do \
+		./$$i; \
+	done
 
 $(OBJS): $(wildcard test-*.c)
-$(BIN): $(OBJS)
 
-build-all: FORCE $(BIN)
+build-all: FORCE $(BINS)
 
 %.i: %.c
 	$(CC) $(CFLAGS) -E -dD -o $@ $^
 
 clean:
-	rm -f $(BIN) *.o
+	rm -f $(BINS) *.o
 
 FORCE:
