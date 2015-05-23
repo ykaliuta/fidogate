@@ -206,6 +206,7 @@ int do_areasbbs(int cmd)
     int tm;
     int flag;
     LNode *l;
+    char *blank_line = "";
     
     pl = NULL;
     p  = areasbbs_first();
@@ -214,7 +215,7 @@ int do_areasbbs(int cmd)
 	lon    = &p->nodes;
 	uplink = lon->first ? &lon->first->node : NULL;
 	n      = lon->size - 1;
-	state  = p->state ? p->state : "";
+	state  = p->state ? p->state : blank_line;
 	
 	debug(3, "processing area %s: state=%s uplink=%s #dl=%d",
 	      p->area, state, uplink ? znfp1(uplink) : "(none)", n   );
@@ -361,7 +362,7 @@ int do_areasbbs(int cmd)
 	case DO_RESUBSCRIBE:
 	    if(uplink && (areasbbs_isstate(state, 'S') ||
 	       areasbbs_isstate(state, 'F') || areasbbs_isstate(state, 'W') ||
-	       state == ""))
+	       state == blank_line))
 	    {
 	    	if(! (a = uplinks_line_get(areafix, uplink)) )
 		{
