@@ -6,6 +6,8 @@
 
 #include <config.c>
 
+#include "config_cf_p_tests.h"
+
 /* local mocks/stubs */
 
 int verbose;
@@ -114,30 +116,8 @@ Ensure(config_inits)
     cf_initialize();
 }
 
-Ensure(cf_p_origin_default)
-{
-    char *exp = "FIDOGATE";
-    char *ret;
-
-    ret = cf_p_origin();
-
-    assert_that(ret, is_equal_to_string(exp));
-}
-
-Ensure(cf_p_origin_returns_config)
-{
-    char *exp = "MY FIDOGATE";
-    char *ret;
-    void *to_free;
-
-    to_free = cf_add_string("Origin", exp);
-
-    ret = cf_p_origin();
-
-    assert_that(ret, is_equal_to_string(exp));
-
-    free(to_free);
-}
+GEN_CF_P_TESTS(origin, "FIDOGATE", "Origin")
+GEN_CF_P_TESTS(organization, "FIDOGATE", "Organization")
 
 TestSuite *create_config_suite(void)
 {
@@ -145,8 +125,8 @@ TestSuite *create_config_suite(void)
 	"Config suite");
 
     add_test(suite, config_inits);
-    add_test(suite, cf_p_origin_default);
-    add_test(suite, cf_p_origin_returns_config);
+    ADD_CF_P_TESTS(suite, origin);
+    ADD_CF_P_TESTS(suite, organization);
 
     return suite;
 }
