@@ -612,7 +612,7 @@ int process_tic(Tick *tic)
 	    return OK;
 	}
 
-	if(!pass_path)
+	if(pass_path[0] == '\0')
 	{
     	    fglog("ERROR: config: PassthroughtBoxesDir not defined");
     	    return ERROR;
