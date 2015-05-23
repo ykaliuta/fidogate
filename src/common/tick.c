@@ -395,7 +395,13 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
 		return ERROR;
 #else
 		unlink(buffer);
-		link(name,buffer);
+		errlvl = link(name,buffer);
+		if (errlvl == -1)
+		{
+			fglog("$ERROR: after unlink cannot link file %s -> %s",
+			      name, buffer);
+			return ERROR;
+		}
 #endif /* OVERWRITEN_FECHO_FILE_TO_LINK */
 	    }
 	    else
@@ -534,7 +540,7 @@ int copy_file(char *old, char *new, char *dir)
 	}
 	
 	nw = fwrite(buffer, sizeof(char), nr, fnew);
-	if(ferror(fnew))
+	if(nw != nr)
 	{
 	    fglog("$ERROR: can't write to %s", new);
 	    fclose(fold);
