@@ -20,11 +20,6 @@ void fglog(const char *fmt, ...)
     return;
 }
 
-char *cf_s_configdir(char *s)
-{
-    return (char *)mock(s);
-}
-
 char *znfp1(Node *node)
 {
     return NULL;

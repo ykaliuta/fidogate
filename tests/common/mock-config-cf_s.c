@@ -1,8 +1,9 @@
 #define GEN_CF_S_STUB(n)			\
     char * n (char *s) {			\
-	return NULL;				\
+	return (char *)mock(s);			\
     }
 
+GEN_CF_S_STUB(cf_s_configdir)
 GEN_CF_S_STUB(cf_s_seq_split)
 GEN_CF_S_STUB(cf_s_newsvardir)
 GEN_CF_S_STUB(cf_s_seq_msgid)
