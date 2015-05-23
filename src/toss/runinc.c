@@ -107,11 +107,16 @@ void unpack(char *inb)
     struct dirent *dir;
     char archive[MAXPATH], type[4];
     short unpack_flag = FALSE;
-
+    int rc;
 
     /* Make sure temporary unpacking directory exists and entering into */
     BUF_COPY2(buffer, inb, "/tmpunpack");
-    chdir(buffer);
+    rc = chdir(buffer);
+    if (rc != 0)
+    {
+        fglog("$ERROR: can't change directory to %s", buffer);
+        return;
+    }
 
     /* Reading files into inbound directory */
     if( ! (dp = opendir(inb)) )
@@ -214,12 +219,18 @@ Unpacking *arch_type( char *name)
     FILE *fp;
     char s[10];
     Unpacking *p;
+    char *ret;
     
     /* Reading chars from archive */
     if( (fp = fopen(name, "r")) )
     {
-	fgets(s, 10, fp);
+        ret = fgets(s, 10, fp);
 	fclose(fp);
+	if (ret == NULL)
+	{
+            fglog("$ERROR: cann't read arch_type");
+            return NULL;
+	}
 
 	/*
 	 * Search archive unpack program
