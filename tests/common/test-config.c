@@ -8,103 +8,28 @@
 
 #include "config_cf_p_tests.h"
 
-/* local mocks/stubs */
-
-int verbose;
-int no_debug;
-
-void debug(int lvl, const char *fmt, ...)
-{
-    return;
-}
-void fglog(const char *fmt, ...)
-{
-    return;
-}
-
-char *znfp1(Node *node)
-{
-    return NULL;
-}
-
-char *znfp2(Node *node)
-{
-    return NULL;
-}
-
-char *znfp3(Node *node)
-{
-    return NULL;
-}
-
-char buffer[BUFFERSIZE];
-void *xmalloc(int size)
-{
-    return NULL;
-}
-void xfree(void *p)
-{
-    return;
-}
-void *xrealloc(void *ptr, int size)
-{
-    return NULL;
-}
-
-char *str_copy2(char *d, size_t n, char *s1, char *s2)
-{
-    return NULL;
-}
-
-Node *inet_to_ftn( char *addr)
-{
-    return NULL;
-}
-
-int asc_to_node(char *asc, Node *node, int point_flag)
-{
-    return 0;
-}
-FILE *xfopen(char *name, char *mode)
-{
-    return NULL;
-}
-
-char *strsave(char *s)
-{
-    return NULL;
-}
-
-char *xstrtok(char *s, const char *delim)
-{
-    return NULL;
-}
-
-char *str_copy(char *d, size_t n, char *s)
-{
-    return NULL;
-}
-
-void strip_crlf(char *line)
-{
-    return;
-}
-
-int is_space(int c)
-{
-    return 0;
-}
-
-int is_blank(int c)
-{
-    return 0;
-}
-
-
-#include "mock-config-cf_s.c"
+#include "mock-config.c"
 
 #include "test-config-api.c"
-/* ----------- end of mocks -------------- */
+
+char key1[] = "ConfigVar1";
+char val1[] = "Value1";
+char key2[] = "ConfigVar2";
+char val2[] = "Value2";
+char key3[] = "ConfigVar3";
+char val3[] = "Value3";
+char key_unexisting[] = "Some Key";
+
+void fill_config(void)
+{
+    cf_add_string(key1, val1);
+    cf_add_string(key2, val2);
+    cf_add_string(key3, val3);
+    cf_add_string(key1, val2); /* Different value */
+    cf_add_string(key3, val2); /* Different value, end */
+    /* leak the momory */
+}
+
 
 Ensure(config_inits)
 {
@@ -119,6 +44,66 @@ Ensure(config_inits)
 GEN_CF_P_TESTS(origin, "FIDOGATE", "Origin")
 GEN_CF_P_TESTS(organization, "FIDOGATE", "Organization")
 
+Ensure(get_string_default_null)
+{
+    char *ret;
+
+    ret = cf_get_string("some_var", TRUE);
+    assert_that(ret, is_null);
+
+    ret = cf_get_string("some_var", FALSE);
+    assert_that(ret, is_null);
+}
+
+Ensure(get_string_finds_var)
+{
+    char *ret;
+    char *exp = val2;
+
+    fill_config();
+
+    ret = cf_get_string(key2, TRUE);
+ 
+    assert_that(ret, is_equal_to_string(exp));
+}
+
+Ensure(get_string_doesnt_find_unexisting)
+{
+    char *ret;
+
+    fill_config();
+
+    ret = cf_get_string(key_unexisting, TRUE);
+
+    assert_that(ret, is_null);
+}
+
+Ensure(get_string_finds_same_var_from_start)
+{
+    char *ret1;
+    char *ret2;
+
+    fill_config();
+
+    ret1 = cf_get_string(key1, TRUE);
+    ret2 = cf_get_string(key1, TRUE);
+
+    assert_that(ret1, is_equal_to_string(ret2));
+}
+
+Ensure(get_string_finds_different_when_continue)
+{
+    char *ret1;
+    char *ret2;
+
+    fill_config();
+
+    ret1 = cf_get_string(key1, TRUE);
+    ret2 = cf_get_string(key1, FALSE);
+
+    assert_that(ret1, is_not_equal_to_string(ret2));
+}
+
 TestSuite *create_config_suite(void)
 {
     TestSuite *suite = create_named_test_suite(
@@ -127,6 +112,11 @@ TestSuite *create_config_suite(void)
     add_test(suite, config_inits);
     ADD_CF_P_TESTS(suite, origin);
     ADD_CF_P_TESTS(suite, organization);
+    add_test(suite, get_string_default_null);
+    add_test(suite, get_string_finds_var);
+    add_test(suite, get_string_doesnt_find_unexisting);
+    add_test(suite, get_string_finds_same_var_from_start);
+    add_test(suite, get_string_finds_different_when_continue);
 
     return suite;
 }

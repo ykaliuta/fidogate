@@ -1,5 +1,5 @@
 
-void *cf_add_string(char *k, char *s)
+cflist *cf_add_string(char *k, char *s)
 {
     cflist *node;
 
