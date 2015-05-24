@@ -420,7 +420,7 @@ char *cf_getline(char *buffer, int len, FILE *fp)
 /*
  * Process line from config file
  */
-void cf_do_line(char *line)
+static void cf_do_line(char *line)
 {
     char *p, *keyword;
     Node a;

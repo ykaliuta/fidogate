@@ -187,7 +187,6 @@ int	cf_defzone		();
 long	cf_lineno_get		(void);
 long	cf_lineno_set		(long n);
 char   *cf_getline		(char *, int, FILE *);
-void	cf_do_line		(char *);
 void	cf_read_config_file	(char *);
 void	cf_initialize		(void);
 void	cf_set_addr		(char *);
