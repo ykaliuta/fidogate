@@ -54,7 +54,7 @@
 /*
  * Prototypes
  */
-char   *get_name_from_body	(void);
+char   *get_name_from_body	(Textlist *);
 void	sendback		(const char *, ...);
 void	rfcaddr_init		(RFCAddr *);
 RFCAddr rfc_sender		(int);
@@ -62,16 +62,16 @@ int	rfc_parse		(RFCAddr *, char *, Node *, int);
 int	rfc_isfido		(void);
 void	cvt_user_name		(char *);
 char   *receiver		(char *, Node *);
-char   *mail_receiver		(RFCAddr *, Node *);
+char   *mail_receiver		(RFCAddr *, Node *, Textlist *);
 time_t	mail_date		(void);
-int	snd_mail		(RFCAddr, long);
-int	snd_message		(Message *, Area *, RFCAddr, RFCAddr, char *,
+int	snd_mail		(RFCAddr, Textlist *, long);
+int	snd_message		(Message *, Area *, RFCAddr, RFCAddr, char *, Textlist *,
 				 long, char *, int, MIMEInfo *, Node *, int);
 int	print_tear_line		(FILE *);
 int	print_origin		(FILE *, char *, Node *);
 int	print_local_msgid	(FILE *, Node *);
 int	print_via		(FILE *, Node *);
-int	snd_to_cc_bcc		(long);
+int	snd_to_cc_bcc		(Textlist *, long);
 void	short_usage		(void);
 void	usage			(void);
 
@@ -134,18 +134,10 @@ int private = TRUE;
 /* News-article */
 int newsmode = FALSE;
 
-
-/*
- * Global Textlist to save message body
- */
-Textlist body = { NULL, NULL };
-
-
-
 /*
  * Get name of recipient from quote lines inserted by news readers
  */
-char *get_name_from_body(void)
+char *get_name_from_body(Textlist *body)
 {
     static char line1[2*MAXINETADDR];
 #ifdef HAS_POSIX_REGEX
@@ -159,7 +151,7 @@ char *get_name_from_body(void)
 #endif
     
     /* First non-empty line of message body */
-    for(tl=body.first; tl && tl->line && is_blank_line(tl->line); tl=tl->next);
+    for(tl=body->first; tl && tl->line && is_blank_line(tl->line); tl=tl->next);
     if(!tl || !tl->line)
 	return NULL;
     
@@ -617,7 +609,7 @@ char *receiver(char *to, Node *node)
  * Return from field for FIDO message.
  * Alias checking is done by function receiver().
  */
-char *mail_receiver(RFCAddr *rfc, Node *node)
+char *mail_receiver(RFCAddr *rfc, Node *node, Textlist *body)
 {
     char *to;
     char name[MSG_MAXNAME];
@@ -652,7 +644,7 @@ char *mail_receiver(RFCAddr *rfc, Node *node)
 	    h = rfcaddr_from_rfc(to);
 	    rfc_parse(&h, name, NULL, FALSE);
 	}
-	else if( (to = get_name_from_body()) )
+	else if( (to = get_name_from_body(body)) )
 	{
 	    h = rfcaddr_from_rfc(to);
 	    rfc_parse(&h, name, NULL, FALSE);
@@ -793,7 +785,7 @@ int check_downlinks(char *area)
 /*
  * Process mail/news message
  */
-int snd_mail(RFCAddr rfc_to, long size)
+int snd_mail(RFCAddr rfc_to, Textlist *body, long size)
 {
     char groups[BUFSIZ];
     Node node_from, node_to;
@@ -826,7 +818,7 @@ int snd_mail(RFCAddr rfc_to, long size)
     else
 	BUF_COPY(subj, "(no subject)");
 
-    if(mime_debody(&body) != OK)
+    if(mime_debody(body) != OK)
 	return ERROR;
     
      /*
@@ -849,7 +841,7 @@ int snd_mail(RFCAddr rfc_to, long size)
     /*
      * To name/node
      */
-    p = mail_receiver(&rfc_to, &node_to);
+    p = mail_receiver(&rfc_to, &node_to, body);
     if(!p) {
 	if(*address_error)
 	    sendback("Address %s:\n  %s",
@@ -1083,7 +1075,7 @@ int snd_mail(RFCAddr rfc_to, long size)
 		    {
 			fglog("BOUNCE: Postings from address `%s' to group `%s' not allowed - skipped, sent notify",
 			      s_rfcaddr_to_asc(&rfc_from, FALSE), pa->group);
-			bounce_mail("acl", &rfc_from, &msg, pa->group, &body);
+			bounce_mail("acl", &rfc_from, &msg, pa->group, body);
 		    }
 		    else
 			fglog("BOUNCE: Postings from address `%s' to group `%s' not allowed - skipped",
@@ -1106,7 +1098,7 @@ int snd_mail(RFCAddr rfc_to, long size)
 		msg.node_from = cf_n_addr();
 		msg.node_to   = cf_n_uplink();
 		status = snd_message(&msg, pa, rfc_from, rfc_to,
-				     subj, size, flags, fido, mime,
+				     subj, body, size, flags, fido, mime,
 				     &node_from, mime_qp);
 		if(status)
 		{
@@ -1136,7 +1128,7 @@ int snd_mail(RFCAddr rfc_to, long size)
 	    msg.node_from = node_from;
 	    msg.node_to   = node_to;
 	    status = snd_message(&msg, NULL, rfc_from, rfc_to,
-				 subj, size, flags, fido, mime, &node_from,mime_qp);
+				 subj, body, size, flags, fido, mime, &node_from,mime_qp);
 	    TMPS_RETURN(status);
 	}
 	else
@@ -1145,7 +1137,7 @@ int snd_mail(RFCAddr rfc_to, long size)
 	    {
 		fglog("BOUNCE: Gateway netmail from address `%s' to `%s' not allowed - skipped, sent notify",
 		      s_rfcaddr_to_asc(&rfc_from, FALSE), asc_node_to);
-		bounce_mail("acl_netmail", &rfc_from, &msg, asc_node_to, &body);
+		bounce_mail("acl_netmail", &rfc_from, &msg, asc_node_to, body);
 	    }
 	    else
 	    {
@@ -1163,8 +1155,9 @@ int snd_mail(RFCAddr rfc_to, long size)
 
 
 int snd_message(Message *msg, Area *parea,
-		RFCAddr rfc_from, RFCAddr rfc_to, char *subj,
-		long size, char *flags, int fido, MIMEInfo *mime,
+		RFCAddr rfc_from, RFCAddr rfc_to,
+		char *subj, Textlist *body, long size,
+		char *flags, int fido, MIMEInfo *mime,
 		Node *node_from, int mime_qp)
 /* msg       FTN nessage structure
  * parea     area/newsgroup description structure
@@ -1321,7 +1314,7 @@ int snd_message(Message *msg, Area *parea,
     {
 	split = 1;
 	lsize = 0;
-	for(p=body.first; p; p=p->next)
+	for(p=body->first; p; p=p->next)
 	{
 	    /* Decode all MIME-style quoted printables */
 	    mime_dequote(buffer, sizeof(buffer), p->line, mime_qp);
@@ -1349,7 +1342,7 @@ int snd_message(Message *msg, Area *parea,
     /*
      * Set pointer to first line in message body
      */
-    p = body.first;
+    p = body->first;
     
 again:
 
@@ -1953,7 +1946,7 @@ int print_via(FILE *fp, Node *node_from)
 /*
  * Send mail to addresses taken from To, Cc, Bcc headers
  */
-int snd_to_cc_bcc(long int size)
+int snd_to_cc_bcc(Textlist *body, long int size)
 {
     char *header, *p;
     int status=EX_OK, st;
@@ -1966,7 +1959,7 @@ int snd_to_cc_bcc(long int size)
 	for(p=addr_token(header); p; p=addr_token(NULL))
 	{
 	    rfc_to = rfcaddr_from_rfc(p);
-	    if( (st = snd_mail(rfc_to, size)) != EX_OK )
+	    if( (st = snd_mail(rfc_to, body, size)) != EX_OK )
 		status = st;
 	}
 
@@ -1977,7 +1970,7 @@ int snd_to_cc_bcc(long int size)
 	for(p=addr_token(header); p; p=addr_token(NULL))
 	{
 	    rfc_to = rfcaddr_from_rfc(p);
-	    if( (st = snd_mail(rfc_to, size)) != EX_OK )
+	    if( (st = snd_mail(rfc_to, body, size)) != EX_OK )
 		status = st;
 	}
 
@@ -1988,7 +1981,7 @@ int snd_to_cc_bcc(long int size)
 	for(p=addr_token(header); p; p=addr_token(NULL))
 	{
 	    rfc_to = rfcaddr_from_rfc(p);
-	    if( (st = snd_mail(rfc_to, size)) != EX_OK )
+	    if( (st = snd_mail(rfc_to, body, size)) != EX_OK )
 		status = st;
 	}
 
@@ -2055,6 +2048,7 @@ int main(int argc, char **argv)
     char article[MAXPATH];
     long pos;
     char posfile[MAXPATH];
+    Textlist body = { NULL, NULL };
     
     int option_index;
     static struct option long_options[] =
@@ -2491,14 +2485,14 @@ int main(int argc, char **argv)
 	if(newsmode)
 	{
 	    /* Send mail to echo feed for news messages */
-	    status = snd_mail(rfc_to, size);
+	    status = snd_mail(rfc_to, &body, size);
 	    tmps_freeall();
 	}
 	else
 	    if(t_flag)
 	    {
 		/* Send mail to addresses from headers */
-		status = snd_to_cc_bcc(size);
+		status = snd_to_cc_bcc(&body, size);
 		tmps_freeall();
 	    }
 	    else
@@ -2507,7 +2501,7 @@ int main(int argc, char **argv)
 		for(i = optind; i < argc; i++)
 		{
 		    rfc_to = rfcaddr_from_rfc(argv[i]);
-		    if( (st = snd_mail(rfc_to, size)) != EX_OK )
+		    if( (st = snd_mail(rfc_to, &body, size)) != EX_OK )
 			status = st;
 		    tmps_freeall();
 		}
