@@ -835,6 +835,7 @@ enable_sep_pkt
 enable_owfl
 enable_active_lookup
 enable_recode_allrfc
+enable_iconv
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1506,6 +1507,7 @@ Optional Features:
   --disable-owfl          overwrite fileecho link
   --disable-active-lookup active file lookup
   --disable-recode-allrfc recoding some RFC header
+  --disable-iconv	disable iconv recoding library
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -6831,7 +6833,7 @@ test x"$silent" = xyes && libtool_flags="$libtool_flags --silent"
 case "$host" in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 6834 "configure"' > conftest.$ac_ext
+  echo '#line 6836 "configure"' > conftest.$ac_ext
   if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_compile\""; } >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -7998,6 +8000,15 @@ if test "${enable_recode_allrfc+set}" = set; then :
   enableval=$enable_recode_allrfc;
 else
   $as_echo "#define RECODE_ALL_RFC 1" >>confdefs.h
+
+fi
+
+
+# Check whether --enable-iconv was given.
+if test "${enable_iconv+set}" = set; then :
+  enableval=$enable_iconv;
+else
+  $as_echo "#define HAVE_ICONV 1" >>confdefs.h
 
 fi
 
