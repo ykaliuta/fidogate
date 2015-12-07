@@ -406,6 +406,10 @@ AC_ARG_ENABLE(recode-allrfc,
 [  --disable-recode-allrfc recoding some RFC header],
     ,AC_DEFINE(RECODE_ALL_RFC))
 
+AC_ARG_ENABLE(iconv,
+[  --disable-iconv	disable iconv recoding library],
+   ,AC_DEFINE(HAVE_ICONV))
+
 AC_SEARCH_LIBS(regcomp, rx regex, [
     AC_DEFINE(HAS_POSIX_REGEX,[],[Do we have a decent regex library?])
     AC_CHECK_HEADER(rxposix.h, AC_DEFINE(HAVE_RX,[],[Do we have rxposix.h?]))])
