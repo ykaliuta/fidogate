@@ -769,9 +769,10 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    if(strieq(mime->encoding, "quoted-printable")) 
 		cvt8 = AREA_QP;
 	}
-	debug(5, "cvt8:%s%s",
+	debug(5, "cvt8:%s%s%s",
 	      (cvt8 & AREA_8BIT ? " 8bit" : ""),
-	      (cvt8 & AREA_QP   ? " quoted-printable" : ""));
+	      (cvt8 & AREA_QP   ? " quoted-printable" : ""),
+	      (cvt8 & AREA_HB64 ? " headers BASE64" : ""));
 	
 	/*
 	 * Convert message body
