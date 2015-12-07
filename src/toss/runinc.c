@@ -524,7 +524,7 @@ int toss_init(void)
     toss[6].grade = "-gf";
     toss[6].flags = "-s";
 
-    for(i=0;i<2;i++)
+    for(i = 0; i <= 6; i++)
     {
 	BUF_COPY2(buffer, toss[i].inbound, "/tmpunpack");
 	if(check_access(buffer, CHECK_DIR) == ERROR)
