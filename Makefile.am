@@ -31,6 +31,8 @@ FDESTDIR	= $(DEFAULT_V_CONFIGDIR) \
 		  $(DEFAULT_V_SPOOLDIR)/toss/route \
 		  $(DEFAULT_V_SPOOLDIR)/toss/pack \
 		  $(DEFAULT_V_SPOOLDIR)/toss/bad \
+		  $(DEFAULT_V_SPOOLDIR)/ftpin \
+		  $(DEFAULT_V_SPOOLDIR)/uuin \
 		  $(DEFAULT_V_BTBASEDIR) \
 		  $(DEFAULT_V_BTBASEDIR)/tick \
 		  $(DEFAULT_V_INBOUND) \
