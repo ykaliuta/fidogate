@@ -12,7 +12,7 @@ include $(top_builddir)/build/config.make
 
 TOPDIR		= .
 
-SUBDIRS		= src scripts doc
+SUBDIRS		= src scripts doc tests
 
 FDESTDIR	= $(DEFAULT_V_CONFIGDIR) \
 		  $(DEFAULT_V_LOGDIR) \
