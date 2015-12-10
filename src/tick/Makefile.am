@@ -5,6 +5,8 @@
 #    Makefile for FIDOGATE src/tick/
 #
 
+AUTOMAKE_OPTIONS        = subdir-objects
+
 AM_CPPFLAGS		= -I$(top_srcdir)/src/include
 
 if enable_static
