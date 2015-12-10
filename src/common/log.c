@@ -138,7 +138,6 @@ static void log_finish_init(struct logger *l)
      */
     if (getuid() != geteuid())
 	l->suppress_debug = TRUE;
-    l->inited = TRUE;
 }
 
 #if !defined(HAVE_SYSLOG) || !defined(HAVE_SYSLOG_H)
@@ -258,6 +257,7 @@ static int log_init(struct logger *l, char *fname)
 	log_init_file_or_stream(l, fname);
 
     log_finish_init(l);
+    l->inited = TRUE;
     return OK;
 }
 
