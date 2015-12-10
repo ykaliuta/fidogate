@@ -11,7 +11,7 @@ AM_CONFIG_HEADER([config.h])
 AC_CONFIG_SRCDIR([src/common/config.c])
 AC_CONFIG_AUX_DIR([build])
 AC_PREFIX_DEFAULT(/usr/local/fido)
-AM_INIT_AUTOMAKE(fidogate, 5.2.4ds, nodefine)
+AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
 AC_CANONICAL_HOST
 
