@@ -23,7 +23,7 @@ libfidogate_la_SOURCES = $(SRC)
 libfidogate_la_LDFLAGS = -shared -rpath $(libdir) -soname $(libdir) -version-info 5:0:0
 
 
-INCLUDES = -I$(top_srcdir)/src/include
+AM_CPPFLAGS = -I$(top_srcdir)/src/include
 
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 

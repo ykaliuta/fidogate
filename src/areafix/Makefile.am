@@ -5,7 +5,7 @@
 #    Makefile for FIDOGATE src/areafix/
 #
 
-INCLUDES		= -I$(top_srcdir)/src/include
+AM_CPPFLAGS		= -I$(top_srcdir)/src/include
 
 if enable_static
 LDADD			= $(top_srcdir)/src/common/libfidogate.a
