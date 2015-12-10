@@ -744,6 +744,13 @@ char *mail_sender(RFCAddr *rfc, Node *node)
 	return name;
     }
 
+    if (cf_get_string("ForceRFCAddrInFrom", TRUE))
+    {
+	snprintf(name, sizeof(name), "%s@%s", rfc->user, rfc->addr);
+	debug(5, "Forcing email address for sender name: %s", name);
+	return name;
+    }
+
     /*
      * If no real name, apply name conversion
      */
