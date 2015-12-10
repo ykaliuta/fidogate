@@ -13,18 +13,6 @@
 # PARTICULAR PURPOSE.
 
 @SET_MAKE@
-
-#:ts=8
-#
-#    $Id: Makefile.am,v 5.2 2004/11/23 00:50:39 anray Exp $
-#
-#    Makefile for FIDOGATE src/
-#
-
-#
-# Normally it should not be necessary to modify this file, see
-# ../config.make and ../rules.make
-#
 VPATH = @srcdir@
 am__is_gnu_make = { \
   if test -z '$(MAKELEVEL)'; then \
@@ -99,7 +87,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-subdir = src
+subdir = tests
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
 	$(top_srcdir)/configure.in
@@ -350,7 +338,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 vardir = @vardir@
-SUBDIRS = include common areafix charset gate tick toss util
+SUBDIRS = common
 all: all-recursive
 
 .SUFFIXES:
@@ -363,9 +351,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__confi
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu tests/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu src/Makefile
+	  $(AUTOMAKE) --gnu tests/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
