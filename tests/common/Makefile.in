@@ -538,6 +538,7 @@ top_srcdir = @top_srcdir@
 vardir = @vardir@
 TOP_SRC = ../../src
 AM_CPPFLAGS = -I$(TOP_SRC)/include -I$(TOP_SRC)/common
+AM_CFLAGS = -Wno-format-security
 LDADD = -lcgreen
 test_log_SOURCES = test-log.c
 test_config_SOURCES = test-config.c
