@@ -98,7 +98,7 @@ host_triplet = @host@
 subdir = src/common
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
@@ -469,7 +469,7 @@ AUTOMAKE_OPTIONS = foreign
 @enable_static_FALSE@libfidogate_la_CFLAGS = -Wall -g -fPIC
 libfidogate_la_SOURCES = $(SRC)
 libfidogate_la_LDFLAGS = -shared -rpath $(libdir) -soname $(libdir) -version-info 5:0:0
-INCLUDES = -I$(top_srcdir)/src/include
+AM_CPPFLAGS = -I$(top_srcdir)/src/include
 SRC = acl.c \
 	    acl_ftn.c \
 	    active.c \
