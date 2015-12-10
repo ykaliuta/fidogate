@@ -634,10 +634,6 @@ DOMAINNAME
 HOSTNAME
 M4MAKE
 SUBSTCMD
-SPOOLDIR
-LOGDIR
-vardir
-LOCKDIR
 SENDMAIL
 PATHDB
 PATHETC
@@ -656,6 +652,10 @@ ftnnews_FALSE
 ftnnews_TRUE
 netmaildir
 btbasedir
+spooldir
+lockdir
+vardir
+logdir
 UUDECODE
 LHA
 ARC
@@ -7682,6 +7682,7 @@ esac
 
 fi
 
+logdir='${prefix}/var/log/${PACKAGE}'
 
 # Check for a --with-vardir argument
 
@@ -7695,6 +7696,7 @@ esac
 
 fi
 
+vardir='${prefix}/var/lib/${PACKAGE}'
 
 # Check for a --with-lockdir argument
 
@@ -7708,6 +7710,7 @@ esac
 
 fi
 
+lockdir='${prefix}/var/lock/${PACKAGE}'
 
 # Check for a --with-spooldir argument
 
@@ -7721,6 +7724,7 @@ esac
 
 fi
 
+spooldir='${prefix}/var/spool/${PACKAGE}'
 
 # Check for a --with-sysconfdir argument
 
@@ -7734,6 +7738,7 @@ esac
 
 fi
 
+sysconfdir='${prefix}/etc/${PACKAGE}'
 
 # Check for a --with-btbasedir argument
 
@@ -7748,10 +7753,7 @@ esac
 
 fi
 
-if ! test "${btbasedir+set}" = set; then
-    btbasedir='/var/spool/fido/bt'
-fi
-
+btbasedir='${prefix}/var/spool/fido/bt'
 
 # Check for a --with-netmaildir argument
 
@@ -8561,70 +8563,6 @@ fi
 	as_fn_error $? "sendmail not found, re-run with valid --with-sendmail=DIR" "$LINENO" 5
     fi
 fi
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for lock directory" >&5
-$as_echo_n "checking for lock directory... " >&6; }
-if test "${with_lockdir+set}" = set; then
-	LOCKDIR="$with_lockdir"
-elif test -d /var/run; then
-	LOCKDIR=/var/run/fidogate
-elif test -d /var/spool/lock; then
-	LOCKDIR=/var/spool/lock/fidogate
-else
-	LOCKDIR=/var/lock/fidogate
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $LOCKDIR" >&5
-$as_echo "$LOCKDIR" >&6; }
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for var directory" >&5
-$as_echo_n "checking for var directory... " >&6; }
-if test "${with_vardir+set}" = set; then
-	vardir="$with_vardir"
-elif test -d /var/lib; then
-	vardir=/var/lib/fidogate
-elif test -d /var/data; then
-	vardir=/var/data/fidogate
-elif test -d /var/db; then
-	vardir=/var/db/fidogate
-else
-	vardir=/var/lib/fidogate
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: ${vardir}" >&5
-$as_echo "${vardir}" >&6; }
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for log directory" >&5
-$as_echo_n "checking for log directory... " >&6; }
-if test "${with_logdir+set}" = set; then
-	LOGDIR="$with_logdir"
-elif test -d /var/log; then
-	LOGDIR=/var/log/fido/gate
-elif test -d /var/spool/log; then
-	LOGDIR=/var/spool/log/fidogate
-else
-	VARDIR=/var/log/fido/gate
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $LOGDIR" >&5
-$as_echo "$LOGDIR" >&6; }
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for spool directory" >&5
-$as_echo_n "checking for spool directory... " >&6; }
-if test "${with_spooldir+set}" = set; then
-	SPOOLDIR="$with_spooldir"
-elif test -d /var/spool; then
-	SPOOLDIR=/var/spool/fido/gate
-elif test -d /var/data; then
-	SPOOLDIR=/var/data/fido/gate
-elif test -d /var/db; then
-	SPOOLDIR=/var/db/fido/gate
-else
-	SPOOLDIR=/var/data/fido/gate
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $SPOOLDIR" >&5
-$as_echo "$SPOOLDIR" >&6; }
 
 
 SUBSTCMD='$(PERL) $(top_srcdir)/build/subst.pl -c$(top_srcdir)/build/config.make -t$(top_srcdir)'
