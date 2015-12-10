@@ -87,8 +87,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-TESTS = test_log$(EXEEXT)
-check_PROGRAMS = tests$(EXEEXT) test_log$(EXEEXT)
+TESTS = test_log$(EXEEXT) test_config$(EXEEXT)
+check_PROGRAMS = test_log$(EXEEXT) test_config$(EXEEXT)
 subdir = tests/common
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
@@ -100,18 +100,18 @@ mkinstalldirs = $(SHELL) $(top_srcdir)/build/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am_test_log_OBJECTS = test-log-main.$(OBJEXT) test-log.$(OBJEXT)
-test_log_OBJECTS = $(am_test_log_OBJECTS)
-test_log_LDADD = $(LDADD)
-test_log_DEPENDENCIES =
+am_test_config_OBJECTS = test-config.$(OBJEXT)
+test_config_OBJECTS = $(am_test_config_OBJECTS)
+test_config_LDADD = $(LDADD)
+test_config_DEPENDENCIES =
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-am_tests_OBJECTS = tests.$(OBJEXT) test-log.$(OBJEXT)
-tests_OBJECTS = $(am_tests_OBJECTS)
-tests_LDADD = $(LDADD)
-tests_DEPENDENCIES =
+am_test_log_OBJECTS = test-log.$(OBJEXT)
+test_log_OBJECTS = $(am_test_log_OBJECTS)
+test_log_LDADD = $(LDADD)
+test_log_DEPENDENCIES =
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -145,8 +145,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(test_log_SOURCES) $(tests_SOURCES)
-DIST_SOURCES = $(test_log_SOURCES) $(tests_SOURCES)
+SOURCES = $(test_config_SOURCES) $(test_log_SOURCES)
+DIST_SOURCES = $(test_config_SOURCES) $(test_log_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -539,8 +539,8 @@ vardir = @vardir@
 TOP_SRC = ../../src
 AM_CPPFLAGS = -I$(TOP_SRC)/include -I$(TOP_SRC)/common
 LDADD = -lcgreen
-test_log_SOURCES = test-log-main.c test-log.c
-tests_SOURCES = tests.c test-log.c
+test_log_SOURCES = test-log.c
+test_config_SOURCES = test-config.c
 all: all-am
 
 .SUFFIXES:
@@ -584,13 +584,13 @@ clean-checkPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
+test_config$(EXEEXT): $(test_config_OBJECTS) $(test_config_DEPENDENCIES) $(EXTRA_test_config_DEPENDENCIES) 
+	@rm -f test_config$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(test_config_OBJECTS) $(test_config_LDADD) $(LIBS)
+
 test_log$(EXEEXT): $(test_log_OBJECTS) $(test_log_DEPENDENCIES) $(EXTRA_test_log_DEPENDENCIES) 
 	@rm -f test_log$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(test_log_OBJECTS) $(test_log_LDADD) $(LIBS)
-
-tests$(EXEEXT): $(tests_OBJECTS) $(tests_DEPENDENCIES) $(EXTRA_tests_DEPENDENCIES) 
-	@rm -f tests$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(tests_OBJECTS) $(tests_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -598,9 +598,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-log-main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-log.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tests.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -825,6 +824,13 @@ recheck: all $(check_PROGRAMS)
 test_log.log: test_log$(EXEEXT)
 	@p='test_log$(EXEEXT)'; \
 	b='test_log'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+test_config.log: test_config$(EXEEXT)
+	@p='test_config$(EXEEXT)'; \
+	b='test_config'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
