@@ -59,7 +59,7 @@ exec_prefix		= @exec_prefix@
 PACKAGE			= @PACKAGE@
 
 DEFAULT_V_CONFIGDIR	= @sysconfdir@
-DEFAULT_V_LIBEXECDIR	= @libexecdir@/@PACKAGE@
+DEFAULT_V_LIBEXECDIR	= @libexecdir@
 DEFAULT_V_BINDIR	= @bindir@
 DEFAULT_V_LIBDIR	= ${prefix}/lib
 DEFAULT_V_LOGDIR	= @logdir@
