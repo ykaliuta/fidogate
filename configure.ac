@@ -89,7 +89,6 @@ yes) AC_MSG_ERROR([--with-logdir requires an argument; use --with-logdir=DIR]) ;
 *) logdir="$withval" ;;
 esac
 ])
-AC_SUBST([logdir],         ['${prefix}/var/log/${PACKAGE}'])dnl
 
 # Check for a --with-vardir argument
 AC_ARG_WITH(vardir, dnl
@@ -101,7 +100,6 @@ yes) AC_MSG_ERROR([--with-vardir requires an argument; use --with-vardir=DIR]) ;
 *) vardir="$withval" ;;
 esac
 ])
-AC_SUBST([vardir],         ['${prefix}/var/lib/${PACKAGE}'])dnl
 
 # Check for a --with-lockdir argument
 AC_ARG_WITH(lockdir, dnl
@@ -113,7 +111,6 @@ yes) AC_MSG_ERROR([--with-lockdir requires an argument; use --with-lockdir=DIR])
 *) LOCKDIR="$withval" ;;
 esac
 ])
-AC_SUBST([lockdir],         ['${prefix}/var/lock/${PACKAGE}'])dnl
 
 # Check for a --with-spooldir argument
 AC_ARG_WITH(spooldir, dnl
@@ -125,7 +122,6 @@ yes) AC_MSG_ERROR([--with-spooldir requires an argument; use --with-spooldir=DIR
 *) spooldir="$withval" ;;
 esac
 ])
-AC_SUBST([spooldir],         ['${prefix}/var/spool/${PACKAGE}'])dnl
 
 # Check for a --with-sysconfdir argument
 AC_ARG_WITH(sysconfdir, dnl
@@ -137,7 +133,6 @@ yes) AC_MSG_ERROR([--with-sysconfdir requires an argument; use --with-sysconfdir
 *) sysconfdir="$withval" ;;
 esac 
 ])
-AC_SUBST([sysconfdir],         ['${prefix}/etc/${PACKAGE}'])dnl
 
 # Check for a --with-btbasedir argument
 AC_ARG_WITH(btbasedir, dnl
@@ -150,7 +145,10 @@ yes) AC_MSG_ERROR([--with-btbasedir requires an argument; use --with-btbasedir=D
 ;;
 esac
 ])
-AC_SUBST([btbasedir],         ['${prefix}/var/spool/fido/bt'])dnl
+if ! test "${btbasedir+set}" = set; then
+    btbasedir='/var/spool/fido/bt'
+fi
+AC_SUBST(btbasedir)
 
 # Check for a --with-netmaildir argument
 AC_ARG_WITH(netmaildir, dnl
@@ -522,6 +520,62 @@ else
     fi
 fi
 AC_SUBST(SENDMAIL)
+
+AC_MSG_CHECKING(for lock directory)
+if test "${with_lockdir+set}" = set; then
+	LOCKDIR="$with_lockdir"
+elif test -d /var/run; then
+	LOCKDIR=/var/run/fidogate
+elif test -d /var/spool/lock; then
+	LOCKDIR=/var/spool/lock/fidogate
+else
+	LOCKDIR=/var/lock/fidogate
+fi
+AC_MSG_RESULT($LOCKDIR)
+AC_SUBST(LOCKDIR)
+
+AC_MSG_CHECKING(for var directory)
+if test "${with_vardir+set}" = set; then
+	vardir="$with_vardir"
+elif test -d /var/lib; then
+	vardir=/var/lib/fidogate
+elif test -d /var/data; then
+	vardir=/var/data/fidogate
+elif test -d /var/db; then
+	vardir=/var/db/fidogate
+else
+	vardir=/var/lib/fidogate
+fi
+AC_MSG_RESULT(${vardir})
+AC_SUBST(vardir)
+
+AC_MSG_CHECKING(for log directory)
+if test "${with_logdir+set}" = set; then
+	LOGDIR="$with_logdir"
+elif test -d /var/log; then
+	LOGDIR=/var/log/fido/gate
+elif test -d /var/spool/log; then
+	LOGDIR=/var/spool/log/fidogate
+else
+	VARDIR=/var/log/fido/gate
+fi
+AC_MSG_RESULT($LOGDIR)
+AC_SUBST(LOGDIR)
+
+AC_MSG_CHECKING(for spool directory)
+if test "${with_spooldir+set}" = set; then
+	SPOOLDIR="$with_spooldir"
+elif test -d /var/spool; then
+	SPOOLDIR=/var/spool/fido/gate
+elif test -d /var/data; then
+	SPOOLDIR=/var/data/fido/gate
+elif test -d /var/db; then
+	SPOOLDIR=/var/db/fido/gate
+else
+	SPOOLDIR=/var/data/fido/gate
+fi
+AC_MSG_RESULT($SPOOLDIR)
+AC_SUBST(SPOOLDIR)
 
 SUBSTCMD='$(PERL) $(top_srcdir)/build/subst.pl -c$(top_srcdir)/build/config.make -t$(top_srcdir)'
 M4MAKE='$(M4) $(M4OPTIONS)'

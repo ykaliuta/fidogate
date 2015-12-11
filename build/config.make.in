@@ -56,16 +56,14 @@
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
 
-PACKAGE			= @PACKAGE@
-
 DEFAULT_V_CONFIGDIR	= @sysconfdir@
 DEFAULT_V_LIBEXECDIR	= @libexecdir@
 DEFAULT_V_BINDIR	= @bindir@
 DEFAULT_V_LIBDIR	= ${prefix}/lib
-DEFAULT_V_LOGDIR	= @logdir@
+DEFAULT_V_LOGDIR	= @LOGDIR@
 DEFAULT_V_VARDIR	= @vardir@
-DEFAULT_V_LOCKDIR	= @lockdir@
-DEFAULT_V_SPOOLDIR	= @spooldir@
+DEFAULT_V_LOCKDIR	= @LOCKDIR@
+DEFAULT_V_SPOOLDIR	= @SPOOLDIR@
 DEFAULT_V_BTBASEDIR	= @btbasedir@
 DEFAULT_V_NETMAILDIR	= @netmaildir@
 DEFAULT_V_INBOUND	= $(DEFAULT_V_BTBASEDIR)/in
