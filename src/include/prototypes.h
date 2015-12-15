@@ -551,7 +551,6 @@ int	header_read_list	(Textlist*, Textlist*);
 short	header_hops		(void);
 char   *rfcheader_get		(Textlist *, char *);
 char   *header_get		(char *);
-char   *rfcheader_geth		(Textlist *, char *, int);
 char   *header_geth		(char *, int);
 char   *header_getnext		(void);
 char   *s_header_getcomplete	(char *);

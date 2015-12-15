@@ -32,19 +32,11 @@
 
 #include "fidogate.h"
 
-
-
-/*
- * Textlist to hold header of message
- */
-static Textlist header = { NULL, NULL };
-static Textline *last_header = NULL;
-
-
+static RFCHeader the_header;
 
 Textlist* header_get_list(void)
 {
-    return &header;
+    return &the_header.headers;
 }
 
 /*
@@ -54,13 +46,14 @@ void header_ca_rfc(FILE *out, int rfc_level)
 {
     static char *rfc_lvl_1[] = { RFC_LVL_1_HEADERS, NULL };
     static char *rfc_lvl_3[] = { RFC_LVL_3_HEADERS, NULL };
-    
+    Textlist *headers = &the_header.headers;
+
     /* RFC level 0 - no ^ARFC-Xxxx kludges */
     if(rfc_level <= 0)
     {
 	return;
     }
-    
+
     /* RFC level 1 - selected set of ^ARFC-Xxxx kludges */
     else if(rfc_level == 1)
     {
@@ -69,7 +62,7 @@ void header_ca_rfc(FILE *out, int rfc_level)
 	int len;
 	int ok = FALSE;
 	
-	for(p=header.first; p; p=p->next)
+	for(p=headers->first; p; p=p->next)
 	{
 	    if(*p->line && !is_space(p->line[0])) 
 	    {
@@ -101,7 +94,7 @@ void header_ca_rfc(FILE *out, int rfc_level)
 	int i;
 
 	crlf = "";
-	for(p=header.first; p; p=p->next)
+	for(p=headers->first; p; p=p->next)
 	{
 	    if(*p->line && !is_space(p->line[0])) 
 	    {
@@ -130,7 +123,7 @@ void header_ca_rfc(FILE *out, int rfc_level)
 	int i;
 	
 	crlf = "";
-	for(p=header.first; p; p=p->next)
+	for(p=headers->first; p; p=p->next)
 	{
 	    if(*p->line && !is_space(p->line[0])) 
 	    {
@@ -174,8 +167,10 @@ void header_ca_rfc(FILE *out, int rfc_level)
  */
 void header_delete(void)
 {
-    tl_clear(&header);
-    last_header = NULL;
+    RFCHeader *header = &the_header;
+
+    tl_clear(&header->headers);
+    header->last_header = NULL;
 }
 
 
@@ -188,10 +183,11 @@ void header_read(FILE *file)
     static char buf[BUFFERSIZE];
     static char queue[BUFFERSIZE];
     short int first = TRUE;
+    Textlist *headers = &the_header.headers;
     
     queue[0]='\0';
 
-    tl_clear(&header);
+    tl_clear(headers);
 
     while(read_line(buf, sizeof(buf), file))
     {
@@ -205,14 +201,14 @@ void header_read(FILE *file)
 	else
 	{
 	    if(!first)
-		tl_append(&header, queue);
+		tl_append(headers, queue);
 	    else
 		first = FALSE;
 	    BUF_COPY(queue,buf);
 	}
     }
     if(strlen(queue) > 1)
-	tl_append(&header, queue);
+	tl_append(headers, queue);
 }
 
 /*
@@ -288,11 +284,12 @@ short header_hops(void)
     char *name = "Received";
     Textline *p;
     int len, hops;
-    
+    Textlist *headers = &the_header.headers;
+
     len  = strlen(name);
     hops = 0;
     
-    for(p=header.first; p; p=p->next)
+    for(p=headers->first; p; p=p->next)
     {
 #ifdef RECEIVED_BY_MAILER
 	if(!strnicmp(p->line, RECEIVED_BY_MAILER, strlen(RECEIVED_BY_MAILER)))
@@ -315,6 +312,7 @@ char *rfcheader_get(Textlist *tl, char *name)
     Textline *p;
     int len;
     char *s;
+    RFCHeader *header = &the_header;
     
     len = strlen(name);
     
@@ -334,12 +332,12 @@ char *rfcheader_get(Textlist *tl, char *name)
 		if((s1 = strstr(s, "?=\t=?")) != NULL)
 		    strncpy(s1 + 2, s1 + 3, strlen(s) - 2 - (int)(s1 - s));
 	    }
-	    last_header = p;
+	    header->last_header = p;
 	    return s;
 	}
     }
     
-    last_header = NULL;
+    header->last_header = NULL;
     return NULL;
 }
 
@@ -350,7 +348,9 @@ char *rfcheader_get(Textlist *tl, char *name)
  */
 char *header_get(char *name)
 {
-    return rfcheader_get(&header, name);
+    RFCHeader *header = &the_header;
+
+    return rfcheader_get(&header->headers, name);
 }
 
 
@@ -365,12 +365,13 @@ char *header_get(char *name)
  *
  * Return: contents of header lines or NULL.
  */
-char *rfcheader_geth(Textlist *tl, char *name, int first)
+static char *rfcheader_geth(RFCHeader *header, char *name, int first)
 {
     static Textline *p_last;
     Textline *p;
     int len;
     char *s;
+    Textlist *tl = &header->headers;
     
     if(first)
     {
@@ -425,7 +426,9 @@ char *rfcheader_geth(Textlist *tl, char *name, int first)
  */
 char *header_geth(char *name, int first)
 {
-    return rfcheader_geth(&header, name, first);
+    RFCHeader *header = &the_header;
+
+    return rfcheader_geth(header, name, first);
 }
 
 
@@ -437,20 +440,21 @@ char *header_geth(char *name, int first)
 char *header_getnext(void)
 {
     char *s;
+    RFCHeader *header = &the_header;
     
-    if(last_header == NULL)
+    if(header->last_header == NULL)
 	return NULL;
 
-    last_header = last_header->next;
-    if(last_header == NULL)
+    header->last_header = header->last_header->next;
+    if(header->last_header == NULL)
 	return NULL;
-    if(!is_space(last_header->line[0])) 
+    if(!is_space(header->last_header->line[0]))
     {
-	last_header = NULL;
+	header->last_header = NULL;
 	return NULL;
     }
     
-    for(s=last_header->line; is_space(*s); s++) ;
+    for(s=header->last_header->line; is_space(*s); s++) ;
     return s;
 }
 
@@ -569,6 +573,7 @@ char *addr_token(char *line)
 int main(int argc, char *argv[])
 {
     char *h, *p;
+    RFCHeader *header = &the_header;
     
     if(argc != 2)
     {
@@ -581,9 +586,9 @@ int main(int argc, char *argv[])
     header_read(stdin);
 
     printf("----------------------------------------\n");
-    for( p = rfcheader_geth(&header, h, TRUE);
+    for( p = rfcheader_geth(header, h, TRUE);
 	 p;
-	 p = rfcheader_geth(&header, h, FALSE) )
+	 p = rfcheader_geth(header, h, FALSE) )
     {
 	printf("%s:    %s\n", h, p);
     }

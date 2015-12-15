@@ -534,3 +534,10 @@ typedef struct st_cflist
     char *string;
     struct st_cflist *next;
 } cflist;
+
+typedef struct rfcheader {
+    Textlist headers;
+    Textline *last_header;
+} RFCHeader;
+
+
