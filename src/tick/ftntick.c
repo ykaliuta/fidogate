@@ -37,7 +37,6 @@
 
 
 #define PROGRAM		"ftntick"
-#define VERSION		"$Revision: 5.4 $"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 

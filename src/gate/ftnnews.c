@@ -39,7 +39,6 @@
 
 
 #define PROGRAM		"ftnnews"
-#define VERSION		"$Revision: 5.2 $"
 #define CONFIG		DEFAULT_CONFIG_GATE
 
 #define RFC2FTN		"rfc2ftn"

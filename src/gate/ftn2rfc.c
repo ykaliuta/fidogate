@@ -39,7 +39,6 @@
 
 
 #define PROGRAM 	"ftn2rfc"
-#define VERSION 	"$Revision: 5.5 $"
 #define CONFIG		DEFAULT_CONFIG_GATE
 
 

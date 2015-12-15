@@ -7,7 +7,6 @@
 #include "getopt.h"
 
 #define PROGRAM		"ngoper"	/* NewsGroup OPERations */
-#define VERSION		"1.2"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 #define GROUP_MAX_LENGTH	128

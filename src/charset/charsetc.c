@@ -36,7 +36,6 @@
 
 
 #define PROGRAM		"charsetc"
-#define VERSION		"$Revision: 5.2 $"
 
 
 

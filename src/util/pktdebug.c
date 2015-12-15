@@ -37,7 +37,6 @@
 
 
 #define PROGRAM		"pktdebug"
-#define VERSION		"$Revision: 5.2 $"
 
 static void debug_line		(FILE *, char *, int);
 void	msg_body_debug		(FILE *, MsgBody *, char);

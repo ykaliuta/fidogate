@@ -36,7 +36,6 @@
 
 
 #define PROGRAM		"ftnafutil"
-#define VERSION		"$Revision: 5.2 $"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 

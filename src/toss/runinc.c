@@ -62,7 +62,6 @@
 #endif
 
 #define PROGRAM		"runinc"
-#define VERSION		"$Revision: 5.5 $"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 void* subs(char *str,char *macro,char *expand);

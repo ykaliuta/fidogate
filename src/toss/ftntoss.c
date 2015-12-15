@@ -40,7 +40,6 @@
 
 
 #define PROGRAM 	"ftntoss"
-#define VERSION 	"$Revision: 5.10 $"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 /*

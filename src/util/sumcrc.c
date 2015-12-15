@@ -36,7 +36,6 @@
 
 
 #define PROGRAM		"sumcrc32"
-#define VERSION		"$Revision: 5.2 $"
 
 
 int s1_flag = FALSE;		/* -1 */

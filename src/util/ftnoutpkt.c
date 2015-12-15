@@ -36,7 +36,6 @@
 
 
 #define PROGRAM		"ftnoutpkt"
-#define VERSION		"$Revision: 5.3 $"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 
