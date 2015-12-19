@@ -400,6 +400,31 @@ Ensure(fglog_outputs_after_log_file_file_log_program)
     free(to_free);
 }
 
+Ensure(fglog_works_after_debug)
+{
+    FILE *fp = dummy_fp;
+    char *to_free;
+    int debug_level = -1; /* less then default 0 */
+
+    /* debug() calls */
+    expect(mock_vfprintf,
+	   when(stream, is_equal_to(stderr)));
+    expect(mock_fprintf,
+	   when(stream, is_equal_to(stderr)));
+    expect(mock_fflush,
+	   when(file, is_equal_to(stderr)));
+    /* fglog() calls */
+    expect_file_config_lookup();
+    to_free = expect_full_output_file(fp,
+				      normal_log_msg, default_name,
+				      config_file);
+
+    debug(debug_level, "some debug");
+    fglog(normal_log_msg);  /* it did hang because of bug */
+
+    free(to_free);
+}
+
 #include "test-log-fglog-syslog.c"
 
 TestSuite *create_log_fglog_suite(void)
@@ -422,6 +447,7 @@ TestSuite *create_log_fglog_suite(void)
     add_test(suite, fglog_outputs_after_log_program_log_file_file);
     add_test(suite, fglog_outputs_after_log_file_stdout_log_program);
     add_test(suite, fglog_outputs_after_log_file_file_log_program);
+    add_test(suite, fglog_works_after_debug);
 
     add_fglog_syslog(suite);
 
