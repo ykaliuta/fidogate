@@ -610,5 +610,11 @@ AC_CONFIG_FILES([build/config.make \
 		 scripts/outbound/Makefile \
 		 doc/Makefile \
 		 tests/Makefile \
-		 tests/common/Makefile ])
+		 tests/common/Makefile \
+		 tests/areafix/Makefile \
+		 tests/charset/Makefile \
+		 tests/gate/Makefile \
+		 tests/tick/Makefile \
+		 tests/toss/Makefile \
+		 tests/utils/Makefile ])
 AC_OUTPUT
