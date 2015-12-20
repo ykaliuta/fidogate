@@ -8642,7 +8642,7 @@ DOMAINNAME=`hostname|sed -e "s/$HOSTNAME//"`
 ac_config_commands="$ac_config_commands build_headers"
 
 
-ac_config_files="$ac_config_files build/config.make Makefile src/Makefile src/areafix/Makefile src/charset/Makefile src/common/Makefile src/gate/Makefile src/include/Makefile src/tick/Makefile src/toss/Makefile src/util/Makefile scripts/Makefile scripts/areas/Makefile scripts/maintenance/Makefile scripts/misc/Makefile scripts/nodelist/Makefile scripts/outbound/Makefile doc/Makefile tests/Makefile tests/common/Makefile"
+ac_config_files="$ac_config_files build/config.make Makefile src/Makefile src/areafix/Makefile src/charset/Makefile src/common/Makefile src/gate/Makefile src/include/Makefile src/tick/Makefile src/toss/Makefile src/util/Makefile scripts/Makefile scripts/areas/Makefile scripts/maintenance/Makefile scripts/misc/Makefile scripts/nodelist/Makefile scripts/outbound/Makefile doc/Makefile tests/Makefile tests/common/Makefile tests/areafix/Makefile tests/charset/Makefile tests/gate/Makefile tests/tick/Makefile tests/toss/Makefile tests/utils/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -9384,6 +9384,12 @@ do
     "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
     "tests/Makefile") CONFIG_FILES="$CONFIG_FILES tests/Makefile" ;;
     "tests/common/Makefile") CONFIG_FILES="$CONFIG_FILES tests/common/Makefile" ;;
+    "tests/areafix/Makefile") CONFIG_FILES="$CONFIG_FILES tests/areafix/Makefile" ;;
+    "tests/charset/Makefile") CONFIG_FILES="$CONFIG_FILES tests/charset/Makefile" ;;
+    "tests/gate/Makefile") CONFIG_FILES="$CONFIG_FILES tests/gate/Makefile" ;;
+    "tests/tick/Makefile") CONFIG_FILES="$CONFIG_FILES tests/tick/Makefile" ;;
+    "tests/toss/Makefile") CONFIG_FILES="$CONFIG_FILES tests/toss/Makefile" ;;
+    "tests/utils/Makefile") CONFIG_FILES="$CONFIG_FILES tests/utils/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
