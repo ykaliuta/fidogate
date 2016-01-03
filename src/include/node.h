@@ -30,6 +30,9 @@
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  *****************************************************************************/
 
+#ifndef FIDOGATE_NODE_H
+#define FIDOGATE_NODE_H
+
 #define MAX_DOMAIN  32
 
 
@@ -81,3 +84,4 @@ LON;
 
 
 
+#endif

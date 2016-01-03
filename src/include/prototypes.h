@@ -29,6 +29,15 @@
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  *****************************************************************************/
+#ifndef FIDOGATE_PROTOTYPES_H
+#define FIDOGATE_PROTOTYPES_H
+
+#include "structs.h"
+#include "node.h"
+#include "packet.h"
+#include <stdio.h>
+/* Should it be checked by configure ? */
+#include <sys/stat.h>
 
 /* define __attribute__ to nothing for non GNU */
 #ifndef __GNUC__
@@ -687,3 +696,5 @@ MIMEInfo *get_mime_from_header	(Textlist*);
 
 /* xstrnlen.c */
 size_t	xstrnlen		(const char *, size_t);
+
+#endif

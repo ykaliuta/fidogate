@@ -30,6 +30,13 @@
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  *****************************************************************************/
 
+#ifndef FIDOGATE_STRUCTS_H
+#define FIDOGATE_STRUCTS_H
+
+#include "node.h"
+#include "config.h"
+#include <time.h>
+
 /*
  * Textline, Textlist
  */
@@ -541,3 +548,4 @@ typedef struct rfcheader {
 } RFCHeader;
 
 
+#endif

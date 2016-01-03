@@ -30,6 +30,11 @@
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  *****************************************************************************/
 
+#ifndef FIDOGATE_PACKET_H
+#define FIDOGATE_PACKET_H
+
+#include <time.h>
+
 /*
  * Packet header
  */
@@ -102,3 +107,5 @@ typedef struct
     char *area;					/* EchoMail area or NULL */
 }
 Message;
+
+#endif
