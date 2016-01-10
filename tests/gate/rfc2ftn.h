@@ -7,4 +7,6 @@
 #ifndef TEST_RFC2FTN_H
 #define TEST_RFC2FTN_H
 
+void cvt_user_name(char *s);
+
 #endif

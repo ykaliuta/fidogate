@@ -6,6 +6,8 @@
 #include "prototypes.h"
 #include <cgreen/cgreen.h>
 
+TestSuite *create_cvt_user_name_suite(void);
+
 int snd_mail(RFCAddr rfc_to, Textlist *body, long size);
 
 Ensure(dummy)
@@ -23,8 +25,12 @@ static TestSuite *create_rfc2ftn_suite(void)
 {
     TestSuite *suite = create_named_test_suite(
 	"rfc2ftn suite");
+    TestSuite *sub;
 
     add_test(suite, dummy);
+
+    sub = create_cvt_user_name_suite();
+    add_suite(suite, sub);
 
     return suite;
 }
