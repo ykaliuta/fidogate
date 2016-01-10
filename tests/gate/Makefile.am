@@ -8,5 +8,7 @@ LDADD = -lcgreen $(TOP_SRC)/common/libfidogate.la
 
 TESTS = test_rfc2ftn
 
-check_PROGRAMS = test_rfc2ftn
+check_PROGRAMS = test_buffered_printf test_rfc2ftn
 test_rfc2ftn_SOURCES = test-rfc2ftn.c rfc2ftn-wrapper.c rfc2ftn-stubs.c
+
+test_buffered_printf_SOURCES = test-buffered-printf.c buffered-printf.c
