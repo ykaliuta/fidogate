@@ -14,11 +14,6 @@ char news_dir[MAXPATH];
 int verbose = 0;
 char address_error[ADDRESS_ERROR_SIZE];
 
-char *s_copy(char *s)
-{
-    return NULL;
-}
-
 char *charset_alias_rfc(char *name)
 {
     return NULL;
@@ -227,11 +222,6 @@ int mime_debody(Textlist *body)
 }
 
 char *mime_deheader(char *d, size_t n, char *s)
-{
-    return NULL;
-}
-
-MIMEInfo *get_mime(char *ver, char *type, char *enc)
 {
     return NULL;
 }
@@ -621,3 +611,20 @@ Node *inet_to_ftn( char *addr )
 {
     return NULL;
 }
+
+/* Pure functions */
+
+
+/*
+
+char *s_copy(char *s)
+{
+    return NULL;
+}
+
+MIMEInfo *get_mime(char *ver, char *type, char *enc)
+{
+    return NULL;
+}
+
+ */
