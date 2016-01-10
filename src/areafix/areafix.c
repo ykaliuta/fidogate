@@ -2494,11 +2494,7 @@ void send_request(Textlist *upl)
 	BUF_COPY(msg.name_to, xstrtok(NULL,","));
 	BUF_COPY(msg.name_from, xstrtok(NULL,","));
 	BUF_COPY(msg.subject, xstrtok(NULL,","));
-#ifndef BEST_AKA
-	cf_set_zone(tmp.zone);
-#else
 	cf_set_best(tmp.zone, tmp.net, tmp.node);
-#endif /* !BEST_AKA */
 	msg.node_from = cf_n_addr();
 
 	l = xstrtok(NULL,",");
@@ -2600,11 +2596,7 @@ short int send_rules(Node *link, char *area)
     BUF_COPY(msg.name_to, "SysOp");
     BUF_COPY(msg.name_from, "Fidogate Daemon");
     sprintf(msg.subject, "%s Rules", area);
-#ifndef BEST_AKA
-    cf_set_zone(link->zone);
-#else
     cf_set_best(link->zone, link->net, link->node);
-#endif /* !BEST_AKA */
     msg.node_from = cf_n_addr();
 
     pkt_outdir(cf_p_outpkt(), NULL);

@@ -130,11 +130,7 @@ void rm_group(char *area, Node *uplink)
     active_init();
 #endif
 
-#ifndef BEST_AKA
-    cf_set_zone(uplink->zone);
-#else
     cf_set_best(uplink->zone, uplink->net, uplink->node);
-#endif /* !BEST_AKA */
     if((ar = areas_lookup(area, NULL, cf_addr())))
     {
 	if( ( p = active_lookup(ar->group)) )

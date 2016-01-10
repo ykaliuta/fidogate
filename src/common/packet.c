@@ -268,11 +268,7 @@ static FILE *pkt_open_node(Node *node, char *flav, int bsy)
 	 */
 	debug(4, "%s is a new packet, writing header", out);
 	
-#ifndef BEST_AKA
-        cf_set_zone(node->zone);
-#else
 	cf_set_best(node->zone, node->net, node->node);
-#endif /* !BEST_AKA */
 
 	pkt.from = cf_n_addr();
 	pkt.to   = *node;
@@ -357,11 +353,7 @@ static FILE *pkt_create(Node *to)
     
     debug(4, "New packet file %s (tmp %s)", packet_name, packet_tmp);
 
-#ifndef BEST_AKA
-    cf_set_zone(to->zone);
-#else
     cf_set_best(to->zone, to->net, to->node);
-#endif /* !BEST_AKA */
     
     /*
      * Write packet header

@@ -312,6 +312,11 @@ void cf_set_best(int zone, int net, int node)
 	  znfp1(&scf_addr[i].addr),
 	  znfp2(&scf_addr[i].uplink)          );
 }
+#else
+void cf_set_best(int zone, int net, int node)
+{
+    cf_set_zone(zone);
+}
 #endif /* BEST_AKA */
 
 
@@ -356,11 +361,7 @@ void cf_set_zone(int zone)
  */
 void cf_set_curr(Node *node)
 {
-#ifndef BEST_AKA
-    cf_set_zone(node->zone);
-#else
     cf_set_best(node->zone, node->net, node->node);
-#endif /* !BEST_AKA */
     scf_c_addr = *node;
 }
 

@@ -1566,11 +1566,7 @@ int do_netmail(Packet *pkt, Message *msg, MsgBody *body, int forwarded)
     /*
      * Write to output packet
      */
-#ifndef BEST_AKA
-    cf_set_zone(msg->node_to.zone);
-#else
     cf_set_best(msg->node_to.zone, msg->node_to.net, msg->node_to.node);
-#endif /* !BEST_AKA */
 
     /* Get outbound flavor from msg attributes */
     flav = 'n';

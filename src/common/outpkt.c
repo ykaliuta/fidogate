@@ -352,11 +352,7 @@ int outpkt_netmail(Message *msg, Textlist *tl, char *program, char *origin,
     FILE *fp;
     
     /* If from node is default, use aka for to zone */
-#ifndef BEST_AKA
-    cf_set_zone(msg->node_to.zone);
-#else 
     cf_set_best(msg->node_to.zone, msg->node_to.net, msg->node_to.node);
-#endif /* !BEST_AKA */
 
     if(msg->node_from.zone == 0)
 	msg->node_from = cf_n_addr();

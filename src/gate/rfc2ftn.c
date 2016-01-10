@@ -858,11 +858,7 @@ int snd_mail(RFCAddr rfc_to, long size)
     BUF_COPY(msg.name_to, p);
     fido = rfc_isfido();
 
-#ifndef BEST_AKA
-    cf_set_zone(node_to.zone);
-#else 
     cf_set_best(node_to.zone, node_to.net, node_to.node);
-#endif /* !BEST_AKA */
 
     /*
      * From name/node
@@ -1027,13 +1023,9 @@ int snd_mail(RFCAddr rfc_to, long size)
 		    if(ab->addr.zone==INVALID && ab->addr.net==INVALID &&
 		       ab->addr.node==INVALID && ab->addr.point==INVALID  )
 		    {
-#ifndef BEST_AKA
-			cf_set_zone(ab->nodes.first->node.zone);
-#else 
 			cf_set_best(ab->nodes.first->node.zone,
 				    ab->nodes.first->node.net,
 				    ab->nodes.first->node.node);
-#endif /* !BEST_AKA */
 			pa->addr.zone  = cf_addr()->zone;
 			pa->addr.net   = cf_addr()->net;
 			pa->addr.node  = cf_addr()->node;

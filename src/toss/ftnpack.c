@@ -692,11 +692,7 @@ int do_noarc(char *name, Node *flonode,
     /*
      * Open .OUT packet in Binkley outbound
      */
-#ifndef BEST_AKA
-    cf_set_zone(desc->to.zone);
-#else
     cf_set_best(desc->to.zone, desc->to.net, desc->to.node);
-#endif /* !BEST_AKA */
 
     fp = out_name
 	     ? pkt_open(out_name, &desc->to, NULL, FALSE)

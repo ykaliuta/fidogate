@@ -188,9 +188,7 @@ Node	cf_n_addr		(void);
 Node	cf_n_uplink		(void);
 void	cf_set_curr		(Node *);
 void	cf_set_zone		(int);
-#ifdef BEST_AKA
 void	cf_set_best		(int, int, int);
-#endif /* BEST_AKA */
 int	cf_zone			();
 int	cf_defzone		();
 long	cf_lineno_get		(void);
