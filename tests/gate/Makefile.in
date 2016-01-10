@@ -88,7 +88,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 TESTS = test_rfc2ftn$(EXEEXT)
-check_PROGRAMS = test_rfc2ftn$(EXEEXT)
+check_PROGRAMS = test_buffered_printf$(EXEEXT) test_rfc2ftn$(EXEEXT)
 subdir = tests/gate
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
@@ -100,15 +100,20 @@ mkinstalldirs = $(SHELL) $(top_srcdir)/build/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
+am_test_buffered_printf_OBJECTS = test-buffered-printf.$(OBJEXT) \
+	buffered-printf.$(OBJEXT)
+test_buffered_printf_OBJECTS = $(am_test_buffered_printf_OBJECTS)
+test_buffered_printf_LDADD = $(LDADD)
+test_buffered_printf_DEPENDENCIES = $(TOP_SRC)/common/libfidogate.la
+AM_V_lt = $(am__v_lt_@AM_V@)
+am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
+am__v_lt_0 = --silent
+am__v_lt_1 = 
 am_test_rfc2ftn_OBJECTS = test-rfc2ftn.$(OBJEXT) \
 	rfc2ftn-wrapper.$(OBJEXT) rfc2ftn-stubs.$(OBJEXT)
 test_rfc2ftn_OBJECTS = $(am_test_rfc2ftn_OBJECTS)
 test_rfc2ftn_LDADD = $(LDADD)
 test_rfc2ftn_DEPENDENCIES = $(TOP_SRC)/common/libfidogate.la
-AM_V_lt = $(am__v_lt_@AM_V@)
-am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
-am__v_lt_0 = --silent
-am__v_lt_1 = 
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -142,8 +147,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(test_rfc2ftn_SOURCES)
-DIST_SOURCES = $(test_rfc2ftn_SOURCES)
+SOURCES = $(test_buffered_printf_SOURCES) $(test_rfc2ftn_SOURCES)
+DIST_SOURCES = $(test_buffered_printf_SOURCES) $(test_rfc2ftn_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -537,6 +542,7 @@ TOP_SRC = $(top_srcdir)/src
 AM_CPPFLAGS = -I$(TOP_SRC)/include -I$(TOP_SRC)/gate
 LDADD = -lcgreen $(TOP_SRC)/common/libfidogate.la
 test_rfc2ftn_SOURCES = test-rfc2ftn.c rfc2ftn-wrapper.c rfc2ftn-stubs.c
+test_buffered_printf_SOURCES = test-buffered-printf.c buffered-printf.c
 all: all-am
 
 .SUFFIXES:
@@ -580,6 +586,10 @@ clean-checkPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
+test_buffered_printf$(EXEEXT): $(test_buffered_printf_OBJECTS) $(test_buffered_printf_DEPENDENCIES) $(EXTRA_test_buffered_printf_DEPENDENCIES) 
+	@rm -f test_buffered_printf$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(test_buffered_printf_OBJECTS) $(test_buffered_printf_LDADD) $(LIBS)
+
 test_rfc2ftn$(EXEEXT): $(test_rfc2ftn_OBJECTS) $(test_rfc2ftn_DEPENDENCIES) $(EXTRA_test_rfc2ftn_DEPENDENCIES) 
 	@rm -f test_rfc2ftn$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(test_rfc2ftn_OBJECTS) $(test_rfc2ftn_LDADD) $(LIBS)
@@ -590,8 +600,10 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/buffered-printf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2ftn-stubs.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2ftn-wrapper.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-buffered-printf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-rfc2ftn.Po@am__quote@
 
 .c.o:
