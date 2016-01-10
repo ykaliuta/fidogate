@@ -37,6 +37,7 @@ void debug(int lvl, const char *fmt, ...)
 
     va_start(ap, fmt);
     bp_vprintf(buffer_id, fmt, ap);
+    bp_printf(buffer_id, "\n");
     va_end(ap);
 }
 
@@ -57,6 +58,7 @@ void fglog(const char *fmt, ...)
 
     va_start(ap, fmt);
     bp_vprintf(buffer_id, fmt, ap);
+    bp_printf(buffer_id, "\n");
     va_end(ap);
 }
 char *log_buffer(void)
