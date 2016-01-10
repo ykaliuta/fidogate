@@ -5,6 +5,8 @@
 #include "prototypes.h"
 #include "node.h"
 #include "config.h"
+#include "buffered-printf.h"
+#include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
 
@@ -30,10 +32,41 @@ void charset_set_in_out(char *in, char *out)
 
 void debug(int lvl, const char *fmt, ...)
 {
+    int buffer_id = 0;
+    va_list ap;
+
+    va_start(ap, fmt);
+    bp_vprintf(buffer_id, fmt, ap);
+    va_end(ap);
+}
+
+char *debug_buffer(void)
+{
+    return bp_buffer_content(0);
+}
+
+void debug_buffer_release(void)
+{
+    bp_buffer_release(0);
 }
 
 void fglog(const char *fmt, ...)
 {
+    int buffer_id = 1;
+    va_list ap;
+
+    va_start(ap, fmt);
+    bp_vprintf(buffer_id, fmt, ap);
+    va_end(ap);
+}
+char *log_buffer(void)
+{
+    return bp_buffer_content(1);
+}
+
+void log_buffer_release(void)
+{
+    bp_buffer_release(1);
 }
 
 void log_program(char *name)
