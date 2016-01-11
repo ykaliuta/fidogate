@@ -137,7 +137,6 @@ int do_tic(int w_flag)
 	{
 	    if( (p = cf_get_string("TickWaitHour", TRUE)) )
 	    {
-		debug(8, "config: TickWaitHour %s", p);
 		tic_wait = atoi(p);
 	    }
 	    now = time(NULL);
@@ -155,9 +154,8 @@ int do_tic(int w_flag)
 		goto no_action;
 	    else
 	    {
-		if( (p = cf_get_string("TickWaitAction", TRUE)) )
-	    	    debug(8, "config: TickWaitAction %s", p);
-		else
+		p = cf_get_string("TickWaitAction", TRUE);
+		if (p == NULL)
 		{
 	    	    fglog("config: TickWaitAction not defined");
 		    return EXIT_ERROR;
@@ -591,8 +589,7 @@ int process_tic(Tick *tic)
 	    if( (a = uplinks_line_get(FALSE, &from_node)) )
 	    {
 		fglog("unsubscribe from area %s (no downlinks)", tic->area);
-		if((fix_name = cf_get_string("FileFixName", TRUE)) )
-		    debug(8, "config: FileFixName = %s",fix_name);
+		fix_name = cf_get_string("FileFixName", TRUE);
 
 		tl_appendf(&req, "%s,%s,%s,%s,-%s",
 		    znfp1(&a->uplink), a->robotname, 
@@ -1141,40 +1138,33 @@ int main(int argc, char **argv)
      */
     if( (p = cf_get_string("UnknownTickArea", TRUE)) )
     {
-	debug(8, "config: UnknownTickArea %s", p);
 	unknown_tick_area = p;
     }
     if ( cf_get_string("AutoCreateFileechoDontCheckPassword", TRUE) )
     {
-	debug(8, "config: AutoCreateFileechoDontCheckPassword");
 	autocreate_check_pass = FALSE;
     }
     if ( (p = cf_get_string("AutoCreateFileechoLine", TRUE)) )
     {
-	debug(8, "config: AutoCreateFileechoLine %s", p);
 	autocreate_line = p;
     }
 #ifdef FTN_ACL
     if( cf_get_string("UplinkCanBeReadonly", TRUE) )
     {
-	debug(8, "config: UplinkCanBeReadonly");
 	uplink_can_be_readonly = TRUE;
     }
 #endif /* FTN_ACL */
     if( (p = cf_get_string("PassthroughtBoxesDir", TRUE)) )
     {
-	    debug(8, "config: PassthroughtBoxesDir %s", p);
 	    BUF_EXPAND(pass_path, p);
     }
 
     if( (p = cf_get_string("FileEchoFilesModeChange", TRUE)) )
     {
-	    debug(8, "config: FileEchoFilesModeChange %s", p);
 	    files_change_mode = atooct(p) & 0777;
     }
     if ( (p = cf_get_string("TickMode", TRUE)) )
     {
-	debug(8, "config: TickMode %s", p);
 	tick_mode = atooct(p) & 0777;
     }
     else
@@ -1183,23 +1173,20 @@ int main(int argc, char **argv)
     }
     if(cf_get_string("DontIgnoreSoftCR", TRUE))
     {
-	debug(8, "config: DontIgnoreSoftCR");
 	ignore_soft_cr = TRUE;
     }
     if(cf_get_string("DontIgnore0x8d", TRUE))
     {
-	debug(8, "config: DontIgnore0x8d");
 	ignore_soft_cr = FALSE;
     }
 
     /*
      * Get name of fareas.bbs file from config file
      */
-    if( !areas_bbs && (areas_bbs = cf_get_string(MY_AREASBBS, TRUE)) )
-    {
-	debug(8, "config: %s %s", MY_AREASBBS, areas_bbs);
-    }
-    if(!areas_bbs)
+    if (areas_bbs == NULL)
+	areas_bbs = cf_get_string(MY_AREASBBS, TRUE);
+
+    if (areas_bbs == NULL)
     {
 	fprintf(stderr, "%s: no areas.bbs specified\n", PROGRAM);
 	exit_free();

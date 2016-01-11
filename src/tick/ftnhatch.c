@@ -288,11 +288,10 @@ int main(int argc, char **argv)
     /*
      * Get name of fareas.bbs file from config file
      */
-    if( !areas_bbs && (areas_bbs = cf_get_string(MY_AREASBBS, TRUE)) )
-    {
-	debug(8, "config: %s %s", MY_AREASBBS, areas_bbs);
-    }
-    if(!areas_bbs)
+    if (areas_bbs == NULL)
+	areas_bbs = cf_get_string(MY_AREASBBS, TRUE);
+
+    if(areas_bbs == NULL)
     {
 	fprintf(stderr, "%s: no areas.bbs specified\n", PROGRAM);
 	exit_free();
@@ -301,7 +300,6 @@ int main(int argc, char **argv)
 
     if ( (p = cf_get_string("TickMode", TRUE)) )
     {
-	debug(8, "config: TickMode %s", p);
 	tick_mode = atooct(p) & 0777;
     }
     else
@@ -311,13 +309,11 @@ int main(int argc, char **argv)
 #if defined(USE_FILEBOX) || defined (FECHO_PASSTHROUGHT)
     if( (p = cf_get_string("PassthroughtBoxesDir", TRUE)) )
     {
-        debug(8, "config: PassthroughtBoxesDir %s", p);
 	BUF_EXPAND(pass_path, p);
     }
 #endif /* USE_FILEBOX || FECHO_PASSTHROUGHT */
     if( ( p = cf_get_string( "DefaultCharset", TRUE ) ) )
     {
-	debug( 8, "config: DefaultCharset %s", p);
 	cs_out = xstrtok( p, ":" );
 	xstrtok( NULL, ":" );
 	cs_in = xstrtok( NULL, ":" );

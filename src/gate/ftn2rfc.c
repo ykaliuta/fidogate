@@ -264,7 +264,6 @@ Area *news_msg(char *line, Node *to)
 	    {
 		if ( cf_get_string("AutoCreateNG", TRUE) )
 		{
-		    debug(8, "config: AutoCreateNG");
 		    fglog("create newsgroup %s", pa->group);
 	    	    BUF_COPY2(buffer, "%N/ngoper create ", pa->group);
 	    	    sprintf(exec_line, "%s/ngoper create %s", cf_p_bindir(), pa->group);
@@ -367,7 +366,6 @@ static int msg_get_line_length(void)
 	char *p;
 	if( (p = cf_get_string("MessageLineLength", TRUE)) )
 	{
-	    debug(8, "config: MessageLineLength %s", p);
 	    message_line_length = atoi(p);
 	    if(message_line_length < 20 ||
 	       message_line_length > MAX_LINE_LENGTH) 
@@ -1440,9 +1438,6 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	          p && *p;
 	          p = cf_get_string("CarbonNameGroup",FALSE) )
 	    {
-
-		debug(8, "carbon copies: %s", p);
-
 		BUF_COPY(buffer, p);
 		s	= xstrtok(buffer, " \t");
 		tm_c	= xstrtok(NULL, " \t");
@@ -1959,12 +1954,10 @@ int main(int argc, char **argv)
     /* Process optional config statements */
     if(cf_get_string("DotNames", TRUE))
     {
-	debug(8, "config: DotNames");
 	rfcaddr_dot_names();
     }
     if( (p = cf_get_string("X-FTN", TRUE)) )
     {
-	debug(8, "config: X-FTN %s", p);
 	while(*p)
 	{
 	    switch(*p)
@@ -1985,85 +1978,70 @@ int main(int argc, char **argv)
     }
     if( (p = cf_get_string("BounceCCMail", TRUE)) )
     {
-	debug(8, "config: BounceCCMail %s", p);
 	bounce_set_cc(p);
     }
     if( (p = cf_get_string("TrackerMail", TRUE)) )
     {
-	debug(8, "config: TrackerMail %s", p);
 	tracker_mail_to = p;
     }
     if(cf_get_string("KillUnknownMSGIDZone", TRUE))
     {
-	debug(8, "config: KillUnknownMSGIDZone");
 	no_unknown_msgid_zones = TRUE;
     }
     if(cf_get_string("KillNoMSGID", TRUE))
     {
-	debug(8, "config: KillNoMSGID");
 	no_messages_without_msgid = TRUE;
     }
     if(cf_get_string("UseOriginForOrganization", TRUE))
     {
-	debug(8, "config: UseOriginForOrganzation");
 	use_origin_for_organization = TRUE;
     }
     if(cf_get_string("HostsRestricted", TRUE))
     {
-	debug(8, "config: HostsRestricted");
 	addr_restricted(TRUE);
     }
     if( (p = cf_get_string("FTNJunkGroup", TRUE)) )
     {
-	debug(8, "config: FTNJunkGroup %s", p);
 	ftn_junk_group = p;
     }
     if( (p = cf_get_string("FTNJunkGroupKeys", TRUE)) )
     {
-	debug(8, "config: FTNJunkGroup %s", p);
 	ftn_junk_group_keys = areas_parse_line(p);
     }
     if( (p = cf_get_string("ErrorsTo", TRUE)) )
     {
-	debug(8, "config: ErrorsTo %s", p);
 	ftn_junk_group = p;
     }
     if(cf_get_string("NoAddressInToField", TRUE))
     {
-	debug(8, "config: NoAddressInToField");
 	no_address_in_to_field = TRUE;
     }
     if(cf_get_string("NetMail8bit", TRUE))
     {
-	debug(8, "config: NetMail8bit");
 	netmail_8bit = TRUE;
     }
     if(cf_get_string("NetMailHeadersBase64", TRUE))
     {
-	debug(8, "config: NetMailHeadersBase64");
 	netmail_hb64 = TRUE;
         netmail_qp = FALSE;
     }
     if(cf_get_string("NetMailQuotedPrintable", TRUE) ||
        cf_get_string("NetMailQP", TRUE)                )
     {
-	debug(8, "config: NetMailQP");
+	debug(8, "actual NetMailQP");
 	netmail_qp = TRUE;
         netmail_hb64 = FALSE;
     }
     if(cf_get_string("UseFTNToAddress", TRUE))
     {
-	debug(8, "config: UseFTNToAddress");
 	use_ftn_to_address = TRUE;
     }
     if(cf_get_string("KillSplit", TRUE))
     {
-	debug(8, "config: KillSplit");
 	kill_split = TRUE;
     }
     if(cf_get_string("SingleArticles", TRUE))
     {
-	debug(8, "config: SingleArticles");
 	single_articles = TRUE;
     }
     if( (p = cf_get_string("RFCAddrMode", TRUE)) )
@@ -2080,18 +2058,16 @@ int main(int argc, char **argv)
 	    break;
 	}
 	rfcaddr_mode(m);
-	debug(8, "config: RFCAddrMode %d", m);
+	debug(8, "actual RFCAddrMode %d", m);
     }
     if( (p = cf_get_string("DefaultCharset", TRUE)) )
     {
-	debug(8, "config: DefaultCharset %s", p);
 	default_charset_def = strtok(p, ":");
 	strtok(NULL, ":");
 	default_charset_out = strtok(NULL, ":");
     }
     if( (p = cf_get_string("NetMailCharset", TRUE)) )
     {
-	debug(8, "config: NetMailCharset %s", p);
 	netmail_charset_def = strtok(p, ":");
 	strtok(NULL, ":");
 	netmail_charset_out = strtok(NULL, ":");
@@ -2105,27 +2081,22 @@ int main(int argc, char **argv)
 	 * <DESC>    The STRING which FIDOGATE's ftn2rfc adds to the
 	 *           Path header.
 	 */
-	debug(8, "config: NewsPathTail %s", p);
 	news_path_tail = p;
     }
     if(cf_get_string("IgnoreCHRS", TRUE))
     {
-	debug(8, "config: IgnoreCHRS");
 	ignore_chrs = TRUE;
     }
     if(cf_get_string("IgnoreSoftCR", TRUE))
     {
-	debug(8, "config: IgnoreSoftCR");
 	ignore_soft_cr = TRUE;
     }
     if(cf_get_string("DontIgnore0x8d", TRUE))
     {
-	debug(8, "config: DontIgnore0x8d");
 	ignore_soft_cr = FALSE;
     }
     if(cf_get_string("GateRfcKludge", TRUE))
     {
-	debug(8, "config: GateRfcKludge");
 	gate_rfc_kludge = TRUE;
     }
 

@@ -507,7 +507,6 @@ int main(int argc, char **argv)
     
     if ( (p = cf_get_string ("DefaultCharset", TRUE)) )
     {
-	debug(8, "config: DefaultCharset %s", p);
 	cs_out = strtok (p, ":");
 	strtok (NULL, ":");
 	cs_in = strtok (NULL, ":");

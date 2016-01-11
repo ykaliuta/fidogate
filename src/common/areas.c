@@ -64,8 +64,6 @@ static void areas_init_xlate(void)
 	  cf && *cf;
 	  cf = cf_get_string("AreasXlate", FALSE) )
     {
-	debug(8, "config: AreasXlate %s", cf);
-	
 	/* Chars in area name */
 	x_a = (unsigned char *)xstrtok(cf  , " \t");
 	/* Chars in newsgroup name */

@@ -421,21 +421,21 @@ int main(int argc, char **argv)
 	max_history = atof(p);
 	if(max_history < 0)
 	    max_history = 0;
-	debug(8, "config: MaxHistoryDBC %g", max_history);
+	debug(8, "actual MaxHistoryDBC %g", max_history);
     }
     else if (type == 2 && ((p = m_flag) || (p = cf_get_string("MaxTicHistory", TRUE))))
     {
 	max_history = atof(p);
 	if(max_history < 0)
 	    max_history = 0;
-	debug(8, "config: MaxTicHistory %g", max_history);
+	debug(8, "actual MaxTicHistory %g", max_history);
     }
     else if( (p = m_flag) || (p = cf_get_string("MaxHistory", TRUE)) )
     {
 	max_history = atof(p);
 	if(max_history < 0)
 	    max_history = 0;
-	debug(8, "config: MaxHistory %g", max_history);
+	debug(8, "actual MaxHistory %g", max_history);
     }
 
     /*

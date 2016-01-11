@@ -207,9 +207,7 @@ int nodelist_read(void)
     
     for(p=cf_get_string("NlFile", TRUE); p; p=cf_get_string("NlFile", FALSE))
     {
-	debug(8, "config: NlFile %s", p);
 	nl_file = p;
-
 
 	if( (stat(nl_file, &statnl)) != 0 )
 	{
@@ -1053,7 +1051,6 @@ int main(int argc, char **argv)
      */
     if(!M_flag && (p = cf_get_string("MaxOpenFiles", TRUE)))
     {
-	debug(8, "config: MaxOpenFiles %s", p);
 	M_flag = p;
     }
     if(M_flag)
@@ -1087,7 +1084,6 @@ int main(int argc, char **argv)
 
 	if((p = cf_get_string("RepackMailTime", TRUE)))
 	{
-	    debug(8, "config:  RepackMailTime %s", p);
 	    repack_time = atoi(p) * 3600;
 	}
 

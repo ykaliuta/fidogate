@@ -84,7 +84,6 @@ sub cf_funcs_c {
 	"    {\n",
 	"	if( ! (pval = cf_get_string(\"$key\", TRUE)) )\n",
 	"	    pval = DEFAULT_$key;\n",
-	"	debug(8, \"config: $key %s\", pval);\n",
 	"    }\n",
 	"    return pval;\n",
 	"}\n",

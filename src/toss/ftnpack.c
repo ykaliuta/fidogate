@@ -743,7 +743,6 @@ int do_noarc(char *name, Node *flonode,
 
 	    if( (p = cf_get_string("IgnoreFileAttach", TRUE)) )
 	    {
-		debug(8, "config: IgnoreFileAttach %s", p);
 		file_attach_action = atoi (p);
 	    }
 
@@ -1298,12 +1297,10 @@ int main(int argc, char **argv)
      */
     if(maxarc == 0 && (p = cf_get_string("MaxArc", TRUE)))
     {
-	debug(8, "config: MaxArc %s", p);
 	maxarc = atol(p) * 1024L;
     }
     if ( (p = cf_get_string( "BundleDisp", TRUE )) )
     {
-	debug(8, "config: BundleDisp %s", p);
 	bundle_disp = atoi( p );
 	if ( (2 < bundle_disp) || (0 > bundle_disp) )
 	{

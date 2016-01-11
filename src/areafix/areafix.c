@@ -215,21 +215,15 @@ void areafix_init(int mode)
     /* Get name of areas.bbs file from config file */
     if(!areas_bbs)
     {
-	if( (areas_bbs = cf_get_string(my_areasbbs, TRUE)) )
-	{
-	    debug(8, "config: %s %s", my_areasbbs, areas_bbs);
-	}
-	else
+	areas_bbs = cf_get_string(my_areasbbs, TRUE);
+	if (areas_bbs == NULL)
 	{
 	    fprintf(stderr, "%s: no areas.bbs specified\n", my_name);
 	    exit(EX_USAGE);
 	}
     }
     if(!create_log_file)
-	if( (create_log_file = cf_get_string("AreaFixCreateLogFile", TRUE)) )
-	{
-	    debug(8, "config: AreaFixCreateLogFile %s", create_log_file);
-	}
+	create_log_file = cf_get_string("AreaFixCreateLogFile", TRUE);
 
     return;
 }
@@ -258,8 +252,6 @@ int areafix_check_forbidden_area(char *areaname)
 	  s && *s;
 	  s = cf_get_string("AreaFixCreateForbiddenAreas",FALSE) )
     {
-	debug(8, "config: AreaFixCreateForbiddenAreas %s", s);
-
 	if ( wildmatch( areaname, s, TRUE ) )
 	    return TRUE;
     }
@@ -268,7 +260,6 @@ int areafix_check_forbidden_area(char *areaname)
 	  s && *s;
 	  s = cf_get_string("AreaFixCreateForbiddenAreasFile",FALSE) )
     {
-	debug(8, "config: AreaFixCreateForbiddenAreasFile %s", s);
 	if ( wildmatch_file( areaname, s, TRUE ) )
 	    return TRUE;
     }
@@ -284,7 +275,6 @@ int filefix_check_forbidden_area( char *areaname )
 	  s && *s;
 	  s = cf_get_string("FileFixCreateForbiddenAreas",FALSE) )
     {
-	debug(8, "config: FileFixCreateForbiddenAreas %s", s);
 	if ( wildmatch( areaname, s, TRUE ) )
 	    return TRUE;
     }
@@ -293,7 +283,6 @@ int filefix_check_forbidden_area( char *areaname )
 	  s && *s;
 	  s = cf_get_string("FileFixCreateForbiddenAreasFile",FALSE) )
     {
-	debug(8, "config: FileFixCreateForbiddenAreasFile %s", s);
 	if ( wildmatch_file( areaname, s, TRUE ) )
 	    return TRUE;
     }
@@ -482,8 +471,6 @@ void zonegate_init(void)
 	s && *s;
 	s = cf_get_string("ZoneGate",FALSE) )
     {
-	debug(8, "config: zonegate %s", s);
-	
 	p = (ZoneGate *)xmalloc(sizeof(ZoneGate));
 	p->next = NULL;
 	lon_init(&p->seenby);
@@ -621,12 +608,10 @@ int areafix_do_cmd(Node *node, char *line, Textlist *out, Textlist *upl)
 
     if (areafix)
     {
-	if((fix_name = cf_get_string("AreaFixName", TRUE)) )
-	    debug(8, "config: AreaFixName = %s",fix_name);
+	fix_name = cf_get_string("AreaFixName", TRUE);
     }
     else
-	if((fix_name = cf_get_string("FileFixName", TRUE)) )
-	    debug(8, "config: FileFixName = %s",fix_name);
+	fix_name = cf_get_string("FileFixName", TRUE);
 
     if(line[0] == '%')
     {
@@ -715,6 +700,7 @@ int areafix_do_cmd(Node *node, char *line, Textlist *out, Textlist *upl)
 	    else
 	    {
 		/* Interpret line as area to add */
+		/* TODO: YK: is it right condition check? */
 		if ( NULL == cf_get_string( "AreaFixSubscribeOnlyIfPlus", TRUE ) )
 		{
 		    debug(8, "config: AreaFixSubscribeOnlyIfPlus");
@@ -844,7 +830,6 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 
     if( (o1 = cf_get_string("ForbiddenChar", TRUE)) )
     {
-	debug(8, "config: ForbiddenChar %s", o1);
 	for (i=0;o1[i]!='\x0';i++)
 	    if (strchr(name,o1[i])!=NULL)
 	    {
@@ -877,7 +862,6 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 
     if(cf_get_string("IgnorePRLKey", TRUE))
     {
-	debug(8, "config: IgnorePRLKey");
 	ignore_prl = TRUE;
     }
     
@@ -969,11 +953,8 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 	else
 	{
 //	    p->flags &= AREASBBS_PASSTHRU;
-	    if((autocreate_fecho_path = cf_get_string("AutoCreateFechoPath", TRUE)))
-	    {
-    		debug(8, "config: AutoCreateFechoPath %s", autocreate_fecho_path);
-	    }
-	    else 
+	    autocreate_fecho_path = cf_get_string("AutoCreateFechoPath", TRUE);
+	    if (autocreate_fecho_path == NULL)
 	    {
     		fglog("CONFIG: AutoCreateFechoPath not defined and filearea not passthru");
     		p->dir = strsave("-");
@@ -1058,7 +1039,6 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 
     if( (autocreate_script_cmd = cf_get_string("AutoCreateCmd", TRUE)) )
     {
-        debug(8, "config: AutoCreateCmd %s", autocreate_script_cmd);
 #ifndef FTN_ACL
         sprintf(buffer,"%s %s %s %s %s %d %s %s %d %s %s",
 #else
@@ -1144,8 +1124,6 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 #ifndef ACTIVE_LOOKUP
     if ( cf_get_string("AutoCreateNG", TRUE) )
     {
-	debug(8, "config: AutoCreateNG");
-
 	    if(autocreate_area = areas_lookup( p->area, NULL, node))
 	    {
 		fglog("create newsgroup %s", autocreate_area->group);
@@ -2265,8 +2243,6 @@ int cmd_delete(Node *node, char *area)
 #ifndef ACTIVE_LOOKUP
     if ( cf_get_string("AutoCreateNG", TRUE) )
     {
-	debug(8, "config: AutoCreateNG");
-
 	    if ( NULL != (autocreate_area = areas_lookup( area, NULL, NULL)))
 	    {
 	        BUF_COPY2(buffer, "%N/ngoper remove ", autocreate_area->group);
@@ -2613,9 +2589,8 @@ short int rulesup(char *rulesc)
 
     if(!rulesc)
     {
-	if( (rulesc1 = cf_get_string("RulesConfig", TRUE)) )
-	    debug(8, "config: RulesConfig %s", rulesc1);
-	else
+	rulesc1 = cf_get_string("RulesConfig", TRUE);
+	if (rulesc1 == NULL)
 	    debug(8, "config: RulesConfig not found");
     }
     else
@@ -2623,7 +2598,6 @@ short int rulesup(char *rulesc)
 
     if ( rulesc1 && (s = cf_get_string("RulesDir", TRUE)) )
     {
-	debug(8, "config: RulesDir %s", s);
 	rdir = strsave(s);
 
 	if(dir_open(rdir, "*.rul", TRUE) == ERROR)

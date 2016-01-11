@@ -93,7 +93,6 @@ main(int argc, char **argv)
   /* AutoCreateNewgroupCmd */
   if (NULL != (p = cf_get_string("AutoCreateNewgroupCmd", TRUE)))
     {
-      debug(8, "config: AutoCreateNewgroupCmd %s", p);
       cmd_ng = p;
     }
   else
@@ -106,14 +105,12 @@ main(int argc, char **argv)
   /* AutoCreateRenumberCmd */
   if (NULL != (p = cf_get_string("AutoCreateRenumberCmd", TRUE)))
     {
-      debug(8, "config: AutoCreateRenumberCmd %s", p);
       cmd_rn = p;
     }
 
   /* AutoCreateRmgroupCmd */
   if (NULL != (p = cf_get_string("AutoCreateRmgroupCmd", TRUE)))
     {
-      debug(8, "config: AutoCreateRmgroupCmd %s", p);
       cmd_rm = p;
     }
   else

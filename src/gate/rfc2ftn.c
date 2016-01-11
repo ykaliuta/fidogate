@@ -2189,29 +2189,24 @@ int main(int argc, char **argv)
      */
     if(cf_get_string("NoFromLine", TRUE))
     {
-	debug(8, "config: NoFromLine");
 	no_from_line = TRUE;
     }
     if(cf_get_string("NoFSC0035", TRUE))
     {
-	debug(8, "config: NoFSC0035");
 	no_fsc_0035 = TRUE;
     }
     if(cf_get_string("NoFSC0035ifAlias", TRUE))
     {
-	debug(8, "config: NoFSC0035ifAlias");
 	no_fsc_0035_if_alias = TRUE;
     }
     if(cf_get_string("NoFSC0047", TRUE))
     {
-	debug(8, "config: NoFSC0047");
 	no_fsc_0047 = TRUE;
     }
     if( (p = cf_get_string("MaxMsgSize", TRUE)) )
     {
 	long sz;
 	
-	debug(8, "config: MaxMsgSize %s", p);
 	sz = atol(p);
 	if(sz <= 0)
 	    fglog("WARNING: illegal MaxMsgSize value %s", p);
@@ -2222,7 +2217,6 @@ int main(int argc, char **argv)
     {
 	long sz;
 	
-	debug(8, "config: LimitMsgSize %s", p);
 	sz = atol(p);
 	if(sz <= 0)
 	    fglog("WARNING: illegal LimitMsgSize value %s", p);
@@ -2231,24 +2225,20 @@ int main(int argc, char **argv)
     }
     if( cf_get_string("EchoMail4D", TRUE) )
     {
-	debug(8, "config: EchoMail4D");
 	echomail4d = TRUE;
     }
     if(cf_get_string("HostsRestricted", TRUE))
     {
-	debug(8, "config: HostsRestricted");
 	addr_restricted(TRUE);
     }
 #ifndef FIDO_STYLE_MSGID
     if( (p = cf_get_string("RFCLevel", TRUE)) )
     {
-	debug(8, "config: RFCLevel %s", p);
 	default_rfc_level = atoi(p);
     }
 #endif
     if(cf_get_string("UseOrganizationForOrigin", TRUE))
     {
-	debug(8, "config: UseOrganizationForOrigin");
 	use_organization_for_origin = TRUE;
     }
     if( (p = cf_get_string("XFlagsPolicy", TRUE)) )
@@ -2265,11 +2255,10 @@ int main(int argc, char **argv)
 	    x_flags_policy = 2;			/* Open X-Flags (all!!!) */
 	    break;
 	}
-	debug(8, "config: XFlagsPolicy %d", x_flags_policy);
+	debug(8, "actual XFlagsPolicy %d", x_flags_policy);
     }
     if(cf_get_string("DontUseReplyTo", TRUE))
     {
-	debug(8, "config: DontUseReplyTo");
 	dont_use_reply_to = TRUE;
     }
     if( (p = cf_get_string("RFCAddrMode", TRUE)) )
@@ -2286,23 +2275,20 @@ int main(int argc, char **argv)
 	    break;
 	}
 	rfcaddr_mode(m);
-	debug(8, "config: RFCAddrMode %d", m);
+	debug(8, "actual RFCAddrMode %d", m);
     }
     if(cf_get_string("ReplyAddrIfmailTX", TRUE))
     {
-	debug(8, "config: ReplyAddrIfmailTX");
 	replyaddr_ifmail_tx = TRUE;
     }
     if(newsmode && cf_get_string("CheckAreasBBS", TRUE))
     {
-	debug(8, "config: CheckAreasBBS");
 	check_areas_bbs = TRUE;
     }
     if(check_areas_bbs || newsmode)
     {
-	if( (areas_bbs = cf_get_string("AreasBBS", TRUE)) )
-	    debug(8, "config: AreasBBS %s", areas_bbs);
-	else
+	areas_bbs = cf_get_string("AreasBBS", TRUE);
+	if (areas_bbs == NULL)
 	{
 	    fprintf(stderr, "%s: no areas.bbs specified\n", PROGRAM);
 	    exit_free();
@@ -2311,44 +2297,36 @@ int main(int argc, char **argv)
     }
     if(cf_get_string("UseXHeaderForTearline", TRUE))
     {
-	debug(8, "config: UseXHeaderForTearline");
 	use_x_for_tearline = TRUE;
     }
     if(cf_get_string("NoChrsKludge", TRUE))
     {
-	debug(8, "config: NoChrsKludge");
 	no_chrs_kludge = TRUE;
     }
     if(cf_get_string("NoRfcKludge", TRUE))
     {
-	debug(8, "config: NoRfcKludge");
 	no_rfc_kludge = TRUE;
     }
     if(cf_get_string("NoGatewayKludge", TRUE))
     {
-	debug(8, "config: NoGatewayKludge");
 	no_gateway_kludge = TRUE;
     }
     if(cf_get_string("UseTZUTCKludge", TRUE))
     {
-	debug(8, "config: UseTZUTCKludge");
 	tzutc_kludge = TRUE;
     }
     if( (p = cf_get_string("AddressIsLocalForXPost", TRUE)) )
     {
-	debug(8, "config: AddressIsLocalForXPost %s", p);
 	addr_is_local_xpost_init(p);
     }
     if( (p = cf_get_string("DefaultCharset", TRUE)) )
     {
-	debug(8, "config: DefaultCharset %s", p);
 	strtok(p, ":");
 	default_charset_out = strtok(NULL, ":");
 	default_charset_in  = strtok(NULL, ":");
     }
     if( (p = cf_get_string("NetMailCharset", TRUE)) )
     {
-	debug(8, "config: NetMailCharset %s", p);
 	strtok(p, ":");
 	netmail_charset_out = strtok(NULL, ":");
     }
@@ -2366,7 +2344,6 @@ int main(int argc, char **argv)
     }
     if(cf_get_string("NoLogIfArticleNotFound", TRUE))
     {
-	debug(8, "config: NoLogIfArticleNotFound");
 	log_artnf = FALSE;
     }
     if( (p = cf_get_string("DontFlushDBCHistory", TRUE)) )

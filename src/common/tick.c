@@ -319,9 +319,8 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
 #endif
     if ( !flav_dfl )
     {
-	if ( ( flav_dfl = cf_get_string( "TickFlav", TRUE ) ) )
-	    debug(8, "config: TickFlav %s", flav_dfl);
-	else
+	flav_dfl = cf_get_string( "TickFlav", TRUE );
+	if (flav_dfl == NULL)
 	    flav_dfl = "Normal";
     }
 

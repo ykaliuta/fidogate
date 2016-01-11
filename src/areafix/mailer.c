@@ -18,8 +18,6 @@ FILE *mailer_open(char *to, int forward, char *robotname, char *password)
     if(!mailer)
 	mailer = DEFAULT_MAILER;
 
-    debug(3, "AreafixMailer %s", mailer);
-    
     fp = popen(mailer, W_MODE);
     if(!fp)
     {
@@ -29,7 +27,6 @@ FILE *mailer_open(char *to, int forward, char *robotname, char *password)
     
     if((fix_name = cf_get_string("AreaFixName", TRUE)) && forward == TRUE)
     {
-	debug(8, "config: AreaFixName = %s",fix_name);
         fprintf(fp, "From: %s@%s (%s)\n",
 		fix_name, cf_fqdn(), fix_name);
     }

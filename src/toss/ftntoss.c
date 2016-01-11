@@ -207,8 +207,6 @@ void addtoseenby_init(void)
 	s && *s;
 	s = cf_get_string("AddToSeenBy",FALSE) )
     {
-	debug(8, "config: addtoseenby %s", s);
-	
 	BUF_COPY(buffer, s);
 	parea  = xstrtok(buffer, " \t");
 	pnodes = xstrtok(NULL  , "\n");
@@ -259,8 +257,6 @@ void deleteseenby_init(void)
 	s && *s;
 	s = cf_get_string("DeleteSeenBy",FALSE) )
     {
-	debug(8, "config: deleteseenby %s", s);
-	
 	p = (DeleteSeenBy *)xmalloc(sizeof(DeleteSeenBy));
 	p->next = NULL;
 	lon_init(&p->deleteseenby);
@@ -303,8 +299,6 @@ void deletepath_init(void)
 	s && *s;
 	s = cf_get_string("DeletePath",FALSE) )
     {
-	debug(8, "config: deletepath %s", s);
-	
 	p = (DeletePath *)xmalloc(sizeof(DeletePath));
 	p->next = NULL;
 	lon_init(&p->deletepath);
@@ -341,8 +335,6 @@ void zonegate_init(void)
 	s && *s;
 	s = cf_get_string("ZoneGate",FALSE) )
     {
-	debug(8, "config: zonegate %s", s);
-	
 	p = (ZoneGate *)xmalloc(sizeof(ZoneGate));
 	p->next = NULL;
 	lon_init(&p->seenby);
@@ -2077,83 +2069,75 @@ int main(int argc, char **argv)
      */
     if(cf_get_string("KillEmpty", TRUE) || cf_get_string("KillBlank", TRUE))
     {
-	debug(8, "config: killempty");
+	debug(8, "actual: killempty true");
 	kill_empty = TRUE;
     }
     if(cf_get_string("KillUnknown", TRUE))
     {
-	debug(8, "config: killunknown");
 	kill_unknown = TRUE;
     }
     if(cf_get_string("KillRouted", TRUE))
     {
-	debug(8, "config: killrouted");
 	kill_routed = TRUE;
     }
     if(cf_get_string("KillInsecure", TRUE))
     {
-	debug(8, "config: killinsecure");
 	kill_insecure = TRUE;
     }
 #ifdef FTN_ACL
     if(cf_get_string("KillReadonly", TRUE))
     {
-	debug(8, "config: killreadonly");
 	kill_readonly = TRUE;
     }
 #endif /* FTN_ACL */
     if(cf_get_string("KillCircular", TRUE))
     {
-	debug(8, "config: killcircular");
 	kill_circular = TRUE;
     }
     if(cf_get_string("LogNetMail", TRUE) || cf_get_string("Track", TRUE))
     {
-	debug(8, "config: lognetmail");
+	debug(8, "actual lognetmail true");
 	log_netmail = TRUE;
     }
     if(cf_get_string("CheckPath", TRUE))
     {
-	debug(8, "config: checkpath");
 	check_path = TRUE;
     }
     if(cf_get_string("DupeCheck", TRUE))
     {
 	if(d_flag) {
-	    debug(8, "config: DupeCheck disabled from command line!");
+	    debug(8, "DupeCheck disabled from command line!");
 	    dupe_check = FALSE;
 	}
 	else
 	{
-	    debug(8, "config: DupeCheck");
 	    dupe_check = TRUE;
 	}
     }
     if(cf_get_string("KillNoMSGID", TRUE))
     {
-	debug(8, "config: KillNoMSGID");
 	kill_nomsgid = TRUE;
     }
     if(cf_get_string("KillDupe", TRUE) || cf_get_string("KillDupes", TRUE))
     {
-	debug(8, "config: KillDupe");
+	debug(8, "actual KillDupe true");
 	kill_dupe = TRUE;
     }
     if(!maxmsg && (p = cf_get_string("MaxMsg", TRUE)))
     {
-	debug(8, "config: MaxMsg %s", p);
 	maxmsg = atoi(p);
+	debug(8, "actual: MaxMsg %d", maxmsg);
+
     }
     if(!M_flag && (p = cf_get_string("MaxOpenFiles", TRUE)))
     {
-	debug(8, "config: MaxOpenFiles %s", p);
 	M_flag = p;
+	debug(8, "actual MaxOpenFiles %s", M_flag);
     }
     if(M_flag)
 	outpkt_set_maxopen(atoi(M_flag));
     if(cf_get_string("KillOld", TRUE))
     {
-	debug(8, "config: KillOld");
 	kill_old = TRUE;
     }
     if( (p = cf_get_string("MaxHistory", TRUE)) )
@@ -2161,50 +2145,43 @@ int main(int argc, char **argv)
 	max_history = atof(p);
 	if(max_history < 0)
 	    max_history = 0;
-	debug(8, "config: MaxHistory %g", max_history);
+	debug(8, "actual MaxHistory %g", max_history);
     }
     if( cf_get_string("TossEchoMail4D", TRUE) )
     {
-	debug(8, "config: TossEchoMail4D");
 	echomail4d = TRUE;
     }
     if( cf_get_string("NoEmptyPath", TRUE) )
     {
-	debug(8, "config: NoEmptyPath");
 	no_empty_path = TRUE;
     }
     if( cf_get_string("AddOtherAKA", TRUE) ||
 	cf_get_string("AddOtherAKAs", TRUE)  )
     {
-	debug(8, "config: AddOtherAKA");
+	debug(8, "actual AddOtherAKA true");
 	add_other_aka = TRUE;
     }
 #ifdef FTN_ACL
     if( cf_get_string("UplinkCanBeReadonly", TRUE) )
     {
-	debug(8, "config: UplinkCanBeReadonly");
 	uplink_can_be_readonly = TRUE;
     }
 #endif /* FTN_ACL */
     if( cf_get_string("TrafficStatistics", TRUE) )
     {
-	debug(8, "config: TrafficStatistics");
 	traffic_statistics = TRUE;
     }
     if( (p = cf_get_string("TrafficStatisticsFile", TRUE)) )
     {
-	debug(8, "config: TrafficStatisticsFile %s", p);
 	traffic_statistics_file = p;
     }
     if ( (p = cf_get_string("AutoCreateLine", TRUE)) )
     {
-	debug(8, "config: AutoCreateLine %s", p);
 	autocreate_line = p;
     }
 #ifndef ACTIVE_LOOKUP
     if ( cf_get_string("AutoCreateNG", TRUE) )
     {
-	debug(8, "config: AutoCreateNG");
 	autocreate_ng = TRUE;
     }
 #endif /* !ACTIVE_LOOKUP */
@@ -2216,7 +2193,6 @@ int main(int argc, char **argv)
     if( cf_get_string("NoRewrite", TRUE) )
     {
        no_rewrite=TRUE;
-       debug(8, "config: NoRewrite");
     }
 #endif /* DO_NOT_TOSS_NETMAIL */
 
@@ -2244,10 +2220,7 @@ int main(int argc, char **argv)
      * Get name of areas.bbs file from config file
      */
     if(!areas_bbs)
-	if( (areas_bbs = cf_get_string("AreasBBS", TRUE)) )
-	{
-	    debug(8, "config: areasbbs %s", areas_bbs);
-	}
+	areas_bbs = cf_get_string("AreasBBS", TRUE);
     if(!areas_bbs)
     {
 	fprintf(stderr, "%s: no areas.bbs specified\n", PROGRAM);

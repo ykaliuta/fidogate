@@ -31,7 +31,7 @@
  *****************************************************************************/
 
 #include "fidogate.h"
-
+#include <assert.h>
 
 
 /*
@@ -1031,7 +1031,24 @@ Node cf_gateway(void)
     return scf_gateway;
 }
 
+static int is_empty_string(char *str)
+{
+    assert(str != NULL);
 
+    return str[0] == '\0';
+}
+
+static void cf_string_debug(char *name, char *val)
+{
+    int level = 8;
+    char *empty_fmt = "config: %s";
+    char *nonempty_fmt = "config: %s %s";
+
+    if (is_empty_string(val))
+	debug(level, empty_fmt, name);
+    else
+	debug(level, nonempty_fmt, name, val);
+}
 
 /*
  * Get config statement(s) string(s)
@@ -1050,6 +1067,7 @@ char *cf_get_string(char *name, int first)
 	{
 	    string     = last_listp->string;
 	    last_listp = last_listp->next;
+	    cf_string_debug(name, string);
 	    return string;
 	}
 	last_listp = last_listp->next;
@@ -1071,7 +1089,6 @@ char *cf_p_organization(void)
     {
 	if( ! (pval = cf_get_string("Organization", TRUE)) )
 	    pval = "FIDOGATE";
-	debug(8, "config: Organization %s", pval);
     }
 
     return pval;
@@ -1085,7 +1102,6 @@ char *cf_p_origin(void)
     {
 	if( ! (pval = cf_get_string("Origin", TRUE)) )
 	    pval = "FIDOGATE";
-	debug(8, "config: Origin %s", pval);
     }
 
     return pval;

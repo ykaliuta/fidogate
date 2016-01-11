@@ -159,8 +159,7 @@ int main(int argc, char **argv)
      * Additional config options
      */
     if(!F_flag)
-	if((F_flag = cf_get_string("FAttachFlav", TRUE)))
-	    debug(8, "config: FAttachFlav %s", F_flag);
+	F_flag = cf_get_string("FAttachFlav", TRUE);
     if(!F_flag)
 	F_flag = "Normal";
 

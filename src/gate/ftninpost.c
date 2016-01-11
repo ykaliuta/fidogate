@@ -344,7 +344,6 @@ int main(int argc, char **argv)
 
     if( (p = cf_get_string("FTNInSendmail", TRUE)) )
     {
-	debug(8, "config: FTNInSendmail %s", p);
 	BUF_COPY(ftnin_sendmail, p);
     }
     else
@@ -352,7 +351,6 @@ int main(int argc, char **argv)
 
     if( (p = cf_get_string("FTNInRnews", TRUE)) )
     {
-	debug(8, "config: FTNInRnews %s", p);
 	ftnin_rnews = p;
     }
     else
@@ -362,7 +360,6 @@ int main(int argc, char **argv)
     {
 	if( (p = cf_get_string("FTNInRecombine", TRUE)) )
 	{
-	    debug(8, "config: FTNInRecombine %s", p);
 	    BUF_EXPAND(buf, p);
 	}
 	else

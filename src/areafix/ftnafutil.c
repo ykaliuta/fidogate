@@ -100,12 +100,10 @@ int do_mail(Node *node, char *area, char *s, AreaUplink *upl)
     /* Send Areafix message */
     if (areafix)
     {
-	if((fix_name = cf_get_string("AreaFixName", TRUE)) )
-	    debug(8, "config: AreaFixName = %s",fix_name);
+	fix_name = cf_get_string("AreaFixName", TRUE);
     }
     else
-	if((fix_name = cf_get_string("FileFixName", TRUE)) )
-	    debug(8, "config: AreaFixName = %s",fix_name);
+	fix_name = cf_get_string("FileFixName", TRUE);
 
     tl_appendf(&req, "%s,%s,%s,%s,%s%s",
 	        znfp1(node),
@@ -143,7 +141,6 @@ void rm_group(char *area, Node *uplink)
 #endif
 	    if ( cf_get_string("AutoRemoveNG", TRUE) )
 	    {
-		debug(8, "config: AutoRemoveNG");
     		BUF_COPY2(buffer, "%N/ngoper remove ", ar->group);
 		if (0 != run_system(buffer))
 		    fglog("ERROR: can't remove newsgroup (rc != 0)");
@@ -602,12 +599,10 @@ int main(int argc, char **argv)
     {
 	if( (p = cf_get_string("AreaFixNoTrafficTimeout", TRUE)) )
 	{
-	    debug(8, "config: AreaFixNoTrafficTimeout");
 	    no_traffic_tmout = atoi(p);
 	}
 	if( (p = cf_get_string("AreaFixRequestTimeout", TRUE)) )
 	{
-	    debug(8, "config: AreaFixRequestTimeout");
 	    request_tmout = atoi(p);
 	}
     }
@@ -615,12 +610,10 @@ int main(int argc, char **argv)
     {
     	if( (p = cf_get_string("FileFixNoTrafficTimeout", TRUE)) )
 	{
-	    debug(8, "config: FileFixNoTrafficTimeout");
 	    no_traffic_tmout = atoi(p);
 	}
 	if( (p = cf_get_string("FileFixRequestTimeout", TRUE)) )
 	{
-	    debug(8, "config: FileFixRequestTimeout");
 	    request_tmout = atoi(p);
 	}
     }
