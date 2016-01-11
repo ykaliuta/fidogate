@@ -9,7 +9,7 @@
 # C O M M O N   C O N F I G U R A T I O N                                    #
 ##############################################################################
 
-# Пути к основным каталогам
+# п÷я┐я┌п╦ п╨ п╬я│п╫п╬п╡п╫я▀п╪ п╨п╟я┌п╟п╩п╬пЁп╟п╪
 #
 CONFIGDIR	<CONFIGDIR>
 BINDIR		<BINDIR>
@@ -119,7 +119,7 @@ Domain		<DOMAINNAME>
 # F I D O N E T   A D D R E S S E S                                          #
 ##############################################################################
 
-# Основной адрес и aka
+# п·я│п╫п╬п╡п╫п╬п╧ п╟п╢я─п╣я│ п╦ aka
 Address		2:2499/999.9
 
 # zones and domains, the outbound directory is relative to the one
@@ -476,7 +476,7 @@ NoFromLine
 # Don't generate FSC-0035 kludges (^AREPLYADDR, ^AREPLYTO)
 NoFSC0035
 
-# Disable the insertion of the ^AREPLYADDR и ^AREPLYTO kludges, the lines
+# Disable the insertion of the ^AREPLYADDR п╦ ^AREPLYTO kludges, the lines
 # `From:', `Reply-To:' and so on into the message body, if there exists a
 # corresponding alias for the RFC address. 
 #
@@ -536,7 +536,7 @@ RFCAddrMode <>
 #
 IgnoreCHRS
 
-# Ignore Soft CR e.q. don't skip simbol 0x8d aka russian char 'Н' in gated
+# Ignore Soft CR e.q. don't skip simbol 0x8d aka russian char 'п²' in gated
 # messages FTN->RFC and tick's field `Description'. DontIgnore0x8d
 DontIgnoreSoftCR
 
@@ -590,7 +590,7 @@ Regex1stLine  ^On ..., .. ... .... ..:..:.. [+\-]...., (.*) (writes|wrote|schrei
 Regex1stLine  ^On .. ... .... ..:..:.. [+\-]...., (.*) (writes|wrote|schreibt|schrieb):$
 # This is very generic, thus it must be the last entry.
 # If this regex yields too many errors, comment it.
-Regex1stLine  ^[ 	]*([^>|].*) (writes|wrote|schreibt|schrieb|пишет):$
+Regex1stLine  ^[ 	]*([^>|].*) (writes|wrote|schreibt|schrieb|п©п╦я┬п╣я┌):$
 
 
 # Line length for formatting long paragraphs in Fido messages
