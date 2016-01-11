@@ -32,7 +32,7 @@ AC_FUNC_ALLOCA
 AC_HEADER_DIRENT
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS(fcntl.h limits.h stddef.h sys/mount.h sys/param.h sys/statfs.h)
+AC_CHECK_HEADERS(fcntl.h limits.h stddef.h sys/mount.h sys/param.h sys/statfs.h sys/stat.h)
 AC_CHECK_HEADERS(sys/statvfs.h sys/time.h sys/vfs.h syslog.h utime.h time.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
