@@ -390,6 +390,7 @@ int rfc_parse(RFCAddr *rfc, char *name, Node *node, int gw)
     Node nn;
     Node *n;
     Host *h;
+    int addr_is_restricted = FALSE;
     
     rfc_isfido_flag = FALSE;
 
@@ -433,6 +434,9 @@ int rfc_parse(RFCAddr *rfc, char *name, Node *node, int gw)
 	ret = OK;
 	debug(3, "    FTN node: %s", znfp1(n));
 
+	if (cf_get_string("HostsRestricted", TRUE))
+	    addr_is_restricted = TRUE;
+
 	/*
 	 * Look up in HOSTS
 	 */
@@ -453,7 +457,7 @@ int rfc_parse(RFCAddr *rfc, char *name, Node *node, int gw)
 	/*
 	 * Bounce mail to nodes not registered in HOSTS
 	 */
-	else if(addr_is_restricted() && !i_flag)
+	else if(addr_is_restricted && !i_flag)
 	{
 	    str_printf(address_error, sizeof(address_error),
 		       "FTN address %s: not registered for this domain",
@@ -2226,10 +2230,6 @@ int main(int argc, char **argv)
     if( cf_get_string("EchoMail4D", TRUE) )
     {
 	echomail4d = TRUE;
-    }
-    if(cf_get_string("HostsRestricted", TRUE))
-    {
-	addr_restricted(TRUE);
     }
 #ifndef FIDO_STYLE_MSGID
     if( (p = cf_get_string("RFCLevel", TRUE)) )

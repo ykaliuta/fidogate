@@ -80,8 +80,6 @@ Active *active_lookup		(char *);
 #define ADDRESS_ERROR_SIZE	256
 extern char address_error[ADDRESS_ERROR_SIZE];
 
-void	addr_restricted		(int);
-int	addr_is_restricted	(void);
 char   *str_ftn_to_inet		(char *, size_t, Node *, int);
 char   *s_ftn_to_inet		(Node *);
 Node   *inet_to_ftn		(char *);

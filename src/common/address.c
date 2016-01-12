@@ -39,14 +39,6 @@
  */
 static int try_pfnz		(Node *, char *, char *, char *);
 
-
-/*
- * HostsRestricted mode: bounce mails to/from unknown FTN addresses
- * (not registered in HOSTS)
- */
-static int hosts_restricted = FALSE;
-
-
 /*
  * Address parsing error message
  */
@@ -54,22 +46,6 @@ char address_error[ADDRESS_ERROR_SIZE];
 
 
 static char **addr_is_local_pats = NULL;
-
-
-/*
- * Set/get HostsRestricted mode
- */
-void addr_restricted(int f)
-{
-    hosts_restricted = f;
-}
-
-
-int addr_is_restricted(void)
-{
-    return hosts_restricted;
-}
-
 
 /*
  * str_ftn_to_inet(): convert FTN address to Internet address

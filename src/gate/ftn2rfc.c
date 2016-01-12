@@ -526,6 +526,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
     char *mime_ver, *mime_type, *mime_enc;
     char *carbon_group = NULL;
     struct encoding_state en_state;
+    int addr_is_restricted = FALSE;
     
     /*
      * Initialize
@@ -1072,7 +1073,10 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	/* Bounce mail from nodes not registered in HOSTS, but allow
 	 * mail to local users.
 	 */
-	if(addr_is_restricted() && !ignore_hosts &&
+	if (cf_get_string("HostsRestricted", TRUE))
+	    addr_is_restricted = TRUE;
+
+	if(addr_is_restricted && !ignore_hosts &&
 	   area==NULL && msgbody_rfc_to && !addr_is_domain(msgbody_rfc_to))
 	{
 	    Host *h;
@@ -1995,10 +1999,6 @@ int main(int argc, char **argv)
     if(cf_get_string("UseOriginForOrganization", TRUE))
     {
 	use_origin_for_organization = TRUE;
-    }
-    if(cf_get_string("HostsRestricted", TRUE))
-    {
-	addr_restricted(TRUE);
     }
     if( (p = cf_get_string("FTNJunkGroup", TRUE)) )
     {
