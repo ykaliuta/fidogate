@@ -10,7 +10,7 @@
 #include <string.h>
 #include <sys/queue.h>
 
-#define DEFAULT_SIZE 2048
+#define DEFAULT_SIZE 128
 
 static void
 _fatal(char *fmt, ...)
@@ -130,13 +130,40 @@ bp_buffer_get_or_create(int id)
     return b;
 }
 
+static size_t
+bp_buffer_calculate_new_size(struct bp_buffer *b, size_t len)
+{
+    size_t size = b->size;
+    size_t required = b->len + len + 1;
+
+    while (required > size)
+	size *= 2;
+    return size;
+}
+
+static void
+bp_buffer_extend(struct bp_buffer *b, size_t len)
+{
+    size_t new_size;
+    char *p;
+
+    new_size = bp_buffer_calculate_new_size(b, len);
+
+    p = realloc(b->buf, new_size);
+    if (p == NULL)
+	fatal("Could not realloc buffer");
+
+    b->buf = p;
+    b->size = new_size;
+}
+
 static void
 _bp_buffer_add(struct bp_buffer *b, char *str, size_t len)
 {
     char *p;
 
     if (b->len + len + 1 > b->size)
-	fatal("Need to resize buffer");
+	bp_buffer_extend(b, len);
 
     p = b->buf + b->len;
     memcpy(p, str, len);
