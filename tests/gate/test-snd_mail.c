@@ -5,6 +5,7 @@
 #include "prototypes.h"
 #include "mock-log.h"
 #include <cgreen/cgreen.h>
+#include <cgreen/mocks.h>
 
 int snd_mail(RFCAddr rfc_to, Textlist *body, long size);
 
@@ -15,6 +16,8 @@ Ensure(dummy)
     Textlist body = { 0 };
     int r;
     long size = 1000;
+
+    cgreen_mocks_are(loose_mocks);
 
     r = snd_mail(to, &body, size);
     assert_that(r, is_equal_to(0));

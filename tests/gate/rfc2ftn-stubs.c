@@ -5,6 +5,7 @@
 #include "prototypes.h"
 #include "node.h"
 #include "config.h"
+#include <cgreen/mocks.h>
 #include <stddef.h>
 #include <stdio.h>
 
@@ -107,7 +108,7 @@ char *header_geth(char *name, int first)
 
 char *s_header_getcomplete(char *name)
 {
-    return NULL;
+    mock(name);
 }
 
 char *header_get(char *name)
