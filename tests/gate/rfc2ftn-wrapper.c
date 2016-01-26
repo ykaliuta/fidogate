@@ -5,7 +5,18 @@
  * and export needed APIs
  */
 
-#define main test_main
-#include <rfc2ftn.c>
+#include <stdio.h>
+
+FILE *rfc2ftn_stdin;
+
+#define main rfc2ftn_main
+#ifdef stdin
+#undef stdin
+#define stdin rfc2ftn_stdin
+#endif
+
+#include "../../src/gate/rfc2ftn.c"
+
 #undef main
+#undef stdin
 
