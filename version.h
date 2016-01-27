@@ -7,9 +7,15 @@
  * Global version number, patch level
  *****************************************************************************/
 
+#ifndef FIDOGATE_VERSION_H_
+#define FIDOGATE_VERSION_H_
+
+#include <config.h>
 #define VERSION_MAJOR	5
 #define VERSION_MINOR	2
-#define PATCHLEVEL	4
-#define EXTRAVERSION	"ds"
+#define PATCHLEVEL	5
+#define EXTRAVERSION	"-g" GIT_HASH_STR
 
-#define STATE		"stable"
+#define STATE		"unstable"
+
+#endif

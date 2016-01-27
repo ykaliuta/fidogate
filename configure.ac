@@ -583,9 +583,9 @@ M4MAKE='$(M4) $(M4OPTIONS)'
 
 AC_SUBST(SUBSTCMD)
 AC_SUBST(M4MAKE)
-AC_DEFINE_UNQUOTED(FG_VERSION_STR,
-	["Fidogate $PACKAGE_VERSION (commit `cd $srcdir && git log -1 --format=format:%h`)"],
-	[A string containing the version number])
+AC_DEFINE_UNQUOTED(GIT_HASH_STR,
+	["`cd $srcdir && git log -1 --format=format:%h`"],
+	[A string containing the git hash])
 
 HOSTNAME=`hostname -s`
 DOMAINNAME=`hostname|sed -e "s/$HOSTNAME//"`
