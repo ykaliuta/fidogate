@@ -6,6 +6,7 @@
 
 TestSuite *create_cvt_user_name_suite(void);
 TestSuite *create_snd_mail_suite(void);
+TestSuite *create_rfc2ftn_main_suite(void);
 
 static TestSuite *create_rfc2ftn_suite(void)
 {
@@ -16,6 +17,8 @@ static TestSuite *create_rfc2ftn_suite(void)
     sub = create_cvt_user_name_suite();
     add_suite(suite, sub);
     sub = create_snd_mail_suite();
+    add_suite(suite, sub);
+    sub = create_rfc2ftn_main_suite();
     add_suite(suite, sub);
 
     return suite;
