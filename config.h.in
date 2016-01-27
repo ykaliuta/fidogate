@@ -767,6 +767,9 @@
 /* Define to 1 if using `alloca.c'. */
 #undef C_ALLOCA
 
+/* A string containing the git hash */
+#undef GIT_HASH_STR
+
 /* Do we have a decent regex library? */
 #undef HAS_POSIX_REGEX
 

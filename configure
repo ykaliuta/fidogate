@@ -8633,6 +8633,10 @@ M4MAKE='$(M4) $(M4OPTIONS)'
 
 
 
+cat >>confdefs.h <<_ACEOF
+#define GIT_HASH_STR "`cd $srcdir && git log -1 --format=format:%h`"
+_ACEOF
+
 
 HOSTNAME=`hostname -s`
 DOMAINNAME=`hostname|sed -e "s/$HOSTNAME//"`
