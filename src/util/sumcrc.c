@@ -119,7 +119,6 @@ void short_usage(void)
 {
     fprintf(stderr, "usage: %s [-options] file ...\n", PROGRAM);
     fprintf(stderr, "       %s --help  for more information\n", PROGRAM);
-    exit(EX_USAGE);
 }
 
 
@@ -138,8 +137,6 @@ options:  -1 --skip-first-line         skip first line in text file\n\
 \n\
           -v --verbose                 verbose\n\
 	  -h --help                    this help\n"                     );
-
-    exit(0);
 }
 
 
@@ -191,14 +188,18 @@ int main(int argc, char **argv)
 	    break;
 	case 'h':
 	    usage();
+	    return 0;
 	    break;
 	default:
 	    short_usage();
+	    return EX_USAGE;
 	    break;
 	}
 
-    if(optind == argc)
+    if(optind == argc) {
 	short_usage();
+	return EX_USAGE;
+    }
     
     /* Files */
     ret = 0;
@@ -206,5 +207,5 @@ int main(int argc, char **argv)
 	if( do_sumcrc32(argv[optind]) == ERROR )
 	    ret = 1;
     
-    exit(ret);
+    return ret;
 }

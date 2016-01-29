@@ -66,7 +66,6 @@ void short_usage(void)
 {
     fprintf(stderr, "usage: %s [-options]\n", PROGRAM);
     fprintf(stderr, "       %s --help  for more information\n", PROGRAM);
-    exit(EX_USAGE);
 }
 
 
@@ -80,8 +79,6 @@ void usage(void)
 options: -F --filefix                 run as Filefix program (FAREAS.BBS)\n\
 \n\
 	 -h --help                    this help\n");
-
-    exit(0);
 }
 
 
@@ -121,11 +118,11 @@ int main(int argc, char **argv)
 	/***** Common options *****/
 	case 'h':
 	    usage();
-	    exit(0);
+	    return 0;
 	    break;
 	default:
 	    short_usage();
-	    exit(EX_USAGE);
+	    return EX_USAGE;
 	    break;
 	}
 
@@ -135,5 +132,5 @@ int main(int argc, char **argv)
 	fglog("ERROR: can't exec %s", cmd);
 	
     /* Only reached if error */
-    exit(1);
+    return 1;
 }

@@ -318,7 +318,6 @@ void short_usage(void)
 {
     fprintf(stderr, "usage: %s [-options] charset.map charset.bin\n", PROGRAM);
     fprintf(stderr, "       %s --help  for more information\n", PROGRAM);
-    exit(EX_USAGE);
 }
 
 
@@ -334,8 +333,6 @@ options:  \n\
 \n\
           -v --verbose                 verbose\n\
 	  -h --help                    this help\n"                     );
-
-    exit(0);
 }
 
 
@@ -371,14 +368,18 @@ int main(int argc, char **argv)
 	    break;
 	case 'h':
 	    usage();
+	    return 0;
 	    break;
 	default:
 	    short_usage();
+	    return EX_USAGE;
 	    break;
 	}
 
-    if(optind+2 != argc)
+    if(optind+2 != argc) {
 	short_usage();
+	return EX_USAGE;
+    }
 
     name_in  = argv[optind++];
     name_out = argv[optind++];
@@ -386,5 +387,5 @@ int main(int argc, char **argv)
     ret = compile_map(name_in, name_out);
     
     exit_free();
-    exit(ret);
+    return ret;
 }

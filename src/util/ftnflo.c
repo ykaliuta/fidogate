@@ -152,7 +152,6 @@ void short_usage(void)
 {
     fprintf(stderr, "usage: %s [-options] Z:N/F.P ...\n", PROGRAM);
     fprintf(stderr, "       %s --help  for more information\n", PROGRAM);
-    exit(EX_USAGE);
 }
 
 
@@ -171,8 +170,6 @@ options:  -B --binkley NAME            set Binkley-style outbound directory\n\
           -v --verbose                 more verbose\n\
 	  -h --help                    this help\n\
           -c --config name             read config file (\"\" = none)\n");
-    
-    exit(0);
 }
 
 
@@ -230,12 +227,14 @@ int main(int argc, char **argv)
 	    break;
 	case 'h':
 	    usage();
+	    return 0;
 	    break;
 	case 'c':
 	    c_flag = optarg;
 	    break;
 	default:
 	    short_usage();
+	    return EX_USAGE;
 	    break;
 	}
 
@@ -259,8 +258,10 @@ int main(int argc, char **argv)
     /*
      * Process following command line arguments
      */
-    if(optind >= argc)
+    if(optind >= argc) {
 	short_usage();
+	return EX_USAGE;
+    }
 
     /* Nodes */
     for(; optind<argc; optind++)
@@ -275,5 +276,5 @@ int main(int argc, char **argv)
     }
 
     exit_free();    
-    exit(0);
+    return 0;
 }

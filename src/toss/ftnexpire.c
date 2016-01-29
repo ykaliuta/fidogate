@@ -326,8 +326,6 @@ options: -m --maxhistory DAYS         set max number of days in history\n\
          -c --config name             read config file (\"\" = none)\n\
 	 -d --dbc                     set history file correspond db\n\
 	 -t --tic                     set history file tick db\n");
-    
-    exit(0);
 }
 
 
@@ -386,7 +384,7 @@ int main(int argc, char **argv)
 	    break;
 	case 'h':
 	    usage();
-	    exit(0);
+	    return 0;
 	    break;
 	case 'c':
 	    c_flag = optarg;
@@ -399,7 +397,7 @@ int main(int argc, char **argv)
 	    break;
 	default:
 	    short_usage();
-	    exit(EX_USAGE);
+	    return EX_USAGE;
 	    break;
 	}
 
@@ -445,7 +443,7 @@ int main(int argc, char **argv)
     {
 	fglog("MSGID history database is busy");
 	exit_free();
-	exit(EXIT_BUSY);
+	return EXIT_BUSY;
     }
 
     /* Start time */
@@ -467,5 +465,5 @@ int main(int argc, char **argv)
 
     
     exit_free();
-    exit(ret);
+    return ret;
 }

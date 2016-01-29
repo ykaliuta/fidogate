@@ -78,8 +78,6 @@ void usage(void)
 options: -v --verbose                 more verbose\n\
 	 -h --help                    this help\n\
          -c --config name             read config file (\"\" = none)\n");
-    
-    exit(0);
 }
 
 /*
@@ -320,14 +318,14 @@ int main(int argc, char **argv)
 	    break;
 	case 'h':
 	    usage();
-	    exit(0);
+	    return 0;
 	    break;
 	case 'c':
 	    c_flag = optarg;
 	    break;
 	default:
 	    short_usage();
-	    exit(EX_USAGE);
+	    return EX_USAGE;
 	    break;
 	}
 
@@ -378,5 +376,5 @@ int main(int argc, char **argv)
     unsplit_mail("test");    
 */
     exit_free();
-    exit(EX_OK);
+    return EX_OK;
 }

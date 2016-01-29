@@ -1915,8 +1915,6 @@ options: -d --no-dupecheck            disable dupe check\n\
 	 -u --uplink-addr Z:N/F.P     set FTN uplink address\n\
 	 -w --wait [TIME]             wait for areas.bbs and history\n\
 	                              lock to be released\n");
-    
-    exit(0);
 }
 
 
@@ -2025,7 +2023,7 @@ int main(int argc, char **argv)
 	    break;
 	case 'h':
 	    usage();
-	    exit(0);
+	    return 0;
 	    break;
 	case 'c':
 	    c_flag = optarg;
@@ -2044,7 +2042,7 @@ int main(int argc, char **argv)
 	    break;
 	default:
 	    short_usage();
-	    exit(EX_USAGE);
+	    return EX_USAGE;
 	    break;
 	}
 
@@ -2225,7 +2223,7 @@ int main(int argc, char **argv)
     {
 	fprintf(stderr, "%s: no areas.bbs specified\n", PROGRAM);
 	exit_free();
-	exit(EX_USAGE);
+	return EX_USAGE;
     }
     
     routing_init(r_flag ? r_flag : cf_p_routing() );
@@ -2233,7 +2231,7 @@ int main(int argc, char **argv)
     if (lock_path(bbslock, w_flag ? w_flag : NOWAIT) == ERROR)
     {
 	exit_free();
-	exit(EXIT_BUSY);
+	return EXIT_BUSY;
     }
     areasbbs_init(areas_bbs);
     passwd_init();
@@ -2258,7 +2256,7 @@ int main(int argc, char **argv)
 	    fglog("$ERROR: can't open directory %s", in_dir);
 	    unlock_path(bbslock);
 	    exit_free();
-	    exit(EX_OSERR);
+	    return EX_OSERR;
 	}
 
 	/* Lock file */
@@ -2267,7 +2265,7 @@ int main(int argc, char **argv)
 	    {
 		/* Already busy */
 		exit_free();
-		exit(EXIT_BUSY);
+		return EXIT_BUSY;
 	    }
 
 	/* Open history */
@@ -2283,7 +2281,7 @@ int main(int argc, char **argv)
 		    unlock_path(bbslock);
 		}
 		exit_free();
-		exit(EXIT_BUSY);
+		return EXIT_BUSY;
 	    }
 	    hi_init_history();
 	}
@@ -2323,7 +2321,7 @@ int main(int argc, char **argv)
 	    {
 		/* Already busy */
 		exit_free();
-		exit(EXIT_BUSY);
+		return EXIT_BUSY;
 	    }
 	
 	/* Open history */
@@ -2337,7 +2335,7 @@ int main(int argc, char **argv)
 		    unlock_path(bbslock);
 
 		exit_free();
-		exit(EXIT_BUSY);
+		return EXIT_BUSY;
 	    }
 	    hi_init_history();
 	}
@@ -2447,5 +2445,5 @@ int main(int argc, char **argv)
     unlock_path(bbslock);
     
     exit_free();
-    exit(c);
+    return c;
 }

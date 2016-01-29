@@ -935,8 +935,6 @@ options: -g --grade G                 processing grade\n\
          -c --config NAME             read config file (\"\" = none)\n\
 	 -a --addr Z:N/F.P            set FTN address\n\
 	 -u --uplink-addr Z:N/F.P     set FTN uplink address\n");
-
-    exit(0);
 }
 
 
@@ -1014,7 +1012,7 @@ int main(int argc, char **argv)
 	    break;
 	case 'h':
 	    usage();
-	    exit(0);
+	    return 0;
 	    break;
 	case 'c':
 	    c_flag = optarg;
@@ -1027,7 +1025,7 @@ int main(int argc, char **argv)
 	    break;
 	default:
 	    short_usage();
-	    exit(EX_USAGE);
+	    return EX_USAGE;
 	    break;
 	}
 
@@ -1099,7 +1097,7 @@ int main(int argc, char **argv)
 	    {
 		/* Already busy */
 		exit_free();
-		exit(EXIT_BUSY);
+		return EXIT_BUSY;
 	    }
 
 
@@ -1112,7 +1110,7 @@ int main(int argc, char **argv)
 	    {
 		fglog("$ERROR: can't open directory %s/%s", btbase, base);
 		exit_free();
-		exit(EX_OSERR);
+		return EX_OSERR;
 	    }
 	    else
 	    {
@@ -1140,7 +1138,7 @@ int main(int argc, char **argv)
 		{
 		    fglog("$ERROR: can't open directory %s", buf);
 		    exit_free();
-		    exit(EX_OSERR);
+		    return EX_OSERR;
 		}
 		else
 		{
@@ -1177,7 +1175,7 @@ int main(int argc, char **argv)
 	{
 	    fglog("$ERROR: can't open directory %s", in_dir);
 	    exit_free();
-	    exit(EX_OSERR);
+	    return EX_OSERR;
 	}
 
 	/* Lock file */
@@ -1186,7 +1184,7 @@ int main(int argc, char **argv)
 	    {
 		/* Already busy */
 		exit_free();
-		exit(EXIT_BUSY);
+		return EXIT_BUSY;
 	    }
 	
 	repack_mode = FALSE;
@@ -1213,7 +1211,7 @@ int main(int argc, char **argv)
 	    {
 		/* Already busy */
 		exit_free();
-		exit(EXIT_BUSY);
+		return EXIT_BUSY;
 	    }
 	
 	/*
@@ -1257,6 +1255,6 @@ int main(int argc, char **argv)
 	hi_close();
 
     exit_free();    
-    exit(ret);
+    return ret;
 }
 

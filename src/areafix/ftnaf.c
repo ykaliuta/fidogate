@@ -182,7 +182,6 @@ void short_usage(void)
 {
     fprintf(stderr, "usage: %s [-options] [Z:N/F.P command]\n", PROGRAM);
     fprintf(stderr, "       %s --help  for more information\n", PROGRAM);
-    exit(EX_USAGE);
 }
 
 
@@ -205,7 +204,6 @@ options: -m --mail                    process Areafix mail on stdin\n\
 	 -a --addr Z:N/F.P            set FTN address\n\
 	 -u --uplink-addr Z:N/F.P     set FTN uplink address\n\
          -w --wait [TIME]             wait for areas.bbs lock to be released\n");
-    exit(0);
 }
 
 
@@ -280,7 +278,7 @@ int main(int argc, char **argv)
 	    break;
 	case 'h':
 	    usage();
-	    exit(0);
+	    return 0;
 	    break;
 	case 'c':
 	    c_flag = optarg;
@@ -299,7 +297,7 @@ int main(int argc, char **argv)
 	    break;
 	default:
 	    short_usage();
-	    exit(EX_USAGE);
+	    return EX_USAGE;
 	    break;
 	}
 
@@ -382,7 +380,7 @@ int main(int argc, char **argv)
 	{
 	    areafix_free();
 	    exit_free();
-	    exit(EX_OSFILE);
+	    return EX_OSFILE;
 	}
 
 	/* Command is rest of args on command line */
@@ -405,5 +403,5 @@ int main(int argc, char **argv)
 
     areafix_free();
     exit_free();
-    exit(ret);
+    return ret;
 }

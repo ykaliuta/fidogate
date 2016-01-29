@@ -272,8 +272,6 @@ options: -I --in-dir DIR              set input packet directory\n\
          -c --config NAME             read config file (\"\" = none)\n\
 	 -a --addr Z:N/F.P            set FTN address\n\
 	 -u --uplink-addr Z:N/F.P     set FTN uplink address\n");
-    
-    exit(0);
 }
 
 
@@ -331,7 +329,7 @@ int main(int argc, char **argv)
 	    break;
 	case 'h':
 	    usage();
-	    exit(0);
+	    return 0;
 	    break;
 	case 'c':
 	    c_flag = optarg;
@@ -344,7 +342,7 @@ int main(int argc, char **argv)
 	    break;
 	default:
 	    short_usage();
-	    exit(EX_USAGE);
+	    return EX_USAGE;
 	    break;
 	}
 
@@ -387,7 +385,7 @@ int main(int argc, char **argv)
 	{
 	    fglog("$ERROR: can't open directory %s", in_dir);
 	    exit_free();
-	    exit(EX_OSERR);
+	    return EX_OSERR;
 	}
     
 	/* Lock file */
@@ -396,7 +394,7 @@ int main(int argc, char **argv)
 	    {
 		/* Already busy */
 		exit_free();
-		exit(EXIT_BUSY);
+		return EXIT_BUSY;
 	    }
 
 	for(pkt_name=dir_get(TRUE); pkt_name; pkt_name=dir_get(FALSE))
@@ -427,7 +425,7 @@ int main(int argc, char **argv)
 	    {
 		/* Already busy */
 		exit_free();
-		exit(EXIT_BUSY);
+		return EXIT_BUSY;
 	    }
 	
 	/* Process packet files on command line */
@@ -451,5 +449,5 @@ int main(int argc, char **argv)
     }
     
     exit_free();
-    exit(ret);
+    return ret;
 }

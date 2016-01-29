@@ -83,7 +83,6 @@ void short_usage(void)
 {
     fprintf(stderr, "usage: %s [-options] 'User Name @ Z:N/F.P' ...\n", PROGRAM);
     fprintf(stderr, "       %s --help  for more information\n", PROGRAM);
-    exit(EX_USAGE);
 }
 
 
@@ -106,8 +105,6 @@ options:  -f --from NAME@Z:N/F.P       set from FTN address\n\
 	  -u --uplink-addr Z:N/F.P     set FTN uplink address\n\
           -t --tearline TEARLINE       set tearline\n\
 	  -o --origin ORIGIN           set origin\n");
-    
-    exit(0);
 }
 
 
@@ -176,6 +173,7 @@ int main(int argc, char **argv)
 	    break;
 	case 'h':
 	    usage();
+	    return 0;
 	    break;
 	case 'c':
 	    c_flag = optarg;
@@ -194,13 +192,16 @@ int main(int argc, char **argv)
 	    break;
 	default:
 	    short_usage();
+	    return EX_USAGE;
 	    break;
 	}
 
 
-    if(optind >= argc) 
+    if(optind >= argc) {
 	short_usage();
-    
+	return EX_USAGE;
+    }
+
     /*
      * Read config file
      */
@@ -221,7 +222,7 @@ int main(int argc, char **argv)
 	{
 	    fprintf(stderr, "%s: illegal address -f %s\n", PROGRAM, f_flag);
 	    exit_free();
-	    exit(EX_USAGE);
+	    return EX_USAGE;
 	}
     }
     else
@@ -265,7 +266,7 @@ int main(int argc, char **argv)
 	{
 	    fprintf(stderr, "%s: illegal address %s\n", PROGRAM, argv[optind]);
 	    exit_free();
-	    exit(EX_USAGE);
+	    return EX_USAGE;
 	}
 	if ( NULL != A_flag ) {
 	    tmp = A_flag;
@@ -276,5 +277,5 @@ int main(int argc, char **argv)
     }
     
     exit_free();
-    exit(0);
+    return 0;
 }

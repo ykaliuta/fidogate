@@ -47,7 +47,6 @@ void short_usage(void)
 {
     fprintf(stderr, "usage: %s [-options] Z:N/F.P file ...\n", PROGRAM);
     fprintf(stderr, "       %s --help  for more information\n", PROGRAM);
-    exit(EX_USAGE);
 }
 
 
@@ -66,8 +65,6 @@ options:  -B --binkley NAME            set Binkley-style outbound directory\n\
           -c --config name             read config file (\"\" = none)\n\
 	  -a --addr Z:N/F.P            set FTN address\n\
 	  -u --uplink-addr Z:N/F.P     set FTN uplink address\n");
-    
-    exit(0);
 }
 
 
@@ -123,6 +120,7 @@ int main(int argc, char **argv)
 	    break;
 	case 'h':
 	    usage();
+	    return 0;
 	    break;
 	case 'c':
 	    c_flag = optarg;
@@ -135,6 +133,7 @@ int main(int argc, char **argv)
 	    break;
 	default:
 	    short_usage();
+	    return EX_USAGE;
 	    break;
 	}
 
@@ -168,10 +167,15 @@ int main(int argc, char **argv)
      * Process following command line arguments
      */
     /* FTN address */
-    if(argc - optind < 2)
+    if(argc - optind < 2) {
 	short_usage();
-    if( asc_to_node(argv[optind], &node, FALSE) == ERROR )
+	return EX_USAGE;
+    }
+
+    if( asc_to_node(argv[optind], &node, FALSE) == ERROR ) {
 	short_usage();
+	return EX_USAGE;
+    }
     optind++;
 
     /* Files */
@@ -189,10 +193,10 @@ int main(int argc, char **argv)
 	if(bink_attach(&node, mode, name, F_flag, TRUE) == ERROR)
 	{
 	    exit_free();
-	    exit(1);
+	    return 1;
 	}
     }
     
     exit_free();
-    exit(0);
+    return 0;
 }

@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 	    L_flag = optarg;
 	    break;
 	default:
-	    exit(EX_USAGE);
+	    return EX_USAGE;
 	    break;
 	}
 
@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
     
     hi_close();
     
-    exit(0);
+    return 0;
 }
 #endif /**TEST**/
 /*****************************************************************************/

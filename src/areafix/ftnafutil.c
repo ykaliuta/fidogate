@@ -467,7 +467,6 @@ void short_usage(void)
 {
     fprintf(stderr, "usage: %s [-options] command ...\n", PROGRAM);
     fprintf(stderr, "       %s --help  for more information\n", PROGRAM);
-    exit(EX_USAGE);
 }
 
 
@@ -497,8 +496,6 @@ command: delete         delete dead areas (no uplink or downlink)\n\
 	 unresubscribe  unscribe and subscribe to all areas from uplink\n\
 	 listareatime	list areas with time last message\n\
 	 rulesup	update echo rules database\n");
-
-    exit(0);
 }
 
 
@@ -562,7 +559,7 @@ int main(int argc, char **argv)
 	    break;
 	case 'h':
 	    usage();
-	    exit(0);
+	    return 0;
 	    break;
 	case 'c':
 	    c_flag = optarg;
@@ -581,7 +578,7 @@ int main(int argc, char **argv)
 	    break;
 	default:
 	    short_usage();
-	    exit(EX_USAGE);
+	    return EX_USAGE;
 	    break;
 	}
 
@@ -649,13 +646,13 @@ int main(int argc, char **argv)
     if (lock_path(bbslock, w_flag ? w_flag : NOWAIT) == ERROR)
     {
 	exit_free();
-	exit(EXIT_BUSY);
+	return EXIT_BUSY;
     }
 
     if(areasbbs_init(areafix_areasbbs()) == ERROR )
     {
 	exit_free();
-	exit(EX_OSFILE);
+	return EX_OSFILE;
     }
 
     if(do_cmd(argv+optind) == ERROR)
@@ -672,5 +669,5 @@ int main(int argc, char **argv)
     unlock_path(bbslock);
 
     exit_free();
-    exit(ret);
+    return ret;
 }

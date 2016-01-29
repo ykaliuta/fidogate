@@ -50,14 +50,14 @@ main(int argc, char **argv)
 	break;
       case 'h':
 	usage();
-	exit(0);
+	return 0;
 	break;
       case 'c':
 	c_flag = optarg;
 	break;
       default:
 	short_usage();
-	exit(EX_USAGE);
+	return EX_USAGE;
 	break;
       }
 
@@ -69,7 +69,7 @@ main(int argc, char **argv)
     {
       short_usage();
       exit_free();
-      exit(EX_USAGE);
+      return EX_USAGE;
     }
 
   if (0 == stricmp(argv[optind], "create"))
@@ -80,14 +80,14 @@ main(int argc, char **argv)
     {
       short_usage();
       exit_free();
-      exit(EX_USAGE);
+      return EX_USAGE;
     }
 
   if (GROUP_MAX_LENGTH < strlen(argv[optind+1]))
     {
       printf("Newsgroup name too long (max %u characters)\n", GROUP_MAX_LENGTH);
       exit_free();
-      exit(1);
+      return 1;
     }
 
   /* AutoCreateNewgroupCmd */
@@ -99,7 +99,7 @@ main(int argc, char **argv)
     {
       printf("config: parameter `AutoCreateNewgroupCmd' not defined!\n");
       exit_free();
-      exit(1);
+      return 1;
     }
 
   /* AutoCreateRenumberCmd */
@@ -117,7 +117,7 @@ main(int argc, char **argv)
     {
       printf("config: parameter `AutoCreateRmgroupCmd' not defined!\n");
       exit_free();
-      exit(1);
+      return 1;
     }
 
   close(0);
@@ -165,5 +165,4 @@ void usage()
   fprintf(stderr, "usage:   %s create|remove NEWSGROUP\n\n", PROGRAM);
 
   exit_free();
-  exit(0);
 }

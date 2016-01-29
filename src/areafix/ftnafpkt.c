@@ -390,8 +390,6 @@ options: -I --in-dir DIR              set input packet directory\n\
 	 -a --addr Z:N/F.P            set FTN address\n\
 	 -u --uplink-addr Z:N/F.P     set FTN uplink address\n\
 	 -w --wait [TIME]             wait for areas.bbs lock to be released\n");
-    
-    exit(0);
 }
 
 
@@ -473,7 +471,7 @@ int main(int argc, char **argv)
 	    break;
 	case 'h':
 	    usage();
-	    exit(0);
+	    return 0;
 	    break;
 	case 'c':
 	    c_flag = optarg;
@@ -491,7 +489,7 @@ int main(int argc, char **argv)
 		w_flag = WAIT;
 	default:
 	    short_usage();
-	    exit(EX_USAGE);
+	    return EX_USAGE;
 	    break;
 	}
 
@@ -546,7 +544,7 @@ int main(int argc, char **argv)
 	{
 	    fglog("ERROR: can't open directory %s", in_dir);
 	    exit_free();
-	    exit(EXIT_ERROR);
+	    return EXIT_ERROR;
 	}
     
 	/* Lock file */
@@ -555,14 +553,14 @@ int main(int argc, char **argv)
 	    {
 		/* Already busy */
 		exit_free();
-		exit(EXIT_BUSY);
+		return EXIT_BUSY;
 	    }
 
 	BUF_COPY2(bbslock, areafix_areasbbs(), ".lock");
 	if (ERROR == lock_path(bbslock, w_flag ? w_flag : WAIT))
 	{
 	    exit_free();
-	    exit(EXIT_BUSY);
+	    return EXIT_BUSY;
 	}
 
 	/* Read areas.bbs */
@@ -571,7 +569,7 @@ int main(int argc, char **argv)
 	    if(l_flag)
 		unlock_program(PROGRAM);
 	    exit_free();
-	    exit(EXIT_ERROR);
+	    return EXIT_ERROR;
 	}
 	
 	for(pkt_name=dir_get(TRUE); pkt_name; pkt_name=dir_get(FALSE))
@@ -609,7 +607,7 @@ int main(int argc, char **argv)
 	    {
 		/* Already busy */
 		exit_free();
-		exit(EXIT_BUSY);
+		return EXIT_BUSY;
 	    }
 
 	/* Read areas.bbs */
@@ -618,7 +616,7 @@ int main(int argc, char **argv)
 	    if(l_flag)
 		unlock_program(PROGRAM);
 	    exit_free();
-	    exit(EXIT_ERROR);
+	    return EXIT_ERROR;
 	}
 	
 	/* Process packet files on command line */
@@ -648,5 +646,5 @@ int main(int argc, char **argv)
     
     areafix_free();
     exit_free();
-    exit(ret);
+    return ret;
 }
