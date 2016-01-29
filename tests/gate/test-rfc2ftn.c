@@ -14,11 +14,11 @@ static TestSuite *create_rfc2ftn_suite(void)
 	"rfc2ftn suite");
     TestSuite *sub;
 
+    sub = create_rfc2ftn_main_suite();
+    add_suite(suite, sub);
     sub = create_cvt_user_name_suite();
     add_suite(suite, sub);
     sub = create_snd_mail_suite();
-    add_suite(suite, sub);
-    sub = create_rfc2ftn_main_suite();
     add_suite(suite, sub);
 
     return suite;
