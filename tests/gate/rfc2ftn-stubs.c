@@ -251,18 +251,6 @@ char *addr_token(char *line)
     return NULL;
 }
 
-void tl_init(Textlist *list)
-{
-}
-
-void tl_append(Textlist *list, char *s)
-{
-}
-
-void tl_clear(Textlist *list)
-{
-}
-
 char *znfp1(Node *node)
 {
     return NULL;
@@ -318,11 +306,6 @@ void areas_init(void)
 
 void pkt_outdir(char *dir1, char *dir2)
 {
-}
-
-char *read_line(char *buf, int n, FILE *stream)
-{
-    return NULL;
 }
 
 void header_read(FILE *file)
@@ -600,10 +583,26 @@ Node *inet_to_ftn( char *addr )
     return NULL;
 }
 
-/* Pure functions */
-
+/* Pure functions or with localaized side effects */
 
 /*
+void tl_init(Textlist *list)
+{
+}
+
+void tl_append(Textlist *list, char *s)
+{
+}
+
+void tl_clear(Textlist *list)
+{
+}
+
+char *read_line(char *buf, int n, FILE *stream)
+{
+    return NULL;
+}
+
 
 char *s_copy(char *s)
 {
