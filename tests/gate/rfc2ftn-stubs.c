@@ -142,7 +142,7 @@ int pkt_isopen(void)
 
 FILE *pkt_open(char *name, Node *node, char *flav, int bsy)
 {
-    return NULL;
+    mock(name, node, flav, bsy);
 }
 
 void pkt_put_line(FILE *fp, char *s)
