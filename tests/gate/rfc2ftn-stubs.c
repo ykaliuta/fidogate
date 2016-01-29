@@ -43,41 +43,6 @@ char *xlat_s(char *s1, char *s2)
     return NULL;
 }
 
-char *str_copy( char *d, size_t n, char *s )
-{
-    return NULL;
-}
-
-char *str_copy2(char *d, size_t n, char *s1, char *s2)
-{
-    return NULL;
-}
-
-char *str_copy3(char *d, size_t n, char *s1, char *s2, char *s3)
-{
-    return NULL;
-}
-
-char *str_append( char *d, size_t n, char *s )
-{
-    return NULL;
-}
-
-char *str_append2(char *d, size_t n, char *s1, char *s2)
-{
-    return NULL;
-}
-
-char *str_upper(char *s)
-{
-    return NULL;
-}
-
-char *str_lower(char *s)
-{
-    return NULL;
-}
-
 int pkt_put_msg_hdr(FILE *pkt, Message *msg, int kludge_flag)
     /* kludge_flag --- TRUE: write AREA/^AINTL,^AFMPT,^ATOPT */
 {
@@ -586,6 +551,41 @@ Node *inet_to_ftn( char *addr )
 /* Pure functions or with localaized side effects */
 
 /*
+char *str_copy( char *d, size_t n, char *s )
+{
+    return NULL;
+}
+
+char *str_copy2(char *d, size_t n, char *s1, char *s2)
+{
+    return NULL;
+}
+
+char *str_copy3(char *d, size_t n, char *s1, char *s2, char *s3)
+{
+    return NULL;
+}
+
+char *str_append( char *d, size_t n, char *s )
+{
+    return NULL;
+}
+
+char *str_append2(char *d, size_t n, char *s1, char *s2)
+{
+    return NULL;
+}
+
+char *str_upper(char *s)
+{
+    return NULL;
+}
+
+char *str_lower(char *s)
+{
+    return NULL;
+}
+
 void tl_init(Textlist *list)
 {
 }
