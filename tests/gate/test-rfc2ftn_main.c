@@ -7,14 +7,17 @@
 #include <cgreen/cgreen.h>
 #include <cgreen/mocks.h>
 
+#define ARRAY_SIZE(x) (sizeof(x)/sizeof(x[0]))
+
 Ensure(rfc2ftn_dummy)
 {
     char *args[] = {
 	"rfc2ftn",
+	"fido.user@p1.f22.n333.z2.fidonet.org"
     };
     int r;
 
-    r = rfc2ftn_main(1, args);
+    r = rfc2ftn_main(ARRAY_SIZE(args), args);
     assert_that(r, is_equal_to(0));
 }
 
