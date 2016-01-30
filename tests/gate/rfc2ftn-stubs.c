@@ -16,12 +16,12 @@ char address_error[ADDRESS_ERROR_SIZE];
 
 char *charset_alias_rfc(char *name)
 {
-    return NULL;
+    return "UTF-8";
 }
 
 char *charset_alias_fsc(char *name)
 {
-    return NULL;
+    return "CP866";
 }
 
 void charset_set_in_out(char *in, char *out)
@@ -107,7 +107,7 @@ int pkt_isopen(void)
 
 FILE *pkt_open(char *name, Node *node, char *flav, int bsy)
 {
-    mock(name, node, flav, bsy);
+    return mock(name, node, flav, bsy);
 }
 
 void pkt_put_line(FILE *fp, char *s)
@@ -181,7 +181,7 @@ char *mime_deheader(char *d, size_t n, char *s)
 
 int acl_ngrp_lookup( char *list )
 {
-    return 0;
+    mock(list);
 }
 
 void acl_ngrp( RFCAddr rfc_from, int type )

@@ -11,6 +11,9 @@
 #define ARRAY_SIZE(x) (sizeof(x)/sizeof(x[0]))
 
 static FILE *fake_stdin;
+static FILE *fake_pkt;
+static char *pkt_buf;
+static size_t pkt_size;
 
 static char *rfc_message =
     "From: one@two.com\n"
@@ -27,6 +30,11 @@ Ensure(rfc2ftn_dummy)
     };
     int r;
 
+    expect(acl_ngrp_lookup,
+	   will_return(1));
+    expect(pkt_open,
+	   will_return(fake_pkt));
+
     r = rfc2ftn_main(ARRAY_SIZE(args), args);
     assert_that(r, is_equal_to(0));
 }
@@ -37,6 +45,13 @@ static void setup_stdin(char *buf)
 
     fake_stdin = fmemopen(buf, size, "r");
     assert_that(fake_stdin, is_not_equal_to(NULL));
+    rfc2ftn_stdin = fake_stdin;
+}
+
+static void setup_pkt_buffer()
+{
+    fake_pkt = open_memstream(&pkt_buf, &pkt_size);
+    assert_that(fake_stdin, is_not_equal_to(NULL));
 }
 
 static void setup(void)
@@ -45,13 +60,16 @@ static void setup(void)
     debug_buffer_release();
 
     setup_stdin(rfc_message);
-    rfc2ftn_stdin = fake_stdin;
+    setup_pkt_buffer();
 }
 
 static void teardown(void)
 {
     printf("DEBUG: %s\n", debug_buffer());
     printf("LOG: %s\n", log_buffer());
+    fclose(fake_pkt);
+    printf("PKT (size %zd): %s\n", pkt_size, pkt_buf);
+    free(pkt_buf);
 }
 
 TestSuite *create_rfc2ftn_main_suite(void)
