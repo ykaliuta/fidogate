@@ -48,6 +48,12 @@ static void setup(void)
     rfc2ftn_stdin = fake_stdin;
 }
 
+static void teardown(void)
+{
+    printf("DEBUG: %s\n", debug_buffer());
+    printf("LOG: %s\n", log_buffer());
+}
+
 TestSuite *create_rfc2ftn_main_suite(void)
 {
     TestSuite *suite = create_named_test_suite("rfc2ftn_main suite");
@@ -55,6 +61,7 @@ TestSuite *create_rfc2ftn_main_suite(void)
     add_test(suite, rfc2ftn_dummy);
 
     set_setup(suite, setup);
+    set_teardown(suite, teardown);
 
     return suite;
 }

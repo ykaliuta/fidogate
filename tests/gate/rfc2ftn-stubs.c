@@ -73,7 +73,7 @@ char *header_geth(char *name, int first)
 
 char *s_header_getcomplete(char *name)
 {
-    mock(name);
+    return "a_var";
 }
 
 char *header_get(char *name)
@@ -351,7 +351,7 @@ char *str_expand_name(char *d, size_t n, char *s)
 
 char *cf_fqdn(void)
 {
-    return NULL;
+    return "fake.domain.com";
 }
 
 char *cf_p_origin(void)
