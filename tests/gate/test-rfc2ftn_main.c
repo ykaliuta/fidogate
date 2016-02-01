@@ -4,6 +4,7 @@
 #include "rfc2ftn.h"
 #include "prototypes.h"
 #include "mock-log.h"
+#include "buffer2c.h"
 #include <cgreen/cgreen.h>
 #include <cgreen/mocks.h>
 #include <stdio.h>
@@ -65,11 +66,15 @@ static void setup(void)
 
 static void teardown(void)
 {
+    char *b;
+
     printf("DEBUG: %s\n", debug_buffer());
     printf("LOG: %s\n", log_buffer());
     fclose(fake_pkt);
-    printf("PKT (size %zd): %s\n", pkt_size, pkt_buf);
+    b = buffer2c(pkt_buf);
+    printf("PKT (size %zd): %s\n", pkt_size, b);
     free(pkt_buf);
+    free(b);
 }
 
 TestSuite *create_rfc2ftn_main_suite(void)
