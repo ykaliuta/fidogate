@@ -18,8 +18,8 @@ static TestSuite *create_rfc2ftn_suite(void)
     add_suite(suite, sub);
     sub = create_cvt_user_name_suite();
     add_suite(suite, sub);
-    sub = create_snd_mail_suite();
-    add_suite(suite, sub);
+    /* sub = create_snd_mail_suite(); */
+    /* add_suite(suite, sub); */
 
     return suite;
 }
