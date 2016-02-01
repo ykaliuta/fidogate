@@ -113,7 +113,7 @@ am_test_rfc2ftn_OBJECTS = test-rfc2ftn.$(OBJEXT) \
 	rfc2ftn-wrapper.$(OBJEXT) test-cvt_user_name.$(OBJEXT) \
 	test-snd_mail.$(OBJEXT) test-rfc2ftn_main.$(OBJEXT) \
 	buffered-printf.$(OBJEXT) mock-log.$(OBJEXT) \
-	rfc2ftn-stubs.$(OBJEXT)
+	buffer2c.$(OBJEXT) rfc2ftn-stubs.$(OBJEXT)
 test_rfc2ftn_OBJECTS = $(am_test_rfc2ftn_OBJECTS)
 test_rfc2ftn_LDADD = $(LDADD)
 test_rfc2ftn_DEPENDENCIES = $(TOP_SRC)/common/libfidogate.la
@@ -546,7 +546,7 @@ AM_CPPFLAGS = -I$(TOP_SRC)/include -I$(TOP_SRC)/gate
 LDADD = -lcgreen $(TOP_SRC)/common/libfidogate.la
 test_rfc2ftn_SOURCES = test-rfc2ftn.c rfc2ftn-wrapper.c \
 	test-cvt_user_name.c test-snd_mail.c test-rfc2ftn_main.c \
-	buffered-printf.c mock-log.c rfc2ftn-stubs.c
+	buffered-printf.c mock-log.c buffer2c.c rfc2ftn-stubs.c
 test_buffered_printf_SOURCES = test-buffered-printf.c buffered-printf.c
 all: all-am
 
@@ -605,6 +605,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/buffer2c.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/buffered-printf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mock-log.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rfc2ftn-stubs.Po@am__quote@
