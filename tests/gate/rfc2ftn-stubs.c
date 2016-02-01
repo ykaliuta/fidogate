@@ -28,11 +28,6 @@ void charset_set_in_out(char *in, char *out)
 {
 }
 
-char *mime_dequote(char *d, size_t n, char *s, int flags)
-{
-    return NULL;
-}
-
 int str_last(char *s, size_t len)
 {
     return 0;
@@ -60,35 +55,6 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
 #endif
 {
     return NULL;
-}
-
-void header_ca_rfc(FILE *out, int rfc_level)
-{
-}
-
-char *header_geth(char *name, int first)
-{
-    return NULL;
-}
-
-char *s_header_getcomplete(char *name)
-{
-    return "a_var";
-}
-
-char *header_get(char *name)
-{
-    return NULL;
-}
-
-char *header_getnext(void)
-{
-    return NULL;
-}
-
-short header_hops(void)
-{
-    return 0;
 }
 
 void str_printf(char *buf, size_t len, const char *fmt, ...)
@@ -167,16 +133,6 @@ long areas_get_maxmsgsize(void)
 
 void node_clear(Node *n)
 {
-}
-
-int mime_debody(Textlist *body)
-{
-    return 0;
-}
-
-char *mime_deheader(char *d, size_t n, char *s)
-{
-    return NULL;
 }
 
 int acl_ngrp_lookup( char *list )
@@ -270,14 +226,6 @@ void areas_init(void)
 }
 
 void pkt_outdir(char *dir1, char *dir2)
-{
-}
-
-void header_read(FILE *file)
-{
-}
-
-void header_delete(void)
 {
 }
 
@@ -550,6 +498,68 @@ Node *inet_to_ftn( char *addr )
 
 /* Pure functions or with localaized side effects */
 
+/* mime */
+/*
+  int mime_debody(Textlist *body)
+{
+    return 0;
+}
+
+char *mime_deheader(char *d, size_t n, char *s)
+{
+    return NULL;
+}
+char *mime_dequote(char *d, size_t n, char *s, int flags)
+{
+    return NULL;
+}
+MIMEInfo *get_mime(char *ver, char *type, char *enc)
+{
+    return NULL;
+}
+
+
+*/
+
+/* rfcheader */
+/*
+  void header_ca_rfc(FILE *out, int rfc_level)
+{
+}
+
+char *header_geth(char *name, int first)
+{
+    return NULL;
+}
+
+char *s_header_getcomplete(char *name)
+{
+    return "a_var";
+}
+
+char *header_get(char *name)
+{
+    return NULL;
+}
+
+char *header_getnext(void)
+{
+    return NULL;
+}
+
+short header_hops(void)
+{
+    return 0;
+}
+void header_read(FILE *file)
+{
+}
+
+void header_delete(void)
+{
+}
+*/
+
 /*
 char *str_copy( char *d, size_t n, char *s )
 {
@@ -605,11 +615,6 @@ char *read_line(char *buf, int n, FILE *stream)
 
 
 char *s_copy(char *s)
-{
-    return NULL;
-}
-
-MIMEInfo *get_mime(char *ver, char *type, char *enc)
 {
     return NULL;
 }
