@@ -38,12 +38,6 @@ char *xlat_s(char *s1, char *s2)
     return NULL;
 }
 
-int pkt_put_msg_hdr(FILE *pkt, Message *msg, int kludge_flag)
-    /* kludge_flag --- TRUE: write AREA/^AINTL,^AFMPT,^ATOPT */
-{
-    return 0;
-}
-
 #ifdef FIDO_STYLE_MSGID
 char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
 			  int part, int split, char *area, short int dont_flush,
@@ -61,11 +55,6 @@ void str_printf(char *buf, size_t len, const char *fmt, ...)
 {
 }
 
-char *date(char *fmt, time_t *t)
-{
-    return NULL;
-}
-
 int pkt_isopen(void)
 {
     return 0;
@@ -74,10 +63,6 @@ int pkt_isopen(void)
 FILE *pkt_open(char *name, Node *node, char *flav, int bsy)
 {
     return mock(name, node, flav, bsy);
-}
-
-void pkt_put_line(FILE *fp, char *s)
-{
 }
 
 int pkt_close(void)
@@ -497,6 +482,29 @@ Node *inet_to_ftn( char *addr )
 }
 
 /* Pure functions or with localaized side effects */
+
+/* date.c */
+/*
+  char *date(char *fmt, time_t *t)
+{
+    return NULL;
+}
+
+*/
+
+
+/* packet.c, not all */
+    /* kludge_flag --- TRUE: write AREA/^AINTL,^AFMPT,^ATOPT */
+/*
+int pkt_put_msg_hdr(FILE *pkt, Message *msg, int kludge_flag)
+{
+    return 0;
+}
+void pkt_put_line(FILE *fp, char *s)
+{
+}
+
+*/
 
 /* mime */
 /*
