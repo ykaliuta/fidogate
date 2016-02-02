@@ -6,6 +6,7 @@
  *
  */
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -18,11 +19,12 @@ struct ctx {
     size_t limit;
     char *b;
     size_t buf_size;
+    char *input;
 };
 
 int printed_len;
 
-static struct ctx *open_stream(size_t limit)
+static struct ctx *open_stream(char *buf, size_t limit)
 {
     struct ctx *ctx;
     FILE *f;
@@ -38,6 +40,7 @@ static struct ctx *open_stream(size_t limit)
     ctx->f = f;
     ctx->cur_len = 0;
     ctx->limit = limit ? limit : DEFAULT_LIMIT;
+    ctx->input = buf;
 
     return ctx;
 err:
@@ -134,6 +137,21 @@ static void out_eol(struct ctx *ctx)
     ctx->cur_len = 1;
 }
 
+static bool end_of_input(struct ctx *ctx)
+{
+    return *ctx->input == '\0';
+}
+
+static char cur_input(struct ctx *ctx)
+{
+    return *ctx->input;
+}
+
+static void progress_input(struct ctx *ctx)
+{
+    ++ctx->input;
+}
+
 char *buffer2c_limit(char *buf, size_t limit)
 {
     struct ctx *ctx;
@@ -142,26 +160,26 @@ char *buffer2c_limit(char *buf, size_t limit)
     if (buf == NULL)
 	return NULL;
 
-    ctx = open_stream(limit);
+    ctx = open_stream(buf, limit);
     if (ctx == NULL)
 	return NULL;
 
     out_header(ctx);
 
-    for (; *buf != '\0'; buf++) {
-	if (*buf == '"') {
+    for (; !end_of_input(ctx); progress_input(ctx)) {
+	if (cur_input(ctx) == '"') {
 	    out_quote(ctx);
 	    continue;
 	}
-	if (*buf == '\n') {
+	if (cur_input(ctx) == '\n') {
 	    out_eol(ctx);
 	    continue;
 	}
-	if (!isprint(*buf)) {
-	    out_hex(ctx, *buf);
+	if (!isprint(cur_input(ctx))) {
+	    out_hex(ctx, cur_input(ctx));
 	    continue;
 	}
-	out_char(ctx, *buf);
+	out_char(ctx, cur_input(ctx));
     }
 
     out_footer(ctx);
