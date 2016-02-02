@@ -71,7 +71,7 @@ static void teardown(void)
     printf("DEBUG: %s\n", debug_buffer());
     printf("LOG: %s\n", log_buffer());
     fclose(fake_pkt);
-    b = buffer2c(pkt_buf);
+    b = buffer2c_size_limit(pkt_buf, pkt_size, 60);
     printf("PKT (size %zd): %s\n", pkt_size, b);
     free(pkt_buf);
     free(b);

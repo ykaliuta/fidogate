@@ -13,10 +13,16 @@
 
 #define DEFAULT_LIMIT 68
 
+enum state {
+    QUOTE_CLOSED,
+    QUOTE_OPENED,
+};
+
 struct ctx {
     FILE *f;
     size_t cur_len;
-    size_t str_len;
+    size_t str_limit;
+    enum state state;
     char *b;
     size_t buf_size;
     char *input;
@@ -26,7 +32,7 @@ struct ctx {
 
 int printed_len;
 
-static struct ctx *open_stream(char *buf, size_t size, size_t str_len)
+static struct ctx *open_stream(char *buf, size_t size, size_t str_limit)
 {
     struct ctx *ctx;
     FILE *f;
@@ -41,7 +47,8 @@ static struct ctx *open_stream(char *buf, size_t size, size_t str_len)
 
     ctx->f = f;
     ctx->cur_len = 0;
-    ctx->str_len = str_len ? str_len : DEFAULT_LIMIT;
+    ctx->state = QUOTE_CLOSED;
+    ctx->str_limit = str_limit ? str_limit : DEFAULT_LIMIT;
     ctx->input = buf;
     ctx->input_size = size;
     ctx->end = buf + size;
@@ -63,80 +70,90 @@ static char *close_stream(struct ctx *ctx)
     return b;
 }
 
-static char last_char(struct ctx *ctx)
+static void trigger_quote_state(struct ctx *ctx)
 {
-    fflush(ctx->f);
-    return ctx->b[ctx->buf_size - 1];
+    ctx->state =
+	ctx->state == QUOTE_OPENED ? QUOTE_CLOSED : QUOTE_OPENED;
 }
 
 static void out_cr(struct ctx *ctx)
 {
     char quote = '"';
 
-    if (last_char(ctx) != quote)
+    if (ctx->state == QUOTE_OPENED)
 	putc(quote, ctx->f);
 
     putc('\n', ctx->f);
     putc(quote, ctx->f);
+    ctx->state = QUOTE_OPENED;
 
     ctx->cur_len = 1;
 }
 
 /* +1 for the last " */
-#define make_cr_if_needed(ctx, chunk_size) do {		  \
-	if ((ctx->str_len > 0) &&			  \
-	    ctx->cur_len + chunk_size + 1 > ctx->str_len) \
-	    out_cr(ctx);				  \
-    } while (0)
-
-static void out_quote(struct ctx *ctx)
+static void make_cr_if_needed(struct ctx *ctx, size_t chunk_size)
 {
-    make_cr_if_needed(ctx, 2);
-    fprintf(ctx->f, "\\\"");
-    ctx->cur_len += 2;
+    if ((ctx->str_limit > 0) &&
+	ctx->cur_len + chunk_size + 1 > ctx->str_limit)
+	out_cr(ctx);
+}
+
+static void open_quote_if_needed(struct ctx *ctx)
+{
+    if (ctx->state == QUOTE_CLOSED) {
+	putc('"', ctx->f);
+	ctx->cur_len++;
+    }
+    ctx->state = QUOTE_OPENED;
 }
 
 static void out_header(struct ctx *ctx)
 {
     fprintf(ctx->f, "\"");
     ctx->cur_len += 1;
+    trigger_quote_state(ctx);
 }
 
 static void out_footer(struct ctx *ctx)
 {
+    if (ctx->state == QUOTE_CLOSED)
+	return;
+
     make_cr_if_needed(ctx, 1);
-    fprintf(ctx->f, "\"");
+    putc('"', ctx->f);
     ctx->cur_len += 1;
+    ctx->state = QUOTE_CLOSED;
+}
+
+static void out_quote(struct ctx *ctx)
+{
+    make_cr_if_needed(ctx, 2);
+    open_quote_if_needed(ctx);
+    fprintf(ctx->f, "\\\"");
+    ctx->cur_len += 2;
 }
 
 static void out_char(struct ctx *ctx, char c)
 {
     make_cr_if_needed(ctx, 1);
+    open_quote_if_needed(ctx);
     putc(c, ctx->f);
     ctx->cur_len += 1;
 }
 
-/* finish and start ", from new line if needed */
-static void retrigger_literal(struct ctx *ctx)
+static void out_hex(struct ctx *ctx, unsigned char c)
 {
-    make_cr_if_needed(ctx, 2);
-    if (ctx->cur_len > 1) {
-	putc('"', ctx->f);
-	putc('"', ctx->f);
-    }
-}
-
-static void out_hex(struct ctx *ctx, char c)
-{
-    make_cr_if_needed(ctx, 4); /* \x01 */
-    printed_len = fprintf(ctx->f, "\\x%02x", c);
+    make_cr_if_needed(ctx, 5); /* \x01 */
+    open_quote_if_needed(ctx);
+    printed_len = fprintf(ctx->f, "\\x%02x\"", c);
     ctx->cur_len += printed_len;
-    retrigger_literal(ctx);
+    ctx->state = QUOTE_CLOSED;
 }
 
 static void out_eol(struct ctx *ctx)
 {
     make_cr_if_needed(ctx, 2);
+    open_quote_if_needed(ctx);
     fprintf(ctx->f, "\\n\"\n\"");
     ctx->cur_len = 1;
 }
@@ -162,7 +179,7 @@ static void progress_input(struct ctx *ctx)
     ++ctx->input;
 }
 
-char *buffer2c_size_limit(char *buf, size_t size, size_t str_len)
+char *buffer2c_size_limit(char *buf, size_t size, size_t str_limit)
 {
     struct ctx *ctx;
     char *b;
@@ -170,7 +187,7 @@ char *buffer2c_size_limit(char *buf, size_t size, size_t str_len)
     if (buf == NULL)
 	return NULL;
 
-    ctx = open_stream(buf, size, str_len);
+    ctx = open_stream(buf, size, str_limit);
     if (ctx == NULL)
 	return NULL;
 
@@ -197,13 +214,12 @@ char *buffer2c_size_limit(char *buf, size_t size, size_t str_len)
     return b;
 }
 
-char *buffer2c_limit(char *buf, size_t str_len)
+char *buffer2c_limit(char *buf, size_t str_limit)
 {
-    return buffer2c_size_limit(buf, 0, str_len);
+    return buffer2c_size_limit(buf, 0, str_limit);
 }
 
 char *buffer2c(char *buf)
 {
     return buffer2c_limit(buf, 0);
 }
-

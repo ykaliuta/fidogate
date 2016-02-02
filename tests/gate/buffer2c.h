@@ -12,7 +12,7 @@
 #include <stddef.h>
 
 char *buffer2c(char *buf);
-char *buffer2c_limit(char *buf, size_t str_len);
-char *buffer2c_size_limit(char *buf, size_t size, size_t str_len);
+char *buffer2c_limit(char *buf, size_t str_limit);
+char *buffer2c_size_limit(char *buf, size_t size, size_t str_limit);
 
 #endif
