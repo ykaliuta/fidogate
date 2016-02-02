@@ -16,15 +16,17 @@
 struct ctx {
     FILE *f;
     size_t cur_len;
-    size_t limit;
+    size_t str_len;
     char *b;
     size_t buf_size;
     char *input;
+    size_t input_size;
+    char *end;
 };
 
 int printed_len;
 
-static struct ctx *open_stream(char *buf, size_t limit)
+static struct ctx *open_stream(char *buf, size_t size, size_t str_len)
 {
     struct ctx *ctx;
     FILE *f;
@@ -39,8 +41,10 @@ static struct ctx *open_stream(char *buf, size_t limit)
 
     ctx->f = f;
     ctx->cur_len = 0;
-    ctx->limit = limit ? limit : DEFAULT_LIMIT;
+    ctx->str_len = str_len ? str_len : DEFAULT_LIMIT;
     ctx->input = buf;
+    ctx->input_size = size;
+    ctx->end = buf + size;
 
     return ctx;
 err:
@@ -79,10 +83,10 @@ static void out_cr(struct ctx *ctx)
 }
 
 /* +1 for the last " */
-#define make_cr_if_needed(ctx, chunk_size) do {			\
-	if ((ctx->limit > 0) &&					\
-	    ctx->cur_len + chunk_size + 1 > ctx->limit)		\
-	    out_cr(ctx);					\
+#define make_cr_if_needed(ctx, chunk_size) do {		  \
+	if ((ctx->str_len > 0) &&			  \
+	    ctx->cur_len + chunk_size + 1 > ctx->str_len) \
+	    out_cr(ctx);				  \
     } while (0)
 
 static void out_quote(struct ctx *ctx)
@@ -139,7 +143,13 @@ static void out_eol(struct ctx *ctx)
 
 static bool end_of_input(struct ctx *ctx)
 {
-    return *ctx->input == '\0';
+    bool r;
+
+    if (ctx->input_size == 0)
+	r = *ctx->input == '\0';
+    else
+	r = ctx->input == ctx->end;
+    return r;
 }
 
 static char cur_input(struct ctx *ctx)
@@ -152,7 +162,7 @@ static void progress_input(struct ctx *ctx)
     ++ctx->input;
 }
 
-char *buffer2c_limit(char *buf, size_t limit)
+char *buffer2c_size_limit(char *buf, size_t size, size_t str_len)
 {
     struct ctx *ctx;
     char *b;
@@ -160,7 +170,7 @@ char *buffer2c_limit(char *buf, size_t limit)
     if (buf == NULL)
 	return NULL;
 
-    ctx = open_stream(buf, limit);
+    ctx = open_stream(buf, size, str_len);
     if (ctx == NULL)
 	return NULL;
 
@@ -185,6 +195,11 @@ char *buffer2c_limit(char *buf, size_t limit)
     out_footer(ctx);
     b = close_stream(ctx);
     return b;
+}
+
+char *buffer2c_limit(char *buf, size_t str_len)
+{
+    return buffer2c_size_limit(buf, 0, str_len);
 }
 
 char *buffer2c(char *buf)

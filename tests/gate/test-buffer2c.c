@@ -61,6 +61,16 @@ Ensure(b2c_obeys_one_string_limit_for_special)
     exp = "\"ab\"" "\n" "\"\\x01\"" "\n" "\"de\"";
 }
 
+Ensure(b2c_obeys_buffer_size)
+{
+    char s[] = "abcdefgh";
+    exp = "\"abcdefgh\\x00\"";
+    char *r;
+
+    r = buffer2c_size_limit(s, sizeof(s), 0);
+    assert_that(r, is_equal_to_string(exp));
+}
+
 static void teardown(void)
 {
     char *r;
@@ -108,6 +118,7 @@ static TestSuite *create_b2c_suite(void)
     set_setup(s2, setup_limit);
     set_teardown(s2, teardown_limit);
 
+    add_test(suite, b2c_obeys_buffer_size);
     add_suite(suite, s1);
     add_suite(suite, s2);
     
