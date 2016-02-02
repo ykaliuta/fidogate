@@ -76,7 +76,7 @@ static void trigger_quote_state(struct ctx *ctx)
 	ctx->state == QUOTE_OPENED ? QUOTE_CLOSED : QUOTE_OPENED;
 }
 
-static void out_cr(struct ctx *ctx)
+static void make_cr(struct ctx *ctx)
 {
     char quote = '"';
 
@@ -95,7 +95,7 @@ static void make_cr_if_needed(struct ctx *ctx, size_t chunk_size)
 {
     if ((ctx->str_limit > 0) &&
 	ctx->cur_len + chunk_size + 1 > ctx->str_limit)
-	out_cr(ctx);
+	make_cr(ctx);
 }
 
 static void open_quote_if_needed(struct ctx *ctx)
@@ -158,6 +158,14 @@ static void out_eol(struct ctx *ctx)
     ctx->cur_len = 1;
 }
 
+static void out_cr(struct ctx *ctx)
+{
+    make_cr_if_needed(ctx, 2);
+    open_quote_if_needed(ctx);
+    fprintf(ctx->f, "\\r");
+    ctx->cur_len += 2;
+}
+
 static bool end_of_input(struct ctx *ctx)
 {
     bool r;
@@ -200,6 +208,10 @@ char *buffer2c_size_limit(char *buf, size_t size, size_t str_limit)
 	}
 	if (cur_input(ctx) == '\n') {
 	    out_eol(ctx);
+	    continue;
+	}
+	if (cur_input(ctx) == '\r') {
+	    out_cr(ctx);
 	    continue;
 	}
 	if (!isprint(cur_input(ctx))) {
