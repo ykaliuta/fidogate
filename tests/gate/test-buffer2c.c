@@ -42,6 +42,12 @@ Ensure(b2c_converts_0x01)
     exp = "\"abc\\x01\"\"de\"";
 }
 
+Ensure(b2c_converts_crs)
+{
+    s = "abc\rde\rfg";
+    exp = "\"abc\\rde\\rfg\"";
+}
+
 Ensure(b2c_obeys_one_string_limit_for_ascii)
 {
     s = "abcdef";
@@ -103,6 +109,7 @@ static TestSuite *create_b2c_suite(void)
     TestSuite *s2 = create_named_test_suite(
         "Buffer to C with line limit");
 
+    add_test(s1, b2c_converts_crs);
     add_test(s1, b2c_converts_0x01);
     add_test(s1, b2c_converts_quotes);
     add_test(s1, b2c_returns_null_for_null);
