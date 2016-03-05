@@ -63,3 +63,7 @@ installdirs:
 
 install-config: install-dirs
 	if [ -f doc/Makefile ]; then $(MAKE) -C doc $@ || exit 1; fi
+
+ACLOCAL_AMFLAGS = -I m4
+
+EXTRA_DIST = build/config.rpath m4/ChangeLog

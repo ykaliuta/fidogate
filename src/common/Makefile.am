@@ -22,6 +22,7 @@ endif
 libfidogate_la_SOURCES = $(SRC)
 libfidogate_la_LDFLAGS = -shared -rpath $(libdir) -soname $(libdir) -version-info 5:0:0
 
+libfidogate_la_LIBADD = @LIBICONV@
 
 AM_CPPFLAGS = -I$(top_srcdir)/src/include
 

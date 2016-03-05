@@ -1,3 +1,9 @@
+2016-03-05  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* Makefile.am
+	(ACLOCAL_AMFLAGS): New variable.
+	(EXTRA_DIST): New variable.
+
 2008-11-22  Andrey Slusar  <anrays@gmail.com>
 
 	* src/common/binkley.c:

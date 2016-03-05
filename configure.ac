@@ -78,6 +78,10 @@ AC_PATH_PROG(ARC, arc, no)
 AC_PATH_PROG(LHA, lzh, no)
 AC_PATH_PROG(UUDECODE, uudecode, no)
 
+dnl took from libgd
+dnl if we're configuring on a system w/out gettext, don't fall over
+m4_ifndef([AM_ICONV],[m4_define([AM_ICONV],[:])])
+AM_ICONV
 
 config_vars=
 # Check for a --with-logdir argument
@@ -407,10 +411,6 @@ AC_ARG_ENABLE(recode-allrfc,
 [  --disable-recode-allrfc recoding some RFC header],
     ,AC_DEFINE(RECODE_ALL_RFC))
 
-AC_ARG_ENABLE(iconv,
-[  --disable-iconv	disable iconv recoding library],
-   ,AC_DEFINE(HAVE_ICONV))
-
 AC_SEARCH_LIBS(regcomp, rx regex, [
     AC_DEFINE(HAS_POSIX_REGEX,[],[Do we have a decent regex library?])
     AC_CHECK_HEADER(rxposix.h, AC_DEFINE(HAVE_RX,[],[Do we have rxposix.h?]))])
@@ -595,7 +595,7 @@ AC_SUBST(DOMAINNAME)
 AC_CONFIG_COMMANDS([build_headers],[build/subst.pl -h])
 
 AC_CONFIG_FILES([build/config.make \
-                 Makefile
+                 Makefile \
 		 src/Makefile \
 		 src/areafix/Makefile \
 		 src/charset/Makefile \
