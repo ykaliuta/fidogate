@@ -473,25 +473,23 @@ int pkt_get_string(FILE *fp, char *buf, int nbytes)
  */
 time_t pkt_get_date(FILE *fp)
 {
-    /*
-     * Allow some characters more in the date string.
-     */
-    char buf[MSG_MAXDATE + 10];
-    int len;
+    char buf[MSG_MAXDATE + 1];
+    size_t len;
 
     /*
-     * Treat FTN date as a 0-terminated string. Actually it's a fixed
-     * string with exactly 19 chars + 0-char.
-     */
-    buf[0] = 0;
-    if((len = pkt_get_string(fp, buf, sizeof(buf))) == ERROR)
-	return ERROR;
-    if( len != MSG_MAXDATE)
+      date has a fixed length
+      constant to rename,
+      before date was treated as NULL-terminated string
+    */
+    len = fread(buf, sizeof(char), MSG_MAXDATE, fp);
+    if (len < MSG_MAXDATE)
     {
-	fglog("ERROR: wrong date size in message header (%d bytes instead %d)", len,
-		MSG_MAXDATE);
+	fglog("ERROR: reading date return %zd, %d expected",
+	      len, MSG_MAXDATE);
 	return ERROR;
     }
+    buf[MSG_MAXDATE] = '\0';
+
     // first date format - FTS         `20 Dec 02  14:26:03'
     // second date dormat - nostandart `Thu 12 Dec 02 18:19'
     if( !( (buf[2]==' ' && buf[6]==' ' && buf[9]== ' ' && buf[10]==' ' &&
