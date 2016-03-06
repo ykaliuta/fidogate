@@ -5,12 +5,14 @@ AM_CPPFLAGS = -I$(TOP_SRC)/include
 AM_CPPFLAGS += -I$(TOP_SRC)/common
 AM_CFLAGS = -Wno-format-security
 
-LDADD = -lcgreen
+LDADD = -lcgreen $(TOP_SRC)/common/libfidogate.la
 
-TESTS = test_log test_config
-check_PROGRAMS = test_log test_config
+TESTS = test_log test_config test_packet
+check_PROGRAMS = test_log test_config test_packet
 test_log_SOURCES = test-log.c
 test_config_SOURCES = test-config.c
-
+# packet.c binary code comes from the library
+test_packet_SOURCES = test-packet-doubles.c
+test_packet_SOURCES += test-packet.c
 
 
