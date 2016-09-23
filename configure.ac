@@ -27,6 +27,10 @@ AC_PROG_RANLIB
 AC_PROG_AWK
 AC_PROG_YACC
 
+if test "x$YACC" = "x"; then
+   AC_MSG_ERROR([yacc/bison not found, please install])
+fi
+
 dnl Checks for header files.
 AC_FUNC_ALLOCA
 AC_HEADER_DIRENT
@@ -418,7 +422,7 @@ AC_SEARCH_LIBS(regcomp, rx regex, [
 if test "$with_news" != no ;then
 {
     AC_MSG_CHECKING(for news-library path)
-    if ! test -x "${newsbindir}"; then
+    if ! test -x "${newsbindir}/innconfval"; then
 	if test -x /usr/local/news/bin/innconfval ; then
 	    newsbindir=/usr/local/news/bin
 	elif test -x /usr/lib/innconfval ; then
