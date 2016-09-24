@@ -67,9 +67,7 @@ AC_CHECK_FUNCS(strerror strncasecmp strpbrk strrchr strspn strstr utime)
 dnl Redefine install scripts
 AM_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
-INSTALL_PROGRAM='${INSTALL} -g ${GROUP} -o ${OWNER} -m 755'
-INSTALL_SCRIPT='${INSTALL} -g ${GROUP} -o ${OWNER} -m 755'
-INSTALL_DATA='${INSTALL} -g ${GROUP} -o ${OWNER} -m 640'
+INSTALL_DATA='${INSTALL} -m 640'
 
 dnl Paths to major progs
 AC_HEADER_MAJOR
