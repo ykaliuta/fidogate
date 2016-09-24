@@ -153,7 +153,7 @@ yes) AC_MSG_ERROR([--with-btbasedir requires an argument; use --with-btbasedir=D
 esac
 ])
 if ! test "${btbasedir+set}" = set; then
-    btbasedir='/var/spool/fido/bt'
+    btbasedir="${localstatedir}/spool/fido/bt"
 fi
 AC_SUBST(btbasedir)
 
@@ -527,12 +527,8 @@ AC_SUBST(SENDMAIL)
 AC_MSG_CHECKING(for lock directory)
 if test "${with_lockdir+set}" = set; then
 	LOCKDIR="$with_lockdir"
-elif test -d /var/run; then
-	LOCKDIR=/var/run/fidogate
-elif test -d /var/spool/lock; then
-	LOCKDIR=/var/spool/lock/fidogate
 else
-	LOCKDIR=/var/lock/fidogate
+	LOCKDIR="${runstatedir}/fidogate"
 fi
 AC_MSG_RESULT($LOCKDIR)
 AC_SUBST(LOCKDIR)
@@ -540,14 +536,8 @@ AC_SUBST(LOCKDIR)
 AC_MSG_CHECKING(for var directory)
 if test "${with_vardir+set}" = set; then
 	vardir="$with_vardir"
-elif test -d /var/lib; then
-	vardir=/var/lib/fidogate
-elif test -d /var/data; then
-	vardir=/var/data/fidogate
-elif test -d /var/db; then
-	vardir=/var/db/fidogate
 else
-	vardir=/var/lib/fidogate
+	vardir="${localstatedir}/lib/fidogate"
 fi
 AC_MSG_RESULT(${vardir})
 AC_SUBST(vardir)
@@ -555,12 +545,8 @@ AC_SUBST(vardir)
 AC_MSG_CHECKING(for log directory)
 if test "${with_logdir+set}" = set; then
 	LOGDIR="$with_logdir"
-elif test -d /var/log; then
-	LOGDIR=/var/log/fido/gate
-elif test -d /var/spool/log; then
-	LOGDIR=/var/spool/log/fidogate
 else
-	VARDIR=/var/log/fido/gate
+	LOGDIR="${localstatedir}/log/fidogate"
 fi
 AC_MSG_RESULT($LOGDIR)
 AC_SUBST(LOGDIR)
@@ -568,14 +554,8 @@ AC_SUBST(LOGDIR)
 AC_MSG_CHECKING(for spool directory)
 if test "${with_spooldir+set}" = set; then
 	SPOOLDIR="$with_spooldir"
-elif test -d /var/spool; then
-	SPOOLDIR=/var/spool/fido/gate
-elif test -d /var/data; then
-	SPOOLDIR=/var/data/fido/gate
-elif test -d /var/db; then
-	SPOOLDIR=/var/db/fido/gate
 else
-	SPOOLDIR=/var/data/fido/gate
+	SPOOLDIR="${localstatedir}/spool/fidogate"
 fi
 AC_MSG_RESULT($SPOOLDIR)
 AC_SUBST(SPOOLDIR)
