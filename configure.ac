@@ -263,6 +263,14 @@ case "$with_group" in
 esac
 ])
 
+AC_ARG_WITH(default-mailer,dnl
+  [--with-default-mailer=COMMAND default mailer comand],dnl
+  [ if test -n "$withval"; then
+    AC_DEFINE_UNQUOTED(DEFAULT_MAILER, "$withval",
+      [default mailer command])
+    fi
+  ])
+
 AC_ARG_ENABLE(local-ftn-addr,
 [  --enable-local-ftn-addr use local FTN addres],dnl
    [case "${enableval}" in
@@ -763,6 +771,228 @@ AC_ARG_ENABLE(recode-allrfc,
     enable_recode_allrfc=yes)
 if test $enable_recode_allrfc = yes; then
     AC_DEFINE(RECODE_ALL_RFC,1,[Recode all RFC headers])
+fi
+
+AC_ARG_ENABLE(security,
+[  --disable-security          disable additional address checking],dnl
+   [case "${enableval}" in
+    yes | no) enable_security="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-security) ;;
+    esac],dnl
+    enable_security=yes)
+
+if test $enable_security = yes; then
+    AC_DEFINE(SECURITY,
+              1,
+	      [
+For the security reason enabled additional addresses checking in the
+.pkt header, message header, origin and echomail ^aPATH.
+If the last address in PATH is not equal to address in the pkt header,
+then the address from the pkt header is inserted into PATH.
+])
+fi
+
+AC_ARG_ENABLE(fts-via,
+[  --disable-fts-via          disable FTS format of VIA],dnl
+   [case "${enableval}" in
+    yes | no) enable_fts_via="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-fts-via) ;;
+    esac],dnl
+    enable_fts_via=yes)
+
+if test $enable_fts_via = yes; then
+    AC_DEFINE(FTS_VIA,
+              1,
+	      [
+Change ^AVia format from:
+   ^AVia FIDOGATE/ftntoss 2:5030/1229.0, 20010405.164323.MSK
+to:
+   ^AVia 2:5030/1229.0 @20010405.164323.MSK FIDOGATE/ftntoss
+])
+fi
+
+AC_ARG_ENABLE(create-log-forwreq,
+[  --enable-create-log-forwreq    use msgid correspond data base],dnl
+   [case "${enableval}" in
+    yes | no) enable_create_log_forwreq="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-create-log-forwreq) ;;
+    esac],dnl
+    enable_create_log_forwreq=no)
+
+if test $enable_create_log_forwreq = yes; then
+    AC_DEFINE(CREATE_LOG_FORWREQ,
+              1,
+	      [Don't put info about create to log
+              if echo created by forward request])
+fi
+
+AC_ARG_ENABLE(del-mime-if-rfc2,
+[  --enable-del-mime-if-rfc2    delete MIME if rfc status set to 2],dnl
+   [case "${enableval}" in
+    yes | no) enable_del_mime_if_rfc2="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-del-mime-if-rfc2) ;;
+    esac],dnl
+    enable_del_mime_if_rfc2=no)
+
+if test $enable_del_mime_if_rfc2 = yes; then
+    AC_DEFINE(DEL_MIME_IF_RFC2,
+              1,
+	      [Delete MIME if rfc status set to 2])
+fi
+
+AC_ARG_ENABLE(domain-to-origin,
+[  --enable-domain-to-origin    paste domain name to Origin message line],dnl
+   [case "${enableval}" in
+    yes | no) enable_domain_to_origin="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-domain-to-origin) ;;
+    esac],dnl
+    enable_domain_to_origin=no)
+
+if test $enable_domain_to_origin = yes; then
+    AC_DEFINE(DOMAIN_TO_ORIGIN,
+              1,
+	      [Paste domain name to Origin message line])
+fi
+
+AC_ARG_ENABLE(do-not-toss-netmail,
+[  --enable-do-not-toss-netmail    disable tosting netmail and set directory for incoming and outgoing pkt's],dnl
+   [case "${enableval}" in
+    yes | no) enable_do_not_toss_netmail="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-do-not-toss-netmail) ;;
+    esac],dnl
+    enable_do_not_toss_netmail=no)
+
+if test $enable_do_not_toss_netmail = yes; then
+    AC_DEFINE(DO_NOT_TOSS_NETMAIL,
+              1,
+	      [Disable tosting netmail and set directory
+	      for incoming and outgoing pkt's])
+fi
+
+AC_ARG_ENABLE(sub-limit,
+[  --disable-sub-limit		disable set limit for subscribe areas],dnl
+   [case "${enableval}" in
+    yes | no) enable_sub_limit="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-sub-limit) ;;
+    esac],dnl
+    enable_sub_limit=yes)
+
+if test $enable_sub_limit = yes; then
+    AC_DEFINE(SUB_LIMIT,
+              1,
+	      [Enable set limit for subscribe areas])
+fi
+
+AC_ARG_ENABLE(fix-bad-pkt-year,
+[  --enable-fix-bad-pkt-year    fix bad year in pkt's],dnl
+   [case "${enableval}" in
+    yes | no) enable_fix_bad_pkt_year="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-fix-bad-pkt-year) ;;
+    esac],dnl
+    enable_fix_bad_pkt_year=no)
+
+if test $enable_fix_bad_pkt_year = yes; then
+    AC_DEFINE(FIX_BAD_PKT_YEAR,
+              1,
+	      [Fix bad year in pkt's])
+fi
+
+AC_ARG_ENABLE(ignore-from-if-reply,
+[  --enable-ignore-from-if-reply    ignore From: field if REPLYTO or REPLYADDR was found],dnl
+   [case "${enableval}" in
+    yes | no) enable_ignore_from_if_reply="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-ignore-from-if-reply) ;;
+    esac],dnl
+    enable_ignore_from_if_reply=no)
+
+if test $enable_ignore_from_if_reply = yes; then
+    AC_DEFINE(IGNORE_FROM_IF_REPLY,
+              1,
+	      [Ignore From: field if REPLYTO or REPLYADDR was found])
+fi
+
+AC_ARG_ENABLE(insert-origin,
+[  --enable-insert-origin    if Origin line is not present, include link address],dnl
+   [case "${enableval}" in
+    yes | no) enable_insert_origin="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-insert-origin) ;;
+    esac],dnl
+    enable_insert_origin=no)
+
+if test $enable_insert_origin = yes; then
+    AC_DEFINE(INSERT_ORIGIN,
+              1,
+	      [If Origin line is not present, include link address])
+fi
+
+AC_ARG_ENABLE(old-toss,
+[  --enable-old-toss    enable old style tosting],dnl
+   [case "${enableval}" in
+    yes | no) enable_old_toss="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-old-toss) ;;
+    esac],dnl
+    enable_old_toss=no)
+
+if test $enable_old_toss = yes; then
+    AC_DEFINE(OLD_TOSS,
+              1,
+	      [Enable old style tosting])
+fi
+
+AC_ARG_ENABLE(passthru-netmail,
+[  --enable-passthru-netmail    passthru operation for NetMail: FIDO->Internet->FIDO],dnl
+   [case "${enableval}" in
+    yes | no) enable_passthru_netmail="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-passthru-netmail) ;;
+    esac],dnl
+    enable_passthru_netmail=no)
+
+if test $enable_passthru_netmail = yes; then
+    AC_DEFINE(PASSTHRU_NETMAIL,
+              1,
+	      [Passthru operation for NetMail: FIDO->Internet->FIDO])
+fi
+
+AC_ARG_ENABLE(passthru-echomail,
+[  --enable-passthru-echomail    passthru operation for EchoMail: FIDO->Internet->FIDO],dnl
+   [case "${enableval}" in
+    yes | no) enable_passthru_echomail="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-passthru-echomail) ;;
+    esac],dnl
+    enable_passthru_echomail=no)
+
+if test $enable_passthru_echomail = yes; then
+    AC_DEFINE(PASSTHRU_ECHOMAIL,
+              1,
+	      [Passthru operation for EchoMail: FIDO->Internet->FIDO])
+fi
+
+AC_ARG_ENABLE(sn,
+[  --enable-sn    enable SN-style active_lookup],dnl
+   [case "${enableval}" in
+    yes | no) enable_sn="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-sn) ;;
+    esac],dnl
+    enable_sn=no)
+
+if test $enable_sn = yes; then
+    AC_DEFINE(SN,
+              1,
+	      [Enable SN-style active_lookup])
+fi
+
+AC_ARG_ENABLE(syslog,
+[  --enable-syslog    enable if you want use syslog for log messages],
+   [case "${enableval}" in
+    yes | no) enable_syslog="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-syslog) ;;
+    esac],dnl
+    enable_syslog=no)
+
+if test $enable_syslog = yes; then
+    AC_DEFINE(USE_SYSLOG,
+              1,
+	      [Enable if you want use syslog for log messages])
 fi
 
 dnl Libraries
