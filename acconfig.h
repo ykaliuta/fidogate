@@ -22,9 +22,6 @@
 /* Define if you have the sprintf function.  */
 #undef HAVE_SPRINTF
 
-/* Define if you have the statfs function.  */
-#undef HAVE_STATFS
-
 /* Define if you have the strcasecmp function.  */
 #undef HAVE_STRCASECMP
 
@@ -511,9 +508,6 @@
 /* Define if you have the vprintf function.  */
 #undef HAVE_VPRINTF
 
-/* Define if your C compiler doesn't accept -c and -o together.  */
-#undef NO_MINUS_C_MINUS_O
-
 /* Define to `long' if <sys/types.h> doesn't define.  */
 #undef off_t
 
@@ -546,8 +540,4 @@
 
 #undef DEFAULT_MAILER
 
-#undef HAVE_DLD
-
 #undef HAVE_LIBDL
-
-#undef HAVE_SHL_LOAD
