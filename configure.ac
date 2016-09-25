@@ -38,6 +38,7 @@ AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
 AC_CHECK_HEADERS(fcntl.h limits.h stddef.h sys/mount.h sys/param.h sys/statfs.h sys/stat.h)
 AC_CHECK_HEADERS(sys/statvfs.h sys/time.h sys/vfs.h syslog.h utime.h time.h)
+AC_CHECK_HEADERS(sysexits.h malloc.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -62,7 +63,8 @@ AC_FUNC_STRFTIME
 AC_FUNC_UTIME_NULL
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS(gettimeofday memchr memset mkdir regcomp strcasecmp strchr)
-AC_CHECK_FUNCS(strerror strncasecmp strpbrk strrchr strspn strstr utime)
+AC_CHECK_FUNCS(strerror strncasecmp strpbrk strrchr strspn strstr stricmp utime)
+AC_CHECK_FUNCS(link mktime syslog sprintf)
 
 dnl Redefine install scripts
 AM_PROG_LIBTOOL
@@ -412,6 +414,9 @@ AC_ARG_ENABLE(active-lookup,
 AC_ARG_ENABLE(recode-allrfc,
 [  --disable-recode-allrfc recoding some RFC header],
     ,AC_DEFINE(RECODE_ALL_RFC))
+
+dnl Libraries
+AC_CHECK_LIB(dl, dlopen)
 
 AC_SEARCH_LIBS(regcomp, rx regex, [
     AC_DEFINE(HAS_POSIX_REGEX,[],[Do we have a decent regex library?])
