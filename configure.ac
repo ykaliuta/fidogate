@@ -264,16 +264,52 @@ esac
 ])
 
 AC_ARG_ENABLE(local-ftn-addr,
-[  --enable-local-ftn-addr use local FTN addres],
-	      AC_DEFINE(LOCAL_FTN_ADDRESSES),)
+[  --enable-local-ftn-addr use local FTN addres],dnl
+   [case "${enableval}" in
+    yes) enable_local_ftn_addr=yes ;;
+     no) enable_local_ftn_addr=no ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-local-ftn-addr) ;;
+    esac],dnl
+    enable_local_ftn_addr=no)
+
+if test $enable_local_ftn_addr = yes; then
+    AC_DEFINE(LOCAL_FTN_ADDRESSES,
+              1,
+	      [
+ Generate local FTN addresses, e.g.
+      user_name%p.f.n.z@host.domain
+ instead of
+      user_name@p.f.n.z.domain
+])
+fi
 
 AC_ARG_ENABLE(dobsy-files,
-[  --disable-dobsy-files   create Binkley-style BSY],
-    ,AC_DEFINE(DO_BSY_FILES))
+[  --disable-dobsy-files   create Binkley-style BSY],dnl
+   [case "${enableval}" in
+    yes | no) enable_dobsy_files="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-dobsy-files) ;;
+    esac],dnl
+    enable_dobsy_files=yes)
+
+if test $enable_dobsy_files = yes; then
+    AC_DEFINE(DO_BSY_FILES,
+              1,
+	      [Create Binkley-style BSY files for all outbound operations])
+fi
 
 AC_ARG_ENABLE(nfs-safe-lock,
-[  --enable-nfs-safe-lock  create lock files/BSY files in an NFS-safe way],
-    AC_DEFINE(NFS_SAFE_LOCK_FILES),)
+[  --enable-nfs-safe-lock  create lock files/BSY files in an NFS-safe way],dnl
+   [case "${enableval}" in
+    yes | no) enable_nfs_safe_lock="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-nfs-safe-lock) ;;
+    esac],dnl
+    enable_nfs_safe_lock=no)
+
+if test $enable_nfs_safe_lock = yes; then
+    AC_DEFINE(NFS_SAFE_LOCK_FILES,
+              1,
+	      [Create lock files / BSY files in an NFS-safe way (see man 2 open)])
+fi
 
 AC_ARG_WITH(maxmsg-size,
 [  --with-maxmsg-size=SIZE set max. message size for FIDO [14000]],
@@ -304,116 +340,398 @@ AC_ARG_WITH(afix-maxstr,
     AC_DEFINE_UNQUOTED(AREAFIXMAXSTR,$withval),AC_DEFINE_UNQUOTED(AREAFIXMAXSTR, 150))
 
 AC_ARG_ENABLE(aliases-local,
-[  --enable-aliases-local  rewrite addresses found in ALIASES so that the sender's address is the gateway address],
-    AC_DEFINE(ALIASES_ARE_LOCAL),)dnl'
+[  --enable-aliases-local  rewrite addresses found in ALIASES so that the sender's address is the gateway address],dnl
+   [case "${enableval}" in
+    yes | no) enable_aliases_local="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-aliases-local) ;;
+    esac],dnl
+    enable_aliases_local=no)
+
+if test $enable_aliases_local = yes; then
+    AC_DEFINE(ALIASES_ARE_LOCAL,
+              1,
+	      [
+ Rewrite addresses found in ALIASES so that the sender's address is the
+ gateway address. The reverse direction requires suitable MTA aliases.
+])
+fi
 
 AC_ARG_ENABLE(ai1,
-[  --enable-ai1		Add -a option to HOSTS entries, useful only with PASSTHRU NET/ECHOMAIL],
-    AC_DEFINE(AI_1),)
+[  --enable-ai1		Add -a option to HOSTS entries, useful only with PASSTHRU NET/ECHOMAIL],dnl
+   [case "${enableval}" in
+    yes | no) enable_ai1="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-ai1) ;;
+    esac],dnl
+    enable_ai1=no)
+
+if test $enable_ai1 = yes; then
+    AC_DEFINE(AI_1,
+              1,
+	      [Add -a option to HOSTS entries, useful only with PASSTHRU_NET/ECHOMAIL])
+fi
 
 AC_ARG_ENABLE(best-aka,
-[  --disable-best-aka	disable best AKA select],
-    ,AC_DEFINE(BEST_AKA))
+[  --disable-best-aka	disable best AKA select],dnl
+   [case "${enableval}" in
+    yes | no) enable_best_aka="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-best-aka) ;;
+    esac],dnl
+    enable_best_aka=no)
+
+if test $enable_best_aka = yes; then
+    AC_DEFINE(BEST_AKA,
+              1,
+	      [Enable best AKA select])
+fi
 
 AC_ARG_ENABLE(ftnacl,
-[  --disable-ftnacl        do'nt use ACL for FTN links ],
-    ,AC_DEFINE(FTN_ACL))
+[  --disable-ftnacl        do'nt use ACL for FTN links ],dnl
+   [case "${enableval}" in
+    yes | no) enable_ftnacl="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-ftnacl) ;;
+    esac],dnl
+    enable_ftnacl=no)
+
+if test $enable_ftnacl = yes; then
+    AC_DEFINE(FTN_ACL,
+              1,
+	      [Enable ACL for FTN links])
+fi
 
 AC_ARG_WITH(desc-dir,
 [  --with-desc-dir=DIR     put file descriptions into ".desc/%s.desc" file instead of files.bbs],
     DESC_DIR="$withval",DESC_DIR=".desc")
 
 AC_ARG_ENABLE(desc-dir,
-[  --disable-desc-dir      put file descriptions into files.bbs],
-    ,AC_DEFINE_UNQUOTED(DESC_DIR,"$DESC_DIR"))
+[  --disable-desc-dir      put file descriptions into files.bbs],dnl
+   [case "${enableval}" in
+    yes | no) enable_desc_dir="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-desc-dir) ;;
+    esac],dnl
+    enable_desc_dir=yes)
+
+if test $enable_desc_dir = yes; then
+    AC_DEFINE_UNQUOTED(DESC_DIR,
+    "$DESC_DIR",[
+Put file descriptions into `.desc/%s.desc' file instead of files.bbs
+.../fileecho/.desc/file.zip.desc -> ".desc",
+.../fileecho/file.zip.desc ""
+])
+fi
 
 AC_ARG_ENABLE(recode-file-desc,
-[  --disable-recode-file-desc disable recode file descriptions],
-    ,AC_DEFINE(RECODE_FILE_DESC))
+[  --disable-recode-file-desc disable recode file descriptions],dnl
+   [case "${enableval}" in
+    yes | no) enable_recode_file_desc="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-recode-file-desc) ;;
+    esac],dnl
+    enable_recode_file_desc=yes)
+
+if test $enable_recode_file_desc = yes; then
+    AC_DEFINE(RECODE_FILE_DESC,
+              1,
+	      [Recode file descriptions])
+fi
 
 AC_ARG_ENABLE(af-avail,
-[  --disable-af-avail      change behaviour of areafix command "%list" and "%avail" ],
-    ,AC_DEFINE(AF_AVAIL))
+[  --disable-af-avail      change behaviour of areafix command "%list" and "%avail" ],dnl
+   [case "${enableval}" in
+    yes | no) enable_af_afail="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-af-afail) ;;
+    esac],dnl
+    enable_af_afail=yes)
+
+if test $enable_af_afail = yes; then
+    AC_DEFINE(AF_AVAIL,
+              1,[
+  Enable areafix command `%avail', change behaviour of areafix
+  command `%list'
+])
+fi
 
 AC_ARG_ENABLE(xff-echomail,
-[  --disable-xff-echomail  add X-FTN-From header to gated echomail],
-    ,AC_DEFINE(X_FTN_FROM_ECHOMAIL))
+[  --disable-xff-echomail  add X-FTN-From header to gated echomail],dnl
+   [case "${enableval}" in
+    yes | no) enable_xff_echomail="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-xff-echomail) ;;
+    esac],dnl
+    enable_xff_echomail=yes)
+
+if test $enable_xff_echomail = yes; then
+    AC_DEFINE(X_FTN_FROM_ECHOMAIL,
+              1,
+	      [Add `X-FTN-From' header in gated echomail.])
+fi
 
 AC_ARG_ENABLE(spyes,
-[  --disable-spyes         use SPYES config],
-    ,AC_DEFINE(SPYES))
+[  --disable-spyes         use SPYES config],dnl
+   [case "${enableval}" in
+    yes | no) enable_spyes="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-spyes) ;;
+    esac],dnl
+    enable_spyes=yes)
+
+if test $enable_spyes = yes; then
+    AC_DEFINE(SPYES,
+              1,
+	      [Added the feature "spy forwards".])
+fi
 
 AC_ARG_ENABLE(aflr,
-[  --disable-aflr          restricted access to areafix command %listall],
-    ,AC_DEFINE(AF_LISTALL_RESTRICTED))
+[  --disable-aflr          restricted access to areafix command %listall],dnl
+   [case "${enableval}" in
+    yes | no) enable_aflr="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-aflr) ;;
+    esac],dnl
+    enable_aflr=yes)
+
+if test $enable_aflr = yes; then
+    AC_DEFINE(AF_LISTALL_RESTRICTED,
+              1,
+	      [Restricted access to areafix command `%listall'])
+fi
 
 AC_ARG_ENABLE(fecho-pass,
-[  --disable-fecho-pass    use passthrought filearea],
-    ,AC_DEFINE(FECHO_PASSTHROUGHT))
+[  --disable-fecho-pass    use passthrought filearea],dnl
+   [case "${enableval}" in
+    yes | no) enable_fecho_pass="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-fecho-pass) ;;
+    esac],dnl
+    enable_fecho_pass=yes)
+
+if test $enable_fecho_pass = yes; then
+    AC_DEFINE(FECHO_PASSTHROUGHT,
+              1,
+	      [Enable passthrought filearea])
+fi
 
 AC_ARG_ENABLE(use-filebox,
-[  --disable-use-filebox   use fileboxes for fileecho],
-    ,AC_DEFINE(USE_FILEBOX))
+[  --disable-use-filebox   use fileboxes for fileecho],dnl
+   [case "${enableval}" in
+    yes | no) enable_use_filebox="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-use-filebox) ;;
+    esac],dnl
+    enable_use_filebox=yes)
+
+if test $enable_use_filebox = yes; then
+    AC_DEFINE(USE_FILEBOX,
+              1,
+	      [Enable if use fileboxes for fileecho])
+fi
 
 AC_ARG_ENABLE(tick-crc,
-[  --disable-tick-crc      ftntick CRC control],
-    AC_DEFINE(FTNTICK_NOCRC),)
+[  --disable-tick-crc      ftntick CRC control],dnl
+   [case "${enableval}" in
+    yes | no) enable_tick_crc="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-tick-crc) ;;
+    esac],dnl
+    enable_tick_crc=yes)
+
+if test $enable_tick_crc = yes; then
+    AC_DEFINE(FTNTICK_NOCRC,
+              1,
+	      [Enable if no ftntick CRC control])
+fi
 
 AC_ARG_ENABLE(no-organization,
-[  --enable-no-organization enable if no insert Origin line if it absence],
-    ,AC_DEFINE(NOINSERT_ORGANIZATION),)
+[  --enable-no-organization enable if no insert Origin line if it absence],dnl
+   [case "${enableval}" in
+    yes | no) enable_no_organization="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-no-organization) ;;
+    esac],dnl
+    enable_no_organization=no)
+
+if test $enable_no_organization = yes; then
+    AC_DEFINE(NOINSERT_ORGANIZATION,
+              1,
+	      [Enable if no insert Origin line if it absence])
+fi
 
 AC_ARG_ENABLE(insecure-not-db,
 [  --disable-insecure-not-db put insecure mail into dupe database],
-    ,AC_DEFINE(INSECURE_DONT_PUT_INTO_DUPE_DB))
+   [case "${enableval}" in
+    yes | no) enable_insecure_not_db="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-insecure-not-db) ;;
+    esac],dnl
+    enable_insecure_not_db=yes)
+
+if test $enable_insecure_not_db = yes; then
+    AC_DEFINE(INSECURE_DONT_PUT_INTO_DUPE_DB,
+              1,
+	      [Don't put insecure mail into dupe database])
+fi
 
 AC_ARG_ENABLE(af-ansok,
-[  --enable-af-ansok       change areafix answering to "ok" if subscribing],
-    AC_DEFINE(ANSWER_OK), )
+[  --enable-af-ansok       change areafix answering to "ok" if subscribing],dnl
+   [case "${enableval}" in
+    yes | no) enable_af_ansok="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-af-ansok) ;;
+    esac],dnl
+    enable_af_ansok=no)
+
+if test $enable_af_ansok = yes; then
+    AC_DEFINE(ANSWER_OK,
+              1,
+	      [Change areafix answer when subscibing to area from `subscribe' to `ok'.])
+fi
 
 AC_ARG_ENABLE(fs-msgid,
 [  --disable-fs-msgid      set gate msgid into outgoing messages],
-    ,AC_DEFINE(FIDO_STYLE_MSGID))
+   [case "${enableval}" in
+    yes | no) enable_fs_msgid="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-fs-msgid) ;;
+    esac],dnl
+    enable_fs_msgid=yes)
+
+if test $enable_fs_msgid = yes; then
+    AC_DEFINE(FIDO_STYLE_MSGID,
+              1,
+	      [Set fido-style msgid])
+fi
 
 AC_ARG_ENABLE(dbc-history,
-[  --enable-dbc-history    use msgid correspond data base],
-    AC_DEFINE(DBC_HISTORY), )
+[  --enable-dbc-history    use msgid correspond data base],dnl
+   [case "${enableval}" in
+    yes | no) enable_dbc_history="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-dbc-history) ;;
+    esac],dnl
+    enable_dbc_history=no)
+
+if test $enable_dbc_history = yes; then
+    AC_DEFINE(DBC_HISTORY,
+              1,
+	      [Set msgid correspond data base])
+fi
 
 AC_ARG_ENABLE(afses,
-[  --enable-afses          areafix send echo status],
-    AC_DEFINE(AFSEND_ECHO_STATUS),)
+[  --enable-afses          areafix send echo status],dnl
+   [case "${enableval}" in
+    yes | no) enable_afses="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-afses) ;;
+    esac],dnl
+    enable_afses=no)
 
-AC_ARG_ENABLE(sub_zonegate,
-[  --enable-sub-zonegate   subscribe only zonegate],
-    AC_DEFINE(SUBSCRIBE_ZONEGATE),)
+if test $enable_afses = yes; then
+    AC_DEFINE(AFSEND_ECHO_STATUS,
+              1,
+	      [Enable areafix send echo status])
+fi
+
+AC_ARG_ENABLE(sub-zonegate,
+[  --enable-sub-zonegate   subscribe only zonegate],dnl
+   [case "${enableval}" in
+    yes) enable_sub_zonegate=yes ;;
+     no) enable_sub_zonegate=no ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-sub-zonegate) ;;
+    esac],dnl
+    enable_sub_zonegate=no)
+
+if test $enable_sub_zonegate = yes; then
+    AC_DEFINE(SUBSCRIBE_ZONEGATE,
+              1,
+	      [Enable subscribe autorization only if node listed in zonegate])
+fi
 
 AC_ARG_ENABLE(pid2rd-tid2gtv,
-[  --enable-pid2rd-tid2gtv paste ^PID & ^TID kludges to message],
-    AC_DEFINE(PID_READER_TID_GTV),)
+[  --enable-pid2rd-tid2gtv paste ^PID & ^TID kludges to message],dnl
+   [case "${enableval}" in
+    yes) enable_pid2rd_tid2gtv=yes ;;
+     no) enable_pid2rd_tid2gtv=no ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-pid2rd-tid2gtv) ;;
+    esac],dnl
+    enable_pid2rd_tid2gtv=no)
+
+if test $enable_pid2rd_tid2gtv = yes; then
+    AC_DEFINE(PID_READER_TID_GTV,
+              1,
+	      [Enable paste ^PID (mail or news reader name)
+	      and ^TID (fidogate version) kludge])
+fi
 
 AC_ARG_ENABLE(tick-history,
-[  --disable-tick-history  tick dupe check],
-    ,AC_DEFINE(TIC_HISTORY))
+[  --disable-tick-history  tick dupe check],dnl
+   [case "${enableval}" in
+    yes) enable_tick_history=yes ;;
+     no) enable_tick_history=no ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-tick-history) ;;
+    esac],dnl
+    enable_tick_history=yes)
+
+if test $enable_tick_history = yes; then
+    AC_DEFINE(TIC_HISTORY,
+              1,
+	      [Enable tic dupe check])
+fi
 
 AC_ARG_ENABLE(dnt-netmail,
-[  --enable-dnt-netmail    do not toss netmail],
-    AC_DEFINE(DO_NOT_TOSS_NETMAIL), )
+[  --enable-dnt-netmail    do not toss netmail],dnl
+   [case "${enableval}" in
+    yes) enable_dnt_netmail=yes ;;
+     no) enable_dnt_netmail=no ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-dnt-netmail) ;;
+    esac],dnl
+    enable_dnt_netmail=no)
+
+if test $enable_dnt_netmail = yes; then
+    AC_DEFINE(DO_NOT_TOSS_NETMAIL,
+              1,
+	      [Disable tosting netmail and set directory for incoming and outgoing pkt's])
+fi
 
 AC_ARG_ENABLE(sep-pkt,
-[  --enable-sep-pkt        separate message to individual pkt (rfc->ftn)],
-    AC_DEFINE(SEP_RFC2FTN_PKT), )
+[  --enable-sep-pkt        separate message to individual pkt (rfc->ftn)],dnl
+   [case "${enableval}" in
+    yes) enable_sep_pkt=yes ;;
+     no) enable_sep_pkt=no ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-sep-pkt) ;;
+    esac],dnl
+    enable_sep_pkt=no)
+
+if test $enable_sep_pkt = yes; then
+    AC_DEFINE(SEP_RFC2FTN_PKT,
+              1,
+	      [Separate outouing message to individual pkt file])
+fi
 
 AC_ARG_ENABLE(owfl,
-[  --disable-owfl          overwrite fileecho link],
-    ,AC_DEFINE(OVERWRITEN_FECHO_FILE_TO_LINK))
+[  --disable-owfl          overwrite fileecho link],dnl
+   [case "${enableval}" in
+    yes) enable_owfl=yes ;;
+     no) enable_owfl=no ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-owfl) ;;
+    esac],dnl
+    enable_owfl=yes)
+
+if test $enable_owfl = yes; then
+    AC_DEFINE(OVERWRITEN_FECHO_FILE_TO_LINK,
+              1,
+	      [Enable overwrite hardlink if file already exist])
+fi
 
 AC_ARG_ENABLE(active-lookup,
-[  --disable-active-lookup active file lookup],
-    ,AC_DEFINE(ACTIVE_LOOKUP))
+[  --disable-active-lookup active file lookup],dnl
+   [case "${enableval}" in
+    yes) enable_active_lookup=yes ;;
+     no) enable_active_lookup=no ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-active-lookup) ;;
+    esac],dnl
+    enable_active_lookup=yes)
+
+if test $enable_active_lookup = yes; then
+    AC_DEFINE(ACTIVE_LOOKUP,1,[Enable lookup to INN active file])
+fi
 
 AC_ARG_ENABLE(recode-allrfc,
 [  --disable-recode-allrfc recoding some RFC header],
-    ,AC_DEFINE(RECODE_ALL_RFC))
+   [case "${enableval}" in
+    yes) enable_recode_allrfc=yes ;;
+     no) enable_recode_allrfc=no ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-recode-allrfc) ;;
+    esac],
+    enable_recode_allrfc=yes)
+if test $enable_recode_allrfc = yes; then
+    AC_DEFINE(RECODE_ALL_RFC,1,[Recode all RFC headers])
+fi
 
 dnl Libraries
 AC_CHECK_LIB(dl, dlopen)
