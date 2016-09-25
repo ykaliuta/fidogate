@@ -311,33 +311,65 @@ if test $enable_nfs_safe_lock = yes; then
 	      [Create lock files / BSY files in an NFS-safe way (see man 2 open)])
 fi
 
+MAXMSGSIZE=14000
 AC_ARG_WITH(maxmsg-size,
 [  --with-maxmsg-size=SIZE set max. message size for FIDO [14000]],
-    AC_DEFINE_UNQUOTED(MAXMSGSIZE,$withval),AC_DEFINE_UNQUOTED(MAXMSGSIZE, 14000))
+    MAXMSGSIZE=$withval,)
+AC_DEFINE_UNQUOTED(MAXMSGSIZE,
+	$MAXMSGSIZE,
+	[
+Default max. message size for FIDO. Due to some more brain damage
+in FIDONET programs we have to split larger messages into several
+smaller ones. May be set with the -M option in AREAS or MaxMsgSize
+in DEFAULT_CONFIG_GATE.
 
+< 16 K -- 14000
+< 32 K -- 30000
+])
+
+FTN_INVALID_DOMAIN="INVALID_FTN_ADDRESS"
 AC_ARG_WITH(ftn-invalid-domain,
 [  --with-ftn-invalid-domain=DOM  set domain for invalid FTN addresses [INVALID_FTN_ADDRESS]],
-    AC_DEFINE_UNQUOTED(FTN_INVALID_DOMAIN,"$withval"),AC_DEFINE_UNQUOTED(FTN_INVALID_DOMAIN, "INVALID_FTN_ADDRESS"))
+   FTN_INVALID_DOMAIN="$withval",)
+AC_DEFINE_UNQUOTED(FTN_INVALID_DOMAIN,"$FTN_INVALID_DOMAIN",
+		 [Domain for invalid FTN addresses])
 
+SYSLOG_FACILITY=LOG_LOCAL0
 AC_ARG_WITH(syslog-facility,
 [  --with-syslog-facility=FAC	set syslog facility [LOG_LOCAL0]],
-    AC_DEFINE_UNQUOTED(FACILITY,$withval),AC_DEFINE_UNQUOTED(FACILITY, LOG_LOCAL0))
+    SYSLOG_FACILITY=$withval,)
+AC_DEFINE_UNQUOTED(FACILITY, $SYSLOG_FACILITY,
+[
+ syslog facility used for logging if logfile == "syslog"
+ (only for HAS_SYSLOG defined)
+])
 
+CHARSET_STDFTN="cp866"
+CHARSET_STDRFC="koi8-r"
+CHARSET_STD7BIT="us-ascii"
 AC_ARG_WITH(ftn-charset,
 [  --with-ftn-charset=CHS  set default assumed charset for Fido messages [cp866] ],
-    AC_DEFINE_UNQUOTED(CHARSET_STDFTN,"$withval"),AC_DEFINE_UNQUOTED(CHARSET_STDFTN, "cp866"))
+   CHARSET_STDFTN="$withval",)
+AC_DEFINE_UNQUOTED(CHARSET_STDFTN, "$CHARSET_STDFTN",
+[Default assumed charset for Fido messages (see also DefaultCharset)])
 
 AC_ARG_WITH(rfc-charset,
 [  --with-rfc-charset=CHS  set default assumed charset for RFC messages if without MIME headers [koi8-r]],
-    AC_DEFINE_UNQUOTED(CHARSET_STDRFC,"$withval"),AC_DEFINE_UNQUOTED(CHARSET_STDRFC, "koi8-r"))
+   CHARSET_STDRFC="$withval",)
+AC_DEFINE_UNQUOTED(CHARSET_STDRFC, "$CHARSET_STDRFC",
+[Default assumed charset for RFC messages if without MIME headers])
 
 AC_ARG_WITH(7bit-charset,
 [  --with-7bit-charset=CHS set default charset for RFC messages with forced 7bit encoding [us-ascii]],
-    AC_DEFINE_UNQUOTED(CHARSET_STD7BIT,"$withval"),AC_DEFINE_UNQUOTED(CHARSET_STD7BIT, "us-ascii"))
+   CHARSET_STD7BIT="$withval",)
+AC_DEFINE_UNQUOTED(CHARSET_STD7BIT, "$CHARSET_STD7BIT",
+[Default charset for RFC messages with forced 7bit encoding])
 
+AREAFIXMAXSTR=150
 AC_ARG_WITH(afix-maxstr,
-[  --with-afix-maxstr=AFS set maximum strings in areafix reports [150] ],
-    AC_DEFINE_UNQUOTED(AREAFIXMAXSTR,$withval),AC_DEFINE_UNQUOTED(AREAFIXMAXSTR, 150))
+[  --with-afix-maxstr=AFS set maximum strings in areafix reports [150] ],AREAFIXMAXSTR=$withval,)
+AC_DEFINE_UNQUOTED(AREAFIXMAXSTR,$AREAFIXMAXSTR,
+[AFS set maximum strings in areafix reports])
 
 AC_ARG_ENABLE(aliases-local,
 [  --enable-aliases-local  rewrite addresses found in ALIASES so that the sender's address is the gateway address],dnl
@@ -798,7 +830,8 @@ AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsb
     fi
 
     if $NEWSLIBDIR/bin/innconfval -v 2>&1 </dev/null | egrep 2\.\[3\|4\|5\|6] > /dev/null; then
-	AC_DEFINE(OLD_BATCHER)
+	AC_DEFINE(OLD_BATCHER, 1,
+	    [Enable use old batcher in runinc program])
 	BATCHER='time $PATHBIN/batcher -N $QUEUEJOBS -b500000 -p"$RFC2FTN -b -n" $SITE $BATCHFILE'
     else
 	BATCHER='time $RFC2FTN -f $BATCHFILE -m 500'
@@ -806,7 +839,8 @@ AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsb
 
     if test "$with_news" != no ;then
 	if test "$with_owner" = news; then
-	    AC_DEFINE(USE_RUNINC_SFGT)
+	    AC_DEFINE(USE_RUNINC_SFGT, 1,
+	        [Enable use send_fidogate function in runinc program])
 	fi
     fi
 }
