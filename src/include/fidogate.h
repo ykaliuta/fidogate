@@ -131,6 +131,16 @@
 # undef  NFS_SAFE_LOCK_FILES
 #endif
 
+#ifndef USE_SYSLOG
+# undef  HAVE_SYSLOG
+#endif
+
+#if defined(HAVE_SYS_MOUNT_H) || defined(HAVE_SYS_PARAM_H)
+# undef  HAVE_SYS_VFS_H
+# undef  HAVE_SYS_STATFS_H
+# undef  HAVE_SYS_STATVFS_H
+#endif
+
 /*
  * Standard FIDONET domain for Z1-6 Message-IDs
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
