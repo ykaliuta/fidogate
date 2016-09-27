@@ -1098,6 +1098,12 @@ AC_SUBST(PATHETC)
 AC_SUBST(PATHDB)
 AC_SUBST(INEWS)
 
+AH_VERBATIM(HAVE_TM_GMTOFF,
+[
+/* left from initial configurator */
+#undef HAVE_TM_GMTOFF
+])
+
 # Checking sendmail
 AC_MSG_CHECKING(for sendmail)
 if test "${with_sendmail+set}" = set ;then
