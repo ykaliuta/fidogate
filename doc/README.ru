@@ -2241,5 +2241,5 @@ E-mail: anray@users.sf.net, dsas@users.sf.net
 
 ;; Local Variables:
 ;; mode: text
-;; coding: koi8-r
+;; coding: utf-8
 ;; End:
