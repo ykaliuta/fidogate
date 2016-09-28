@@ -12,7 +12,7 @@ include $(top_builddir)/build/config.make
 
 TOPDIR		= .
 
-SUBDIRS		= src scripts doc tests
+SUBDIRS		= src scripts doc tests configs
 
 FDESTDIR	= $(DEFAULT_V_CONFIGDIR) \
 		  $(DEFAULT_V_LOGDIR) \
@@ -62,7 +62,9 @@ installdirs:
 	fi
 
 install-config: install-dirs
-	if [ -f doc/Makefile ]; then $(MAKE) -C doc $@ || exit 1; fi
+	if [ -f configs/Makefile ]; then \
+		$(MAKE) -C configs $@ || exit 1; \
+	fi
 
 ACLOCAL_AMFLAGS = -I m4
 

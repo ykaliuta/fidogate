@@ -1187,6 +1187,7 @@ AC_CONFIG_FILES([build/config.make \
 		 scripts/nodelist/Makefile \
 		 scripts/outbound/Makefile \
 		 doc/Makefile \
+		 configs/Makefile \
 		 tests/Makefile \
 		 tests/common/Makefile \
 		 tests/areafix/Makefile \
