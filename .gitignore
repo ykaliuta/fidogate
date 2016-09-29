@@ -4,11 +4,15 @@
 .deps
 .libs
 Makefile
+Makefile.in
 libtool
 build/config.make
 config.h
+config.h.in
 config.log
 config.status
+autom4te.cache
+configure
 doc/examples/dyff/fidogate.conf.sample
 doc/examples/dyff/packing.sample
 doc/examples/point/fidogate.conf
@@ -91,4 +95,5 @@ src/util/ftnoutpkt
 src/util/pktdebug
 src/util/pktmore
 src/util/sumcrc
+stamp-h1.in
 stamp-h1
