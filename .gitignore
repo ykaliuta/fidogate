@@ -4,7 +4,6 @@
 .deps
 .libs
 Makefile
-Makefile.in
 libtool
 build/config.make
 config.h
@@ -12,7 +11,6 @@ config.h.in
 config.log
 config.status
 autom4te.cache
-configure
 doc/examples/dyff/fidogate.conf.sample
 doc/examples/dyff/packing.sample
 doc/examples/point/fidogate.conf
