@@ -64,7 +64,12 @@ AC_FUNC_UTIME_NULL
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS(gettimeofday memchr memset mkdir regcomp strcasecmp strchr)
 AC_CHECK_FUNCS(strerror strncasecmp strpbrk strrchr strspn strstr stricmp utime)
-AC_CHECK_FUNCS(link mktime syslog sprintf)
+AC_CHECK_FUNCS(link mktime syslog sprintf snprintf)
+
+if ! test "x$ac_cv_func_snprintf" = xyes && \
+   ! test "x$ac_cv_func_sprintf" = xyes; then
+   AC_MSG_ERROR(sprintf() or snprintf() required)
+fi
 
 dnl Redefine install scripts
 AM_PROG_LIBTOOL
