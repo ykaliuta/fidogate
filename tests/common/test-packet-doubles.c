@@ -6,7 +6,7 @@
  *
  */
 
-#include <structs.h>
+#include <fidogate.h>
 #include <time.h>
 
 void fglog(const char *fmt, ...)
