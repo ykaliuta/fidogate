@@ -21,7 +21,7 @@ bin_PROGRAMS		= ftnhatch
 libexec_PROGRAMS	= ftntick
 libexec_SCRIPTS		= ftntickpost
 
-ftntick_SOURCES		= ftntick.c $(top_srcdir)/src/areafix/areafix.c
+ftntick_SOURCES		= ftntick.c ../../src/areafix/areafix.c
 
 $(libexec_SCRIPTS):
 	$(SUBSTCMD) $@.in > $@

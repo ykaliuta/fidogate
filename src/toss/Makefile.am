@@ -23,8 +23,8 @@ libexec_SCRIPTS		= report_traffic
 
 ftntoss_SOURCES		= ftntoss.c \
 			  history.c \
-			  $(top_srcdir)/src/areafix/areafix.c \
-                          $(top_srcdir)/src/areafix/mailer.c
+			  ../../src/areafix/areafix.c \
+                          ../../src/areafix/mailer.c
 
 report_traffic:
 	$(SUBSTCMD) $@.in > $@
