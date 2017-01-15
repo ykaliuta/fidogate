@@ -141,7 +141,7 @@ char *mime_dequote(char *d, size_t n, char *s, int flags)
 #define MIME_HEADER_CODE_MIDDLE_QP	"?Q?"
 #define MIME_HEADER_CODE_MIDDLE_B64	"?B?"
 #define MIME_HEADER_CODE_END	"?="
-#define MIME_HEADER_STR_DELIM	"\r\n "
+#define MIME_HEADER_STR_DELIM	"\n "
 #define MIME_STRING_LIMIT 74
 #define MIME_ENC_STRING_LIMIT 80
 #define MIME_MAX_ENC_LEN 31
