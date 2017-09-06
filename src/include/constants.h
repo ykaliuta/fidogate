@@ -100,12 +100,12 @@
 /*
  * Permissions
  */
-#define PACKET_MODE	0600		/* Mode for outbound packets */
-#define BSY_MODE	0644		/* Mode for BSY files */
-#define FLO_MODE	0644		/* Mode for FLO files */
-#define DIR_MODE	0755		/* Mode for directories */
-#define FILE_DIR_MODE	0700		/* Mode for create fileecho directories */
-#define CONF_MODE	0640		/* Mode for written config files */
+#define PACKET_MODE	0660		/* Mode for outbound packets */
+#define BSY_MODE	0664		/* Mode for BSY files */
+#define FLO_MODE	0664		/* Mode for FLO files */
+#define DIR_MODE	0775		/* Mode for directories */
+#define FILE_DIR_MODE	0770		/* Mode for create fileecho directories */
+#define CONF_MODE	0660		/* Mode for written config files */
 
 /*
  * RFC headers recognized at beginning of FTN message body
