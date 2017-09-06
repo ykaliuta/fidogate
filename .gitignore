@@ -13,6 +13,15 @@ config.log
 config.status
 autom4te.cache
 configure
+aclocal.m4
+build/compile
+build/config.guess
+build/config.sub
+build/depcomp
+build/install-sh
+build/ltmain.sh
+build/ylwrap
+build/mkinstalldirs
 doc/examples/dyff/fidogate.conf.sample
 doc/examples/dyff/packing.sample
 doc/examples/point/fidogate.conf

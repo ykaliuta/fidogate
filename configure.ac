@@ -237,13 +237,17 @@ AC_ARG_WITH(owner, dnl
             [dnl
 case "$with_owner" in
 ''|news|no)
-    AM_CONDITIONAL(ftnnews,false);;
+    withftnnews=false;;
 *) 
-    OWNER="$withval" 
-    AM_CONDITIONAL(ftnnews,true)
+    OWNER="$withval"
+    withftnnews=true
     SRFC2FTN="ftnnews";;
 esac
 ])
+
+AM_CONDITIONAL(ftnnews, [test x$withftnnews = xtrue])
+
+
 AC_SUBST(OWNER)
 
 AC_SUBST(SRFC2FTN)
@@ -1171,6 +1175,9 @@ HOSTNAME=`hostname -s`
 DOMAINNAME=`hostname|sed -e "s/$HOSTNAME//"`
 AC_SUBST(HOSTNAME)
 AC_SUBST(DOMAINNAME)
+
+AC_CONFIG_MACRO_DIRS([m4])
+AM_CONDITIONAL(enable_static, test "$enable_static" = yes)
 
 AC_CONFIG_COMMANDS([build_headers],[build/subst.pl -h])
 
