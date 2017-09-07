@@ -1,0 +1,15 @@
+fidogate for Debian
+-------------------
+
+Build with the folowing confiure options:
+
+	--enable-dbc-history
+	--disable-desc-dir
+	--enable-aliases-local
+	--disable-fecho-pass
+	--enable-af-ansok
+	--enable-afses
+	--enable-pid2rd-tid2gtv
+	--enable-sep-pkt
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>, Fri,  3 Nov 2006 01:35:31 +0200

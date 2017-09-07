@@ -1,0 +1,29 @@
+This package was debianized by Zhenja Kaluta <trinfo@mail.ru> on
+Sat,  5 Oct 2002 23:44:46 +0300.
+
+It was taken from cvs:
+
+cvs -z3 -d:pserver:rusfidogate.cvs.sf.net/cvsroot/rusfidogate co fidogate
+Current SVN URL: http://fidogate5.googlecode.com/svn
+
+Copyright (C) 1990-2002 Martin Junius <mj@fidogate.org>
+
+Current maintainer: Andrey Slusar  <anrays@gmail.com>
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; version 2 dated June, 1991.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+   02110-1301 USA
+
+On Debian systems, a copy of the GNU General Public License can be
+found in /usr/share/common-licenses/GPL.
+

@@ -1,0 +1,19 @@
+/var/log/fidogate/log {
+	weekly
+	missingok
+	rotate 52
+	compress
+	delaycompress
+	notifempty
+	create 660 ftn news
+}
+
+/var/log/fidogate/log-in {
+	weekly
+	missingok
+	rotate 52
+	compress
+	delaycompress
+	notifempty
+	create 660 ftn news
+}
