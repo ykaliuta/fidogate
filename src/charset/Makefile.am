@@ -7,7 +7,7 @@
 
 AM_CPPFLAGS		= -I$(top_srcdir)/src/include
 
-if enable_static
+if ENABLE_STATIC
 LDADD			= $(top_srcdir)/src/common/libfidogate.a
 else
 LDADD			= $(top_srcdir)/src/common/libfidogate.la

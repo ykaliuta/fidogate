@@ -1177,7 +1177,7 @@ AC_SUBST(HOSTNAME)
 AC_SUBST(DOMAINNAME)
 
 AC_CONFIG_MACRO_DIRS([m4])
-AM_CONDITIONAL(enable_static, test "$enable_static" = yes)
+AM_CONDITIONAL(ENABLE_STATIC, test "$enable_shared" != yes)
 
 AC_CONFIG_COMMANDS([build_headers],[build/subst.pl -h])
 

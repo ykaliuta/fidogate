@@ -7,7 +7,7 @@
 AUTOMAKE_OPTIONS = foreign
 
 
-if enable_static
+if ENABLE_STATIC
 noinst_LIBRARIES = libfidogate.a
 
 libfidogate_a_CFLAGS = -Wall -g
