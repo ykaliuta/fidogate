@@ -9,11 +9,7 @@ AUTOMAKE_OPTIONS        = subdir-objects
 
 AM_CPPFLAGS		= -I$(top_srcdir)/src/include
 
-if ENABLE_STATIC
-LDADD			= $(top_srcdir)/src/common/libfidogate.a
-else
 LDADD			= $(top_srcdir)/src/common/libfidogate.la
-endif
 
 AM_CFLAGS		= -Wall
 

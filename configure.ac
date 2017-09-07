@@ -23,7 +23,6 @@ AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-AC_PROG_RANLIB
 AC_PROG_AWK
 AC_PROG_YACC
 
@@ -72,7 +71,7 @@ if ! test "x$ac_cv_func_snprintf" = xyes && \
 fi
 
 dnl Redefine install scripts
-AM_PROG_LIBTOOL
+LT_INIT
 AC_SUBST(LIBTOOL_DEPS)
 INSTALL_DATA='${INSTALL} -m 640'
 
@@ -1177,7 +1176,6 @@ AC_SUBST(HOSTNAME)
 AC_SUBST(DOMAINNAME)
 
 AC_CONFIG_MACRO_DIRS([m4])
-AM_CONDITIONAL(ENABLE_STATIC, test "$enable_shared" != yes)
 
 AC_CONFIG_COMMANDS([build_headers],[build/subst.pl -h])
 

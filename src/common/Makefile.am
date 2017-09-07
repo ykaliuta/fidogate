@@ -7,20 +7,16 @@
 AUTOMAKE_OPTIONS = foreign
 
 
-if ENABLE_STATIC
 noinst_LIBRARIES = libfidogate.a
 
 libfidogate_a_CFLAGS = -Wall -g
 libfidogate_a_SOURCES = $(SRC)
-install-data-am:	install-libLTLIBRARIES
-else
 
 lib_LTLIBRARIES = libfidogate.la
 libfidogate_la_CFLAGS = -Wall -g -fPIC
-endif
 
 libfidogate_la_SOURCES = $(SRC)
-libfidogate_la_LDFLAGS = -shared -rpath $(libdir) -soname $(libdir) -version-info 5:0:0
+libfidogate_la_LDFLAGS = -version-info 5:0:0
 
 libfidogate_la_LIBADD = @LIBICONV@
 
