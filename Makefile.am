@@ -53,12 +53,16 @@ installdirs:
 	$(mkinstalldirs) $(DESTDIR)$$d || exit 1; \
 	echo "create directory $(DESTDIR)$$d"; \
 	fi; \
-	done; \
-	if test `id -u` -eq 0 && test -n "${OWNER}" && test -n "${GROUP}"; then \
+	done;
+	@if test `id -u` -eq 0 && \
+	   test -n "${OWNER}" && \
+           test -n "${GROUP}" && \
+           id "${OWNER}" >/dev/null 2>/dev/null ; then \
 	for d in $(FDESTDIR); do \
 	chown ${OWNER}:${GROUP} $(DESTDIR)$$d || exit 1; \
 	echo "chown ${OWNER}:${GROUP} $(DESTDIR)$$d"; \
 	done; \
+	else echo "Cannot change owner to ${OWNER}:${GROUP}"; \
 	fi
 
 install-config: install-dirs
