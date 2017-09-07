@@ -3,7 +3,6 @@ TOP_SRC = ../../src
 
 AM_CPPFLAGS = -I$(TOP_SRC)/include
 AM_CPPFLAGS += -I$(TOP_SRC)/common
-AM_CFLAGS = -Wno-format-security
 
 LDADD = -lcgreen $(TOP_SRC)/common/libfidogate.la
 
