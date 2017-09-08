@@ -143,14 +143,14 @@ static Textlist *areafix_otl    = NULL;
 void areafix_tlprintf(const char *fmt, ...)
 {
     static char buf[4096];
-#ifdef HAVE_SPRINTF
+#ifndef HAVE_SNPRINTF
     int n;
 #endif
     va_list args;
 
     va_start(args, fmt);
     
-#ifndef HAVE_SPRINTF    
+#ifdef HAVE_SNPRINTF
     vsnprintf(buf, sizeof(buf), fmt, args);
 #else
     n = vsprintf(buf, fmt, args);

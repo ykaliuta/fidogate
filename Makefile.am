@@ -12,7 +12,7 @@ include $(top_builddir)/build/config.make
 
 TOPDIR		= .
 
-SUBDIRS		= src scripts doc tests
+SUBDIRS		= src scripts doc tests configs
 
 FDESTDIR	= $(DEFAULT_V_CONFIGDIR) \
 		  $(DEFAULT_V_LOGDIR) \
@@ -53,16 +53,22 @@ installdirs:
 	$(mkinstalldirs) $(DESTDIR)$$d || exit 1; \
 	echo "create directory $(DESTDIR)$$d"; \
 	fi; \
-	done; \
-	if test `id -u` -eq 0 && test -n "${OWNER}" && test -n "${GROUP}"; then \
+	done;
+	@if test `id -u` -eq 0 && \
+	   test -n "${OWNER}" && \
+           test -n "${GROUP}" && \
+           id "${OWNER}" >/dev/null 2>/dev/null ; then \
 	for d in $(FDESTDIR); do \
 	chown ${OWNER}:${GROUP} $(DESTDIR)$$d || exit 1; \
 	echo "chown ${OWNER}:${GROUP} $(DESTDIR)$$d"; \
 	done; \
+	else echo "Cannot change owner to ${OWNER}:${GROUP}"; \
 	fi
 
 install-config: install-dirs
-	if [ -f doc/Makefile ]; then $(MAKE) -C doc $@ || exit 1; fi
+	if [ -f configs/Makefile ]; then \
+		$(MAKE) -C configs $@ || exit 1; \
+	fi
 
 ACLOCAL_AMFLAGS = -I m4
 

@@ -61,7 +61,7 @@ void str_printf(char *buf, size_t len, const char *fmt, ...)
 
     va_start(args, fmt);
     
-#ifndef HAVE_SPRINTF    
+#ifdef HAVE_SNPRINTF
     vsnprintf(buf, len, fmt, args);
     /**FIXME: check for n==-1 and errno**/
 #else

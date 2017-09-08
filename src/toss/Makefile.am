@@ -9,11 +9,7 @@ AUTOMAKE_OPTIONS        = subdir-objects
 
 AM_CPPFLAGS		= -I$(top_srcdir)/src/include
 
-if enable_static
-LDADD			= $(top_srcdir)/src/common/libfidogate.a
-else
 LDADD			= $(top_srcdir)/src/common/libfidogate.la
-endif
 
 AM_CFLAGS		= -Wall
 
@@ -23,8 +19,8 @@ libexec_SCRIPTS		= report_traffic
 
 ftntoss_SOURCES		= ftntoss.c \
 			  history.c \
-			  $(top_srcdir)/src/areafix/areafix.c \
-                          $(top_srcdir)/src/areafix/mailer.c
+			  ../../src/areafix/areafix.c \
+                          ../../src/areafix/mailer.c
 
 report_traffic:
 	$(SUBSTCMD) $@.in > $@

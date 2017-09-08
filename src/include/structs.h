@@ -33,8 +33,13 @@
 #ifndef FIDOGATE_STRUCTS_H
 #define FIDOGATE_STRUCTS_H
 
+/*
+  must be included by fidogate.h
+  since requires config.h and amendmends
+*/
+
 #include "node.h"
-#include "config.h"
+#include "constants.h"
 #include <time.h>
 
 /*

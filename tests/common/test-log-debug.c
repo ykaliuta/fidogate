@@ -83,7 +83,7 @@ Ensure(debug_output) {
 
     expect_debug_output(stderr, my_debug);
 
-    debug(level, my_debug);
+    debug(level, "some debug");
 }
 
 #include "test-log-debug-syslog.c"
