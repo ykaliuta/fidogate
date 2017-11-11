@@ -246,7 +246,7 @@
  */
 #define MAXADDRESS	32		/* Max. # of FTN address in CONFIG */
 
-#define MAXMSGHEADRLEN	70		/* Max. length message field */
+#define MAXMSGHEADRLEN	71		/* Max. length message field */
 
 #define MAXDOSDRIVE	16		/* Max. # of DOS drives in CONFIG */
 
