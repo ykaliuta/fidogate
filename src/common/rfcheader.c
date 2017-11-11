@@ -321,17 +321,6 @@ char *rfcheader_get(Textlist *tl, char *name)
 	if(!strnicmp(p->line, name, len) && p->line[len]==':')
 	{
 	    for(s=p->line+len+1; is_space(*s); s++) ;
-	    /*
-	     * Strip space anb tab in QP Subject
-	     */
-	    if(!strnicmp(name, "Subject", len))
-	    {
-		char *s1;
-		if((s1 = strstr(s, "?= =?")) != NULL)
-		    strncpy(s1 + 2, s1 + 3, strlen(s) - 2 - (int)(s1 - s));
-		if((s1 = strstr(s, "?=\t=?")) != NULL)
-		    strncpy(s1 + 2, s1 + 3, strlen(s) - 2 - (int)(s1 - s));
-	    }
 	    header->last_header = p;
 	    return s;
 	}
