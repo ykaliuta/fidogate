@@ -45,6 +45,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */
@@ -109,6 +110,11 @@
 #define toupper(c)  (islower(c) ? _toupper(c) : (c))
 #define tolower(c)  (isupper(c) ? _tolower(c) : (c))
 
+#define MIN(a,b) ({				\
+	typeof(a) __a = a;			\
+	typeof(b) __b = b;			\
+	__a < __b ? __a : __b;			\
+		})
 
 /*
  * Function declarations for systems like SUNOS, where the standard
