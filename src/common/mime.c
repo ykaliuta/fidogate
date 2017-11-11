@@ -34,7 +34,7 @@
 
 static int is_qpx		(int);
 static int x2toi		(char *);
-static int mime_decharset_string(char*, size_t*, const char*, size_t*, char*, char*);
+static int mime_decharset_string(char*, size_t*, char*, size_t*, char*, char*);
 void	   mime_free		(void);
 
 static MIMEInfo *mime_list = NULL;
@@ -199,7 +199,7 @@ int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
     int outpos = 0;
     char *delim = NULL;
 
-    debug(6, "MIME: %s: %d chars to encode (%s): %s",
+    debug(6, "MIME: %s: %zd chars to encode (%s): %s",
 	  __FUNCTION__, len, encoding, src);
     
     padding = (B64_ENC_CHUNK - len % B64_ENC_CHUNK) % B64_ENC_CHUNK;
@@ -977,7 +977,7 @@ static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime)
  * Adjust given length to string's length
  */
 
-static int mime_decharset_string(char *dst, size_t *dstlen, const char *src, size_t *srclen, char *from, char *to)
+static int mime_decharset_string(char *dst, size_t *dstlen, char *src, size_t *srclen, char *from, char *to)
 {
     int rc;
     int len;
