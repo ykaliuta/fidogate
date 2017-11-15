@@ -1216,7 +1216,8 @@ static Textlist* mime_debody_section(Textlist *body, Textlist *header)
 	}
 	mime_decharset_section(dec_body, mime);
     }
-    else if(strieq(mime->type_type, "multipart/mixed"))
+    else if(strieq(mime->type_type, "multipart/mixed") ||
+	    strieq(mime->type_type, "multipart/alternative"))
     {
 	dec_body = mime_debody_multipart(body, mime);
     }
