@@ -34,7 +34,7 @@
 
 static int is_qpx		(int);
 static int x2toi		(char *);
-static int mime_decharset_string(char*, size_t*, const char*, size_t*, char*, char*);
+static int mime_decharset_string(char*, size_t*, char*, size_t*, char*, char*);
 void	   mime_free		(void);
 
 static MIMEInfo *mime_list = NULL;
@@ -199,7 +199,7 @@ int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
     int outpos = 0;
     char *delim = NULL;
 
-    debug(6, "MIME: %s: %d chars to encode (%s): %s",
+    debug(6, "MIME: %s: %zd chars to encode (%s): %s",
 	  __FUNCTION__, len, encoding, src);
     
     padding = (B64_ENC_CHUNK - len % B64_ENC_CHUNK) % B64_ENC_CHUNK;
@@ -428,116 +428,199 @@ int mime_qp_decode(char **dst, char *src, size_t len)
 	*dst = buf;
     return rc;
 }
+/*
+ * mime word is a mime encoded string, separated by space
+ * from other mime words.
+ * The function takes non-whitespace starting string
+ * and decodes it from mime (quoted-printable or base64),
+ * if it is properly encoded.
+ * Leaves the string as is, if cannot recode.
+ * Allocates buffer,
+ * return the buffer,
+ *        the byte length of the decoded string (no final '\0'),
+ *        and the charset (from the mime info)
+ */
+static int mime_handle_mimed_word(char *s, char **out, size_t *out_len,
+				  bool *is_mime,
+				  char *charset, size_t ch_size)
 
-char *mime_deheader(char *d, size_t n, char *s)
 {
-    int	i;
-    char *p, *beg, *end, *buf;
+    char *p;
+    size_t len;
+    size_t tmp_len;
+    char *buf;
+    char *beg;
+    char *end;
+    int (*decoder)(char **dst, char *src, size_t len) = NULL;
+
+    /* May be MIME (b64 or qp) */
+    p = strchr(s + strlen(MIME_HEADER_CODE_START), '?');
+    if (p == NULL)
+	goto fallback;
+
+    tmp_len = p - (s + strlen(MIME_HEADER_CODE_START));
+    if (tmp_len > MIME_MAX_ENC_LEN) {
+	fglog("ERROR: charset name's length too long, %zd. Do not recode", tmp_len);
+	goto fallback;
+    }
+
+    tmp_len = MIN(tmp_len + 1, ch_size);
+    snprintf(charset, tmp_len, s + strlen(MIME_HEADER_CODE_START));
+
+    /* Check if b64 or qp */
+    if (strnieq(p,
+		MIME_HEADER_CODE_MIDDLE_QP,
+		strlen(MIME_HEADER_CODE_MIDDLE_QP))) {
+	/* May be qp */
+	decoder = mime_qp_decode;
+	beg = p + strlen(MIME_HEADER_CODE_MIDDLE_QP);
+
+    } else if (strnieq(p,
+		       MIME_HEADER_CODE_MIDDLE_B64,
+		       strlen(MIME_HEADER_CODE_MIDDLE_B64))) {
+	/* May be b64 */
+	decoder = mime_b64_decode;
+	beg = p + strlen(MIME_HEADER_CODE_MIDDLE_B64);
+    } else {
+	fglog("ERROR: subject looks like mime, but does not have proper header");
+	goto fallback;
+    }
+
+    end = strchr(beg, '?');
+
+    if (end == NULL ||
+	!strnieq(end,
+		 MIME_HEADER_CODE_END,
+		 strlen(MIME_HEADER_CODE_END))) {
+	fglog("ERROR: subject looks like mime, but does not have proper ending");
+	goto fallback;
+    }
+    if (decoder(&buf, beg, end - beg) == ERROR) {
+	fglog("ERROR: subject mime deconding failed");
+	goto fallback;
+    }
+
+    *out_len = strlen(buf);
+    *out = buf;
+    *is_mime = true;
+    return end + strlen(MIME_HEADER_CODE_END) - s;
+
+fallback:
+    /* keep it as is */
+    debug(6, "Could not unmime subject '%s', leaving as is", s);
+    len = strlen(s);
+    *out = xmalloc(len);
+    memcpy(*out, s, len); /* no '\0' */
+    snprintf(charset, ch_size, "%s", INTERNAL_CHARSET);
+    *is_mime = false;
+
+    return len;
+}
+
+/*
+ * Fetches the mime word from the string. It can be mime-encoded
+ * or plain part, separated with "space".
+ * _Must_ start with non-space.
+ * For mime-encoded parts decode it and fetch the charset.
+ * For plain parts copy them as is, take the global charset.
+ * Allocates the final buffer.
+ * @returns the number of bytes, handled in the source string.
+ */
+static int mime_handle_word(char *s, char **out, size_t *out_len,
+			    bool *is_mime, char *charset, size_t ch_size)
+{
+    char *plain_charset;
+    bool free_charset = true;
+
+    if (strnieq(s,
+		MIME_HEADER_CODE_START,
+		strlen(MIME_HEADER_CODE_START))) {
+	return mime_handle_mimed_word(s,
+				      out, out_len,
+				      is_mime,
+				      charset, ch_size);
+    }
+
+    /* do not support mix of mimed and plain words at the moment */
+    plain_charset = mime_get_main_charset();
+    if (plain_charset == NULL) {
+	plain_charset = INTERNAL_CHARSET;
+	free_charset = false;
+    }
+
+    strncpy(charset, plain_charset, ch_size - 1);
+    charset[ch_size - 1] = '\0';
+
+    if (free_charset)
+	free(plain_charset);
+
+    *is_mime = false;
+    *out_len = strlen(s);
+    *out = strsave(s);
+    return *out_len;
+}
+
+/* source @s must be '\0'-terminated */
+char *mime_deheader(char *d, size_t d_max, char *s)
+{
+    char *save_d = d;
+    bool is_mime = false;
+    bool is_prev_mime = false;
+    char *buf;
+    size_t len;
     char charset[MIME_MAX_ENC_LEN + 1];
-    int is_new_decoder = 1, is_mimed = 0;
-    size_t tmp_len, dst_len;
-        
-    memset(d, 0, n);
-    for (i = 0; (n - 1 > i) && ('\0' != *s);)
-    {
-	if (strnieq(s, MIME_HEADER_CODE_START, strlen(MIME_HEADER_CODE_START)))
-	{
-	    /* May be MIME (b64 or qp) */
-	    p = strchr(s + strlen(MIME_HEADER_CODE_START), '?');
-	    if (NULL != p)
-	    {
-		tmp_len = p - (s + strlen(MIME_HEADER_CODE_START));
-		if(tmp_len > MIME_MAX_ENC_LEN)
-		{
-		    fglog("ERROR: charset name's length too long, %zd. Do not recode", tmp_len);
-		    is_new_decoder = 0;
-		}
-		strncpy(charset, s + strlen(MIME_HEADER_CODE_START), tmp_len);
-		charset[tmp_len] = '\0';
-		debug(6, "subject charset: %s", charset);
-		/* Check if b64 or qp */
-		if (strnieq(p, MIME_HEADER_CODE_MIDDLE_QP, strlen(MIME_HEADER_CODE_MIDDLE_QP)))
-		{
-		    /* May be qp */
-		    beg = p + strlen(MIME_HEADER_CODE_MIDDLE_QP);
-		    end = strchr(beg, '?');
-		    if (NULL != end &&
-			strnieq(end, MIME_HEADER_CODE_END, strlen(MIME_HEADER_CODE_END)) &&
-			ERROR != mime_qp_decode(&buf, beg, end - beg))
-		    {
-			is_mimed = 1;
-			if(!is_new_decoder || strieq(charset, INTERNAL_CHARSET))
-			{
-			    strncpy(&(d[i]), buf, n - i - 1);
-			}
-			else
-			{
-			    dst_len = tmp_len = n - i - 1;
-			    if(mime_decharset_string(&(d[i]), &tmp_len, buf, &dst_len,
-						     charset, INTERNAL_CHARSET) == ERROR)
-				strncpy(&(d[i]), buf, n - i - 1);
-			}
-			free(buf);
-			i += strlen(&(d[i]));
-			s = end + strlen(MIME_HEADER_CODE_END);
-			continue;
-		    }
-		}
-		else if(strnieq(p, MIME_HEADER_CODE_MIDDLE_B64, strlen(MIME_HEADER_CODE_MIDDLE_B64)))
-		{
-		    /* May be b64 */
-		    beg = p + strlen(MIME_HEADER_CODE_MIDDLE_B64);
-		    end = strchr(beg, '?');
-		    if (NULL != end &&
-			strnieq(end, MIME_HEADER_CODE_END, strlen(MIME_HEADER_CODE_END)) &&
-			ERROR != mime_b64_decode(&buf, beg, end - beg))
-		    {
-			is_mimed = 1;
-			if(!is_new_decoder || strieq(charset, INTERNAL_CHARSET))
-			{
-			    strncpy(&(d[i]), buf, n - i - 1);
-			}
-			else
-			{
-			    dst_len = tmp_len = n - i - 1;
-			    if(mime_decharset_string(&(d[i]), &tmp_len, buf, &dst_len,
-						     charset, INTERNAL_CHARSET) == ERROR)
-				strncpy(&(d[i]), buf, n - i - 1);
-			}
-			xfree(buf);
-			i += strlen(&(d[i]));
-			s = end + strlen(MIME_HEADER_CODE_END);
-			continue;
-		    }
-		}
+    int rc;
+    size_t d_left = d_max - 1;
+    size_t d_size;
+    size_t s_handled;
+
+    while (d_left != 0 && *s != '\0') {
+	if (isspace(*s)) {
+	    /* just skip spaces between mime words */
+	    if (!is_mime) {
+		*d++ = *s;
+		d_left--;
 	    }
+	    s++;
+	    continue;
 	}
 
-	/* Nothing special to do */
-	d[i++] = *s++;
-    }
-    d[i] = 0;
-    /* if 8bit subject, normalize it */
-    if(is_new_decoder && !is_mimed)
-    {
-	char *tmp_str, *src_charset;
-	size_t src_len, dst_len;
+	is_prev_mime = is_mime;
 
-	if((src_charset = mime_get_main_charset()) != NULL)
-	{
-	    debug(6, "Normilizing 8bit subject from  charset %s to %s", src_charset, INTERNAL_CHARSET);
-	    
-	    src_len = strlen(d);
-	    dst_len = src_len + 1;
-	    tmp_str = xmalloc(dst_len);
-	    if(mime_decharset_string(tmp_str, &dst_len, d, &src_len,
-				     src_charset, INTERNAL_CHARSET) != ERROR)
-		strcpy(d, tmp_str);
-	    xfree(src_charset);
-	    xfree(tmp_str);
+        /* it means mime "word" -- encoded or plain part */
+	s_handled = mime_handle_word(s, &buf, &len, &is_mime,
+				     charset, sizeof(charset));
+
+	/* keep at least one space between mime and non-mime words */
+	if (is_prev_mime && !is_mime) {
+	    *d++ = ' ';
+	    d_left--;
+
+	    if (d_left == 0)
+		break;
 	}
+
+	debug(6, "subject charset: %s", charset);
+	d_size = d_left;
+	rc = mime_decharset_string(d, &d_size, buf, &len,
+				   charset, INTERNAL_CHARSET);
+	free(buf);
+
+	/* unused space was returned in d_size */
+	d += d_left - d_size;
+
+	if (rc != OK) {
+	    debug(6, "Could not recode subject %s", buf);
+	    goto out;
+	}
+
+	d_left = d_size;
+	s += s_handled;
     }
-    return d;
+
+out:
+    *d = '\0';
+    return save_d;
 }
 
 /* takes space-stripped string */
@@ -977,10 +1060,10 @@ static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime)
  * Adjust given length to string's length
  */
 
-static int mime_decharset_string(char *dst, size_t *dstlen, const char *src, size_t *srclen, char *from, char *to)
+static int mime_decharset_string(char *dst, size_t *dstlen, char *src, size_t *srclen, char *from, char *to)
 {
     int rc;
-    int len;
+    size_t len;
 
 #ifdef HAVE_ICONV
     iconv_t desc;
@@ -996,6 +1079,13 @@ static int mime_decharset_string(char *dst, size_t *dstlen, const char *src, siz
     len = strlen(src);
     if(len < *srclen)
 	*srclen = len;
+
+    if (strieq(from, to)) {
+	len = MIN(*dstlen, *srclen);
+	memcpy(dst, src, len);
+	*dstlen -= len;
+	return OK;
+    }
     
 #ifdef HAVE_ICONV
     
