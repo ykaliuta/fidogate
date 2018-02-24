@@ -1,3 +1,13 @@
+fidogate (5.2.5~git20171111-1) unstable; urgency=medium
+
+  * New upstream snapshot:
+    - constants: increase MAXMSGHEADRLEN from 70 to 71 chars
+    - mime: redesign mime_deheader() and fix mime handling
+    - mime.c: fix compiler warnings
+    - tests: common/mime: add deheader tests
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Sat, 24 Feb 2018 17:35:49 +0200
+
 fidogate (5.2.5~git20170907-1) unstable; urgency=medium
 
   * Switch to 3.0 (quilt) source format.
