@@ -120,9 +120,9 @@ main(int argc, char **argv)
       return 1;
     }
 
-  close(0);
-  close(1);
-  close(2);
+  freopen("/dev/null", "w", stdout);
+  freopen("/dev/null", "w", stderr);
+  freopen("/dev/null", "r", stdin);
 
   if (!remove)
     {
