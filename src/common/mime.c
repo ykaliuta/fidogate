@@ -465,7 +465,7 @@ static int mime_handle_mimed_word(char *s, char **out, size_t *out_len,
     }
 
     tmp_len = MIN(tmp_len + 1, ch_size);
-    snprintf(charset, tmp_len, s + strlen(MIME_HEADER_CODE_START));
+    snprintf(charset, tmp_len, "%s", s + strlen(MIME_HEADER_CODE_START));
 
     /* Check if b64 or qp */
     if (strnieq(p,
