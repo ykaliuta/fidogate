@@ -1,3 +1,13 @@
+fidogate (5.2.5~git20170227-1) unstable; urgency=medium
+
+  * New upstream snapshot:
+    - toss/ngoper: redirect stdio to /dev/null instead of closing
+    - mime.c: use "%s" format for snprintf
+  * packaging: logrotate: add missing and reduce count
+  * packaging: cron.d run runinc sequentially
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Sat, 10 Mar 2018 07:58:06 +0200
+
 fidogate (5.2.5~git20171111-1) unstable; urgency=medium
 
   * New upstream snapshot:
