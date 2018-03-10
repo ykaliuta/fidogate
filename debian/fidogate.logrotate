@@ -1,7 +1,7 @@
 /var/log/fidogate/log {
 	weekly
 	missingok
-	rotate 52
+	rotate 12
 	compress
 	delaycompress
 	notifempty
@@ -11,9 +11,38 @@
 /var/log/fidogate/log-in {
 	weekly
 	missingok
-	rotate 52
+	rotate 12
 	compress
 	delaycompress
 	notifempty
 	create 660 ftn news
+}
+
+/var/log/fidogate/areafix.log {
+	monthly
+	missingok
+	rotate 12
+	nocompress
+	notifempty
+	create 660 ftn news
+}
+
+/var/log/fidogate/log-news {
+	weekly
+	missingok
+	rotate 12
+	compress
+	delaycompress
+	notifempty
+	create 660 news news
+}
+
+/var/log/fidogate/send-fidogate.log {
+	weekly
+	missingok
+	rotate 12
+	compress
+	delaycompress
+	notifempty
+	create 660 news news
 }
