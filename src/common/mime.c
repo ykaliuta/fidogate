@@ -743,7 +743,6 @@ static MIMEInfo *get_mime_disposition(char *ver, char *type, char *enc, char *di
 	if(tmp_line != NULL)
 	    tmp_str = mime_attr_value(tmp_line->line);
 	mime->disposition_filename = s_copy(tmp_str);
-	xfree(tmp_str);
 	tl_clear(&header_line);
     }
     
