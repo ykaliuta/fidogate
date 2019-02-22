@@ -22,6 +22,8 @@ build/install-sh
 build/ltmain.sh
 build/ylwrap
 build/mkinstalldirs
+build/missing
+build/test-driver
 doc/examples/dyff/fidogate.conf.sample
 doc/examples/dyff/packing.sample
 doc/examples/point/fidogate.conf

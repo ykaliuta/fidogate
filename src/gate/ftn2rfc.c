@@ -139,6 +139,7 @@ static char *netmail_charset_out = NULL;
 static char *news_path_tail = "fidogate!not-for-mail";
 static short int ignore_chrs 	= FALSE;
 static short int ignore_soft_cr	= FALSE;
+static short int ignore_mime_type	= TRUE;
 
 static int is_7bit(char *buffer, size_t len) {
      int i;
@@ -753,6 +754,9 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    mime_enc = kludge_get(&body.kludge,
 				  "RFC-Content-Transfer-Encoding", NULL);
 	strip_space(mime_enc);
+
+	if (ignore_mime_type)
+		mime_type = NULL;
 	mime = get_mime(mime_ver, mime_type, mime_enc);
 
 	/*
@@ -2088,6 +2092,10 @@ int main(int argc, char **argv)
     if(cf_get_string("IgnoreSoftCR", TRUE))
     {
 	ignore_soft_cr = TRUE;
+    }
+    if(cf_get_string("DontIgnoreMimeType", TRUE))
+    {
+	ignore_mime_type = FALSE;
     }
     if(cf_get_string("DontIgnore0x8d", TRUE))
     {

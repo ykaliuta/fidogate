@@ -413,6 +413,7 @@ void log_file(char *name)
 
     log_deinit(l);
     log_init(l, name);
+    setenv("FIDOGATE_LOGFILE", name, 1);
 }
 
 void log_program(char *name)
