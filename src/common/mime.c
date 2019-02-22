@@ -531,6 +531,8 @@ static int mime_handle_word(char *s, char **out, size_t *out_len,
 {
     char *plain_charset;
     bool free_charset = true;
+    char *p;
+    char save_ch = 0;
 
     if (strnieq(s,
 		MIME_HEADER_CODE_START,
@@ -541,7 +543,6 @@ static int mime_handle_word(char *s, char **out, size_t *out_len,
 				      charset, ch_size);
     }
 
-    /* do not support mix of mimed and plain words at the moment */
     plain_charset = mime_get_main_charset();
     if (plain_charset == NULL) {
 	plain_charset = INTERNAL_CHARSET;
@@ -555,8 +556,24 @@ static int mime_handle_word(char *s, char **out, size_t *out_len,
 	free(plain_charset);
 
     *is_mime = false;
+
+    /*
+     * if there are several words, handle only one.
+     * temporary replace the space with \0 to get the word
+     */
+    p = strchr(s, ' ');
+    if (p != NULL) {
+	save_ch = *p;
+	*p = '\0';
+    }
+
     *out_len = strlen(s);
     *out = strsave(s);
+
+    /* fix back */
+    if (p != NULL)
+	*p = save_ch;
+
     return *out_len;
 }
 
