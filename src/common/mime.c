@@ -513,6 +513,7 @@ fallback:
     memcpy(*out, s, len); /* no '\0' */
     snprintf(charset, ch_size, "%s", INTERNAL_CHARSET);
     *is_mime = false;
+    *out_len = len;
 
     return len;
 }
