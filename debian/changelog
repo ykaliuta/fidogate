@@ -1,3 +1,17 @@
+fidogate (5.2.5~git20190222-2) unstable; urgency=medium
+
+  * New upstream snapshot:
+
+    - version: switch to 2 levels, 5.3
+    - autotools: do not track build/missing build/test-driver
+    - mime: handle mix of mime/non-mime word in subject
+    - log: log_file sets environment as well
+    - mime: fix double free at get_mime_disposition
+    - ftn2rfc: Ignore mime type and add DontIgnoreMimeType option
+    - mime: rfc2ftn: do not fail on multipart/alternative
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Fri, 22 Feb 2019 09:34:51 +0200
+
 fidogate (5.2.5~git20170227-1) unstable; urgency=medium
 
   * New upstream snapshot:
