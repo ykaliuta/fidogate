@@ -532,7 +532,8 @@ static int mime_handle_word(char *s, char **out, size_t *out_len,
     char *plain_charset;
     bool free_charset = true;
     char *p;
-    char save_ch = 0;
+    size_t len;
+    char *res;
 
     if (strnieq(s,
 		MIME_HEADER_CODE_START,
@@ -557,22 +558,18 @@ static int mime_handle_word(char *s, char **out, size_t *out_len,
 
     *is_mime = false;
 
-    /*
-     * if there are several words, handle only one.
-     * temporary replace the space with \0 to get the word
-     */
+    /* if there are several words, handle only one. */
     p = strchr(s, ' ');
-    if (p != NULL) {
-	save_ch = *p;
-	*p = '\0';
-    }
-
-    *out_len = strlen(s);
-    *out = strsave(s);
-
-    /* fix back */
     if (p != NULL)
-	*p = save_ch;
+	    len = p - s;
+    else
+	    len = strlen(s);
+
+    res = xmalloc(len + 1);
+    str_copy(res, len + 1, s);
+
+    *out_len = len;
+    *out = res;
 
     return *out_len;
 }
