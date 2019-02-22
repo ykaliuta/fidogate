@@ -6,7 +6,7 @@ dnl Copyright (c) 2015-206 Yauheni Kaliuta <y.kaliuta@gmail.com>
 dnl
 AC_REVISION([$Revision: 5.6 $])
 AC_PREREQ(2.53)
-AC_INIT([fidogate],[5.2.5],[y.kaliuta@gmail.com])
+AC_INIT([fidogate],[5.3],[y.kaliuta@gmail.com])
 AC_DISABLE_OPTION_CHECKING
 AM_CONFIG_HEADER([config.h])
 AC_CONFIG_SRCDIR([src/common/config.c])

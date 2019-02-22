@@ -465,7 +465,7 @@ static int mime_handle_mimed_word(char *s, char **out, size_t *out_len,
     }
 
     tmp_len = MIN(tmp_len + 1, ch_size);
-    snprintf(charset, tmp_len, s + strlen(MIME_HEADER_CODE_START));
+    snprintf(charset, tmp_len, "%s", s + strlen(MIME_HEADER_CODE_START));
 
     /* Check if b64 or qp */
     if (strnieq(p,
@@ -531,6 +531,8 @@ static int mime_handle_word(char *s, char **out, size_t *out_len,
 {
     char *plain_charset;
     bool free_charset = true;
+    char *p;
+    char save_ch = 0;
 
     if (strnieq(s,
 		MIME_HEADER_CODE_START,
@@ -541,7 +543,6 @@ static int mime_handle_word(char *s, char **out, size_t *out_len,
 				      charset, ch_size);
     }
 
-    /* do not support mix of mimed and plain words at the moment */
     plain_charset = mime_get_main_charset();
     if (plain_charset == NULL) {
 	plain_charset = INTERNAL_CHARSET;
@@ -555,8 +556,24 @@ static int mime_handle_word(char *s, char **out, size_t *out_len,
 	free(plain_charset);
 
     *is_mime = false;
+
+    /*
+     * if there are several words, handle only one.
+     * temporary replace the space with \0 to get the word
+     */
+    p = strchr(s, ' ');
+    if (p != NULL) {
+	save_ch = *p;
+	*p = '\0';
+    }
+
     *out_len = strlen(s);
     *out = strsave(s);
+
+    /* fix back */
+    if (p != NULL)
+	*p = save_ch;
+
     return *out_len;
 }
 
@@ -743,7 +760,6 @@ static MIMEInfo *get_mime_disposition(char *ver, char *type, char *enc, char *di
 	if(tmp_line != NULL)
 	    tmp_str = mime_attr_value(tmp_line->line);
 	mime->disposition_filename = s_copy(tmp_str);
-	xfree(tmp_str);
 	tl_clear(&header_line);
     }
     
@@ -1216,7 +1232,8 @@ static Textlist* mime_debody_section(Textlist *body, Textlist *header)
 	}
 	mime_decharset_section(dec_body, mime);
     }
-    else if(strieq(mime->type_type, "multipart/mixed"))
+    else if(strieq(mime->type_type, "multipart/mixed") ||
+	    strieq(mime->type_type, "multipart/alternative"))
     {
 	dec_body = mime_debody_multipart(body, mime);
     }
