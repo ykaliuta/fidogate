@@ -42,8 +42,8 @@ char *version_global(void)
 {
     static char id[32];
 
-    str_printf(id, sizeof(id), "%d.%d.%d%s",
-	       VERSION_MAJOR, VERSION_MINOR, PATCHLEVEL, EXTRAVERSION);
+    str_printf(id, sizeof(id), "%d.%d%s",
+	       VERSION_MAJOR, VERSION_MINOR, EXTRAVERSION);
     return id;
 }
 

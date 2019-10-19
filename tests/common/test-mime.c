@@ -64,6 +64,15 @@ Ensure(deheader_decodes_ge35chars_line)
 	assert_that(dres, is_equal_to_string(exp));
 }
 
+Ensure(deheader_decodes_nonmime_at_start)
+{
+	char *src = "Re: Re: =?utf-8?B?0LnQudC50LnQuQ==?=";
+	char *exp = "Re: Re: " J J J J J;
+
+	mime_deheader(dres, sizeof(dres), src);
+
+	assert_that(dres, is_equal_to_string(exp));
+}
 #undef J
 
 Ensure(deheader_handles_empty)
@@ -124,6 +133,7 @@ static TestSuite *create_mime_suite(void)
     add_test(suite, enheader_encodes_long_line);
     add_test(suite, deheader_decodes_le28chars_line);
     add_test(suite, deheader_decodes_ge35chars_line);
+    add_test(suite, deheader_decodes_nonmime_at_start);
     add_test(suite, deheader_handles_empty);
     add_test(suite, deheader_preserves_non_mime);
     add_test(suite, deheader_cuts_long_non_mime);

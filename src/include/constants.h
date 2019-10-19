@@ -78,8 +78,8 @@
 #define INVALID		(-1)
 #define WILDCARD	(-2)
 
-#define DEFAULT_LINE_LENGTH	72
-#define MAX_LINE_LENGTH		200
+#define DEFAULT_LINE_LENGTH	32768
+#define MAX_LINE_LENGTH		32768
 
 /*
  * Standard FIDONET domain for Z1-6 Message-IDs
