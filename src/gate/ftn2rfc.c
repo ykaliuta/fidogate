@@ -355,38 +355,114 @@ int check_valid_domain(char *s)
 
 struct encoding_state {
     int cvt8;
+    char *cs_in;
     char *cs_out;
-    Textlist *theader;
 };
+
+static int recode_header(Textline *tl, struct encoding_state *state)
+{
+    size_t len;
+    char *tmpbuf;
+    int rc;
+    size_t size;
+    size_t new_size;
+
+    len = strlen(tl->line);
+    size = len + 1;
+    /*
+     * max utf8 symbol size is 4 bytes, min source 1 byte,
+     * max increase -- 4 times
+     */
+    new_size = len * 4 + 1;
+    tmpbuf = xmalloc(new_size);
+    /* recode with the header's name, hopefully no charset amend ascii */
+    rc = charset_recode_string(tmpbuf, &new_size, tl->line, &size,
+			       state->cs_in, state->cs_out);
+
+    if (rc != OK) {
+	fglog("ERROR: could not recode header from %s to %s\n",
+	      state->cs_in, state->cs_out);
+	return ERROR;
+    }
+
+    xfree(tl->line);
+    tl->line = tmpbuf;
+
+    return OK;
+}
 
 static int encode_header(Textline *tl, void *arg)
 {
     struct encoding_state *state = arg;
-    char *line = tl->line;
     char *tmpbuf = NULL;
     char *p;
-    int size;
-    
-    if((is_7bit(line, strlen(line))) || (!(state->cvt8 & AREA_HB64)))
+    size_t size;
+    size_t name_len;
+    int rc;
+
+    rc = recode_header(tl, state);
+    if (rc != OK)
+	return rc;
+
+    if((is_7bit(tl->line, strlen(tl->line))) || (!(state->cvt8 & AREA_HB64)))
 	return OK;
     
-    p = strstr(line, ": ");
+    p = strstr(tl->line, ": ");
     if (p == NULL)
 	return OK;
 
-    size = strlen(p + 2);
-    mime_enheader(&tmpbuf, (unsigned char *)p + 2,
+    /* including `: `, like `Subject: ` */
+    name_len = p - tl->line + 2;
+
+    size = strlen(tl->line + name_len);
+    mime_enheader(&tmpbuf, (unsigned char *)tl->line + name_len,
 		  size, state->cs_out);
 
-    size += (p - line) + 2 + strlen(tmpbuf) + 2;
-    tl->line = xrealloc(line, size);
-    strcpy(tl->line + (p + 2 - line), tmpbuf);
+    size = name_len + strlen(tmpbuf) + 2; /* \n\0 */
+    tl->line = xrealloc(tl->line, size);
+    strcpy(tl->line + name_len, tmpbuf);
     strcat(tl->line, "\n");
     xfree(tmpbuf);
     
     return OK;
 }
 
+/*
+ * temporal copy'n'paste. Must traverse all the characters across the
+ * lines
+ */
+static int recode_body(Textline *tl, void *arg)
+{
+    struct encoding_state *state = arg;
+    char *line = tl->line;
+    char *tmpbuf = NULL;
+    size_t len;
+    size_t new_size;
+    size_t size;
+    int rc;
+
+    len = strlen(line);
+    size = len + 1;
+    /*
+     * max utf8 symbol size is 4 bytes, min source 1 byte,
+     * mac increase -- 4 times
+     */
+    new_size = len * 4 + 1;
+    tmpbuf = xmalloc(new_size);
+    rc = charset_recode_string(tmpbuf, &new_size, line, &size,
+			       state->cs_in, state->cs_out);
+
+    if (rc != OK) {
+	fglog("ERROR: could not recode body line from %s to %s\n",
+	      state->cs_in, state->cs_out);
+	return ERROR;
+    }
+
+    xfree(tl->line);
+    tl->line = tmpbuf;
+
+    return OK;
+}
 
 /*
  * Read and convert FTN mail packet
@@ -1574,10 +1650,11 @@ carbon:
 	tl_appendf(&theader, "\n");
 
 	en_state.cvt8 = cvt8;
+	en_state.cs_in = cs_in;
 	en_state.cs_out = cs_out;
-	en_state.theader = &theader;
 	
 	tl_for_each(&theader, encode_header, &en_state);
+	tl_for_each(&tbody, recode_body, &en_state);
 	
 	/* Write header and message body to output file */
 	if(area)
