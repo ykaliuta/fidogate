@@ -276,10 +276,11 @@ Area *news_msg(char *line, Node *to)
 		else
 		    debug(8, "config: AutoCreateNG not defuned");
 	    }
-#else
-	    return pa;
 #endif /* ACTIVE_LOOKUP */
+
+	    return pa;
 	}
+
 	/* Area not found */
 	area.next  	  = NULL;
 	area.area  	  = p;
