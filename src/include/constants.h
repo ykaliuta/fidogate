@@ -78,7 +78,6 @@
 #define INVALID		(-1)
 #define WILDCARD	(-2)
 
-#define DEFAULT_LINE_LENGTH	32768
 #define MAX_LINE_LENGTH		32768
 
 /*

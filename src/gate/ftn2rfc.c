@@ -52,7 +52,6 @@ char   *get_bcc			(Textlist *);
 char   *get_subject		(Textlist *);
 Area   *news_msg		(char *, Node *);
 int	msg_format_buffer	(char *, Textlist *);
-static int msg_get_line_length	(void);
 static int gate_rfc_kludge = FALSE;	/* GateRfcKludge          */
 int	unpack			(FILE *, Packet *);
 int	unpack_file		(char *);
@@ -354,103 +353,6 @@ int check_valid_domain(char *s)
 }
 
 
-/*
- * Format buffer line and put it into Textlist. Returns number of
- * lines.
- */
-
-static int msg_get_line_length(void)
-{
-    static int message_line_length = 0;
-
-    if(!message_line_length) 
-    {
-	char *p;
-	if( (p = cf_get_string("MessageLineLength", TRUE)) )
-	{
-	    message_line_length = atoi(p);
-	    if(message_line_length < 20 ||
-	       message_line_length > MAX_LINE_LENGTH) 
-	    {
-		fglog("WARNING: illegal MessageLineLength value %d",
-		      message_line_length);
-		message_line_length = DEFAULT_LINE_LENGTH;
-	    }
-	}
-	else
-	    message_line_length = DEFAULT_LINE_LENGTH;
-    }
-    return message_line_length;
-}
-
-
-
-int msg_format_buffer(char *buffer, Textlist *tlist)
-{
-    int max_linelen;
-    char *p, *np;
-    char localbuffer[MAX_LINE_LENGTH + 16];	/* Some extra space */
-    int i;
-    int lines;
-
-    max_linelen = msg_get_line_length();
-    
-    if(strlen(buffer) <= max_linelen)		/* Nothing to do */
-    {
-	tl_append(tlist, buffer);
-	return 1;
-    }
-    else
-    {
-	/* Break line with word wrap */
-	lines = 0;
-	p     = buffer;
-
-	while(TRUE)
-	{
-	    /* Search backward for a whitespace to break line. If no
-	     * proper point is found, the line will not be split.
-	     */
-	    for(i=max_linelen-1; i>=0; i--)
-		if(is_blank(p[i]))	/* Found a white space */
-		    break;
-	    if(i < max_linelen/2)	/* Not proper space to split found, */
-	    {				/* put line as is                   */
-		tl_append(tlist, p);
-		lines++;
-		return lines;
-	    }
-	    for(; i>=0 && is_blank(p[i]); i--);	/* Skip more white space */
-	    i++;				/* Return to last white sp. */
-
-	    /* Cut here and put into textlist */
-	    np = p + i;
-	    *np++ = 0;
-	    BUF_COPY2(localbuffer, p, "\n");
-	    tl_append(tlist, localbuffer);
-	    lines++;
-	    
-	    /* Advance buffer pointer and test length of remaining
-	     * line
-	     */
-	    p = np;
-	    for(; *p && is_blank(*p); p++);	/* Skip white space */
-	    if(*p == 0)				/* The end */
-		return lines;
-	    if(strlen(p) <= max_linelen)	/* No more wrappin' */
-	    {
-		tl_append(tlist, p);
-		lines++;
-		return lines;
-	    }
-
-	    /* Play it again, Sam! */
-	}
-    }
-    /**NOT REACHED**/
-    return 0;
-}
-
 struct encoding_state {
     int cvt8;
     char *cs_out;
@@ -519,7 +421,6 @@ int unpack(FILE *pkt_file, Packet *pkt)
     Textlist tbody;    			/* RFC message body */
     int uucp_flag;			/* To == UUCP or GATEWAY */
     int ret;
-    int rfc_lvl, rfc_lines;
     char *split_line;
     int cvt8 = 0;			/* AREA_8BIT | AREA_QP | AREA_HB64 */
     char *cs_def, *cs_in, *cs_out;	/* Charset def, in(=FTN), out(=RFC) */
@@ -825,21 +726,6 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	charset_set_in_out(cs_in, cs_out);
 	/**FIXME: if ERROR is returned, use first matching alias for cs_in**/
 
-	/* ^ARFC level and line break flag */
-	rfc_lvl   = 0;
-	rfc_lines = FALSE;
-	if( (p = kludge_get(&body.kludge, "RFC", NULL)) )
-	{
-	    s = strtok(p, " \t");
-	    if(s)
-		rfc_lvl = atoi(s);
-	    s = strtok(NULL, " \t");
-	    if(s && !stricmp(s, "lines"))
-		rfc_lines = TRUE;
-	    if(s && atoi(s)==0)
-		rfc_lines = TRUE;
-	}
-	    
 	lines = 0;
 	for(pl=body.body.first; pl; pl=pl->next)
 	{
@@ -859,13 +745,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    {
 		msg_xlate_line(buffer, sizeof(buffer), p, cvt8 & AREA_QP,
 			       ignore_soft_cr);
-		if(rfc_lines)
-		{
-		    tl_append(&tbody, buffer);
-		    lines++;
-		}
-		else
-		    lines += msg_format_buffer(buffer, &tbody);
+		tl_append(&tbody, buffer);
+		lines++;
 	    }
 	}
 

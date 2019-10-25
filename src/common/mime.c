@@ -803,33 +803,6 @@ MIMEInfo* get_mime_from_header (Textlist *header)
 				    rfcheader_get(header, "Content-Disposition"));
 }
 
-
-static int msg_get_line_length(void)
-{
-    static int message_line_length = 0;
-
-    if(!message_line_length) 
-    {
-	char *p;
-	if( (p = cf_get_string("MessageLineLength", TRUE)) )
-	{
-	    debug(8, "config: MessageLineLength %s", p);
-	    message_line_length = atoi(p);
-	    if(message_line_length < 20 ||
-	       message_line_length > MAX_LINE_LENGTH) 
-	    {
-		fglog("WARNING: illegal MessageLineLength value %d",
-		      message_line_length);
-		message_line_length = DEFAULT_LINE_LENGTH;
-	    }
-	}
-	else
-	    message_line_length = DEFAULT_LINE_LENGTH;
-    }
-    return message_line_length;
-}
-
-
 /* Garantee [^\r]\n\0 in the end of string since our
    output subroutine adds '\r'
    str should have space for 1 extra symbol */
@@ -931,7 +904,7 @@ static Textlist* mime_debody_base64(Textlist *body)
     Textlist *dec_body = NULL;
     Textline *line;
 
-    int max_len = msg_get_line_length();
+    int max_len = MAX_LINE_LENGTH;
     int left;
     int enc_len = 0, dec_str_len = 0;
 
@@ -1167,7 +1140,7 @@ static int mime_decharset_section(Textlist *body, MIMEInfo *mime)
 	return OK;
 
    
-    max_len = msg_get_line_length();
+    max_len = MAX_LINE_LENGTH;
     res_str = xmalloc(max_len + 1);
 
     for(line = body->first; line != NULL; line = line->next)
