@@ -167,6 +167,9 @@ int	charset_read_bin	(char *);
 char   *charset_qpen		(int, int);
 char   *charset_map_c		(int, int);
 char   *xlat_s			(char *, char *);
+int     charset_recode_string   (char *dst, size_t *dstlen,
+				 char *src, size_t *srclen,
+				 char *from, char *to);
 char   *charset_alias_fsc	(char *);
 char   *charset_alias_rfc	(char *);
 void	charset_set_in_out	(char *, char *);
@@ -689,7 +692,6 @@ void	exit_free		(void);
 
 MIMEInfo *get_mime		(char *, char *, char *);
 MIMEInfo *get_mime_from_header	(Textlist*);
-
 /* xstrnlen.c */
 size_t	xstrnlen		(const char *, size_t);
 
