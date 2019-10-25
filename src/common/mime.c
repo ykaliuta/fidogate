@@ -34,7 +34,6 @@
 
 static int is_qpx		(int);
 static int x2toi		(char *);
-static int mime_decharset_string(char*, size_t*, char*, size_t*, char*, char*);
 void	   mime_free		(void);
 
 static MIMEInfo *mime_list = NULL;
@@ -617,7 +616,7 @@ char *mime_deheader(char *d, size_t d_max, char *s)
 
 	debug(6, "subject charset: %s", charset);
 	d_size = d_left;
-	rc = mime_decharset_string(d, &d_size, buf, &len,
+	rc = charset_recode_string(d, &d_size, buf, &len,
 				   charset, INTERNAL_CHARSET);
 	free(buf);
 
@@ -1037,91 +1036,6 @@ static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime)
 }
 
 
-/*
- * get source string, lenght of it, buffer for the destination string
- * and its length.
- * Return in srclen -- rest of undecoded characters (0 if ok)
- * in dstlen -- number of unused bytes in the dst buffer
- * The argument's order is like in str/mem functions
- *
- * Adjust given length to string's length
- */
-
-static int mime_decharset_string(char *dst, size_t *dstlen, char *src, size_t *srclen, char *from, char *to)
-{
-    int rc;
-    size_t len;
-
-#ifdef HAVE_ICONV
-    iconv_t desc;
-#endif
-    if(src == NULL || dst == NULL || srclen == NULL || dstlen == NULL)
-	return ERROR;
-    
-    if(*srclen == 0 || *dstlen == 0)
-	return ERROR;
-
-    debug(6, "mime charset: recoding from %s to %s", from, to);
-
-    len = strlen(src);
-    if(len < *srclen)
-	*srclen = len;
-
-    if (strieq(from, to)) {
-	len = MIN(*dstlen, *srclen);
-	memcpy(dst, src, len);
-	*dstlen -= len;
-	return OK;
-    }
-    
-#ifdef HAVE_ICONV
-    
-    debug(6, "Using ICONV");
-    desc = iconv_open(to, from);
-    if(desc == (iconv_t)-1)
-    {
-	fglog("WARNING: iconv cannot convert from %s to %s", from, to);
-	return ERROR;
-    }
-
-    while(*srclen > 0)
-    {
-	rc = iconv(desc, &src, srclen, &dst, dstlen);
-	if(rc != -1)
-	    continue;
-
-	if(errno == E2BIG)
-	{
-	    rc = ERROR;
-	    goto exit;
-	}
-	
-	/* Only if wrong symbol (or sequence), try to skip it */
-	(*srclen)--;
-	src++;
-	/* reset conversion state */
-	/* iconv(desc, NULL, NULL, &res_ptr, &res_len); */
-    }
-
-    rc = OK;
-exit:
-    *dst = '\0';
-    iconv_close(desc);
-#else
-
-    charset_set_in_out(from, to);
-    *dst = '\0';
-    
-    for(; (*srclen > 0 ) && (*dstlen > 0); (*srclen)--, (*dstlen)--) 
-	strcat(dst, charset_map_c(*(src++), 0));
-
-    rc = OK;
-    
-#endif
-    return rc;
-    
-}
-
 static int mime_decharset_section(Textlist *body, MIMEInfo *mime)
 {
 
@@ -1148,7 +1062,7 @@ static int mime_decharset_section(Textlist *body, MIMEInfo *mime)
 	src_len = strlen(line->line);
 	res_len = max_len;
 
-	rc = mime_decharset_string(res_str, &res_len, line->line, &src_len,
+	rc = charset_recode_string(res_str, &res_len, line->line, &src_len,
 				   mime->type_charset, INTERNAL_CHARSET);
 
 	if(rc == ERROR)

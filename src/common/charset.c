@@ -463,3 +463,109 @@ void charset_free(void)
 	xfree(pt);
     }
 }
+
+#ifdef HAVE_ICONV
+static int charset_recode_iconv(char *dst, size_t *dstlen,
+				char *src, size_t *srclen,
+				char *from, char *to)
+{
+    int rc;
+    iconv_t desc;
+
+    debug(6, "Using ICONV");
+    desc = iconv_open(to, from);
+    if(desc == (iconv_t)-1)
+    {
+	debug(6, "WARNING: iconv cannot convert from %s to %s", from, to);
+	return ERROR;
+    }
+
+    while(*srclen > 0)
+    {
+	rc = iconv(desc, &src, srclen, &dst, dstlen);
+	if(rc != -1)
+	    continue;
+
+	if((errno == E2BIG) || (*dstlen == 0))
+	{
+	    rc = ERROR;
+	    goto exit;
+	}
+
+	/* Only if wrong symbol (or sequence), try to skip it */
+	(*srclen)--;
+	src++;
+
+	*dst++ = '?';
+	(*dstlen)--;
+    }
+
+    /*
+     * write sequence to get to the initial state if needed
+     * https://www.gnu.org/software/libc/manual/html_node/iconv-Examples.html
+     */
+    iconv(desc, NULL, NULL, &dst, dstlen);
+    rc = OK;
+
+exit:
+    *dst = '\0';
+    iconv_close(desc);
+
+    return rc;
+}
+#endif
+
+/* uses internal recode */
+static int charset_recode_int(char *dst, size_t *dstlen,
+			      char *src, size_t *srclen,
+			      char *from, char *to)
+{
+
+    charset_set_in_out(from, to);
+    *dst = '\0';
+
+    for(; (*srclen > 0 ) && (*dstlen > 0); (*srclen)--, (*dstlen)--)
+	strcat(dst, charset_map_c(*(src++), 0));
+
+    return OK;
+}
+
+/*
+ * get source string, lenght of it, buffer for the destination string
+ * and its length.
+ * Return in srclen -- rest of undecoded characters (0 if ok)
+ * in dstlen -- number of unused bytes in the dst buffer
+ * The argument's order is like in str/mem functions
+ *
+ * Adjust given length to string's length
+ */
+int charset_recode_string(char *dst, size_t *dstlen,
+			  char *src, size_t *srclen,
+			  char *from, char *to)
+{
+    int rc;
+    size_t len;
+
+    if(src == NULL || dst == NULL || srclen == NULL || dstlen == NULL)
+	return ERROR;
+
+    if(*srclen == 0 || *dstlen == 0)
+	return ERROR;
+
+    debug(6, "mime charset: recoding from %s to %s", from, to);
+
+    if (strieq(from, to)) {
+	len = MIN(*dstlen, *srclen);
+	memcpy(dst, src, len);
+	*dstlen -= len;
+	*srclen -= len;
+	return OK;
+    }
+
+#ifdef HAVE_ICONV
+    rc = charset_recode_iconv(dst, dstlen, src, srclen, from, to);
+#else
+    rc = charset_recode_int(dst, dstlen, src, srclen, from, to);
+#endif
+    return rc;
+}
