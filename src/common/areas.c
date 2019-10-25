@@ -143,6 +143,8 @@ long areas_get_limitmsgsize(void)
  *     -8               convert to 8bit iso-8859-1 characters
  *     -Q               convert to quoted-printable iso-8859-1 characters
  *     -C def:in:out    charset mapping setting
+ *     -b               convert to base64, enabled by default
+ *     -nb              do not convert to base64
  */
 Area *areas_parse_line(char *buf)
 {
@@ -170,7 +172,7 @@ Area *areas_parse_line(char *buf)
     node_invalid(&p->addr);
     p->origin       = NULL;
     p->distribution = NULL;
-    p->flags        = 0;
+    p->flags        = AREA_HB64; /* enable base64 by default */
     p->rfc_lvl      = -1;
     p->maxsize      = -1;
     p->limitsize    = -1;
@@ -231,7 +233,7 @@ Area *areas_parse_line(char *buf)
 	if(!strcmp(o, "-Q"))
         {
             p->flags |= AREA_QP;
-            p->flags &= AREA_HB64;
+            p->flags &= ~AREA_HB64;
         }
             
 	if(!strcmp(o, "-b"))
@@ -240,6 +242,11 @@ Area *areas_parse_line(char *buf)
             p->flags &= ~AREA_QP;
         }
             
+	if(!strcmp(o, "-nb"))
+        {
+	    p->flags &= ~AREA_HB64;
+        }
+
 	if(!strcmp(o, "-C"))
 	    /* -C DEF:IN:OUT */
 	    if((o = xstrtok(NULL, " \t")))
