@@ -519,7 +519,6 @@ int unpack(FILE *pkt_file, Packet *pkt)
     Textlist tbody;    			/* RFC message body */
     int uucp_flag;			/* To == UUCP or GATEWAY */
     int ret;
-    int rfc_lvl, rfc_lines;
     char *split_line;
     int cvt8 = 0;			/* AREA_8BIT | AREA_QP | AREA_HB64 */
     char *cs_def, *cs_in, *cs_out;	/* Charset def, in(=FTN), out(=RFC) */
@@ -825,21 +824,6 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	charset_set_in_out(cs_in, cs_out);
 	/**FIXME: if ERROR is returned, use first matching alias for cs_in**/
 
-	/* ^ARFC level and line break flag */
-	rfc_lvl   = 0;
-	rfc_lines = FALSE;
-	if( (p = kludge_get(&body.kludge, "RFC", NULL)) )
-	{
-	    s = strtok(p, " \t");
-	    if(s)
-		rfc_lvl = atoi(s);
-	    s = strtok(NULL, " \t");
-	    if(s && !stricmp(s, "lines"))
-		rfc_lines = TRUE;
-	    if(s && atoi(s)==0)
-		rfc_lines = TRUE;
-	}
-	    
 	lines = 0;
 	for(pl=body.body.first; pl; pl=pl->next)
 	{
@@ -859,13 +843,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    {
 		msg_xlate_line(buffer, sizeof(buffer), p, cvt8 & AREA_QP,
 			       ignore_soft_cr);
-		if(rfc_lines)
-		{
-		    tl_append(&tbody, buffer);
-		    lines++;
-		}
-		else
-		    lines += msg_format_buffer(buffer, &tbody);
+		tl_append(&tbody, buffer);
+		lines++;
 	    }
 	}
 
