@@ -879,7 +879,7 @@ int msg_put_msgbody(FILE *fp, MsgBody *body)
  */
 char *msg_xlate_line(char *buf, int n, char *line, int qp, int ignore_soft_cr)
 {
-    char *s, *p, *xl;
+    char *s, *p;
     int c;
 
     n--;				/* Room for \0 char */
@@ -905,33 +905,6 @@ char *msg_xlate_line(char *buf, int n, char *line, int qp, int ignore_soft_cr)
 		c = c + '@';
 	    }
 	}
-	else if(qp && c=='=')
-	{
-	    /* Translate '=' to MIME quoted-printable =3D */
-	    xl = "=3D";
-	    while(*xl)
-	    {
-		if(!n--)
-		    break;
-		*p++ = *xl++;
-	    }
-	    continue;
-	}
-	else if(c & 0x80)
-	{
-	    /* Translate special characters according to character set */
-	    xl = charset_map_c(c, qp);
-	    if(!xl || !*xl)
-		continue;
-	    while(*xl)
-	    {
-		if(!n--)
-		    break;
-		*p++ = *xl++;
-	    }
-	    continue;
-	}
-
 	/*
 	 * Put normal char into buf
 	 */
