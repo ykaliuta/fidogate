@@ -34,7 +34,6 @@
 
 static int is_qpx		(int);
 static int x2toi		(char *);
-static int mime_decharset_string(char*, size_t*, char*, size_t*, char*, char*);
 void	   mime_free		(void);
 
 static MIMEInfo *mime_list = NULL;
@@ -617,8 +616,8 @@ char *mime_deheader(char *d, size_t d_max, char *s)
 
 	debug(6, "subject charset: %s", charset);
 	d_size = d_left;
-	rc = mime_decharset_string(d, &d_size, buf, &len,
-				   charset, INTERNAL_CHARSET);
+	rc = mime_recode_string(d, &d_size, buf, &len,
+				charset, INTERNAL_CHARSET);
 	free(buf);
 
 	/* unused space was returned in d_size */
@@ -1074,7 +1073,7 @@ static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime)
  * Adjust given length to string's length
  */
 
-static int mime_decharset_string(char *dst, size_t *dstlen, char *src, size_t *srclen, char *from, char *to)
+int mime_recode_string(char *dst, size_t *dstlen, char *src, size_t *srclen, char *from, char *to)
 {
     int rc;
     size_t len;
@@ -1175,8 +1174,8 @@ static int mime_decharset_section(Textlist *body, MIMEInfo *mime)
 	src_len = strlen(line->line);
 	res_len = max_len;
 
-	rc = mime_decharset_string(res_str, &res_len, line->line, &src_len,
-				   mime->type_charset, INTERNAL_CHARSET);
+	rc = mime_recode_string(res_str, &res_len, line->line, &src_len,
+				mime->type_charset, INTERNAL_CHARSET);
 
 	if(rc == ERROR)
 	{

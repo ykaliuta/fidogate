@@ -689,7 +689,9 @@ void	exit_free		(void);
 
 MIMEInfo *get_mime		(char *, char *, char *);
 MIMEInfo *get_mime_from_header	(Textlist*);
-
+int     mime_recode_string      (char *dst, size_t *dstlen,
+				 char *src, size_t *srclen,
+				 char *from, char *to);
 /* xstrnlen.c */
 size_t	xstrnlen		(const char *, size_t);
 
