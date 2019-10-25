@@ -381,6 +381,23 @@ static int recode_header(Textline *tl, struct encoding_state *state)
     return OK;
 }
 
+/*
+ * If body is not encoded, provide default for headers, if they are
+ * not plain
+ */
+static int sanitize_encoding(int enc)
+{
+    switch (enc) {
+    case MIME_B64:
+	/* fallthrough */
+    case MIME_QP:
+	return enc;
+    }
+
+    return MIME_DEFAULT;
+}
+	
+
 static char *encode_skip[] = {
     "Path:",
 };
@@ -412,7 +429,8 @@ static int encode_header(Textline *tl, void *arg)
     len = strlen(tl->line);
     if (charset_is_7bit(tl->line, len) && len <= MIME_STRING_LIMIT)
 	return OK;
-    
+
+    enc = sanitize_encoding(enc);
     rc = mime_header_enc(&tmpbuf, tl->line, state->cs_out, enc);
     if (rc != OK)
 	    return OK; /* skip misformatted */

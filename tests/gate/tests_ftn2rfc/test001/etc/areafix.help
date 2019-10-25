@@ -1,0 +1,48 @@
+Help for Areafix/Filefix, FIDOGATE 5.x
+
+Send mail
+
+  To:      AreaFix @ Z:N/F.P
+       or  AreaMgr @ Z:N/F.P
+       or  FileFix @ Z:N/F.P
+       or  FileMgr @ Z:N/F.P
+  Subject: PASSWORD [-l] [-q]
+                          ^^-- same as QUERY command
+                     ^^------- same as LIST command
+
+Commands in message body, optional prefix %% allowed:
+
+  listall                      list all available areas
+  list                         list subscribed from uplinks areas
+                               available to node
+  avail                        list not subscribed from uplinks areas
+                               available to node
+  query                        list subscribed areas
+  unlinked                     list unsubscribed areas
+  from Z:N/F.P PASSWORD        set address and password
+  passwd Z:N/F.P PASSWORD
+  password Z:N/F.P PASSWORD
+  +AREA                        subscribe to AREA
+  AREA    
+  subscribe AREA
+  sub AREA
+  -AREA                        unsubscribe from AREA
+  unsubscribe AREA
+  unsub AREA
+  passive                      set passive mode for all subscribed areas
+  pause
+  passive AREA                 set passive mode for AREA
+  pause AREA
+  active                       unset passive mode for all subscribed areas
+  resume
+  active AREA                  set active mode for AREA
+  resume AREA
+  &AREA [-options]             create new AREA
+  new AREA [-options]
+  create AREA [-options]
+  ~AREA                        delete AREA
+  delete AREA
+  help                         this help
+
+AREA names are not case-sensitive and support shell-style wildcards
+  * ? [a-z] [abc], e.g. COMP.OS.*, [A-D]*.GER
