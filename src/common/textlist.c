@@ -293,3 +293,44 @@ int tl_for_each(Textlist *list, int (*func)(Textline *, void *), void *arg)
     }
     return OK;
 }
+
+void tl_iterator_start(TextlistIterator *iter, Textlist *list)
+{
+    iter->list = list;
+    iter->cur = list->first;
+    iter->len = list->first == NULL ? 0 : strlen(list->first->line);
+    iter->pos = 0;
+}
+
+size_t tl_iterator_next(TextlistIterator *iter, char *buf, size_t len)
+{
+    size_t left; /* in current line */
+    size_t moved;
+
+    if (iter->cur == NULL)
+	return 0;
+
+    left = iter->len - iter->pos;
+
+    moved = 0;
+    while (len > 0) {
+	size_t to_move = MIN(left, len);
+
+	memcpy(buf + moved, &iter->cur->line[iter->pos], to_move);
+	moved += to_move;
+	iter->pos += to_move;
+	len -= to_move;
+	left -= to_move;
+
+	if (left == 0) {
+	    iter->cur = iter->cur->next;
+	    if (iter->cur == NULL)
+		return moved;
+
+	    iter->len = strlen(iter->cur->line);
+	    left = iter->len;
+	    iter->pos = 0;
+	}
+    }
+    return moved;
+}
