@@ -123,5 +123,7 @@ TestSuite *create_config_suite(void)
 
 int main(int argc, char **argv) {
     TestSuite *suite = create_config_suite();
+
+    cgreen_mocks_are(loose_mocks);
     return run_test_suite(suite, create_text_reporter());
 }
