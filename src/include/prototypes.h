@@ -361,6 +361,7 @@ char   *mime_dequote		(char *, size_t, char *, int);
 char   *mime_deheader		(char *, size_t, char *);
 int    mime_debody		(Textlist*); /* decode base64 body */
 int    mime_enheader		(char **, unsigned char *, size_t, char *);
+void   mime_b64_encode_chunk(char *dst, unsigned char *src, unsigned len);
 
 /* misc.c */
 char   *str_change_ext		(char *, size_t, char *, char *);

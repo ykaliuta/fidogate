@@ -189,6 +189,43 @@ int mime_qptoint(char c)
 #define B64_ENC_CHUNK 3
 #define B64_NLET_PER_CHUNK 4
 
+/*
+ * dst must have space for at least 4 octets
+ * dst will not be NUL-terminated
+ * Max 3 source octets encoded
+ */
+void mime_b64_encode_chunk(char *dst, unsigned char *src, unsigned len)
+{
+    int padding;
+
+    if (len == 0)
+	return;
+
+    if (len > B64_ENC_CHUNK)
+	len = B64_ENC_CHUNK;
+
+    padding = B64_ENC_CHUNK - len;
+
+    dst[0] = mime_inttob64(src[0] >> 2);
+    dst[1] = mime_inttob64(src[0] << 4);
+
+    if (len < 2)
+	goto out;
+
+    dst[1] = mime_inttob64((src[0] << 4) | (src[1] >> 4));
+    dst[2] = mime_inttob64(src[1] << 2);
+
+    if (len < 3)
+	goto out;
+
+    dst[2] = mime_inttob64((src[1] << 2) | (src[2] >> 6));
+    dst[3] = mime_inttob64(src[2]);
+
+out:
+    for (; padding > 0; padding--)
+        dst[B64_NLET_PER_CHUNK - padding] = '=';
+}
+
 int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
 {
     int buflen, delimlen = 0;
