@@ -299,15 +299,11 @@ int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
             strcat(buf+outpos, delim);
             outpos += delimlen;
         }
-        /*
-	 * Use this set of shifts, because loop and pointer is
-	 * endian-dependend way
-	 */
-        buf[outpos++] = mime_inttob64(src[i] >> 2);
-        buf[outpos++] = mime_inttob64((src[i] << 4) | (src[i+1] >> 4));
-        buf[outpos++] = mime_inttob64((src[i+1] << 2) | (src[i+2] >> 6));
-        buf[outpos++] = mime_inttob64(src[i+2]);
+
+	mime_b64_encode_chunk(buf + outpos, src + i, B64_ENC_CHUNK);
+	outpos += B64_NLET_PER_CHUNK;
     }
+
     while(padding > 0)
         buf[outpos - padding--] = '=';
 
