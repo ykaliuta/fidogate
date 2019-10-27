@@ -238,11 +238,9 @@ int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
     debug(6, "MIME: %s: %zd chars to encode (%s): %s",
 	  __FUNCTION__, len, encoding, src);
     
-    padding = (B64_ENC_CHUNK - len % B64_ENC_CHUNK) % B64_ENC_CHUNK;
+    padding = B64_ENC_CHUNK - len % B64_ENC_CHUNK;
     
-    /* Round it up and find len
-     * (here (val) *  B64_ENC_CHUNK * B64_NLET_PER_CHUNK / B64_ENC_CHUNK )*/
-    buflen = ((len + (B64_ENC_CHUNK - 1)) / B64_ENC_CHUNK )  * B64_NLET_PER_CHUNK + 1; 
+    buflen = ((len + padding) / B64_ENC_CHUNK )  * B64_NLET_PER_CHUNK;
     
     if(encoding == NULL)
     {
@@ -261,8 +259,9 @@ int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
     if((delim = xmalloc(delimlen + 1)) == NULL)
         return ERROR;
 
-    buflen += (buflen / MIME_STRING_LIMIT) * delimlen;
-    
+    buflen += (buflen / (MIME_STRING_LIMIT - delimlen)) * delimlen;
+    buflen += 1; /* \0 */
+
     if((buf = xmalloc(buflen)) == NULL)
     {
         xfree(delim);
@@ -290,26 +289,20 @@ int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
         strcat(delim, buf);
     }
 
-    len += padding; 
-
     for(i = 0; i < len; i += 3)
     {
+	size_t chunk;
+
         if((outpos % MIME_STRING_LIMIT) < 4 )
         {
             strcat(buf+outpos, delim);
             outpos += delimlen;
         }
-        /*
-	 * Use this set of shifts, because loop and pointer is
-	 * endian-dependend way
-	 */
-        buf[outpos++] = mime_inttob64(src[i] >> 2);
-        buf[outpos++] = mime_inttob64((src[i] << 4) | (src[i+1] >> 4));
-        buf[outpos++] = mime_inttob64((src[i+1] << 2) | (src[i+2] >> 6));
-        buf[outpos++] = mime_inttob64(src[i+2]);
+
+	chunk = MIN(B64_ENC_CHUNK, len - i);
+	mime_b64_encode_chunk(buf + outpos, src + i, chunk);
+	outpos += B64_NLET_PER_CHUNK;
     }
-    while(padding > 0)
-        buf[outpos - padding--] = '=';
 
     if(encoding != NULL)
         strcat(buf, MIME_HEADER_CODE_END);
