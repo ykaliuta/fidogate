@@ -507,6 +507,13 @@ exit:
 
     return rc;
 }
+#else
+static int charset_recode_iconv(char *dst, size_t *dstlen,
+				char *src, size_t *srclen,
+				char *from, char *to)
+{
+	return ERROR;
+}
 #endif
 
 /* uses internal recode */
@@ -559,10 +566,10 @@ int charset_recode_string(char *dst, size_t *dstlen,
 	return OK;
     }
 
-#ifdef HAVE_ICONV
     rc = charset_recode_iconv(dst, dstlen, src, srclen, from, to);
-#else
+    if (rc == OK)
+	    return OK;
+
     rc = charset_recode_int(dst, dstlen, src, srclen, from, to);
-#endif
     return rc;
 }
