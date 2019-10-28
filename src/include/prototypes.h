@@ -358,9 +358,9 @@ int	msg_parse_msgid		(char *, Node *);
 #define MIME_US 2		/* underscore `_' */
 
 char   *mime_dequote		(char *, size_t, char *, int);
-char   *mime_deheader		(char *, size_t, char *);
-int    mime_debody		(Textlist*); /* decode base64 body */
-int    mime_enheader		(char **, unsigned char *, size_t, char *);
+char   *mime_header_dec		(char *, size_t, char *);
+int    mime_body_dec		(Textlist*); /* decode base64 body */
+int    mime_header_enc		(char **, unsigned char *, size_t, char *);
 void   mime_b64_encode_chunk(char *dst, unsigned char *src, unsigned len);
 
 /* misc.c */

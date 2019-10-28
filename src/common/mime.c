@@ -226,7 +226,7 @@ out:
         dst[B64_NLET_PER_CHUNK - padding] = '=';
 }
 
-int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding)
+int mime_header_enc(char **dst, unsigned char *src, size_t len, char *encoding)
 {
     int buflen, delimlen = 0;
     char *buf = NULL;
@@ -605,7 +605,7 @@ static int mime_handle_word(char *s, char **out, size_t *out_len,
 }
 
 /* source @s must be '\0'-terminated */
-char *mime_deheader(char *d, size_t d_max, char *s)
+char *mime_header_dec(char *d, size_t d_max, char *s)
 {
     char *save_d = d;
     bool is_mime = false;
@@ -1165,7 +1165,7 @@ exit:
 }
 
 
-int mime_debody(Textlist *body)
+int mime_body_dec(Textlist *body)
 {
     Textlist *dec_body;
     Textlist *header;

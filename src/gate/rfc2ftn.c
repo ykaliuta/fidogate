@@ -413,7 +413,7 @@ int rfc_parse(RFCAddr *rfc, char *name, Node *node, int gw)
 	    if(p[len-1] == '\"')	/* " makes C-mode happy */
 	    p[len-1] = 0;
 	}
-	mime_deheader(name, MSG_MAXNAME, p);
+	mime_header_dec(name, MSG_MAXNAME, p);
     }
 
     if(!node)
@@ -822,11 +822,11 @@ int snd_mail(RFCAddr rfc_to, long size)
      * Subject
      */
     if( (p = header_get("Subject")) )
-	mime_deheader(subj, MSG_MAXSUBJ, p);
+	mime_header_dec(subj, MSG_MAXSUBJ, p);
     else
 	BUF_COPY(subj, "(no subject)");
 
-    if(mime_debody(&body) != OK)
+    if(mime_body_dec(&body) != OK)
 	return ERROR;
     
      /*
@@ -1697,7 +1697,7 @@ again:
 		else if(use_organization_for_origin && organization)
 		{
 		    origin = organization;
-		    mime_deheader(buffer, sizeof(buffer), origin);
+		    mime_header_dec(buffer, sizeof(buffer), origin);
 		    pt = xlat_s(buffer, pt);
 		    print_origin(sf, pt ? pt : buffer, node_from);
 		}
@@ -1735,7 +1735,7 @@ again:
 	else if(use_organization_for_origin && organization)
 	{
 	    origin = organization;
-	    mime_deheader(buffer, sizeof(buffer), origin);
+	    mime_header_dec(buffer, sizeof(buffer), origin);
 	    pt = xlat_s(buffer, pt);
 	    print_origin(sf, pt ? pt : buffer, node_from);
 	}
@@ -1774,7 +1774,7 @@ int print_tear_line(FILE *fp)
 	    (p = header_get("X-Newsreader"))   ||
 	    (p = header_get("X-GateSoftware"))   )
 	{
-	    mime_deheader(buffer, sizeof(buffer), p);
+	    mime_header_dec(buffer, sizeof(buffer), p);
 	    pt = xlat_s(buffer, NULL);
 	    fprintf(fp, "--- %s\r\n", pt ? pt : buffer);
 	    pt = xlat_s(NULL, pt);
