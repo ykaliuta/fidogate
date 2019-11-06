@@ -176,6 +176,7 @@ void	charset_set_in_out	(char *, char *);
 void	charset_init		(void);
 char   *charset_chrs_name	(char *);
 void	charset_free		(void);
+int     charset_is_7bit         (char *buffer, size_t len);
 
 /* config.c */
 void	cf_i_am_a_gateway_prog	(void);

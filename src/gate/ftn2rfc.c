@@ -140,19 +140,6 @@ static short int ignore_chrs 	= FALSE;
 static short int ignore_soft_cr	= FALSE;
 static short int ignore_mime_type	= TRUE;
 
-static int is_7bit(char *buffer, size_t len) {
-     int i;
-     
-     if(buffer == NULL)
-	  return TRUE;
-
-     for(i = 0; i < len; i++)
-	  if(buffer[i] & 0x80)
-	       return FALSE;
-     return TRUE;
-}
-
-
 /*
  * Get header for
  *   - From/Reply-To/UUCPFROM
@@ -404,7 +391,8 @@ static int encode_header(Textline *tl, void *arg)
     if (rc != OK)
 	return rc;
 
-    if((is_7bit(tl->line, strlen(tl->line))) || (!(state->cvt8 & AREA_HB64)))
+    if((charset_is_7bit(tl->line, strlen(tl->line)))
+       || (!(state->cvt8 & AREA_HB64)))
 	return OK;
     
     p = strstr(tl->line, ": ");

@@ -576,3 +576,16 @@ int charset_recode_string(char *dst, size_t *dstlen,
     rc = charset_recode_int(dst, dstlen, src, srclen, from, to);
     return rc;
 }
+
+int charset_is_7bit(char *buffer, size_t len)
+{
+     int i;
+
+     if(buffer == NULL)
+	  return TRUE;
+
+     for(i = 0; i < len; i++)
+	  if(buffer[i] & 0x80)
+	       return FALSE;
+     return TRUE;
+}
