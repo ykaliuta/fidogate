@@ -9,9 +9,9 @@
 #include <stdio.h>
 
 
-int mime_enheader(char **dst, unsigned char *src, size_t len, char *encoding);
+int mime_header_enc(char **dst, unsigned char *src, size_t len, char *encoding);
 
-char *mime_deheader(char *d, size_t n, char *s);
+char *mime_header_dec(char *d, size_t n, char *s);
 
 void debug(int lvl, const char *fmt, ...)
 {
@@ -21,13 +21,13 @@ void fglog(const char *fmt, ...)
 {
 }
 
-Ensure(enheader_encodes_long_line)
+Ensure(hdr_enc_encodes_long_line)
 {
 	char *src = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 	char *exp = "=?windows-1251?B?YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFh?=\n =?windows-1251?B?YWFhYQ==?=";
 	char *res = NULL;
 
-	mime_enheader(&res, src, strlen(src), "windows-1251");
+	mime_header_enc(&res, src, strlen(src), "windows-1251");
 
 	assert_that(res, is_equal_to_string(exp));
 	free(res);
@@ -37,19 +37,19 @@ Ensure(enheader_encodes_long_line)
 #define J "\xe9" /* Cyrillic й */
 static char dres[MSG_MAXSUBJ];
 
-Ensure(deheader_decodes_le28chars_line)
+Ensure(hdr_dec_decodes_le28chars_line)
 {
 	char *src = "=?UTF-8?B?0LnQudC50LnQudC50LnQudC50LnQudC50LnQudC50LnQudC50LnQudC5?=";
 	char *exp =
 		J J J J J J J J J J J J J J J J
 		J J J J J; /* 21 */
 
-	mime_deheader(dres, sizeof(dres), src);
+	mime_header_dec(dres, sizeof(dres), src);
 
 	assert_that(dres, is_equal_to_string(exp));
 }
 
-Ensure(deheader_decodes_ge35chars_line)
+Ensure(hdr_dec_decodes_ge35chars_line)
 {
 	char *src =
 		"=?UTF-8?B?0LnQudC50LnQudC50LnQudC50LnQudC50LnQudC50LnQudC50LnQudC5?=\n"
@@ -59,45 +59,45 @@ Ensure(deheader_decodes_ge35chars_line)
 		J J J J J J J J J J J J J J J J
 		J J J J J; /* 37 */
 
-	mime_deheader(dres, sizeof(dres), src);
+	mime_header_dec(dres, sizeof(dres), src);
 
 	assert_that(dres, is_equal_to_string(exp));
 }
 
-Ensure(deheader_decodes_nonmime_at_start)
+Ensure(hdr_dec_decodes_nonmime_at_start)
 {
 	char *src = "Re: Re: =?utf-8?B?0LnQudC50LnQuQ==?=";
 	char *exp = "Re: Re: " J J J J J;
 
-	mime_deheader(dres, sizeof(dres), src);
+	mime_header_dec(dres, sizeof(dres), src);
 
 	assert_that(dres, is_equal_to_string(exp));
 }
 #undef J
 
-Ensure(deheader_handles_empty)
+Ensure(hdr_dec_handles_empty)
 {
 	char *src = "";
 	char *exp = "";
 
-	mime_deheader(dres, sizeof(dres), src);
+	mime_header_dec(dres, sizeof(dres), src);
 
 	assert_that(dres, is_equal_to_string(exp));
 }
 
-Ensure(deheader_preserves_non_mime)
+Ensure(hdr_dec_preserves_non_mime)
 {
 	char *src =
 		"abcdefghijklmnopqrstuvwxyz123456"
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZ123456"; /* 64 */
 	char *exp = src;
 
-	mime_deheader(dres, sizeof(dres), src);
+	mime_header_dec(dres, sizeof(dres), src);
 
 	assert_that(dres, is_equal_to_string(exp));
 }
 
-Ensure(deheader_cuts_long_non_mime)
+Ensure(hdr_dec_cuts_long_non_mime)
 {
 	char *src =
 		"abcdefghijklmnopqrstuvwxyz123456"
@@ -108,20 +108,20 @@ Ensure(deheader_cuts_long_non_mime)
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZ123456" /* 64 */
 		"abcdefg"; /* 71 */
 
-	mime_deheader(dres, sizeof(dres), src);
+	mime_header_dec(dres, sizeof(dres), src);
 
 	assert_that(dres, is_equal_to_string(exp));
 }
 
 #define MIME_MAX_ENC_LEN 31
 
-Ensure(deheader_skips_long_charset_decoding)
+Ensure(hdr_dec_skips_long_charset_decoding)
 {
 	char *src = "=?UTF-8longlonglonglonglonglonglong?B?0LnQudC50LnQudC50LnQudC50LnQudC50LnQudC50LnQudC50LnQudC5?=";
         /* cut to 71 + '\0' symbols */
 	char *exp = "=?UTF-8longlonglonglonglonglonglong?B?0LnQudC50LnQudC50LnQudC50LnQudC50";
 
-	mime_deheader(dres, sizeof(dres), src);
+	mime_header_dec(dres, sizeof(dres), src);
 
 	assert_that(dres, is_equal_to_string(exp));
 }
@@ -130,14 +130,14 @@ static TestSuite *create_mime_suite(void)
 {
     TestSuite *suite = create_named_test_suite(
 	    "MIME suite");
-    add_test(suite, enheader_encodes_long_line);
-    add_test(suite, deheader_decodes_le28chars_line);
-    add_test(suite, deheader_decodes_ge35chars_line);
-    add_test(suite, deheader_decodes_nonmime_at_start);
-    add_test(suite, deheader_handles_empty);
-    add_test(suite, deheader_preserves_non_mime);
-    add_test(suite, deheader_cuts_long_non_mime);
-    add_test(suite, deheader_skips_long_charset_decoding);
+    add_test(suite, hdr_enc_encodes_long_line);
+    add_test(suite, hdr_dec_decodes_le28chars_line);
+    add_test(suite, hdr_dec_decodes_ge35chars_line);
+    add_test(suite, hdr_dec_decodes_nonmime_at_start);
+    add_test(suite, hdr_dec_handles_empty);
+    add_test(suite, hdr_dec_preserves_non_mime);
+    add_test(suite, hdr_dec_cuts_long_non_mime);
+    add_test(suite, hdr_dec_skips_long_charset_decoding);
     return suite;
 }
 
