@@ -141,7 +141,12 @@ static TestSuite *create_mime_suite(void)
     return suite;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     TestSuite *suite = create_mime_suite();
+
+    if (argc > 1)
+	return run_single_test(suite, argv[1], create_text_reporter());
+
     return run_test_suite(suite, create_text_reporter());
 }
