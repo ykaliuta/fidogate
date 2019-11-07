@@ -9,8 +9,7 @@
 #include <stdio.h>
 
 
-int mime_header_enc(char **dst, unsigned char *src, size_t len, char *encoding);
-
+int mime_header_enc(char **dst, unsigned char *src, char *charset);
 char *mime_header_dec(char *d, size_t n, char *s);
 
 void debug(int lvl, const char *fmt, ...)
@@ -21,13 +20,37 @@ void fglog(const char *fmt, ...)
 {
 }
 
-Ensure(hdr_enc_encodes_long_line)
+Ensure(hdr_enc_encodes_cyrillic)
 {
-	char *src = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-	char *exp = "=?windows-1251?B?YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFh?=\n =?windows-1251?B?YWFhYQ==?=";
+	char *src = "Subject: tеsт кириллица latinitsa";
+	char *exp = "Subject: =?utf-8?B?dNC1c9GCINC60LjRgNC40LvQu9C40YbQsA==?= latinitsa\n";
 	char *res = NULL;
 
-	mime_header_enc(&res, src, strlen(src), "windows-1251");
+	mime_header_enc(&res, src, "utf-8");
+
+	assert_that(res, is_equal_to_string(exp));
+	free(res);
+}
+
+Ensure(hdr_enc_encodes_cyrillic2)
+{
+	char *src = "Subject: tеsт кириллица latinitsa, оdna, двeee, триiiiiiii";
+	char *exp = "Subject: =?utf-8?B?dNC1c9GCINC60LjRgNC40LvQu9C40YbQsA==?= latinitsa,\n =?utf-8?B?0L5kbmEsINC00LJlZWUsINGC0YDQuGlpaWlpaWk=?=\n";
+	char *res = NULL;
+
+	mime_header_enc(&res, src, "utf-8");
+
+	assert_that(res, is_equal_to_string(exp));
+	free(res);
+}
+
+Ensure(hdr_enc_encodes_long_line)
+{
+	char *src = "Field: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+	char *exp = "Field: =?windows-1251?B?YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFh?=\n =?windows-1251?B?YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFh?=\n =?windows-1251?B?YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYQ==?=\n";
+	char *res = NULL;
+
+	mime_header_enc(&res, src, "windows-1251");
 
 	assert_that(res, is_equal_to_string(exp));
 	free(res);
@@ -130,6 +153,8 @@ static TestSuite *create_mime_suite(void)
 {
     TestSuite *suite = create_named_test_suite(
 	    "MIME suite");
+    add_test(suite, hdr_enc_encodes_cyrillic);
+    add_test(suite, hdr_enc_encodes_cyrillic2);
     add_test(suite, hdr_enc_encodes_long_line);
     add_test(suite, hdr_dec_decodes_le28chars_line);
     add_test(suite, hdr_dec_decodes_ge35chars_line);
