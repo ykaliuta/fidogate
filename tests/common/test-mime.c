@@ -8,8 +8,13 @@
 #include <cgreen/cgreen.h>
 #include <stdio.h>
 
+enum mime_encodings {
+	MIME_8BIT,
+	MIME_QP,
+	MIME_B64,
+};
 
-int mime_header_enc(char **dst, unsigned char *src, char *charset);
+int mime_header_enc(char **dst, unsigned char *src, char *charset, int enc);
 char *mime_header_dec(char *d, size_t n, char *s);
 
 void debug(int lvl, const char *fmt, ...)
@@ -26,7 +31,7 @@ Ensure(hdr_enc_encodes_cyrillic)
 	char *exp = "Subject: =?utf-8?B?dNC1c9GCINC60LjRgNC40LvQu9C40YbQsA==?= latinitsa\n";
 	char *res = NULL;
 
-	mime_header_enc(&res, src, "utf-8");
+	mime_header_enc(&res, src, "utf-8", MIME_B64);
 
 	assert_that(res, is_equal_to_string(exp));
 	free(res);
@@ -38,7 +43,7 @@ Ensure(hdr_enc_encodes_cyrillic2)
 	char *exp = "Subject: =?utf-8?B?dNC1c9GCINC60LjRgNC40LvQu9C40YbQsA==?= latinitsa,\n =?utf-8?B?0L5kbmEsINC00LJlZWUsINGC0YDQuGlpaWlpaWk=?=\n";
 	char *res = NULL;
 
-	mime_header_enc(&res, src, "utf-8");
+	mime_header_enc(&res, src, "utf-8", MIME_B64);
 
 	assert_that(res, is_equal_to_string(exp));
 	free(res);
@@ -50,7 +55,7 @@ Ensure(hdr_enc_encodes_long_line)
 	char *exp = "Field: =?windows-1251?B?YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFh?=\n =?windows-1251?B?YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFh?=\n =?windows-1251?B?YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYQ==?=\n";
 	char *res = NULL;
 
-	mime_header_enc(&res, src, "windows-1251");
+	mime_header_enc(&res, src, "windows-1251", MIME_B64);
 
 	assert_that(res, is_equal_to_string(exp));
 	free(res);
