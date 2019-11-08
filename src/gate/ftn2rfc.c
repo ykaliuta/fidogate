@@ -378,6 +378,19 @@ static int recode_header(Textline *tl, struct encoding_state *state)
     return OK;
 }
 
+static int cvt8_to_encoding(int cvt8)
+{
+	if (cvt8 & AREA_HB64)
+		return MIME_B64;
+	if (cvt8 & AREA_QP)
+		return MIME_QP;
+	if (cvt8 & AREA_8BIT)
+		return MIME_8BIT;
+
+	/* default QP */
+	return MIME_QP;
+}
+
 static char *encode_skip[] = {
     "Path:",
 };
@@ -389,6 +402,7 @@ static int encode_header(Textline *tl, void *arg)
     int rc;
     size_t len;
     int i;
+    int enc = cvt8_to_encoding(state->cvt8);
 
     for (i = 0; i < sizeof(encode_skip)/sizeof(encode_skip[0]); i++) {
         size_t len;
@@ -406,7 +420,7 @@ static int encode_header(Textline *tl, void *arg)
     if (charset_is_7bit(tl->line, len) && len <= MIME_STRING_LIMIT)
 	return OK;
     
-    rc = mime_header_enc(&tmpbuf, tl->line, state->cs_out);
+    rc = mime_header_enc(&tmpbuf, tl->line, state->cs_out, enc);
     if (rc != OK)
 	    return OK; /* skip misformatted */
 

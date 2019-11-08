@@ -396,7 +396,7 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
     {
 	p = id + strlen("MSGID_");
 	tmps = tmps_alloc(strlen(id)+1);
-	mime_dequote(tmps->s, tmps->len, p, MIME_QP|MIME_US);
+	mime_dequote(tmps->s, tmps->len, p, MIME_QP);
 	xfree(savep);
 	if(origid_flag)
 	    *origid_flag = FALSE;

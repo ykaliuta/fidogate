@@ -98,7 +98,7 @@ char *mime_dequote(char *d, size_t n, char *s, int flags)
 		break;
 	    }
 	}
-	else if( (flags & MIME_US) && (s[0] == '_') ) /* Underscore */
+	else if( s[0] == '_' ) /* Underscore */
 	{
 	    c = ' ';
 	}
@@ -189,6 +189,14 @@ int mime_qptoint(char c)
     else                              	return ERROR;
 }
 
+/* rfc 2045 */
+static bool mime_qp_is_plain(int c)
+{
+    return ((c >= '%') && (c < '@') && (c != '='))
+	|| ((c >= 'A') && (c <= 'Z'))
+	|| ((c >= 'a') && (c <= 'z'));
+}
+
 #define B64_ENC_CHUNK 3
 #define B64_NLET_PER_CHUNK 4
 
@@ -242,31 +250,14 @@ struct mime_word_enc_state {
     size_t vpos; /* visual position in the line */
     size_t limit; /* in 7 bit chars, no line endings */
     size_t rem_len;
+    char *encoding;
+    size_t (*calc_len)(char *token, size_t len);
+    size_t (*encode)(struct mime_word_enc_state *state, char *p, size_t len);
     char rem[B64_ENC_CHUNK];
     bool is_mime; /* previous word is not plain */
 };
 
-static void mime_header_enc_start(struct mime_word_enc_state *state,
-				  char *charset)
-{
-    size_t size = MIME_STRING_LIMIT + sizeof(MIME_HEADER_STR_DELIM);/* \0 counted */
-    char *p;
-
-    p = xmalloc(size);
-    *p = '\0';
-    state->size = size;
-    state->encoded_line = p;
-    state->charset = charset;
-    state->charset_len = strlen(charset);
-    state->inc = size - 1; /* only one \0 */
-    state->pos = 0;
-    state->vpos = 0;
-    state->limit = MIME_STRING_LIMIT;
-    state->rem_len = 0;
-    state->is_mime = false;
-}
-
-static size_t mime_enc_calc_len(char *t, size_t len)
+static size_t mime_b64_calc_len(char *t, size_t len)
 {
     size_t res;
 
@@ -334,7 +325,7 @@ static size_t mime_word_calc_len(struct mime_word_enc_state *state,
 	if (is_7bit) {
 	    encoded_len = strlen(MIME_HEADER_CODE_END) + len;
 	} else {
-	    encoded_len = mime_enc_calc_len(token, len); /* with spaces */
+	    encoded_len = state->calc_len(token, len); /* with spaces */
 	}
     } else {
 	if (is_7bit) {
@@ -344,7 +335,7 @@ static size_t mime_word_calc_len(struct mime_word_enc_state *state,
 		strlen(MIME_HEADER_CODE_START) +
 		charset_len +
 		strlen(MIME_HEADER_CODE_MIDDLE_B64) +
-		mime_enc_calc_len(p, len); /* without spaces */
+		state->calc_len(p, len); /* without spaces */
 	}
     }
 
@@ -456,7 +447,7 @@ static void mime_word_start(struct mime_word_enc_state *state)
     mime_strcat(state, " ");
     mime_strcat(state, MIME_HEADER_CODE_START);
     mime_strcat(state, state->charset);
-    mime_strcat(state, MIME_HEADER_CODE_MIDDLE_B64);
+    mime_strcat(state, state->encoding);
 
     state->is_mime = true;
 }
@@ -549,6 +540,74 @@ static int mime_7bit_try(struct mime_word_enc_state *state,
     return OK;
 }
 
+#define QP_NLET_MAX 3 /* =XX */
+
+static size_t mime_qp_calc_len(char *s, size_t len)
+{
+    size_t sum = 0;
+
+    for (; len > 0; --len, s++) {
+	if (mime_qp_is_plain(*s))
+	    sum += 1;
+	else
+	    sum += QP_NLET_MAX;
+    }
+
+    return sum;
+}
+
+/*
+ * Encodes one octet, @out should point to a buffer enough to store 3
+ * bytes;
+ *
+ * Returns amount of bytes written
+ */
+static size_t mime_qp_encode_octet(char *out, unsigned char in)
+{
+    int len;
+    char buf[QP_NLET_MAX + 1]; /* max encoded length =XX\0 */
+
+    if (mime_qp_is_plain(in)) {
+           *out = in;
+           return sizeof(*out);
+    }
+
+    len = snprintf(buf, sizeof(buf), "=%02X", in);
+    memcpy(out, buf, len);
+    return len;
+}
+
+/*
+ * Encodes the word, extending the line if necessary
+ */
+static size_t mime_word_enc_qp(struct mime_word_enc_state *state,
+			       char *p, size_t len)
+{
+    size_t limit;
+    size_t left;
+    size_t produced;
+
+    limit = state->limit - strlen(MIME_HEADER_CODE_END);
+
+    for (left = len; left > 0; left--, p++) {
+	if (state->vpos + QP_NLET_MAX > limit)
+	    break;
+
+	produced = mime_qp_encode_octet(state->encoded_line + state->pos, *p);
+	state->pos += produced;
+	state->vpos += produced;
+    }
+
+    *(state->encoded_line + state->pos) = '\0';
+
+    return len - left;
+}
+
+static size_t mime_8bit_calc_len(char *s, size_t len)
+{
+    return len;
+}
+
 /*
  * Encodes word if necessary (non-7bit) and adds to the header line.
  * Makes extented line if needed.
@@ -583,7 +642,7 @@ static void mime_word_enc(struct mime_word_enc_state *state,
 	    mime_word_start(state);
 	}
 
-	consumed = mime_word_enc_b64(state, p, left);
+	consumed = state->encode(state, p, left);
 
 	p += consumed;
 	left -= consumed;
@@ -591,6 +650,43 @@ static void mime_word_enc(struct mime_word_enc_state *state,
 	    break;
 
 	mime_line_break(state);
+    }
+}
+
+static void mime_header_enc_start(struct mime_word_enc_state *state,
+				  char *charset, int type)
+{
+    size_t size = MIME_STRING_LIMIT + sizeof(MIME_HEADER_STR_DELIM);/* \0 counted */
+    char *p;
+
+    p = xmalloc(size);
+    *p = '\0';
+    state->size = size;
+    state->encoded_line = p;
+    state->charset = charset;
+    state->charset_len = strlen(charset);
+    state->inc = size - 1; /* only one \0 */
+    state->pos = 0;
+    state->vpos = 0;
+    state->limit = MIME_STRING_LIMIT;
+    state->rem_len = 0;
+    state->is_mime = false;
+
+    switch (type) {
+    case MIME_QP:
+	state->encoding = MIME_HEADER_CODE_MIDDLE_QP;
+	state->calc_len = mime_qp_calc_len;
+	state->encode = mime_word_enc_qp;
+	break;
+    case MIME_B64:
+	state->encoding = MIME_HEADER_CODE_MIDDLE_B64;
+	state->calc_len = mime_b64_calc_len;
+	state->encode = mime_word_enc_b64;
+	break;
+    default:
+	state->encoding = NULL;
+	state->calc_len = mime_8bit_calc_len;
+	state->encode = NULL;
     }
 }
 
@@ -625,7 +721,7 @@ static char *mime_header_enc_end(struct mime_word_enc_state *state)
  *
  * Encoding is done word by word, 7bit words are not encoded
  */
-int mime_header_enc(char **dst, char *src, char *charset)
+int mime_header_enc(char **dst, char *src, char *charset, int enc)
 {
     struct mime_word_enc_state state;
     char *token;
@@ -633,7 +729,7 @@ int mime_header_enc(char **dst, char *src, char *charset)
 
     debug(6, "MIME: %s: to encode (%s): %s", __func__, charset, src);
 
-    mime_header_enc_start(&state, charset);
+    mime_header_enc_start(&state, charset, enc);
 
     /* strtok does not work on RO strings */
 
