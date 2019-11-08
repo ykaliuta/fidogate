@@ -364,8 +364,10 @@ enum mime_encodings {
 
 char   *mime_dequote		(char *, size_t, char *, int);
 char   *mime_header_dec		(char *, size_t, char *);
-int    mime_body_dec		(Textlist*); /* decode base64 body */
-int    mime_header_enc		(char **, char *, char *, int);
+int     mime_body_dec		(Textlist*); /* decode base64 body */
+int     mime_header_enc		(char **, char *, char *, int);
+void    mime_b64_encode_tl      (Textlist *in, Textlist *out);
+void    mime_qp_encode_tl       (Textlist *in, Textlist *out);
 
 /* misc.c */
 char   *str_change_ext		(char *, size_t, char *, char *);

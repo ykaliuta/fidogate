@@ -467,6 +467,61 @@ static int recode_body(Textline *tl, void *arg)
     return OK;
 }
 
+static void ftn2rfc_finish_mime(Textlist *hdr, Textlist *body,
+				MIMEInfo *mime,
+				char *cs_in, char *cs_out, int cvt8)
+{
+    Textlist body_encoded;
+    struct encoding_state en_state;
+    char *mime_type = mime->type;
+    char *charset = "";
+    char *encoding;
+
+    if (mime_type == NULL) {
+	mime_type = "text/plain; charset=";
+	if (cvt8)
+	    charset = cs_out;
+	else
+	    charset = CHARSET_STD7BIT;
+    }
+
+    if (cvt8 == 0) {
+	encoding = "7bit";
+    } else {
+	if (cvt8 & AREA_HB64)
+	    encoding = "base64";
+	else if (cvt8 & AREA_QP)
+	    encoding = "quoted-printable";
+	else
+	    encoding = "8bit";
+    }
+
+    /* MIME header */
+    tl_appendf(hdr, "MIME-Version: 1.0\n");
+    tl_appendf(hdr, "Content-Type: %s%s\n", mime_type, charset);
+    tl_appendf(hdr, "Content-Transfer-Encoding: %s\n", encoding);
+
+    en_state.cvt8 = cvt8;
+    en_state.cs_in = cs_in;
+    en_state.cs_out = cs_out;
+
+    /* does recoding as well */
+    tl_for_each(hdr, encode_header, &en_state);
+    tl_for_each(body, recode_body, &en_state);
+
+    if (cvt8 & AREA_HB64)
+	mime_b64_encode_tl(body, &body_encoded);
+    else if (cvt8 & AREA_QP)
+	mime_qp_encode_tl(body, &body_encoded);
+    else
+	goto out;
+
+    tl_clear(body);
+    *body = body_encoded;
+out:
+    return;
+}
+
 /*
  * Read and convert FTN mail packet
  */
@@ -507,7 +562,6 @@ int unpack(FILE *pkt_file, Packet *pkt)
     MIMEInfo *mime;
     char *mime_ver, *mime_type, *mime_enc;
     char *carbon_group = NULL;
-    struct encoding_state en_state;
     int addr_is_restricted = FALSE;
     
     /*
@@ -1630,16 +1684,6 @@ carbon:
 	if(split_line)
 	    tl_appendf(&theader, "X-SPLIT: %s\n", split_line);
 
-	/* MIME header */
-	tl_appendf(&theader, "MIME-Version: 1.0\n");
-	tl_appendf(&theader, "Content-Type: %s%s\n",
-		   mime->type ? mime->type : "text/plain; charset=",
-		   mime->type ? ""         : (cvt8 ? cs_out : CHARSET_STD7BIT) );
-
-	tl_appendf(&theader, "Content-Transfer-Encoding: %s\n",
-		   cvt8 ? ((cvt8 & AREA_QP) ? "quoted-printable" : "8bit")
-		        : "7bit");
-
 	if(cs_save)
 	    xfree(cs_save);
 	
@@ -1647,15 +1691,12 @@ carbon:
 	if(area)
 	    for(pl=area->x_hdr.first; pl; pl=pl->next)
 		tl_appendf(&theader, "%s\n", pl->line);
-	    
-	tl_appendf(&theader, "\n");
 
-	en_state.cvt8 = cvt8;
-	en_state.cs_in = cs_in;
-	en_state.cs_out = cs_out;
+	/* adds mime headers, recodes and encodes message */
+	ftn2rfc_finish_mime(&theader, &tbody, mime,
+			    cs_in, cs_out, cvt8);
 	
-	tl_for_each(&theader, encode_header, &en_state);
-	tl_for_each(&tbody, recode_body, &en_state);
+	tl_appendf(&theader, "\n");
 	
 	/* Write header and message body to output file */
 	if(area)

@@ -769,6 +769,41 @@ int mime_header_enc(char **dst, char *src, char *charset, int enc)
     return OK;
 }
 
+void mime_b64_encode_tl(Textlist *in, Textlist *out)
+{
+    TextlistIterator iter;
+    /* + \n\0, no \r needed */
+    char buf[MIME_STRING_LIMIT + 2];
+    char ibuf[B64_ENC_CHUNK];
+    size_t len;
+    size_t pos;
+
+    tl_init(out);
+    tl_iterator_start(&iter, in);
+    pos = 0;
+
+    len = tl_iterator_next(&iter, ibuf, sizeof(ibuf));
+
+    while (len > 0) {
+	if (pos + B64_NLET_PER_CHUNK > MIME_STRING_LIMIT) {
+	    buf[pos++] = '\n';
+	    buf[pos++] = '\0';
+
+	    tl_append(out, buf);
+	    pos = 0;
+	}
+
+	mime_b64_encode_chunk(buf + pos, (unsigned char *)ibuf, len);
+	pos += B64_NLET_PER_CHUNK;
+	len = tl_iterator_next(&iter, ibuf, sizeof(ibuf));
+    }
+
+    buf[pos++] = '\n';
+    buf[pos++] = '\0';
+
+    tl_append(out, buf);
+}
+
 int mime_b64_decode(char **dst, char *src, size_t len)
 {
     char *buf;
@@ -835,6 +870,44 @@ int mime_b64_decode(char **dst, char *src, size_t len)
     else
 	*dst = buf;
     return rc;
+}
+
+void mime_qp_encode_tl(Textlist *in, Textlist *out)
+{
+    TextlistIterator iter;
+    /* + =\n\0 */
+    char buf[MIME_STRING_LIMIT + 4];
+    char ibuf[1];
+    size_t len;
+    size_t pos;
+    size_t len_encoded;
+
+    tl_init(out);
+    tl_iterator_start(&iter, in);
+    pos = 0;
+
+    len = tl_iterator_next(&iter, ibuf, sizeof(ibuf));
+
+    while (len > 0) {
+	if (pos + QP_NLET_MAX > MIME_STRING_LIMIT) {
+	    buf[pos++] = '=';
+	    buf[pos++] = '\n';
+	    buf[pos++] = '\0';
+
+	    tl_append(out, buf);
+	    pos = 0;
+	}
+
+	len_encoded =
+	    mime_qp_encode_octet(buf + pos, ibuf[0]);
+	pos += len_encoded;
+	len = tl_iterator_next(&iter, ibuf, sizeof(ibuf));
+    }
+
+    buf[pos++] = '\n';
+    buf[pos++] = '\0';
+
+    tl_append(out, buf);
 }
 
 int mime_qp_decode(char **dst, char *src, size_t len)
