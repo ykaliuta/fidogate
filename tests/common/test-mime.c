@@ -61,6 +61,18 @@ Ensure(hdr_enc_encodes_long_line)
 	free(res);
 }
 
+Ensure(hdr_enc_qp_encodes_cyrillic)
+{
+	char *src = "Subject: tеsт кириллица latinitsa, оdna, двeee, триiiiiiii";
+	char *exp = "Subject: =?utf-8?Q?t=D0=B5s=D1=82=20=D0=BA=D0=B8=D1=80=D0=B8=D0=BB=D0=BB?=\n =?utf-8?Q?=D0=B8=D1=86=D0=B0?= latinitsa, =?utf-8?Q?=D0=BEdna,=20=D0=B4?=\n =?utf-8?Q?=D0=B2eee,=20=D1=82=D1=80=D0=B8iiiiiii?=\n";
+	char *res = NULL;
+
+	mime_header_enc(&res, src, "utf-8", MIME_QP);
+
+	assert_that(res, is_equal_to_string(exp));
+	free(res);
+}
+
 #define MSG_MAXSUBJ	72
 #define J "\xe9" /* Cyrillic й */
 static char dres[MSG_MAXSUBJ];
@@ -161,6 +173,7 @@ static TestSuite *create_mime_suite(void)
     add_test(suite, hdr_enc_encodes_cyrillic);
     add_test(suite, hdr_enc_encodes_cyrillic2);
     add_test(suite, hdr_enc_encodes_long_line);
+    add_test(suite, hdr_enc_qp_encodes_cyrillic);
     add_test(suite, hdr_dec_decodes_le28chars_line);
     add_test(suite, hdr_dec_decodes_ge35chars_line);
     add_test(suite, hdr_dec_decodes_nonmime_at_start);
