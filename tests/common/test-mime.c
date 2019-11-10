@@ -8,14 +8,7 @@
 #include <cgreen/cgreen.h>
 #include <stdio.h>
 
-enum mime_encodings {
-	MIME_8BIT,
-	MIME_QP,
-	MIME_B64,
-};
-
-int mime_header_enc(char **dst, unsigned char *src, char *charset, int enc);
-char *mime_header_dec(char *d, size_t n, char *s);
+#include "../../src/include/prototypes.h"
 
 void debug(int lvl, const char *fmt, ...)
 {
@@ -71,6 +64,24 @@ Ensure(hdr_enc_qp_encodes_cyrillic)
 
 	assert_that(res, is_equal_to_string(exp));
 	free(res);
+}
+
+Ensure(body_enc_b64_encodes_cyrillic)
+{
+	Textlist src;
+	Textlist res;
+	char *exp = "dNC1c9GCINC60LjRgNC40LvQu9C40YbQsA==\n";
+
+	tl_init(&src);
+	tl_init(&res);
+	tl_append(&src, "tеsт кириллица");
+
+	mime_b64_encode_tl(&src, &res);
+
+	assert_that(res.first->line, is_equal_to_string(exp));
+
+	tl_clear(&src);
+	tl_clear(&res);
 }
 
 #define MSG_MAXSUBJ	72
@@ -174,6 +185,7 @@ static TestSuite *create_mime_suite(void)
     add_test(suite, hdr_enc_encodes_cyrillic2);
     add_test(suite, hdr_enc_encodes_long_line);
     add_test(suite, hdr_enc_qp_encodes_cyrillic);
+    add_test(suite, body_enc_b64_encodes_cyrillic);
     add_test(suite, hdr_dec_decodes_le28chars_line);
     add_test(suite, hdr_dec_decodes_ge35chars_line);
     add_test(suite, hdr_dec_decodes_nonmime_at_start);
