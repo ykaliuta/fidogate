@@ -79,6 +79,18 @@ Ensure(hdr_enc_b64_wraps_reminder)
 	free(res);
 }
 
+Ensure(hdr_enc_b64_only_splits_plain)
+{
+	char *src = "Subject: aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaa aaaaaa aaaaa aaaaaa aaaaaa";
+	char *exp = "Subject: aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaa aaaaaa aaaaa aaaaaa\n aaaaaa\n";
+	char *res = NULL;
+
+	mime_header_enc(&res, src, "utf-8", MIME_B64);
+
+	assert_that(res, is_equal_to_string(exp));
+	free(res);
+}
+
 Ensure(body_enc_b64_encodes_cyrillic)
 {
 	Textlist src;
@@ -199,6 +211,7 @@ static TestSuite *create_mime_suite(void)
     add_test(suite, hdr_enc_encodes_long_line);
     add_test(suite, hdr_enc_qp_encodes_cyrillic);
     add_test(suite, hdr_enc_b64_wraps_reminder);
+    add_test(suite, hdr_enc_b64_only_splits_plain);
     add_test(suite, body_enc_b64_encodes_cyrillic);
     add_test(suite, hdr_dec_decodes_le28chars_line);
     add_test(suite, hdr_dec_decodes_ge35chars_line);
