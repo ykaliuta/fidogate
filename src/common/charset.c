@@ -465,9 +465,9 @@ void charset_free(void)
 }
 
 #ifdef HAVE_ICONV
-static int charset_recode_iconv(char *dst, size_t *dstlen,
-				char *src, size_t *srclen,
-				char *from, char *to)
+static int _charset_recode_iconv(char *dst, size_t *dstlen,
+				 char *src, size_t *srclen,
+				 char *from, char *to)
 {
     int rc;
     iconv_t desc;
@@ -513,6 +513,40 @@ exit:
 
     return rc;
 }
+
+static int charset_recode_iconv(char *dst, size_t *dstlen,
+				char *src, size_t *srclen,
+				char *from, char *to)
+{
+    int rc;
+    char *p;
+    char *buf;
+    size_t len;
+    size_t off;
+
+    rc = _charset_recode_iconv(dst, dstlen, src, srclen, from, to);
+    if (rc == OK)
+	return OK;
+
+    /* Heuristic, LATIN-1 -> LATIN1 */
+    p = strchr(from, '-');
+    if (p == NULL)
+	return ERROR;
+
+    off = p - from;
+    len = strlen(from);
+
+    buf = xmalloc(len + 1);
+    memcpy(buf, from, off);
+    memcpy(buf + off, p + 1, len - off - 1);
+    buf[len - 1] = '\0';
+
+    rc = _charset_recode_iconv(dst, dstlen, src, srclen, buf, to);
+    free(buf);
+
+    return rc;
+}
+
 #else
 static int charset_recode_iconv(char *dst, size_t *dstlen,
 				char *src, size_t *srclen,
