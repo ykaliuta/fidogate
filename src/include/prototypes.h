@@ -350,7 +350,7 @@ short int pkt_get_body_parse	(FILE *, MsgBody *, Node *, Node *);
 int	msg_body_parse		(Textlist *, MsgBody *);
 int	msg_put_msgbody		(FILE *, MsgBody *);
 int	msg_put_line		(FILE *, char *);
-char   *msg_xlate_line		(char *, int, char *, int, int);
+char   *msg_xlate_line		(char *, int, char *, int);
 int	msg_parse_origin	(char *, Node *);
 int	msg_parse_msgid		(char *, Node *);
 

@@ -844,7 +844,7 @@ int add_files_bbs(Tick *tic, char *dir)
     if (tic->desc.first)
     {
 	BUF_COPY (buf, tic->desc.first->line);
-	msg_xlate_line (buf, sizeof (buf), tic->desc.first->line, 0, ignore_soft_cr);
+	msg_xlate_line (buf, sizeof (buf), tic->desc.first->line, ignore_soft_cr);
     }
     else
     {

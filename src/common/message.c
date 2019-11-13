@@ -877,7 +877,7 @@ int msg_put_msgbody(FILE *fp, MsgBody *body)
 /*
  * Convert text line read from FTN message body
  */
-char *msg_xlate_line(char *buf, int n, char *line, int qp, int ignore_soft_cr)
+char *msg_xlate_line(char *buf, int n, char *line, int ignore_soft_cr)
 {
     char *s, *p;
     int c;
