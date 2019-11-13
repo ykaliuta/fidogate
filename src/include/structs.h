@@ -110,17 +110,14 @@ typedef struct st_area {	/* Area/newsgroup entry with options */
     long  limitsize;		    /* -L message size limit */
     Textlist x_hdr;		    /* -X "Xtra: xyz" extra RFC headers */
     char *charset;		    /* -C def:in:out charset setting */
+    int   encoding;                 /* desired 8bit/base64/QP */
 } Area;
 
 #define AREA_LOCALXPOST	1	/* -l  Only local crosspostings */
 #define AREA_NOXPOST	2	/* -x  No crosspostings */
-#define AREA_NOGATE	8	/* -g  No messages from other gateways */
-#define AREA_8BIT	16	/* -8  Use 8 bit ISO-8859-1 character set */
-#define AREA_HIERARCHY	32	/* -H  Area/group names match entire hierar. */
-#define AREA_NO		64	/* -!  Don't gate area/group */
-#define AREA_QP		128	/* -Q  Use quoted-printable ISO-8859-1 */
-#define AREA_HB64	256	/* -b  Use base64 to encode headers */
-
+#define AREA_NOGATE	4	/* -g  No messages from other gateways */
+#define AREA_HIERARCHY	8	/* -H  Area/group names match entire hierar. */
+#define AREA_NO		16	/* -!  Don't gate area/group */
 
 
 /*

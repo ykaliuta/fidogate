@@ -144,7 +144,6 @@ long areas_get_limitmsgsize(void)
  *     -Q               convert to quoted-printable iso-8859-1 characters
  *     -C def:in:out    charset mapping setting
  *     -b               convert to base64, enabled by default
- *     -nb              do not convert to base64
  */
 Area *areas_parse_line(char *buf)
 {
@@ -172,12 +171,13 @@ Area *areas_parse_line(char *buf)
     node_invalid(&p->addr);
     p->origin       = NULL;
     p->distribution = NULL;
-    p->flags        = AREA_HB64; /* enable base64 by default */
+    p->flags        = 0;
     p->rfc_lvl      = -1;
     p->maxsize      = -1;
     p->limitsize    = -1;
     tl_init(&p->x_hdr);
     p->charset      = NULL;
+    p->encoding     = MIME_DEFAULT;
 
     /* Options */
     for(o=xstrtok(NULL, " \t");
@@ -227,25 +227,13 @@ Area *areas_parse_line(char *buf)
 	    if((o = xstrtok(NULL, " \t")))
 		tl_append(&p->x_hdr, o);
 	if(!strcmp(o, "-8"))
-	    p->flags |= AREA_8BIT;
+	    p->encoding = MIME_8BIT;
 
-/* do not use b64 and qp in the same time */
 	if(!strcmp(o, "-Q"))
-        {
-            p->flags |= AREA_QP;
-            p->flags &= ~AREA_HB64;
-        }
+	    p->encoding = MIME_QP;
             
 	if(!strcmp(o, "-b"))
-        {
-	    p->flags |= AREA_HB64;
-            p->flags &= ~AREA_QP;
-        }
-            
-	if(!strcmp(o, "-nb"))
-        {
-	    p->flags &= ~AREA_HB64;
-        }
+	    p->encoding = MIME_B64;
 
 	if(!strcmp(o, "-C"))
 	    /* -C DEF:IN:OUT */

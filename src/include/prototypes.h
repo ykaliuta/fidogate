@@ -356,10 +356,12 @@ int	msg_parse_msgid		(char *, Node *);
 
 /* mime.c */
 enum mime_encodings {
+	MIME_7BIT = 0,
 	MIME_8BIT,
 	MIME_QP,
 	MIME_B64,
 };
+#define MIME_DEFAULT MIME_B64
 #define MIME_STRING_LIMIT 76
 
 char   *mime_dequote		(char *, size_t, char *, int);

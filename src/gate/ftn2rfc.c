@@ -117,7 +117,7 @@ static int no_address_in_to_field = FALSE;
 /* Character conversion */
 static int netmail_8bit = FALSE;
 static int netmail_qp   = FALSE;
-static int netmail_hb64 = FALSE;
+static int netmail_b64 = FALSE;
 
 /* Use FTN to address (cvt to Internet address) for mail_to */
 static int use_ftn_to_address = FALSE;
@@ -275,10 +275,11 @@ Area *news_msg(char *line, Node *to)
 	node_invalid(&area.addr);
 	area.origin       = NULL;
 	area.distribution = NULL;
-	area.flags        = AREA_8BIT;
+	area.flags        = 0;
 	area.rfc_lvl      = -1;
 	area.maxsize      = -1;
 	tl_init(&area.x_hdr);
+	area.encoding     = MIME_DEFAULT;
 
 	return &area;
     }
@@ -378,19 +379,6 @@ static int recode_header(Textline *tl, struct encoding_state *state)
     return OK;
 }
 
-static int cvt8_to_encoding(int cvt8)
-{
-	if (cvt8 & AREA_HB64)
-		return MIME_B64;
-	if (cvt8 & AREA_QP)
-		return MIME_QP;
-	if (cvt8 & AREA_8BIT)
-		return MIME_8BIT;
-
-	/* default QP */
-	return MIME_QP;
-}
-
 static char *encode_skip[] = {
     "Path:",
 };
@@ -402,7 +390,7 @@ static int encode_header(Textline *tl, void *arg)
     int rc;
     size_t len;
     int i;
-    int enc = cvt8_to_encoding(state->cvt8);
+    int enc = state->cvt8;
 
     for (i = 0; i < sizeof(encode_skip)/sizeof(encode_skip[0]); i++) {
         size_t len;
@@ -467,6 +455,22 @@ static int recode_body(Textline *tl, void *arg)
     return OK;
 }
 
+static char *cvt8_to_str(int cvt8)
+{
+    switch (cvt8) {
+    case MIME_7BIT:
+	return "7bit";
+    case MIME_8BIT:
+	return "8bit";
+    case MIME_B64:
+	return "base64";
+    case MIME_QP:
+	return "quoted-printable";
+    default:
+	return cvt8_to_str(MIME_DEFAULT);
+    }
+}
+
 static void ftn2rfc_finish_mime(Textlist *hdr, Textlist *body,
 				MIMEInfo *mime,
 				char *cs_in, char *cs_out, int cvt8)
@@ -476,25 +480,27 @@ static void ftn2rfc_finish_mime(Textlist *hdr, Textlist *body,
     char *mime_type = mime->type;
     char *charset = "";
     char *encoding;
+    int body_encoding = cvt8;
+
+    /*
+     * Check for 8bit characters in message body. If none are
+     * found, don't use the quoted-printable encoding or 8bit.
+     * Headers handled separately.
+     */
+    if( !check_8bit(body)) {
+	body_encoding = MIME_7BIT;
+	debug(5, "Body encoding switched to 7bit\n");
+    }
 
     if (mime_type == NULL) {
 	mime_type = "text/plain; charset=";
-	if (cvt8)
-	    charset = cs_out;
-	else
+	if (body_encoding == MIME_7BIT)
 	    charset = CHARSET_STD7BIT;
+	else
+	    charset = cs_out;
     }
 
-    if (cvt8 == 0) {
-	encoding = "7bit";
-    } else {
-	if (cvt8 & AREA_HB64)
-	    encoding = "base64";
-	else if (cvt8 & AREA_QP)
-	    encoding = "quoted-printable";
-	else
-	    encoding = "8bit";
-    }
+    encoding = cvt8_to_str(body_encoding);
 
     /* MIME header */
     tl_appendf(hdr, "MIME-Version: 1.0\n");
@@ -507,11 +513,14 @@ static void ftn2rfc_finish_mime(Textlist *hdr, Textlist *body,
 
     /* does recoding as well */
     tl_for_each(hdr, encode_header, &en_state);
+
+    en_state.cvt8 = body_encoding;
+    /* should not harm for 7 bit */
     tl_for_each(body, recode_body, &en_state);
 
-    if (cvt8 & AREA_HB64)
+    if (body_encoding == MIME_B64)
 	mime_b64_encode_tl(body, &body_encoded);
-    else if (cvt8 & AREA_QP)
+    else if (body_encoding == MIME_QP)
 	mime_qp_encode_tl(body, &body_encoded);
     else
 	goto out;
@@ -556,7 +565,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
     int uucp_flag;			/* To == UUCP or GATEWAY */
     int ret;
     char *split_line;
-    int cvt8 = 0;			/* AREA_8BIT | AREA_QP | AREA_HB64 */
+    int cvt8 = MIME_DEFAULT;		/* MIME_* */
     char *cs_def, *cs_in, *cs_out;	/* Charset def, in(=FTN), out(=RFC) */
     char *cs_save;
     MIMEInfo *mime;
@@ -723,7 +732,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	 */
 	if( (area = news_msg(body.area, &msg.node_to)) )
 	{
-	    cvt8 = area->flags & (AREA_8BIT | AREA_QP | AREA_HB64);
+	    cvt8 = area->encoding;
 	    
 	    /* Set AKA according to area's zone */
 	    cf_set_zone(area->zone);
@@ -755,12 +764,13 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	else
 	{
 	    cvt8 = 0;
+	    /* Order make priority for netmail for now */
 	    if(netmail_8bit)
-		cvt8 |= AREA_8BIT;
+		cvt8 = MIME_8BIT;
 	    if(netmail_qp)
-                cvt8 |= AREA_QP;
-            if(netmail_hb64)
-                cvt8 |= AREA_HB64;
+                cvt8 = MIME_QP;
+            if(netmail_b64)
+                cvt8 = MIME_B64;
 	    
 	    /* Set AKA according to sender's zone */
 	    cf_set_zone(msg.node_orig.zone!=-1 
@@ -768,17 +778,6 @@ int unpack(FILE *pkt_file, Packet *pkt)
 			: msg.node_from.zone  );
 	}
 
-	/*
-	 * Check for 8bit characters in message body. If none are
-	 * found, don't use the quoted-printable encoding or 8bit.
-	 */
-	if( !(check_8bit(&body.body)                         ||
-	      check_8bit_s(body.origin, sizeof(body.origin)) ||
-	      check_8bit_s(body.tear, sizeof(body.tear))     ||
-	      check_8bit_s(msg.subject, sizeof(msg.subject)))  )
-
-	    cvt8 &= ~(AREA_QP | AREA_8BIT);
-	
 	if ( !(mime_ver = rfcheader_get(&body.rfc, "MIME-Version") ) )
 	    mime_ver = kludge_get(&body.kludge,
 				  "RFC-MIME-Version", NULL);
@@ -794,22 +793,22 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		mime_type = NULL;
 	mime = get_mime(mime_ver, mime_type, mime_enc);
 
+	/* YK: I still keep that, but it sounds broken for me */
 	/*
 	 * Check for Content-Transfer-Encoding in RFC headers or ^ARFC kludges
 	 */
 	if ( mime->encoding )
 	{
 	    if(strieq(mime->encoding, "7bit")) 
-		cvt8 = AREA_8BIT;
+		cvt8 = MIME_7BIT;
 	    if(strieq(mime->encoding, "8bit")) 
-		cvt8 = AREA_8BIT;
+		cvt8 = MIME_8BIT;
 	    if(strieq(mime->encoding, "quoted-printable")) 
-		cvt8 = AREA_QP;
+		cvt8 = MIME_QP;
+	    if(strieq(mime->encoding, "base64"))
+		cvt8 = MIME_B64;
 	}
-	debug(5, "cvt8:%s%s%s",
-	      (cvt8 & AREA_8BIT ? " 8bit" : ""),
-	      (cvt8 & AREA_QP   ? " quoted-printable" : ""),
-	      (cvt8 & AREA_HB64 ? " headers BASE64" : ""));
+	debug(5, "cvt8:%s", cvt8_to_str(cvt8));
 	
 	/*
 	 * Convert message body
@@ -843,8 +842,6 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    cs_def = CHARSET_STDFTN;
 	if(!cs_out)
 	    cs_out = default_charset_out;
-	if(cvt8==0 || !cs_out)
-	    cs_out = CHARSET_STD7BIT;
 	
 	if(!ignore_chrs)
 	{
@@ -2016,17 +2013,14 @@ int main(int argc, char **argv)
     {
 	netmail_8bit = TRUE;
     }
-    if(cf_get_string("NetMailHeadersBase64", TRUE))
+    if(cf_get_string("NetMailBase64", TRUE))
     {
-	netmail_hb64 = TRUE;
-        netmail_qp = FALSE;
+	netmail_b64 = TRUE;
     }
     if(cf_get_string("NetMailQuotedPrintable", TRUE) ||
        cf_get_string("NetMailQP", TRUE)                )
     {
-	debug(8, "actual NetMailQP");
 	netmail_qp = TRUE;
-        netmail_hb64 = FALSE;
     }
     if(cf_get_string("UseFTNToAddress", TRUE))
     {
