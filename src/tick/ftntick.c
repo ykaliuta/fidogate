@@ -67,6 +67,12 @@ static char *areas_bbs;
 static mode_t tick_mode = 0600;
 static char pass_path[MAXPATH]={0};
 
+#ifdef RECODE_FILE_DESC
+static char *cs_def;
+static char *cs_out;
+#endif /* RECODE_FILE_DESC */
+
+
 /*
  * Prototypes
  */
@@ -814,6 +820,7 @@ int move(Tick *tic, char *old, char *new, char *dir)
 int add_files_bbs(Tick *tic, char *dir)
 {
 #ifdef RECODE_FILE_DESC
+    char buf1[BUFSIZ];
     char buf[BUFSIZ];
 #endif /* RECODE_FILE_DESC */
     char files_bbs[MAXPATH];
@@ -843,8 +850,14 @@ int add_files_bbs(Tick *tic, char *dir)
 #ifdef RECODE_FILE_DESC
     if (tic->desc.first)
     {
-	BUF_COPY (buf, tic->desc.first->line);
-	msg_xlate_line (buf, sizeof (buf), tic->desc.first->line, ignore_soft_cr);
+	size_t srclen;
+	size_t dstlen = sizeof(buf);
+
+	BUF_COPY (buf1, tic->desc.first->line);
+	msg_xlate_line (buf1, sizeof (buf1), tic->desc.first->line, ignore_soft_cr);
+
+	srclen = strlen(buf1) + 1;
+	charset_recode_string(buf, &dstlen, buf1, &srclen, cs_def, cs_out);
     }
     else
     {
@@ -1036,10 +1049,6 @@ int main(int argc, char **argv)
     char *c_flag=NULL;
     char *a_flag=NULL, *u_flag=NULL;
     int w_flag = FALSE;
-#ifdef RECODE_FILE_DESC
-    char *cs_def=NULL, *cs_out=NULL;
-#endif /* RECODE_FILE_DESC */
-
 
     
     int option_index;
