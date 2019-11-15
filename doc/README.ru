@@ -1067,6 +1067,9 @@ UseOriginForOrganization
 # Использовать текст из заголовока `Organization' для вставление в `* Origin'.
 #UseOrganizationForOrigin
 
+# rfc2ftn, использовать интернет адрес (a@b.c) вместо Full Name для имени
+#ForceRFCAddrInFrom
+
 # Использовать текст из заголовков X-FTN-Tearline, X-Mailer, User-Agent,
 # X-Newsreader для формирования фидошного тиарлайна (--- tearline).
 UseXHeaderForTearline
@@ -1232,12 +1235,19 @@ FTNInRnews	/usr/bin/rnews
 # сообщений.
 FTNInRecombine	%L/ftninrecomb
 
-# Использовать 8-битные кодировки при гейтовании FTN->RFC.
-NetMail8bit
+# Только одна из опций о кодировании может быть включена
 
-# Использовать MIME quoted-printable ISO-8859-1 кодировку при гейтовании
-# FTN->RFC нетмейла.
+# ftn2rfc, не кодировать тело письма в base64/QP
+#NetMail8bit
+
+# ftn2rfc кодировать тело письма в quoted-printable
 #NetMailQuotedPrintable
+
+# ftn2rfc, кодировать тело письма в base64
+NetMailBase64
+
+# ftn2rfc, не кодировать заголовки письма в base64/QP
+NetMailHeadersPlain
 
 # X-Flags правила
 #
@@ -1265,8 +1275,13 @@ CheckAreasBBS
 
 # Кодировки
 #
+
+# ftn2rfc, если в ftn сообщении есть гейтованные заголовки mime,
+# использовать их как есть. См. f55f43abe9712a1f0f913b8f9e3ab0223a807e06
+#DontIgnoreMimeType
+
 # Игнорировать содержимое кладжа CHRS.
-IgnoreCHRS
+#IgnoreCHRS
 
 # Игнорировать Soft CR т.е. не пропускать символ 0x8d aka русская буква 'Н' в
 # сгейтованных сообщениях FTN->RFC и поле Description tick'ов. Аналогично
@@ -1282,10 +1297,10 @@ DontIgnoreSoftCR
 #				отсутствует ^ACHRS кладж.
 #
 # Кодировки по умолчанию если NetMailCharset или -C не установлены.
-DefaultCharset	cp866:cp866:koi8-r
+DefaultCharset	cp866:cp866:utf-8
 
 # Кодировки по умолчанию для нетмейла.
-NetMailCharset	cp866:cp866:koi8-r
+NetMailCharset	cp866:cp866:utf8
 
 # Строка, добавляемая в "Path" сгейтованного из FTN RFC батча
 # (обычно это "not-for-mail").
