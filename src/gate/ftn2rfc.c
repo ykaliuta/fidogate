@@ -118,6 +118,7 @@ static int no_address_in_to_field = FALSE;
 static int netmail_8bit = FALSE;
 static int netmail_qp   = FALSE;
 static int netmail_b64 = FALSE;
+static int netmail_headers_plain = FALSE;
 
 /* Use FTN to address (cvt to Internet address) for mail_to */
 static int use_ftn_to_address = FALSE;
@@ -345,6 +346,7 @@ struct encoding_state {
     int cvt8;
     char *cs_in;
     char *cs_out;
+    bool plain_headers;
 };
 
 static int recode_header(Textline *tl, struct encoding_state *state)
@@ -403,6 +405,9 @@ static int encode_header(Textline *tl, void *arg)
     rc = recode_header(tl, state);
     if (rc != OK)
 	return rc;
+
+    if (state->plain_headers)
+	return OK;
 
     len = strlen(tl->line);
     if (charset_is_7bit(tl->line, len) && len <= MIME_STRING_LIMIT)
@@ -473,7 +478,8 @@ static char *cvt8_to_str(int cvt8)
 
 static void ftn2rfc_finish_mime(Textlist *hdr, Textlist *body,
 				MIMEInfo *mime,
-				char *cs_in, char *cs_out, int cvt8)
+				char *cs_in, char *cs_out,
+				int cvt8, bool plain_headers)
 {
     Textlist body_encoded;
     struct encoding_state en_state;
@@ -510,6 +516,7 @@ static void ftn2rfc_finish_mime(Textlist *hdr, Textlist *body,
     en_state.cvt8 = cvt8;
     en_state.cs_in = cs_in;
     en_state.cs_out = cs_out;
+    en_state.plain_headers = plain_headers;
 
     /* does recoding as well */
     tl_for_each(hdr, encode_header, &en_state);
@@ -572,6 +579,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
     char *mime_ver, *mime_type, *mime_enc;
     char *carbon_group = NULL;
     int addr_is_restricted = FALSE;
+    bool plain_headers = false;
     
     /*
      * Initialize
@@ -733,6 +741,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	if( (area = news_msg(body.area, &msg.node_to)) )
 	{
 	    cvt8 = area->encoding;
+	    plain_headers = area->flags & AREA_HEADERS_PLAIN;
 	    
 	    /* Set AKA according to area's zone */
 	    cf_set_zone(area->zone);
@@ -771,6 +780,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
                 cvt8 = MIME_QP;
             if(netmail_b64)
                 cvt8 = MIME_B64;
+
+	    plain_headers = netmail_headers_plain;
 	    
 	    /* Set AKA according to sender's zone */
 	    cf_set_zone(msg.node_orig.zone!=-1 
@@ -1684,7 +1695,7 @@ carbon:
 
 	/* adds mime headers, recodes and encodes message */
 	ftn2rfc_finish_mime(&theader, &tbody, mime,
-			    cs_in, cs_out, cvt8);
+			    cs_in, cs_out, cvt8, plain_headers);
 	
 	tl_appendf(&theader, "\n");
 	
@@ -2021,6 +2032,10 @@ int main(int argc, char **argv)
        cf_get_string("NetMailQP", TRUE)                )
     {
 	netmail_qp = TRUE;
+    }
+    if(cf_get_string("NetMailHeadersPlain", TRUE))
+    {
+	netmail_headers_plain = TRUE;
     }
     if(cf_get_string("UseFTNToAddress", TRUE))
     {

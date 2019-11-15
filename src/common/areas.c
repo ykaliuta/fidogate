@@ -144,6 +144,7 @@ long areas_get_limitmsgsize(void)
  *     -Q               convert to quoted-printable iso-8859-1 characters
  *     -C def:in:out    charset mapping setting
  *     -b               convert to base64, enabled by default
+ *     -nh              do not encode or wrap headers
  */
 Area *areas_parse_line(char *buf)
 {
@@ -239,6 +240,9 @@ Area *areas_parse_line(char *buf)
 	    /* -C DEF:IN:OUT */
 	    if((o = xstrtok(NULL, " \t")))
 		p->charset = strsave(o);
+
+	if(!strcmp(o, "-nh"))
+	    p->flags |= AREA_HEADERS_PLAIN;
     }
     /* Value not set or error */
     if(p->maxsize   < 0)

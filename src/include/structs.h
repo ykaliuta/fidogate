@@ -118,6 +118,7 @@ typedef struct st_area {	/* Area/newsgroup entry with options */
 #define AREA_NOGATE	4	/* -g  No messages from other gateways */
 #define AREA_HIERARCHY	8	/* -H  Area/group names match entire hierar. */
 #define AREA_NO		16	/* -!  Don't gate area/group */
+#define AREA_HEADERS_PLAIN	32	/* -nh  Don't encode headers */
 
 
 /*
