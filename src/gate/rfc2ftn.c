@@ -824,7 +824,7 @@ int snd_mail(RFCAddr rfc_to, long size)
     else
 	BUF_COPY(subj, "(no subject)");
 
-    if(mime_body_dec(&body) != OK)
+    if(mime_body_dec(&body, INTERNAL_CHARSET) != OK)
 	return ERROR;
     
      /*

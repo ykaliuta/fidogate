@@ -999,7 +999,7 @@ int mime_qp_decode(char **dst, char *src, size_t len)
  */
 static int mime_handle_mimed_word(char *s, char **out, size_t *out_len,
 				  bool *is_mime,
-				  char *charset, size_t ch_size)
+				  char *charset, size_t ch_size, char *to)
 
 {
     char *p;
@@ -1063,12 +1063,16 @@ static int mime_handle_mimed_word(char *s, char **out, size_t *out_len,
     return end + strlen(MIME_HEADER_CODE_END) - s;
 
 fallback:
-    /* keep it as is */
+    /*
+     * Keep it as is.
+     * Will work correctly with utf-8 plain headers, iconv and utf-8
+     * internal charset.
+     */
     debug(6, "Could not unmime subject '%s', leaving as is", s);
     len = strlen(s);
     *out = xmalloc(len);
     memcpy(*out, s, len); /* no '\0' */
-    snprintf(charset, ch_size, "%s", INTERNAL_CHARSET);
+    snprintf(charset, ch_size, "%s", to);
     *is_mime = false;
     *out_len = len;
 
@@ -1085,7 +1089,8 @@ fallback:
  * @returns the number of bytes, handled in the source string.
  */
 static int mime_handle_word(char *s, char **out, size_t *out_len,
-			    bool *is_mime, char *charset, size_t ch_size)
+			    bool *is_mime, char *charset, size_t ch_size,
+			    char *to)
 {
     char *plain_charset;
     bool free_charset = true;
@@ -1099,12 +1104,12 @@ static int mime_handle_word(char *s, char **out, size_t *out_len,
 	return mime_handle_mimed_word(s,
 				      out, out_len,
 				      is_mime,
-				      charset, ch_size);
+				      charset, ch_size, to);
     }
 
     plain_charset = mime_get_main_charset();
     if (plain_charset == NULL) {
-	plain_charset = INTERNAL_CHARSET;
+	plain_charset = to;
 	free_charset = false;
     }
 
@@ -1161,7 +1166,7 @@ char *mime_header_dec(char *d, size_t d_max, char *s, char *to)
 
         /* it means mime "word" -- encoded or plain part */
 	s_handled = mime_handle_word(s, &buf, &len, &is_mime,
-				     charset, sizeof(charset));
+				     charset, sizeof(charset), to);
 
 	/* keep at least one space between mime and non-mime words */
 	if (is_prev_mime && !is_mime) {
@@ -1530,9 +1535,9 @@ exit:
     return dec_body;
 }
 
-static Textlist* mime_debody_section(Textlist *body, Textlist *header);
+static Textlist* mime_debody_section(Textlist *body, Textlist *header, char *to);
 
-static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime)
+static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime, char *to)
 {
     Textlist header = { NULL, NULL };
     Textline *line;
@@ -1574,7 +1579,7 @@ static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime)
 	    header_read_list(&tmp_body, &header);
 	    header_delete_from_body(&tmp_body);
 
-	    ptr_body = mime_debody_section(&tmp_body, &header);
+	    ptr_body = mime_debody_section(&tmp_body, &header, to);
 	    if(ptr_body != NULL)
 	    {
 		tl_addtl(dec_body, ptr_body);
@@ -1594,34 +1599,31 @@ static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime)
 }
 
 
-static int mime_decharset_section(Textlist *body, MIMEInfo *mime)
+static int mime_decharset_section(Textlist *body, MIMEInfo *mime, char *to)
 {
 
     char *res_str = NULL;
     size_t res_len, src_len;
-    size_t max_len;
     int rc;
-    
     Textline *line;
+    char *tmp;
     
     if(body == NULL || mime == NULL)
 	return ERROR;
 
     /* if no charset, us-ascii assumed */
-    if(mime->type_charset == NULL || strieq(mime->type_charset, INTERNAL_CHARSET))
+    if(mime->type_charset == NULL || strieq(mime->type_charset, to))
 	return OK;
-
-   
-    max_len = MAX_LINE_LENGTH;
-    res_str = xmalloc(max_len + 1);
 
     for(line = body->first; line != NULL; line = line->next)
     {
 	src_len = strlen(line->line);
-	res_len = max_len;
+	res_len = src_len * MAX_CHARSET_OUT + 1;
+	src_len++; /* recode final \0 also */
+	res_str = xmalloc(res_len);
 
 	rc = charset_recode_string(res_str, &res_len, line->line, &src_len,
-				   mime->type_charset, INTERNAL_CHARSET);
+				   mime->type_charset, to);
 
 	if(rc == ERROR)
 	{
@@ -1630,19 +1632,19 @@ static int mime_decharset_section(Textlist *body, MIMEInfo *mime)
 	    else
 		goto exit; /* something really wrong */
 	}
-	
-	/* Converting to 8bit charset, so result always less or equal */
-	strcpy(line->line, res_str);
+
+	tmp = line->line;
+	line->line = res_str;
+	free(tmp);
     }
 
     rc = OK;
 exit:
-    xfree(res_str);
     return rc;
 }
     
 
-static Textlist* mime_debody_section(Textlist *body, Textlist *header)
+static Textlist* mime_debody_section(Textlist *body, Textlist *header, char *to)
 {
 
     Textlist *dec_body;
@@ -1673,12 +1675,12 @@ static Textlist* mime_debody_section(Textlist *body, Textlist *header)
 	    dec_body = NULL;
 	    goto exit;
 	}
-	mime_decharset_section(dec_body, mime);
+	mime_decharset_section(dec_body, mime, to);
     }
     else if(strieq(mime->type_type, "multipart/mixed") ||
 	    strieq(mime->type_type, "multipart/alternative"))
     {
-	dec_body = mime_debody_multipart(body, mime);
+	dec_body = mime_debody_multipart(body, mime, to);
     }
     else
     {
@@ -1693,15 +1695,17 @@ exit:
 }
 
 
-int mime_body_dec(Textlist *body)
+int mime_body_dec(Textlist *body, char *to)
 {
     Textlist *dec_body;
     Textlist *header;
+    int len;
+    char *buf;
 
     if((header = header_get_list()) == NULL)
 	return ERROR;
     
-    if((dec_body = mime_debody_section(body, header)) == NULL)
+    if((dec_body = mime_debody_section(body, header, to)) == NULL)
 	return ERROR;
 
     if(dec_body->first == NULL)
@@ -1718,8 +1722,14 @@ int mime_body_dec(Textlist *body)
 	xfree(dec_body);
     }
 
-    header_alter(header, "Content-Type", INTERNAL_TYPE);
+    len = snprintf(NULL, 0, "text/plain; charset=%s", to);
+    buf = xmalloc(len + 1);
+    sprintf(buf, "text/plain; charset=%s", to);
+
+    header_alter(header, "Content-Type", buf);
     header_alter(header, "Content-Transfer-Encoding", INTERNAL_ENCODING);
+
+    free(buf);
 
     return OK;
 }
