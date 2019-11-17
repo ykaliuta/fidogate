@@ -690,10 +690,6 @@ RFCAddrMode <>
 # messages FTN->RFC and tick's field `Description'. DontIgnore0x8d
 DontIgnoreSoftCR
 
-
-# Do'nt change content type charset
-DontChangeContentTypeCharset
-
 # Charset mapping
 #
 # Format	default:ftn:rfc

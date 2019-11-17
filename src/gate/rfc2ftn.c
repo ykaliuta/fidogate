@@ -103,8 +103,6 @@ static int no_chrs_kludge = FALSE;	/* NoChrsKludge		*/
 static int no_rfc_kludge = FALSE;	/* NoRfcKludge		*/
 static int no_gateway_kludge = FALSE;	/* NoGatewayKludge	*/
 static short x_from_kludge = FALSE;	/* XFromKludge	*/
-static int dont_change_content_type_charset = FALSE;
-					/* DontChangeContentTypeCharset */
 static int tzutc_kludge = FALSE;	/* UseTZUTCKludge */
 static int dont_process_return_receipt_to = FALSE;
 					/* DontProcessReturnReceiptTo */
@@ -1249,14 +1247,7 @@ int snd_message(Message *msg, Area *parea,
     str_upper(cs_out_fsc);
     cs_enc = strieq(cs_out_rfc, "us-ascii") ? "7bit" : "8bit";
     charset_set_in_out(cs_in, cs_out);
-    if(dont_change_content_type_charset) 
-    {
-	if(!strieq(cs_in, cs_out_rfc))
-	{
-	    debug(6, "charset: cs_out_rfc set to original %s", cs_in);
-	    cs_out_rfc = cs_in;
-	}
-    }
+
     debug(6, "charset: msg RFC=%s FSC=%s enc=%s",
 	  cs_out_rfc, cs_out_fsc, cs_enc         );
 
@@ -2327,10 +2318,6 @@ int main(int argc, char **argv)
     {
 	strtok(p, ":");
 	netmail_charset_out = strtok(NULL, ":");
-    }
-    if( (p = cf_get_string("DontChangeContentTypeCharset", TRUE)) )
-    {
-	dont_change_content_type_charset = TRUE;
     }
     if( (p = cf_get_string("DontProcessReturnReceiptTo", TRUE)) )
     {
