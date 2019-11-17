@@ -50,8 +50,8 @@ static CharsetTable *charset_table_last = NULL;
  * Current charset mapping table
  */
 static CharsetTable *charset_table_used = NULL;
-
-
+static char *orig_in;
+static char *orig_out;
 
 /*
  * Alloc new CharsetTable and put into linked list
@@ -248,27 +248,29 @@ char *charset_map_c(int c, int qp)
 char *
 xlat_s(char *s1, char *s2)
 {
-  char	 *p1, *p2;
-  size_t  len;
+    char *dst;
+    size_t src_len;
+    size_t dst_len;
+    int rc;
 
-  if (NULL != s2)
-    free(s2);
+    if (s2 != NULL)
+	free(s2);
 
-  if (NULL == s1)
+    if (s1 == NULL)
+	return NULL;
+
+    src_len = strlen(s1);
+    dst_len = src_len * MAX_CHARSET_OUT;
+    dst = xmalloc(dst_len + 1);
+    src_len++; /* recode also final \0 */
+
+    rc = charset_recode_string(dst, &dst_len, s1, &src_len,
+			       orig_in, orig_out);
+    if (rc == OK)
+	return dst;
+
+    free(dst);
     return NULL;
-
-  len = strlen(s1) * MAX_CHARSET_OUT + 1;
-  p1 = malloc(len);
-  if (NULL == p1)
-    return NULL;
-
-  memset(p1, 0, len);
-  p2 = s1;
-
-  while(*p2)
-    strcat(p1, charset_map_c(*(p2++), 0));
-
-  return p1;
 }
 
 
@@ -318,6 +320,9 @@ void charset_set_in_out(char *in, char *out)
 	return;
 
     debug(5, "charset: in=%s out=%s", in, out);
+
+    orig_in = in;
+    orig_out = out;
     
     /* Search for aliases */
     for(pa = charset_alias_list; pa; pa=pa->next)
