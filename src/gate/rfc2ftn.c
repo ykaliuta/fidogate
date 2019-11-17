@@ -796,7 +796,7 @@ int snd_mail(RFCAddr rfc_to, long size)
     char *asc_node_to;
     RFCAddr rfc_from;
     char *p;
-    char subj[MSG_MAXSUBJ];
+    char subj[MSG_MAXSUBJ * 4 + 1];
     int status, fido;
     Message msg;
     char *flags = NULL;

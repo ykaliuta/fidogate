@@ -264,10 +264,8 @@
 					 * ftntoss/ftnroute's -M option */
 
 #ifdef HAVE_ICONV
-#define INTERNAL_TYPE "text/plain; charset=windows-1251"
-#define INTERNAL_CHARSET "windows-1251"
+#define INTERNAL_CHARSET "utf-8"
 #else
-#define INTERNAL_TYPE "text/plain; charset=cp866"
 #define INTERNAL_CHARSET "cp866"
 #endif /* HAVE_ICONV */
 
