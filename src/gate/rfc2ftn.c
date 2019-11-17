@@ -57,7 +57,7 @@
 char   *get_name_from_body	(void);
 void	sendback		(const char *, ...);
 void	rfcaddr_init		(RFCAddr *);
-RFCAddr rfc_sender		(int);
+RFCAddr rfc_sender		(void);
 int	rfc_parse		(RFCAddr *, char *, Node *, int);
 int	rfc_isfido		(void);
 void	cvt_user_name		(char *);
@@ -66,7 +66,7 @@ char   *mail_receiver		(RFCAddr *, Node *);
 time_t	mail_date		(void);
 int	snd_mail		(RFCAddr, long);
 int	snd_message		(Message *, Area *, RFCAddr, RFCAddr, char *,
-				 long, char *, int, MIMEInfo *, Node *, int);
+				 long, char *, int, MIMEInfo *, Node *);
 int	print_tear_line		(FILE *);
 int	print_origin		(FILE *, char *, Node *);
 int	print_local_msgid	(FILE *, Node *);
@@ -301,7 +301,7 @@ void rfcaddr_init(RFCAddr *rfc)
 /*
  * Return message sender as RFCAddr struct
  */
-RFCAddr rfc_sender(int mime_qp)
+RFCAddr rfc_sender(void)
 {
     RFCAddr rfc, rfc1;
     char *from, *reply_to, *p;
@@ -321,13 +321,13 @@ RFCAddr rfc_sender(int mime_qp)
 	if(from)
 	{
 	    debug(5, "RFC From:     %s", from);
-	    mime_dequote(buffer, sizeof(buffer), from, mime_qp);
+	    mime_dequote(buffer, sizeof(buffer), from, 0);
 	    rfc = rfcaddr_from_rfc(from);
 	}
 	if(reply_to)
 	{
 	    debug(5, "RFC Reply-To: %s", reply_to);
-	    mime_dequote(buffer, sizeof(buffer), reply_to, mime_qp);
+	    mime_dequote(buffer, sizeof(buffer), reply_to, 0);
 	    rfc1 = rfcaddr_from_rfc(reply_to);
 	    /* No From, use Reply-To */
 	    if(!from)
@@ -807,7 +807,6 @@ int snd_mail(RFCAddr rfc_to, long size)
     long limitsize;
     Textlist tl;
     Textline *tp;
-    int mime_qp = 0;
 
     node_clear(&node_from);
     node_clear(&node_to);
@@ -834,15 +833,11 @@ int snd_mail(RFCAddr rfc_to, long size)
 		     s_header_getcomplete("Content-Type"),
 		     s_header_getcomplete("Content-Transfer-Encoding"));
 
-    /* MIME stuff and charset handling */
-    if(mime->encoding && strieq(mime->encoding, "quoted-printable"))
-	mime_qp = MIME_QP;
-
     /*
      * From RFCAddr
      */
     rfcaddr_init(&rfc_from);
-    rfc_from = rfc_sender(mime_qp);
+    rfc_from = rfc_sender();
     
     /*
      * To name/node
@@ -1105,7 +1100,7 @@ int snd_mail(RFCAddr rfc_to, long size)
 		msg.node_to   = cf_n_uplink();
 		status = snd_message(&msg, pa, rfc_from, rfc_to,
 				     subj, size, flags, fido, mime,
-				     &node_from, mime_qp);
+				     &node_from);
 		if(status)
 		{
 		    tl_clear(&tl);
@@ -1134,7 +1129,7 @@ int snd_mail(RFCAddr rfc_to, long size)
 	    msg.node_from = node_from;
 	    msg.node_to   = node_to;
 	    status = snd_message(&msg, NULL, rfc_from, rfc_to,
-				 subj, size, flags, fido, mime, &node_from,mime_qp);
+				 subj, size, flags, fido, mime, &node_from);
 	    TMPS_RETURN(status);
 	}
 	else
@@ -1163,7 +1158,7 @@ int snd_mail(RFCAddr rfc_to, long size)
 int snd_message(Message *msg, Area *parea,
 		RFCAddr rfc_from, RFCAddr rfc_to, char *subj,
 		long size, char *flags, int fido, MIMEInfo *mime,
-		Node *node_from, int mime_qp)
+		Node *node_from)
 /* msg       FTN nessage structure
  * parea     area/newsgroup description structure
  * rfc_from  Internet sender
@@ -1213,9 +1208,6 @@ int snd_message(Message *msg, Area *parea,
     if(parea && parea->rfc_lvl!=-1)
 	rfc_level = parea->rfc_lvl;
 
-    /* MIME stuff and charset handling */
-    if(mime->encoding && strieq(mime->encoding, "quoted-printable"))
-	mime_qp = MIME_QP;
     if(default_charset_in)
 	cs_in = default_charset_in;
     else
@@ -1315,7 +1307,7 @@ int snd_message(Message *msg, Area *parea,
 	for(p=body.first; p; p=p->next)
 	{
 	    /* Decode all MIME-style quoted printables */
-	    mime_dequote(buffer, sizeof(buffer), p->line, mime_qp);
+	    mime_dequote(buffer, sizeof(buffer), p->line, 0);
 	    lsize += strlen(buffer);		/* Length incl. <LF> */
 	    if(BUF_LAST(buffer) == '\n')	/* <LF> ->           */
 		lsize++;			/* <CR><LF>          */
@@ -1662,7 +1654,7 @@ again:
     while(p)
     {
 	/* Decode all MIME-style quoted printables */
-	mime_dequote(buffer, sizeof(buffer), p->line, mime_qp);
+	mime_dequote(buffer, sizeof(buffer), p->line, 0);
 
 	if(!strncmp(buffer, "--- ", 4))
 	    buffer[1] = '+';
