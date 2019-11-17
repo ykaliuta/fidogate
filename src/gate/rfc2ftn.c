@@ -411,7 +411,7 @@ int rfc_parse(RFCAddr *rfc, char *name, Node *node, int gw)
 	    if(p[len-1] == '\"')	/* " makes C-mode happy */
 	    p[len-1] = 0;
 	}
-	mime_header_dec(name, MSG_MAXNAME, p);
+	strncpy(name, p, MSG_MAXNAME);
     }
 
     if(!node)
@@ -820,7 +820,7 @@ int snd_mail(RFCAddr rfc_to, long size)
      * Subject
      */
     if( (p = header_get("Subject")) )
-	mime_header_dec(subj, MSG_MAXSUBJ, p);
+	BUF_COPY(subj, p);
     else
 	BUF_COPY(subj, "(no subject)");
 
@@ -1443,9 +1443,9 @@ again:
     else
 	print_local_msgid(sf, node_from);
 	
-	if((header = s_header_getcomplete("References")) ||
-	   (header = s_header_getcomplete("In-Reply-To")))
-	{
+    if((header = s_header_getcomplete("References")) ||
+       (header = s_header_getcomplete("In-Reply-To")))
+    {
 #ifdef FIDO_STYLE_MSGID
 	    if((id = s_msgid_rfc_to_fido(&flag, header, 0, 0, msg->area,
 					 0, 1)))
@@ -1454,7 +1454,7 @@ again:
 					 x_flags_m, 1)))
 #endif
 		fprintf(sf, "\001REPLY: %s\r\n", id);
-	}
+    }
 
     if(!no_fsc_0035)
 	if(!x_flags_n && !(alias_found && no_fsc_0035_if_alias))
@@ -1688,7 +1688,7 @@ again:
 		else if(use_organization_for_origin && organization)
 		{
 		    origin = organization;
-		    mime_header_dec(buffer, sizeof(buffer), origin);
+		    BUF_COPY(buffer, origin);
 		    pt = xlat_s(buffer, pt);
 		    print_origin(sf, pt ? pt : buffer, node_from);
 		}
@@ -1726,7 +1726,7 @@ again:
 	else if(use_organization_for_origin && organization)
 	{
 	    origin = organization;
-	    mime_header_dec(buffer, sizeof(buffer), origin);
+	    BUF_COPY(buffer, origin);
 	    pt = xlat_s(buffer, pt);
 	    print_origin(sf, pt ? pt : buffer, node_from);
 	}
@@ -1765,7 +1765,8 @@ int print_tear_line(FILE *fp)
 	    (p = header_get("X-Newsreader"))   ||
 	    (p = header_get("X-GateSoftware"))   )
 	{
-	    mime_header_dec(buffer, sizeof(buffer), p);
+	    BUF_COPY(buffer, p);
+	    /* TODO: no xlat when converted directly to FTN charset */
 	    pt = xlat_s(buffer, NULL);
 	    fprintf(fp, "--- %s\r\n", pt ? pt : buffer);
 	    pt = xlat_s(NULL, pt);
@@ -1986,7 +1987,14 @@ int snd_to_cc_bcc(long int size)
     return status;
 }
 
-
+/*
+ * wrapper to read the header and decode mime
+ */
+static void rfc2ftn_header_read(FILE *fpart)
+{
+    header_read(fpart);
+    header_decode(INTERNAL_CHARSET);
+}
 
 /*
  * Usage messages
@@ -2454,7 +2462,8 @@ int main(int argc, char **argv)
 	
 	/* Read message header from fpart */
 	header_delete();
-	header_read(fpart);
+	/* read and decode mime */
+	rfc2ftn_header_read(fpart);
 
 	/* Get Organization header */
 	if(use_organization_for_origin)

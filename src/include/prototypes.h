@@ -364,7 +364,7 @@ enum mime_encodings {
 #define MIME_STRING_LIMIT 76
 
 char   *mime_dequote		(char *, size_t, char *, int);
-char   *mime_header_dec		(char *, size_t, char *);
+char   *mime_header_dec		(char *, size_t, char *, char *);
 int     mime_body_dec		(Textlist*); /* decode base64 body */
 int     mime_header_enc		(char **, char *, char *, int);
 void    mime_b64_encode_tl      (Textlist *in, Textlist *out);
@@ -571,6 +571,8 @@ char   *header_geth		(char *, int);
 char   *header_getnext		(void);
 char   *s_header_getcomplete	(char *);
 char   *addr_token		(char *);
+void    header_decode           (char *);
+
 
 /* routing.c */
 extern Routing *routing_first;
