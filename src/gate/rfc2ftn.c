@@ -321,13 +321,11 @@ RFCAddr rfc_sender(void)
 	if(from)
 	{
 	    debug(5, "RFC From:     %s", from);
-	    mime_dequote(buffer, sizeof(buffer), from, 0);
 	    rfc = rfcaddr_from_rfc(from);
 	}
 	if(reply_to)
 	{
 	    debug(5, "RFC Reply-To: %s", reply_to);
-	    mime_dequote(buffer, sizeof(buffer), reply_to, 0);
 	    rfc1 = rfcaddr_from_rfc(reply_to);
 	    /* No From, use Reply-To */
 	    if(!from)

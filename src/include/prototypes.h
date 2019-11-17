@@ -363,7 +363,7 @@ enum mime_encodings {
 #define MIME_DEFAULT MIME_B64
 #define MIME_STRING_LIMIT 76
 
-char   *mime_dequote		(char *, size_t, char *, int);
+char   *mime_dequote		(char *, size_t, char *);
 char   *mime_header_dec		(char *, size_t, char *, char *);
 int     mime_body_dec		(Textlist*, char *); /* decode mime body */
 int     mime_header_enc		(char **, char *, char *, int);

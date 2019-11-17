@@ -78,14 +78,13 @@ static int x2toi(char *s)
 /*
  * Dequote string with MIME-style quoted-printable =XX
  */
-char *mime_dequote(char *d, size_t n, char *s, int flags)
+char *mime_dequote(char *d, size_t n, char *s)
 {
     int i, c=0;
-    char *xl;
 
     for(i=0; i<n-1 && *s; i++, s++)
     {
-	if( (flags & MIME_QP) && (s[0] == '=') )/* MIME quoted printable */
+	if(s[0] == '=')/* MIME quoted printable */
 	{
 	    if(is_qpx(s[1]) && is_qpx(s[2]))	/* =XX */
 	    {
@@ -106,22 +105,7 @@ char *mime_dequote(char *d, size_t n, char *s, int flags)
 	{					   	 /* Nothing special to do */
 	    c = *s;
 	}
-
-	if(c & 0x80)
-	{
-	    /* Translate special characters according to charset */
-	    if( (xl = charset_map_c(c, FALSE)) )
-	    {
-		while(*xl && i<n-1)
-		{
-		    d[i] = *xl++;
-		    if(*xl)
-		        i++;
-		}
-	    }
-	}
-	else
-	    d[i] = c;
+	d[i] = c;
     }
     d[i] = 0;
 
