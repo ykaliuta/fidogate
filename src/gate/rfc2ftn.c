@@ -823,9 +823,6 @@ int snd_mail(RFCAddr rfc_to, long size)
     else
 	BUF_COPY(subj, "(no subject)");
 
-    if(mime_body_dec(&body, INTERNAL_CHARSET) != OK)
-	return ERROR;
-    
      /*
      * MIME header
      */
@@ -1154,6 +1151,52 @@ int snd_mail(RFCAddr rfc_to, long size)
     return 0;
 }
 
+/*
+ * determine input and output charsets.
+ * Input charset will be used only for headers, since body is recoded
+ * separately.
+ * Headers are recoded in the beginning to the internal charset.
+ */
+static void determine_charsets(Area *parea, char **in, char **out,
+			       char **out_fsc)
+{
+    char *cs_in;
+    char *cs_out = NULL;
+    char *cs_out_fsc, *cs_out_rfc;
+    char *cs_save;
+
+    cs_in = INTERNAL_CHARSET;
+
+    if(parea)					/* News */
+    {
+	if(parea->charset)
+	{
+	    /* TODO: leak */
+	    cs_save = s_copy(parea->charset);
+	    strtok(cs_save, ":");
+	    cs_out = strtok(NULL, ":");
+	}
+    }
+    else					/* Mail */
+	cs_out = netmail_charset_out;
+
+    /* defaults */
+    if(!cs_out)
+	cs_out = default_charset_out;
+    if(!cs_out || strieq(cs_in, CHARSET_STD7BIT))
+	cs_out = CHARSET_STD7BIT;
+    cs_out_rfc = charset_alias_rfc(cs_out);
+    cs_out_fsc = charset_alias_fsc(cs_out);
+    str_upper(cs_out_fsc);
+
+    debug(6, "charset: msg RFC=%s FSC=%s",
+	  cs_out_rfc, cs_out_fsc);
+
+    *in = cs_in;
+    *out = cs_out;
+    *out_fsc = cs_out_fsc;
+}
+
 
 int snd_message(Message *msg, Area *parea,
 		RFCAddr rfc_from, RFCAddr rfc_to, char *subj,
@@ -1188,8 +1231,8 @@ int snd_message(Message *msg, Area *parea,
     int rfc_level = default_rfc_level;
     int x_flags_n=FALSE, x_flags_m=FALSE, x_flags_f=FALSE;
     char *cs_in, *cs_out;		/* Charset in(=RFC), out(=FTN) */
-    char *cs_out_fsc, *cs_out_rfc;
-    char *cs_save, *cs_enc;
+    char *cs_out_fsc;
+    char *cs_enc = "8bit"; /* all converted to 8 bit now */
     char *pt;
 
 #ifdef MAXMSGHEADRLEN
@@ -1208,40 +1251,8 @@ int snd_message(Message *msg, Area *parea,
     if(parea && parea->rfc_lvl!=-1)
 	rfc_level = parea->rfc_lvl;
 
-    if(default_charset_in)
-	cs_in = default_charset_in;
-    else
-	cs_in = CHARSET_STDRFC;
-    cs_save = NULL;
-    cs_out  = NULL;
-    if(mime->type_charset)
-        cs_in = mime->type_charset;
-
-    if(parea)					/* News */
-    {
-	if(parea->charset)
-	{
-	    cs_save = s_copy(parea->charset);
-	    strtok(cs_save, ":");
-	    cs_out = strtok(NULL, ":");
-	}
-    }
-    else					/* Mail */
-	cs_out = netmail_charset_out;
-    
-    /* defaults */
-    if(!cs_out)
-        cs_out = default_charset_out;
-    if(!cs_out || strieq(cs_in, CHARSET_STD7BIT))
-        cs_out = CHARSET_STD7BIT;
-    cs_out_rfc = charset_alias_rfc(cs_out);
-    cs_out_fsc = charset_alias_fsc(cs_out);
-    str_upper(cs_out_fsc);
-    cs_enc = strieq(cs_out_rfc, "us-ascii") ? "7bit" : "8bit";
+    determine_charsets(parea, &cs_in, &cs_out, &cs_out_fsc);
     charset_set_in_out(cs_in, cs_out);
-
-    debug(6, "charset: msg RFC=%s FSC=%s enc=%s",
-	  cs_out_rfc, cs_out_fsc, cs_enc         );
 
     /*
      * Open output packet
@@ -1294,6 +1305,9 @@ int snd_message(Message *msg, Area *parea,
     
     last_zone = cf_zone();
 
+    /* Decode and recode (charset) the body */
+    if(mime_body_dec(&body, cs_out) != OK)
+	return ERROR;
     
     /*
      * Compute number of split messages if any
@@ -1306,10 +1320,8 @@ int snd_message(Message *msg, Area *parea,
 	lsize = 0;
 	for(p=body.first; p; p=p->next)
 	{
-	    /* Decode all MIME-style quoted printables */
-	    mime_dequote(buffer, sizeof(buffer), p->line, 0);
-	    lsize += strlen(buffer);		/* Length incl. <LF> */
-	    if(BUF_LAST(buffer) == '\n')	/* <LF> ->           */
+	    lsize += strlen(p->line);		/* Length incl. <LF> */
+	    if(BUF_LAST(p->line) == '\n')	/* <LF> ->           */
 		lsize++;			/* <CR><LF>          */
 	    if(lsize > maxsize)
 	    {
@@ -1327,12 +1339,6 @@ int snd_message(Message *msg, Area *parea,
     }
     else
 	split = 0;
-    
-
-    /*
-     * Set pointer to first line in message body
-     */
-    p = body.first;
     
 again:
 
@@ -1650,11 +1656,15 @@ again:
 
     /***** Message body *****************************************************/
 
+    /*
+     * Set pointer to first line in message body
+     */
+    p = body.first;
+
     lsize = 0;
     while(p)
     {
-	/* Decode all MIME-style quoted printables */
-	mime_dequote(buffer, sizeof(buffer), p->line, 0);
+	snprintf(buffer, sizeof(buffer), "%s", p->line);
 
 	if(!strncmp(buffer, "--- ", 4))
 	    buffer[1] = '+';
