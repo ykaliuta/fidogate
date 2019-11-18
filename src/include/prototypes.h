@@ -164,7 +164,6 @@ CharsetTable *charset_table_new	(void);
 CharsetAlias *charset_alias_new	(void);
 int	charset_write_bin	(char *);
 int	charset_read_bin	(char *);
-char   *charset_qpen		(int, int);
 char   *charset_map_c		(int, int);
 char   *xlat_s			(char *, char *);
 int     charset_recode_string   (char *dst, size_t *dstlen,

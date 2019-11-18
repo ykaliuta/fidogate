@@ -196,7 +196,7 @@ int charset_read_bin(char *name)
 /*
  * Convert to MIME quoted-printable =XX if qp==TRUE
  */
-char *charset_qpen(int c, int qp)
+static char *charset_qpen(int c, int qp)
 {
     static char buf[4];
 
