@@ -628,3 +628,81 @@ int charset_is_7bit(char *buffer, size_t len)
 	       return FALSE;
      return TRUE;
 }
+
+enum utf8_state {
+    START_SEQ,
+    PROCESS_SEQ,
+    FINISH,
+    ERR,
+};
+
+static enum utf8_state utf8_check_start(unsigned char c, size_t *n)
+{
+    size_t num;
+
+    if ((c & 0x80) == 0)
+	num = 1;
+    else if (((c & 0xc0) == 0xc0) && ((c & 0x20) == 0))
+	num = 2;
+    else if (((c & 0xe0) == 0xe0) && ((c & 0x10) == 0))
+	num = 3;
+    else if (((c & 0xf0) == 0xf0) && ((c & 0x08) == 0))
+	num = 4;
+    else
+	return ERR;
+
+    *n = num;
+    return PROCESS_SEQ;
+}
+
+static bool utf8_check_rest_byte(unsigned char c)
+{
+    return ((c & 0x80) == 0x80) && ((c & 0x40) == 0);
+}
+
+static bool utf8_check_rest_bytes(char *s, size_t len, size_t i, size_t num)
+{
+    while (num--) {
+	if (s[i] == '\0' || i == len)
+	    return false;
+	if (!utf8_check_rest_byte(s[i]))
+	    return false;
+	i++;
+    }
+    return true;
+}
+
+bool charset_is_valid_utf8(char *s, size_t len)
+{
+    enum utf8_state state = START_SEQ;
+    size_t i;
+    size_t num;
+    static const void *const states[] = {
+	[START_SEQ] = &&START_SEQ,
+	[PROCESS_SEQ] = &&PROCESS_SEQ,
+	[FINISH] = &&FINISH,
+	[ERR] = &&ERR,
+    };
+
+    i = 0;
+    goto START_SEQ;
+
+START_SEQ:
+    if (s[i] == '\0' || i == len)
+	goto FINISH;
+    state = utf8_check_start(s[i], &num);
+    goto *states[state];
+
+PROCESS_SEQ:
+    i++;
+    num--;
+    if (!utf8_check_rest_bytes(s, len, i, num))
+	goto ERR;
+    i += num;
+    goto START_SEQ;
+
+FINISH:
+    return true;
+ERR:
+    return false;
+}
