@@ -1703,9 +1703,6 @@ carbon:
 	if(split_line)
 	    tl_appendf(&theader, "X-SPLIT: %s\n", split_line);
 
-	if(cs_save)
-	    xfree(cs_save);
-	
 	/* Add extra headers */
 	if(area)
 	    for(pl=area->x_hdr.first; pl; pl=pl->next)
@@ -1759,6 +1756,9 @@ carbon:
 	tl_clear(&tl);
 	msg_body_clear(&body);
 	tmps_freeall();
+
+	if(cs_save)
+	    xfree(cs_save);
     } /**while(type == MSG_TYPE)**/
 
     if(mail_file('n')) 
