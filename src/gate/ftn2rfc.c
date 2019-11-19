@@ -400,6 +400,8 @@ static int sanitize_encoding(int enc)
 
 static char *encode_skip[] = {
     "Path:",
+    "Message-ID:",
+    "References:",
 };
 
 static int encode_header(Textline *tl, void *arg)
@@ -415,7 +417,7 @@ static int encode_header(Textline *tl, void *arg)
         size_t len;
 
         len = strlen(encode_skip[i]);
-        if (strncmp(tl->line, encode_skip[i], len) == 0)
+        if (strncasecmp(tl->line, encode_skip[i], len) == 0)
             return OK;
     }
 
