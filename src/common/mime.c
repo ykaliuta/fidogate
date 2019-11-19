@@ -1063,6 +1063,60 @@ fallback:
     return len;
 }
 
+static int mime_handle_plain_word(char *s, char **out, size_t *out_len,
+				  char *charset, size_t ch_size, char *to)
+
+{
+    char *plain_charset = CHARSET_STDRFC;
+    char *mime_charset = NULL;
+    char *p;
+    size_t len;
+    char *res;
+
+    /*
+     * If there are several words, handle only one.
+     * Reading code should combine splitted lines, so no \n.
+     * TODO: \t can be checked as well
+     */
+    p = strchr(s, ' ');
+    if (p != NULL)
+	    len = p - s;
+    else
+	    len = strlen(s);
+
+    /*
+     * There must be no plain 8 bit headers except utf-8.
+     * If there are, do some heuristics:
+     * - if body charset supplied and is not 7 bit us-ascii, use that;
+     * - othewise it's broken most probably, assume the precompiled
+     *   default.
+     */
+    if (!charset_is_7bit(s, len) && charset_is_valid_utf8(s, len)) {
+	plain_charset = "utf-8";
+    } else {
+	mime_charset = mime_get_main_charset();
+
+	if ((mime_charset != NULL) &&
+	    (strcmp(mime_charset, CHARSET_STD7BIT) != 0))
+	{
+	    plain_charset = mime_charset;
+	}
+    }
+
+    strncpy(charset, plain_charset, ch_size - 1);
+    charset[ch_size - 1] = '\0';
+
+    free(mime_charset);
+
+    res = xmalloc(len + 1);
+    str_copy(res, len + 1, s);
+
+    *out_len = len;
+    *out = res;
+
+    return *out_len;
+}
+
 /*
  * Fetches the mime word from the string. It can be mime-encoded
  * or plain part, separated with "space".
@@ -1076,12 +1130,6 @@ static int mime_handle_word(char *s, char **out, size_t *out_len,
 			    bool *is_mime, char *charset, size_t ch_size,
 			    char *to)
 {
-    char *plain_charset;
-    bool free_charset = true;
-    char *p;
-    size_t len;
-    char *res;
-
     if (strnieq(s,
 		MIME_HEADER_CODE_START,
 		strlen(MIME_HEADER_CODE_START))) {
@@ -1091,34 +1139,8 @@ static int mime_handle_word(char *s, char **out, size_t *out_len,
 				      charset, ch_size, to);
     }
 
-    plain_charset = mime_get_main_charset();
-    if (plain_charset == NULL) {
-	plain_charset = to;
-	free_charset = false;
-    }
-
-    strncpy(charset, plain_charset, ch_size - 1);
-    charset[ch_size - 1] = '\0';
-
-    if (free_charset)
-	free(plain_charset);
-
     *is_mime = false;
-
-    /* if there are several words, handle only one. */
-    p = strchr(s, ' ');
-    if (p != NULL)
-	    len = p - s;
-    else
-	    len = strlen(s);
-
-    res = xmalloc(len + 1);
-    str_copy(res, len + 1, s);
-
-    *out_len = len;
-    *out = res;
-
-    return *out_len;
+    return mime_handle_plain_word(s, out, out_len, charset, ch_size, to);
 }
 
 /* source @s must be '\0'-terminated */
@@ -1161,7 +1183,7 @@ char *mime_header_dec(char *d, size_t d_max, char *s, char *to)
 		break;
 	}
 
-	debug(6, "subject charset: %s", charset);
+	debug(6, "header charset: %s", charset);
 	d_size = d_left;
 	rc = charset_recode_string(d, &d_size, buf, &len,
 				   charset, to);
@@ -1171,7 +1193,7 @@ char *mime_header_dec(char *d, size_t d_max, char *s, char *to)
 	d += d_left - d_size;
 
 	if (rc != OK) {
-	    debug(6, "Could not recode subject %s", buf);
+	    debug(6, "Could not recode header %s", buf);
 	    goto out;
 	}
 
