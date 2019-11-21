@@ -361,7 +361,7 @@ AC_DEFINE_UNQUOTED(FACILITY, $SYSLOG_FACILITY,
 ])
 
 CHARSET_STDFTN="cp866"
-CHARSET_STDRFC="koi8-r"
+CHARSET_STDRFC="utf-8"
 CHARSET_STD7BIT="us-ascii"
 AC_ARG_WITH(ftn-charset,
 [  --with-ftn-charset=CHS  set default assumed charset for Fido messages [cp866] ],
