@@ -16,7 +16,7 @@ DONE	* rfc2ftn: config option for setting RRQ for Return-Receipt-To.
 DONE    * rfc2ftn: log WARNINGs if article not found, disable option
 	  in config.
 
-	* rfc2ftn: mime_deheader() für alle RFC-Header ->
+	* rfc2ftn: mime_deheader() fÃ¼r alle RFC-Header ->
 	  Fido-Something
 
 DONE	* get rid of the fidogate_exit(), exit.c stuff. Is/will this
