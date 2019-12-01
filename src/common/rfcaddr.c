@@ -96,15 +96,9 @@ RFCAddr rfcaddr_from_ftn(char *name, Node *node)
     for(i=0; *name && i<MAXUSERNAME-1; )
     {
 	c = (unsigned char)(*name++);
-	if(c >= 0x80)			/* Must translate */
-	{
-	    p = charset_map_c(c, FALSE);
-	    if(p)
-		while(*p && i<MAXUSERNAME-1)
-		    buf[i++] = *p++;
-	}
-	else if(c>=' ' && c<0x7f)
-	    buf[i++] = c;
+	if (c < ' ')
+	    continue;
+	buf[i++] = c;
     }
     buf[i] = 0;
 

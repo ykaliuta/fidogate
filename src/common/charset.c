@@ -50,8 +50,8 @@ static CharsetTable *charset_table_last = NULL;
  * Current charset mapping table
  */
 static CharsetTable *charset_table_used = NULL;
-
-
+static char *orig_in;
+static char *orig_out;
 
 /*
  * Alloc new CharsetTable and put into linked list
@@ -196,7 +196,7 @@ int charset_read_bin(char *name)
 /*
  * Convert to MIME quoted-printable =XX if qp==TRUE
  */
-char *charset_qpen(int c, int qp)
+static char *charset_qpen(int c, int qp)
 {
     static char buf[4];
 
@@ -248,27 +248,29 @@ char *charset_map_c(int c, int qp)
 char *
 xlat_s(char *s1, char *s2)
 {
-  char	 *p1, *p2;
-  size_t  len;
+    char *dst;
+    size_t src_len;
+    size_t dst_len;
+    int rc;
 
-  if (NULL != s2)
-    free(s2);
+    if (s2 != NULL)
+	free(s2);
 
-  if (NULL == s1)
+    if (s1 == NULL)
+	return NULL;
+
+    src_len = strlen(s1);
+    dst_len = src_len * MAX_CHARSET_OUT;
+    dst = xmalloc(dst_len + 1);
+    src_len++; /* recode also final \0 */
+
+    rc = charset_recode_string(dst, &dst_len, s1, &src_len,
+			       orig_in, orig_out);
+    if (rc == OK)
+	return dst;
+
+    free(dst);
     return NULL;
-
-  len = strlen(s1) * MAX_CHARSET_OUT + 1;
-  p1 = malloc(len);
-  if (NULL == p1)
-    return NULL;
-
-  memset(p1, 0, len);
-  p2 = s1;
-
-  while(*p2)
-    strcat(p1, charset_map_c(*(p2++), 0));
-
-  return p1;
 }
 
 
@@ -318,6 +320,9 @@ void charset_set_in_out(char *in, char *out)
 	return;
 
     debug(5, "charset: in=%s out=%s", in, out);
+
+    orig_in = in;
+    orig_out = out;
     
     /* Search for aliases */
     for(pa = charset_alias_list; pa; pa=pa->next)
@@ -462,4 +467,242 @@ void charset_free(void)
 	pt1=pt->next;
 	xfree(pt);
     }
+}
+
+#ifdef HAVE_ICONV
+static int _charset_recode_iconv(char *dst, size_t *dstlen,
+				 char *src, size_t *srclen,
+				 char *from, char *to)
+{
+    int rc;
+    iconv_t desc;
+
+    debug(6, "Using ICONV");
+    desc = iconv_open(to, from);
+    if(desc == (iconv_t)-1)
+    {
+	debug(6, "WARNING: iconv cannot convert from %s to %s", from, to);
+	return ERROR;
+    }
+
+    while(*srclen > 0)
+    {
+	rc = iconv(desc, &src, srclen, &dst, dstlen);
+	if(rc != -1)
+	    continue;
+
+	if((errno == E2BIG) || (*dstlen == 0))
+	{
+	    rc = ERROR;
+	    goto exit;
+	}
+
+	/* Only if wrong symbol (or sequence), try to skip it */
+	(*srclen)--;
+	src++;
+
+	*dst++ = '?';
+	(*dstlen)--;
+    }
+
+    /*
+     * write sequence to get to the initial state if needed
+     * https://www.gnu.org/software/libc/manual/html_node/iconv-Examples.html
+     */
+    iconv(desc, NULL, NULL, &dst, dstlen);
+    rc = OK;
+
+exit:
+    *dst = '\0';
+    iconv_close(desc);
+
+    return rc;
+}
+
+static int charset_recode_iconv(char *dst, size_t *dstlen,
+				char *src, size_t *srclen,
+				char *from, char *to)
+{
+    int rc;
+    char *p;
+    char *buf;
+    size_t len;
+    size_t off;
+
+    rc = _charset_recode_iconv(dst, dstlen, src, srclen, from, to);
+    if (rc == OK)
+	return OK;
+
+    /* Heuristic, LATIN-1 -> LATIN1 */
+    p = strchr(from, '-');
+    if (p == NULL)
+	return ERROR;
+
+    off = p - from;
+    len = strlen(from);
+
+    buf = xmalloc(len + 1);
+    memcpy(buf, from, off);
+    memcpy(buf + off, p + 1, len - off - 1);
+    buf[len - 1] = '\0';
+
+    rc = _charset_recode_iconv(dst, dstlen, src, srclen, buf, to);
+    free(buf);
+
+    return rc;
+}
+
+#else
+static int charset_recode_iconv(char *dst, size_t *dstlen,
+				char *src, size_t *srclen,
+				char *from, char *to)
+{
+	return ERROR;
+}
+#endif
+
+/* uses internal recode */
+static int charset_recode_int(char *dst, size_t *dstlen,
+			      char *src, size_t *srclen,
+			      char *from, char *to)
+{
+
+    charset_set_in_out(from, to);
+    *dst = '\0';
+
+    for(; (*srclen > 0 ) && (*dstlen > 0); (*srclen)--, (*dstlen)--)
+	strcat(dst, charset_map_c(*(src++), 0));
+
+    return OK;
+}
+
+/*
+ * get source string, lenght of it, buffer for the destination string
+ * and its length.
+ * Return in srclen -- rest of undecoded characters (0 if ok)
+ * in dstlen -- number of unused bytes in the dst buffer
+ * The argument's order is like in str/mem functions
+ *
+ * Adjust given length to string's length
+ */
+int charset_recode_string(char *dst, size_t *dstlen,
+			  char *src, size_t *srclen,
+			  char *from, char *to)
+{
+    int rc;
+    size_t len;
+
+    if(src == NULL || dst == NULL || srclen == NULL || dstlen == NULL)
+	return ERROR;
+
+    if(*srclen == 0 || *dstlen == 0)
+	return ERROR;
+
+    debug(6, "mime charset: recoding from %s to %s", from, to);
+
+    if (strieq(from, to)) {
+	len = MIN(*dstlen, *srclen);
+	memcpy(dst, src, len);
+	*dstlen -= len;
+	*srclen -= len;
+	return OK;
+    }
+
+    rc = charset_recode_iconv(dst, dstlen, src, srclen, from, to);
+    if (rc == OK)
+	    return OK;
+
+    rc = charset_recode_int(dst, dstlen, src, srclen, from, to);
+    return rc;
+}
+
+int charset_is_7bit(char *buffer, size_t len)
+{
+     int i;
+
+     if(buffer == NULL)
+	  return TRUE;
+
+     for(i = 0; i < len; i++)
+	  if(buffer[i] & 0x80)
+	       return FALSE;
+     return TRUE;
+}
+
+enum utf8_state {
+    START_SEQ,
+    PROCESS_SEQ,
+    FINISH,
+    ERR,
+};
+
+static enum utf8_state utf8_check_start(unsigned char c, size_t *n)
+{
+    size_t num;
+
+    if ((c & 0x80) == 0)
+	num = 1;
+    else if (((c & 0xc0) == 0xc0) && ((c & 0x20) == 0))
+	num = 2;
+    else if (((c & 0xe0) == 0xe0) && ((c & 0x10) == 0))
+	num = 3;
+    else if (((c & 0xf0) == 0xf0) && ((c & 0x08) == 0))
+	num = 4;
+    else
+	return ERR;
+
+    *n = num;
+    return PROCESS_SEQ;
+}
+
+static bool utf8_check_rest_byte(unsigned char c)
+{
+    return ((c & 0x80) == 0x80) && ((c & 0x40) == 0);
+}
+
+static bool utf8_check_rest_bytes(char *s, size_t len, size_t i, size_t num)
+{
+    while (num--) {
+	if (s[i] == '\0' || i == len)
+	    return false;
+	if (!utf8_check_rest_byte(s[i]))
+	    return false;
+	i++;
+    }
+    return true;
+}
+
+bool charset_is_valid_utf8(char *s, size_t len)
+{
+    enum utf8_state state = START_SEQ;
+    size_t i;
+    size_t num;
+    static const void *const states[] = {
+	[START_SEQ] = &&START_SEQ,
+	[PROCESS_SEQ] = &&PROCESS_SEQ,
+	[FINISH] = &&FINISH,
+	[ERR] = &&ERR,
+    };
+
+    i = 0;
+    goto START_SEQ;
+
+START_SEQ:
+    if (s[i] == '\0' || i == len)
+	goto FINISH;
+    state = utf8_check_start(s[i], &num);
+    goto *states[state];
+
+PROCESS_SEQ:
+    i++;
+    num--;
+    if (!utf8_check_rest_bytes(s, len, i, num))
+	goto ERR;
+    i += num;
+    goto START_SEQ;
+
+FINISH:
+    return true;
+ERR:
+    return false;
 }

@@ -555,6 +555,40 @@ char *addr_token(char *line)
     return s;
 }   
 
+struct decoding_state {
+    char *charset;
+};
+
+static int decode_header(Textline *tl, void *arg)
+{
+    struct decoding_state *state = arg;
+    char *decoded;
+
+    mime_header_dec(buffer, sizeof(buffer), tl->line, state->charset);
+    decoded = strdup(buffer);
+
+    free(tl->line);
+    tl->line = decoded;
+
+    return OK;
+}
+
+/*
+ * Use the static state
+ * Decodes the mimed headers and recodes them to @to charset
+ * (source charset is part of the mime encoding)
+ */
+void header_decode(char *to)
+{
+    Textlist *hdr;
+    struct decoding_state state = {
+	.charset = to,
+    };
+
+    hdr = header_get_list();
+    /* does recoding as well */
+    tl_for_each(hdr, decode_header, &state);
+}
 
 
 #ifdef TEST /****************************************************************/

@@ -1,0 +1,16 @@
+#
+# $Id: ftnacl.sample,v 5.2 2004/11/23 00:50:36 anray Exp $
+#
+
+Echo
+Readonly
+!*/*.0,*	*.SYSOP
+
+
+Fecho
+Readonly
+!*/*.0,*	BOOK,NODEDIFF
+
+Echo
+Mandatory
+#*		CORE.LOCAL

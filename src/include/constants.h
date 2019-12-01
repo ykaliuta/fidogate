@@ -78,7 +78,6 @@
 #define INVALID		(-1)
 #define WILDCARD	(-2)
 
-#define DEFAULT_LINE_LENGTH	32768
 #define MAX_LINE_LENGTH		32768
 
 /*
@@ -265,10 +264,8 @@
 					 * ftntoss/ftnroute's -M option */
 
 #ifdef HAVE_ICONV
-#define INTERNAL_TYPE "text/plain; charset=windows-1251"
-#define INTERNAL_CHARSET "windows-1251"
+#define INTERNAL_CHARSET "utf-8"
 #else
-#define INTERNAL_TYPE "text/plain; charset=cp866"
 #define INTERNAL_CHARSET "cp866"
 #endif /* HAVE_ICONV */
 

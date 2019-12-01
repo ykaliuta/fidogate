@@ -57,7 +57,7 @@
 char   *get_name_from_body	(void);
 void	sendback		(const char *, ...);
 void	rfcaddr_init		(RFCAddr *);
-RFCAddr rfc_sender		(int);
+RFCAddr rfc_sender		(void);
 int	rfc_parse		(RFCAddr *, char *, Node *, int);
 int	rfc_isfido		(void);
 void	cvt_user_name		(char *);
@@ -66,7 +66,7 @@ char   *mail_receiver		(RFCAddr *, Node *);
 time_t	mail_date		(void);
 int	snd_mail		(RFCAddr, long);
 int	snd_message		(Message *, Area *, RFCAddr, RFCAddr, char *,
-				 long, char *, int, MIMEInfo *, Node *, int);
+				 long, char *, int, MIMEInfo *, Node *);
 int	print_tear_line		(FILE *);
 int	print_origin		(FILE *, char *, Node *);
 int	print_local_msgid	(FILE *, Node *);
@@ -103,8 +103,6 @@ static int no_chrs_kludge = FALSE;	/* NoChrsKludge		*/
 static int no_rfc_kludge = FALSE;	/* NoRfcKludge		*/
 static int no_gateway_kludge = FALSE;	/* NoGatewayKludge	*/
 static short x_from_kludge = FALSE;	/* XFromKludge	*/
-static int dont_change_content_type_charset = FALSE;
-					/* DontChangeContentTypeCharset */
 static int tzutc_kludge = FALSE;	/* UseTZUTCKludge */
 static int dont_process_return_receipt_to = FALSE;
 					/* DontProcessReturnReceiptTo */
@@ -303,7 +301,7 @@ void rfcaddr_init(RFCAddr *rfc)
 /*
  * Return message sender as RFCAddr struct
  */
-RFCAddr rfc_sender(int mime_qp)
+RFCAddr rfc_sender(void)
 {
     RFCAddr rfc, rfc1;
     char *from, *reply_to, *p;
@@ -323,13 +321,11 @@ RFCAddr rfc_sender(int mime_qp)
 	if(from)
 	{
 	    debug(5, "RFC From:     %s", from);
-	    mime_dequote(buffer, sizeof(buffer), from, mime_qp);
 	    rfc = rfcaddr_from_rfc(from);
 	}
 	if(reply_to)
 	{
 	    debug(5, "RFC Reply-To: %s", reply_to);
-	    mime_dequote(buffer, sizeof(buffer), reply_to, mime_qp);
 	    rfc1 = rfcaddr_from_rfc(reply_to);
 	    /* No From, use Reply-To */
 	    if(!from)
@@ -413,7 +409,7 @@ int rfc_parse(RFCAddr *rfc, char *name, Node *node, int gw)
 	    if(p[len-1] == '\"')	/* " makes C-mode happy */
 	    p[len-1] = 0;
 	}
-	mime_deheader(name, MSG_MAXNAME, p);
+	strncpy(name, p, MSG_MAXNAME);
     }
 
     if(!node)
@@ -800,7 +796,7 @@ int snd_mail(RFCAddr rfc_to, long size)
     char *asc_node_to;
     RFCAddr rfc_from;
     char *p;
-    char subj[MSG_MAXSUBJ];
+    char subj[MSG_MAXSUBJ * 4 + 1];
     int status, fido;
     Message msg;
     char *flags = NULL;
@@ -809,7 +805,6 @@ int snd_mail(RFCAddr rfc_to, long size)
     long limitsize;
     Textlist tl;
     Textline *tp;
-    int mime_qp = 0;
 
     node_clear(&node_from);
     node_clear(&node_to);
@@ -822,13 +817,10 @@ int snd_mail(RFCAddr rfc_to, long size)
      * Subject
      */
     if( (p = header_get("Subject")) )
-	mime_deheader(subj, MSG_MAXSUBJ, p);
+	BUF_COPY(subj, p);
     else
 	BUF_COPY(subj, "(no subject)");
 
-    if(mime_debody(&body) != OK)
-	return ERROR;
-    
      /*
      * MIME header
      */
@@ -836,15 +828,11 @@ int snd_mail(RFCAddr rfc_to, long size)
 		     s_header_getcomplete("Content-Type"),
 		     s_header_getcomplete("Content-Transfer-Encoding"));
 
-    /* MIME stuff and charset handling */
-    if(mime->encoding && strieq(mime->encoding, "quoted-printable"))
-	mime_qp = MIME_QP;
-
     /*
      * From RFCAddr
      */
     rfcaddr_init(&rfc_from);
-    rfc_from = rfc_sender(mime_qp);
+    rfc_from = rfc_sender();
     
     /*
      * To name/node
@@ -1107,7 +1095,7 @@ int snd_mail(RFCAddr rfc_to, long size)
 		msg.node_to   = cf_n_uplink();
 		status = snd_message(&msg, pa, rfc_from, rfc_to,
 				     subj, size, flags, fido, mime,
-				     &node_from, mime_qp);
+				     &node_from);
 		if(status)
 		{
 		    tl_clear(&tl);
@@ -1136,7 +1124,7 @@ int snd_mail(RFCAddr rfc_to, long size)
 	    msg.node_from = node_from;
 	    msg.node_to   = node_to;
 	    status = snd_message(&msg, NULL, rfc_from, rfc_to,
-				 subj, size, flags, fido, mime, &node_from,mime_qp);
+				 subj, size, flags, fido, mime, &node_from);
 	    TMPS_RETURN(status);
 	}
 	else
@@ -1161,11 +1149,57 @@ int snd_mail(RFCAddr rfc_to, long size)
     return 0;
 }
 
+/*
+ * determine input and output charsets.
+ * Input charset will be used only for headers, since body is recoded
+ * separately.
+ * Headers are recoded in the beginning to the internal charset.
+ */
+static void determine_charsets(Area *parea, char **in, char **out,
+			       char **out_fsc)
+{
+    char *cs_in;
+    char *cs_out = NULL;
+    char *cs_out_fsc, *cs_out_rfc;
+    char *cs_save;
+
+    cs_in = INTERNAL_CHARSET;
+
+    if(parea)					/* News */
+    {
+	if(parea->charset)
+	{
+	    /* TODO: leak */
+	    cs_save = s_copy(parea->charset);
+	    strtok(cs_save, ":");
+	    cs_out = strtok(NULL, ":");
+	}
+    }
+    else					/* Mail */
+	cs_out = netmail_charset_out;
+
+    /* defaults */
+    if(!cs_out)
+	cs_out = default_charset_out;
+    if(!cs_out || strieq(cs_in, CHARSET_STD7BIT))
+	cs_out = CHARSET_STD7BIT;
+    cs_out_rfc = charset_alias_rfc(cs_out);
+    cs_out_fsc = charset_alias_fsc(cs_out);
+    str_upper(cs_out_fsc);
+
+    debug(6, "charset: msg RFC=%s FSC=%s",
+	  cs_out_rfc, cs_out_fsc);
+
+    *in = cs_in;
+    *out = cs_out;
+    *out_fsc = cs_out_fsc;
+}
+
 
 int snd_message(Message *msg, Area *parea,
 		RFCAddr rfc_from, RFCAddr rfc_to, char *subj,
 		long size, char *flags, int fido, MIMEInfo *mime,
-		Node *node_from, int mime_qp)
+		Node *node_from)
 /* msg       FTN nessage structure
  * parea     area/newsgroup description structure
  * rfc_from  Internet sender
@@ -1195,8 +1229,8 @@ int snd_message(Message *msg, Area *parea,
     int rfc_level = default_rfc_level;
     int x_flags_n=FALSE, x_flags_m=FALSE, x_flags_f=FALSE;
     char *cs_in, *cs_out;		/* Charset in(=RFC), out(=FTN) */
-    char *cs_out_fsc, *cs_out_rfc;
-    char *cs_save, *cs_enc;
+    char *cs_out_fsc;
+    char *cs_enc = "8bit"; /* all converted to 8 bit now */
     char *pt;
 
 #ifdef MAXMSGHEADRLEN
@@ -1215,50 +1249,8 @@ int snd_message(Message *msg, Area *parea,
     if(parea && parea->rfc_lvl!=-1)
 	rfc_level = parea->rfc_lvl;
 
-    /* MIME stuff and charset handling */
-    if(mime->encoding && strieq(mime->encoding, "quoted-printable"))
-	mime_qp = MIME_QP;
-    if(default_charset_in)
-	cs_in = default_charset_in;
-    else
-	cs_in = CHARSET_STDRFC;
-    cs_save = NULL;
-    cs_out  = NULL;
-    if(mime->type_charset)
-        cs_in = mime->type_charset;
-
-    if(parea)					/* News */
-    {
-	if(parea->charset)
-	{
-	    cs_save = s_copy(parea->charset);
-	    strtok(cs_save, ":");
-	    cs_out = strtok(NULL, ":");
-	}
-    }
-    else					/* Mail */
-	cs_out = netmail_charset_out;
-    
-    /* defaults */
-    if(!cs_out)
-        cs_out = default_charset_out;
-    if(!cs_out || strieq(cs_in, CHARSET_STD7BIT))
-        cs_out = CHARSET_STD7BIT;
-    cs_out_rfc = charset_alias_rfc(cs_out);
-    cs_out_fsc = charset_alias_fsc(cs_out);
-    str_upper(cs_out_fsc);
-    cs_enc = strieq(cs_out_rfc, "us-ascii") ? "7bit" : "8bit";
+    determine_charsets(parea, &cs_in, &cs_out, &cs_out_fsc);
     charset_set_in_out(cs_in, cs_out);
-    if(dont_change_content_type_charset) 
-    {
-	if(!strieq(cs_in, cs_out_rfc))
-	{
-	    debug(6, "charset: cs_out_rfc set to original %s", cs_in);
-	    cs_out_rfc = cs_in;
-	}
-    }
-    debug(6, "charset: msg RFC=%s FSC=%s enc=%s",
-	  cs_out_rfc, cs_out_fsc, cs_enc         );
 
     /*
      * Open output packet
@@ -1311,6 +1303,9 @@ int snd_message(Message *msg, Area *parea,
     
     last_zone = cf_zone();
 
+    /* Decode and recode (charset) the body */
+    if(mime_body_dec(&body, cs_out) != OK)
+	return ERROR;
     
     /*
      * Compute number of split messages if any
@@ -1323,10 +1318,8 @@ int snd_message(Message *msg, Area *parea,
 	lsize = 0;
 	for(p=body.first; p; p=p->next)
 	{
-	    /* Decode all MIME-style quoted printables */
-	    mime_dequote(buffer, sizeof(buffer), p->line, mime_qp);
-	    lsize += strlen(buffer);		/* Length incl. <LF> */
-	    if(BUF_LAST(buffer) == '\n')	/* <LF> ->           */
+	    lsize += strlen(p->line);		/* Length incl. <LF> */
+	    if(BUF_LAST(p->line) == '\n')	/* <LF> ->           */
 		lsize++;			/* <CR><LF>          */
 	    if(lsize > maxsize)
 	    {
@@ -1344,12 +1337,6 @@ int snd_message(Message *msg, Area *parea,
     }
     else
 	split = 0;
-    
-
-    /*
-     * Set pointer to first line in message body
-     */
-    p = body.first;
     
 again:
 
@@ -1452,9 +1439,9 @@ again:
     else
 	print_local_msgid(sf, node_from);
 	
-	if((header = s_header_getcomplete("References")) ||
-	   (header = s_header_getcomplete("In-Reply-To")))
-	{
+    if((header = s_header_getcomplete("References")) ||
+       (header = s_header_getcomplete("In-Reply-To")))
+    {
 #ifdef FIDO_STYLE_MSGID
 	    if((id = s_msgid_rfc_to_fido(&flag, header, 0, 0, msg->area,
 					 0, 1)))
@@ -1463,7 +1450,7 @@ again:
 					 x_flags_m, 1)))
 #endif
 		fprintf(sf, "\001REPLY: %s\r\n", id);
-	}
+    }
 
     if(!no_fsc_0035)
 	if(!x_flags_n && !(alias_found && no_fsc_0035_if_alias))
@@ -1667,11 +1654,15 @@ again:
 
     /***** Message body *****************************************************/
 
+    /*
+     * Set pointer to first line in message body
+     */
+    p = body.first;
+
     lsize = 0;
     while(p)
     {
-	/* Decode all MIME-style quoted printables */
-	mime_dequote(buffer, sizeof(buffer), p->line, mime_qp);
+	snprintf(buffer, sizeof(buffer), "%s", p->line);
 
 	if(!strncmp(buffer, "--- ", 4))
 	    buffer[1] = '+';
@@ -1697,7 +1688,7 @@ again:
 		else if(use_organization_for_origin && organization)
 		{
 		    origin = organization;
-		    mime_deheader(buffer, sizeof(buffer), origin);
+		    BUF_COPY(buffer, origin);
 		    pt = xlat_s(buffer, pt);
 		    print_origin(sf, pt ? pt : buffer, node_from);
 		}
@@ -1735,7 +1726,7 @@ again:
 	else if(use_organization_for_origin && organization)
 	{
 	    origin = organization;
-	    mime_deheader(buffer, sizeof(buffer), origin);
+	    BUF_COPY(buffer, origin);
 	    pt = xlat_s(buffer, pt);
 	    print_origin(sf, pt ? pt : buffer, node_from);
 	}
@@ -1774,7 +1765,8 @@ int print_tear_line(FILE *fp)
 	    (p = header_get("X-Newsreader"))   ||
 	    (p = header_get("X-GateSoftware"))   )
 	{
-	    mime_deheader(buffer, sizeof(buffer), p);
+	    BUF_COPY(buffer, p);
+	    /* TODO: no xlat when converted directly to FTN charset */
 	    pt = xlat_s(buffer, NULL);
 	    fprintf(fp, "--- %s\r\n", pt ? pt : buffer);
 	    pt = xlat_s(NULL, pt);
@@ -1995,7 +1987,14 @@ int snd_to_cc_bcc(long int size)
     return status;
 }
 
-
+/*
+ * wrapper to read the header and decode mime
+ */
+static void rfc2ftn_header_read(FILE *fpart)
+{
+    header_read(fpart);
+    header_decode(INTERNAL_CHARSET);
+}
 
 /*
  * Usage messages
@@ -2328,10 +2327,6 @@ int main(int argc, char **argv)
 	strtok(p, ":");
 	netmail_charset_out = strtok(NULL, ":");
     }
-    if( (p = cf_get_string("DontChangeContentTypeCharset", TRUE)) )
-    {
-	dont_change_content_type_charset = TRUE;
-    }
     if( (p = cf_get_string("DontProcessReturnReceiptTo", TRUE)) )
     {
 	dont_process_return_receipt_to = TRUE;
@@ -2467,7 +2462,8 @@ int main(int argc, char **argv)
 	
 	/* Read message header from fpart */
 	header_delete();
-	header_read(fpart);
+	/* read and decode mime */
+	rfc2ftn_header_read(fpart);
 
 	/* Get Organization header */
 	if(use_organization_for_origin)

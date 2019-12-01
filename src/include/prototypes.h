@@ -164,15 +164,19 @@ CharsetTable *charset_table_new	(void);
 CharsetAlias *charset_alias_new	(void);
 int	charset_write_bin	(char *);
 int	charset_read_bin	(char *);
-char   *charset_qpen		(int, int);
 char   *charset_map_c		(int, int);
 char   *xlat_s			(char *, char *);
+int     charset_recode_string   (char *dst, size_t *dstlen,
+				 char *src, size_t *srclen,
+				 char *from, char *to);
 char   *charset_alias_fsc	(char *);
 char   *charset_alias_rfc	(char *);
 void	charset_set_in_out	(char *, char *);
 void	charset_init		(void);
 char   *charset_chrs_name	(char *);
 void	charset_free		(void);
+int     charset_is_7bit         (char *buffer, size_t len);
+bool    charset_is_valid_utf8   (char *, size_t);
 
 /* config.c */
 void	cf_i_am_a_gateway_prog	(void);
@@ -346,18 +350,26 @@ short int pkt_get_body_parse	(FILE *, MsgBody *, Node *, Node *);
 int	msg_body_parse		(Textlist *, MsgBody *);
 int	msg_put_msgbody		(FILE *, MsgBody *);
 int	msg_put_line		(FILE *, char *);
-char   *msg_xlate_line		(char *, int, char *, int, int);
+char   *msg_xlate_line		(char *, int, char *, int);
 int	msg_parse_origin	(char *, Node *);
 int	msg_parse_msgid		(char *, Node *);
 
 /* mime.c */
-#define MIME_QP 1		/* quoted printable */
-#define MIME_US 2		/* underscore `_' */
+enum mime_encodings {
+	MIME_7BIT = 0,
+	MIME_8BIT,
+	MIME_QP,
+	MIME_B64,
+};
+#define MIME_DEFAULT MIME_B64
+#define MIME_STRING_LIMIT 76
 
-char   *mime_dequote		(char *, size_t, char *, int);
-char   *mime_deheader		(char *, size_t, char *);
-int    mime_debody		(Textlist*); /* decode base64 body */
-int    mime_enheader		(char **, unsigned char *, size_t, char *);
+char   *mime_dequote		(char *, size_t, char *);
+char   *mime_header_dec		(char *, size_t, char *, char *);
+int     mime_body_dec		(Textlist*, char *); /* decode mime body */
+int     mime_header_enc		(char **, char *, char *, int);
+void    mime_b64_encode_tl      (Textlist *in, Textlist *out);
+void    mime_qp_encode_tl       (Textlist *in, Textlist *out);
 
 /* misc.c */
 char   *str_change_ext		(char *, size_t, char *, char *);
@@ -560,6 +572,8 @@ char   *header_geth		(char *, int);
 char   *header_getnext		(void);
 char   *s_header_getcomplete	(char *);
 char   *addr_token		(char *);
+void    header_decode           (char *);
+
 
 /* routing.c */
 extern Routing *routing_first;
@@ -626,6 +640,9 @@ Textline* tl_get		(Textlist *, char *, int);
 char*	tl_get_str		(Textlist *, char *, int);
 int	tl_copy			(Textlist *, Textlist *);
 int	tl_for_each		(Textlist *, int (*)(Textline *, void *), void *);
+void    tl_iterator_start(TextlistIterator *iter, Textlist *list);
+size_t  tl_iterator_next(TextlistIterator *iter, char *buf, size_t len);
+
 /* tick.c */
 int	copy_file		(char *, char *, char *);
 void	tick_init		(Tick *);
@@ -689,7 +706,6 @@ void	exit_free		(void);
 
 MIMEInfo *get_mime		(char *, char *, char *);
 MIMEInfo *get_mime_from_header	(Textlist*);
-
 /* xstrnlen.c */
 size_t	xstrnlen		(const char *, size_t);
 
