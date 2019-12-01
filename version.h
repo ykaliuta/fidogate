@@ -12,7 +12,7 @@
 
 #include <config.h>
 #define VERSION_MAJOR	5
-#define VERSION_MINOR	3
+#define VERSION_MINOR	4
 #define EXTRAVERSION	"-g" GIT_HASH_STR
 
 #define STATE		"unstable"
