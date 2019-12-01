@@ -12,12 +12,15 @@
 #     -g                 No gated messages
 #     -l                 Only local crosspostings
 #     -x                 No crosspostings
-#     -8                 Messages with 8bit ISO-8859-1 charset
 #     -H                 Names match entire hierarchy, names are translated
 #     -!                 Don't gate area/newsgroup [hierarchy]
 #     -R LVL             ^ARFC header level
 #     -m MAXSIZE         MaxMsgSize for this area (0 = infinity)
 #     -X "Xtra: xyz"     Add extra RFC headers (multiple -X allowed)
+#     -8                 Do not encode message body in base64/QP
+#     -Q                 Encode message in QP
+#     -b                 Encode message in base64
+#     -nh                Do not encode message headers
 #
 # All fields may be quoted in "...", order is import, first area/newsgroup
 # found matches!
@@ -30,7 +33,7 @@
 #
 # Local
 #
-CORE.LOCAL		fido.core.local		-8 -H -z 2 -a 2:5030/1229
+CORE.LOCAL		fido.core.local		-z 2 -a 2:5030/1229
 SMALL&IMP.LOCAL		fido.smaill.and.imp.local	-8 -H -z 2 -a 2:5030/1229
-RU.FIDO&FSB		fido.ru.fido.and.fsb	-8 -H -z 2 -a 2:5030/1229
-""			fido.			-8 -H -z 2 -a 2:5030/1229
+RU.FIDO&FSB		fido.ru.fido.and.fsb	-z 2 -a 2:5030/1229
+""			fido.			-H -z 2 -a 2:5030/1229

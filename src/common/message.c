@@ -636,36 +636,34 @@ short int pkt_get_body_parse(FILE *fp, MsgBody *body, Node *from, Node *to)
 	}
 	if(do_flag == PARSE_BODY_NETMAIL)
 	{
-	    if(line | FOUND_KLUDGE)
+	    if(!strncmp(buffer, "---", 3) &&
+	       (buffer[3] == ' ' || buffer[3] == '\r') && !body->tear)
 	    {
-		if(!strncmp(buffer, "---", 3) &&
-		    (buffer[3] == ' ' || buffer[3] == '\r') && !body->tear)
+		body->tear = strsave(buffer);
+		if(verbose)
 		{
-		    body->tear = strsave(buffer);
-		    if(verbose)
-		    {
-			len = strlen(buffer);
-			if(buffer[len-1] == '\n')
-			    buffer[len-1] = '\0';
-			debug(9,"tearline: %s", buffer);
-		    }
-		    line |= FOUND_TEARLINE;
-		    continue;
+		    len = strlen(buffer);
+		    if(buffer[len-1] == '\n')
+			buffer[len-1] = '\0';
+		    debug(9,"tearline: %s", buffer);
 		}
-		if(!strncmp(buffer, " * Origin:", 10) && !body->origin)
-		{
-		    body->origin = strsave(buffer);
-		    if(verbose)
-		    {
-			len = strlen(buffer);
-			if(buffer[len-1] == '\n')
-			    buffer[len-1] = '\0';
-			    debug(9,"origin: %s", buffer);
-		    }
-		    line |= FOUND_ORIGIN;
-		    continue;
-		}
+		line |= FOUND_TEARLINE;
+		continue;
 	    }
+	    if(!strncmp(buffer, " * Origin:", 10) && !body->origin)
+	    {
+		body->origin = strsave(buffer);
+		if(verbose)
+		{
+		    len = strlen(buffer);
+		    if(buffer[len-1] == '\n')
+			buffer[len-1] = '\0';
+		    debug(9,"origin: %s", buffer);
+		}
+		line |= FOUND_ORIGIN;
+		continue;
+	    }
+
 	    if(*buffer == '\001' && (!strncmp(buffer, "\001Via", 4) ||
 			!strncmp(buffer, "\001Recd", 5)))
 	    {
@@ -698,7 +696,7 @@ short int pkt_get_body_parse(FILE *fp, MsgBody *body, Node *from, Node *to)
 		tl_append(&body->body, buffer);
 		xfree(body->tear);
 		body->tear = NULL;
-		line &= FOUND_TEARLINE;
+		line &= ~FOUND_TEARLINE;
 	    }
 	    else if(line & FOUND_ORIGIN)
 	    {
@@ -706,41 +704,39 @@ short int pkt_get_body_parse(FILE *fp, MsgBody *body, Node *from, Node *to)
 		tl_append(&body->body, buffer);
 		xfree(body->origin);
 		body->origin = NULL;
-		line &= FOUND_ORIGIN;
+		line &= ~FOUND_ORIGIN;
 	    }
         }
 	else if(do_flag == PARSE_BODY_ECHOMAIL)
 	{
-	    if(line | FOUND_KLUDGE)
+	    if(!strncmp(buffer, "---", 3) &&
+	       (buffer[3] == ' ' || buffer[3] == '\r') && !body->tear)
 	    {
-		if(!strncmp(buffer, "---", 3) &&
-		    (buffer[3] == ' ' || buffer[3] == '\r') && !body->tear)
+		body->tear = strsave(buffer);
+		if(verbose)
 		{
-		    body->tear = strsave(buffer);
-		    if(verbose)
-		    {
-			len = strlen(buffer);
-			if(buffer[len-1] == '\n')
-			    buffer[len-1] = '\0';
-			debug(9,"tearline: %s", buffer);
-		    }
-		    line |= FOUND_TEARLINE;
-		    continue;
+		    len = strlen(buffer);
+		    if(buffer[len-1] == '\n')
+			buffer[len-1] = '\0';
+		    debug(9,"tearline: %s", buffer);
 		}
-		if(!strncmp(buffer, " * Origin:", 10) && !body->origin)
-		{
-		    body->origin = strsave(buffer);
-		    if(verbose)
-		    {
-			len = strlen(buffer);
-			if(buffer[len-1] == '\n')
-			    buffer[len-1] = '\0';
-			debug(9,"origin: %s", buffer);
-		    }
-		    line |= FOUND_ORIGIN;
-		    continue;
-		}
+		line |= FOUND_TEARLINE;
+		continue;
 	    }
+	    if(!strncmp(buffer, " * Origin:", 10) && !body->origin)
+	    {
+		body->origin = strsave(buffer);
+		if(verbose)
+		{
+		    len = strlen(buffer);
+		    if(buffer[len-1] == '\n')
+			buffer[len-1] = '\0';
+		    debug(9,"origin: %s", buffer);
+		}
+		line |= FOUND_ORIGIN;
+		continue;
+	    }
+
 	    if(!strncmp(buffer, "\001PATH", 5))
 	    {
 		    tl_append(&body->path, buffer);
@@ -785,7 +781,7 @@ short int pkt_get_body_parse(FILE *fp, MsgBody *body, Node *from, Node *to)
 		tl_append(&body->body, buffer);
 		xfree(body->tear);
 		body->tear = NULL;
-		line &= FOUND_TEARLINE;
+		line &= ~FOUND_TEARLINE;
 	    }
 	    else if(line & FOUND_ORIGIN)
 	    {
@@ -793,7 +789,7 @@ short int pkt_get_body_parse(FILE *fp, MsgBody *body, Node *from, Node *to)
 		tl_append(&body->body, buffer);
 		xfree(body->origin);
 		body->origin = NULL;
-		line &= FOUND_ORIGIN;
+		line &= ~FOUND_ORIGIN;
 	    }
         }
     }
@@ -881,9 +877,9 @@ int msg_put_msgbody(FILE *fp, MsgBody *body)
 /*
  * Convert text line read from FTN message body
  */
-char *msg_xlate_line(char *buf, int n, char *line, int qp, int ignore_soft_cr)
+char *msg_xlate_line(char *buf, int n, char *line, int ignore_soft_cr)
 {
-    char *s, *p, *xl;
+    char *s, *p;
     int c;
 
     n--;				/* Room for \0 char */
@@ -909,33 +905,6 @@ char *msg_xlate_line(char *buf, int n, char *line, int qp, int ignore_soft_cr)
 		c = c + '@';
 	    }
 	}
-	else if(qp && c=='=')
-	{
-	    /* Translate '=' to MIME quoted-printable =3D */
-	    xl = "=3D";
-	    while(*xl)
-	    {
-		if(!n--)
-		    break;
-		*p++ = *xl++;
-	    }
-	    continue;
-	}
-	else if(c & 0x80)
-	{
-	    /* Translate special characters according to character set */
-	    xl = charset_map_c(c, qp);
-	    if(!xl || !*xl)
-		continue;
-	    while(*xl)
-	    {
-		if(!n--)
-		    break;
-		*p++ = *xl++;
-	    }
-	    continue;
-	}
-
 	/*
 	 * Put normal char into buf
 	 */

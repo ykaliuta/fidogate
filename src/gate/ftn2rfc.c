@@ -52,7 +52,6 @@ char   *get_bcc			(Textlist *);
 char   *get_subject		(Textlist *);
 Area   *news_msg		(char *, Node *);
 int	msg_format_buffer	(char *, Textlist *);
-static int msg_get_line_length	(void);
 static int gate_rfc_kludge = FALSE;	/* GateRfcKludge          */
 int	unpack			(FILE *, Packet *);
 int	unpack_file		(char *);
@@ -118,7 +117,8 @@ static int no_address_in_to_field = FALSE;
 /* Character conversion */
 static int netmail_8bit = FALSE;
 static int netmail_qp   = FALSE;
-static int netmail_hb64 = FALSE;
+static int netmail_b64 = FALSE;
+static int netmail_headers_plain = FALSE;
 
 /* Use FTN to address (cvt to Internet address) for mail_to */
 static int use_ftn_to_address = FALSE;
@@ -140,19 +140,6 @@ static char *news_path_tail = "fidogate!not-for-mail";
 static short int ignore_chrs 	= FALSE;
 static short int ignore_soft_cr	= FALSE;
 static short int ignore_mime_type	= TRUE;
-
-static int is_7bit(char *buffer, size_t len) {
-     int i;
-     
-     if(buffer == NULL)
-	  return TRUE;
-
-     for(i = 0; i < len; i++)
-	  if(buffer[i] & 0x80)
-	       return FALSE;
-     return TRUE;
-}
-
 
 /*
  * Get header for
@@ -276,10 +263,11 @@ Area *news_msg(char *line, Node *to)
 		else
 		    debug(8, "config: AutoCreateNG not defuned");
 	    }
-#else
-	    return pa;
 #endif /* ACTIVE_LOOKUP */
+
+	    return pa;
 	}
+
 	/* Area not found */
 	area.next  	  = NULL;
 	area.area  	  = p;
@@ -288,10 +276,11 @@ Area *news_msg(char *line, Node *to)
 	node_invalid(&area.addr);
 	area.origin       = NULL;
 	area.distribution = NULL;
-	area.flags        = AREA_8BIT;
+	area.flags        = 0;
 	area.rfc_lvl      = -1;
 	area.maxsize      = -1;
 	tl_init(&area.x_hdr);
+	area.encoding     = MIME_DEFAULT;
 
 	return &area;
     }
@@ -353,137 +342,221 @@ int check_valid_domain(char *s)
 }
 
 
-/*
- * Format buffer line and put it into Textlist. Returns number of
- * lines.
- */
-
-static int msg_get_line_length(void)
-{
-    static int message_line_length = 0;
-
-    if(!message_line_length) 
-    {
-	char *p;
-	if( (p = cf_get_string("MessageLineLength", TRUE)) )
-	{
-	    message_line_length = atoi(p);
-	    if(message_line_length < 20 ||
-	       message_line_length > MAX_LINE_LENGTH) 
-	    {
-		fglog("WARNING: illegal MessageLineLength value %d",
-		      message_line_length);
-		message_line_length = DEFAULT_LINE_LENGTH;
-	    }
-	}
-	else
-	    message_line_length = DEFAULT_LINE_LENGTH;
-    }
-    return message_line_length;
-}
-
-
-
-int msg_format_buffer(char *buffer, Textlist *tlist)
-{
-    int max_linelen;
-    char *p, *np;
-    char localbuffer[MAX_LINE_LENGTH + 16];	/* Some extra space */
-    int i;
-    int lines;
-
-    max_linelen = msg_get_line_length();
-    
-    if(strlen(buffer) <= max_linelen)		/* Nothing to do */
-    {
-	tl_append(tlist, buffer);
-	return 1;
-    }
-    else
-    {
-	/* Break line with word wrap */
-	lines = 0;
-	p     = buffer;
-
-	while(TRUE)
-	{
-	    /* Search backward for a whitespace to break line. If no
-	     * proper point is found, the line will not be split.
-	     */
-	    for(i=max_linelen-1; i>=0; i--)
-		if(is_blank(p[i]))	/* Found a white space */
-		    break;
-	    if(i < max_linelen/2)	/* Not proper space to split found, */
-	    {				/* put line as is                   */
-		tl_append(tlist, p);
-		lines++;
-		return lines;
-	    }
-	    for(; i>=0 && is_blank(p[i]); i--);	/* Skip more white space */
-	    i++;				/* Return to last white sp. */
-
-	    /* Cut here and put into textlist */
-	    np = p + i;
-	    *np++ = 0;
-	    BUF_COPY2(localbuffer, p, "\n");
-	    tl_append(tlist, localbuffer);
-	    lines++;
-	    
-	    /* Advance buffer pointer and test length of remaining
-	     * line
-	     */
-	    p = np;
-	    for(; *p && is_blank(*p); p++);	/* Skip white space */
-	    if(*p == 0)				/* The end */
-		return lines;
-	    if(strlen(p) <= max_linelen)	/* No more wrappin' */
-	    {
-		tl_append(tlist, p);
-		lines++;
-		return lines;
-	    }
-
-	    /* Play it again, Sam! */
-	}
-    }
-    /**NOT REACHED**/
-    return 0;
-}
-
 struct encoding_state {
     int cvt8;
+    char *cs_in;
     char *cs_out;
-    Textlist *theader;
+    bool plain_headers;
+};
+
+static int recode_header(Textline *tl, struct encoding_state *state)
+{
+    size_t len;
+    char *tmpbuf;
+    int rc;
+    size_t size;
+    size_t new_size;
+
+    len = strlen(tl->line);
+    size = len + 1;
+    /*
+     * max utf8 symbol size is 4 bytes, min source 1 byte,
+     * max increase -- 4 times
+     */
+    new_size = len * 4 + 1;
+    tmpbuf = xmalloc(new_size);
+    /* recode with the header's name, hopefully no charset amend ascii */
+    rc = charset_recode_string(tmpbuf, &new_size, tl->line, &size,
+			       state->cs_in, state->cs_out);
+
+    if (rc != OK) {
+	fglog("ERROR: could not recode header from %s to %s\n",
+	      state->cs_in, state->cs_out);
+	return ERROR;
+    }
+
+    xfree(tl->line);
+    tl->line = tmpbuf;
+
+    return OK;
+}
+
+/*
+ * If body is not encoded, provide default for headers, if they are
+ * not plain
+ */
+static int sanitize_encoding(int enc)
+{
+    switch (enc) {
+    case MIME_B64:
+	/* fallthrough */
+    case MIME_QP:
+	return enc;
+    }
+
+    return MIME_DEFAULT;
+}
+	
+
+static char *encode_skip[] = {
+    "Path:",
+    "Message-ID:",
+    "References:",
 };
 
 static int encode_header(Textline *tl, void *arg)
 {
     struct encoding_state *state = arg;
-    char *line = tl->line;
     char *tmpbuf = NULL;
-    char *p;
-    int size;
-    
-    if((is_7bit(line, strlen(line))) || (!(state->cvt8 & AREA_HB64)))
-	return OK;
-    
-    p = strstr(line, ": ");
-    if (p == NULL)
+    int rc;
+    size_t len;
+    int i;
+    int enc = state->cvt8;
+
+    for (i = 0; i < sizeof(encode_skip)/sizeof(encode_skip[0]); i++) {
+        size_t len;
+
+        len = strlen(encode_skip[i]);
+        if (strncasecmp(tl->line, encode_skip[i], len) == 0)
+            return OK;
+    }
+
+    rc = recode_header(tl, state);
+    if (rc != OK)
+	return rc;
+
+    if (state->plain_headers)
 	return OK;
 
-    size = strlen(p + 2);
-    mime_enheader(&tmpbuf, (unsigned char *)p + 2,
-		  size, state->cs_out);
+    len = strlen(tl->line);
+    if (charset_is_7bit(tl->line, len) && len <= MIME_STRING_LIMIT)
+	return OK;
 
-    size += (p - line) + 2 + strlen(tmpbuf) + 2;
-    tl->line = xrealloc(line, size);
-    strcpy(tl->line + (p + 2 - line), tmpbuf);
-    strcat(tl->line, "\n");
-    xfree(tmpbuf);
+    enc = sanitize_encoding(enc);
+    rc = mime_header_enc(&tmpbuf, tl->line, state->cs_out, enc);
+    if (rc != OK)
+	    return OK; /* skip misformatted */
+
+    xfree(tl->line);
+    tl->line = tmpbuf;
     
     return OK;
 }
 
+/*
+ * temporal copy'n'paste. Must traverse all the characters across the
+ * lines
+ */
+static int recode_body(Textline *tl, void *arg)
+{
+    struct encoding_state *state = arg;
+    char *line = tl->line;
+    char *tmpbuf = NULL;
+    size_t len;
+    size_t new_size;
+    size_t size;
+    int rc;
+
+    len = strlen(line);
+    size = len + 1;
+    /*
+     * max utf8 symbol size is 4 bytes, min source 1 byte,
+     * mac increase -- 4 times
+     */
+    new_size = len * 4 + 1;
+    tmpbuf = xmalloc(new_size);
+    rc = charset_recode_string(tmpbuf, &new_size, line, &size,
+			       state->cs_in, state->cs_out);
+
+    if (rc != OK) {
+	fglog("ERROR: could not recode body line from %s to %s\n",
+	      state->cs_in, state->cs_out);
+	return ERROR;
+    }
+
+    xfree(tl->line);
+    tl->line = tmpbuf;
+
+    return OK;
+}
+
+static char *cvt8_to_str(int cvt8)
+{
+    switch (cvt8) {
+    case MIME_7BIT:
+	return "7bit";
+    case MIME_8BIT:
+	return "8bit";
+    case MIME_B64:
+	return "base64";
+    case MIME_QP:
+	return "quoted-printable";
+    default:
+	return cvt8_to_str(MIME_DEFAULT);
+    }
+}
+
+static void ftn2rfc_finish_mime(Textlist *hdr, Textlist *body,
+				MIMEInfo *mime,
+				char *cs_in, char *cs_out,
+				int cvt8, bool plain_headers)
+{
+    Textlist body_encoded;
+    struct encoding_state en_state;
+    char *mime_type = mime->type;
+    char *charset = "";
+    char *encoding;
+    int body_encoding = cvt8;
+
+    /*
+     * Check for 8bit characters in message body. If none are
+     * found, don't use the quoted-printable encoding or 8bit.
+     * Headers handled separately.
+     */
+    if( !check_8bit(body)) {
+	body_encoding = MIME_7BIT;
+	debug(5, "Body encoding switched to 7bit\n");
+    }
+
+    if (mime_type == NULL) {
+	mime_type = "text/plain; charset=";
+	if (body_encoding == MIME_7BIT)
+	    charset = CHARSET_STD7BIT;
+	else
+	    charset = cs_out;
+    }
+
+    encoding = cvt8_to_str(body_encoding);
+
+    /* MIME header */
+    tl_appendf(hdr, "MIME-Version: 1.0\n");
+    tl_appendf(hdr, "Content-Type: %s%s\n", mime_type, charset);
+    tl_appendf(hdr, "Content-Transfer-Encoding: %s\n", encoding);
+
+    en_state.cvt8 = cvt8;
+    en_state.cs_in = cs_in;
+    en_state.cs_out = cs_out;
+    en_state.plain_headers = plain_headers;
+
+    /* does recoding as well */
+    tl_for_each(hdr, encode_header, &en_state);
+
+    en_state.cvt8 = body_encoding;
+    /* should not harm for 7 bit */
+    tl_for_each(body, recode_body, &en_state);
+
+    if (body_encoding == MIME_B64)
+	mime_b64_encode_tl(body, &body_encoded);
+    else if (body_encoding == MIME_QP)
+	mime_qp_encode_tl(body, &body_encoded);
+    else
+	goto out;
+
+    tl_clear(body);
+    *body = body_encoded;
+out:
+    return;
+}
 
 /*
  * Read and convert FTN mail packet
@@ -518,16 +591,15 @@ int unpack(FILE *pkt_file, Packet *pkt)
     Textlist tbody;    			/* RFC message body */
     int uucp_flag;			/* To == UUCP or GATEWAY */
     int ret;
-    int rfc_lvl, rfc_lines;
     char *split_line;
-    int cvt8 = 0;			/* AREA_8BIT | AREA_QP | AREA_HB64 */
+    int cvt8 = MIME_DEFAULT;		/* MIME_* */
     char *cs_def, *cs_in, *cs_out;	/* Charset def, in(=FTN), out(=RFC) */
     char *cs_save;
     MIMEInfo *mime;
     char *mime_ver, *mime_type, *mime_enc;
     char *carbon_group = NULL;
-    struct encoding_state en_state;
     int addr_is_restricted = FALSE;
+    bool plain_headers = false;
     
     /*
      * Initialize
@@ -688,7 +760,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	 */
 	if( (area = news_msg(body.area, &msg.node_to)) )
 	{
-	    cvt8 = area->flags & (AREA_8BIT | AREA_QP | AREA_HB64);
+	    cvt8 = area->encoding;
+	    plain_headers = area->flags & AREA_HEADERS_PLAIN;
 	    
 	    /* Set AKA according to area's zone */
 	    cf_set_zone(area->zone);
@@ -720,12 +793,15 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	else
 	{
 	    cvt8 = 0;
+	    /* Order make priority for netmail for now */
 	    if(netmail_8bit)
-		cvt8 |= AREA_8BIT;
+		cvt8 = MIME_8BIT;
 	    if(netmail_qp)
-                cvt8 |= AREA_QP;
-            if(netmail_hb64)
-                cvt8 |= AREA_HB64;
+                cvt8 = MIME_QP;
+            if(netmail_b64)
+                cvt8 = MIME_B64;
+
+	    plain_headers = netmail_headers_plain;
 	    
 	    /* Set AKA according to sender's zone */
 	    cf_set_zone(msg.node_orig.zone!=-1 
@@ -733,17 +809,6 @@ int unpack(FILE *pkt_file, Packet *pkt)
 			: msg.node_from.zone  );
 	}
 
-	/*
-	 * Check for 8bit characters in message body. If none are
-	 * found, don't use the quoted-printable encoding or 8bit.
-	 */
-	if( !(check_8bit(&body.body)                         ||
-	      check_8bit_s(body.origin, sizeof(body.origin)) ||
-	      check_8bit_s(body.tear, sizeof(body.tear))     ||
-	      check_8bit_s(msg.subject, sizeof(msg.subject)))  )
-
-	    cvt8 &= ~(AREA_QP | AREA_8BIT);
-	
 	if ( !(mime_ver = rfcheader_get(&body.rfc, "MIME-Version") ) )
 	    mime_ver = kludge_get(&body.kludge,
 				  "RFC-MIME-Version", NULL);
@@ -759,22 +824,22 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		mime_type = NULL;
 	mime = get_mime(mime_ver, mime_type, mime_enc);
 
+	/* YK: I still keep that, but it sounds broken for me */
 	/*
 	 * Check for Content-Transfer-Encoding in RFC headers or ^ARFC kludges
 	 */
 	if ( mime->encoding )
 	{
 	    if(strieq(mime->encoding, "7bit")) 
-		cvt8 = AREA_8BIT;
+		cvt8 = MIME_7BIT;
 	    if(strieq(mime->encoding, "8bit")) 
-		cvt8 = AREA_8BIT;
+		cvt8 = MIME_8BIT;
 	    if(strieq(mime->encoding, "quoted-printable")) 
-		cvt8 = AREA_QP;
+		cvt8 = MIME_QP;
+	    if(strieq(mime->encoding, "base64"))
+		cvt8 = MIME_B64;
 	}
-	debug(5, "cvt8:%s%s%s",
-	      (cvt8 & AREA_8BIT ? " 8bit" : ""),
-	      (cvt8 & AREA_QP   ? " quoted-printable" : ""),
-	      (cvt8 & AREA_HB64 ? " headers BASE64" : ""));
+	debug(5, "cvt8:%s", cvt8_to_str(cvt8));
 	
 	/*
 	 * Convert message body
@@ -808,8 +873,6 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    cs_def = CHARSET_STDFTN;
 	if(!cs_out)
 	    cs_out = default_charset_out;
-	if(cvt8==0 || !cs_out)
-	    cs_out = CHARSET_STD7BIT;
 	
 	if(!ignore_chrs)
 	{
@@ -824,21 +887,6 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	charset_set_in_out(cs_in, cs_out);
 	/**FIXME: if ERROR is returned, use first matching alias for cs_in**/
 
-	/* ^ARFC level and line break flag */
-	rfc_lvl   = 0;
-	rfc_lines = FALSE;
-	if( (p = kludge_get(&body.kludge, "RFC", NULL)) )
-	{
-	    s = strtok(p, " \t");
-	    if(s)
-		rfc_lvl = atoi(s);
-	    s = strtok(NULL, " \t");
-	    if(s && !stricmp(s, "lines"))
-		rfc_lines = TRUE;
-	    if(s && atoi(s)==0)
-		rfc_lines = TRUE;
-	}
-	    
 	lines = 0;
 	for(pl=body.body.first; pl; pl=pl->next)
 	{
@@ -856,15 +904,9 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    }
 	    else
 	    {
-		msg_xlate_line(buffer, sizeof(buffer), p, cvt8 & AREA_QP,
-			       ignore_soft_cr);
-		if(rfc_lines)
-		{
-		    tl_append(&tbody, buffer);
-		    lines++;
-		}
-		else
-		    lines += msg_format_buffer(buffer, &tbody);
+		msg_xlate_line(buffer, sizeof(buffer), p, ignore_soft_cr);
+		tl_append(&tbody, buffer);
+		lines++;
 	    }
 	}
 
@@ -1348,8 +1390,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	{
 	    if( (p = kludge_get(&body.kludge, "RFC-Reply-To", NULL)) )
 	    {
-		msg_xlate_line(buffer, sizeof(buffer), p,
-			       cvt8 & AREA_QP, ignore_soft_cr);
+		msg_xlate_line(buffer, sizeof(buffer), p, ignore_soft_cr);
 		reply_to_line = buffer;
 	    }
 	}
@@ -1360,29 +1401,26 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	{
 	    if( (p = kludge_get(&body.kludge, "RFC-User-Agent", NULL)) )
 	    {
-		msg_xlate_line(buffer, sizeof(buffer), p,
-			       cvt8 & AREA_QP, ignore_soft_cr);
+		msg_xlate_line(buffer, sizeof(buffer), p, ignore_soft_cr);
 		tl_appendf(&theader, "User-Agent: %s\n", buffer);
 	    }
 	    if( (p = kludge_get(&body.kludge, "RFC-X-NewsReader", NULL)) )
 	    {
-		msg_xlate_line(buffer, sizeof(buffer), p,
-			       cvt8 & AREA_QP, ignore_soft_cr);
+		msg_xlate_line(buffer, sizeof(buffer), p, ignore_soft_cr);
 		tl_appendf(&theader, "X-NewsReader: %s\n", buffer);
 	    }
 	}
 	
 	if ( NULL == msgbody_rfc_subject )
 	{
-	    msg_xlate_line(buffer, sizeof(buffer), msg.subject,
-			   cvt8 & AREA_QP, ignore_soft_cr);
+	    msg_xlate_line(buffer, sizeof(buffer), msg.subject, ignore_soft_cr);
 	    tl_appendf(&theader, "Subject: %s\n", buffer);
 	}
 	else
 	{
 	    tl_appendf(&theader, "Subject: %s\n", msgbody_rfc_subject);
 	}
-	msg_xlate_line(buffer, sizeof(buffer), id_line, cvt8 & AREA_QP, ignore_soft_cr);
+	msg_xlate_line(buffer, sizeof(buffer), id_line, ignore_soft_cr);
 	tl_appendf(&theader, "Message-ID: %s\n", buffer);
 
 	/* Different header for mail and news */
@@ -1391,12 +1429,12 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    if ((!ref_line || strlen(ref_line) != 8 ) &&
 				(s = kludge_get(&body.kludge, "RFC-References", NULL)))
 	    {
-		msg_xlate_line(buffer, sizeof(buffer), s, cvt8 & AREA_QP, ignore_soft_cr);
+		msg_xlate_line(buffer, sizeof(buffer), s, ignore_soft_cr);
 		tl_appendf(&theader, "References: %s\n", buffer);
 	    }
 	    else if(ref_line)
 	    {
-		msg_xlate_line(buffer, sizeof(buffer), ref_line, cvt8 & AREA_QP, ignore_soft_cr);
+		msg_xlate_line(buffer, sizeof(buffer), ref_line, ignore_soft_cr);
 		tl_appendf(&theader, "References: %s\n", buffer);
 	    }
 
@@ -1413,19 +1451,19 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    }
 	    if(*x_orig_to)
 	    {
-		msg_xlate_line(buffer, sizeof(buffer), x_orig_to, cvt8 & AREA_QP, ignore_soft_cr);
+		msg_xlate_line(buffer, sizeof(buffer), x_orig_to, ignore_soft_cr);
 		tl_appendf(&theader, "X-Orig-To: %s\n", x_orig_to);
 	    }
 	    if(errors_to)
 	    {
-		msg_xlate_line(buffer, sizeof(buffer), errors_to, cvt8 & AREA_QP, ignore_soft_cr);
+		msg_xlate_line(buffer, sizeof(buffer), errors_to, ignore_soft_cr);
 		tl_appendf(&theader, "Errors-To: %s\n", buffer);
 	    }
 	    /* FTN ReturnReceiptRequest -> Return-Receipt-To */
 	    if(msg.attr & MSG_RRREQ)
 	    {
 		msg_xlate_line(buffer, sizeof(buffer),
-			s_rfcaddr_to_asc(&addr_from,  FALSE), cvt8 & AREA_QP, ignore_soft_cr);
+			s_rfcaddr_to_asc(&addr_from,  FALSE), ignore_soft_cr);
 		tl_appendf(&theader, "Return-Receipt-To: %s\n", buffer);
 	    }
 	}
@@ -1436,7 +1474,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 
 	    if(ref_line)
 	    {
-		msg_xlate_line(buffer, sizeof(buffer), ref_line, cvt8 & AREA_QP, ignore_soft_cr);
+		msg_xlate_line(buffer, sizeof(buffer), ref_line, ignore_soft_cr);
 		tl_appendf(&theader, "References: %s\n", buffer);
 	    }
 
@@ -1502,8 +1540,7 @@ carbon:
 	{
 	 if(gate_rfc_kludge && (p = kludge_get(&body.kludge, "RFC-Organization", NULL)))
 	 {
-	    msg_xlate_line(buffer, sizeof(buffer), p, cvt8 & AREA_QP,
-			    ignore_soft_cr);
+	    msg_xlate_line(buffer, sizeof(buffer), p, ignore_soft_cr);
 	    tl_appendf(&theader, "Organization: %s\n", buffer);
 	 }
 	 else
@@ -1511,8 +1548,7 @@ carbon:
 	  if(use_origin_for_organization)
 	  {
 	    strip_crlf(body.origin);
-	    msg_xlate_line(buffer, sizeof(buffer), body.origin, cvt8 & AREA_QP,
-			    ignore_soft_cr);
+	    msg_xlate_line(buffer, sizeof(buffer), body.origin, ignore_soft_cr);
 
 	    if((p = strrchr(buffer, '(')))
 		*p = 0;
@@ -1602,14 +1638,14 @@ carbon:
 	 else
 	 {
 	    strip_crlf(body.tear);
-	    msg_xlate_line(buffer, sizeof(buffer), body.tear, cvt8 & AREA_QP, ignore_soft_cr);
+	    msg_xlate_line(buffer, sizeof(buffer), body.tear, ignore_soft_cr);
 	    tl_appendf(&theader, "X-FTN-Tearline: %s\n", buffer+4);
 	 }
 	}
 	if(x_ftn_O  &&  body.origin)
 	{
 	    strip_crlf(body.origin);
-	    msg_xlate_line(buffer, sizeof(buffer), body.origin, cvt8 & AREA_QP, ignore_soft_cr);
+	    msg_xlate_line(buffer, sizeof(buffer), body.origin, ignore_soft_cr);
 
 	    p = buffer + strlen(" * Origin: ");
 	    while(is_blank(*p))
@@ -1621,7 +1657,7 @@ carbon:
 	    {
 		p = pl->line;
 		strip_crlf(p);
-		msg_xlate_line(buffer, sizeof(buffer), p+1, 0, ignore_soft_cr);
+		msg_xlate_line(buffer, sizeof(buffer), p+1, ignore_soft_cr);
 
 		if ( !strncmp( buffer, "Via ", 4 ) )
 			tl_appendf(&theader, "X-FTN-Via: %s\n", buffer+4);
@@ -1659,43 +1695,26 @@ carbon:
 
 	    for(pl=body.kludge.first; pl; pl=pl->next)
 	    {
-		p2 = xlat_s( pl->line, p2 );
-		if(!strncmp(p2,"RFC",3))
-		    tl_appendf(&theader, "%s\n", p2 ? (p2 + 1) : (pl->line + 1));
+		if(!strncmp(pl->line,"RFC",3))
+		    tl_appendf(&theader, "%s\n", pl->line + 1);
 		else
-		    tl_appendf(&theader, "X-FTN-Kludge: %s\n", p2 ? (p2 + 1) : (pl->line + 1));
+		    tl_appendf(&theader, "X-FTN-Kludge: %s\n", pl->line + 1);
 	    }
-	    p2 = xlat_s( NULL, p2 );
 	}
 
 	if(split_line)
 	    tl_appendf(&theader, "X-SPLIT: %s\n", split_line);
 
-	/* MIME header */
-	tl_appendf(&theader, "MIME-Version: 1.0\n");
-	tl_appendf(&theader, "Content-Type: %s%s\n",
-		   mime->type ? mime->type : "text/plain; charset=",
-		   mime->type ? ""         : (cvt8 ? cs_out : CHARSET_STD7BIT) );
-
-	tl_appendf(&theader, "Content-Transfer-Encoding: %s\n",
-		   cvt8 ? ((cvt8 & AREA_QP) ? "quoted-printable" : "8bit")
-		        : "7bit");
-
-	if(cs_save)
-	    xfree(cs_save);
-	
 	/* Add extra headers */
 	if(area)
 	    for(pl=area->x_hdr.first; pl; pl=pl->next)
 		tl_appendf(&theader, "%s\n", pl->line);
-	    
-	tl_appendf(&theader, "\n");
 
-	en_state.cvt8 = cvt8;
-	en_state.cs_out = cs_out;
-	en_state.theader = &theader;
+	/* adds mime headers, recodes and encodes message */
+	ftn2rfc_finish_mime(&theader, &tbody, mime,
+			    cs_in, cs_out, cvt8, plain_headers);
 	
-	tl_for_each(&theader, encode_header, &en_state);
+	tl_appendf(&theader, "\n");
 	
 	/* Write header and message body to output file */
 	if(area)
@@ -1739,6 +1758,9 @@ carbon:
 	tl_clear(&tl);
 	msg_body_clear(&body);
 	tmps_freeall();
+
+	if(cs_save)
+	    xfree(cs_save);
     } /**while(type == MSG_TYPE)**/
 
     if(mail_file('n')) 
@@ -2022,17 +2044,18 @@ int main(int argc, char **argv)
     {
 	netmail_8bit = TRUE;
     }
-    if(cf_get_string("NetMailHeadersBase64", TRUE))
+    if(cf_get_string("NetMailBase64", TRUE))
     {
-	netmail_hb64 = TRUE;
-        netmail_qp = FALSE;
+	netmail_b64 = TRUE;
     }
     if(cf_get_string("NetMailQuotedPrintable", TRUE) ||
        cf_get_string("NetMailQP", TRUE)                )
     {
-	debug(8, "actual NetMailQP");
 	netmail_qp = TRUE;
-        netmail_hb64 = FALSE;
+    }
+    if(cf_get_string("NetMailHeadersPlain", TRUE))
+    {
+	netmail_headers_plain = TRUE;
     }
     if(cf_get_string("UseFTNToAddress", TRUE))
     {
