@@ -87,7 +87,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-TESTS = test_rfc2ftn$(EXEEXT)
+TESTS = test_rfc2ftn$(EXEEXT) test_rfc2ftn.sh test_ftn2rfc.sh
 check_PROGRAMS = test_rfc2ftn$(EXEEXT)
 subdir = tests/gate
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -398,10 +398,6 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
-CXX = @CXX@
-CXXCPP = @CXXCPP@
-CXXDEPMODE = @CXXDEPMODE@
-CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -491,7 +487,6 @@ abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
-ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
@@ -831,6 +826,20 @@ recheck: all $(check_PROGRAMS)
 test_rfc2ftn.log: test_rfc2ftn$(EXEEXT)
 	@p='test_rfc2ftn$(EXEEXT)'; \
 	b='test_rfc2ftn'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+test_rfc2ftn.sh.log: test_rfc2ftn.sh
+	@p='test_rfc2ftn.sh'; \
+	b='test_rfc2ftn.sh'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+test_ftn2rfc.sh.log: test_ftn2rfc.sh
+	@p='test_ftn2rfc.sh'; \
+	b='test_ftn2rfc.sh'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
