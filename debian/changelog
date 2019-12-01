@@ -1,3 +1,76 @@
+fidogate (5.4-1) unstable; urgency=medium
+
+  * debian: fidogate-doc: remove explicit changelogs
+  * New upstream release:
+
+    - doc: drop changelogs and recode todo
+    - configure: do not check for c++ compiler
+    - tests: ftn2rfc: check if 8bit kludges recoded correctly
+    - configure.ac: switch to utf-8 default rfc charset
+    - autogen.sh: call autoreconf instead of individual tools
+    - tests: rfc2ftn: check utf-8 headers with us-ascii body
+    - mime: recognize utf-8 in plain headers, debug message fix
+    - tests: rfc2ftn: check handling of plain words
+    - charset: add charset_is_valid_utf8()
+    - ftn2rfc: skip message-id and references from encoding
+    - ftn2rfc: fix premature freeing of per-area charset
+    - tests: rfc2ftn: remove NoChrsKludge option
+    - tests: gate: rfc2ftn: add test004, utf-8 test
+    - rfc2ftn: switch to internal utf-8 for iconv
+    - mime: leave mime_dequote() to unquote msgid only
+    - rfc2ftn: recode body and headers separately
+    - rfc2ftn: get rid of unused mime_qp
+    - mime: mime_body_dec: accept charset from gate
+    - rfc2ftn: recode all headers in one place
+    - rfc2ftn: remove DontChangeContentTypeCharset option
+    - tests: gate: add qp and base64 rfc2ftn integration tests
+    - rfcaddr, charset: remove charset_map_c from rfcaddr_from_ftn
+    - charset: convert xlat_s to use iconv recoder
+    - update tests as the system is 4500/1
+    - test: update cyrillic in names
+    - tests: update ftn2rfc tests with CHRS
+    - tests: gate: ftn2rfc: add Cyrillic "from"
+    - tests: gate: add simple integration testing
+    - README.ru, samples: document latest config changes
+    - areas, ftn2rfc: add support for plain headers
+    - areas: get rid of AREA_{8BIT,QP,HB64} flags, revisit 7/8 bits
+    - ftntick: fix description recoding
+    - message: msg_xlate_line: do not pass qp
+    - tests: add test_charset.
+    - charset: recode iconv: remove - from source encoding, fallback
+    - tests: mime: test line breaking of 7 bit headers
+    - tests: mime: add wrapping test
+    - tests: mime: add simple body b64 encoder test
+    - mime, rfc2ftn: implement mime encoding of the body
+    - textlist: add iterator
+    - test: add simple qp test
+    - tests: mime: adopt to encoder API change
+    - mime: implement quoted-printable for headers
+    - mime: word based only 8bit headers encoder (base64 only)
+    - tests: mime: update tests for the word-based header encoder
+    - tests: mime: use run_single_test() if argument passed
+    - tests: mime: adopt to mime_enheader/deheader renaming
+    - charset: move is_7bit from ftn2rfc
+    - mime: rename encode/decode functions
+    - charset: add fallback to internal if iconv fails
+    - ftn2rfc: recode body with iconv (support utf-8), 8 bit only
+    - tests: common: set loose_mocks
+    - mime, mime_enheader: fix buffer size calculations
+    - mime: implement mime_b64_encode_chunk
+    - mime: rename and refactor mime_decharset_string()
+    - ftn2rfc: remove line splitting and MessageLineLength config
+    - common/message: fix logical errors in pkt_get_body_parse()
+    - ftn2rfc: always return area if found in areas
+    - areas: enable base64 encoding by default
+    - version: get rid of PATCHLEVEL
+    - autotools: really rm build/missing build/test-driver
+    - constants: increase line length
+    - tests: add deheader_decodes_nonmime_at_start
+    - mime: mime_handle_mimed_word: on fallback report len as well
+    - mime: change fix of mix string handling in non-invasive way
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Sun, 01 Dec 2019 13:14:11 +0200
+
 fidogate (5.2.5~git20190222-2) unstable; urgency=medium
 
   * New upstream snapshot:
