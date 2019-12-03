@@ -1165,9 +1165,19 @@ M4MAKE='$(M4) $(M4OPTIONS)'
 
 AC_SUBST(SUBSTCMD)
 AC_SUBST(M4MAKE)
-AC_DEFINE_UNQUOTED(GIT_HASH_STR,
+
+AC_ARG_ENABLE([extraversion],
+	AS_HELP_STRING([--disable-extraversion], [do not add GIT hash]))
+
+AS_IF([test "x$enable_extraversion" != "xno"], [
+
+  if test -d $srcdir/.git; then
+    AC_DEFINE_UNQUOTED(GIT_HASH_STR,
 	["`cd $srcdir && git log -1 --format=format:%h`"],
 	[A string containing the git hash])
+  fi
+
+])
 
 HOSTNAME=`hostname -s`
 DOMAINNAME=`hostname|sed -e "s/$HOSTNAME//"`
