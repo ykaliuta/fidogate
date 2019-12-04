@@ -12,9 +12,9 @@ LDADD			= $(top_srcdir)/src/common/libfidogate.la
 AM_CFLAGS		= -Wall
 
 libexec_PROGRAMS	= charsetc
-libexec_EXTRA		= charset.bin
+libexec_SCRIPTS		= charset.bin
 
-charset.bin:
+charset.bin: charsetc
 	./charsetc -v charset.map charset.bin
 
 clean-am:
