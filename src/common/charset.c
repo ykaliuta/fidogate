@@ -365,6 +365,37 @@ void charset_init(void)
 }
 
 
+struct str_to_str {
+    char *key;
+    char *val;
+};
+
+static struct str_to_str level1_map[] = {
+    { "ASCII", "ASCII" },
+    { "DUTCH", "ISO646-DK" },
+    { "FINNISH", "ISO646-FI" },
+    { "FRENCH", "ISO646-FR" },
+    { "CANADIAN", "ISO646-CA" },
+    { "GERMAN", "ISO646-DE" },
+    { "ITALIAN", "ISO646-IT" },
+    { "NORWEIG", "ISO646-NO" },
+    { "PORTU", "ISO646-PT" },
+    { "SPANISH", "ISO646-ES" },
+    { "SWEDISH", "ISO646-SE" },
+    { "SWISS", "ISO646-CN" },
+    { "UK", "ISO646-GB" },
+};
+
+static char *charset_level1_to_iconv(char *charset)
+{
+    int i;
+
+    for (i = 0; i < sizeof(level1_map)/sizeof(level1_map[0]); i++)
+	if (stricmp(level1_map[i].key, charset) == 0)
+	    return level1_map[i].val;
+    return NULL;
+}
+
 
 /*
  * Get charset name from ^ACHRS kludge line
@@ -391,9 +422,15 @@ char *charset_chrs_name(char *s)
 	level = 2;
     else
 	level = atoi(p);
-    
-    if(level == 2)
-    {
+
+    switch (level) {
+    case 1:
+	p = charset_level1_to_iconv(name);
+	debug(5, "FSC-0054 level 1 charset=%s (level 2: %s)",
+	      name, p);
+	return p;
+
+    case 2:
 	debug(5, "FSC-0054 level 2 charset=%s", name);
 	return name;
     }
