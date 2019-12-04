@@ -558,6 +558,30 @@ out:
     return;
 }
 
+static char *charset_from_kludge(MsgBody *body)
+{
+    Textlist *kludge = &body->kludge;
+    char codepage[8] = "CP"; /* rest is \0, including final */
+    char *p;
+    char *names[] = { "CHRS", "CHARSET" };
+    int i;
+
+    /* CHRS: IBMPC CODEPAGE: CP... is priority */
+    p = kludge_get(kludge, "CODEPAGE", NULL);
+    if (p != NULL) {
+	strncpy(codepage + 2, p, sizeof(codepage) - 1 - 2);
+	return charset_chrs_name(codepage);
+    }
+
+    for (i = 0; i < sizeof(names)/sizeof(names[0]); i++) {
+	p = kludge_get(kludge, names[i], NULL);
+	if (p != NULL)
+	    return charset_chrs_name(p);
+    }
+
+    return NULL;
+}
+
 /*
  * Read and convert FTN mail packet
  */
@@ -875,18 +899,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    cs_out = default_charset_out;
 	
 	if(!ignore_chrs)
-	{
-	    if( (p = kludge_get(&body.kludge, "CHRS", NULL)) )
-		cs_in = charset_chrs_name(p);
-	    else if( (p = kludge_get(&body.kludge, "CHARSET", NULL)) )
-		cs_in = charset_chrs_name(p);
-	}
+	    cs_in = charset_from_kludge(&body);
 	
-	if(!cs_in)
-	    cs_in = cs_def;
-	charset_set_in_out(cs_in, cs_out);
-	/**FIXME: if ERROR is returned, use first matching alias for cs_in**/
-
 	lines = 0;
 	for(pl=body.body.first; pl; pl=pl->next)
 	{
@@ -900,7 +914,6 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		if(strnieq(p + 1, "CHARSET: ", 9))
 		    if( (s = charset_chrs_name(p + 9)) )
 			cs_in = s;
-		    /**FIXME: change in/out charset if needed**/
 	    }
 	    else
 	    {
@@ -910,7 +923,6 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    }
 	}
 
-
 	/*
 	 * Convert FTN from/to addresses to RFCAddr struct
 	 */
@@ -919,6 +931,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	if(!cs_out)
 	    cs_out = CHARSET_STDRFC;
 	charset_set_in_out(cs_in, cs_out);
+	/**FIXME: if ERROR is returned, use first matching alias for cs_in**/
 	addr_from = rfcaddr_from_ftn(msg.name_from, &msg.node_orig);
 	addr_to   = rfcaddr_from_ftn(msg.name_to,   &msg.node_to  );
 
