@@ -12,7 +12,8 @@ AM_CONFIG_HEADER([config.h])
 AC_CONFIG_SRCDIR([src/common/config.c])
 AC_CONFIG_AUX_DIR([build])
 AC_PREFIX_DEFAULT(/usr/local/fido)
-AM_INIT_AUTOMAKE([1.5 foreign subdir-objects])
+AM_INIT_AUTOMAKE([1.11 foreign subdir-objects])
+AM_SILENT_RULES([yes])
 AM_MAINTAINER_MODE
 AC_CANONICAL_HOST
 
