@@ -1117,7 +1117,7 @@ AC_MSG_CHECKING(for sendmail)
 if test "${with_sendmail+set}" = set ;then
 	SENDMAIL="$with_sendmail"
 else
-    XPATH="/usr/sbin:/usr/lib:/usr/ucblib:/usr/share"
+    XPATH="/sbin:/usr/sbin:/usr/lib:/usr/ucblib:/usr/share"
     AC_PATH_PROG(SENDMAIL, sendmail,, $XPATH)
     if test "x$SENDMAIL" = "x"; then
 	AC_MSG_ERROR([sendmail not found, re-run with valid --with-sendmail=DIR])
