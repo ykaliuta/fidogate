@@ -1006,8 +1006,6 @@ if test $enable_syslog = yes; then
 fi
 
 dnl Libraries
-AC_CHECK_LIB(dl, dlopen)
-
 AC_SEARCH_LIBS(regcomp, rx regex, [
     AC_DEFINE(HAS_POSIX_REGEX,[],[Do we have a decent regex library?])
     AC_CHECK_HEADER(rxposix.h, AC_DEFINE(HAVE_RX,[],[Do we have rxposix.h?]))])
