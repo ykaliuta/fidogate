@@ -1172,7 +1172,7 @@ AC_MSG_CHECKING(for lock directory)
 if test "${with_lockdir+set}" = set; then
 	LOCKDIR="$with_lockdir"
 else
-	LOCKDIR="${runstatedir}/fidogate"
+	LOCKDIR="${localstatedir}/run/fidogate"
 fi
 AC_MSG_RESULT($LOCKDIR)
 AC_SUBST(LOCKDIR)
