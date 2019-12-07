@@ -1,19 +1,21 @@
 #!/bin/sh
 
-. $PWD/test-common.sh
+WORKDIR=$(dirname $(realpath $0))
+
+. $WORKDIR/test-common.sh
 
 FAIL=""
-CMP="../cmp-rfc.sh"
-COMMAND="$PWD/../../src/gate/ftn2rfc -1 -n"
-TEST_DIR=tests_ftn2rfc
+CMP="$WORKDIR/../cmp-rfc.sh"
+COMMAND="$WORKDIR/../../src/gate/ftn2rfc -1 -n"
+TEST_DIR=$WORKDIR/tests_ftn2rfc
 RESULT=$FIDOGATE_OUTRFC_NEWS/00000001.rfc
 
 run_one()
 {
     local command="$1"
     local dir="$2"
-    local input="$PWD/$dir/input"
-    local expected="$PWD/$dir/expected"
+    local input="$WORKDIR/$dir/input"
+    local expected="$WORKDIR/$dir/expected"
 
     $command $input
 
