@@ -1,19 +1,21 @@
 #!/bin/sh
 
-. $PWD/test-common.sh
+WORKDIR=$(dirname $(realpath $0))
+
+. $WORKDIR/test-common.sh
 
 FAIL=""
-CMP="$PWD/../cmp-pkt.sh"
-COMMAND="$PWD/../../src/gate/rfc2ftn -n"
-TEST_DIR=tests_rfc2ftn
+CMP="$WORKDIR/../cmp-pkt.sh"
+COMMAND="$WORKDIR/../../src/gate/rfc2ftn -n"
+TEST_DIR=$WORKDIR/tests_rfc2ftn
 RESULT=$FIDOGATE_OUTPKT_NEWS/00000001.pkt
 
 run_one()
 {
     local command="$1"
     local dir="$2"
-    local input="$PWD/$dir/input"
-    local expected="$PWD/$dir/expected"
+    local input="$WORKDIR/$dir/input"
+    local expected="$WORKDIR/$dir/expected"
 
     cat $input | $command
 
