@@ -5,7 +5,7 @@
 # Makefile FIDOGATE TOPDIR
 #
 
-AUTOMAKE_OPTIONS=foreign dist-bzip2 1.5
+AUTOMAKE_OPTIONS=foreign dist-bzip2 1.5 subdir-objects
 
 include $(top_builddir)/build/config.make
 
