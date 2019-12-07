@@ -18,6 +18,8 @@ void fglog(const char *fmt, ...)
 {
 }
 
+int verbose;
+
 Ensure(hdr_enc_encodes_cyrillic)
 {
 	char *src = "Subject: tеsт кириллица latinitsa";
@@ -110,7 +112,7 @@ Ensure(body_enc_b64_encodes_cyrillic)
 }
 
 #define MSG_MAXSUBJ	72
-#define J "\xe9" /* Cyrillic й */
+#define J "\xe9" /* Cyrillic й cp1251 */
 static char dres[MSG_MAXSUBJ];
 
 Ensure(hdr_dec_decodes_le28chars_line)
@@ -120,7 +122,7 @@ Ensure(hdr_dec_decodes_le28chars_line)
 		J J J J J J J J J J J J J J J J
 		J J J J J; /* 21 */
 
-	mime_header_dec(dres, sizeof(dres), src);
+	mime_header_dec(dres, sizeof(dres), src, "windows-1251");
 
 	assert_that(dres, is_equal_to_string(exp));
 }
@@ -135,7 +137,7 @@ Ensure(hdr_dec_decodes_ge35chars_line)
 		J J J J J J J J J J J J J J J J
 		J J J J J; /* 37 */
 
-	mime_header_dec(dres, sizeof(dres), src);
+	mime_header_dec(dres, sizeof(dres), src, "windows-1251");
 
 	assert_that(dres, is_equal_to_string(exp));
 }
@@ -145,7 +147,7 @@ Ensure(hdr_dec_decodes_nonmime_at_start)
 	char *src = "Re: Re: =?utf-8?B?0LnQudC50LnQuQ==?=";
 	char *exp = "Re: Re: " J J J J J;
 
-	mime_header_dec(dres, sizeof(dres), src);
+	mime_header_dec(dres, sizeof(dres), src, "windows-1251");
 
 	assert_that(dres, is_equal_to_string(exp));
 }
@@ -156,7 +158,7 @@ Ensure(hdr_dec_handles_empty)
 	char *src = "";
 	char *exp = "";
 
-	mime_header_dec(dres, sizeof(dres), src);
+	mime_header_dec(dres, sizeof(dres), src, "ASCII");
 
 	assert_that(dres, is_equal_to_string(exp));
 }
@@ -168,23 +170,7 @@ Ensure(hdr_dec_preserves_non_mime)
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZ123456"; /* 64 */
 	char *exp = src;
 
-	mime_header_dec(dres, sizeof(dres), src);
-
-	assert_that(dres, is_equal_to_string(exp));
-}
-
-Ensure(hdr_dec_cuts_long_non_mime)
-{
-	char *src =
-		"abcdefghijklmnopqrstuvwxyz123456"
-		"ABCDEFGHIJKLMNOPQRSTUVWXYZ123456" /* 64 */
-		"abcdefghijklmnopqrstuvwxyz123456"; /* 96 */
-	char *exp =
-		"abcdefghijklmnopqrstuvwxyz123456"
-		"ABCDEFGHIJKLMNOPQRSTUVWXYZ123456" /* 64 */
-		"abcdefg"; /* 71 */
-
-	mime_header_dec(dres, sizeof(dres), src);
+	mime_header_dec(dres, sizeof(dres), src, "ASCII");
 
 	assert_that(dres, is_equal_to_string(exp));
 }
@@ -197,7 +183,7 @@ Ensure(hdr_dec_skips_long_charset_decoding)
         /* cut to 71 + '\0' symbols */
 	char *exp = "=?UTF-8longlonglonglonglonglonglong?B?0LnQudC50LnQudC50LnQudC50LnQudC50";
 
-	mime_header_dec(dres, sizeof(dres), src);
+	mime_header_dec(dres, sizeof(dres), src, "ASCII");
 
 	assert_that(dres, is_equal_to_string(exp));
 }
@@ -218,7 +204,6 @@ static TestSuite *create_mime_suite(void)
     add_test(suite, hdr_dec_decodes_nonmime_at_start);
     add_test(suite, hdr_dec_handles_empty);
     add_test(suite, hdr_dec_preserves_non_mime);
-    add_test(suite, hdr_dec_cuts_long_non_mime);
     add_test(suite, hdr_dec_skips_long_charset_decoding);
     return suite;
 }
