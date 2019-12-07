@@ -11,6 +11,8 @@ void fglog(const char *fmt, ...)
 {
 }
 
+int verbose;
+
 Ensure(charset_recodes_latin1)
 {
 	char *src = "\xf8";
