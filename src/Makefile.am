@@ -8,6 +8,8 @@
 # ../config.make and ../rules.make
 #
 
+include $(top_builddir)/build/rules.make
+
 AM_CPPFLAGS		= -Iinclude
 
 LDADD			= common/libfidogate.a
@@ -223,13 +225,3 @@ bin_SCRIPTS		= $(util_scripts)
 
 subst_scripts		+= $(util_scripts)
 CLEANFILES		+= $(util_scripts)
-
-########### common rules
-
-$(subst_scripts): %: %.in
-	$(SUBSTCMD) $< > $@
-	chmod +x $@
-
-installcheck-am: $(install_hooks)
-
-.PHONY: $(install_hooks)
