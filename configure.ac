@@ -1239,14 +1239,6 @@ AC_CONFIG_COMMANDS([build_headers],[build/subst.pl -h])
 AC_CONFIG_FILES([build/config.make \
                  Makefile \
 		 src/Makefile \
-		 src/areafix/Makefile \
-		 src/charset/Makefile \
-		 src/common/Makefile \
-		 src/gate/Makefile \
-		 src/include/Makefile \
-		 src/tick/Makefile \
-		 src/toss/Makefile \
-		 src/util/Makefile \
 		 scripts/Makefile \
 		 scripts/areas/Makefile \
 		 scripts/maintenance/Makefile \
