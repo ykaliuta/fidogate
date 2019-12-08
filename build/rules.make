@@ -3,7 +3,7 @@
 .SUFFIXES: .in
 
 .in:
-	$(SUBSTCMD) $< > $@
+	$(AM_V_GEN)$(SUBSTCMD) $< > $@
 	@chmod +x $@
 
 installcheck-am: $(install_hooks)
