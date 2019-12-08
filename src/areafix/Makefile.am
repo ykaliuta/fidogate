@@ -7,7 +7,7 @@
 
 AM_CPPFLAGS		= -I$(top_srcdir)/src/include
 
-LDADD			= $(top_srcdir)/src/common/libfidogate.la
+LDADD			= $(top_srcdir)/src/common/libfidogate.a
 
 AM_CFLAGS		= -Wall
 

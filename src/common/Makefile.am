@@ -4,29 +4,12 @@
 #    Makefile for FIDOGATE src/common/
 #
 
-AUTOMAKE_OPTIONS = foreign
-
-
 noinst_LIBRARIES = libfidogate.a
+libfidogate_a_LIBADD = @LIBICONV@
 
-libfidogate_a_CFLAGS = -Wall -g
 libfidogate_a_SOURCES = $(SRC)
 
-lib_LTLIBRARIES = libfidogate.la
-libfidogate_la_CFLAGS = -Wall -g -fPIC
-
-libfidogate_la_SOURCES = $(SRC)
-libfidogate_la_LDFLAGS = -version-info 5:0:0
-
-libfidogate_la_LIBADD = @LIBICONV@
-
 AM_CPPFLAGS = -I$(top_srcdir)/src/include
-
-LIBTOOL_DEPS = @LIBTOOL_DEPS@
-
-libtool:
-	$(LIBTOOL_DEPS)
-	$(SHELL) ../../config.status --recheck
 
 SRC	   = acl.c \
 	    acl_ftn.c \

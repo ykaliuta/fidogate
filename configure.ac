@@ -2,7 +2,7 @@ dnl $Id: configure.in,v 5.5 2008/06/29 07:20:39 anray Exp $
 dnl
 dnl Copyright (c) 2003-2008 Andrey Slusar <anrays@gmail.com>
 dnl Copyright (c) 2003-2004 Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
-dnl Copyright (c) 2015-206 Yauheni Kaliuta <y.kaliuta@gmail.com>
+dnl Copyright (c) 2015-2019 Yauheni Kaliuta <y.kaliuta@gmail.com>
 dnl
 AC_REVISION([$Revision: 5.6 $])
 AC_PREREQ(2.53)
@@ -29,6 +29,12 @@ AC_PROG_YACC
 if test "x$YACC" = "x"; then
    AC_MSG_ERROR([yacc/bison not found, please install])
 fi
+
+# for libtool:
+# LT_INIT
+# AC_SUBST(LIBTOOL_DEPS)
+AC_PROG_RANLIB
+AM_PROG_AR
 
 dnl Checks for header files.
 AC_FUNC_ALLOCA
@@ -71,8 +77,6 @@ if ! test "x$ac_cv_func_snprintf" = xyes && \
 fi
 
 dnl Redefine install scripts
-LT_INIT
-AC_SUBST(LIBTOOL_DEPS)
 INSTALL_DATA='${INSTALL} -m 640'
 
 dnl Paths to major progs
