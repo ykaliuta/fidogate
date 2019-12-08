@@ -361,11 +361,13 @@ int main(int argc, char **argv)
 	{
 	    fprintf(stderr, "%s: expecting Z:N/F.P node\n", PROGRAM);
 	    short_usage();
+	    return EX_USAGE;
 	}
 	if( asc_to_node(argv[optind], &node, FALSE) == ERROR )
 	{
 	    fprintf(stderr, "%s: invalid node %s\n", PROGRAM, argv[optind]);
 	    short_usage();
+	    return EX_DATAERR;
 	}
 	optind++;
 
