@@ -1,8 +1,8 @@
 #
-# $Id: Makefile.am,v 5.2 2004/11/23 00:50:36 anray Exp $
-#
 # Makefile.am FIDOGATE doc/
 #
+
+include $(top_builddir)/build/rules.make
 
 configs  =  mailer/postfix/master.cf \
 	    mailer/sendmail/mailer/ftn.m4 \
@@ -12,10 +12,7 @@ configs  =  mailer/postfix/master.cf \
 	    examples/point/fidogate.conf \
 	    examples/dyff/packing.sample
 
-$(configs):
-	$(SUBSTCMD) $@.in > $@
+subst_scripts        = $(configs)
+CLEANFILES           = $(configs)
 
 all-am: $(configs)
-
-clean-am:
-	rm -f $(configs)
