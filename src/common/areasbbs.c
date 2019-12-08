@@ -346,12 +346,18 @@ int areasbbs_init(char *name)
     
     debug(14, "Reading %s file" , name);
     
-    fp = fopen_expand_name(name, R_MODE, FALSE);
-    if(!fp)
-	return ERROR;
-    
     areasbbs_filename = name;
     areasbbs_changed_flag = FALSE;
+
+    fp = fopen_expand_name(name, R_MODE, FALSE);
+    if(!fp) {
+	if (errno == ENOENT) {
+	    debug(14, "No file %s, assuming empty", name);
+	    return OK;
+	} else {
+	    return ERROR;
+	}
+    }
 
     /*
      * 1st line is special
