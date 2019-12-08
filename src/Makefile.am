@@ -113,7 +113,7 @@ EXTRA_DIST		+= $(CHARSET_GENERATED) \
 			   charset/russian.map
 
 $(CHARSET_GENERATED): charset/charsetc
-	cd charset && \
+	$(AM_V_GEN)cd charset && \
 		./charsetc -v charset.map charset.bin
 
 install_hooks		+= charset_install
@@ -166,10 +166,10 @@ INCLUDE_GENERATED_C = common/cf_funcs.c common/cf_abbrev.c common/cf_env.c
 SUFFIXES = .h .c .mak
 
 .mak.h:
-	cp $< $@
+	$(AM_V_GEN)cp $< $@
 
 .mak.c:
-	cp $< $@
+	$(AM_V_GEN)cp $< $@
 
 BUILT_SOURCES		= $(INCLUDE_GENERATED_C) $(INCLUDE_GENERATED_H)
 
