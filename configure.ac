@@ -1239,8 +1239,5 @@ AC_CONFIG_COMMANDS([build_headers],[build/subst.pl -h])
 AC_CONFIG_FILES([build/config.make \
                  Makefile \
 		 src/Makefile \
-		 scripts/Makefile \
-		 doc/Makefile \
-		 configs/Makefile \
 		 tests/Makefile ])
 AC_OUTPUT
