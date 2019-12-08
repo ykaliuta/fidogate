@@ -1,19 +1,50 @@
 #:ts=8
 #
-#    $Id: Makefile.am,v 5.2 2004/11/23 00:50:38 anray Exp $
-#
 #    Makefile for FIDOGATE scripts/
 #
 
-SUBDIRS	      = areas maintenance misc nodelist outbound
+include $(top_builddir)/build/rules.make
 
-noinst_SCRIPTS= filebase/fb-chkfiles \
-		filebase/fb-filelist \
-		www/gate.cgi
+binscripts = areas/areassucksync \
+	  areas/areasbbssync \
+	  nodelist/nl-del \
+	  nodelist/nl-diff \
+	  nodelist/nl-autoupd \
+	  maintenance/logstat \
+	  maintenance/logdaily \
+	  maintenance/runchklock \
+	  maintenance/logsendmail \
+	  maintenance/logcheck \
+	  maintenance/logreport \
+	  misc/senduumail \
+	  misc/hosts2dns \
+	  misc/senduu \
+	  misc/recvuu \
+	  outbound/out-ls \
+	  outbound/outb \
+	  outbound/out-freq \
+	  outbound/out-attach \
+	  outbound/out-rm0 \
+	  outbound/out-manip \
+	  outbound/outb-kill \
+	  outbound/out-rmbsy
 
-$(bin_SCRIPTS) $(noinst_SCRIPTS):
-	$(SUBSTCMD) $@.in > $@
-	chmod +x $@
+noinstscripts = www/gate.cgi \
+	  filebase/fb-filelist \
+	  filebase/fb-chkfiles \
+	  maintenance/fidogate.logrotate \
+	  maintenance/rc.fidogate \
+	  nodelist/html-tmpl \
+	  nodelist/nl-2hosts \
+	  nodelist/nl-print \
+	  nodelist/nl-2routing \
+	  nodelist/nl-html \
+	  nodelist/nl-isdn
 
-clean-am:
-	rm -f $(bin_SCRIPTS) $(noinst_SCRIPTS)
+scripts = $(binscripts) $(noinstscripts)
+
+bin_SCRIPTS		= $(binscripts)
+noinst_SCRIPTS		= $(noinstscripts)
+
+subst_scripts		= $(scripts)
+cleanup_files		= $(scripts)
