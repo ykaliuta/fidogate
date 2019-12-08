@@ -113,7 +113,7 @@ libexec_SCRIPTS		= $(CHARSET_GENERATED)
 cleanup_files		+= $(CHARSET_GENERATED)
 
 $(CHARSET_GENERATED): charset/charsetc
-	cd charset && \
+	$(AM_V_GEN)cd charset && \
 		./$(notdir $<) -v charset.map $(notdir $@)
 
 install_hooks		+= charset_install

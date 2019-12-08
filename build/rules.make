@@ -1,8 +1,8 @@
 ########### common rules
 
 $(subst_scripts): %: %.in
-	$(SUBSTCMD) $< > $@
-	chmod +x $@
+	$(AM_V_GEN)$(SUBSTCMD) $< > $@
+	@chmod +x $@
 
 clean-am:
 	rm -f $(cleanup_files)
