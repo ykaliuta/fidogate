@@ -1240,11 +1240,6 @@ AC_CONFIG_FILES([build/config.make \
                  Makefile \
 		 src/Makefile \
 		 scripts/Makefile \
-		 scripts/areas/Makefile \
-		 scripts/maintenance/Makefile \
-		 scripts/misc/Makefile \
-		 scripts/nodelist/Makefile \
-		 scripts/outbound/Makefile \
 		 doc/Makefile \
 		 configs/Makefile \
 		 tests/Makefile ])
