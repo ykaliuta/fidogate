@@ -3,6 +3,10 @@ TOP_SRC = $(top_srcdir)/src
 AM_CPPFLAGS = -I$(TOP_SRC)/include
 AM_CPPFLAGS += -I$(TOP_SRC)/common
 
+noinst_PROGRAMS = cmp-pkt
+cmp_pkt_SOURCES = cmp-pkt.c
+cmp_pkt_LDADD = $(top_srcdir)/src/common/libfidogate.a
+
 LDADD = -lcgreen
 
 TESTS = $(TESTS_COMMON) $(TESTS_GATE)

@@ -5,7 +5,7 @@ WORKDIR=$(dirname $(realpath $0))
 . $WORKDIR/test-common.sh
 
 FAIL=""
-CMP="$WORKDIR/../cmp-pkt.sh"
+CMP="$WORKDIR/../cmp-pkt"
 COMMAND="$WORKDIR/../../src/gate/rfc2ftn -n"
 TEST_DIR=$WORKDIR/tests_rfc2ftn
 RESULT=$FIDOGATE_OUTPKT_NEWS/00000001.pkt
