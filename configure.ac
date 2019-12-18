@@ -1,10 +1,8 @@
-dnl $Id: configure.in,v 5.5 2008/06/29 07:20:39 anray Exp $
-dnl
 dnl Copyright (c) 2003-2008 Andrey Slusar <anrays@gmail.com>
 dnl Copyright (c) 2003-2004 Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 dnl Copyright (c) 2015-2019 Yauheni Kaliuta <y.kaliuta@gmail.com>
 dnl
-AC_REVISION([$Revision: 5.6 $])
+AC_REVISION([Revision: 1024])
 AC_PREREQ(2.53)
 AC_INIT([fidogate],[5.4],[y.kaliuta@gmail.com])
 AC_DISABLE_OPTION_CHECKING
