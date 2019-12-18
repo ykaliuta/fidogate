@@ -15,7 +15,6 @@ configure_options := \
 	--with-btbasedir=/var/spool/ftn \
 	--with-newsbindir=/usr/lib/news/bin\
 	--with-owner=ftn --with-group=news \
-	--without-news \
 	--with-sendmail=/usr/sbin/sendmail \
 	--enable-dbc-history \
 	--disable-desc-dir \
@@ -24,7 +23,12 @@ configure_options := \
 	--enable-af-ansok \
 	--enable-afses \
 	--enable-pid2rd-tid2gtv \
-	--enable-sep-pkt
+	--enable-sep-pkt \
+	--enable-best-aka \
+	--with-inndir=/usr/lib/news \
+	--with-innetcdir=/etc/news \
+	--with-inndbdir=/var/lib/news \
+	--with-innspooldir=/var/spool/news
 
 override_dh_auto_test:
 
@@ -34,7 +38,6 @@ override_dh_auto_configure:
 
 override_dh_auto_build:
 	dh_auto_build
-	$(MAKE) -C src/charset charset.bin
 
 override_dh_auto_install:
 	dh_auto_install

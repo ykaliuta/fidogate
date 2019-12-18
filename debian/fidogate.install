@@ -1,7 +1,6 @@
 usr/bin/*
 usr/lib/fidogate/*
-usr/lib/*/lib*.so.*
-etc/fidogate/* usr/share/fidogate
+etc/fidogate/*
 var/lib/fidogate/seq
 var/log/*
 var/spool/*

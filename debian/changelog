@@ -1,3 +1,40 @@
+fidogate (5.5-1) unstable; urgency=medium
+
+  * Removed patches:
+     - configure.patch
+     - news-path.patch
+     since the functionality implemented in configure.
+  * Pass news paths with configure, remove --without-inn.
+  * Explicitly --enable-best-aka, to revisit in configure.
+  * New upstream release:
+
+     - configure.ac: remove cvs/svn variables, change revision scheme
+     - tests: cmp-pkt: switch to custom comparator
+     - automake: move doc, configs and scripts to the main Makefile
+     - automake: silent generation
+     - automake: doc, configs: use common build/rules.make
+     - automake: scripts: convert to non-recursive automake
+     - automake: move common src/ rules to build/rules.make
+     - autotools: convert src to non-recursive automake
+     - autotools: get rid of libtool, static libfidogate
+     - autotools, tests: make tests in non-recursive way
+     - configure.ac: use localstatedir instead of runstatedir
+     - configure.ac: remove libdl detection
+     - configure.ac: revisit news detection
+     - configure.ac: search sendmail in /sbin
+     - autotools: enable silent rules by default
+     - autotools: move automake options from Makefile.am to configure.ac
+     - tests: common: make buildable with --disable-shared
+     - scripts/inn: add filter_nnrpd.pl
+     - ftn2rfc, charset: support CODEPAGE and level 1
+     - autotools, charset.bin: build and install it
+     - configure.ac, version.h: more accurate adding GIT hash
+     - areasbbs: do not fail if areas.bbs does not exist
+     - areafix: ftnaf: exit as soon as detected wrong cmdline
+     - autotools: remove src/areafix/.dirstamp
+
+ -- Yauheni Kaliuta <y.kaliuta@gmail.com>  Wed, 18 Dec 2019 22:30:00 +0200
+
 fidogate (5.4-1) unstable; urgency=medium
 
   * debian: fidogate-doc: remove explicit changelogs
