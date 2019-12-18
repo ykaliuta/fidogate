@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ROOT=$PWD/testroot
+ROOT=$WORKDIR/testroot
 
 export FIDOGATE_CONFIGDIR=$ROOT/etc
 export FIDOGATE_OUTPKT_NEWS=$ROOT/outpkt_news
@@ -61,15 +61,16 @@ run_dir()
 {
     local command="$1"
     local dir="$2"
+    local testdir="$(basename $2)"
 
     for t in $(ls -1d $dir/test*); do
-        if [ -d "$PWD/$t/etc" ]; then
-            export FIDOGATE_CONFIGDIR="$PWD/$t/etc"
+        if [ -d "$t/etc" ]; then
+            export FIDOGATE_CONFIGDIR="$(realpath $t/etc)"
         fi
 
         setup
 
-        run_one "$command" "$t" || FAIL=true
+        run_one "$command" "$testdir/$(basename $t)" || FAIL=true
 
         export FIDOGATE_CONFIGDIR=$ROOT/etc
     done

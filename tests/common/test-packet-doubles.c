@@ -9,6 +9,8 @@
 #include <fidogate.h>
 #include <time.h>
 
+int verbose;
+
 void fglog(const char *fmt, ...)
 {
     return;

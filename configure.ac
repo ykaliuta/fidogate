@@ -1,18 +1,17 @@
-dnl $Id: configure.in,v 5.5 2008/06/29 07:20:39 anray Exp $
-dnl
 dnl Copyright (c) 2003-2008 Andrey Slusar <anrays@gmail.com>
 dnl Copyright (c) 2003-2004 Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
-dnl Copyright (c) 2015-206 Yauheni Kaliuta <y.kaliuta@gmail.com>
+dnl Copyright (c) 2015-2019 Yauheni Kaliuta <y.kaliuta@gmail.com>
 dnl
-AC_REVISION([$Revision: 5.6 $])
+AC_REVISION([Revision: 1025])
 AC_PREREQ(2.53)
-AC_INIT([fidogate],[5.4],[y.kaliuta@gmail.com])
+AC_INIT([fidogate],[5.5],[y.kaliuta@gmail.com])
 AC_DISABLE_OPTION_CHECKING
 AM_CONFIG_HEADER([config.h])
 AC_CONFIG_SRCDIR([src/common/config.c])
 AC_CONFIG_AUX_DIR([build])
 AC_PREFIX_DEFAULT(/usr/local/fido)
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([1.11 foreign subdir-objects])
+AM_SILENT_RULES([yes])
 AM_MAINTAINER_MODE
 AC_CANONICAL_HOST
 
@@ -28,6 +27,12 @@ AC_PROG_YACC
 if test "x$YACC" = "x"; then
    AC_MSG_ERROR([yacc/bison not found, please install])
 fi
+
+# for libtool:
+# LT_INIT
+# AC_SUBST(LIBTOOL_DEPS)
+AC_PROG_RANLIB
+AM_PROG_AR
 
 dnl Checks for header files.
 AC_FUNC_ALLOCA
@@ -70,8 +75,6 @@ if ! test "x$ac_cv_func_snprintf" = xyes && \
 fi
 
 dnl Redefine install scripts
-LT_INIT
-AC_SUBST(LIBTOOL_DEPS)
 INSTALL_DATA='${INSTALL} -m 640'
 
 dnl Paths to major progs
@@ -180,7 +183,7 @@ AC_SUBST(netmaildir)
 
 dnl# Check for a --with-newsbindir argument
 AC_ARG_WITH(newsbindir, dnl
-  --with-newsbindir=DIR		set INN bin directory,
+  --with-newsbindir=DIR		set INN bin directory for autodetect,
 	    [dnl
 case "$with_newsbindir" in
 yes) AC_MSG_ERROR([--with-newsbindir requires an argument; use --with-newsbindir=DIR]) ;;
@@ -189,33 +192,35 @@ yes) AC_MSG_ERROR([--with-newsbindir requires an argument; use --with-newsbindir
 esac
 ])
 
-dnl# Check for a --with-inews argument
-AC_ARG_WITH(INEWS_S, dnl
-  --with-inews=PATH		set directory containt INEWS,
-	    [dnl
-case "$with_inews" in
-yes) AC_MSG_ERROR([--with-inews   requires an argument; use --with-inews=PATH]) ;;
-''|no) ;;
-*) INEWS_S="$withval" ;;
-esac
-])
+AC_ARG_WITH([news],
+    [AS_HELP_STRING([--without-news], [build fidogate without news server])])
 
-dnl# Check for a --with-rnews argument
-AC_ARG_WITH(RNEWS_S, dnl
-  --with-rnews=PATH		set directory containt RNEWS,
-	    [dnl
-case "$with_rnews" in
-yes) AC_MSG_ERROR([--with-rnews   requires an argument; use --with-rnews=PATH]) ;;
-''|no) ;;
-*) RNEWS_S="$withval" ;;
-esac
-])
+AC_ARG_WITH([inndir],
+    [AS_HELP_STRING([--with-inndir], [main INN directory; PATHNEWS])],
+    [],
+    [with_inndir=undefined])
 
-AC_ARG_WITH(, dnl
-  --without-news          build fidogate without news server,,)
-AC_ARG_WITH(, dnl
-  --without-rsf           build fidogate without runinc send_fidogate function,,)
-  
+AC_ARG_WITH([innetcdir],
+    [AS_HELP_STRING([--with-innetcdir], [INN etc directory; PATHETC])],
+    [],
+    [with_innetcdir=undefined])
+
+AC_ARG_WITH([inndbdir],
+    [AS_HELP_STRING([--with-inndbdir], [INN db directory; PATHDB])],
+    [],
+    [with_inndbdir=undefined])
+
+AC_ARG_WITH([innspooldir],
+    [AS_HELP_STRING([--with-innspooldir], [INN spool directory])],
+    [],
+    [with_innspooldir=undefined])
+
+AC_ARG_ENABLE([oldbatcher],
+    [AS_HELP_STRING([--inn-disable-old-batcher], [disable old INN batcher])])
+
+AC_ARG_WITH([rsf],
+    [AS_HELP_STRING([--without-rsf],
+                   [build fidogate without runinc send_fidogate function])])
 
 AC_ARG_WITH(sendmail, dnl
   --with-sendmail=PATH    Specify path to sendmail,
@@ -1003,14 +1008,54 @@ if test $enable_syslog = yes; then
 fi
 
 dnl Libraries
-AC_CHECK_LIB(dl, dlopen)
-
 AC_SEARCH_LIBS(regcomp, rx regex, [
     AC_DEFINE(HAS_POSIX_REGEX,[],[Do we have a decent regex library?])
     AC_CHECK_HEADER(rxposix.h, AC_DEFINE(HAVE_RX,[],[Do we have rxposix.h?]))])
 
 if test "$with_news" != no ;then
-{
+
+    AS_IF([test "x$enable_oldbatcher" != "xno"], [
+        BATCHER='time $PATHBIN/batcher -N $QUEUEJOBS -b500000 -p"$RFC2FTN -b -n" $SITE $BATCHFILE' ],
+	[BATCHER='time $RFC2FTN -f $BATCHFILE -m 500'])
+
+# MY CHECK IF
+
+    AS_CASE([$with_inndir],
+            [yes|no], [
+                 AC_MSG_ERROR([--with-inndir requires an argument; use --with-inndir=PATH])],
+            [undefined], [PATHNEWS=""],
+            [PATHNEWS="$with_inndir"
+             PATHBIN="$PATHNEWS/bin"
+             RNEWS="$PATHBIN/rnews"
+             INEWS="$PATHBIN/inews"
+            ])
+#MY CHECK CASE
+    AS_CASE([$with_innetcdir],
+            [yes|no], [
+                 AC_MSG_ERROR([--with-innetcdir requires an argument; use --with-innetcdir=PATH])],
+            [undefined], [PATHETC=""],
+            [PATHETC="$with_innetcdir"])
+
+    AS_CASE([$with_inndbdir],
+            [yes|no], [
+                 AC_MSG_ERROR([--with-inndbdir requires an argument; use --with-inndbdir=PATH])],
+            [undefined], [PATHDB=""],
+            [PATHDB="$with_inndbdir"])
+
+    AS_CASE([$with_innspooldir],
+            [yes|no], [
+                 AC_MSG_ERROR([--with-innspooldir requires an argument; use --with-innspooldir=PATH])],
+            [undefined], [PATHARTICLES=""],
+            [PATHARTICLES="$with_innspooldir/articles"
+             PATHOUTGOING="$with_innspooldir/outgoing"
+            ])
+
+# if something is not provided to configure, do autodetect
+
+    AS_IF([test -z "$PATHNEWS" -o -z "$PATHETC" \
+                -o -z "$PATHDB" -o -z "$PATHARTICLES"],
+    [
+    AC_MSG_NOTICE([Something from --with-inndir, --with-innetcdir, --with-inndbdir, --with-innspooldir is missing. Detecting])
     AC_MSG_CHECKING(for news-library path)
     if ! test -x "${newsbindir}/innconfval"; then
 	if test -x /usr/local/news/bin/innconfval ; then
@@ -1052,7 +1097,7 @@ AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsb
     else
 	AC_PATH_PROG(RNEWS, rnews,, $XPATH)
 	if test "x$RNEWS" = "x"; then
-	    AC_MSG_ERROR([rnews not found, re-run with valid --with-rnews=DIR])
+	    AC_MSG_ERROR([rnews not found])
 	fi
     fi
 
@@ -1062,7 +1107,7 @@ AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsb
     else
 	AC_PATH_PROG(INEWS, inews,, $XPATH)
 	if test "x$INEWS" = "x"; then
-	    AC_MSG_ERROR([inews not found, re-run with valid --with-inews=DIR])
+	    AC_MSG_ERROR([inews not found])
 	fi
     fi
 
@@ -1075,13 +1120,14 @@ AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsb
     fi
 
     if test "$with_news" != no ;then
-	if test "$with_owner" = news; then
+	if test "$with_owner" = news -a "x$with_rsf" != xno; then
 	    AC_DEFINE(USE_RUNINC_SFGT, 1,
 	        [Enable use send_fidogate function in runinc program])
 	fi
     fi
-}
-else
+])
+else # if test "$with_news" != no ;then
+    AC_MSG_NOTICE([Building without news support])
     BATCHER='time $RFC2FTN -f $BATCHFILE -m 500'
     RNEWS='/none/rnews'
     INEWS='/none/inews'
@@ -1116,7 +1162,7 @@ AC_MSG_CHECKING(for sendmail)
 if test "${with_sendmail+set}" = set ;then
 	SENDMAIL="$with_sendmail"
 else
-    XPATH="/usr/sbin:/usr/lib:/usr/ucblib:/usr/share"
+    XPATH="/sbin:/usr/sbin:/usr/lib:/usr/ucblib:/usr/share"
     AC_PATH_PROG(SENDMAIL, sendmail,, $XPATH)
     if test "x$SENDMAIL" = "x"; then
 	AC_MSG_ERROR([sendmail not found, re-run with valid --with-sendmail=DIR])
@@ -1128,7 +1174,7 @@ AC_MSG_CHECKING(for lock directory)
 if test "${with_lockdir+set}" = set; then
 	LOCKDIR="$with_lockdir"
 else
-	LOCKDIR="${runstatedir}/fidogate"
+	LOCKDIR="${localstatedir}/run/fidogate"
 fi
 AC_MSG_RESULT($LOCKDIR)
 AC_SUBST(LOCKDIR)
@@ -1165,9 +1211,19 @@ M4MAKE='$(M4) $(M4OPTIONS)'
 
 AC_SUBST(SUBSTCMD)
 AC_SUBST(M4MAKE)
-AC_DEFINE_UNQUOTED(GIT_HASH_STR,
+
+AC_ARG_ENABLE([extraversion],
+	AS_HELP_STRING([--disable-extraversion], [do not add GIT hash]))
+
+AS_IF([test "x$enable_extraversion" != "xno"], [
+
+  if test -d $srcdir/.git; then
+    AC_DEFINE_UNQUOTED(GIT_HASH_STR,
 	["`cd $srcdir && git log -1 --format=format:%h`"],
 	[A string containing the git hash])
+  fi
+
+])
 
 HOSTNAME=`hostname -s`
 DOMAINNAME=`hostname|sed -e "s/$HOSTNAME//"`
@@ -1181,28 +1237,5 @@ AC_CONFIG_COMMANDS([build_headers],[build/subst.pl -h])
 AC_CONFIG_FILES([build/config.make \
                  Makefile \
 		 src/Makefile \
-		 src/areafix/Makefile \
-		 src/charset/Makefile \
-		 src/common/Makefile \
-		 src/gate/Makefile \
-		 src/include/Makefile \
-		 src/tick/Makefile \
-		 src/toss/Makefile \
-		 src/util/Makefile \
-		 scripts/Makefile \
-		 scripts/areas/Makefile \
-		 scripts/maintenance/Makefile \
-		 scripts/misc/Makefile \
-		 scripts/nodelist/Makefile \
-		 scripts/outbound/Makefile \
-		 doc/Makefile \
-		 configs/Makefile \
-		 tests/Makefile \
-		 tests/common/Makefile \
-		 tests/areafix/Makefile \
-		 tests/charset/Makefile \
-		 tests/gate/Makefile \
-		 tests/tick/Makefile \
-		 tests/toss/Makefile \
-		 tests/utils/Makefile ])
+		 tests/Makefile ])
 AC_OUTPUT

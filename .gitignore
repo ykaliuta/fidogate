@@ -24,6 +24,7 @@ build/ylwrap
 build/mkinstalldirs
 build/missing
 build/test-driver
+build/ar-lib
 doc/examples/dyff/fidogate.conf.sample
 doc/examples/dyff/packing.sample
 doc/examples/point/fidogate.conf
