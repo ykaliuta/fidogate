@@ -65,6 +65,7 @@ ACLOCAL_AMFLAGS = -I m4
 EXTRA_DIST = build/config.rpath m4/ChangeLog
 EXTRA_DIST += build/rules.make build/subst.pl config.pl
 EXTRA_DIST += autogen.sh
+EXTRA_DIST += packages/rpm/fidogate.spec
 
 noinst_HEADERS = version.h
 

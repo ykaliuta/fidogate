@@ -1,0 +1,89 @@
+Summary: Fido-Internet Gateway and Fido Tosser
+Name: fidogate
+Version: @VERSION@
+Release: 1%{?dist}
+License: GPLv2+
+Group: Fidonet/Gate
+Source0: https://github.com/ykaliuta/fidogate/archive/%{name}-%{version}.tar.gz
+Source1: %{name}.service
+BuildRequires: autoconf automake
+
+%description
+FIDOGATE Version 5
+ * Fido-Internet Gateway
+ * Fido FTN-FTN Gateway
+ * Fido Mail Processor
+ * Fido File Processor
+ * Fido Areafix/Filefix
+
+%define user news
+
+%prep
+%setup -q -n %{name}-%{version}
+#%patch0 -p0
+./autogen.sh
+./configure 	--prefix=/usr \
+	--sysconfdir=%{_sysconfdir}/%{name} \
+	--libexecdir=%{_libexecdir}/%{name} \
+	--with-logdir=/var/log/%{name} \
+	--with-vardir=%{_sharedstatedir}/%{name} \
+	--with-spooldir=/var/spool/%{name} \
+	--with-btbasedir=/var/spool/ftn \
+	--with-newsbindir=%{_libexecdir}/news\
+	--with-owner=%{user} --with-group=news \
+	--with-sendmail=%{_sbindir}/sendmail \
+	--enable-dbc-history \
+	--disable-desc-dir \
+	--enable-aliases-local \
+	--disable-fecho-pass \
+	--enable-af-ansok \
+	--enable-afses \
+	--enable-pid2rd-tid2gtv \
+	--enable-sep-pkt \
+	--enable-best-aka \
+	--with-inndir=/usr \
+	--with-innetcdir=/etc/news \
+	--with-inndbdir=/var/lib/news \
+	--with-innspooldir=/var/spool/news \
+	--with-lockdir=%{_rundir}/%{name}
+
+%build
+make V=1 %{?_smp_mflags}
+
+%install
+make install DESTDIR=$RPM_BUILD_ROOT
+install -D -m 0644 %{SOURCE1} $RPM_BUILD_ROOT%{_unitdir}/%{name}.service
+
+%pre
+getent group news >/dev/null || groupadd -g 13 -r news
+getent passwd %{user} >/dev/null || \
+useradd -r  -g news -d /etc/%{name}  -c "Fidonet user" %{user}
+
+%post
+%systemd_post %{name}.service
+systemctl start %{name}
+
+%preun
+%systemd_preun %{name}.service
+
+%postun
+%systemd_postun_with_restart %{name}.service
+
+%files
+%doc COPYING TODO TODO.rus doc/README doc/FAQ.ru doc/README.ru
+
+%{_unitdir}
+
+%defattr(-,%{user},news,-)
+%{_bindir}/*
+%{_libexecdir}/*
+
+%defattr(0660,%{user},news,0770)
+%dir %{_sysconfdir}/%{name}
+%dir /var/log/%{name}
+%dir %{_sharedstatedir}/%{name}
+%dir %{_rundir}/%{name}
+/var/spool/ftn
+/var/spool/%{name}
+%config(noreplace) %{_sysconfdir}/%{name}/*
+%config(noreplace) %{_sharedstatedir}/%{name}/*

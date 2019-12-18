@@ -1,0 +1,11 @@
+Unit]
+Description=Fidogate runtime prepare
+
+[Service]
+Type=oneshot
+ExecStart=mkdir -p /run/fidogate
+ExecStart=chown ftn:news /run/fidogate
+ExecStart=chmod 770 /run/fidogate
+
+[Install]
+WantedBy=multi-user.target
