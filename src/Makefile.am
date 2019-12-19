@@ -110,7 +110,7 @@ CLEANFILES		+= $(CHARSET_GENERATED)
 
 EXTRA_DIST		+= $(CHARSET_GENERATED) \
 			   charset/charset.map \
-			   charset/russian.map
+			   charset/cyrillic.map
 
 $(CHARSET_GENERATED): charset/charsetc
 	$(AM_V_GEN)cd charset && \
