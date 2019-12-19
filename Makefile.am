@@ -154,8 +154,9 @@ dist_sysconf_DATA = configs/bounce.acl \
 		    configs/passwd.sample \
 		    configs/routing.sample \
 		    configs/spyes.sample \
-		    configs/uplinks.sample \
-		    $(generated)
+		    configs/uplinks.sample
+
+sysconf_DATA = $(generated)
 
 generated = configs/fidogate.conf.sample \
 	    configs/packing.sample
