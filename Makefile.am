@@ -64,6 +64,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 EXTRA_DIST = build/config.rpath m4/ChangeLog
 EXTRA_DIST += build/rules.make build/subst.pl config.pl
+EXTRA_DIST += autogen.sh
 
 noinst_HEADERS = version.h
 
