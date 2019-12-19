@@ -129,7 +129,8 @@ docs  =  doc/mailer/postfix/master.cf \
 subst_scripts        += $(docs)
 CLEANFILES           += $(docs)
 
-EXTRA_DIST += $(doc:=.in)
+EXTRA_DIST += $(docs:=.in)
+EXTRA_DIST += TODO.rus doc/README doc/README.ru doc/FAQ.ru
 
 all-am: $(docs)
 
