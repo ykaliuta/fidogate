@@ -143,6 +143,7 @@ dist_sysconf_DATA = configs/bounce.acl \
 		    configs/bounce.restricted \
 		    configs/acl.sample \
 		    configs/aliases.sample \
+		    configs/areas.sample \
 		    configs/areafix.help.sample \
 		    configs/areafix.help.rus \
 		    configs/fidokill.sample \
