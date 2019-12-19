@@ -2,7 +2,7 @@ dnl Copyright (c) 2003-2008 Andrey Slusar <anrays@gmail.com>
 dnl Copyright (c) 2003-2004 Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 dnl Copyright (c) 2015-2019 Yauheni Kaliuta <y.kaliuta@gmail.com>
 dnl
-AC_REVISION([Revision: 1025])
+AC_REVISION([Revision: 1026])
 AC_PREREQ(2.53)
 AC_INIT([fidogate],[5.5],[y.kaliuta@gmail.com])
 AC_DISABLE_OPTION_CHECKING
@@ -183,7 +183,7 @@ AC_SUBST(netmaildir)
 
 dnl# Check for a --with-newsbindir argument
 AC_ARG_WITH(newsbindir, dnl
-  --with-newsbindir=DIR		set INN bin directory for autodetect,
+  --with-newsbindir=DIR		set INN bin directory, PATHBIN,
 	    [dnl
 case "$with_newsbindir" in
 yes) AC_MSG_ERROR([--with-newsbindir requires an argument; use --with-newsbindir=DIR]) ;;
@@ -1025,7 +1025,10 @@ if test "$with_news" != no ;then
                  AC_MSG_ERROR([--with-inndir requires an argument; use --with-inndir=PATH])],
             [undefined], [PATHNEWS=""],
             [PATHNEWS="$with_inndir"
-             PATHBIN="$PATHNEWS/bin"
+	     AS_IF([test "$with_newsbindir" != "no"],
+	       [ PATHBIN=$with_newsbindir ],
+	       [ PATHBIN="$PATHNEWS/bin" ])
+	     NEWSLIBDIR=$PATHNEWS
              RNEWS="$PATHBIN/rnews"
              INEWS="$PATHBIN/inews"
             ])
@@ -1239,3 +1242,41 @@ AC_CONFIG_FILES([build/config.make \
 		 src/Makefile \
 		 tests/Makefile ])
 AC_OUTPUT
+
+# as template taken from kmod
+AC_MSG_RESULT([
+	$PACKAGE $VERSION
+	=======
+
+	prefix:			${prefix}
+	sysconfdir:		${sysconfdir}
+	libdir:			${libdir}
+	includedir:		${includedir}
+	bindir:			${bindir}
+	logdir:			${LOGDIR}
+	vardir:			${vardir}
+	lockdir:		${LOCKDIR}
+	spooldir:		${SPOOLDIR}
+	btbasedir:		${btbasedir}
+	netmaildir:		${netmaildir}
+
+	compiler:		${CC}
+	cflags:			${with_cflags} ${CFLAGS}
+	ldflags:		${with_ldflags} ${LDFLAGS}
+
+	sendmail:		${SENDMAIL}
+	owner:			${OWNER}
+	group:			${GROUP}
+
+	NEWS:
+	BATCHER:		$BATCHER
+	RNEWS:			$RNEWS
+	NEWSLIBDIR:		$NEWSLIBDIR
+	PATHOUTGOING:		$PATHOUTGOING
+	PATHARTICLES:		$PATHARTICLES
+	PATHNEWS:		$PATHNEWS
+	PATHBIN:		$PATHBIN
+	PATHETC:		$PATHETC
+	PATHDB:			$PATHDB
+	INEWS:			$INEWS
+])
