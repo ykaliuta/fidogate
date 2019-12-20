@@ -3,14 +3,13 @@ TOP_SRC = $(top_srcdir)/src
 AM_CPPFLAGS = -I$(TOP_SRC)/include
 AM_CPPFLAGS += -I$(TOP_SRC)/common
 
-noinst_PROGRAMS = cmp-pkt
+check_PROGRAMS = cmp-pkt
 cmp_pkt_SOURCES = cmp-pkt.c
 cmp_pkt_LDADD = $(top_srcdir)/src/common/libfidogate.a
 
-LDADD = -lcgreen
+LDADD = -lcgreen @LIBICONV@
 
 TESTS = $(TESTS_COMMON) $(TESTS_GATE)
-check_PROGRAMS = $(BINARIES_COMMON) $(BINARIES_GATE)
 
 # dependencies, fetched by xalloc.c + read.c and xstrnlen.c
 LIBFIDOGATE_MIN = $(top_srcdir)/src/common/xalloc.c \
@@ -40,6 +39,7 @@ LIBFIDOGATE_MIN = $(top_srcdir)/src/common/xalloc.c \
 BINARIES_COMMON = common/test_log common/test_config common/test_packet \
 		  common/test_mime common/test_charset
 TESTS_COMMON = $(BINARIES_COMMON)
+check_PROGRAMS += $(BINARIES_COMMON)
 
 common_test_log_SOURCES = common/test-log.c
 common_test_config_SOURCES = common/test-config.c
@@ -68,6 +68,7 @@ common_test_charset_SOURCES = common/test-charset.c \
 # gate
 AM_CPPFLAGS += -I$(TOP_SRC)/gate
 BINARIES_GATE = gate/test_rfc2ftn
+check_PROGRAMS += $(BINARIES_GATE)
 TESTS_GATE = $(BINARIES_GATE) gate/test_rfc2ftn.sh gate/test_ftn2rfc.sh
 
 gate_test_rfc2ftn_LDADD = $(TOP_SRC)/common/libfidogate.a
