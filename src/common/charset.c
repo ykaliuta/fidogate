@@ -509,12 +509,19 @@ void charset_free(void)
 #ifdef HAVE_ICONV
 static int _charset_recode_iconv(char *dst, size_t *dstlen,
 				 char *src, size_t *srclen,
-				 char *from, char *to)
+				 char *from, char *_to)
 {
     int rc;
     iconv_t desc;
+    size_t size;
+    char *to;
 
     debug(6, "Using ICONV");
+
+    size = strlen(_to) + sizeof("//TRANSLIT");
+    to = xmalloc(size);
+    sprintf(to, "%s//TRANSLIT", _to);
+
     desc = iconv_open(to, from);
     if(desc == (iconv_t)-1)
     {
@@ -552,6 +559,7 @@ static int _charset_recode_iconv(char *dst, size_t *dstlen,
 exit:
     *dst = '\0';
     iconv_close(desc);
+    free(to);
 
     return rc;
 }
