@@ -52,8 +52,6 @@ void    acl_do_file		(char *);
 void	acl_ngrp		(RFCAddr, int);
 int	acl_ngrp_lookup		(char *);
 int	pna_notify		(char *);
-void	list_init		(char ***, char *);
-int	list_match		(char **, char **);
 int	ftnacl_lookup		(Node *, Node *, char *);
 void	acl_ftn_free		(void);
 
@@ -435,6 +433,9 @@ char   *str_dosify		(char *);
 int    run_system		(char *);
 
 int    xfeof                    (FILE *);
+
+void	list_init		(char ***, char *);
+int	list_match		(char **, char **);
 
 /* msgid.c */
 char   *s_msgid_fido_to_rfc	(char *, int*, short, char*);
