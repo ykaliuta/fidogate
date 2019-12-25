@@ -580,6 +580,23 @@ void list_init( char ***argvp, char *list ) {
 
 
 /*
+ * Free the list, it's a bit more complicated than just free() call
+ */
+void list_free( char **argv) {
+
+    if( argv == NULL )
+	return;
+
+    /*
+     * In argify() the result of strlen() is saved in the first
+     * element, then elements point inside. And the pointers array
+     * itself.
+     */
+    xfree( ( void * )argv[0] );
+    xfree( ( void * )argv );
+}
+
+/*
 **  Match a list of newsgroup specifiers against a list of newsgroups.
 **  func is called to see if there is a match.
 */

@@ -436,6 +436,7 @@ int    xfeof                    (FILE *);
 
 void	list_init		(char ***, char *);
 int	list_match		(char **, char **);
+void	list_free		(char **);
 
 /* msgid.c */
 char   *s_msgid_fido_to_rfc	(char *, int*, short, char*);
