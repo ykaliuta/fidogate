@@ -930,8 +930,10 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    cs_in = cs_def;
 	if(!cs_out)
 	    cs_out = CHARSET_STDRFC;
+
+	cs_in = charset_fsc_canonize(cs_in);
 	charset_set_in_out(cs_in, cs_out);
-	/**FIXME: if ERROR is returned, use first matching alias for cs_in**/
+
 	addr_from = rfcaddr_from_ftn(msg.name_from, &msg.node_orig);
 	addr_to   = rfcaddr_from_ftn(msg.name_to,   &msg.node_to  );
 

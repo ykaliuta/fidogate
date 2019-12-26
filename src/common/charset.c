@@ -34,6 +34,11 @@
 
 
 
+/* New code reuses original structures */
+
+/* fidogate.conf aliases to canonical fsc charset name */
+static CharsetAlias *fsc_aliases;
+
 /*
  * Alias linked list
  */
@@ -348,6 +353,57 @@ void charset_set_in_out(char *in, char *out)
     return;
 }
 
+static void charset_fsc_aliases_add(char **list)
+{
+    char *name = *list++;
+    char *alias;
+    CharsetAlias *p;
+
+    for (alias = *list; alias; alias = *++list) {
+	p = xmalloc(sizeof(*p));
+	snprintf(p->name, sizeof(p->name), "%s", name);
+	snprintf(p->alias, sizeof(p->alias), "%s", alias);
+
+	p->next = fsc_aliases;
+	fsc_aliases = p;
+
+	debug(15, "Adding FSC alias %s -> %s\n", alias, name);
+    }
+}
+
+char *charset_fsc_canonize(char *chrs)
+{
+    CharsetAlias *p;
+
+    for (p = fsc_aliases; p; p = p->next) {
+	if (streq(chrs, p->alias))
+	    return p->name;
+    }
+    return chrs;
+}
+
+static void charset_fsc_aliases_init(void)
+{
+    int first = TRUE, next = FALSE;
+    char *p;
+    char **list = NULL;
+
+    for (p = cf_get_string("CharsetAliasesFSC", first);
+	 p;
+	 p = cf_get_string("CharsetAliasesFSC", next)) {
+
+	list_init(&list, p);
+
+	if (*list == NULL) {
+	    fglog("ERROR: CharsetAliasesFSC requires <name> <list>\n");
+	    continue;
+	}
+
+	charset_fsc_aliases_add(list);
+    }
+
+    list_free(list);
+}
 
 
 /*
@@ -362,6 +418,7 @@ void charset_init(void)
     }
 
     charset_table_used = NULL;
+    charset_fsc_aliases_init();
 }
 
 
@@ -489,6 +546,17 @@ int main(int argc, char *argv[])
     exit(EXIT_OK);}
 #endif /**TEST**/
 
+static void charset_fsc_aliases_free(void)
+{
+    CharsetAlias *pa, *pa1;
+
+    for(pa = fsc_aliases; pa; pa = pa1)
+    {
+	pa1 = pa->next;
+	free(pa);
+    }
+}
+
 void charset_free(void)
 {
     CharsetAlias *pa, *pa1;
@@ -504,6 +572,7 @@ void charset_free(void)
 	pt1=pt->next;
 	xfree(pt);
     }
+    charset_fsc_aliases_free();
 }
 
 #ifdef HAVE_ICONV
