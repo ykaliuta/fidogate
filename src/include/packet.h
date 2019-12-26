@@ -56,6 +56,7 @@ typedef struct
     int    rev_maj;			/* Revision major */
     char   passwd[PKT_MAXPASSWD+1];	/* Password */
     int    capword;			/* Capability word (== 1 fuer 2+) */
+    char   psd[4];                      /* Produc Specific Data */
 }
 Packet;
 

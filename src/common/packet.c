@@ -921,17 +921,11 @@ int pkt_put_string_padded(FILE *fp, char *s, int n)
     return ferror(fp);
 }
 
-
-
 /*
- * Write packet header to file. This function always writes a 2+
- * (FSC-0039) header.
+ * Fills non-user information in pkt header
  */
-int pkt_put_hdr(FILE *fp, Packet *pkt)
+void pkt_fill_hdr(Packet *pkt)
 {
-    struct tm *tm;
-    int swap;
-
     /*
      * Fill rest of Packet structure
      */
@@ -942,15 +936,19 @@ int pkt_put_hdr(FILE *fp, Packet *pkt)
     pkt->rev_min   = version_minor();
     pkt->rev_maj   = version_major();
     pkt->capword   = 0x0001;		/* Designates packet type 2+ */
-    swap           = 0x0100;		/* Byte swapped capability word */
-    tm = localtime(&pkt->time);
-    
-    if(verbose >= 3)
-	pkt_debug_hdr(stderr, pkt, "Writing ");
+    memcpy(pkt->psd, "XPKT", sizeof(pkt->psd)); /* Like SQUISH */
+}
 
-    /*
-     * Write the actual header
-     */
+int pkt_put_hdr_raw(FILE *fp, Packet *pkt)
+{
+    struct tm *tm;
+    int swap; 		/* Byte swapped capability word */
+    int i;
+
+    swap = (pkt->capword << 8) & 0xff00;
+    swap |= (pkt->capword >> 8) & 0x00ff;
+    tm = localtime(&pkt->time);
+
     pkt_put_int16        (fp, pkt->from.node);
     pkt_put_int16        (fp, pkt->to  .node);
     pkt_put_int16        (fp, tm->tm_year+1900);
@@ -977,7 +975,23 @@ int pkt_put_hdr(FILE *fp, Packet *pkt)
     pkt_put_int16        (fp, pkt->to  .zone);
     pkt_put_int16        (fp, pkt->from.point);
     pkt_put_int16        (fp, pkt->to  .point);
-    fputs                (    "XPKT", fp);	/* Like SQUISH */
+
+    for (i = 0; i < sizeof(pkt->psd); i++)
+	putc(pkt->psd[i], fp);
 
     return ferror(fp);
+}
+
+/*
+ * Write packet header to file. This function always writes a 2+
+ * (FSC-0039 / FSC-0048) header.
+ */
+int pkt_put_hdr(FILE *fp, Packet *pkt)
+{
+    pkt_fill_hdr(pkt);
+
+    if(verbose >= 3)
+	pkt_debug_hdr(stderr, pkt, "Writing ");
+
+    return pkt_put_hdr_raw(fp, pkt);
 }

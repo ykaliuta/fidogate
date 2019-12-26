@@ -522,6 +522,8 @@ int 	pkt_get_hdr		(FILE *, Packet *);
 void	pkt_debug_hdr		(FILE *, Packet *, char *);
 int	pkt_put_string_padded	(FILE *, char *, int);
 int	pkt_put_hdr		(FILE *, Packet *);
+int	pkt_put_hdr_raw		(FILE *, Packet *);
+void	pkt_fill_hdr		(Packet *);
 
 /* parsenode.c */
 int	znfp_get_number		(char **);
