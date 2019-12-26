@@ -176,6 +176,7 @@ void	charset_free		(void);
 int     charset_is_7bit         (char *buffer, size_t len);
 bool    charset_is_valid_utf8   (char *, size_t);
 char   *charset_fsc_canonize    (char *);
+char   *charset_name_rfc2ftn    (char *);
 
 /* config.c */
 void	cf_i_am_a_gateway_prog	(void);

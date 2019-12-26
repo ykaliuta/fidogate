@@ -38,6 +38,7 @@
 
 /* fidogate.conf aliases to canonical fsc charset name */
 static CharsetAlias *fsc_aliases;
+static CharsetAlias *charset_name_map;
 
 /*
  * Alias linked list
@@ -278,41 +279,6 @@ xlat_s(char *s1, char *s2)
     return NULL;
 }
 
-
-
-/*
- * Search alias
- */
-char *charset_alias_fsc(char *name)
-{
-    CharsetAlias *pa;
-
-    /* Search for aliases */
-    for(pa = charset_alias_list; pa; pa=pa->next)
-    {
-	if(strieq(pa->name, name))
-	    return pa->alias;
-    }
-
-    return name;
-}
-
-char *charset_alias_rfc(char *name)
-{
-    CharsetAlias *pa;
-
-    /* Search for aliases */
-    for(pa = charset_alias_list; pa; pa=pa->next)
-    {
-	if(strieq(pa->alias, name))
-	    return pa->name;
-    }
-
-    return name;
-}
-
-
-
 /*
  * Set character mapping table
  */
@@ -405,6 +371,56 @@ static void charset_fsc_aliases_init(void)
     list_free(list);
 }
 
+char *charset_name_rfc2ftn(char *chrs)
+{
+    CharsetAlias *p;
+
+    for (p = charset_name_map; p; p = p->next) {
+	if (streq(chrs, p->name))
+	    return p->alias;
+    }
+    return chrs;
+}
+
+static void charset_name_map_add(char **list)
+{
+    char *rfc = list[0];
+    char *fsc = list[1];
+    CharsetAlias *p;
+
+    p = xmalloc(sizeof(*p));
+    snprintf(p->name, sizeof(p->name), "%s", rfc);
+    snprintf(p->alias, sizeof(p->alias), "%s", fsc);
+
+    p->next = charset_name_map;
+    charset_name_map = p;
+
+    debug(15, "Adding charset name map %s -> %s\n", rfc, fsc);
+}
+
+static void charset_name_map_init(void)
+{
+    int first = TRUE, next = FALSE;
+    char *p;
+    char **list = NULL;
+
+    for (p = cf_get_string("CharsetNameMap", first);
+	 p;
+	 p = cf_get_string("CharsetNameMap", next)) {
+
+	list_init(&list, p);
+
+	if ((list[0] == NULL) || (list[1] == 0)) {
+	    fglog("ERROR: Syntax CharsetNameMap <RFC name> <FSC name>\n");
+	    continue;
+	}
+
+	charset_name_map_add(list);
+    }
+
+    list_free(list);
+}
+
 
 /*
  * Initialize charset mapping
@@ -419,6 +435,7 @@ void charset_init(void)
 
     charset_table_used = NULL;
     charset_fsc_aliases_init();
+    charset_name_map_init();
 }
 
 
@@ -557,6 +574,17 @@ static void charset_fsc_aliases_free(void)
     }
 }
 
+static void charset_name_map_free(void)
+{
+    CharsetAlias *pa, *pa1;
+
+    for(pa = charset_name_map; pa; pa = pa1)
+    {
+	pa1 = pa->next;
+	free(pa);
+    }
+}
+
 void charset_free(void)
 {
     CharsetAlias *pa, *pa1;
@@ -573,6 +601,7 @@ void charset_free(void)
 	xfree(pt);
     }
     charset_fsc_aliases_free();
+    charset_name_map_free();
 }
 
 #ifdef HAVE_ICONV

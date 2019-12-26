@@ -1160,7 +1160,7 @@ static void determine_charsets(Area *parea, char **in, char **out,
 {
     char *cs_in;
     char *cs_out = NULL;
-    char *cs_out_fsc, *cs_out_rfc;
+    char *cs_out_fsc;
     char *cs_save;
 
     cs_in = INTERNAL_CHARSET;
@@ -1183,12 +1183,10 @@ static void determine_charsets(Area *parea, char **in, char **out,
 	cs_out = default_charset_out;
     if(!cs_out || strieq(cs_in, CHARSET_STD7BIT))
 	cs_out = CHARSET_STD7BIT;
-    cs_out_rfc = charset_alias_rfc(cs_out);
-    cs_out_fsc = charset_alias_fsc(cs_out);
+    cs_out_fsc = charset_name_rfc2ftn(cs_out);
     str_upper(cs_out_fsc);
 
-    debug(6, "charset: msg RFC=%s FSC=%s",
-	  cs_out_rfc, cs_out_fsc);
+    debug(6, "charset: msg %s FSC=%s", cs_out, cs_out_fsc);
 
     *in = cs_in;
     *out = cs_out;
