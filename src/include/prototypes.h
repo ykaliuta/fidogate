@@ -639,6 +639,7 @@ void	tl_appendf		(Textlist *, char *, ...)
     __attribute__ ((format (printf, 2, 3)));
 void	tl_print		(Textlist *, FILE *);
 void	tl_print_x		(Textlist *, FILE *, char *);
+void	tl_print_xx		(Textlist *, FILE *, char *, char *);
 void	tl_clear		(Textlist *);
 long	tl_size			(Textlist *);
 void	tl_addtl		(Textlist *, Textlist *);

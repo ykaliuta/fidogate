@@ -197,23 +197,31 @@ void tl_print(Textlist *list, FILE *fp)
 
 
 
-/*
- * Output complete textlist with extra end-of-line
- */
-void tl_print_x(Textlist *list, FILE *fp, char *extra)
+void tl_print_xx(Textlist *list, FILE *fp, char *prefix, char *suffix)
 {
     Textline *p;
 
     for(p=list->first; p; p=p->next)
     {
+	if (prefix)
+	    fputs(prefix, fp);
+
 	fputs(p->line, fp);
-	fputs(extra  , fp);
+
+	if (suffix)
+	    fputs(suffix, fp);
     }
 
     return;
 }
 
-
+/*
+ * Output complete textlist with extra end-of-line
+ */
+void tl_print_x(Textlist *list, FILE *fp, char *extra)
+{
+    tl_print_xx(list, fp, NULL, extra);
+}
 
 /***** tl_size() --- Compute size of text in chain *********************/
 
