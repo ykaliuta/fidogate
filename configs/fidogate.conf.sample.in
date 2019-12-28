@@ -706,6 +706,12 @@ DefaultCharset	cp866:cp866:utf-8
 # Charset mapping for NetMail
 NetMailCharset	cp866:cp866:utf-8
 
+# Canonical name and the list of its aliases
+CharsetAliasesFSC CP866 CP-866 +7FIDO +7_FIDO FIDO7 FIDO_7
+
+# map RFC-2045 charset name to FSC-0054 one
+CharsetNameMap windows-1251 CP1251
+
 # If set and no matching in/out charset is found, ftn2rfc will use
 # the first charset translation pair from charset.map with
 # in charset = Fido ^ACHRS

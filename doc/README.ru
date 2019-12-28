@@ -1302,6 +1302,12 @@ DefaultCharset	cp866:cp866:utf-8
 # Кодировки по умолчанию для нетмейла.
 NetMailCharset	cp866:cp866:utf8
 
+# Каноническое название чарсета и алиасы к нему
+CharsetAliasesFSC CP866 CP-866 +7FIDO +7_FIDO FIDO7 FIDO_7
+
+# маппинг RFC-2045 названия чарсета в FSC-0054
+CharsetNameMap windows-1251 CP1251
+
 # Строка, добавляемая в "Path" сгейтованного из FTN RFC батча
 # (обычно это "not-for-mail").
 # Если назанчение этой переменной не понятно, то лучше не трогать.
