@@ -220,6 +220,7 @@ util_scripts		= util/pktmore
 EXTRA_DIST		+= $(util_scripts:=.in)
 
 bin_PROGRAMS		+= util/ftnfattach util/sumcrc util/ftnoutpkt util/pktdebug
+bin_PROGRAMS		+= util/ftngenpkt
 libexec_PROGRAMS	+= util/confval util/ftnflo
 bin_SCRIPTS		= $(util_scripts)
 
