@@ -1108,7 +1108,8 @@ int main(int argc, char **argv)
 
 	    if( (base = cf_out_get(0)) == NULL )
 	    {
-		fglog("$ERROR: can't open directory %s/%s", btbase, base);
+		fglog("$ERROR: can't find ASO outbound directory (%s/..)",
+		      btbase);
 		exit_free();
 		return EX_OSERR;
 	    }
