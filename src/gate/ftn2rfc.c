@@ -1690,8 +1690,6 @@ carbon:
 	    }
 	if(x_ftn_K)
 	{
-	    char *p2 = NULL;
-
 	    for(lines = 1; buffer[lines]; lines++)
 	    {
 		if(buffer[lines] == ':')
