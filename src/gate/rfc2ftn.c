@@ -1149,6 +1149,54 @@ int snd_mail(RFCAddr rfc_to, long size)
     return 0;
 }
 
+static char *get_chrs_header(void)
+{
+    char *p;
+    char *chrs = "CHRS:";
+
+    for (p = header_geth("X-FTN-Kludge", TRUE);
+	 p;
+	 p = header_geth("X-FTN-Kludge", FALSE))
+    {
+	if (strncmp(p, chrs, strlen(chrs)) == 0)
+	    return p;
+    }
+    return NULL;
+}
+
+static bool should_skip_kludge(char *p)
+{
+    /* Ugly */
+    char *chrs = "CHRS:";
+
+    if (strncmp(p, chrs, strlen(chrs)) == 0)
+	return true;
+    return false;
+}
+
+static char *get_charset_from_header(void)
+{
+    char *kludge;
+    char *p;
+    char *save;
+
+    kludge = get_chrs_header();
+    if (kludge == NULL)
+	return NULL;
+
+    /* 'CHRS:' */
+    p = strtok_r(kludge, " \t", &save);
+    if (p == NULL)
+	return NULL;
+
+    /* CHRS's content */
+    p = strtok_r(NULL, " \t", &save);
+    if (p == NULL)
+	return NULL;
+
+    return charset_chrs_name(p);
+}
+
 /*
  * determine input and output charsets.
  * Input charset will be used only for headers, since body is recoded
@@ -1164,8 +1212,9 @@ static void determine_charsets(Area *parea, char **in, char **out,
     char *cs_save;
 
     cs_in = INTERNAL_CHARSET;
+    cs_out = get_charset_from_header();
 
-    if(parea)					/* News */
+    if (!cs_out && parea)			/* News */
     {
 	if(parea->charset)
 	{
@@ -1175,7 +1224,8 @@ static void determine_charsets(Area *parea, char **in, char **out,
 	    cs_out = strtok(NULL, ":");
 	}
     }
-    else					/* Mail */
+
+    if (!cs_out && !parea)			/* Mail */
 	cs_out = netmail_charset_out;
 
     /* defaults */
@@ -1192,7 +1242,6 @@ static void determine_charsets(Area *parea, char **in, char **out,
     *out = cs_out;
     *out_fsc = cs_out_fsc;
 }
-
 
 int snd_message(Message *msg, Area *parea,
 		RFCAddr rfc_from, RFCAddr rfc_to, char *subj,
@@ -1531,6 +1580,9 @@ again:
 	 p2;
 	 p2 = header_geth("X-FTN-Kludge", FALSE) )
     {
+	if (should_skip_kludge(p2))
+	    continue;
+
 	p3 = xlat_s(p2, p3);
 	fprintf( sf, "\001%s\r\n", p3 );
     }
