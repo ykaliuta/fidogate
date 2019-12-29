@@ -927,11 +927,14 @@ dbcfetch(key)
 datum key;
 {
     datum out;
+    char *s;
 
     out = dbzfetch(key);
     if(out.dsize)
     {
-	fgets(buffer, sizeof(buffer), basef);
+	s = fgets(buffer, sizeof(buffer), basef);
+	if (s == NULL)
+	    fglog("$ERROR: could not read db entry");
 	out.dsize = 0;
 	out.dptr = buffer;
     }
