@@ -1251,7 +1251,7 @@ AC_MSG_RESULT([
 
 	prefix:			${prefix}
 	sysconfdir:		${sysconfdir}
-	libdir:			${libdir}
+	libexecdir:		${libexecdir}
 	includedir:		${includedir}
 	bindir:			${bindir}
 	logdir:			${LOGDIR}
