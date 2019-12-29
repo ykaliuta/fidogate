@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -155,11 +155,11 @@ char *get_from(Textlist *rfc, Textlist *kludge)
     Node dummy;
     char *q;
 #endif /* IGNORE_FROM_IF_REPLY */
-    
+
 #ifdef IGNORE_FROM_IF_REPLY
     if((p = rfcheader_get(rfc, "REPLYTO")));
     else if((p = rfcheader_get(rfc, "REPLYADDR")));
-    else 
+    else
 #endif /* IGNORE_FROM_IF_REPLY */
     p = rfcheader_get(rfc, "From");
 #ifndef IGNORE_FROM_IF_REPLY
@@ -174,27 +174,27 @@ char *get_from(Textlist *rfc, Textlist *kludge)
 	p = rfcheader_get(rfc, "UUCPFROM");
 #endif /* IGNORE_FROM_IF_REPLY */
     return p;
-}    
+}
 
 char *get_reply_to(Textlist *tl)
 {
     return rfcheader_get(tl, "Reply-To");
-}    
+}
 
 char *get_to(Textlist *tl)
 {
     return rfcheader_get(tl, "To");
-}    
+}
 
 char *get_cc(Textlist *tl)
 {
     return rfcheader_get(tl, "Cc");
-}    
+}
 
 char *get_bcc(Textlist *tl)
 {
     return rfcheader_get(tl, "Bcc");
-}    
+}
 
 char *get_subject(Textlist *tl)
 {
@@ -214,7 +214,7 @@ Area *news_msg(char *line, Node *to)
     Active *pg;
 #endif /* ACTIVE_LOOKUP */
     static Area area;
-    
+
 #ifdef ACTIVE_LOOKUP
     char exec_line[MAXPATH];
 #endif /* ACTIVE_LOOKUP */
@@ -222,7 +222,7 @@ Area *news_msg(char *line, Node *to)
     {
 	/* Message is FIDO EchoMail */
 	strip_crlf(line);
-	
+
 	for(p=line+strlen("AREA:"); *p && is_space(*p); p++);
 	debug(7, "FIDO Area: %s", p);
 	pa = areas_lookup(p, NULL, to);
@@ -298,7 +298,7 @@ int check_8bit(Textlist *tl)
 {
     Textline *pl;
     char *p;
-    
+
     for(pl=tl->first; pl; pl=pl->next)
 	for(p=pl->line; *p && *p!='\r'; p++)
 	    if(*p & 0x80)
@@ -391,7 +391,7 @@ static int sanitize_encoding(int enc)
 
     return MIME_DEFAULT;
 }
-	
+
 
 static char *encode_skip[] = {
     "Path:",
@@ -434,7 +434,7 @@ static int encode_header(Textline *tl, void *arg)
 
     xfree(tl->line);
     tl->line = tmpbuf;
-    
+
     return OK;
 }
 
@@ -614,7 +614,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
     char *carbon_group = NULL;
     int addr_is_restricted = FALSE;
     bool plain_headers = false;
-    
+
     /*
      * Initialize
      */
@@ -623,7 +623,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
     tl_init(&tbody);
     msg_body_init(&body);
     ret = OK;
-    
+
     /*
      * Read packet
      */
@@ -635,7 +635,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    fglog("WARNING: premature EOF reading input packet");
 	    return OK;
 	}
-	
+
 	fglog("ERROR: reading input packet");
 	return ERROR;
     }
@@ -651,7 +651,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	 */
 	msg.node_from = pkt->from;
 	msg.node_to   = pkt->to;
-	
+
 	if( pkt_get_msg_hdr(pkt_file, &msg) == ERROR )
 	{
 	    fglog("ERROR: reading input packet");
@@ -667,7 +667,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	/* Replace empty subject */
 	if (!*msg.subject)
 	    BUF_COPY(msg.subject, "(no subject)");
-	
+
 	/*
 	 * Read & parse message body
 	 */
@@ -699,7 +699,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    kludge_pt_intl(&body, &msg, FALSE);
 	    msg.node_orig = msg.node_from;
 	}
-	else 
+	else
 	{
 	    if(ftnacl_lookup(&msg.node_orig, NULL, body.area))
 	    {
@@ -736,7 +736,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    strip_crlf(pl->line);
 	for(pl=body.rfc.first; pl; pl=pl->next)
 	    strip_crlf(pl->line);
-	
+
 	/*
 	 * X-Split header line
 	 */
@@ -765,7 +765,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		tl_delete(&body.body, pl);
 	}
 
-	
+
 	/*
 	 * Check for mail or news.
 	 *
@@ -776,7 +776,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	{
 	    cvt8 = area->encoding;
 	    plain_headers = area->flags & AREA_HEADERS_PLAIN;
-	    
+
 	    /* Set AKA according to area's zone */
 	    cf_set_zone(area->zone);
 
@@ -800,7 +800,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		    area = ftn_junk_group_keys;
 		    area->area = p;
 		}
-		
+
 		area->group =  ftn_junk_group;
 	    }
 	}
@@ -816,9 +816,9 @@ int unpack(FILE *pkt_file, Packet *pkt)
                 cvt8 = MIME_B64;
 
 	    plain_headers = netmail_headers_plain;
-	    
+
 	    /* Set AKA according to sender's zone */
-	    cf_set_zone(msg.node_orig.zone!=-1 
+	    cf_set_zone(msg.node_orig.zone!=-1
 			? msg.node_orig.zone
 			: msg.node_from.zone  );
 	}
@@ -844,17 +844,17 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	 */
 	if ( mime->encoding )
 	{
-	    if(strieq(mime->encoding, "7bit")) 
+	    if(strieq(mime->encoding, "7bit"))
 		cvt8 = MIME_7BIT;
-	    if(strieq(mime->encoding, "8bit")) 
+	    if(strieq(mime->encoding, "8bit"))
 		cvt8 = MIME_8BIT;
-	    if(strieq(mime->encoding, "quoted-printable")) 
+	    if(strieq(mime->encoding, "quoted-printable"))
 		cvt8 = MIME_QP;
 	    if(strieq(mime->encoding, "base64"))
 		cvt8 = MIME_B64;
 	}
 	debug(5, "cvt8:%s", cvt8_to_str(cvt8));
-	
+
 	/*
 	 * Convert message body
 	 */
@@ -864,7 +864,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	cs_def  = NULL;
 	cs_in   = NULL;
 	cs_out  = NULL;
-	
+
 	if(area)				/* EchoMail -> News */
 	{
 	    if(area->charset)
@@ -887,10 +887,10 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    cs_def = CHARSET_STDFTN;
 	if(!cs_out)
 	    cs_out = default_charset_out;
-	
+
 	if(!ignore_chrs)
 	    cs_in = charset_from_kludge(&body);
-	
+
 	lines = 0;
 	for(pl=body.body.first; pl; pl=pl->next)
 	{
@@ -967,7 +967,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		continue;
 	    }
 	}
-	
+
 	/*
 	 * If -g flag is set for area and message seems to come from
 	 * another gateway, skip it.
@@ -984,7 +984,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		msg_body_clear(&body);
 		continue;
 	    }
-	
+
 	    /* GIGO */
 	    if( (p = kludge_get(&body.kludge, "PID", NULL)) &&
 		!strnicmp(p, "GIGO", 4)                       )
@@ -1043,7 +1043,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	{
 	    Alias *a;
 	    char *t;
-	    
+
 	    debug(7, "Checking for alias: %s",
 		  s_rfcaddr_to_asc(&addr_to, TRUE));
 	    /**FIXME: why _strict()?**/
@@ -1067,7 +1067,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		    }
 		    BUF_COPY5(mail_to, msg.name_to, " <", a->username, "@",
 			      a->userdom);
-			
+
 		    BUF_APPEND(mail_to, ">");
 		}
 		else
@@ -1165,7 +1165,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		continue;
 	    }
 
-	}	    
+	}
 
 	/*
 	 * Check for address in mail_to
@@ -1205,7 +1205,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	   !strchr(mail_to, '@') && !strchr(mail_to, '%') &&
 	   !strchr(mail_to, '!')			    )
 	{
-	    if(uucp_flag) 
+	    if(uucp_flag)
 	    {
 		/* Addressed to `UUCP' or `GATEWAY', but no To: line */
 		debug(1, "Message to `UUCP' or `GATEWAY' without To line");
@@ -1232,18 +1232,18 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	if(msgbody_rfc_from)
 	{
 	    RFCAddr rfc;
-	    
+
 	    rfc = rfcaddr_from_rfc(msgbody_rfc_from);
 	    if(!rfc.real[0])
 		BUF_COPY(rfc.real, addr_from.real);
-	    
+
 	    addr_from = rfc;
 	}
 	from_line = s_rfcaddr_to_asc(&addr_from, TRUE);
 
 	/* Construct Reply-To line */
 	reply_to_line = msgbody_rfc_reply_to;
-	
+
 	/* Construct string for To:/X-Comment-To: header line */
 	if(msgbody_rfc_to)
 	{
@@ -1264,7 +1264,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	/* Construct Cc/Bcc header lines */
 	cc_line  = msgbody_rfc_to ? msgbody_rfc_cc  : NULL;
 	bcc_line = msgbody_rfc_to ? msgbody_rfc_bcc : NULL;
-		
+
 	/* Construct Message-ID and References header lines */
 	id_line  = NULL;
 	ref_line = NULL;
@@ -1273,7 +1273,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    id_line = s_msgid_convert_origid(p);
 	else if( (p = kludge_get(&body.kludge, "Message-ID", NULL)) )
 	    id_line = s_msgid_convert_origid(p);
-	
+
 	if(gate_rfc_kludge && !id_line)
 	{
 	    if( (p = kludge_get(&body.kludge, "RFC-Message-ID", NULL)) )
@@ -1283,7 +1283,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	if(!id_line)
 	{
 	    int id_zone;
-	    
+
 	    if( (p = kludge_get(&body.kludge, "MSGID", NULL)) )
 	    {
 		if(!strncmp(p, "<NOMSGID_", 9))
@@ -1331,7 +1331,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    msg_body_clear(&body);
 	    continue;
 	}
-	
+
 	if( (p = kludge_get(&body.kludge, "ORIGREF", NULL)) )
 	    ref_line = s_msgid_convert_origid(p);
 	else
@@ -1344,7 +1344,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    if( (p = kludge_get(&body.kludge, "REPLY", NULL)) )
 		ref_line = s_msgid_fido_to_rfc(p, NULL, area!=NULL, ref_line);
 	}
-	
+
 	/* ^AGATEWAY */
 	gateway = kludge_get(&body.kludge, "GATEWAY", NULL);
 
@@ -1357,7 +1357,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	if(area==NULL)
 	{			/* Mail */
 	    fglog("MAIL: %s -> %s", from_line, to_line);
-	    
+
 	    tl_appendf(&theader,
 		       "From %s %s\n", s_rfcaddr_to_asc(&addr_from, FALSE),
 		       date(DATE_FROM, NULL) );
@@ -1401,7 +1401,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	}
 	if(reply_to_line)
 	    tl_appendf(&theader, "Reply-To: %s\n", reply_to_line);
-	
+
 	if(gate_rfc_kludge)
 	{
 	    if( (p = kludge_get(&body.kludge, "RFC-User-Agent", NULL)) )
@@ -1415,7 +1415,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 		tl_appendf(&theader, "X-NewsReader: %s\n", buffer);
 	    }
 	}
-	
+
 	if ( NULL == msgbody_rfc_subject )
 	{
 	    msg_xlate_line(buffer, sizeof(buffer), msg.subject, ignore_soft_cr);
@@ -1562,11 +1562,11 @@ carbon:
 	    while(is_blank(*p))
 		p++;
             if (strlen(p) == 0)
-#ifdef NOINSERT_ORGANIZATION 
+#ifdef NOINSERT_ORGANIZATION
             tl_appendf(&theader, "Organization: %s\n", "(none)" );
-#else /* NOINSERT_ORGANIZATION */ 
+#else /* NOINSERT_ORGANIZATION */
             tl_appendf(&theader, "Organization: %s\n", cf_p_organization() );
-#endif /* NOINSERT_ORGANIZATION */ 
+#endif /* NOINSERT_ORGANIZATION */
             else
             tl_appendf(&theader, "Organization: %s\n", p);
 	  }
@@ -1635,7 +1635,7 @@ carbon:
 	    }
 	}
 #endif /* X_FTN_FROM_ECHOMAIL */
-	
+
 	if(x_ftn_T  &&  body.tear)
 	{
 	 if (strncmp(body.tear, "--- ", 4))
@@ -1716,9 +1716,9 @@ carbon:
 	/* adds mime headers, recodes and encodes message */
 	ftn2rfc_finish_mime(&theader, &tbody, mime,
 			    cs_in, cs_out, cvt8, plain_headers);
-	
+
 	tl_appendf(&theader, "\n");
-	
+
 	/* Write header and message body to output file */
 	if(area)
 	{
@@ -1766,7 +1766,7 @@ carbon:
 	    xfree(cs_save);
     } /**while(type == MSG_TYPE)**/
 
-    if(mail_file('n')) 
+    if(mail_file('n'))
 	mail_close('n');
 
     TMPS_RETURN(ret);
@@ -1805,12 +1805,12 @@ int unpack_file(char *pkt_name)
 	    return OK;
 	}
     }
-    
+
     /* * Unpack it */
     fglog("packet %s (%ldb) from %s to %s", pkt_name, check_size(pkt_name),
 	znfp1(&pkt.from), znfp2(&pkt.to) );
-    
-    if(unpack(pkt_file, &pkt) == ERROR) 
+
+    if(unpack(pkt_file, &pkt) == ERROR)
     {
 	fglog("ERROR: processing %s", pkt_name);
 	if(n_flag)
@@ -1821,9 +1821,9 @@ int unpack_file(char *pkt_name)
 	    return OK;
 	}
     }
-    
+
     fclose(pkt_file);
-    
+
     if(!n_flag && unlink(pkt_name)==ERROR) {
 	fglog("$ERROR: can't unlink packet %s", pkt_name);
 	rename_bad(pkt_name);
@@ -1849,7 +1849,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] [packet ...]\n\n", PROGRAM);
     fprintf(stderr, "\
 options: -1 --single-articles         write single news articles, not batch\n\
@@ -1881,7 +1881,7 @@ int main(int argc, char **argv)
     char *a_flag=NULL, *u_flag=NULL;
     char *pkt_name;
     char *p;
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -1902,7 +1902,7 @@ int main(int argc, char **argv)
     };
 
     log_program(PROGRAM);
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -1974,7 +1974,7 @@ int main(int argc, char **argv)
 
     cf_i_am_a_gateway_prog();
     cf_debug();
-    
+
     /* Process local options */
     BUF_EXPAND(in_dir, I_flag ? I_flag : cf_p_pinbound());
 
@@ -2076,7 +2076,7 @@ int main(int argc, char **argv)
     {
 	int m = 0;
 
-	switch(*p) 
+	switch(*p)
 	{
 	case '(': case 'p': case '0':
 	    m = 0;				/* user@do.main (Real Name) */
@@ -2178,7 +2178,7 @@ int main(int argc, char **argv)
 	    tmps_freeall();
 	}
     }
-    
+
 
     /* Execute given command, if option -x set.  */
     if(execprog)
@@ -2192,10 +2192,10 @@ int main(int argc, char **argv)
 	if(retx != EXIT_OK)
 	    ret = EXIT_ERROR;
     }
-    
+
     if(l_flag)
 	unlock_program(PROGRAM);
-    
+
     exit_free();
     return ret;
 }
