@@ -813,13 +813,13 @@ void* subs(char *str,char *macro,char *expand) {
      char *newstr;
      pos = strstr(str,macro);
      if(!(newstr = malloc(strlen(str)+strlen(expand) - strlen(macro) + 1)))
-	  return NULL;
-     if(!strncpy(newstr,str,strlen(str)))
-	  return NULL;
-     if(!strncpy(newstr+(pos-str), expand, strlen(expand)))
-	  return NULL;
+	 return NULL;
+     if(!strcpy(newstr,str))
+	 return NULL;
+     if(!strcpy(newstr+(pos-str), expand))
+	 return NULL;
      if(!strcpy(newstr+(pos-str)+strlen(expand), pos + strlen(macro)))
-	  return NULL;
+	 return NULL;
      return newstr;
 }
 
