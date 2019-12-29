@@ -1277,7 +1277,10 @@ int snd_message(Message *msg, Area *parea,
     time_t time_split = -1;
     long seq          = 0;
     int rfc_level = default_rfc_level;
-    int x_flags_n=FALSE, x_flags_m=FALSE, x_flags_f=FALSE;
+    int x_flags_n=FALSE, x_flags_f=FALSE;
+#ifndef FIDO_STYLE_MSGID
+    int x_flags_m=FALSE;
+#endif
     char *cs_in, *cs_out;		/* Charset in(=RFC), out(=FTN) */
     char *cs_out_fsc;
     char *cs_enc = "8bit"; /* all converted to 8 bit now */
@@ -1290,7 +1293,9 @@ int snd_message(Message *msg, Area *parea,
      * X-Flags settings
      */
     x_flags_f = flags && strchr(flags, 'f');
+#ifndef FIDO_STYLE_MSGID
     x_flags_m = flags && strchr(flags, 'm');
+#endif
     x_flags_n = flags && strchr(flags, 'n');
 
     /*
