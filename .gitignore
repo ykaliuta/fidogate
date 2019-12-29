@@ -1,8 +1,15 @@
 *.o
 *.lo
 *.la
+*.tar.gz
 .deps
 .libs
+.dirstamp
+.gdb_history
+TAGS
+GPATH
+GRTAGS
+GTAGS
 Makefile
 Makefile.in
 libtool
@@ -25,12 +32,16 @@ build/mkinstalldirs
 build/missing
 build/test-driver
 build/ar-lib
+configs/fidogate.conf.sample
+configs/packing.sample
+debian/changelog
 doc/examples/dyff/fidogate.conf.sample
 doc/examples/dyff/packing.sample
 doc/examples/point/fidogate.conf
 doc/mailer/postfix/master.cf
 doc/mailer/sendmail/mailer/ftn.m4
 doc/news/leafnode/config.h
+packages/rpm/fidogate.spec
 scripts/areas/areasbbssync
 scripts/areas/areassucksync
 scripts/filebase/fb-chkfiles
@@ -41,6 +52,8 @@ scripts/maintenance/logreport
 scripts/maintenance/logsendmail
 scripts/maintenance/logstat
 scripts/maintenance/runchklock
+scripts/maintenance/fidogate.logrotate
+scripts/maintenance/rc.fidogate
 scripts/misc/hosts2dns
 scripts/misc/recvuu
 scripts/misc/senduu
@@ -68,6 +81,7 @@ src/areafix/ftnafmail
 src/areafix/ftnafpkt
 src/areafix/ftnafutil
 src/areafix/pkttmpl
+src/charset/charset.bin
 src/charset/charsetc
 src/common/cf_abbrev.c
 src/common/cf_abbrev.mak
@@ -75,7 +89,7 @@ src/common/cf_env.c
 src/common/cf_env.mak
 src/common/cf_funcs.c
 src/common/cf_funcs.mak
-src/common/libfidogate.la
+src/common/libfidogate.a
 src/common/parsedate.c
 src/gate/ftn2rfc
 src/gate/ftnin
@@ -107,5 +121,6 @@ src/util/ftnoutpkt
 src/util/pktdebug
 src/util/pktmore
 src/util/sumcrc
+src/util/ftngenpkt
 stamp-h1.in
 stamp-h1
