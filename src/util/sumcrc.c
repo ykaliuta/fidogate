@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -62,7 +62,7 @@ int do_sumcrc32(char *name)
 {
     FILE *fp;
     int c;
-    
+
     fp = fopen(name, R_MODE);
     if(fp == NULL)
     {
@@ -81,7 +81,7 @@ int do_sumcrc32(char *name)
 	    fprintf(stderr, "%s: can't read from %s\n", PROGRAM, name);
 	    return ERROR;
 	}
-    }	
+    }
 
     crc32_init();
     crc16_init();
@@ -106,7 +106,7 @@ int do_sumcrc32(char *name)
     if(v_flag)
 	printf(" %s", name);
     printf("\n");
-    
+
     return OK;
 }
 
@@ -126,7 +126,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] file ...\n\n", PROGRAM);
     fprintf(stderr, "\
 options:  -1 --skip-first-line         skip first line in text file\n\
@@ -147,7 +147,7 @@ int main(int argc, char **argv)
 {
     int c;
     int ret;
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -162,7 +162,7 @@ int main(int argc, char **argv)
 	{ 0,              0, 0, 0  }
     };
 
-    
+
     while ((c = getopt_long(argc, argv, "1zxvh36",
 			    long_options, &option_index     )) != EOF)
 	switch (c) {
@@ -181,7 +181,7 @@ int main(int argc, char **argv)
 	case '6':
 	    crc16_flag = TRUE;
 	    break;
-	    
+
 	/***** Common options *****/
 	case 'v':
 	    v_flag = TRUE;
@@ -200,12 +200,12 @@ int main(int argc, char **argv)
 	short_usage();
 	return EX_USAGE;
     }
-    
+
     /* Files */
     ret = 0;
     for(; optind<argc; optind++)
 	if( do_sumcrc32(argv[optind]) == ERROR )
 	    ret = 1;
-    
+
     return ret;
 }

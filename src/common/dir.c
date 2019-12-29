@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -72,13 +72,13 @@ static void dir_resize(int new)
     int i;
 
     old = dir_array;
-    
+
     dir_array = (DirEntry *)xmalloc(new * sizeof(DirEntry));
-    
+
     /* Copy old entries */
     for(i=0; i<dir_narray; i++)
 	dir_array[i] = old[i];
-    
+
     /* Init new entries */
     for(; i<new; i++)
     {
@@ -88,7 +88,7 @@ static void dir_resize(int new)
     }
 
     xfree(old);
-    
+
     dir_narray = new;
 }
 
@@ -101,10 +101,10 @@ int dir_compare(const void *pa, const void *pb)
 {
     DirEntry *a, *b;
     int ret;
-    
+
     a = (DirEntry *)pa;
     b = (DirEntry *)pb;
-    
+
     switch(dir_smode)
     {
     case DIR_SORTNAME:
@@ -146,18 +146,18 @@ int dir_open(char *dirname, char *pattern, int ic)
 
     if(dir_array)
 	dir_close();
-    
+
     /* Open and read directory */
     if( ! (dp = opendir(name)) )
 	return ERROR;
 
     dir_resize(DIR_INITSIZE);
-    
+
     while((dir = readdir(dp)))
 	if(pattern==NULL || wildmatch(dir->d_name, pattern, ic))
 	{
 	    BUF_COPY3(buf, name, "/", dir->d_name);
-	    
+
 	    if(stat(buf, &st) == ERROR)
 	    {
 		dir_close();
@@ -172,12 +172,12 @@ int dir_open(char *dirname, char *pattern, int ic)
 
 	    dir_nentry++;
 	}
-    
+
     closedir(dp);
 
     /* Sort it */
     qsort(dir_array, dir_nentry, sizeof(DirEntry), dir_compare);
-    
+
     return OK;
 }
 
@@ -189,12 +189,12 @@ int dir_open(char *dirname, char *pattern, int ic)
 void dir_close(void)
 {
     int i;
-    
+
     for(i=0; i<dir_nentry; i++)
 	xfree(dir_array[i].name);
-    
+
     xfree(dir_array);
-    
+
     dir_array  = NULL;
     dir_narray = 0;
     dir_nentry = 0;
@@ -218,13 +218,13 @@ void dir_sortmode(int mode)
 char *dir_get(int first)
 {
     static int index = 0;
-    
+
     if(first)
 	index = 0;
-    
+
     if(index < dir_nentry)
 	return dir_array[index++].name;
-    
+
     return NULL;
 }
 
@@ -232,7 +232,7 @@ char *dir_get(int first)
 char *dir_get_mtime(time_t mtime, char first)
 {
     static int index = 0;
-    
+
     if(first)
 	index = 0;
     else
@@ -268,7 +268,7 @@ char *dir_search(char *dirname, char *filename)
 	    closedir(dp);
 	    return filename;
 	}
-    
+
     closedir(dp);
     return NULL;
 }
@@ -286,7 +286,7 @@ int mkdir_r(char *dir, mode_t mode)
 	return OK;
     if ( errno == EEXIST)
 	return OK;
-    
+
     p = dir;
     n = strlen(dir);
 
@@ -299,7 +299,7 @@ int mkdir_r(char *dir, mode_t mode)
 	{
 	    if(*p != '/')
 		tmp[i] = *p;
-	    else 
+	    else
 		break;
 	    p++;
 	    i++;
@@ -336,14 +336,14 @@ int main(int argc, char *argv[])
 	for(n=dir_get(TRUE); n; n=dir_get(FALSE))
 	    printf(" %s\n", n);
 	printf("\n");
-	
+
 	printf("%s (size):\n", argv[1]);
 	dir_sortmode(DIR_SORTSIZE);
 	dir_open(argv[1], NULL, FALSE);
 	for(n=dir_get(TRUE); n; n=dir_get(FALSE))
 	    printf(" %s\n", n);
 	printf("\n");
-	
+
 	printf("%s (*.pkt, mtime):\n", argv[1]);
 	dir_sortmode(DIR_SORTMTIME);
 	dir_open(argv[1], "*.pkt", TRUE);
@@ -351,7 +351,7 @@ int main(int argc, char *argv[])
 	    printf(" %s\n", n);
 	printf("\n");
     }
-    
+
     return 0;
 }
 

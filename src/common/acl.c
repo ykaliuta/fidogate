@@ -37,7 +37,7 @@ static char   gate_type         = RFC2FTN;
 static Acl *acl_parse_line( char *buf ) {
     Acl *p;
     char *f, *n;
-	
+
     p = NULL;
     f = strtok( buf, " \t" );	/* E-Mail address pattern */
 
@@ -55,13 +55,13 @@ static Acl *acl_parse_line( char *buf ) {
     else
     {
         n = strtok( NULL, " \t" );	/* Newsgroup pattern */
-    
+
         if( n == NULL );
 	else if( strieq(f, "include") )
 	    acl_do_file(n);
         else if( strieq(f, "PostingNotAllowedNotify") )
 	    pna_notify_init(n);
-        else {    
+        else {
             p = (Acl*)xmalloc(sizeof(Acl));
             p->next      = NULL;
             p->type      = acl_type;
@@ -84,7 +84,7 @@ void acl_do_file( char *name ) {
     Acl *p;
 
     debug( 14, "Reading ACL file %s", name );
-    
+
     fp = fopen_expand_name( name, R_MODE_T, FALSE );
     if( fp ) {
 
@@ -110,18 +110,18 @@ char *acl_lookup( char *email, int type ) {
 
     Acl  *p;
     char *ngrp = NULL;
-    
+
     for( p = acl_list; p; p = p->next ) {
 
 	if( p->gate == RFC2FTN &&
 	    wildmat( email, p->email_pat ) &&
 	    p->type == type )
-	    
+
 	    ngrp = p->ngrp_pat;
     }
-    
+
     debug( 7, "acl_lookup(): From=%s, ngrp=%s", email, ngrp );
-    
+
     return ngrp;
 }
 
@@ -174,7 +174,7 @@ int ftnacl_lookup( Node *node_from, Node *node_to, char *echo ) {
 	node2 = znfp1( node_to );
     }
     node1 = znfp2( node_from );
-    
+
     for( p = acl_list; p; p = p->next ) {
 
 	if( p->gate == FTN2RFC &&

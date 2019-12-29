@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -43,7 +43,7 @@
 
 #define PKT_MAXPASSWD	8
 
-typedef struct 
+typedef struct
 {
     Node   from;			/* Originating node address */
     Node   to;				/* Destination node address */
@@ -94,7 +94,7 @@ Packet;
 
 #define MSG_MASK	0x7413			/* attr AND before packeting */
 
-typedef struct 
+typedef struct
 {
     Node node_from, node_to;			/* FTN address from, to */
     Node node_orig;				/* FTN address sender */

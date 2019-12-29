@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -90,7 +90,7 @@ int do_mail(Node *node, char *area, char *s, AreaUplink *upl)
 
     if(!upl || !upl->password)
     {
-	fglog("ERROR: no uplink password for %s, can't send request", 
+	fglog("ERROR: no uplink password for %s, can't send request",
 	    znfp1(node));
 	return ERROR;
     }
@@ -107,7 +107,7 @@ int do_mail(Node *node, char *area, char *s, AreaUplink *upl)
 
     tl_appendf(&req, "%s,%s,%s,%s,%s%s",
 	        znfp1(node),
-		to, 
+		to,
 		fix_name ? fix_name : areafix_name(),
 		upl->password,
 		s, area);
@@ -168,10 +168,10 @@ int do_mail_notify(Node *node, char *area, char *s, int days)
 		"You are unsubscribed from area %s\r\n"
 		"    Reason: %s %i day(s)",
 	        znfp1(node),
-		to, 
+		to,
 		fix_name ? fix_name : areafix_name(),
 		area, s, days);
- 
+
  return TRUE;
 }
 
@@ -199,7 +199,7 @@ int do_areasbbs(int cmd)
     int flag;
     LNode *l;
     char *blank_line = "";
-    
+
     pl = NULL;
     p  = areasbbs_first();
     while(p)
@@ -208,10 +208,10 @@ int do_areasbbs(int cmd)
 	uplink = lon->first ? &lon->first->node : NULL;
 	n      = lon->size - 1;
 	state  = p->state ? p->state : blank_line;
-	
+
 	debug(3, "processing area %s: state=%s uplink=%s #dl=%d",
 	      p->area, state, uplink ? znfp1(uplink) : "(none)", n   );
-	
+
 	flag = FALSE;
 	switch(cmd)
 	{
@@ -219,7 +219,7 @@ int do_areasbbs(int cmd)
 	    if(!uplink || areasbbs_isstate(state, 'U') )
 	    {
 		fglog("area %s: no uplink or unsubscribe, deleting", p->area);
-		if(!n_flag) 
+		if(!n_flag)
 		{
 		    areasbbs_remove(p, pl);
 		    areafix_set_changed();
@@ -228,7 +228,7 @@ int do_areasbbs(int cmd)
 		}
 	    }
 	    break;
-	    
+
 	case DO_LISTGWLINKS:
 	    n = lon->size;
 	    cf_set_zone(p->zone);
@@ -398,13 +398,13 @@ int do_areasbbs(int cmd)
     	    printf("area %s, state = %s, zone %d, %s",
 			    p->area, state, p->zone, p->time ? ctime(&p->time): "time_none\n");
 	    break;
-	    
+
 	default:
 	    return ERROR;
 	    /**NOT REACHED**/
 	    break;
 	}
-	
+
 	/* Next */
 	if ( !flag )
 	    pl = p;
@@ -454,7 +454,7 @@ int do_cmd(char *cmd[])
 	    return ERROR;
 	}
     }
-    
+
     return OK;
 }
 
@@ -474,7 +474,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] command ...\n\n", PROGRAM);
     fprintf(stderr, "\
 options: -n --noaction                don't really do anything ;-)\n\
@@ -512,7 +512,7 @@ int main(int argc, char **argv)
     int w_flag = FALSE;
     char *p;
     char bbslock[MAXPATH];
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -531,7 +531,7 @@ int main(int argc, char **argv)
     };
 
     log_program(PROGRAM);
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -552,7 +552,7 @@ int main(int argc, char **argv)
 	case 'O':
 	    O_flag = optarg;
 	    break;
-	    
+
 	/***** Common options *****/
 	case 'v':
 	    verbose++;
@@ -632,7 +632,7 @@ int main(int argc, char **argv)
     tl_init(&req);
 
     ret = 0;
-    
+
     /*
      * Process command on command line
      */
@@ -658,7 +658,7 @@ int main(int argc, char **argv)
     if(do_cmd(argv+optind) == ERROR)
 	ret = EX_DATAERR;
 
-    
+
     if(req.n > 0)
 	send_request(&req);
 

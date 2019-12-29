@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -73,7 +73,7 @@ int check_stale_lock(char *name)
 
     if(kill(pid, 0) == 0 || errno == EPERM)
 	 return LOCKFILE_LOCKED;
-    
+
     fglog("$WARNING: stale lock file %s (pid = %d) found", name, pid);
     if (unlink(name) != 0)
     {
@@ -93,18 +93,18 @@ int lock_fd(int fd)
 #else
     struct flock fl;
     int err;
-    
+
     fl.l_type   = F_WRLCK;
     fl.l_whence = SEEK_SET;
     fl.l_start  = 0;
     fl.l_len    = 0;
-    
+
     do
     {
 	err = fcntl(fd, F_SETLKW, &fl);
     }
     while(err == EINTR);
-    
+
     return err;
 #endif
 }
@@ -121,18 +121,18 @@ int unlock_fd(int fd)
 #else
     struct flock fl;
     int err;
-    
+
     fl.l_type   = F_UNLCK;
     fl.l_whence = SEEK_SET;
     fl.l_start  = 0;
     fl.l_len    = 0;
-    
+
     do
     {
 	err = fcntl(fd, F_SETLKW, &fl);
     }
     while(err == EINTR);
-    
+
     return err;
 #endif
 }
@@ -170,7 +170,7 @@ int lock_lockfile_nfs(char *name, int wait, char *id)
     int success;
     FILE *fp;
     struct stat st;
-    
+
     BUF_COPY(uniq_name, name);
     str_printf(uniq_name+strlen(uniq_name),
 	       sizeof(uniq_name)-strlen(uniq_name),
@@ -204,7 +204,7 @@ int lock_lockfile_nfs(char *name, int wait, char *id)
 	fclose(fp);
     }
     close(uniq_fd);
-    
+
     /* try to link to actual lock file */
     do
     {
@@ -269,7 +269,7 @@ int lock_lockfile_nfs(char *name, int wait, char *id)
 int unlock_lockfile_nfs(char *name)
 {
     int ret = OK;
-    
+
     if( unlink(name) == ERROR )
     {
 	fglog("$WARNING: removing lock %s failed", name);
@@ -291,10 +291,10 @@ int lock_lockfile(char *name, int wait)
     FILE *fp = NULL;
     short int wait_time = FALSE;
     short int exists_lock = FALSE;
-    
+
     if (wait && wait != WAIT)
 	wait_time = TRUE;
-    
+
     /* Create lock file */
     debug(7, "Creating lock file %s ...", name);
     do
@@ -317,7 +317,7 @@ int lock_lockfile(char *name, int wait)
 	 default:
 	      return ERROR;
 	 }
-	 
+
 	if(wait > 0)
 	{
 	    if(wait_time)
@@ -342,7 +342,7 @@ int lock_lockfile(char *name, int wait)
 int unlock_lockfile(char *name)
 {
     int ret;
-    
+
     ret = unlink(name);
     debug(7, "Deleting lock file %s %s.",
 	  name, ret==-1 ? "failed" : "succeeded");
@@ -375,7 +375,7 @@ int lock_program(char *name, int wait)
 int unlock_program(char *name)
 {
     char buf[MAXPATH];
-    
+
     BUF_COPY3(buf, cf_p_lockdir(), "/", name);
 
 #ifdef NFS_SAFE_LOCK_FILES
@@ -424,7 +424,7 @@ int main(int argc, char *argv[])
     char *file;
     FILE *fp;
     int c;
-    
+
     if(argc < 2)
     {
 	fprintf(stderr, "usage: lock.c-TEST file\n");
@@ -437,7 +437,7 @@ int main(int argc, char *argv[])
 	fprintf(stderr, "lock.c-TEST: can't open %s: ", file);
 	perror("");
 	exit(1);
-    }    
+    }
 
     printf("Locking %s ...\n", file);
     if(lock_file(fp))
@@ -445,7 +445,7 @@ int main(int argc, char *argv[])
 	fprintf(stderr, "lock.c-TEST: can't lock %s: ", file);
 	perror("");
 	exit(1);
-    }    
+    }
     printf("%s locked.\n", file);
 
     printf("Press <Return> ..."); fflush(stdout);
@@ -457,7 +457,7 @@ int main(int argc, char *argv[])
 	fprintf(stderr, "lock.c-TEST: can't unlock %s: ", file);
 	perror("");
 	exit(1);
-    }    
+    }
     printf("%s unlocked.\n", file);
 
     exit(0);

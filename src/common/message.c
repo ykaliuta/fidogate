@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -56,20 +56,20 @@ int pkt_get_line(FILE *fp, char *buf, int size)
     int c, c1, c2;
     char read_lf=FALSE;
     long pos;
-    
+
     p = buf;
 
     while (size > 3)			/* Room for current + 2 extra chars */
     {
 	c = getc(fp);
-	
+
 	if(read_lf && c!='\n')		/* No more LFs, this is end of line */
 	{
 	    ungetc(c, fp);
 	    *p = 0;
 	    return 1;
 	}
-	   
+
 	switch(c)
 	{
 	case EOF:			/* premature EOF */
@@ -85,7 +85,7 @@ int pkt_get_line(FILE *fp, char *buf, int size)
 		if(c1==2)
 		{
 		    *p = 0;
-		    return MSG_TYPE;		
+		    return MSG_TYPE;
 		}
 		if(c1==0)		/* end of packet */
 		{
@@ -111,7 +111,7 @@ int pkt_get_line(FILE *fp, char *buf, int size)
 	    }
 	    continue;
 	    break;
-	    
+
 #if 1 /***** Work around for a SQUISH bug **********************************/
 	case 2:	    			/* May be grunged packet: start of */
 	    c1 = getc(fp);		/* new message                     */
@@ -128,13 +128,13 @@ int pkt_get_line(FILE *fp, char *buf, int size)
 	    size--;
 	    size--;
 	    break;
-	    
+
 #endif /********************************************************************/
 
 	case '\r':			/* End of line */
 	    read_lf = TRUE;
 	    /**fall thru**/
-		
+
 	default:
 	    *p++ = c;
 	    size--;
@@ -174,7 +174,7 @@ int pkt_get_body(FILE *fp, Textlist *tl)
 
 	tl_append(tl, buffer);
     }
-    
+
     return type;
 }
 
@@ -331,7 +331,7 @@ static int msg_body_parse_echomail(MsgBody *body)
     }
     if(body->tear==NULL || body->origin==NULL)
 	return -1;
-    
+
     return OK;
 }
 
@@ -357,7 +357,7 @@ static int msg_body_parse_netmail(MsgBody *body)
 	p = p->prev;
     /* Move back */
     p = p ? p->next : body->body.first;
-    
+
     /*
      * Copy to MsgBody
      */
@@ -429,11 +429,11 @@ int msg_body_parse(Textlist *text, MsgBody *body)
     Textline *p, *pn;
     int i;
     int look_for_AREA;
-    
+
     msg_body_clear(body);
-    
+
     p = text->first;
-    
+
     /*
      * 1st, look for ^A kludges and AREA: line
      */
@@ -585,7 +585,7 @@ short int pkt_get_body_parse(FILE *fp, MsgBody *body, Node *from, Node *to)
 		fglog("ERROR: no found HI kludge in message");
 		return ERROR;
 	    }
-		
+
 	}
 	if(do_flag == PARSE_BLANK)
 	{
@@ -868,7 +868,7 @@ int msg_put_msgbody(FILE *fp, MsgBody *body)
     tl_fput     (fp, &body->via   );
 
     putc(0, fp);			/* Terminating 0-byte */
-    
+
     return ferror(fp);
 }
 
@@ -887,7 +887,7 @@ char *msg_xlate_line(char *buf, int n, char *line, int ignore_soft_cr)
     for(s=line, p=buf; *s; s++)
     {
 	c = *s & 0xff;
-	
+
 	/*
 	 * Special chars require special treatment ...
 	 */
@@ -914,7 +914,7 @@ char *msg_xlate_line(char *buf, int n, char *line, int ignore_soft_cr)
     }
 
     *p = 0;
-    
+
     return OK;
 }
 
@@ -933,7 +933,7 @@ int msg_parse_origin(char *buffer, Node *node)
 
     if(buffer == NULL)
 	return ERROR;
-    
+
     buf   = strsave(buffer);
     right = strrchr(buf, ')');
     if(!right) {

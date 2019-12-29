@@ -8,7 +8,7 @@
  *
  *****************************************************************************
  * Copyright (C) 2001
- * 
+ *
  *    Dmitry Fedotov            FIDO:      2:5030/1229
  *				Internet:  dyff@users.sourceforge.net
  *
@@ -23,7 +23,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -129,7 +129,7 @@ void unpack(char *inb)
 	/* Is it DOS 8-3 file */
 	if(strlen(dir->d_name) == 12 && dir->d_name[8] == '.')
 	{
-	    
+
 	    BUF_COPY(type, &dir->d_name[9]);
 	    str_lower(type);
 
@@ -157,13 +157,13 @@ void unpack(char *inb)
 		    unpacking_init(cf_p_packing());
 		    unpack_init = TRUE;
 		}
-		    
+
 		BUF_COPY3(archive, inb, "/", dir->d_name);
 		a = arch_type(archive);
 
 		if(!a)
 		{
-		    fglog("unknown archive %s, moving archive to %s/bad", 
+		    fglog("unknown archive %s, moving archive to %s/bad",
 			    dir->d_name, inb);
 		    move(archive, inb, "/bad/", dir->d_name);
 		    continue;
@@ -189,7 +189,7 @@ void unpack(char *inb)
     dir_close();
     if(!unpack_flag)
 	return;
-    
+
     BUF_COPY2(buffer, inb, "/tmpunpack");
     if( ! (dp = opendir(buffer)) )
 	return;
@@ -219,7 +219,7 @@ Unpacking *arch_type( char *name)
     char s[10];
     Unpacking *p;
     char *ret;
-    
+
     /* Reading chars from archive */
     if( (fp = fopen(name, "r")) )
     {
@@ -302,7 +302,7 @@ int run_unpack(char *cmd_list, char *cmd_unarc, char *archive, char *type)
 		    pclose(fp);
 		    return FALSE;
 		}
-	    }	
+	    }
 
 	}
     }
@@ -384,7 +384,7 @@ Unpacking *unpacking_parse_line(char *buf1)
 	    }
 	    else
 		(r->iden)[i] = *f;
-	    
+
 	    f++;
 	    i++;
 	}
@@ -424,7 +424,7 @@ void unpacking_init(char *name)
 
 	if(!r)
 	    continue;
-	
+
 	/* Put into linked list */
 	if(unpacking_first)
 	    unpacking_last->next = r;
@@ -471,7 +471,7 @@ int toss_init(void)
     char *spool = cf_p_spooldir();
     char pathbuffer[MAXPATH];
     unsigned short i;
-    
+
     toss[0].name = "pin";
     BUF_EXPAND(pathbuffer, cf_p_pinbound());
     toss[0].inbound = strsave(pathbuffer);
@@ -501,21 +501,21 @@ int toss_init(void)
     toss[3].fadir = NULL;
     toss[3].grade = "-gm";
     toss[3].flags = "-n -t -p";
-    
+
     toss[4].name = "outpkt/news";
     BUF_COPY3(buffer, spool, "/", toss[4].name);
     toss[4].inbound = strsave(buffer);
     toss[4].fadir = NULL;
     toss[4].grade = "-gn";
     toss[4].flags = "-n -t -p";
-    
+
     toss[5].name = "uuin";
     BUF_COPY3(buffer, spool, "/", toss[5].name);
     toss[5].inbound = strsave(buffer);
     toss[5].fadir = NULL;
     toss[5].grade = "-gu";
     toss[5].flags = "-s";
-    
+
     toss[6].name = "ftpin";
     BUF_COPY3(buffer, spool, "/", toss[6].name);
     toss[6].inbound = strsave(buffer);
@@ -570,14 +570,14 @@ void run_toss(Runtoss *a)
 	minfree = atoi(p) * 1024;
     else if( (p = cf_get_string("MinDiskFree", TRUE)) )
 	minfree = atoi(p) * 1024;
-    else 
+    else
 	minfree = 1048576;
     debug(8, "DiskFreeMin %d", minfree);
-    
+
     /* Calculate free memore size and number inodes */
 
 #ifndef NO_FS
-#ifdef VFS 
+#ifdef VFS
     if(statfs(a->inbound, &drive) && (minfree < drive.f_bavail * drive.f_bsize) &&
 #else
     if(statvfs(a->inbound, &drive) && (minfree < drive.f_bavail * drive.f_bsize) &&
@@ -595,7 +595,7 @@ void run_toss(Runtoss *a)
 	      fglog("ERROR: can't subs macros");
 	      return;
 	 }
-	 
+
 	if( !(fp = popen(str, R_MODE)) )
 	{
 	    fglog("ERROR: can't open pipe");
@@ -664,7 +664,7 @@ void send_fidogate(void)
     char batch[30];
 #ifdef OLD_BATCHER
     char buf[MAXPATH*2];
-#endif /* OLD_BATCHER */    
+#endif /* OLD_BATCHER */
     struct stat st;
 
     BUF_COPY2(work, site, ".work");
@@ -673,7 +673,7 @@ void send_fidogate(void)
     /* FIXME: processing lock */
 
     chdir(DEFAULT_INN_BATCHDIR);
-    
+
     if(access(batch, F_OK) != ERROR)
     {
 	cat(work, batch);
@@ -740,7 +740,7 @@ void do_dir( char *input)
 {
     Runtoss *p;
     int ret = 0;
-    
+
     /* Search correspond shot inbound name */
     for(p=toss; p->name; p++)
     {
@@ -768,7 +768,7 @@ void do_dir( char *input)
 			    exit_free();
 			    exit(2);
 			}
-			    
+
 		    run_toss(p);
 
 		    if(a_flag)
@@ -794,7 +794,7 @@ void do_dir( char *input)
 		}
 		else
 		    debug(5, "tick's not found - ftntick not started");
-	
+
 	    }
 	    else
 		debug(1, "directory %s - %s not found", input, p->inbound);
@@ -979,7 +979,7 @@ int main(int argc, char **argv)
 	    do_dir("pin");
 	}
     }
-	
+
     /* Unlock it */
     unlock_program(PROGRAM);
 

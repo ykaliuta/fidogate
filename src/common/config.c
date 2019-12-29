@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -119,8 +119,8 @@ static cflist *scf_list_last  = NULL;
 void cf_i_am_a_gateway_prog(void)
 {
     int i;
-    
-    if(scf_ig) 
+
+    if(scf_ig)
     {
 	/* GateAddress used, new-style config, shuffle addresses */
 	debug(8, "config: switching to gateway, using GateAddress");
@@ -166,7 +166,7 @@ void cf_check_gate(void)
 	exit(EX_USAGE);
     }
 
-#if 0    
+#if 0
     if(scf_ir==0 && scf_ig==0)
     {
 	fglog("ERROR: config: no Uplink or GateAddress");
@@ -175,7 +175,7 @@ void cf_check_gate(void)
 	exit(EX_USAGE);
     }
 #endif
-    
+
     if(scf_ir && scf_ia!=scf_ir)
 	fglog("WARNING: config: #Address (%d) != #Uplink (%d)",
 	    scf_ia, scf_ir);
@@ -197,7 +197,7 @@ void cf_debug(void)
 	return;
 
     debug(8, "config: fqdn=%s", scf_fqdn);
-    
+
     for(i=0; i<scf_naddr; i++)
 	debug(8, "config: address Z%-4d: addr=%s uplink=%s gateaddr=%s",
 	      scf_addr[i].zone, znfp1(&scf_addr[i].addr),
@@ -260,8 +260,8 @@ Node cf_n_uplink(void)
 void cf_set_best(int zone, int net, int node)
 {
     int i;
-    
-    if(scf_naddr == 0) 
+
+    if(scf_naddr == 0)
     {
 	fprintf(stderr, "No FTN addresses configured.\n");
 	exit(1);
@@ -304,7 +304,7 @@ void cf_set_best(int zone, int net, int node)
 		  znfp2(&scf_addr[i].uplink)          );
 	    return;
 	}
-    
+
     scf_index    = i = 0;
     scf_c_addr   = scf_addr[i].addr;
     scf_c_uplink = scf_addr[i].uplink;
@@ -326,8 +326,8 @@ void cf_set_best(int zone, int net, int node)
 void cf_set_zone(int zone)
 {
     int i;
-    
-    if(scf_naddr == 0) 
+
+    if(scf_naddr == 0)
     {
 	fprintf(stderr, "No FTN addresses configured.\n");
 	exit(1);
@@ -346,7 +346,7 @@ void cf_set_zone(int zone)
 		  znfp2(&scf_addr[i].uplink)          );
 	    return;
 	}
-    
+
     scf_index    = i = 0;
     scf_c_addr   = scf_addr[i].addr;
     scf_c_uplink = scf_addr[i].uplink;
@@ -397,7 +397,7 @@ long cf_lineno_get(void)
 long cf_lineno_set(long n)
 {
     long old;
-    
+
     old = cf_lineno;
     cf_lineno = n;
 
@@ -425,7 +425,7 @@ static void cf_do_line(char *line)
 {
     char *p, *keyword;
     Node a;
-	    
+
     keyword = xstrtok(line, " \t");
     if(!keyword)
 	return;
@@ -434,7 +434,7 @@ static void cf_do_line(char *line)
     if(!stricmp(keyword, "include"))
     {
 	p = xstrtok(NULL, " \t");
-	if(!p) 
+	if(!p)
 	{
 	    fglog("config: missing include file");
 	    return;
@@ -445,7 +445,7 @@ static void cf_do_line(char *line)
     else if (!stricmp(keyword, "hostname"))
     {
 	p = xstrtok(NULL, " \t");
-	if(!p) 
+	if(!p)
 	{
 	    fglog("config: missing hostname");
 	    return;
@@ -456,7 +456,7 @@ static void cf_do_line(char *line)
     else if (!stricmp(keyword, "domain"  ))
     {
 	p = xstrtok(NULL, " \t");
-	if(!p) 
+	if(!p)
 	{
 	    fglog("config: missing domainname");
 	    return;
@@ -472,7 +472,7 @@ static void cf_do_line(char *line)
     else if (!stricmp(keyword, "hostsdomain"  ))
     {
 	p = xstrtok(NULL, " \t");
-	if(!p) 
+	if(!p)
 	{
 	    fglog("config: missing domainname");
 	    return;
@@ -487,7 +487,7 @@ static void cf_do_line(char *line)
     {
 	/* address */
 	p = xstrtok(NULL, " \t");
-	if(!p) 
+	if(!p)
 	{
 	    fglog("config: missing address");
 	    return;
@@ -511,7 +511,7 @@ static void cf_do_line(char *line)
     else if (!stricmp(keyword, "uplink" ))
     {
 	p = xstrtok(NULL, " \t");
-	if(!p) 
+	if(!p)
 	{
 	    fglog("config: missing address");
 	    return;
@@ -534,7 +534,7 @@ static void cf_do_line(char *line)
     else if (!stricmp(keyword, "gateaddress" ))
     {
 	p = xstrtok(NULL, " \t");
-	if(!p) 
+	if(!p)
 	{
 	    fglog("config: missing address");
 	    return;
@@ -564,7 +564,7 @@ static void cf_do_line(char *line)
 	    fglog("config: too many zones");
 	    return;
 	}
-	    
+
 	if(! (p = xstrtok(NULL, " \t")) )
 	{
 	    fglog("config: missing zone");
@@ -572,7 +572,7 @@ static void cf_do_line(char *line)
 	}
 	if(!stricmp(p, "default"))
 	    zone = 0;
-	else 
+	else
 	{
 	    zone = atoi(p);
 	    if(!zone)
@@ -581,7 +581,7 @@ static void cf_do_line(char *line)
 		return;
 	    }
 	}
-	    
+
 	if(! (inet = xstrtok(NULL, " \t")) )
 	{
 	    fglog("config: missing Internet domain");
@@ -610,7 +610,7 @@ static void cf_do_line(char *line)
     else if (!stricmp(keyword, "dosdrive" ))
     {
 	char *drive, *path;
-	    
+
 	if(scf_ndos >= MAXDOSDRIVE)
 	{
 	    fglog("config: too many DOS drives");
@@ -635,7 +635,7 @@ static void cf_do_line(char *line)
     else if (!stricmp(keyword, "gateway" ))
     {
 	p = xstrtok(NULL, " \t");
-	if(!p) 
+	if(!p)
 	{
 	    fglog("config: missing address");
 	    return;
@@ -648,20 +648,20 @@ static void cf_do_line(char *line)
 	scf_gateway = a;
     }
     /***** U n k n o w n ************************************************/
-    else 
+    else
     {
 	cflist *pl;
-	
+
 	p = xstrtok(NULL, "\n");
 	if(p)
 	    while(is_blank(*p)) p++;
-	    
+
 	pl = (cflist *)xmalloc(sizeof(cflist));
 
 	pl->key    = strsave(keyword);
 	pl->string = p ? strsave(p) : "";
 	pl->next   = NULL;
-	    
+
 	if(scf_list_first)
 	    scf_list_last->next = pl;
 	else
@@ -679,12 +679,12 @@ void cf_read_config_file(char *name)
 {
     FILE *cf;
     char *line;
-    
+
     if(!name || !*name)			/* Empty string -> no config file */
 	return;
 
     cf = xfopen(name, R_MODE_T);
-    
+
     while((line = cf_getline(buffer, BUFFERSIZE, cf)))
 	cf_do_line(line);
 
@@ -693,9 +693,9 @@ void cf_read_config_file(char *name)
     scf_index 	 = 0;
     scf_c_addr   = scf_addr[0].addr;
     scf_c_uplink = scf_addr[0].uplink;
-    
+
     BUF_COPY2(scf_fqdn, scf_hostname, scf_domainname);
-    
+
     fclose(cf);
 }
 
@@ -709,7 +709,7 @@ void cf_initialize(void)
 {
     char *p;
 
-    /* 
+    /*
      * Check for real uid != effective uid (setuid installed FIDOGATE
      * programs), disable debug() output (-v on command line) and
      * environment variables in this case.
@@ -718,7 +718,7 @@ void cf_initialize(void)
     {
 	return;
     }
-    
+
     /* Env FIDOGATE is alias for FIDOGATE_CONFIGDIR */
     if( (p = getenv("FIDOGATE")) )
 	cf_s_configdir(p);
@@ -735,7 +735,7 @@ void cf_initialize(void)
 void cf_set_addr(char *addr)
 {
     Node node;
-    
+
     if( asc_to_node(addr, &node, FALSE) == ERROR )
     {
 	Node *n = inet_to_ftn(addr);
@@ -768,7 +768,7 @@ void cf_set_uplink(char *addr)
 {
     Node node;
     int i;
-    
+
     if( asc_to_node(addr, &node, FALSE) == ERROR )
     {
 	Node *n = inet_to_ftn(addr);
@@ -779,7 +779,7 @@ void cf_set_uplink(char *addr)
 	}
 	node = *n;
     }
-    
+
     for(i=0; i<scf_naddr; i++)
 	scf_addr[i].uplink = node;
 
@@ -826,7 +826,7 @@ char *cf_fqdn(void)
 char *cf_zones_inet_domain(int zone)
 {
     int i;
-    
+
     /*
      * Search zone
      */
@@ -852,7 +852,7 @@ char *cf_zones_inet_domain(int zone)
 int cf_zones_check(int zone)
 {
     short i;
-    
+
     /*
      * Search zone
      */
@@ -860,7 +860,7 @@ int cf_zones_check(int zone)
 	if(scf_zones[i].zone && scf_zones[i].zone==zone)
 	    return TRUE;
 
-    return FALSE;    
+    return FALSE;
 }
 
 
@@ -886,7 +886,7 @@ char *cf_zones_trav(int first)
 char *cf_zones_out(int zone)
 {
     short i;
-    
+
     /*
      * Search zone
      */
@@ -915,7 +915,7 @@ char *cf_out_get(short i)
 char *cf_zones_ftn_domain(int zone)
 {
     int i;
-    
+
     /*
      * Search zone
      */
@@ -941,7 +941,7 @@ char *cf_zones_ftn_domain(int zone)
 Node *cf_addr_trav(int first)
 {
     static int iaddr;
-    
+
     if(first)
 	iaddr = 0;
 
@@ -972,7 +972,7 @@ char *cf_dos_xlate(char *name)
     int i;
     char *s;
     int len;
-    
+
     for(i=0; i<scf_ndos; i++)
     {
 	len = strlen(scf_dos[i].path);
@@ -987,7 +987,7 @@ char *cf_dos_xlate(char *name)
 	    return buf;
 	}
     }
-    
+
     return NULL;
 }
 
@@ -1002,7 +1002,7 @@ char *cf_unix_xlate(char *name)
     int i;
     char *s;
     int len;
-    
+
     for(i=0; i<scf_ndos; i++)
     {
 	len = strlen(scf_dos[i].drive);
@@ -1017,7 +1017,7 @@ char *cf_unix_xlate(char *name)
 	    return buf;
 	}
     }
-    
+
     return NULL;
 }
 
@@ -1057,10 +1057,10 @@ char *cf_get_string(char *name, int first)
 {
     static cflist *last_listp = NULL;
     char *string;
-    
+
     if(first)
 	last_listp = scf_list_first;
-    
+
     while(last_listp)
     {
 	if(!stricmp(last_listp->key, name))		/* Found */
@@ -1121,12 +1121,12 @@ void config_free(void)
     for(p=scf_list_first; p; p=n)
     {
 	n = p->next;
-	
+
 	xfree(p->key);
 	if(strlen(p->string) > 0)
 	    xfree(p->string);
 	p->next = NULL;
-	
+
 	xfree(p);
     }
 

@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -141,8 +141,8 @@ static unsigned long crc_32_tab[] =
 
 
 unsigned long compute_crc32(unsigned char *s, int len)
-                 
-        
+
+
 /* Compute CRC value for buffer s, length len */
 {
     register unsigned long crcval = 0xffffffff;
@@ -169,13 +169,13 @@ void crc32_compute(unsigned char *s, int len)
     while (len--)
 	crcval = crc_32_tab[((unsigned char) crcval ^ (*s++)) & 0xff]
 		    ^ (crcval >> 8);
-}   
+}
 
 void crc32_update(int c)
 {
     crcval = crc_32_tab[((unsigned char) crcval ^ c) & 0xff]
 	^ (crcval >> 8);
-}   
+}
 
 unsigned long crc32_value(void)
 {
@@ -191,19 +191,19 @@ unsigned long crc32_file(char *name)
 {
     FILE *fp;
     int c;
-    
+
     if((fp = fopen(name, R_MODE)) == NULL)
     {
 	fglog("$crc32_file(): can't open %s", name);
 	return 0;
     }
-    
+
     crc32_init();
     while((c = getc(fp)) != EOF)
 	crc32_update(c);
-    
+
     fclose(fp);
-    
+
     return crc32_value();
 }
 
@@ -219,7 +219,7 @@ main(int argc, char *argv[])
 
     buffer[0] = 0;
     crc32_init();
-    
+
     while(--argc) {
 	argv++;
 	crc32_compute(*argv, strlen(*argv));

@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -55,7 +55,7 @@ void areasbbs_remove(AreasBBS *cur, AreasBBS *prev)
 {
     if(!cur)
 	return;
-    
+
     if(prev)
 	prev->next = cur->next;
     else
@@ -94,7 +94,7 @@ void areasbbs_remove1(AreasBBS *cur)
 AreasBBS *areasbbs_new(void)
 {
     AreasBBS *p;
-    
+
     p = (AreasBBS *)xmalloc(sizeof(AreasBBS));
 
     /* Init */
@@ -137,7 +137,7 @@ static int areasbbs_add_string(LON *lon, LON *lon_passive, char *p)
 {
     Node node, old;
     int ret;
-    
+
     old.zone = cf_zone();
     old.net = old.node = old.point = -1;
     lon->size = 0;
@@ -210,7 +210,7 @@ static AreasBBS *areasbbs_parse_line(char *line)
 {
     AreasBBS *p;
     char *dir, *tag, *nl, *o2;
-   
+
     dir = xstrtok(line, " \t\r\n");
     tag = xstrtok(NULL, " \t\r\n");
     if(!dir || !tag)
@@ -226,7 +226,7 @@ static AreasBBS *areasbbs_parse_line(char *line)
     }
     p->dir   = strsave(dir);
     p->area  = strsave(tag);
-    
+
     /*
      * Options:
      *
@@ -249,42 +249,42 @@ static AreasBBS *areasbbs_parse_line(char *line)
 	    o2 = xstrtok(NULL, " \t\r\n");
 	    asc_to_node(o2, &p->addr, FALSE);
 	}
-	
+
 	if(streq(nl, "-z"))		/* -z ZONE */
 	{
 	    o2 = xstrtok(NULL, " \t\r\n");
 	    p->zone = atoi(o2);
 	}
-	
+
 	if(streq(nl, "-l"))		/* -l LVL */
 	{
 	    o2 = xstrtok(NULL, " \t\r\n");
 	    p->lvl = atoi(o2);
 	}
-	
+
 	if(streq(nl, "-k"))		/* -k KEY */
 	{
 	    o2 = xstrtok(NULL, " \t\r\n");
 	    p->key = strsave(o2);
 	}
-	
+
 	if(streq(nl, "-d"))		/* -d DESC */
 	{
 	    o2 = xstrtok(NULL, " \t\r\n");
 	    p->desc = strsave(o2);
 	}
-	
+
 	if(streq(nl, "-s"))		/* -s STATE */
 	{
 	    o2 = xstrtok(NULL, " \t\r\n");
 	    p->state = strsave(o2);
 	}
-	
+
 	if(streq(nl, "-#"))		/* -# */
 	{
 	    p->flags |= AREASBBS_PASSTHRU;
 	}
-	
+
 	if(streq(nl, "-r"))		/* -r */
 	{
 	    p->flags |= AREASBBS_READONLY;
@@ -318,13 +318,13 @@ static AreasBBS *areasbbs_parse_line(char *line)
 	    p->uplinks = atoi(o2);
 	}
 	nl  = xstrtok(NULL, " \t\r\n");
-    }	
-    
+    }
+
     areasbbs_add_string(&(p->nodes), &(p->passive), nl);
 
     if(p->zone == -1)
 	p->zone = p->nodes.first ? p->nodes.first->node.zone : 0;
-    
+
     return p;
 }
 
@@ -343,9 +343,9 @@ int areasbbs_init(char *name)
 
     if(!name)
 	return ERROR;
-    
+
     debug(14, "Reading %s file" , name);
-    
+
     areasbbs_filename = name;
     areasbbs_changed_flag = FALSE;
 
@@ -377,7 +377,7 @@ int areasbbs_init(char *name)
 	p = areasbbs_parse_line(buffer);
 	if(!p)
 	    continue;
-	
+
 	debug(15, "areas.bbs: %s %s Z%d", p->dir, p->area, p->zone);
 
 	/*
@@ -403,9 +403,9 @@ int areasbbs_init(char *name)
 int areasbbs_print(FILE *fp)
 {
     AreasBBS *p;
-    
+
     fprintf(fp, "%s\n", areasbbs_1stline);
-    
+
     for(p=areasbbs_list; p; p=p->next)
     {
 	if(p->flags & AREASBBS_PASSTHRU)
@@ -439,7 +439,7 @@ int areasbbs_print(FILE *fp)
 	lon_print_sorted(&p->nodes, fp, p->uplinks);
 	fprintf(fp, "\n");
     }
-    
+
     return ferror(fp);
 }
 
@@ -463,7 +463,7 @@ int areasbbs_rewrite(void)
     char old[MAXPATH], new[MAXPATH];
     int i, ovwr;
     FILE *fp;
-    
+
     if(!areasbbs_changed_flag)
     {
 	debug(4, "AREAS.BBS not changed");
@@ -526,7 +526,7 @@ int areasbbs_rewrite(void)
 	debug(4, "Renaming %s -> %s", old, new);
 	rename(old, new);
     }
-    
+
     /*
      * Rename AREAS.BBS -> AREAS.O01
      */
@@ -536,7 +536,7 @@ int areasbbs_rewrite(void)
     BUF_COPY(new+ovwr, "o01");
     debug(4, "Renaming %s -> %s", old, new);
     rename(old, new);
-    
+
     /*
      * Rename AREAS.NEW -> AREAS.BBS
      */
@@ -569,14 +569,14 @@ void areasbbs_not_changed(void)
 AreasBBS *areasbbs_lookup(char *area)
 {
     AreasBBS *p;
-    
+
     /**FIXME: the search method should use hashing or similar**/
     for(p=areasbbs_list; p; p=p->next)
     {
 	if(area  && !stricmp(area,  p->area ))
 	    return p;
     }
-    
+
     return NULL;
 }
 
@@ -663,7 +663,7 @@ areasbbs_chstate(char **state, char *stold, char stnew)
 void areasbbs_free(void)
 {
     AreasBBS *p, *n;
-    
+
     for(p=areasbbs_list; p; p=n)
     {
 	n=p->next;

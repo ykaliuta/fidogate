@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -47,7 +47,7 @@ static char *get_tz_name(struct tm *tm)
 {
 #ifdef HAVE_STRFTIME
     static char buf[32];
-    
+
     strftime(buf, sizeof(buf), "%Z", tm);
     return buf;
 #else
@@ -60,7 +60,7 @@ static char *get_tz_name(struct tm *tm)
 #endif
 #endif
 }
-    
+
 
 
 /*
@@ -96,7 +96,7 @@ char *date_buf(char *buf, size_t len, char *fmt, time_t *t)
     /* Check for invalid time (-1) */
     if(fmt==NULL && t && *t==-1)
 	return "INVALID";
-    
+
     GetTimeInfo(&ti);
     tm = localtime(&ti.time);
     if(tm->tm_isdst)
@@ -219,7 +219,7 @@ char *date_buf(char *buf, size_t len, char *fmt, time_t *t)
 		break;
 	    }
 	}
-	else 
+	else
 	{
 	    sbuf[0] = *fmt;
 	    sbuf[1] = 0;

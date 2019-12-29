@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -93,10 +93,10 @@ int do_message(Node *gate, Message *msg, MsgBody *body)
     char *from, *to;
     char *p;
     Node node;
-    
+
     from = msg->name_from;
     to   = msg->name_to;
-    
+
     debug(3, "Message to: %s", to);
 
     p = strrchr(to, '%');
@@ -111,7 +111,7 @@ int do_message(Node *gate, Message *msg, MsgBody *body)
 	fglog("ftn2ftn: skipping EchoMail");
 	return ERROR;
     }
-    
+
     /*
      * Gateway addressing with "User Name%Z:N/F.P"
      * "User Name@Z:N/F.P" found. Get address and push
@@ -124,7 +124,7 @@ int do_message(Node *gate, Message *msg, MsgBody *body)
 	/* Add gate addresses to ^Via lines */
 	add_via(&body->via, &msg->node_to);
 	add_via(&body->via, gate);
-	
+
 	/* Strip % addressing */
 	*p = 0;
 	/* Add sender address to from name */
@@ -139,7 +139,7 @@ int do_message(Node *gate, Message *msg, MsgBody *body)
     /*
      * Local message, simply readdress to our main AKA
      */
-    else 
+    else
     {
 	cf_set_zone(msg->node_to.zone);
 
@@ -159,13 +159,13 @@ int do_message(Node *gate, Message *msg, MsgBody *body)
 	if( (fp = pkt_open(o_flag, NULL, NULL, FALSE)) == NULL )
 	    return ERROR;
     last_zone = cf_zone();
-    
+
     msg->area = NULL;
     if( pkt_put_msg_hdr(fp, msg, TRUE) != OK )
 	return ERROR;
     if( msg_put_msgbody(fp, body) != OK )
 	return ERROR;
-    
+
     return OK;
 }
 
@@ -183,7 +183,7 @@ int unpack(Node *gate, FILE *pkt_file, Packet *pkt)
 
     tl_init(&tl);
     msg_body_init(&body);
-    
+
     type = pkt_get_int16(pkt_file);
     while((type == MSG_TYPE) && !xfeof(pkt_file))
     {
@@ -191,7 +191,7 @@ int unpack(Node *gate, FILE *pkt_file, Packet *pkt)
 	msg.node_to   = pkt->to;
 	if(pkt_get_msg_hdr(pkt_file, &msg) == ERROR)
 	    TMPS_RETURN(ERROR);
-	
+
 	if( pkt_get_body_parse(pkt_file, &body, &msg.node_from, &msg.node_to) != OK )
 	{
 	    fglog("ftn2ftn: error parsing message body");
@@ -206,7 +206,7 @@ int unpack(Node *gate, FILE *pkt_file, Packet *pkt)
 
     /* Close packet */
     pkt_close();
-    
+
     TMPS_RETURN(OK);
 }
 
@@ -237,18 +237,18 @@ int unpack_file(Node *gate, char *pkt_name)
 	exit_free();
 	exit(EX_OSERR);
     }
-    
+
     /*
      * Unpack it
      */
-    if(unpack(gate, pkt_file, &pkt) != OK) 
+    if(unpack(gate, pkt_file, &pkt) != OK)
     {
 	fclose(pkt_file);
 	fglog("Error in unpacking %s", pkt_name);
 	exit_free();
 	exit(EX_OSERR);
     }
-    
+
     fclose(pkt_file);
 
     if (unlink(pkt_name)) {
@@ -268,7 +268,7 @@ int unpack_file(Node *gate, char *pkt_name)
 int do_outbound(Node *gate_outb, Node *gate_other)
 {
     char *name;
-    
+
     /* Create BSY file */
     if( bink_bsy_create(gate_outb, NOWAIT) == ERROR )
 	return ERROR;
@@ -276,11 +276,11 @@ int do_outbound(Node *gate_outb, Node *gate_other)
     /* Find and process OUT packet file */
     if( (name = bink_find_out(gate_outb, NULL)) )
 	unpack_file(gate_other, name);
-    
+
     /* Delete BSY file */
     if( bink_bsy_delete(gate_outb) == ERROR )
 	return ERROR;
-    
+
     return OK;
 }
 
@@ -300,7 +300,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] [packet ...]\n\n", PROGRAM);
     fprintf(stderr, "\
 options: -A --address-a Z:N/F.P       FTN address in network A\n\
@@ -313,7 +313,7 @@ options: -A --address-a Z:N/F.P       FTN address in network A\n\
          -c --config name             read config file (\"\" = none)\n\
 	 -a --addr Z:N/F.P            set FTN address\n\
 	 -u --uplink-addr Z:N/F.P     set FTN uplink address\n");
-    
+
     exit(0);
 }
 
@@ -345,7 +345,7 @@ int main(int argc, char **argv)
     };
 
     log_program(PROGRAM);
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -380,7 +380,7 @@ int main(int argc, char **argv)
 	    /* Set packet dir */
 	    O_flag = optarg;
 	    break;
-		
+
 	/***** Common options *****/
 	case 'v':
 	    verbose++;
@@ -437,7 +437,7 @@ int main(int argc, char **argv)
      * Process command line file args
      */
     if(optind >= argc)
-    {	
+    {
 	/* Process outbound packets for both addresses */
 	do_outbound(&gate_a, &gate_b);
 	tmps_freeall();

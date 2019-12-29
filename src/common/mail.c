@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -53,7 +53,7 @@ static FILE *n_file = NULL;
 int mail_open(int sel)
 {
     long n;
-    
+
     switch(sel)
     {
     case 'm':
@@ -67,7 +67,7 @@ int mail_open(int sel)
 	    return ERROR;
 	}
 	break;
-	
+
     case 'n':
     case 'N':
 	n = sequencer(cf_p_seq_news());
@@ -117,7 +117,7 @@ FILE *mail_file(int sel)
  */
 void mail_close(int sel)
 {
-    
+
     switch(sel)
     {
     case 'm':

@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -62,7 +62,7 @@ static Regex *regex_last = NULL;
 static Regex *regex_new(void)
 {
     Regex *p;
-    
+
     p = (Regex *)xmalloc(sizeof(Regex));
 
     /* Init */
@@ -94,7 +94,7 @@ static Regex *regex_parse_line(char *s)
     }
 
     debug(15, "regex: pattern=%s", p->re_s);
-    
+
     return p;
 }
 
@@ -106,11 +106,11 @@ static Regex *regex_parse_line(char *s)
 static int regex_do_entry(char *s)
 {
     Regex *p;
-    
+
     p = regex_parse_line(s);
     if(!p)
 	return ERROR;
-    
+
     /* Put into linked list */
     if(regex_list)
 	regex_last->next = p;
@@ -134,7 +134,7 @@ static regmatch_t regex_pmatch[MAXREGMATCH];
 int regex_match(const char *s)
 {
     Regex *p;
-    
+
     for(p=regex_list; p; p=p->next)
     {
 	if(regexec(&p->re_c, s, MAXREGMATCH, regex_pmatch, 0) == OK)
@@ -162,7 +162,7 @@ char *str_regex_match_sub(char *buf, size_t len, int idx, const char *s)
 {
     regmatch_t *p;
     int i, j;
-    
+
     p = regex_match_sub(idx);
     if(p == NULL)
     {
@@ -173,7 +173,7 @@ char *str_regex_match_sub(char *buf, size_t len, int idx, const char *s)
     for(i=0, j=p->rm_so; i<len-1 && j<p->rm_eo; i++, j++)
 	buf[i] = s[j];
     buf[i] = 0;
-    
+
     return buf;
 }
 
@@ -185,7 +185,7 @@ char *str_regex_match_sub(char *buf, size_t len, int idx, const char *s)
 void regex_init(void)
 {
     char *s;
-    
+
     /* regex patterns from fidogate.conf */
     for(s = cf_get_string("Regex1stLine",TRUE);
 	s;
@@ -196,7 +196,7 @@ void regex_init(void)
 
 #endif /** HAS_POSIX_REGEX ****************************************************/
 
-    
+
 
 
 /***** TEST ******************************************************************/
@@ -207,7 +207,7 @@ void regex_init(void)
 void debug_subs(void)
 {
     int i;
-    
+
     printf("pmatch[]:");
     for(i=0; i<MAXREGMATCH; i++)
 	if(regex_pmatch[i].rm_so != -1)
@@ -224,11 +224,11 @@ int main(int argc, char *argv[])
 {
 #ifdef HAS_POSIX_REGEX
     char buf[MAXINETADDR];
-    
+
     regex_init();
-    
+
 # if 0
-    do 
+    do
     {
 	printf("Enter regex pattern [ENTER=end of list]: ");
 	fflush(stdout);
@@ -241,15 +241,15 @@ int main(int argc, char *argv[])
 
     printf("\n");
 # endif
-    
+
     /* Read strings to match */
-    do 
+    do
     {
 	printf("Enter string [ENTER=end]: ");
 	fflush(stdout);
 	fgets(buffer, sizeof(buffer), stdin);
 	strip_crlf(buffer);
-	if(buffer[0]) 
+	if(buffer[0])
 	{
 	    if(regex_match(buffer))
 	    {

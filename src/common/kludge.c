@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -45,9 +45,9 @@ void kludge_pt_intl(MsgBody *body, Message *msg, short int del)
     Textlist *list;
     char *p, *s;
     Node node;
-    
+
     list = &body->kludge;
-    
+
     /* ^AINTL */
     if( (p = kludge_get(list, "INTL", &line)) )
     {
@@ -62,11 +62,11 @@ void kludge_pt_intl(MsgBody *body, Message *msg, short int del)
 		msg->node_from = node;
 
 	xfree(p);
-	
+
 	if(del)
 	    tl_delete(list, line);
     }
-    
+
     /* ^AFMPT */
     if( (p = kludge_get(list, "FMPT", &line)) )
     {
@@ -75,7 +75,7 @@ void kludge_pt_intl(MsgBody *body, Message *msg, short int del)
 	if(del)
 	    tl_delete(list, line);
     }
-    
+
     /* ^ATOPT */
     if( (p = kludge_get(list, "TOPT", &line)) )
     {
@@ -100,7 +100,7 @@ char *kludge_get(Textlist *tl, char *name, Textline **ptline)
     len = strlen(name);
 
     last_kludge = tl->first;
-    
+
     while(last_kludge)
     {
 	s = last_kludge->line;
@@ -117,13 +117,13 @@ char *kludge_get(Textlist *tl, char *name, Textline **ptline)
 	    if(ptline)
 		*ptline = last_kludge;
 	    last_kludge = last_kludge->next;
-	    
+
 	    return r;
 	}
 
 	last_kludge = last_kludge->next;
     }
-    
+
     /* Not found */
     if(ptline)
 	*ptline = NULL;

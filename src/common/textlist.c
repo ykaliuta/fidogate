@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -61,7 +61,7 @@ void tl_add(Textlist *list, Textline *line)
 
     line->next = NULL;
     line->prev = list->last;
-    
+
     list->last = line;
     list->n++;
 }
@@ -77,7 +77,7 @@ void tl_remove(Textlist *list, Textline *line)
 	list->first = line->next;
     else
 	line->prev->next = line->next;
-    
+
     if(list->last == line)
 	list->last = line->prev;
     else
@@ -126,7 +126,7 @@ void tl_clear(Textlist *list)
 	xfree(p);
 	p  = pn;
     }
-    
+
     list->first = NULL;
     list->last	= NULL;
     list->n     = 0;
@@ -142,7 +142,7 @@ void tl_append(Textlist *list, char *s)
 
     if(!s)
 	return;
-    
+
     s = strsave(s);
     p	    = (Textline *)xmalloc(sizeof(Textline));
     p->line = s;
@@ -251,7 +251,7 @@ void tl_addtl(Textlist *d, Textlist *s)
 Textline* tl_get(Textlist *list, char *str, int len)
 {
     Textline *p = NULL;
-    
+
     for(p = list->first; p != NULL; p = p->next)
     {
 	if(len == 0)
@@ -267,12 +267,12 @@ Textline* tl_get(Textlist *list, char *str, int len)
     }
     return p;
 }
-	
+
 char* tl_get_str(Textlist *list, char *str, int len)
 {
     Textline *p;
     char *new_str = NULL;
-  
+
     p = tl_get(list, str, len);
     if(p != NULL)
 	new_str = strsave(p->line);

@@ -9,7 +9,7 @@
  *
  *****************************************************************************
  * Copyright (C) 2000
- *  
+ *
  * Oleg Derevenetz	     FIDO:	2:5025/3.4
  *
  * This file is part of FIDOGATE.
@@ -23,10 +23,10 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
- * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
+ * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  *****************************************************************************/
 
 #include "fidogate.h"
@@ -67,7 +67,7 @@ static AreaUplink *uplinks_parse_line(char *buf)
     char *t, *a, *n, *f, *w;
     Node uplink;
     char *opt;
-    
+
     t = xstrtok(buf,  " \t");	/* Robot type (af-AreaFix, ff-FileFix) */
     a = xstrtok(NULL, " \t");	/* Areas */
     n = xstrtok(NULL, " \t");	/* Uplink */
@@ -76,14 +76,14 @@ static AreaUplink *uplinks_parse_line(char *buf)
     opt = xstrtok( NULL, "" );	/* Options */
     if(t==NULL || a==NULL)
 	return NULL;
-    if(strieq(t, "include")) 
+    if(strieq(t, "include"))
     {
 	uplinks_do_file(a);
 	return NULL;
     }
     if(n==NULL || f==NULL || w==NULL)
 	return NULL;
-    
+
     if( asc_to_node(n, &uplink, FALSE) == ERROR )
     {
 	fglog("uplinks: illegal FTN address %s", n);
@@ -105,7 +105,7 @@ static AreaUplink *uplinks_parse_line(char *buf)
     p->robotname        = strsave( f );
     p->password         = strsave( w );
     p->options          = strsave( opt );
-    
+
     debug(15, "uplinks: %s %s %s %s %s %s", p->areafix?"af":"ff",
               p->areas, znfp1(&p->uplink),
 	      p->robotname, p->password, p->options);
@@ -120,17 +120,17 @@ static int uplinks_do_file(char *name)
     AreaUplink *p;
 
     debug(14, "Reading uplinks file %s", name);
-    
+
     fp = fopen_expand_name(name, R_MODE_T, FALSE);
     if(fp == NULL)
 	return ERROR;
-    
+
     while(cf_getline(buffer, BUFFERSIZE, fp))
     {
 	p = uplinks_parse_line(buffer);
 	if(p == NULL)
 	    continue;
-	
+
 	/*
 	 * Put into linked list
 	 */
@@ -140,7 +140,7 @@ static int uplinks_do_file(char *name)
 	    uplinks_list       = p;
 	uplinks_last       = p;
     }
-    
+
     fclose(fp);
 
     return OK;
@@ -150,13 +150,13 @@ static int uplinks_do_file(char *name)
 static int uplinks_check_dups(int areafix, Node *uplink)
 {
     AreaUplink *a;
-    
+
     for(a=uplinks_list; a; a=a->next)
     {
 	if ((a->areafix==areafix) && anodeeq (uplink, &a->uplink))
 	    return TRUE;
     }
-    
+
     return FALSE;
 }
 #endif /* DEBUG */
@@ -191,7 +191,7 @@ void uplinks_lookup_save(int afix, char *area, const AreaUplink *a)
 void uplinks_lookup_free(void)
 {
     AreaUplink *p, *s;
-    
+
     for(p=upll_ap; p; p=s)
     {
 	s=p->next;
@@ -216,7 +216,7 @@ AreaUplink *uplinks_lookup(int areafix, char *area)
     char *t, *n, *f;
     int iswc;
     FILE *fp1;
-    
+
     iswc = is_wildcard(area);
 
     for(a=uplinks_list; a; a=a->next)
@@ -276,14 +276,14 @@ AreaUplink *uplinks_lookup(int areafix, char *area)
 	}
 	xfree(t);
     }
-    
+
     return upll_ap;
 }
 
 AreaUplink *uplinks_line_get(int areafix, Node *uplink)
 {
     AreaUplink *p1;
-    
+
     for(p1=uplinks_list; p1; p1=p1->next)
     {
 	if (p1->areafix != areafix)
@@ -316,7 +316,7 @@ static int anodeeq(Node *a, Node *b)
 void uplinks_free(void)
 {
     AreaUplink *p, *s;
-    
+
     for(p=uplinks_list; p; p=s)
     {
 	s=p->next;

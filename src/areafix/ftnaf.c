@@ -25,7 +25,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -141,7 +141,7 @@ int do_mail(void)
 	if(n)
 	    xfrom.node = *n;
     }
-    
+
     if(n)
     {
 	debug(3, "FTN address: %s", znfp1(n));
@@ -159,7 +159,7 @@ int do_mail(void)
     if(x_ftn_from && n)
 	pfrom = s_ftnaddr_print_pfnz(&xfrom);
     debug(3, "Sending reply to: %s", pfrom);
-    
+
     /* Send output to mailer */
     if(!r_flag)
     {
@@ -189,7 +189,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] [Z:N/F.P command]\n\n", PROGRAM);
     fprintf(stderr, "\
 options: -m --mail                    process Areafix mail on stdin\n\
@@ -222,7 +222,7 @@ int main(int argc, char **argv)
     int ret;
     Textlist req;
     char bbslock[MAXPATH];
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -247,7 +247,7 @@ int main(int argc, char **argv)
 #endif
 
     log_program(PROGRAM);
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -271,7 +271,7 @@ int main(int argc, char **argv)
 	case 'F':
 	    areafix = FALSE;
 	    break;
-	    
+
 	/***** Common options *****/
 	case 'v':
 	    verbose++;
@@ -325,9 +325,9 @@ int main(int argc, char **argv)
     /* Read UPLINKS */
     uplinks_init();
     tl_init(&req);
-    
+
     ret = 0;
-    
+
     if(m_flag)
     {
 	/*
@@ -393,7 +393,7 @@ int main(int argc, char **argv)
 	    if(optind < argc-1)
 		BUF_APPEND(buffer, " ");
 	}
-	
+
 	if(areafix_do_cmd(&node, buffer, NULL, &req) == ERROR)
 	    ret = EX_DATAERR;
 	else

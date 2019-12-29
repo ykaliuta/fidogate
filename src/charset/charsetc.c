@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -66,7 +66,7 @@ void	usage			(void);
 int charset_parse_c(char *s)
 {
     int val, n;
-    
+
     if(s[0] == '\\')			/* Special: \NNN or \xNN */
     {
 	s++;
@@ -119,7 +119,7 @@ int charset_do_line(char *line)
     char *key, *w1, *w2;
     CharsetAlias *pa;
     int i, c1, c2;
-    
+
     debug(16, "charset.map line: %s", line);
 
     key = strtok(line, " \t");
@@ -127,7 +127,7 @@ int charset_do_line(char *line)
 	return OK;
 
     /* Include map file */
-    if(      strieq(key, "include") ) 
+    if(      strieq(key, "include") )
     {
 	w1 = strtok(NULL, " \t");
 	if( charset_do_file(w1) == ERROR)
@@ -135,17 +135,17 @@ int charset_do_line(char *line)
     }
 
     /* Define alias */
-    else if( strieq(key, "alias") ) 
+    else if( strieq(key, "alias") )
     {
 	w1 = strtok(NULL, " \t");
 	w2 = strtok(NULL, " \t");
-	if(!w1 || !w2) 
+	if(!w1 || !w2)
 	{
 	    fprintf(stderr, "%s:%ld: argument(s) for alias missing\n",
 		    PROGRAM, cf_lineno_get());
 	    return ERROR;
 	}
-	
+
 	pa = charset_alias_new();
 	BUF_COPY(pa->alias, w1);
 	BUF_COPY(pa->name, w2);
@@ -157,7 +157,7 @@ int charset_do_line(char *line)
     {
 	w1 = strtok(NULL, " \t");
 	w2 = strtok(NULL, " \t");
-	if(!w1 || !w2) 
+	if(!w1 || !w2)
 	{
 	    fprintf(stderr, "%s:%ld: argument(s) for table missing\n",
 		    PROGRAM, cf_lineno_get());
@@ -174,7 +174,7 @@ int charset_do_line(char *line)
     else if( strieq(key, "map") )
     {
 	w1 = strtok(NULL, " \t");
-	if(!w1) 
+	if(!w1)
 	{
 	    fprintf(stderr, "%s:%ld: argument for map missing\n",
 		    PROGRAM, cf_lineno_get());
@@ -246,13 +246,13 @@ int charset_do_line(char *line)
 	}
     }
     /* Error */
-    else 
+    else
     {
 	fprintf(stderr, "%s:%ld: illegal key word %s\n",
 		PROGRAM, cf_lineno_get(), key);
 	return ERROR;
     }
-    
+
     return OK;
 }
 
@@ -270,18 +270,18 @@ int charset_do_file(char *name)
     if(!name)
 	return ERROR;
     debug(1, "Reading charset.map file %s", name);
-    
+
     oldn = cf_lineno_set(0);
     fp = fopen_expand_name(name, R_MODE_T, FALSE);
     if(!fp)
 	return ERROR;
-    
+
     while( (p = cf_getline(buffer, BUFFERSIZE, fp)) )
 	charset_do_line(p);
 
     fclose(fp);
     cf_lineno_set(oldn);
-    
+
     return OK;
 }
 
@@ -325,7 +325,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] charset.map charset.bin\n\n",
 	    PROGRAM);
     fprintf(stderr, "\
@@ -344,7 +344,7 @@ int main(int argc, char **argv)
     int c;
     int ret = EXIT_OK;
     char *name_in, *name_out;
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -354,14 +354,14 @@ int main(int argc, char **argv)
 	{ 0,              0, 0, 0  }
     };
 
-    
+
     log_file("stderr");
     log_program(PROGRAM);
-    
+
     while ((c = getopt_long(argc, argv, "vh",
 			    long_options, &option_index     )) != EOF)
 	switch (c) {
-	    
+
 	/***** Common options *****/
 	case 'v':
 	    verbose++;
@@ -385,7 +385,7 @@ int main(int argc, char **argv)
     name_out = argv[optind++];
 
     ret = compile_map(name_in, name_out);
-    
+
     exit_free();
     return ret;
 }

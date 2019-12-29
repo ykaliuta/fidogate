@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -48,7 +48,7 @@ void	msg_body_debug		(FILE *, MsgBody *, char);
 static void debug_line(FILE *out, char *line, int crlf)
 {
     int c;
-    
+
     while( (c = *line++) )
 	if( !(c & 0xe0) )
 	{
@@ -68,7 +68,7 @@ static void debug_line(FILE *out, char *line, int crlf)
 void msg_body_debug(FILE *out, MsgBody *body, char crlf)
 {
     Textline *p;
-    
+
     fprintf(out, "----------------------------------------"
 	         "--------------------------------------\n");
     if(body->area)
@@ -121,7 +121,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] file ...\n\n", PROGRAM);
     fprintf(stderr, "\
 options:  -m --msg-header              print message header\n\
@@ -149,13 +149,13 @@ int main(int argc, char **argv)
     int m_flag=FALSE, t_flag=0, s_flag=FALSE;
     MsgBody body;
     long n_mail, n_echo;
-    
+
     int option_index;
     static struct option long_options[] =
     {
 	{ "msg-header",   0, 0, 'm'},
-	{ "msg-text",     0, 0, 't'},	    
-	{ "short",        0, 0, 's'},	    
+	{ "msg-text",     0, 0, 't'},
+	{ "short",        0, 0, 's'},
 	{ "verbose",      0, 0, 'v'},	/* More verbose */
 	{ "help",         0, 0, 'h'},	/* Help */
 	{ 0,              0, 0, 0  }
@@ -163,10 +163,10 @@ int main(int argc, char **argv)
 
     log_file("stdout");
     log_program(PROGRAM);
-    
+
     tl_init(&tl);
     msg_body_init(&body);
-    
+
     while ((c = getopt_long(argc, argv, "mtsvh",
 			    long_options, &option_index     )) != EOF)
 	switch (c) {
@@ -180,7 +180,7 @@ int main(int argc, char **argv)
 	case 's':
 	    s_flag = TRUE;
 	    break;
-	    
+
 	/***** Common options *****/
 	case 'v':
 	    verbose++;
@@ -198,7 +198,7 @@ int main(int argc, char **argv)
      */
     if(optind == argc)
 	short_usage();
-	
+
     /* Files */
     for(; optind<argc; optind++)
     {
@@ -210,13 +210,13 @@ int main(int argc, char **argv)
 	    fp = xfopen(name, R_MODE);
 
 	n_mail = n_echo = 0;
-	
+
 	do
 	{
 	    if( pkt_get_hdr(fp, &pkt) == ERROR )
 	    {
 		printf("ERROR: %s: reading packet header\n", name);
-		if(!s_flag) 
+		if(!s_flag)
 		{
 		    printf("Partially read ");
 		    pkt_debug_hdr(stdout, &pkt, "");
@@ -236,7 +236,7 @@ int main(int argc, char **argv)
 			    "========================================"
 			    "======================================\n");
 	    }
-	    
+
 	    type = pkt_get_int16(fp);
 	    if(type == ERROR)
 	    {
@@ -292,7 +292,7 @@ int main(int argc, char **argv)
 		    /* EchoMail */
 		    n_echo++;
 		}
-		
+
 		if(m_flag)
 		    pkt_debug_msg_hdr(stdout, &msg, "");
 		if(t_flag)
@@ -302,7 +302,7 @@ int main(int argc, char **argv)
 	    }
 	}
 	while(0);
-	    
+
 	if(fp != stdin)
 	    fclose(fp);
 
@@ -313,7 +313,7 @@ int main(int argc, char **argv)
 
 	tmps_freeall();
     }
-    
+
     exit_free();
     exit(0);
 }

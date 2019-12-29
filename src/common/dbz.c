@@ -197,7 +197,7 @@ static int putconf();
 static void mybytemap();
 static of_t bytemap();
 
-/* 
+/*
  * For a program that makes many, many references to the database, it
  * is a large performance win to keep the table in core, if it will fit.
  * Note that this does hurt robustness in the event of crashes, and
@@ -901,7 +901,7 @@ datum key;
 		/* try it */
 		buffer[keysize] = '\0';		/* terminated for DEBUG */
 		(void) mapcase(buffer, buffer, keysize);
-		DEBUG(("fetch: buffer (%s) looking for (%s) size = %d\n", 
+		DEBUG(("fetch: buffer (%s) looking for (%s) size = %d\n",
 						buffer, key.dptr, keysize));
 		if (memcmp(key.dptr, buffer, cmplen) == 0 &&
 				(*sepp == conf.fieldsep || *sepp == '\0')) {
@@ -927,7 +927,7 @@ dbcfetch(key)
 datum key;
 {
     datum out;
-    
+
     out = dbzfetch(key);
     if(out.dsize)
     {
@@ -1086,7 +1086,7 @@ register struct dbzconfig *cp;
 		cp->tagmask = TAGMASK;
 		cp->tagshift = TAGSHIFT;
 		DEBUG(("getconf: defaults (%ld, %c, (0x%lx/0x%lx<<%d))\n",
-			cp->tsize, cp->casemap, cp->tagenb, 
+			cp->tsize, cp->casemap, cp->tagenb,
 			cp->tagmask, cp->tagshift));
 		return(0);
 	}

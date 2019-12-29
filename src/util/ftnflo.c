@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -64,7 +64,7 @@ int do_flo(Node *node)
     char buf[MAXPATH];
 
     del_ok = TRUE;
-    
+
     /* Open FLO file */
     if(flo_open(node, TRUE) == ERROR)
     {
@@ -159,7 +159,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] Z:N/F.P ...\n\n", PROGRAM);
     fprintf(stderr, "\
 options:  -B --binkley NAME            set Binkley-style outbound directory\n\
@@ -182,7 +182,7 @@ int main(int argc, char **argv)
     char *B_flag=NULL;
     char *c_flag=NULL;
     Node node;
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -199,7 +199,7 @@ int main(int argc, char **argv)
 
     log_program(PROGRAM);
     log_file("stderr");
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -241,7 +241,7 @@ int main(int argc, char **argv)
     /* Default: -l */
     if(!l_flag && !x_flag)
 	l_flag = TRUE;
-    
+
     /*
      * Read config file
      */
@@ -275,6 +275,6 @@ int main(int argc, char **argv)
 	do_flo(&node);
     }
 
-    exit_free();    
+    exit_free();
     return 0;
 }

@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -82,9 +82,9 @@ TmpS *tmps_alloc(size_t len)
     p->s    = (char *)xmalloc(len);
     p->len  = len;
     p->next = NULL;
-    
+
     memset(p->s, 0, len);
-    
+
     /* Put into linked list */
     if(tmps_list)
 	tmps_last->next = p;
@@ -116,7 +116,7 @@ TmpS *tmps_realloc(TmpS *s, size_t len)
 TmpS *tmps_find(char *s)
 {
     TmpS *p;
-    
+
     for(p=tmps_list; p; p=p->next)
 	if(p->s == s)
 	    /* Found */
@@ -133,7 +133,7 @@ TmpS *tmps_find(char *s)
 void tmps_free(TmpS *s)
 {
     TmpS *p, *pp;
-    
+
     p  = tmps_list;
     pp = NULL;
     while(p)
@@ -149,10 +149,10 @@ void tmps_free(TmpS *s)
 	    p->len  = 0;
 	    xfree(p->s);
 	    xfree(p);
-	    
+
 	    return;
 	}
-	
+
 	pp = p;
 	p  = p->next;
     }
@@ -171,7 +171,7 @@ void tmps_free(TmpS *s)
 void tmps_freeall(void)
 {
     TmpS *p, *pp;
-    
+
     p  = tmps_list;
     pp = NULL;
     while(p)
@@ -202,12 +202,12 @@ TmpS *tmps_printf(const char *fmt, ...)
     va_list args;
     TmpS *p;
     int n;
-    
+
     va_start(args, fmt);
 
     p = tmps_alloc(TMPS_PRINTF_BUFSIZE);
 #ifdef HAVE_SNPRINTF
-    do 
+    do
     {
 	n = vsnprintf(p->s, p->len, fmt, args);
 	/* Resize if too small */
@@ -240,10 +240,10 @@ TmpS *tmps_printf(const char *fmt, ...)
 TmpS *tmps_copy(char *s)
 {
     TmpS *p;
-    
+
     p = tmps_alloc(strlen(s)+1);
     str_copy(p->s, p->len, s);
-    
+
     return p;
 }
 
@@ -276,8 +276,8 @@ char *s_alloc(size_t len)
 char *s_realloc(char *s, size_t len)
 {
     TmpS *p;
-    
-    if( (p = tmps_find(s)) ) 
+
+    if( (p = tmps_find(s)) )
     {
 	tmps_realloc(p, len);
 	return p->s;
@@ -297,7 +297,7 @@ char *s_realloc(char *s, size_t len)
 void s_free(char *s)
 {
     TmpS *p, *pp;
-    
+
     p  = tmps_list;
     pp = NULL;
     while(p)
@@ -313,10 +313,10 @@ void s_free(char *s)
 	    p->len  = 0;
 	    xfree(p->s);
 	    xfree(p);
-	    
+
 	    return;
 	}
-	
+
 	pp = p;
 	p  = p->next;
     }
@@ -345,12 +345,12 @@ char *s_printf(const char *fmt, ...)
     va_list args;
     TmpS *p;
     int n;
-    
+
     va_start(args, fmt);
 
     p = tmps_alloc(TMPS_PRINTF_BUFSIZE);
 #ifdef HAVE_SNPRINTF
-    do 
+    do
     {
 	n = vsnprintf(p->s, p->len, fmt, args);
 	/* Resize if too small */
@@ -393,14 +393,14 @@ char *s_copy(char *s)
 char *s_stripsize(char *s)
 {
     TmpS *p;
-    
+
     p = tmps_find(s);
     if(!p)
 	/* Not found, internal error */
 	fatal("s_stripsize() internal error - freeing invalid temp string", EX_SOFTWARE);
-    
+
     tmps_realloc(p, strlen(p->s)+1);
-    
+
     return p->s;
 }
 
@@ -413,12 +413,12 @@ int testf()
 {
     s_copy("testf string 1");
     s_copy("testf string 2");
-    
+
     if(1)
 	TMPS_RETURN(255);
-    
+
     TMPS_RETURN(0);
-    
+
     return 1;
 }
 
@@ -431,8 +431,8 @@ int main(int argc, char *argv[])
     printf("Calling testf()\n");
     i = testf();
     printf("Returned from testf(), ret=%d\n", i);
-    
-    for(i=1; i<=10; i++) 
+
+    for(i=1; i<=10; i++)
     {
 	s = s_alloc(i*20);
 	str_printf(s, i*20, "temp: >%d<", i);
@@ -472,7 +472,7 @@ int main(int argc, char *argv[])
 	      16, 0xffff0000, "----------------", 3.14159265);
     s_printf("Test printf LARGE %d\n%-80s%80s%-80s---",
 	     123456, "abc", "def", "ghi");
-    
+
     printf("List of temporary strings:\n");
     for(p=tmps_list; p; p=p->next)
 	printf("    %08lx: s=%s, len=%ld, next=%08lx\n",
@@ -480,7 +480,7 @@ int main(int argc, char *argv[])
 
     printf("Expect error message\n");
     s_free(s2);
-    
+
     exit(0);
     return 0;
 }

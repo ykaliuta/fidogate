@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -41,7 +41,7 @@
 
 
 
-#define MY_AREASBBS	"FAreasBBS"    
+#define MY_AREASBBS	"FAreasBBS"
 #define MY_CONTEXT	"ff"
 
 #define MY_FILESBBS	"files.bbs"
@@ -115,18 +115,18 @@ int do_tic(int w_flag)
 
     /* Inicialize tick structure */
     tick_init(&tic);
-    
+
     /* Set pattern dor searching tic files */
     BUF_COPY(pattern, "*.tic");
 
-    
+
     dir_sortmode(DIR_SORTMTIME);
     if(dir_open(in_dir, pattern, TRUE) == ERROR)
     {
 	fglog("$ERROR: can't open directory %s", in_dir);
 	return ERROR;
     }
-    
+
     for(name=dir_get(TRUE); name; name=dir_get(FALSE))
     {
 	debug(1, "ftntick: tick file %s", name);
@@ -151,11 +151,11 @@ int do_tic(int w_flag)
 		fglog("$ERROR: can't stat() file %s", buf);
 		return EXIT_ERROR;
 	    }
-	    
+
 	    debug (4,"file: name=%s time=%ld now=%ld wait=%d",
 		    tic.file, (long)st.st_mtime, (long)now,
 		    tic_wait ? tic_wait*3600 : tic_wait);
-		    
+
 	    if (tic_wait && (now-3600*tic_wait)<st.st_mtime)
 		goto no_action;
 	    else
@@ -166,7 +166,7 @@ int do_tic(int w_flag)
 	    	    fglog("config: TickWaitAction not defined");
 		    return EXIT_ERROR;
 		}
-		if (strcmp(p,"bad")==0) 
+		if (strcmp(p,"bad")==0)
 		{
 		    debug (4,"rename to bad tic %s", name);
 		    goto rename_to_bad;
@@ -181,7 +181,7 @@ int do_tic(int w_flag)
 	}
 	else if(check_file(&tic) == ERROR)
 	    goto rename_to_bad;
-	
+
 	tick_debug(&tic, 3);
 
 	fglog("area %s file %s (%lub) from %s", tic.area, tic.file, tic.size,
@@ -246,7 +246,7 @@ int do_tic(int w_flag)
 	    rename(name, buf);
 	    fglog("%s: renamed to %s", name, buf);
 	}
-	else 
+	else
 	{
 /*
  * Write history information to database
@@ -260,7 +260,7 @@ int do_tic(int w_flag)
 	 }
 
 	 hi_init_tic_history();
-	 sprintf(buffer,"%s %s %s %lx", tic.area, znfp1(&tic.origin), tic.file, 
+	 sprintf(buffer,"%s %s %s %lx", tic.area, znfp1(&tic.origin), tic.file,
 	             tic.crc);
 	 if(hi_write(tic.date,buffer)  == ERROR)
 	    return ERROR;
@@ -274,7 +274,7 @@ int do_tic(int w_flag)
 	    if(exec_script)
 	    {
 		int ret;
-		
+
 		BUF_COPY3(buffer, exec_script, " ", name);
 
 		debug(4, "Command: %s", buffer);
@@ -289,7 +289,7 @@ int do_tic(int w_flag)
 	no_action:
 	tmps_freeall();
     }
-    
+
     dir_close();
 
     return OK;
@@ -309,7 +309,7 @@ int process_tic(Tick *tic)
     char new_name[MAXPATH];
     int is_unknown = FALSE;
     Node from_node;
-    
+
 #ifdef FECHO_PASSTHROUGHT
     char full_farea_dir[MAXPATH];
 #endif /* FECHO_PASSTHROUGHT */
@@ -332,7 +332,7 @@ int process_tic(Tick *tic)
 	from_node = tic->from;
 
 	debug(5,"unknow area %s from %s", tic->area, znfp1(&tic->from));
-	
+
 	if( unknown_tick_area &&
 	    (bbs = areasbbs_lookup(unknown_tick_area)) )
 	{
@@ -347,7 +347,7 @@ int process_tic(Tick *tic)
 	    if(autocreate_check_pass)
 		if(!check_pass(tic, TRUE))
 		    return ERROR;
-	    
+
 	    areafix_init(FALSE);
 	    areafix_auth_check(&tic->from,tic->pw, TRUE);
 
@@ -369,7 +369,7 @@ int process_tic(Tick *tic)
 		uplinks_init();
 		int_uplinks = TRUE;
 	    }
-	    
+
 	    a = uplinks_line_get(FALSE, &tic->from);
 	    if(a != NULL && a->options != NULL)
 	    {
@@ -424,9 +424,9 @@ int process_tic(Tick *tic)
 		znfp1(&tic->from)             );
 	    return ERROR;
 	}
-	
+
 #ifdef FTN_ACL
-	if ( uplink_can_be_readonly || !lon_is_uplink(&(bbs->nodes), bbs->uplinks, 
+	if ( uplink_can_be_readonly || !lon_is_uplink(&(bbs->nodes), bbs->uplinks,
 		    &(tic->from)) )
 	    if(ftnacl_isreadonly(&tic->from, bbs->area, TYPE_FECHO))
 	    {
@@ -453,13 +453,13 @@ int process_tic(Tick *tic)
 	if(tic->replaces && !cf_get_string("TickReplacedIgnore", TRUE))
 	{
 	    char *xrdir =   cf_get_string("TickReplacedDir", TRUE);
-	    
+
 #ifdef FECHO_PASSTHROUGHT
 	    if (create_flag == TRUE)
 		BUF_COPY3(old_name, full_farea_dir, "/", tic->replaces);
 	    else
-		BUF_COPY3(old_name, bbs->dir, "/", tic->replaces);		
-	    if(check_access(old_name, CHECK_FILE) == TRUE && 
+		BUF_COPY3(old_name, bbs->dir, "/", tic->replaces);
+	    if(check_access(old_name, CHECK_FILE) == TRUE &&
 		! (bbs->flags & AREASBBS_PASSTHRU))
 #else
 	    BUF_COPY3(old_name, bbs->dir, "/", tic->replaces);
@@ -484,16 +484,16 @@ int process_tic(Tick *tic)
 		else
 		    fglog("area %s file %s replaces %s, removed",
 			tic->area, tic->file, tic->replaces);
-		
+
 		/* Remove old file, no error if this fails */
 		unlink(old_name);
-		
+
 		/* Remove old file from FILES.BBS */
 		/**FIXME**/
 	    }
 	}
     }
-    
+
     /*
      * Move file from inbound to file area, add description to FILES.BBS
      */
@@ -541,18 +541,18 @@ int process_tic(Tick *tic)
 	 * Add us to Path list
 	 */
 	tick_add_path(tic);
-	
+
 	/*
 	 * Add sender to SEEN-BY if not already there
 	 */
 	if(!lon_search(&tic->seenby, &tic->from))
 	    lon_add(&tic->seenby, &tic->from);
-	
+
 	/*
 	 * We're the sender
 	 */
 	tic->from = cf_n_addr();
-	
+
 	if(!lon_search(&tic->seenby, &tic->from))
 	    lon_add(&tic->seenby, &tic->from);
 
@@ -571,7 +571,7 @@ int process_tic(Tick *tic)
 	 */
 	BUF_COPY(old_name,new_name);
 
-	if(!(new.size > 0) && create_flag == TRUE && 
+	if(!(new.size > 0) && create_flag == TRUE &&
 		bbs->flags & AREASBBS_PASSTHRU)
 	{
 	    Textlist req;
@@ -598,7 +598,7 @@ int process_tic(Tick *tic)
 		fix_name = cf_get_string("FileFixName", TRUE);
 
 		tl_appendf(&req, "%s,%s,%s,%s,-%s",
-		    znfp1(&a->uplink), a->robotname, 
+		    znfp1(&a->uplink), a->robotname,
 		    fix_name ? fix_name : areafix_name(),
 		    a->password,
 		    str_upper(tic->area));
@@ -691,11 +691,11 @@ int process_tic(Tick *tic)
             xfree(str_save);
         }
 #ifdef FECHO_PASSTHROUGHT
-	if ( bbs->flags & AREASBBS_PASSTHRU ) 
+	if ( bbs->flags & AREASBBS_PASSTHRU )
 	    unlink (new_name);
 #endif /* FECHO_PASSTHROUGHT */
     }
-    
+
     return OK;
 }
 
@@ -775,7 +775,7 @@ int move(Tick *tic, char *old, char *new, char *dir)
 	fglog("$ERROR: can't copy %s -> %s", old, new);
 	return ERROR;
     }
-    
+
 #ifndef FTNTICK_NOCRC
     /* Compute CRC again to be sure */
     crc = crc32_file(new);
@@ -786,7 +786,7 @@ int move(Tick *tic, char *old, char *new, char *dir)
 	return ERROR;
     }
 #endif /* FTNTICK_NOCRC */
-    
+
     /* o.k., now unlink file in inbound */
     if(unlink(old) == ERROR)
     {
@@ -847,7 +847,7 @@ int add_files_bbs(Tick *tic, char *dir)
 	fglog("$ERROR: can't append to %s", files_bbs);
 	return ERROR;
     }
-    
+
 #ifdef RECODE_FILE_DESC
     if (tic->desc.first)
     {
@@ -875,7 +875,7 @@ int add_files_bbs(Tick *tic, char *dir)
 #  endif /* RECODE_FILE_DESC */
 #else
 #  ifndef RECODE_FILE_DESC
-    fprintf(fp, "%-12s  %s\n", tic->file, 
+    fprintf(fp, "%-12s  %s\n", tic->file,
 	    tic->desc.first ? tic->desc.first->line : "--no description--");
 #  else
     fprintf(fp, "%-12s  %s\n", tic->file, buf);
@@ -886,7 +886,7 @@ int add_files_bbs(Tick *tic, char *dir)
 
     if(files_change_mode)
 	chmod(files_bbs, files_change_mode);
-    
+
     return OK;
 }
 
@@ -899,7 +899,7 @@ int do_seenby(LON *seenby, LON *nodes, LON *new, LON *passive, int bbsupl)
 {
     LNode *p;
     int uplinks = 1;
-    
+
     for(p=nodes->first; p; p=p->next, uplinks++)
     {
 	if(bbsupl >= uplinks)
@@ -931,7 +931,7 @@ int check_file(Tick *tic)
 #endif /* FTNTICK_NOCRC */
     char name[MAXPATH];
     char orig[MAXPATH];
-    
+
     if(!tic->file)
     {
 	fglog("ERROR: no file name");
@@ -980,8 +980,8 @@ int check_file(Tick *tic)
      */
     if(tic->date == -1)
 	tic->date = st.st_mtime;
-    
-#ifndef FTNTICK_NOCRC    
+
+#ifndef FTNTICK_NOCRC
     /*
      * File CRC
      */
@@ -997,9 +997,9 @@ int check_file(Tick *tic)
 	    return ERROR;
 	}
     }
-    
+
 #endif /* FTNTICK_NOCRC */
-    
+
     return OK;
 }
 
@@ -1020,7 +1020,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options]\n\n", PROGRAM);
     fprintf(stderr, "\
 options:  -b --fareas-bbs NAME         use alternate FAREAS.BBS\n\
@@ -1052,7 +1052,7 @@ int main(int argc, char **argv)
     char *a_flag=NULL, *u_flag=NULL;
     int w_flag = FALSE;
 
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -1072,7 +1072,7 @@ int main(int argc, char **argv)
 
     /* Set log and debug output */
     log_program(PROGRAM);
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -1094,7 +1094,7 @@ int main(int argc, char **argv)
 	case 'x':
 	    exec_script = optarg;
 	    break;
-	    
+
     	/***** Common options *****/
 	case 'v':
 	    verbose++;
@@ -1236,7 +1236,7 @@ int main(int argc, char **argv)
     ftnacl_init();
 #endif /* FTN_ACL */
 
-    
+
     /* Set lockfile in lock directoy (with wait for it released) */
     if(lock_program(PROGRAM, NOWAIT) == ERROR)
     {

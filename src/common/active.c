@@ -8,7 +8,7 @@
  *
  *****************************************************************************
  * Copyright (C) 2001-2002
- * 
+ *
  *    Dmitry Fedotov            FIDO:      2:5030/1229
  *				Internet:  dyff@users.sourceforge.net
  *
@@ -23,7 +23,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -84,7 +84,7 @@ short active_init( void ) {
     FILE *active;
     Active *p;
     char *name;
-    
+
     name = get_active_name( );
     if( name == FALSE )
 	return ERROR;

@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -75,17 +75,17 @@ int flo_openx(Node *node, int bsy, char *flav, int apmode)
     if(!flo)
 	return ERROR;
     BUF_COPY(flo_name, flo);
-    
+
     /* Create directory if necessary */
     if(bink_mkdir(node) == ERROR)
 	return ERROR;
-    
+
     /* Create BSY file */
     if(bsy)
 	if(bink_bsy_create(node, WAIT) == ERROR)
 	    return ERROR;
 
- again:    
+ again:
     /* Open FLO file for read/write */
     debug(4, "Opening FLO file, mode=%s", mode);
     flo_fp = fopen(flo_name, mode);
@@ -142,7 +142,7 @@ char *flo_gets(char *s, size_t len)
 {
     long off;
     char *ret;
-    
+
     /* Current offset */
     if( (off = ftell(flo_fp)) == -1 )
     {
@@ -161,7 +161,7 @@ char *flo_gets(char *s, size_t len)
 	    return NULL;
 	}
     }
-    
+
     /* New offset == offset of next entry line */
     if( (off = ftell(flo_fp)) == -1 )
     {
@@ -172,7 +172,7 @@ char *flo_gets(char *s, size_t len)
 
     /* Remove CR/LF */
     strip_crlf(s);
-    
+
     return ret;
 }
 
@@ -184,7 +184,7 @@ char *flo_gets(char *s, size_t len)
 int flo_close(Node *node, int bsy, int del)
 {
     int ret = OK;
-    
+
     if(flo_fp)
     {
 	if(del)
@@ -260,7 +260,7 @@ int main(int argc, char *argv[])
     char *S_flag=NULL, *L_flag=NULL;
     char mode[] = "-";
     char *line;
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -331,7 +331,7 @@ int main(int argc, char *argv[])
     printf("Contents of FLO file:\n");
     str_printf(buffer, sizeof(buffer), "cat -v %s", flo_name);
     system(buffer);
-    
+
     while( (line = flo_gets(buffer, sizeof(buffer))) )
     {
 	mode[0] = '-';
@@ -347,9 +347,9 @@ int main(int argc, char *argv[])
     printf("Modified contents of FLO file:\n");
     str_printf(buffer, sizeof(buffer), "cat -v %s", flo_name);
     system(buffer);
-    
+
     flo_close(&node, TRUE, TRUE);
-    
+
     exit(0);
 
     /**NOT REACHED**/

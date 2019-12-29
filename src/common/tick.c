@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -101,7 +101,7 @@ int tick_put(Tick *tic, char *name, mode_t mode)
     FILE *fp;
     LNode *p;
     Textline *pl;
-    
+
 
     if(!creat(name, mode))
     {
@@ -114,7 +114,7 @@ int tick_put(Tick *tic, char *name, mode_t mode)
 
 //    if(chmod(name, mode) == -1)
 //	fglog("WARNING: can't change mode for file %s (%s)", name, strerror(errno));
-    
+
     fprintf(fp, "Area %s\r\n", tic->area);
     fprintf(fp, "Origin %s\r\n", znf1(&tic->origin));
     fprintf(fp, "From %s\r\n", znf1(&tic->from));
@@ -134,7 +134,7 @@ int tick_put(Tick *tic, char *name, mode_t mode)
     for(p=tic->seenby.first; p; p=p->next)
 	fprintf(fp, "Seenby %s\r\n", znf1(&p->node));
     fprintf(fp, "Pw %s\r\n", tic->pw);
-    
+
     return fclose(fp);
 }
 
@@ -148,9 +148,9 @@ int tick_get(Tick *tic, char *name)
     FILE *fp;
     char *key, *arg;
     Node node;
-    
+
     tick_delete(tic);
-    
+
     if((fp = fopen(name, R_MODE)) == NULL)
     {
 	fglog("$WARNING: can't open file %s for reading (%s)", name, strerror(errno));
@@ -160,7 +160,7 @@ int tick_get(Tick *tic, char *name)
     while(fgets(buffer, sizeof(buffer), fp))
     {
 	strip_crlf(buffer);
-	
+
 	key = strtok(buffer, " \t");		/* Keyword */
 	arg = strtok(NULL  , "");		/* Arg(s) */
 
@@ -168,95 +168,95 @@ int tick_get(Tick *tic, char *name)
 	    continue;
 	if(!arg)
 	    arg = "";
-	
+
 	if(! stricmp(key, "Origin"))
 	{
 	    if(asc_to_node(arg, &node, FALSE) == OK)
 		tic->origin = node;
 	}
-	
+
 	if(! stricmp(key, "From"))
 	{
 	    if(asc_to_node(arg, &node, FALSE) == OK)
 		tic->from = node;
 	}
-	
+
 	if(! stricmp(key, "Area"))
 	{
 	    tic->area = strsave(arg);
 	    str_upper(tic->area);
 	}
-	
+
 	if(! stricmp(key, "File"))
 	{
 	    tic->file = strsave(arg);
 	    str_lower(tic->file);
 	}
-	
+
 	if(! stricmp(key, "Replaces"))
 	{
 	    tic->replaces = strsave(arg);
 	    str_lower(tic->replaces);
 	}
-	
+
 	if(! stricmp(key, "Desc"))
 	{
 	    if(!*arg)
 		arg = "--no description--";
 	    tl_append(&tic->desc, arg);
 	}
-	
+
 	if(! stricmp(key, "LDesc"))
 	{
 	    tl_append(&tic->ldesc, arg);
 	}
-	
+
 	if(! stricmp(key, "CRC"))
 	{
 	    sscanf(arg, "%lx", &tic->crc);
 	}
-	
+
 	if(! stricmp(key, "Created"))
 	{
 	    tic->created = strsave(arg);
 	}
-	
+
 	if(! stricmp(key, "Size"))
 	{
 	    tic->size = atol(arg);
 	}
-	
+
 	if(! stricmp(key, "Path"))
 	{
 	    tl_append(&tic->path, arg);
 	}
-	
+
 	if(! stricmp(key, "Seenby"))
 	{
 	    lon_add_string(&tic->seenby, arg);
 	}
-	
+
 	if(! stricmp(key, "Pw"))
 	{
 	    tic->pw = strsave(arg);
 	}
-	
+
 	if(! stricmp(key, "Release"))
 	{
 	    tic->release = atol(arg);
 	}
-	
+
 	if(! stricmp(key, "Date"))
 	{
 	    tic->date = atol(arg);
 	}
-	
+
 	if(! stricmp(key, "App"))
 	{
 	    tl_append(&tic->app, arg);
 	}
     }
-    
+
     fclose(fp);
     return OK;
 }
@@ -270,7 +270,7 @@ void tick_debug(Tick *tic, int lvl)
 {
     Textline *pl;
     LNode *p;
-    
+
     debug(lvl, "Origin 	 : %s", znfp1(&tic->origin));
     debug(lvl, "From   	 : %s", znfp1(&tic->from));
     debug(lvl, "To     	 : %s", znfp1(&tic->to));
@@ -347,7 +347,7 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
      * Attach file
      */
     debug(4, "attach %s (%s)", name, flav);
-    
+
 #ifndef FECHO_PASSTHROUGHT
     if(bink_attach(node, 0, name, flav, TRUE) == ERROR)
     {
@@ -355,7 +355,7 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
 	return ERROR;
     }
 #else
-    if (type==1) 
+    if (type==1)
     {
 	if(!pass_path)
 	{
@@ -366,7 +366,7 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
 	str_printf(buffer, sizeof(buffer), "%s/%d.%d.%d.%d",
 	       pass_path, node->zone, node->net, node->node,
 	           node->point);
-	    
+
 	if(mkdir_r(buffer, DIR_MODE) == ERROR)
 	{
 	    fglog("$WARNING: can't create dir %s", buffer);
@@ -421,7 +421,7 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
 	return ERROR;
     }
 #endif /* !FECHO_PASSTHROUGHT */
-    
+
     /*
      * Get password
      */
@@ -467,8 +467,8 @@ int tick_send(Tick *tic, Node *node, char *name, mode_t mode)
 	fglog("ERROR: tick_put() return -1");
 	return ERROR;
     }
-    
-#ifndef USE_FILEBOX    
+
+#ifndef USE_FILEBOX
     /*
      * Attach TIC
      */
@@ -506,7 +506,7 @@ int copy_file(char *old, char *new, char *dir)
 {
     FILE *fold, *fnew;
     int nr, nw;
-    
+
     /* Open */
     if( (fold = fopen(old, R_MODE)) == NULL)
     {
@@ -526,7 +526,7 @@ int copy_file(char *old, char *new, char *dir)
     }
 
     /* Copy */
-    do 
+    do
     {
 	nr = fread(buffer, sizeof(char), sizeof(buffer), fold);
 	if(ferror(fold))
@@ -537,7 +537,7 @@ int copy_file(char *old, char *new, char *dir)
 	    unlink(new);
 	    return ERROR;
 	}
-	
+
 	nw = fwrite(buffer, sizeof(char), nr, fnew);
 	if(nw != nr)
 	{
@@ -549,7 +549,7 @@ int copy_file(char *old, char *new, char *dir)
 	}
     }
     while(!feof(fold));
-    
+
     /* Close */
     fclose(fold);
     fclose(fnew);

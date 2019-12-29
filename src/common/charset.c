@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -70,7 +70,7 @@ CharsetTable *charset_table_new(void)
     p = (CharsetTable *)xmalloc(sizeof(CharsetTable));
     memset(p, 0, sizeof(CharsetTable));
     p->next = NULL;			/* Just to be sure */
-    
+
     /* Put into linked list */
     if(charset_table_list)
 	charset_table_last->next = p;
@@ -94,7 +94,7 @@ CharsetAlias *charset_alias_new(void)
     p = (CharsetAlias *)xmalloc(sizeof(CharsetAlias));
     memset(p, 0, sizeof(CharsetAlias));
     p->next = NULL;			/* Just to be sure */
-    
+
     /* Put into linked list */
     if(charset_alias_list)
 	charset_alias_last->next = p;
@@ -115,9 +115,9 @@ int charset_write_bin(char *name)
     FILE *fp;
     CharsetTable *pt;
     CharsetAlias *pa;
-    
+
     debug(14, "Writing charset.bin file %s", name);
-    
+
     fp = fopen_expand_name(name, W_MODE, FALSE);
     if(!fp)
 	return ERROR;
@@ -162,7 +162,7 @@ int charset_read_bin(char *name)
     CharsetAlias *pa;
 
     debug(14, "Reading charset.bin file %s", name);
-    
+
     fp = fopen_expand_name(name, R_MODE, TRUE);
 
     while( (c = fgetc(fp)) != EOF )
@@ -190,7 +190,7 @@ int charset_read_bin(char *name)
 	    break;
 	}
     }
-    
+
     if(ferror(fp))
 	return ERROR;
     fclose(fp);
@@ -207,7 +207,7 @@ static char *charset_qpen(int c, int qp)
     static char buf[4];
 
     c &= 0xff;
-    
+
     if( qp && (c == '=' || c >= 0x80) )
 	str_printf(buf, sizeof(buf), "=%2.2X", c & 0xff);
     else
@@ -215,7 +215,7 @@ static char *charset_qpen(int c, int qp)
 	buf[0] = c;
 	buf[1] = 0;
     }
-    
+
     return buf;
 }
 
@@ -228,10 +228,10 @@ char *charset_map_c(int c, int qp)
 {
     static char buf[MAX_CHARSET_OUT * 4];
     char *s;
-    
+
     c &= 0xff;
     buf[0] = 0;
-    
+
     if(charset_table_used && c>=0x80)
     {
 	s = charset_table_used->map[c - 0x80];
@@ -292,7 +292,7 @@ void charset_set_in_out(char *in, char *out)
 
     orig_in = in;
     orig_out = out;
-    
+
     /* Search for aliases */
     for(pa = charset_alias_list; pa; pa=pa->next)
     {
@@ -425,7 +425,7 @@ static void charset_name_map_init(void)
  */
 void charset_init(void)
 {
-    if(charset_read_bin( cf_p_charsetmap() ) == ERROR) 
+    if(charset_read_bin( cf_p_charsetmap() ) == ERROR)
     {
 	fglog("ERROR: reading from %s", cf_p_charsetmap());
 	exit(EX_SOFTWARE);
@@ -477,7 +477,7 @@ char *charset_chrs_name(char *s)
     static char name[MAXPATH];
     char *p;
     int level;
-    
+
     while(is_space(*s))
 	s++;
     debug(5, "FSC-0054 ^ACHRS/CHARSET: %s", s);
@@ -521,23 +521,23 @@ int main(int argc, char *argv[])
 {
     char *in  = "ibmpc";
     char *out = "iso-8859-1";
-    
-    if(argc < 2) 
+
+    if(argc < 2)
     {
 	fprintf(stderr, "usage: testcharset CHARSET.BIN [IN] [OUT]\n");
 	exit(EXIT_ERROR);
     }
-    
+
     verbose = 15;
 
 /*    charset_init(); */
-    
-    if(charset_read_bin(argv[1]) == ERROR) 
+
+    if(charset_read_bin(argv[1]) == ERROR)
     {
 	fprintf(stderr, "testcharset: can't read %s\n", argv[1]);
 	exit(EXIT_ERROR);
     }
-    
+
     if(argc > 2)
 	in = argv[2];
     if(argc > 3)
@@ -553,11 +553,11 @@ int main(int argc, char *argv[])
 
 	if(buffer[0] == '\n')
 	    break;
-	
+
 	printf("qp=FALSE  : %s\n", charset_map_c(buffer[0], FALSE));
 	printf("qp=TRUE   : %s\n", charset_map_c(buffer[0], TRUE ));
     }
-    
+
     exit(EXIT_OK);}
 #endif /**TEST**/
 

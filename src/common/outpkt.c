@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -97,7 +97,7 @@ OutPkt *outpkt_new(Node *from, Node *to)
     else
 	outpkt_first      = p;
     outpkt_last       = p;
-    
+
     return p;
 }
 
@@ -133,19 +133,19 @@ long outpkt_sequencer(void)
 void outpkt_names(OutPkt *p, int grade, int type, int flav, int bad)
 {
     long n = outpkt_sequencer();
-    
+
     /* Set fields */
     p->flav  = flav;
     p->type  = type;
     p->grade = grade;
     p->bad   = bad;
-    
+
     /* Names */
-    outpkt_outputname(buffer, 
+    outpkt_outputname(buffer,
 		      bad ? pkt_get_baddir() : pkt_get_outdir(),
 		      grade, type, flav, n, "pkt");
     p->outname = strsave(buffer);
-    outpkt_outputname(buffer, 
+    outpkt_outputname(buffer,
 		      bad ? pkt_get_baddir() : pkt_get_outdir(),
 		      grade, type, flav, n, "tmp");
     p->tmpname = strsave(buffer);
@@ -195,7 +195,7 @@ static int outpkt_close_ln(void)
     }
     else
 	ret = ERROR;
-    
+
     return ret;
 }
 
@@ -204,7 +204,7 @@ static int outpkt_close_ln(void)
 /*
  * Open file for output packet. If the max number of open files
  * exceeded, this function closes an old packet file. NULL is
- * returned when this doesn't suceed, either. 
+ * returned when this doesn't suceed, either.
  */
 static FILE *outpkt_fopen(char *name, char *mode)
 {
@@ -268,11 +268,11 @@ FILE *outpkt_open(Node *from, Node *to,
 	fglog("$failed to open packet %s", p->tmpname);
 	return NULL;
     }
-    
+
     debug(2, "New packet %s (%s): %s -> %s",
 	  p->outname, p->tmpname,
 	  znfp1(&p->from), znfp2(&p->to)    );
-    
+
     pkt.from = p->from;
     pkt.to   = p->to;
     pkt.time = time(NULL);
@@ -301,7 +301,7 @@ FILE *outpkt_open(Node *from, Node *to,
 void outpkt_close(void)
 {
     OutPkt *p, *pn;
-    
+
     for(p=outpkt_first; p; )
     {
 	pn = p->next;
@@ -325,19 +325,19 @@ void outpkt_close(void)
 	    if(rename(p->tmpname, p->outname) == ERROR)
 		debug(3, "Rename failed");
 	}
-	
+
 	/* Delete OutPkt entry */
 	xfree(p->tmpname);
 	xfree(p->outname);
 	xfree(p);
-	
+
 	p = pn;
     }
 
     outpkt_first = NULL;
     outpkt_last  = NULL;
     outpkt_nopen = 0;			/* Just to be sure ... */
-    
+
     return;
 }
 
@@ -350,18 +350,18 @@ int outpkt_netmail(Message *msg, Textlist *tl, char *program, char *origin,
 		    char *tearline)
 {
     FILE *fp;
-    
+
     /* If from node is default, use aka for to zone */
     cf_set_best(msg->node_to.zone, msg->node_to.net, msg->node_to.node);
 
     if(msg->node_from.zone == 0)
 	msg->node_from = cf_n_addr();
-    
+
     /* Open outpkt packet */
     fp = outpkt_open(&msg->node_from, &msg->node_to, '0', '0', '0', FALSE);
     if(!fp)
 	return ERROR;
-    
+
     /* Write message header */
     pkt_put_msg_hdr(fp, msg, TRUE);
     /* Additional kludges */

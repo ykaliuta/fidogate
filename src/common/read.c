@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -44,7 +44,7 @@ char *read_line(char *buf, int n, FILE *stream)
 {
     int c;
     char *s;
-    
+
     if(n <= 1)
 	return NULL;
     if(read_size!=-1 && read_size<=0)
@@ -74,7 +74,7 @@ char *read_line(char *buf, int n, FILE *stream)
 	    return buf;
 	}
     }
-    
+
     *s = 0;
     return buf;
 }
@@ -87,14 +87,14 @@ long read_rnews_size(FILE *stream)
 {
     char buffer[32];
     long n;
-    
+
     if(!fgets(buffer, sizeof(buffer), stream))
 	return 0;
     if(buffer[0]!='#' && strlen(buffer)<10)
 	return -1;
     if(strncmp(buffer, "#! rnews ", 9))
 	return -1;
-    
+
     n = atol(buffer + 9);
     if(n > 0)
     {
@@ -119,14 +119,14 @@ int main(int argc, char *argv[])
     char test[16];
     char buffer[16];
     int i;
-    
+
     memset(test, 0, sizeof(test));
-    
+
     while(read_line(buffer, sizeof(buffer), stdin))
     {
 	printf("n=%d buffer=<%s>\n", strlen(buffer), buffer);
     }
-    
+
     for(i=0; i<sizeof(test); i++)
 	if(test[i])
 	    printf("Error - overwrite!\n");
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
 	printf("size=%ld ", n);
 	lines = 0;
 	articles++;
-	
+
 	while(read_line(buffer, sizeof(buffer), stdin))
 	    if(buffer[strlen(buffer) - 1] == '\n')
 		lines++;

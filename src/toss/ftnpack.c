@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -63,7 +63,7 @@ int bundle_disp;
 
 
 /* "noarc" packer program */
-static ArcProg noarc = 
+static ArcProg noarc =
 {
     PACK_ARC, "noarc", NULL, NULL
 };
@@ -140,7 +140,7 @@ int parse_pack(char *s)
 	return PACK_LAC;
     if(!stricmp(s, "unarc"))
 	return 0;
-    
+
     return ERROR;
 }
 
@@ -152,7 +152,7 @@ int parse_pack(char *s)
 ArcProg *parse_arc(char *s)
 {
     ArcProg *p;
-    
+
     for(p=arcprog_first; p; p=p->next)
 	if(!stricmp(p->name, s))
 	    return p;
@@ -168,7 +168,7 @@ void new_arc(int cmd)
 {
     char *name, *prog;
     ArcProg *a;
-    
+
     name = xstrtok(NULL, " \t");
     prog = xstrtok(NULL, " \t");
     if(!name || !prog)
@@ -176,7 +176,7 @@ void new_arc(int cmd)
 	fglog("packing: missing argument for arc/prog definition");
 	return;
     }
-    
+
     /* Create new entry and put into list */
     a = (ArcProg *)xmalloc(sizeof(ArcProg));
     a->pack = cmd;
@@ -189,7 +189,7 @@ void new_arc(int cmd)
     else
 	arcprog_first      = a;
     arcprog_last = a;
-	
+
     debug(15, "packing: pack=%c name=%s prog=%s",
 	  a->pack, a->name, a->prog             );
 }
@@ -294,12 +294,12 @@ Packing *packing_parse_line(char *buf)
     }
     else
 	a = NULL;
-    
+
     /* List of nodes follows */
     node_invalid(&old);
     old.zone = cf_zone();
     lon_init(&lon);
-	
+
     p = xstrtok(NULL, " \t=");
     if(!stricmp(p, "size"))
     {
@@ -325,7 +325,7 @@ Packing *packing_parse_line(char *buf)
 	    old = node;
 	    lon_add(&lon, &node);
 	}
-	    
+
 	p = xstrtok(NULL, " \t");
     }
 
@@ -339,7 +339,7 @@ Packing *packing_parse_line(char *buf)
     r->next  = NULL;
     if(!r->maxarc)
 	r->maxarc = ma;
-	
+
     debug(15, "packing: pack=%c dir=%s arc=%s type=%c, maxarc=%ld",
 	  r->pack, r->dir ? r->dir : "", (r->arc ? r->arc->name : NULL), r->type,
 	  r->maxarc);
@@ -363,7 +363,7 @@ int packing_do_file(char*name)
 	r = packing_parse_line(buffer);
 	if(!r)
 	    continue;
-	
+
 	/* Put into linked list */
 	if(packing_first)
 	    packing_last->next = r;
@@ -402,7 +402,7 @@ char *arcmail_name(Node *node, char *dir)
 
     if (cf_get_string("AmigaStyleOutbound", TRUE) != NULL)
 	aso = TRUE;
-    
+
     cf_set_zone(node->zone);
 
     if(dir)
@@ -419,7 +419,7 @@ char *arcmail_name(Node *node, char *dir)
 	    base = cf_zones_out(0);
 	else
 	    base = cf_zones_out(node->zone);
-	
+
 	if (base == NULL)
 		return NULL;
 	BUF_COPY4(buf, cf_p_btbasedir(), "/", base, "/");
@@ -448,7 +448,7 @@ char *arcmail_name(Node *node, char *dir)
 	{
 	    d1 = 0;
 	    d2 = (cf_main_addr()->point - node->point) & 0xffff;
-	    
+
 	    if(dir)
 		str_printf(base, rest, "%04x%04x.%s", d1, d2, wk );
 	    else
@@ -459,11 +459,11 @@ char *arcmail_name(Node *node, char *dir)
 	{
 	    d1 = (cf_main_addr()->net  - node->net ) & 0xffff;
 	    d2 = (cf_main_addr()->node - node->node) & 0xffff;
-	    
+
 	    str_printf(base, rest, "%04x%04x.%s", d1, d2, wk);
 	}
     }
-    
+
     return buf;
 }
 
@@ -476,7 +476,7 @@ char *packing_pkt_name(char *dir, char *name)
 {
     static char buf[MAXPATH];
     char *p;
-    
+
 #if 0
     /* Return nnnnnnnn.pkt in dir */
     str_printf(buf, sizeof(buf), "%s/%08ld.pkt",
@@ -490,7 +490,7 @@ char *packing_pkt_name(char *dir, char *name)
     else
 	p++;
     BUF_COPY3(buf, (dir ? dir : out_dir), "/", p);
-    
+
     return buf;
 }
 
@@ -522,11 +522,11 @@ int arcmail_search(char *name, long max_arc, long psize)
     }
 
     cc = C[0];
-    
+
     for(c = last_arcmail_chars; c >= 0; c--)
     {
 	*p = C[c];
-	
+
 	if(check_access(name, CHECK_FILE) == TRUE)	/* Found it */
 	{
 	    if( (size = check_size(name)) == ERROR )
@@ -603,20 +603,20 @@ int do_arcmail(char *name, Node *arcnode, Node *flonode,
 {
     char *arcn, *pktn;
     int ret;
-    
+
     arcn = arcmail_name(arcnode, dir);
     pktn = packing_pkt_name(NULL, name);
     if(!arcn)
 	return ERROR;
     if(arcmail_search(arcn, max_arc, check_size(pktn)) == ERROR)
 	return ERROR;
-    
+
     if(bink_mkdir(arcnode) == ERROR)
     {
 	fglog("ERROR: can't create outbound dir");
 	return ERROR;
     }
-    
+
     debug(4, "Archiving %s for %s arc", name, znfp1(arcnode));
     debug(4, "    Packet  name: %s", pktn);
     debug(4, "    Archive name: %s", arcn);
@@ -641,8 +641,8 @@ int do_arcmail(char *name, Node *arcnode, Node *flonode,
 	    return ERROR;
 	}
     }
-    
-    
+
+
     str_printf(buffer, sizeof(buffer), prog, arcn, pktn);
     debug(4, "Command: %s", buffer);
     ret = run_system(buffer);
@@ -702,7 +702,7 @@ int do_noarc(char *name, Node *flonode,
 	fclose(pkt_file);
 	TMPS_RETURN(ERROR);
     }
-    
+
     tl_init(&tl);
 
     /*
@@ -760,7 +760,7 @@ int do_noarc(char *name, Node *flonode,
 			fglog("file attach %s (%ldb) for %s",
 			    fa_name, sz, znfp1(&desc->to));
 		}
-		else if (file_attach_action==1) 
+		else if (file_attach_action==1)
 			    unlink(fa_name);
 	    }
 	    /* File attachments from inbound directory */
@@ -810,7 +810,7 @@ int do_noarc(char *name, Node *flonode,
 	    fclose(pkt_file);
 	    TMPS_RETURN(ERROR);
 	}
-	
+
 	tmps_freeall();
     } /**while**/
 
@@ -825,7 +825,7 @@ int do_noarc(char *name, Node *flonode,
 	fglog("$ERROR: can't remove packet %s", name);
 	TMPS_RETURN(ERROR);
     }
-    
+
     TMPS_RETURN(OK);
 }
 
@@ -837,7 +837,7 @@ int do_noarc(char *name, Node *flonode,
 int do_prog(char *name, PktDesc *desc, Packing *pack)
 {
     int ret;
-    
+
     debug(4, "Processing %s", name);
 
     str_printf(buffer, sizeof(buffer), pack->arc->prog, name);
@@ -882,10 +882,10 @@ int do_pack(PktDesc *desc, char *name, FILE *file, Packing *pack)
 {
     int ret = OK;
     Node arcnode, flonode;
-    
+
     arcnode = desc->to;
     flonode = desc->to;
-    
+
     if(pack->pack == PACK_ROUTE)
     {
 	/* New archive node */
@@ -902,7 +902,7 @@ int do_pack(PktDesc *desc, char *name, FILE *file, Packing *pack)
     /* Set all -1 values to 0 */
     set_zero(&arcnode);
     set_zero(&flonode);
-    
+
 
     if(node_eq(&arcnode, &flonode) &&
        bink_bsy_create(&flonode, NOWAIT) == ERROR)
@@ -913,7 +913,7 @@ int do_pack(PktDesc *desc, char *name, FILE *file, Packing *pack)
 /*	bink_bsy_delete(&arcnode); */
 	return OK;			/* This is o.k. */
     }
-       
+
     /* Do the various pack functions */
     if(pack->arc && pack->arc->pack==PACK_ARC)
     {
@@ -952,12 +952,12 @@ int do_pack(PktDesc *desc, char *name, FILE *file, Packing *pack)
 	    check_size(name), znfp1(&desc->to), pack->arc->name);
 	ret = do_prog(name, desc, pack);
     }
-    
+
     /* Delete BSY file */
     bink_bsy_delete(&arcnode);
     if(!node_eq(&arcnode, &flonode))
 	bink_bsy_delete(&flonode);
-    
+
     return ret;
 }
 
@@ -971,14 +971,14 @@ int do_dirpack(PktDesc *desc, char *name, FILE *file, Packing *pack)
     int ret = OK;
     Node arcnode, flonode;
     char *pktn;
-    
+
     arcnode = desc->to;
     flonode = desc->to;
-    
+
     /* Set all -1 values to 0 */
     set_zero(&arcnode);
     set_zero(&flonode);
-    
+
     /* Create BSY file(s) */
     if(bink_bsy_create(&arcnode, NOWAIT) == ERROR)
     {
@@ -1010,10 +1010,10 @@ int do_dirpack(PktDesc *desc, char *name, FILE *file, Packing *pack)
 	pktn = packing_pkt_name(pack->dir, name);
 	ret = do_noarc(name, &flonode, desc, file, pktn);
     }
-    
+
     /* Delete BSY file */
     bink_bsy_delete(&arcnode);
-    
+
     return ret;
 }
 
@@ -1043,17 +1043,17 @@ int do_packing(char *name, FILE *fp, Packet *pkt)
 	pktdesc.type  = '-';
 #endif /* DO_NOT_TOSS_NETMAIL */
 	pktdesc.flav  = FLAV_NORMAL;
-	
+
 	desc = &pktdesc;
     }
-    else 
+    else
     {
 	/* Parse description from filename */
 	desc = parse_pkt_name(name, &pkt->from, &pkt->to);
 	if(desc == NULL)
 	    TMPS_RETURN(ERROR);
     }
-    
+
     debug(2, "Packet: from=%s to=%s grade=%c type=%c flav=%c",
 	  znfp1(&desc->from), znfp2(&desc->to),
 	  desc->grade, desc->type, desc->flav);
@@ -1062,7 +1062,7 @@ int do_packing(char *name, FILE *fp, Packet *pkt)
      * Search for matching packing commands
      */
     for(r=packing_first; r; r=r->next)
-	if (desc->type == r->type) 
+	if (desc->type == r->type)
 	{
 	    for(p=r->nodes.first; p; p=p->next)
 		if(node_match(&desc->to, &p->node))
@@ -1100,10 +1100,10 @@ int do_file(char *pkt_name)
         fglog("ERROR: reading header from %s", pkt_name);
         TMPS_RETURN(severe_error);
     }
-    
-    
+
+
     /* Pack it */
-    if(do_packing(pkt_name, pkt_file, &pkt) == ERROR) 
+    if(do_packing(pkt_name, pkt_file, &pkt) == ERROR)
     {
 	fglog("ERROR: processing %s", pkt_name);
 	TMPS_RETURN(severe_error);
@@ -1122,7 +1122,7 @@ void prog_signal(int signum)
     char *name = "";
 
     signal_exit = TRUE;
-    
+
     switch(signum)
     {
     case SIGHUP:
@@ -1154,7 +1154,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] [packet ...]\n\n", PROGRAM);
     fprintf(stderr, "\
 options: -B --binkley NAME            set Binkley outbound directory\n\
@@ -1188,7 +1188,7 @@ int main(int argc, char **argv)
     char *a_flag=NULL, *u_flag=NULL;
     char *pkt_name;
     char pattern[16];
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -1201,7 +1201,7 @@ int main(int argc, char **argv)
 	{ "packing-file", 1, 0, 'p'},	/* Set packing file */
 	{ "maxarc",       1, 0, 'm'},	/* Set max archive size */
 	{ "pkt",          0, 0, 'P'},	/* Process .pkt's */
-	
+
 	{ "verbose",      0, 0, 'v'},	/* More verbose */
 	{ "help",         0, 0, 'h'},	/* Help */
 	{ "config",       1, 0, 'c'},	/* Config file */
@@ -1211,7 +1211,7 @@ int main(int argc, char **argv)
     };
 
     log_program(PROGRAM);
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -1247,7 +1247,7 @@ int main(int argc, char **argv)
 	case 'P':
 	    pkt_flag = TRUE;
 	    break;
-	    
+
 	/***** Common options *****/
 	case 'v':
 	    verbose++;
@@ -1287,7 +1287,7 @@ int main(int argc, char **argv)
 	cf_set_uplink(u_flag);
 
     cf_debug();
-    
+
     /*
      * Process optional config statements
      */
@@ -1323,20 +1323,20 @@ int main(int argc, char **argv)
 
 
     ret = EXIT_OK;
-    
+
     if(optind >= argc)
     {
 	if(pkt_flag)
 	{
 	    BUF_COPY(pattern, "*.pkt");
 	}
-	else 
+	else
 	{
 	    BUF_COPY(pattern, "????????.pkt");
 	    if(g_flag)
 		pattern[0] = g_flag;
 	}
-	
+
 	/* Lock file */
 	if(l_flag)
 	    if(lock_program(PROGRAM, NOWAIT) == ERROR)
@@ -1352,7 +1352,7 @@ int main(int argc, char **argv)
 	    fglog("$ERROR: can't open directory %s", in_dir);
 	    ret = EX_OSERR;
 	}
-	else 
+	else
 	{
 	    for(pkt_name=dir_get(TRUE); pkt_name; pkt_name=dir_get(FALSE))
 	    {
@@ -1365,7 +1365,7 @@ int main(int argc, char **argv)
 	    }
 	    dir_close();
 	}
-	
+
 	/* Lock file */
 	if(l_flag)
 	    unlock_program(PROGRAM);
@@ -1379,7 +1379,7 @@ int main(int argc, char **argv)
 		exit_free();
 		return EXIT_BUSY;
 	    }
-	
+
 	/* Process packet files on command line */
 	for(; optind<argc; optind++)
 	{
@@ -1390,12 +1390,12 @@ int main(int argc, char **argv)
 	    }
 	    tmps_freeall();
 	}
-	
+
 	/* Lock file */
 	if(l_flag)
 	    unlock_program(PROGRAM);
     }
-    
+
     exit_free();
     return ret;
 }

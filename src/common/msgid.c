@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -58,9 +58,9 @@ static void msgid_fts9_quote(char *d, char *s, int n)
 {
     int i=0;
     int must_quote=FALSE;
-    
+
     must_quote = strchr(s, ' ') || strchr(s, '\"');	/* " */
-    
+
     if(must_quote)
 	d[i++] = '\"';					/* " */
     for(; i<n-3 && *s; i++, s++)
@@ -107,7 +107,7 @@ static void msgid_mime_quote(char *d, char *s, int n)
 static char *msgid_domain(int zone)
 {
     char *d;
-    
+
     d = zone>=1 && zone<=6 ? MSGID_FIDONET_DOMAIN : cf_zones_inet_domain(zone);
     if(*d == '.')
 	d++;
@@ -130,7 +130,7 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail, char *ref_line)
     TmpS *tmps;
 
     save = strsave(msgid);
-    
+
     /*
      * Retrieve `origaddr' part
      */
@@ -188,7 +188,7 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail, char *ref_line)
 	if(lock_program(cf_p_lock_history(), FALSE) == ERROR)
 	    return NULL;
 	if(hi_init_dbc() == ERROR)
-	    return NULL; 
+	    return NULL;
 	s = hi_fetch(msgid, 0);
 	hi_close();
 	unlock_program(cf_p_lock_history());
@@ -214,7 +214,7 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail, char *ref_line)
 	    *pzone = -2;
 	return tmps->s;
     }
-    
+
 
     /***** FTN-style *****/
 
@@ -236,19 +236,19 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail, char *ref_line)
 	if(pzone)
 	    *pzone = -1;
     }
-    
+
     /*
      * New-style FTN Message-IDs using MIME quoted-printable
      */
     tmps = tmps_alloc(2*MAXINETADDR);
-    
+
     str_copy(tmps->s, tmps->len, "<MSGID_");
     msgid_mime_quote(tmps->s + strlen(tmps->s), msgid,
 		     tmps->len - strlen(tmps->s));
     str_append(tmps->s, tmps->len, "@");
     str_append(tmps->s, tmps->len, msgid_domain(zone));
     str_append(tmps->s, tmps->len, ">");
-    
+
     xfree(save);
     return tmps->s;
 }
@@ -330,7 +330,7 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
     }
     *host++ = 0;
     p = strchr(host, '>');
-    if(!p)  
+    if(!p)
     {
 	xfree(savep);
 	return NULL;
@@ -372,7 +372,7 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
 	    /* Pad with leading 0's */
 	    str_copy(hexid, sizeof(hexid), "00000000");
 	    str_copy(hexid+8-strlen(id), sizeof(hexid)-8+strlen(id), id);
-	    
+
 	    /* host must be an FTN address */
 	    if( (n = inet_to_ftn(host)) )
 	    {

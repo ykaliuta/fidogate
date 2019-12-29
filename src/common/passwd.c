@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -72,15 +72,15 @@ static Passwd *passwd_parse_line(char *buf)
     }
     if(!w)
 	return NULL;
-    
+
     p = (Passwd *)xmalloc(sizeof(Passwd));
-    
+
     p->context = strsave(c);
     asc_to_node(n, &p->node, FALSE);
     p->passwd  = strsave(w);
     p->args    = r ? strsave(r) : NULL;
     p->next    = NULL;
-    
+
     debug(15, "passwd: %s %s %s", p->context,
 	  znfp1(&p->node), p->passwd);
 
@@ -92,9 +92,9 @@ static int passwd_do_file(char *name)
 {
     FILE *fp;
     Passwd *p;
-    
+
     debug(14, "Reading passwd file %s", name);
-    
+
     fp = fopen_expand_name(name, R_MODE_T, FALSE);
     if(!fp)
 	return ERROR;
@@ -104,7 +104,7 @@ static int passwd_do_file(char *name)
 	p = passwd_parse_line(buffer);
 	if(!p)
 	    continue;
-	
+
 	/*
 	 * Put into linked list
 	 */
@@ -114,7 +114,7 @@ static int passwd_do_file(char *name)
 	    passwd_list       = p;
 	passwd_last       = p;
     }
-    
+
     fclose(fp);
 
     return OK;
@@ -134,18 +134,18 @@ void passwd_init(void)
 Passwd *passwd_lookup(char *context, Node *node)
 {
     Passwd *p;
-    
+
     for(p=passwd_list; p; p=p->next)
 	if(!strcmp(context, p->context) && node_eq(node, &p->node))
 	    return p;
-    
+
     return NULL;
 }
 
 void passwd_free(void)
 {
     Passwd *p, *n;
-    
+
     for(p=passwd_list; p; p=n)
     {
 	n = p->next;

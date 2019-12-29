@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -54,7 +54,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] Z:N/F.P file ...\n\n", PROGRAM);
     fprintf(stderr, "\
 options:  -B --binkley NAME            set Binkley-style outbound directory\n\
@@ -96,10 +96,10 @@ int main(int argc, char **argv)
     };
 
     Node node;
-    
+
     log_program(PROGRAM);
     log_file("stderr");
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -189,14 +189,14 @@ int main(int argc, char **argv)
 	}
 	else
 	    mode = 0;
-	
+
 	if(bink_attach(&node, mode, name, F_flag, TRUE) == ERROR)
 	{
 	    exit_free();
 	    return 1;
 	}
     }
-    
+
     exit_free();
     return 0;
 }

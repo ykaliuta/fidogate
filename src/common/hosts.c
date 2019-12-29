@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -66,18 +66,18 @@ static Host *hosts_parse_line(char *buf)
 
     char *f, *n, *o;
     Node node;
-	
+
     f = strtok(buf,  " \t");	/* FTN address */
     n = strtok(NULL, " \t");	/* Internet address */
     if(f==NULL || n==NULL)
 	return NULL;
-    
+
     if(strieq(f, "include"))
     {
 	hosts_do_file(n);
 	return NULL;
     }
-    
+
     if( asc_to_node(f, &node, FALSE) == ERROR )
     {
 	fglog("hosts: illegal FTN address %s", f);
@@ -102,7 +102,7 @@ static Host *hosts_parse_line(char *buf)
 	    p->name = strsave2(n, cf_hostsdomain());
 	}
     }
-	
+
     for(o=strtok(NULL, " \t");	/* Options */
 	o;
 	o=strtok(NULL, " \t")  )
@@ -144,17 +144,17 @@ static int hosts_do_file(char *name)
     Host *p;
 
     debug(14, "Reading hosts file %s", name);
-    
+
     fp = fopen_expand_name(name, R_MODE_T, FALSE);
     if(!fp)
 	return ERROR;
-    
+
     while(cf_getline(buffer, BUFFERSIZE, fp))
     {
 	p = hosts_parse_line(buffer);
 	if(!p)
 	    continue;
-	
+
 	/* Put into linked list */
 	if(host_list)
 	    host_last->next = p;
@@ -162,7 +162,7 @@ static int hosts_do_file(char *name)
 	    host_list       = p;
 	host_last       = p;
     }
-    
+
     fclose(fp);
 
     return OK;
@@ -186,7 +186,7 @@ void hosts_init(void)
 Host *hosts_lookup(Node *node, char *name)
 {
     Host *p;
-    
+
     /*
      * FIXME: the search method should use hashing or similar
      */
@@ -202,7 +202,7 @@ Host *hosts_lookup(Node *node, char *name)
 	if(name && p->name && !stricmp(name, p->name))
 	    return p;
     }
-    
+
     return NULL;
 }
 

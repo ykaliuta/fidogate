@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -149,7 +149,7 @@ void areafix_tlprintf(const char *fmt, ...)
     va_list args;
 
     va_start(args, fmt);
-    
+
 #ifdef HAVE_SNPRINTF
     vsnprintf(buf, sizeof(buf), fmt, args);
 #else
@@ -173,10 +173,10 @@ void areafix_stdprintf(const char *fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
-    
+
     vprintf(fmt, args);
     printf("\n");
-    
+
     va_end(args);
 
     return;
@@ -211,7 +211,7 @@ void areafix_init(int mode)
 	my_type     = TYPE_FECHO;
 #endif /* FTN_ACL */
     }
-    
+
     /* Get name of areas.bbs file from config file */
     if(!areas_bbs)
     {
@@ -318,7 +318,7 @@ int areafix_auth_check(Node *node, char *passwd, int checkpass)
 {
     Passwd *pwd;
     char *p, *s;
-    
+
     /* Init */
     areafix_auth_init();
     authorized_node = *node;
@@ -327,7 +327,7 @@ int areafix_auth_check(Node *node, char *passwd, int checkpass)
     debug(3, "Node %s, passwd %s", znfp1(node), passwd);
     pwd = passwd_lookup(MY_CONTEXT, node);
     debug(3, "passwd entry: %s", pwd ? pwd->passwd : "-NONE-");
-	
+
     if (checkpass == FALSE)
     {
 	debug(3, "no passwd check needed - authorized");
@@ -353,7 +353,7 @@ int areafix_auth_check(Node *node, char *passwd, int checkpass)
 	fglog("WARNING: node %s have null password",znfp1(node));
         return authorized;
     }
-    
+
     /* Extract level, key, and real name from pwd->args */
     s = strsave(pwd->args);
     if( (p = xstrtok(s, " \t")) )
@@ -385,17 +385,17 @@ int areafix_auth_check(Node *node, char *passwd, int checkpass)
         authorized_lim_A = -1;
         authorized_lim_G = -1;
     }
-    
+
     xfree(s);
 #endif /* SUB_LIMIT */
-    
+
     debug(3, "passwd lvl : %d", authorized_lvl);
     debug(3, "passwd key : %s", authorized_key);
     debug(3, "passwd name: %s", authorized_name);
 #ifdef SUB_LIMIT
     debug(3, "passwd lim : %d/%d", authorized_lim_G, authorized_lim_A);
 #endif /* SUB_LIMIT */
-    
+
     if(strchr(authorized_key, '$'))
     {
 	debug(3, "authorized for NEW command");
@@ -418,7 +418,7 @@ int areafix_auth_check(Node *node, char *passwd, int checkpass)
 	authorized_listall = TRUE;
     }
 #endif /* AF_LISTALL_RESTRICTED */
-       
+
     return authorized;
 }
 
@@ -466,7 +466,7 @@ void zonegate_init(void)
 {
     char *s;
     ZoneGate *p;
-    
+
     for(s = cf_get_string("ZoneGate",TRUE);
 	s && *s;
 	s = cf_get_string("ZoneGate",FALSE) )
@@ -482,14 +482,14 @@ void zonegate_init(void)
 	}
 	else
 	    node_invalid(&p->node);
-	
+
 	if(zonegate_first)
 	    zonegate_last->next = p;
 	else
 	    zonegate_first = p;
 	zonegate_last = p;
     }
-}    
+}
 #endif /* SUBSCRIBE_ZONEGATE */
 
 /*
@@ -505,7 +505,7 @@ void areafix_do(Node *node, char *subj, Textlist *tl, Textlist *out)
 
     areafix_auth_init();
     tl_init(&upl);
-    
+
     /* Check password in Subject and process options */
     passwd = strtok(subj, " \t");
     while( (q = strtok(NULL, " \t")) )
@@ -532,12 +532,12 @@ void areafix_do(Node *node, char *subj, Textlist *tl, Textlist *out)
 #else
 	cmd_list(node, TRUE);	/* SNP:FIXME */
 #endif /* !AF_AVAIL */
-    
+
     /* Execute commands from stdin */
     for(tp=tl->first; tp; tp=tp->next)
     {
 	p = tp->line;
-	
+
 	strip_crlf(p);				/* Strip CR/LF */
 	strip_space(p);				/* Strip spaces */
 	if(strneq(p, " * ", 3))			/* Skip " * blah" lines */
@@ -590,7 +590,7 @@ int areafix_do_cmd(Node *node, char *line, Textlist *out, Textlist *upl)
     int percent = FALSE;
 
     /* Output */
-    if(out) 
+    if(out)
     {
 	debug(3, "output via textlist");
 	areafix_otl    = out;
@@ -645,7 +645,7 @@ int areafix_do_cmd(Node *node, char *line, Textlist *out, Textlist *upl)
 	    buf[i] = line[i];
 	buf[i] = 0;
 	arg = line + i;
-	
+
 	if     (!stricmp(buf, "list"))
 	    cmd = CMD_LIST;
 	else if(!stricmp(buf, "query"))
@@ -769,8 +769,8 @@ int areafix_do_cmd(Node *node, char *line, Textlist *out, Textlist *upl)
 	    ret = cmd_list(node, FALSE);
 	    break;
 #endif /* AF_AVAIL */
-    }	
-    
+    }
+
     return ret;
 }
 
@@ -864,7 +864,7 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
     {
 	ignore_prl = TRUE;
     }
-    
+
 
     /* Parse options:
      *
@@ -941,7 +941,7 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 		break;
 	    p->expire_t = atoi(o2);
 	}
-    }	
+    }
 
     if(p->state == NULL)
 	p->state = strsave("S");
@@ -991,7 +991,7 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
     }
     else
 	p->dir = strsave("-");
-    
+
     lon_init(&p->nodes);
     lon_add(&p->nodes, node);
 
@@ -1050,7 +1050,7 @@ int cmd_new(Node *node, char *line, char *dwnl, int inter)
 		p->state,
 		znfp1(&p->addr),
 		p->lvl,
-		p->key ? p->key:"NONE", 
+		p->key ? p->key:"NONE",
 		p->desc ? p->desc:"NONE",
 		p->zone,
 #ifndef FTN_ACL
@@ -1156,7 +1156,7 @@ int cmd_listall(Node *node)
     char *t;
     FILE *fp;
     char buf[BUFSIZ];
-    
+
 #ifdef AFSEND_ECHO_STATUS
     char tmp[35];
 #endif /* AFSEND_ECHO_STATUS */
@@ -1171,14 +1171,14 @@ int cmd_listall(Node *node)
         areafix_printf("Command LISTALL: not authorized.");
         return OK;
     }
-    
+
     areafix_printf("");
     areafix_printf("ALL available areas:");
     areafix_printf("");
 
     BUF_COPY2(buf, cf_p_vardir(), "/avail");
     hi_init(buf);
-    
+
     for(p=areasbbs_first(); p; p=p->next)
     {
 	char *mark;
@@ -1231,7 +1231,7 @@ int cmd_listall(Node *node)
 #endif /* AFSEND_ECHO_STATUS */
 	    areafix_printf("%s",buffer);
     }
-    
+
     for(a=uplinks_first(); a; a=a->next)
     {
 	t = strsave(a->areas);
@@ -1282,7 +1282,7 @@ int cmd_listall(Node *node)
 			    {
 				hi_write_avail(f2, "");
 #ifndef FTN_ACL
-				sprintf(buffer,"  Z%-3d %s", 
+				sprintf(buffer,"  Z%-3d %s",
 					(a->uplink).zone, f2);
 #else
 				sprintf(buffer,"      Z%-3d %s",
@@ -1355,7 +1355,7 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
 #ifdef AF_AVAIL
     int print_all = FALSE;
 #endif /* AF_AVAIL */
-    
+
     fglog("%s: list", znfp1(node));
 
     if(!authorized)
@@ -1372,7 +1372,7 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
 #endif /* AF_AVAIL */
     if ( cf_get_string("FStatusAreaFixList", TRUE) )
 	list_f = TRUE;
-    
+
     areafix_printf("Areas available to %s:", znf1(node));
 #ifdef AF_AVAIL
     if ( TRUE == flag )
@@ -1388,7 +1388,7 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
     }
 #endif /* AF_AVAIL */
     areafix_printf("");
-    
+
     /* Check for unscribed areas & define echolist in config file */
 #ifdef AF_AVAIL
     if (flag == TRUE || !(s = cf_get_string("AvailFile", TRUE)))
@@ -1420,7 +1420,7 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
 		/* Check zone */
 		if( p->zone != node->zone && ((p->zone) > 6 || (node->zone) > 6))
 		    continue;
-	
+
 #ifdef AF_AVAIL
 		if (NULL == p->state || areasbbs_isstate(p->state, 'U'))
 		    continue;
@@ -1441,7 +1441,7 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
 		mark = ((lon_search(&p->passive, node)) ? "P" : "*");
 	    else
 		mark = " ";
-	    
+
 #ifdef FTN_ACL
 	    if ( (cf_get_string("UplinkCanBeReadonly", TRUE) ||
 	          !lon_is_uplink(&(p->nodes), p->uplinks, node)) &&
@@ -1474,10 +1474,10 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
 #endif /* AFSEND_ECHO_STATUS */
 		areafix_printf("%s",buffer);
 	}
-    } 
+    }
 #ifdef AF_AVAIL
      /* Check for define echolist in config file */
-    else 
+    else
     {
 	char *n;
 	FILE *fp;
@@ -1494,7 +1494,7 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
 	    }
 	}
     }
-    
+
 #endif /* AF_AVAIL */
 
     areafix_printf("");
@@ -1512,7 +1512,7 @@ int cmd_list(Node *node, int flag)	/* FALSE -> %avail; TRUE -> %list */
     areafix_printf("S = area is currently subscribed at uplink");
 #endif /* AFSEND_ECHO_STATUS */
     areafix_printf("");
-    
+
     return OK;
 }
 
@@ -1525,7 +1525,7 @@ int cmd_query(Node *node)
 {
     AreasBBS *p;
     LON *l;
-    
+
     fglog("%s: query", znfp1(node));
 
     if(!authorized)
@@ -1533,11 +1533,11 @@ int cmd_query(Node *node)
 	areafix_printf("Command QUERY: not authorized.");
 	return OK;
     }
-    
+
     areafix_printf("");
     areafix_printf("%s is linked to the following areas:", znf1(node));
     areafix_printf("");
-    
+
     for(p=areasbbs_first(); p; p=p->next)
     {
 #ifdef FTN_ACL
@@ -1567,7 +1567,7 @@ int cmd_query(Node *node)
 	    areafix_printf("%s %s %s %s", mark_p, mark_r, mark_m, p->area);
 #  endif /* !FTN_ACL */
     }
-    
+
     areafix_printf("");
     areafix_printf("P = passive mode (write only)");
 #ifdef FTN_ACL
@@ -1575,7 +1575,7 @@ int cmd_query(Node *node)
     areafix_printf("M = mandatory (can't unsubscribe)");
 #endif /* FTN_ACL */
     areafix_printf("");
-    
+
     return OK;
 }
 
@@ -1590,7 +1590,7 @@ int cmd_unlinked(Node *node)
     LON *l;
     char *s;
     int key_ok;
-    
+
     fglog("%s: unlinked", znfp1(node));
 
     if(!authorized)
@@ -1598,12 +1598,12 @@ int cmd_unlinked(Node *node)
 	areafix_printf("Command UNLINKED: not authorized.");
 	return OK;
     }
-    
+
     areafix_printf("");
     areafix_printf("%s is not linked to the following available areas:",
 		   znf1(node));
     areafix_printf("");
-    
+
     for(p=areasbbs_first(); p; p=p->next)
     {
 #ifdef FTN_ACL
@@ -1631,7 +1631,7 @@ int cmd_unlinked(Node *node)
 	/* Check zone */
 	if(areafix && p->zone!=node->zone)
 	    continue;
-	
+
 #ifdef FTN_ACL
 	if ( (cf_get_string("UplinkCanBeReadonly", TRUE) ||
 	      !lon_is_uplink(&(p->nodes), p->uplinks, node)) &&
@@ -1653,7 +1653,7 @@ int cmd_unlinked(Node *node)
 	    areafix_printf("%s %s %s", mark_r, mark_m, p->area);
 #endif /* !FTN_ACL */
     }
-    
+
     areafix_printf("");
 #ifdef FTN_ACL
     areafix_printf("R = read only");
@@ -1695,14 +1695,14 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
     if(zonegate_first)
     {
 	ZoneGate *pz;
-	
+
 	for(pz=zonegate_first; pz; pz=pz->next)
 	    if(node_eq(node, &pz->node))
 		zg_flag = TRUE;
     }
     debug(7,"Zonegate : %s", zg_flag ? "TRUE" : "FALSE");
     if(!authorized || !zg_flag)
-#else    
+#else
     if(!authorized)
 #endif /* SUBSCRIBE_ZONEGATE */
     {
@@ -1724,12 +1724,12 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 	}
 #endif /* SUB_LIMIT */
     iswc = is_wildcard(area);
-    
+
     BUF_COPY( buf, area );
 
     for(p=areasbbs_first(); p; p=p->next)
     {
-	
+
 	l = &p->nodes;
 
 	if(sub_areas && !iswc)
@@ -1832,7 +1832,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 		    }
 		}
 	    }
-	    
+
 	    if(l->first)
 	    {
 		lon_add(l, node);
@@ -1856,7 +1856,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 		lim_g++;
 #endif /* SUB_LIMIT */
 
-		if( areasbbs_isstate(p->state, 'U') || 
+		if( areasbbs_isstate(p->state, 'U') ||
 		    areasbbs_isstate(p->state, 'P'))
 		{
 		    if((a=uplinks_line_get (areafix, &l->first->node))!=NULL)
@@ -1864,14 +1864,14 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 			/* Subscribe from uplink */
 			tl_appendf(upl, "%s,%s,%s,%s,+%s",
 				   znf1(&l->first->node),
-				   a->robotname, 
+				   a->robotname,
 				   fix_name ? fix_name : areafix_name(),
 				   a->password,
 				   str_upper(p->area));
 
 			areasbbs_chstate(&p->state, "UP", 'W');
 			p->time = time( NULL );
-			
+
 			if( lon_search(&p->passive, node) )
 			{
 			    lon_remove(&p->passive, node);
@@ -1883,7 +1883,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 		    }
 		    else
 		    {
-			fglog("WARNING: no entry for uplink %s in uplink config file", 
+			fglog("WARNING: no entry for uplink %s in uplink config file",
 			      znf1(&l->first->node));
 			areafix_printf("        Please forward this message to sysop:\r\n"
 				       "        no entry for uplink %s in uplink config file",
@@ -1958,7 +1958,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 		    areafix_printf("%s: internal areafix error (can't create area)\r\n"
 				   "Please forward this message to sysop", a->areas);
 		    fglog("ERROR: can't create area %s (cmd_new() returned ERROR)", a->areas);
-				    
+
 		    continue;
 		}
 		authorized_fwd = an;
@@ -1984,7 +1984,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
 		/* Subscribe from uplink */
 		tl_appendf(upl, "%s,%s,%s,%s,+%s",
 			    znfp1(&a->uplink),
-			    a->robotname, 
+			    a->robotname,
 			    fix_name ? fix_name : areafix_name(),
 			    a->password,
 			    str_upper(a->areas));
@@ -2003,7 +2003,7 @@ int cmd_sub(Node *node, char *area_in, Textlist *upl)
         areafix_printf("%s: no such area, or no area matching pattern\r\n"
 				"    No uplink found to forward this request",
 				    area);
-       
+
     return OK;
 }
 
@@ -2025,7 +2025,7 @@ int cmd_unsub(Node *node, char *area, Textlist *upl)
 	areafix_printf("Command UNSUBSCRIBE: not authorized.");
 	return OK;
     }
-    
+
     for(p=areasbbs_first(); p; p=p->next)
     {
 	l = &p->nodes;
@@ -2048,7 +2048,7 @@ int cmd_unsub(Node *node, char *area, Textlist *upl)
 		    if(!iswild)
 		    areafix_printf("%-41s: not subscribed", p->area);
 	    }
-	    else 
+	    else
 	    {
 #ifdef FTN_ACL
 		if (ftnacl_ismandatory(node, p->area, my_type))
@@ -2061,12 +2061,12 @@ int cmd_unsub(Node *node, char *area, Textlist *upl)
 		    lon_remove( &(p->passive), node );
 		areasbbs_changed();
 		areafix_printf("%-41s: unsubscribed", p->area);
-		
+
 #ifdef SUB_LIMIT
 		lim_g--;
 #endif /* SUB_LIMIT */
 		fglog("%s: -%s", znfp1(node), p->area);
-		
+
 		if( (l->size == 1 && p->flags & AREASBBS_PASSTHRU) )
 		{
 		    if( (a = uplinks_line_get(areafix, &l->first->node)) )
@@ -2077,7 +2077,7 @@ int cmd_unsub(Node *node, char *area, Textlist *upl)
 
 			tl_appendf(upl, "%s,%s,%s,%s,-%s",
 			    znfp1(&a->uplink),
-			    a->robotname, 
+			    a->robotname,
 			    fix_name ? fix_name : areafix_name(),
 			    a->password,
 			    str_upper(p->area));
@@ -2112,7 +2112,7 @@ int cmd_unsub(Node *node, char *area, Textlist *upl)
 	else
 	    areafix_printf("%-41s: no such area", area);
     }
-	
+
     return OK;
 }
 
@@ -2130,7 +2130,7 @@ int cmd_help(Node *node)
 
     if( (helpfile = cf_get_string("AreaFixHelp", TRUE)) )
     {
-	if( (fp = fopen_expand_name(helpfile, R_MODE, FALSE)) ) 
+	if( (fp = fopen_expand_name(helpfile, R_MODE, FALSE)) )
 	{
 	    while(fgets(buffer, sizeof(buffer), fp))
 	    {
@@ -2164,7 +2164,7 @@ int cmd_passwd(Node *node, char *arg)
 {
     char *p;
     Node n;
-    
+
     fglog("%s: passwd", znfp1(node));
 
     authorized = FALSE;
@@ -2174,7 +2174,7 @@ int cmd_passwd(Node *node, char *arg)
     {
 	areafix_printf("Command PASSWORD: missing Z:N/F.P address.");
 	return OK;
-    }	
+    }
     if( asc_to_node(p, &n, FALSE) == ERROR )
     {
 	areafix_printf("Command PASSWORD: illegal address %s.", p);
@@ -2182,7 +2182,7 @@ int cmd_passwd(Node *node, char *arg)
     }
     *node = n;
     cf_set_zone(node->zone);
-    
+
     p = strtok(NULL, " \t");			/* Password */
     if(!p)
     {
@@ -2195,7 +2195,7 @@ int cmd_passwd(Node *node, char *arg)
     if(!authorized)
 	areafix_printf("Command PASSWORD: authorization for %s failed.",
 		       znfp1(node));
-    
+
     return OK;
 }
 
@@ -2303,7 +2303,7 @@ int cmd_passive(Node *node, char *area, Textlist *upl)
 		    }
 		    tl_appendf(upl, "%s,%s,%s,%s,-%s",
 				znfp1(&a->uplink),
-				a->robotname, 
+				a->robotname,
 				fix_name ? fix_name : areafix_name(),
 				a->password,
 				str_upper(p->area));
@@ -2371,7 +2371,7 @@ int cmd_active(Node *node, char *area, Textlist *upl)
 		    }
 		    tl_appendf(upl, "%s,%s,%s,%s,+%s",
 			znfp1(&a->uplink),
-			a->robotname, 
+			a->robotname,
 			fix_name ? fix_name : areafix_name(),
 			a->password,
 			str_upper(p->area));
@@ -2417,13 +2417,13 @@ void send_request(Textlist *upl)
     char *link=NULL, *l, *s;
     Node tmp;
     Message msg;
-    
+
     tl_init(&out);
-    tl_init(&send);    
+    tl_init(&send);
 
     pkt_outdir(cf_p_outpkt(), NULL);
     BUF_COPY(links,"");
-    
+
     while(1)
     {
 	for ( tl = upl->first; NULL != tl; tl = tl->next )
@@ -2457,7 +2457,7 @@ void send_request(Textlist *upl)
 	link = NULL;
 	tl = out.first;
 	node_clear(&tmp);
-    
+
 	msg.attr      = MSG_DIRECT;
 	msg.cost      = 0;
 	msg.date      = time(NULL);

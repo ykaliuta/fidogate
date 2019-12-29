@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -89,7 +89,7 @@ void hi_init_history (void)
 short int hi_init(char *his_file)
 {
     FILE *fp;
-    
+
     /* Test for history.dir, history.pag */
     BUF_EXPAND(buffer, his_file);
     BUF_APPEND(buffer, ".dir");
@@ -119,7 +119,7 @@ short int hi_init(char *his_file)
     }
     /* Open the history text file */
     BUF_EXPAND(buffer, his_file);
-    if( (hi_file = fopen(buffer, A_MODE)) == NULL ) 
+    if( (hi_file = fopen(buffer, A_MODE)) == NULL )
     {
 	fglog("$ERROR: open MSGID history %s failed", buffer);
 	if(check_access(buffer, CHECK_FILE) == ERROR)
@@ -145,10 +145,10 @@ short int hi_init(char *his_file)
  */
 void hi_close(void)
 {
-    
+
     if(hi_file)
     {
-	if(fclose(hi_file) == ERROR) 
+	if(fclose(hi_file) == ERROR)
 	    fglog("$ERROR: close MSGID history failed");
 	if (dbzsync())
 	    fglog("$ERROR: dbzsync MSGID history failed");
@@ -173,19 +173,19 @@ short int hi_write_dbc(char *rfc_msgid, char *fido_msgid, short int dont_flush)
     GetTimeInfo(&ti);
     if(hi_file)
     {
-      /* Get offset in history text file */ 
-      if ( (offset = ftell(hi_file)) == ERROR) 
+      /* Get offset in history text file */
+      if ( (offset = ftell(hi_file)) == ERROR)
       {
 	fglog("$ERROR: ftell DBC MSGID history failed");
 	return ERROR;
-      } 
-    } 
-    else 
-    { 
-	fglog("$ERROR: can't open MSGID history file"); 
-	return ERROR; 
+      }
     }
-    
+    else
+    {
+	fglog("$ERROR: can't open MSGID history file");
+	return ERROR;
+    }
+
     /* Write MSGID line to history text file */
     if(strchr(fido_msgid, ' '))
     fido_msgid = strrchr(fido_msgid, ' ') + 1;
@@ -210,7 +210,7 @@ short int hi_write_dbc(char *rfc_msgid, char *fido_msgid, short int dont_flush)
     }
 
     /**FIXME: dbzsync() every n msgids */
-    
+
     return OK;
 }
 #endif /* DBC_HISTORY && FIDO_STYLE_MSGID */
@@ -226,19 +226,19 @@ short int hi_write_t(time_t t, time_t msgdate, char *msgid)
 
     if (hi_file)
     {
-      /* Get offset in history text file */ 
-      if( (offset = ftell(hi_file)) == ERROR) 
+      /* Get offset in history text file */
+      if( (offset = ftell(hi_file)) == ERROR)
       {
 	fglog("$ERROR: ftell MSGID history failed");
 	return ERROR;
       }
     }
-    else 
-    { 
-	fglog("$ERROR: can't open MSGID history file"); 
-	return ERROR; 
+    else
+    {
+	fglog("$ERROR: can't open MSGID history file");
+	return ERROR;
     }
-    
+
     /* Write MSGID line to history text file */
     debug(7, "history: offset=%ld: %s %ld", offset, msgid, (long)t);
     ret = fprintf(hi_file, "%s\t%ld\n", msgid, (long)t);
@@ -259,7 +259,7 @@ short int hi_write_t(time_t t, time_t msgdate, char *msgid)
     }
 
     /**FIXME: dbzsync() every n msgids */
-    
+
     return OK;
 }
 
@@ -295,8 +295,8 @@ short int hi_write_avail(char *area, char *desc)
     }
     else
     {
-	fglog("$ERROR: can't open MSGID history file"); 
-	return ERROR; 
+	fglog("$ERROR: can't open MSGID history file");
+	return ERROR;
     }
 
     /* Write MSGID line to history text file */
@@ -319,7 +319,7 @@ short int hi_write_avail(char *area, char *desc)
     }
 
     /**FIXME: dbzsync() every n msgids */
-    
+
     return OK;
 }
 

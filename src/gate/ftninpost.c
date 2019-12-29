@@ -6,7 +6,7 @@
  *
  *****************************************************************************
  * Copyright (C) 2001
- * 
+ *
  *    Dmitry Fedotov            FIDO:      2:5030/1229
  *				Internet:  dyff@users.sourceforge.net
  *
@@ -21,7 +21,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -70,7 +70,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options]\n\n", PROGRAM);
     fprintf(stderr, "\
 options: -v --verbose                 more verbose\n\
@@ -87,9 +87,9 @@ int unsplit_mail_count(char *fname)
     char *s;
     int idlen;
     split *spl;
-    
+
     debug(1, "Processing %s", fname);
-    
+
     fp = fopen(fname, "r");
     if(!fp) {
 	fglog("can't open %s", fname);
@@ -125,7 +125,7 @@ int unsplit_mail_count(char *fname)
 	   }
     }
     debug(8,"ID: %s %d/%d", spl->id, spl->part, spl->parts);
-    
+
     fclose(fp);
 
     return OK;
@@ -136,7 +136,7 @@ int unsplit_mail()
     split *spl;
 
     debug(1, "Processing split mails\n");
-    
+
     for(spl = split_first; spl; spl=spl->next)
     {
     split *splt;
@@ -158,9 +158,9 @@ int unsplit_mail()
             int linesline=0;
             int lines;
             int flag=0;
-	    
+
 	    debug(3, "Message %s complete, recombining", spl->id);
-	    
+
 	    fp = fopen(sfirst->fname, "r");
 	    if(!fp) {
 	       fglog("can't open %s", sfirst->fname);
@@ -313,7 +313,7 @@ int main(int argc, char **argv)
     };
 
     log_program(PROGRAM);
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -382,7 +382,7 @@ int main(int argc, char **argv)
     BUF_EXPAND(buf, cf_p_outrfc_news());
     do_dir(buf, 2);
 /*
-    unsplit_mail("test");    
+    unsplit_mail("test");
 */
     exit_free();
     return EX_OK;

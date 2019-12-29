@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -143,13 +143,13 @@ int troute_scan(char *file, int flag)
 				rou_list = p;
 			    stat = TRUE;
 			}
-		    
+
 		    last = p;
 		}
 		node = 0;
 	    }
 	}
-    }    
+    }
     fclose(fp);
 
     return OK;
@@ -204,7 +204,7 @@ int nodelist_read(void)
     int proc = FALSE;
 
     struct stat statnl, statdb;
-    
+
     for(p=cf_get_string("NlFile", TRUE); p; p=cf_get_string("NlFile", FALSE))
     {
 	nl_file = p;
@@ -316,7 +316,7 @@ void hubroute_write(void)
     unlink(cf_p_hubroutedb());
     debug(9, "init database %s", cf_p_hubroutedb());
     hi_init(cf_p_hubroutedb());
-    
+
 
     for(s=nl_list; s; s=s->next)
     {
@@ -358,7 +358,7 @@ int do_routing(char *name, FILE *fp, Packet *pkt)
     MkRoute *r1;
     LNode *p;
     Node match;
-    
+
     desc = parse_pkt_name(name, &pkt->from, &pkt->to);
     if(desc == NULL)
 	return ERROR;
@@ -391,10 +391,10 @@ int do_routing(char *name, FILE *fp, Packet *pkt)
 			  "match=%s",
 			  r->type, r->cmd, r->flav, r->flav_new,
 			  s_znfp_print(&match, TRUE)                   );
-		    
+
 		    if(do_cmd(desc, r, &match))
 			goto ready;
-		    
+
 		    break;			/* Inner for loop */
 		}
 
@@ -403,7 +403,7 @@ int do_routing(char *name, FILE *fp, Packet *pkt)
      * Write contents of this packet to output packet
      */
     debug(2, "Target packet: from=%s to=%s grade=%c type=%c flav=%c",
-	  znfp1(&desc->from), znfp2(&desc->to), 
+	  znfp1(&desc->from), znfp2(&desc->to),
 	  desc->grade, desc->type, desc->flav);
 
 
@@ -426,9 +426,9 @@ int do_routing(char *name, FILE *fp, Packet *pkt)
 int do_move(char *name, FILE *fp, PktDesc *desc)
 {
     long n;
-    
+
     fclose(fp);
-    
+
     n = outpkt_sequencer();
     outpkt_outputname(buffer, pkt_get_outdir(),
 		      desc->grade, desc->type, desc->flav, n, "pkt");
@@ -450,7 +450,7 @@ int do_move(char *name, FILE *fp, PktDesc *desc)
 	return ERROR;
 #endif
     }
-    
+
     return OK;
 }
 
@@ -462,7 +462,7 @@ int do_move(char *name, FILE *fp, PktDesc *desc)
 int do_cmd(PktDesc *desc, Routing *r, Node *match)
 {
     int ret = FALSE;
-    
+
     switch(r->cmd)
     {
     case CMD_SEND:
@@ -480,7 +480,7 @@ int do_cmd(PktDesc *desc, Routing *r, Node *match)
 	    ret = TRUE;
 	}
 	break;
-	
+
     case CMD_SENDMOVE:
 	if(desc->flav == FLAV_NORMAL)
 	{
@@ -491,7 +491,7 @@ int do_cmd(PktDesc *desc, Routing *r, Node *match)
 	    ret = TRUE;
 	}
 	break;
-	
+
     case CMD_ROUTE:
 	if(desc->flav == FLAV_NORMAL)
 	{
@@ -515,7 +515,7 @@ int do_cmd(PktDesc *desc, Routing *r, Node *match)
 	    ret = TRUE;
 	}
 	break;
-	
+
     default:
 	debug(2, "unknown routing command, strange");
 	break;
@@ -661,7 +661,7 @@ int do_packet(char *pkt_name, FILE *pkt_file, Packet *pkt, PktDesc *desc)
     MsgBody body;			/* Message body of FTN message */
     int type, ret;
     FILE *fp;
-    
+
     /*
      * Initialize
      */
@@ -680,13 +680,13 @@ int do_packet(char *pkt_name, FILE *pkt_file, Packet *pkt, PktDesc *desc)
 	fclose(pkt_file);
 	TMPS_RETURN(ERROR);
     }
-    
+
     /*
      * Read message from input packet and write to output packet
      */
     type = pkt_get_int16(pkt_file);
     ret  = OK;
-    
+
     while(type == MSG_TYPE && !xfeof(pkt_file))
     {
 	/*
@@ -708,7 +708,7 @@ int do_packet(char *pkt_name, FILE *pkt_file, Packet *pkt, PktDesc *desc)
 	    desc->to = pkt->to;
 	    return do_move(pkt_name, pkt_file, desc);
 	}
-	
+
 	/*
 	 * Read & parse message body
 	 */
@@ -812,7 +812,7 @@ int do_file(char *pkt_name)
     /*
      * Route it
      */
-    if(do_routing(pkt_name, pkt_file, &pkt) == ERROR) 
+    if(do_routing(pkt_name, pkt_file, &pkt) == ERROR)
     {
 	fglog("ERROR: in processing %s", pkt_name);
 	TMPS_RETURN(ERROR);
@@ -862,7 +862,7 @@ int do_repack(char *dir, char *wildcard, int repack_time)
 
 	debug(5, "rename %s -> %s", pkt_name, buf);
 	rename(pkt_name, buf);
-	
+
 	if(do_file(buf) == ERROR)
 	{
 	    dir_close();
@@ -874,7 +874,7 @@ int do_repack(char *dir, char *wildcard, int repack_time)
 	}
     }
     dir_close();
-    
+
     return OK;
 }
 
@@ -887,7 +887,7 @@ void prog_signal(int signum)
     char *name = "";
 
     signal_exit = TRUE;
-    
+
     switch(signum)
     {
     case SIGHUP:
@@ -919,7 +919,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] [packet ...]\n\n", PROGRAM);
     fprintf(stderr, "\
 options: -g --grade G                 processing grade\n\
@@ -954,7 +954,7 @@ int main(int argc, char **argv)
     char *pkt_name;
     char pattern[16];
     int aso = FALSE;
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -975,7 +975,7 @@ int main(int argc, char **argv)
     };
 
     log_program(PROGRAM);
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -1005,7 +1005,7 @@ int main(int argc, char **argv)
         case 'p':
 	    p_flag = TRUE;
             break;
-	    
+
 	/***** Common options *****/
 	case 'v':
 	    verbose++;
@@ -1043,7 +1043,7 @@ int main(int argc, char **argv)
 	cf_set_uplink(u_flag);
 
     cf_debug();
-    
+
     /*
      * Process optional config statements
      */
@@ -1065,7 +1065,7 @@ int main(int argc, char **argv)
 
     routing_init(r_flag ? r_flag : cf_p_routing() );
     passwd_init();
-    
+
     /* Install signal/exit handlers */
     signal(SIGHUP,  prog_signal);
     signal(SIGINT,  prog_signal);
@@ -1073,7 +1073,7 @@ int main(int argc, char **argv)
 
 
     ret = EXIT_OK;
-    
+
     if(p_flag)
     {
 	char buf[MAXPATH];
@@ -1169,7 +1169,7 @@ int main(int argc, char **argv)
 	BUF_COPY(pattern, "????????.pkt");
 	if(g_flag)
 	    pattern[0] = g_flag;
-	
+
 	/* process packet files in directory */
 	dir_sortmode(DIR_SORTMTIME);
 	if(dir_open(in_dir, pattern, TRUE) == ERROR)
@@ -1187,7 +1187,7 @@ int main(int argc, char **argv)
 		exit_free();
 		return EXIT_BUSY;
 	    }
-	
+
 	repack_mode = FALSE;
 
 	for(pkt_name=dir_get(TRUE); pkt_name; pkt_name=dir_get(FALSE))
@@ -1196,7 +1196,7 @@ int main(int argc, char **argv)
 		ret = EXIT_ERROR;
 		break;
 	    }
-	
+
 
 	dir_close();
 
@@ -1214,7 +1214,7 @@ int main(int argc, char **argv)
 		exit_free();
 		return EXIT_BUSY;
 	    }
-	
+
 	/*
 	 * Process packet files on command line
 	 */
@@ -1231,7 +1231,7 @@ int main(int argc, char **argv)
 	if(l_flag)
 	    unlock_program(PROGRAM);
     }
-    
+
     outpkt_close();
 
     if(p_flag)
@@ -1255,7 +1255,7 @@ int main(int argc, char **argv)
     if(hist_init)
 	hi_close();
 
-    exit_free();    
+    exit_free();
     return ret;
 }
 

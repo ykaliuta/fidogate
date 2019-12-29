@@ -7,7 +7,7 @@
  *
  *****************************************************************************
  * Copyright (C) 2000
- *  
+ *
  * Oleg Derevenetz	     FIDO:	2:5025/3.4
  *
  * This file is part of FIDOGATE.
@@ -21,10 +21,10 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
- * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
+ * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  *****************************************************************************/
 
 #include "fidogate.h"
@@ -61,17 +61,17 @@ static Spy *spyes_parse_line(char *buf)
     Spy *p;
     char *n, *r;
     Node node, forward_node;
-    
+
     n = xstrtok(buf,  " \t");	/* Node */
     r = xstrtok(NULL, " \t");	/* Forward node */
     if(n==NULL || r==NULL)
 	return NULL;
-    if(strieq(n, "include")) 
+    if(strieq(n, "include"))
     {
 	spyes_do_file(r);
 	return NULL;
     }
-    
+
     if( asc_to_node(n, &node, TRUE) == ERROR )
     {
 	fglog("spyes: illegal FTN address %s", n);
@@ -87,12 +87,12 @@ static Spy *spyes_parse_line(char *buf)
 	fglog("spyes: illegal FTN address %s", r);
 	return NULL;
     }
-    
+
     p = (Spy *)xmalloc(sizeof(Spy));
     p->next     	= NULL;
     p->node     	= node;
     p->forward_node     = forward_node;
-    
+
     debug(15, "spyes: %s %s", znfp1(&p->node), znfp2(&p->forward_node));
 
     return p;
@@ -105,17 +105,17 @@ static int spyes_do_file(char *name)
     Spy *p;
 
     debug(14, "Reading spyes file %s", name);
-    
+
     fp = fopen_expand_name(name, R_MODE_T, FALSE);
     if(!fp)
 	return ERROR;
-    
+
     while(cf_getline(buffer, BUFFERSIZE, fp))
     {
 	p = spyes_parse_line(buffer);
 	if(!p)
 	    continue;
-	
+
 	/*
 	 * Put into linked list
 	 */
@@ -125,7 +125,7 @@ static int spyes_do_file(char *name)
 	    spyes_list       = p;
 	spyes_last       = p;
     }
-    
+
     fclose(fp);
 
     return OK;
@@ -134,13 +134,13 @@ static int spyes_do_file(char *name)
 static int spyes_check_dups(Node *node)
 {
     Spy *a;
-    
+
     for(a=spyes_list; a; a=a->next)
     {
 	if (anodeeq(node, &a->node))
 	    return TRUE;
     }
-    
+
     return FALSE;
 }
 
@@ -162,13 +162,13 @@ void spyes_init(void)
 Spy *spyes_lookup(Node *node)
 {
     Spy *a;
-    
+
     for(a=spyes_list; a; a=a->next)
     {
 	if (wild_compare_node(node, &a->node))
 	    return a;
     }
-    
+
     return NULL;
 }
 

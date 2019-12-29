@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -125,7 +125,7 @@ void routing_remap(int cmd)
     char *p;
     Node old, src, dest;
     Remap *r;
-    
+
     node_invalid(&old);
     old.zone = cf_zone();
 
@@ -143,7 +143,7 @@ void routing_remap(int cmd)
 	fglog("remap: illegal node address %s", p);
 	return;
     }
-    
+
     /*
      * Destination node (pattern)
      */
@@ -168,7 +168,7 @@ void routing_remap(int cmd)
 	fglog("remap: name missing");
 	return;
     }
-    
+
     /*
      * Create new entry and put into list
      */
@@ -178,13 +178,13 @@ void routing_remap(int cmd)
     r->to   = dest;
     r->name = strsave(p);
     r->next = NULL;
-    
+
     if(remap_first)
 	remap_last->next = r;
     else
 	remap_first      = r;
     remap_last = r;
-    
+
     debug(15, "remap: from=%s to=%s name=%s",
 	  znfp1(&r->from), znfp2(&r->to), r->name);
 }
@@ -195,7 +195,7 @@ void routing_rewrite(int cmd)
     char *p;
     Node old, src, dest;
     Rewrite *r;
-    
+
     node_invalid(&old);
     old.zone = cf_zone();
 
@@ -213,7 +213,7 @@ void routing_rewrite(int cmd)
 	fglog("rewrite: illegal node address %s", p);
 	return;
     }
-    
+
     /*
      * Destination node (pattern)
      */
@@ -238,7 +238,7 @@ void routing_rewrite(int cmd)
     r->to   = dest;
     r->name = "*";
     r->next = NULL;
-    
+
 
     if (cmd==CMD_REWRITE_FROM || cmd==CMD_REWRITE_TO)
     {
@@ -248,7 +248,7 @@ void routing_rewrite(int cmd)
 	    fglog("rewritefrom(to): name missing");
 	    return;
 	}
-	r->name = strsave(p);	
+	r->name = strsave(p);
     }
 
     if(rewrite_first)
@@ -277,7 +277,7 @@ void mk_route(int cmd)
     LON  links;
     MkRoute *r;
     int flav;
-    
+
     node_invalid(&old);
     old.zone = cf_zone();
 
@@ -340,7 +340,7 @@ void mk_route(int cmd)
     r->uplink = dest;
     r->links  = links;
     r->next = NULL;
-    
+
 
     if(mkroute_first)
 	mkroute_last->next = r;
@@ -373,7 +373,7 @@ static Routing *routing_parse_line(char *buf)
     int cmd, flav, flav_new=FLAV_NONE;
     Node old, node;
     LON lon;
-    
+
     /*
      * Command
      */
@@ -387,7 +387,7 @@ static Routing *routing_parse_line(char *buf)
 	routing_do_file(p);
 	return NULL;
     }
-    
+
     if((cmd = parse_cmd(p)) == ERROR)
     {
 	fglog("routing: unknown command %s", p);
@@ -414,7 +414,7 @@ static Routing *routing_parse_line(char *buf)
 	mk_route(cmd);
 	return NULL;
     }
-	
+
     /*
      * Target flavor
      */
@@ -454,7 +454,7 @@ static Routing *routing_parse_line(char *buf)
     node_invalid(&old);
     old.zone = cf_zone();
     lon_init(&lon);
-	
+
     p = xstrtok(NULL, " \t");
     if(!p)
     {
@@ -472,7 +472,7 @@ static Routing *routing_parse_line(char *buf)
 	    old = node;
 	    lon_add(&lon, &node);
 	}
-	    
+
 	p = xstrtok(NULL, " \t");
     }
 
@@ -487,7 +487,7 @@ static Routing *routing_parse_line(char *buf)
     r->flav_new = flav_new;
     r->nodes    = lon;
     r->next     = NULL;
-	
+
     debug(15, "routing: type=%c cmd=%c flav=%c flav_new=%c",
 	  r->type, r->cmd, r->flav, r->flav_new            );
     lon_debug(15, "         nodes=", &r->nodes, TRUE);
@@ -510,7 +510,7 @@ static int routing_do_file(char *name)
 	r = routing_parse_line(buffer);
 	if(!r)
 	    continue;
-	
+
 	/* Put into linked list */
 	if(routing_first)
 	    routing_last->next = r;
@@ -537,11 +537,11 @@ void routing_init(char *name)
 int node_match(Node *node, Node *pat)
 {
     if(pat->zone !=EMPTY &&  pat->zone !=WILDCARD && node->zone !=pat->zone )
-	return FALSE;		       	 	     		  
+	return FALSE;
     if(pat->net  !=EMPTY &&  pat->net  !=WILDCARD && node->net  !=pat->net  )
-	return FALSE;		       	 	     		  
+	return FALSE;
     if(pat->node !=EMPTY &&  pat->node !=WILDCARD && node->node !=pat->node )
-	return FALSE;		       	 	     		  
+	return FALSE;
     if(pat->point!=EMPTY &&  pat->point!=WILDCARD && node->point!=pat->point)
 	return FALSE;
     return TRUE;
@@ -559,13 +559,13 @@ PktDesc *parse_pkt_name(char *name, Node *from, Node *to)
 
     p = strrchr(name, '/');
     p = p ? p+1 : name;
-    
+
     if(strlen(p) != 8+1+3)		/* Must be  GTFxxxxx.pkt */
     {
 	fglog("strange packet name %s", name);
 	return NULL;
     }
-    
+
     desc.from      = *from;
     desc.to        = *to;
     desc.grade     = p[0];
@@ -588,6 +588,6 @@ PktDesc *parse_pkt_name(char *name, Node *from, Node *to)
 	desc.flav  = FLAV_NORMAL;
     }
 
-    
+
     return &desc;
 }

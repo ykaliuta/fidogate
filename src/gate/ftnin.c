@@ -27,7 +27,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -109,7 +109,7 @@ int do_flo_line(char *s)
 	if(!s)
 	    return ERROR;
     }
-    
+
     return exec_ftn2rfc(s);
     /* the packet files will be removed by ftn2rfc */
 }
@@ -124,7 +124,7 @@ int do_packets(void)
     char *name;
     Node *node;
     char *p;
-    
+
     /*
      * If -n option not given, call ftn2rfc for each packet
      */
@@ -145,7 +145,7 @@ int do_packets(void)
 		debug(5, "OUT file=%s", name);
 		exec_ftn2rfc(name);
 	    }
-	    
+
 	    /* Try *.?LO with *.pkt */
 	    if((name = bink_find_flo(node, NULL)))
 	    {
@@ -154,7 +154,7 @@ int do_packets(void)
 		{
 		    continue;
 		}
-		
+
 		while( (p = flo_gets(line, sizeof(line))) )
 		{
 		    if(*p==';' || *p=='~')
@@ -166,12 +166,12 @@ int do_packets(void)
 
 		flo_close(node, FALSE, TRUE);
 	    }
-	    
+
 	    bink_bsy_delete(node);
 
 	    tmps_freeall();
 	}
-    
+
     /*
      * If -x option given, call command in script[]
      */
@@ -189,7 +189,7 @@ int do_packets(void)
 	}
 	tmps_freeall();
     }
-	
+
     return OK;
 }
 
@@ -201,9 +201,9 @@ int do_packets(void)
 int exec_ftn2rfc(char *name)
 {
     int ret;
-    
+
     debug(2, "Packet: %s", name);
-    
+
     BUF_COPY4(buffer, cmd, args, " ", name);
     debug(2, "Command: %s", buffer);
 
@@ -214,7 +214,7 @@ int exec_ftn2rfc(char *name)
 	fglog("ERROR: can't exec command %s", buffer);
 	return ERROR;
     }
-    
+
     return OK;
 }
 
@@ -235,7 +235,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options]\n\n", PROGRAM);
     fprintf(stderr, "\
 options:  -n --no-toss                 don't call ftn2rfc for tossing\n\
@@ -260,7 +260,7 @@ int main(int argc, char **argv)
     char *c_flag=NULL;
     char *a_flag=NULL, *u_flag=NULL;
     char *exec=NULL;
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -277,7 +277,7 @@ int main(int argc, char **argv)
 
     log_program(PROGRAM);
     log_file("stderr");
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -293,7 +293,7 @@ int main(int argc, char **argv)
 	    exec   = optarg;
 	    x_flag = TRUE;
 	    break;
-	    
+
 	/***** Common options *****/
 	case 'v':
 	    args_add(" -v");
@@ -341,7 +341,7 @@ int main(int argc, char **argv)
     BUF_COPY3(cmd, cf_p_libexecdir(), "/", FTN2RFC);
     if(exec)
 	BUF_EXPAND(script, exec);
-    
+
     do_packets();
 
     exit_free();

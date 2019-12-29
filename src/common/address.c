@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -116,16 +116,16 @@ static int try_pfnz( Node *node, char *addr, char *dot, char *domain ) {
 
     int len  = strlen( addr );
     int dlen = strlen( dot ) + strlen( domain );
-    
+
     BUF_COPY( adr, addr );
     BUF_COPY2( dom, dot, domain );
-    
+
     if( len > dlen  &&  !stricmp( adr+len-dlen, dom ) ) {
 	adr[len - dlen] = 0;
 	if( pfnz_to_node( adr, node ) == OK )
 	    return TRUE;
     }
-    
+
     return FALSE;
 }
 
@@ -164,7 +164,7 @@ Node *inet_to_ftn( char *addr ) {
 	    node.point = point;
 	return &node;
     }
-    
+
     /*
      * 2. Add domainname and lookup in HOSTS
      */
@@ -188,44 +188,44 @@ Node *inet_to_ftn( char *addr ) {
     }
 
     BUF_COPY( buf, addr );
-    
+
     /*
      * 3. Try p.f.n.z
      */
     if( try_pfnz(&node, buf, "", "") )
 	return &node;
-    
+
     /*
      * 4. Try p.f.n.z.HOSTNAME
      */
     if( try_pfnz( &node, buf, ".", cf_hostname( ) ) )
 	return &node;
-    
+
     /*
      * 5. Try p.f.n.z.HOSTNAME.DOMAIN
      */
     if( try_pfnz(&node, buf, ".", cf_fqdn( ) ) )
 	return &node;
-    
+
     /*
      * 6. Try p.f.n.z.DOMAIN
      */
     if( try_pfnz( &node, buf, "", cf_domainname( ) ) )
 	return &node;
-    
+
     /*
      * 6a. Try p.f.n.z.HOSTSDOMAIN
      */
     if( try_pfnz( &node, buf, "", cf_hostsdomain( ) ) )
 	return &node;
-    
+
     /*
      * 7. Try FTN domains from CONFIG
      */
     for ( p = cf_zones_trav( TRUE ); p; p=cf_zones_trav( FALSE ) )
 	if( try_pfnz( &node, buf, "", p ) )
 	    return &node;
-	
+
     /*
      * Everything failed - not an FTN address
      */
@@ -240,12 +240,12 @@ Node *inet_to_ftn( char *addr ) {
 int addr_is_local( char *addr ) {
 
     RFCAddr rfc;
-    
+
     if( !addr )
 	return FALSE;
 
     rfc = rfcaddr_from_rfc( addr );
-    
+
     debug( 7, "addr_is_local(): From=%s FQDN=%s",
 	  s_rfcaddr_to_asc( &rfc, TRUE ), cf_fqdn( ) );
     return  rfc.addr[0] == '\0'  ||  stricmp( rfc.addr, cf_fqdn( ) ) == 0;
@@ -261,12 +261,12 @@ int addr_is_local_xpost( char *addr ) {
     RFCAddr rfc;
     char ailx;
     static char **addr_list = NULL;
-    
+
     if( !addr )
 	return FALSE;
 
     rfc = rfcaddr_from_rfc( addr );
-    
+
     debug( 7, "addr_is_local_xpost(): From=%s FQDN=%s",
 	  s_rfcaddr_to_asc( &rfc, TRUE ), cf_fqdn( ) );
     ailx = rfc.addr[0] == '\0'  ||  stricmp( rfc.addr, cf_fqdn( ) ) == 0;
@@ -287,7 +287,7 @@ int addr_is_domain( char *addr ) {
     RFCAddr rfc;
     char *d;
     int l, ld, ret = TRUE;
-    
+
     if( addr ) {
 
         rfc = rfcaddr_from_rfc( addr );

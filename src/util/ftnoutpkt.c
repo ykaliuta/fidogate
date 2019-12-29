@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -70,7 +70,7 @@ int do_addr(FTNAddr *from, FTNAddr *to, char *subj, Textlist *tl, char *area,
 	ptr->line = strsave( p );
 	xfree( p );
     }
-    
+
     TMPS_RETURN(outpkt_netmail(&msg, tl, PROGRAM, origin, tearline));
 }
 
@@ -90,7 +90,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] 'User Name @ Z:N/F.P' ...\n\n", PROGRAM);
     fprintf(stderr, "\
 options:  -f --from NAME@Z:N/F.P       set from FTN address\n\
@@ -123,10 +123,10 @@ int main(int argc, char **argv)
     char *cs_in=NULL, *cs_out=NULL, *p;
     char *o_flag=NULL;
     char *t_flag=NULL;
-        
+
     FTNAddr to, from;
     Textlist tl;
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -146,7 +146,7 @@ int main(int argc, char **argv)
     };
 
     log_program(PROGRAM);
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -218,7 +218,7 @@ int main(int argc, char **argv)
     if(f_flag)
     {
 	from = ftnaddr_parse(f_flag);
-	if(from.node.zone == INVALID) 
+	if(from.node.zone == INVALID)
 	{
 	    fprintf(stderr, "%s: illegal address -f %s\n", PROGRAM, f_flag);
 	    exit_free();
@@ -257,12 +257,12 @@ int main(int argc, char **argv)
 	strip_crlf(buffer);
 	tl_append(&tl, buffer);
     }
-    
+
     /* FTN to addresses */
 //    for(; optind<argc; optind++)
     {
 	to = ftnaddr_parse(argv[optind]);
-	if(to.node.zone == INVALID) 
+	if(to.node.zone == INVALID)
 	{
 	    fprintf(stderr, "%s: illegal address %s\n", PROGRAM, argv[optind]);
 	    exit_free();
@@ -275,7 +275,7 @@ int main(int argc, char **argv)
 	}
 	do_addr(&from, &to, s_flag, &tl, A_flag, o_flag, t_flag);
     }
-    
+
     exit_free();
     return 0;
 }

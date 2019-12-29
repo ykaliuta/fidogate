@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -69,16 +69,16 @@ FTNAddr ftnaddr_parse(char *s)
 {
     FTNAddr ftn;
     char *d;
-    
+
     /* Delimiter is first '@' */
     d = strchr(s, '@');
     if(!d)
 	d = s + strlen(s);
-    
+
     /* Copy user name */
     str_copy_range(ftn.name, sizeof(ftn.name), s, d);
     strip_space(ftn.name);
-    
+
     /* Parse address */
     if(*d == '@')
 	d++;
@@ -112,7 +112,7 @@ char *s_ftnaddr_print(FTNAddr *ftn)
 int main(int argc, char *argv[])
 {
     FTNAddr ftn;
-    
+
     /* Init configuration */
     cf_initialize();
     cf_read_config_file(DEFAULT_CONFIG_MAIN);
@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
     }
 
     ftn = ftnaddr_parse(argv[1]);
-    
+
     printf("FTNAddr: %s\n", s_ftnaddr_print(&ftn));
 
     tmps_freeall();

@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -59,7 +59,7 @@ static void areas_init_xlate(void)
 {
     char *cf;
     unsigned char *x_a, *x_g, *p, *q;
-    
+
     for ( cf = cf_get_string("AreasXlate", TRUE);
 	  cf && *cf;
 	  cf = cf_get_string("AreasXlate", FALSE) )
@@ -150,7 +150,7 @@ Area *areas_parse_line(char *buf)
 {
     Area *p;
     char *a, *g, *o;
-	
+
     a = xstrtok(buf,  " \t");	/* FTN area */
     g = xstrtok(NULL, " \t");	/* Newsgroup */
     if(a==NULL || g==NULL)
@@ -162,7 +162,7 @@ Area *areas_parse_line(char *buf)
 	areas_do_file(g);
 	return NULL;
     }
-    
+
     /* Create new areas entry */
     p = (Area *)xmalloc(sizeof(Area));
     p->next         = NULL;
@@ -232,7 +232,7 @@ Area *areas_parse_line(char *buf)
 
 	if(!strcmp(o, "-Q"))
 	    p->encoding = MIME_QP;
-            
+
 	if(!strcmp(o, "-b"))
 	    p->encoding = MIME_B64;
 
@@ -249,7 +249,7 @@ Area *areas_parse_line(char *buf)
 	p->maxsize   = areas_def_maxsize;
     if(p->limitsize < 0)
 	p->limitsize = areas_def_limitsize;
-	
+
     debug(15, "areas: %s %s Z=%d A=%s R=%d S=%ld",
 	  p->area, p->group, p->zone,
 	  p->addr.zone!=-1 ? znfp1(&p->addr) : "",
@@ -265,7 +265,7 @@ static int areas_do_file(char *name)
     Area *p;
 
     debug(14, "Reading areas file %s", name);
-    
+
     fp = xfopen(name, R_MODE_T);
 
     while(cf_getline(buffer, BUFFERSIZE, fp))
@@ -273,7 +273,7 @@ static int areas_do_file(char *name)
 	p = areas_parse_line(buffer);
 	if(!p)
 	    continue;
-	
+
 	/*
 	 * Put into linked list
 	 */
@@ -283,7 +283,7 @@ static int areas_do_file(char *name)
 	    area_list       = p;
 	area_last       = p;
     }
-    
+
     fclose(fp);
 
     return OK;
@@ -308,7 +308,7 @@ void areas_init(void)
 Area *areas_lookup(char *area, char *group, Node *aka)
 {
     Area *p;
-    
+
     /*
      * Inefficient search, but order is important!
      */
@@ -344,7 +344,7 @@ Area *areas_lookup(char *area, char *group, Node *aka)
 	    }
 	}
     }
-    
+
     return NULL;
 }
 
@@ -358,14 +358,14 @@ static Area *area_build(Area *pa, char *area, char *group)
     static char bufa[MAXPATH], bufg[MAXPATH];
     static Area ret;
     char *p, *q, *end;
-    
+
     *bufa = *bufg = 0;
 
     ret       = *pa;
     ret.next  = NULL;
     ret.area  = bufa;
     ret.group = bufg;
-    
+
     /* AREA -> Newsgroup */
     if(area)				/* Was searching for area */
     {
@@ -374,7 +374,7 @@ static Area *area_build(Area *pa, char *area, char *group)
 	p   = bufg + strlen(bufg);
 	end = bufg + sizeof(bufg) - 1;
 	q   = area + strlen(pa->area);
-	
+
 	for(; *q && p<end; q++, p++)
 	    if(areas_x_a[(unsigned char)*q])
 		*p = areas_x_a[(unsigned char)*q];
@@ -391,7 +391,7 @@ static Area *area_build(Area *pa, char *area, char *group)
 	p   = bufa + strlen(bufa);
 	end = bufa + sizeof(bufa) - 1;
 	q   = group + strlen(pa->group);
-	
+
 	for(; *q && p<end; q++, p++)
 	    if(areas_x_g[(unsigned char)*q])
 		*p = areas_x_g[(unsigned char)*q];
@@ -399,6 +399,6 @@ static Area *area_build(Area *pa, char *area, char *group)
 		*p = toupper(*q);
 	*p = 0;
     }
-    
+
     return &ret;
 }

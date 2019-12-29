@@ -24,7 +24,7 @@ FILE *mailer_open(char *to, int forward, char *robotname, char *password)
 	fglog("ERROR: can't open pipe to %s", mailer);
 	return NULL;
     }
-    
+
     if((fix_name = cf_get_string("AreaFixName", TRUE)) && forward == TRUE)
     {
         fprintf(fp, "From: %s@%s (%s)\n",
@@ -45,7 +45,7 @@ FILE *mailer_open(char *to, int forward, char *robotname, char *password)
 	fprintf(fp, "Subject: Your %s request\n", areafix_name());
 
     fprintf(fp, "\n");
-    
+
     return fp;
 }
 

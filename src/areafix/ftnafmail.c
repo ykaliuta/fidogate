@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -73,7 +73,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options]\n\n", PROGRAM);
     fprintf(stderr, "\
 options: -F --filefix                 run as Filefix program (FAREAS.BBS)\n\
@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 {
     int c;
     int filefix = FALSE;
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -106,7 +106,7 @@ int main(int argc, char **argv)
 
     log_file("stderr");
     log_program(PROGRAM);
-    
+
     while ((c = getopt_long(argc, argv, "Fh",
 			    long_options, &option_index     )) != EOF)
 	switch (c) {
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
 	case 'F':
 	    filefix = TRUE;
 	    break;
-	    
+
 	/***** Common options *****/
 	case 'h':
 	    usage();
@@ -130,7 +130,7 @@ int main(int argc, char **argv)
     BUF_COPY2(cmd, cf_p_bindir(), "/ftnaf");
     if( execv(cmd, filefix ? args_filefix : args_areafix) == ERROR )
 	fglog("ERROR: can't exec %s", cmd);
-	
+
     /* Only reached if error */
     return 1;
 }

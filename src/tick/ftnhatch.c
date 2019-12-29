@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -42,7 +42,7 @@
 
 #define CREATOR		"by FIDOGATE/ftnhatch"
 
-#define MY_AREASBBS	"FAreasBBS"    
+#define MY_AREASBBS	"FAreasBBS"
 #define MY_CONTEXT	"ff"
 
 
@@ -73,7 +73,7 @@ int hatch(char *area, char *file, char *desc, char *replaces)
     Node node;
     LNode *p;
     int ret;
-    
+
     /*
      * Lookup area
      */
@@ -104,7 +104,7 @@ int hatch(char *area, char *file, char *desc, char *replaces)
     file_size = st.st_size;
     file_time = st.st_mtime;
     file_crc  = crc32_file(file_name);
-    
+
     debug(4, "file: name=%s size=%ld time=%ld crc=%08lx",
 	  file_name, file_size, (long)file_time, file_crc);
 
@@ -115,7 +115,7 @@ int hatch(char *area, char *file, char *desc, char *replaces)
     tick_init(&tic);
 
     now = time(NULL);
-    
+
     tic.origin	 = cf_n_addr();
     tic.from	 = cf_n_addr();
     /* tic.to set by hatch_one() */
@@ -153,7 +153,7 @@ int hatch(char *area, char *file, char *desc, char *replaces)
 #endif /* FECHO_PASSTHROUGHT */
 	    ret = EXIT_ERROR;
     }
-    
+
     return ret;
 }
 
@@ -175,7 +175,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] AREA FILE \"DESCRIPTION\"\n\n",
 	    PROGRAM);
     fprintf(stderr, "\
@@ -203,13 +203,13 @@ int main(int argc, char **argv)
     int ret;
     char *area, *file, *desc, *p;
     char *cs_out = NULL, *cs_in  = NULL;
-    
+
     int option_index;
     static struct option long_options[] =
 	{
 	    { "fareas-bbs",   1, 0, 'b'},
 	    { "replaces",     1, 0, 'r'},
-	    
+
 	    { "verbose",      0, 0, 'v'},	/* More verbose */
 	    { "help",         0, 0, 'h'},	/* Help */
 	    { "config",       1, 0, 'c'},	/* Config file */
@@ -219,7 +219,7 @@ int main(int argc, char **argv)
 	};
 
     log_program(PROGRAM);
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -235,7 +235,7 @@ int main(int argc, char **argv)
 	case 'r':
 	    r_flag = optarg;
 	    break;
-	    
+
 	    /***** Common options *****/
 	case 'v':
 	    verbose++;
@@ -284,7 +284,7 @@ int main(int argc, char **argv)
     area = argv[optind++];
     file = argv[optind++];
     desc = argv[optind++];
-    
+
     /*
      * Get name of fareas.bbs file from config file
      */
@@ -329,7 +329,7 @@ int main(int argc, char **argv)
 	fglog("$ERROR: can't open %s", areas_bbs);
 	ret = EX_OSFILE;
     }
-    
+
     /* Hatch it! */
     ret = hatch(area, file, desc, r_flag);
     tmps_freeall();

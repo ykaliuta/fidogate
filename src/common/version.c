@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -62,10 +62,10 @@ static char *get_keyword_arg(char *s)
 	s++;
     while(*s && *s==' ')
 	s++;
-    
+
     for(p=s; *p && *p!=' '; p++) ;
     *p = 0;
-    
+
     return s;
 }
 
@@ -77,9 +77,9 @@ static char *get_keyword_arg(char *s)
 char *version_local(char *rev)
 {
     static char id[128];
-    
+
     BUF_COPY(id, rev);
-    
+
     return get_keyword_arg(id);
 }
 

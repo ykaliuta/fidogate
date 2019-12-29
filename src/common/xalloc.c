@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -107,7 +107,7 @@ char *strsave2(char *s1, char *s2)
 
     if(!s1 || !s2)
 	return NULL;
-    
+
     len = strlen(s1) + strlen(s2) + 1;
     p = xmalloc(len);
     str_copy2(p, len, s1, s2);
@@ -121,21 +121,21 @@ void exit_free(void)
     debug(9, "passwd_free()");
 
     hosts_free();
-    debug(9, "hosts_free()"); 
+    debug(9, "hosts_free()");
 
-    uplinks_free(); 
-    debug(9, "uplinks_free()"); 
+    uplinks_free();
+    debug(9, "uplinks_free()");
 
-    areasbbs_free(); 
-    debug(9, "areasbbs_free()"); 
+    areasbbs_free();
+    debug(9, "areasbbs_free()");
 
-    config_free(); 
-    debug(9, "config_free()"); 
+    config_free();
+    debug(9, "config_free()");
 
 #ifdef FTN_ACL
     acl_ftn_free();
-    debug(9, "acl_ftn_free()"); 
+    debug(9, "acl_ftn_free()");
 #endif /* FTN_ACL */
     charset_free();
-    debug(9, "charset_free()"); 
+    debug(9, "charset_free()");
 }

@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -62,7 +62,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options]\n\n", PROGRAM);
     fprintf(stderr, "\
 options: -b --news-batch              (passed on as -b)\n\
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
     char *m_flag=NULL;
     char cmd[MAXPATH];
     char *args[MAXARGS];
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -128,7 +128,7 @@ int main(int argc, char **argv)
 	case 'm':
 	    m_flag = optarg;
 	    break;
-	    
+
 	/***** common options *****/
 	case 'h':
 	    usage();
@@ -178,7 +178,7 @@ int main(int argc, char **argv)
     /* exec */
     if( execv(cmd, args) == ERROR )
 	fglog("$can't exec %s", cmd);
-	
+
     /* Only reached if error */
     exit(1);
 

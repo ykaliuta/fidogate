@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -151,7 +151,7 @@ static FILE *pkt_open_node(Node *node, char *flav, int bsy)
     long pos;
     Packet pkt;
     int count;
-    
+
     /* Name of .OUT file */
     out = bink_find_out(node, flav);
     if(!out)
@@ -182,7 +182,7 @@ static FILE *pkt_open_node(Node *node, char *flav, int bsy)
 	    fp = NULL;
 	    break;
 	}
-	
+
 	/* Open OUT file for append, creating empty one if necessary */
 	debug(4, "Open OUT file in append mode");
 	fp = fopen(out, A_MODE);
@@ -262,12 +262,12 @@ static FILE *pkt_open_node(Node *node, char *flav, int bsy)
     if(pos == 0L)
     {
 	Passwd *pwd;
-	
+
 	/*
 	 * This is a new packet file
 	 */
 	debug(4, "%s is a new packet, writing header", out);
-	
+
 	cf_set_best(node->zone, node->net, node->node);
 
 	pkt.from = cf_n_addr();
@@ -326,7 +326,7 @@ static FILE *pkt_open_node(Node *node, char *flav, int bsy)
 
     packet_file = fp;
     packet_node = *node;
-    
+
     return fp;
 }
 
@@ -339,22 +339,22 @@ static FILE *pkt_create(Node *to)
 {
     Packet pkt;
     Passwd *pwd;
-    
+
     if((packet_file = fopen(packet_tmp, W_MODE)) == NULL)
     {
 	fglog("$ERROR: pkt_open(): can't create packet %s", packet_tmp);
 	return NULL;
     }
-    
+
     /*
      * Change mode to PACKET_MODE
      */
     chmod(packet_tmp, PACKET_MODE);
-    
+
     debug(4, "New packet file %s (tmp %s)", packet_name, packet_tmp);
 
     cf_set_best(to->zone, to->net, to->node);
-    
+
     /*
      * Write packet header
      */
@@ -411,13 +411,13 @@ FILE *pkt_open(char *name, Node *node, char *flav, int bsy)
 int pkt_close(void)
 {
     int ret = OK;
-    
+
     if(packet_file)
     {
 	/* End of packet */
 	pkt_put_int16(packet_file, 0);
 	ret = fclose(packet_file);
-	
+
 	packet_file = NULL;
 
 	if(packet_node.zone != -1)
@@ -427,7 +427,7 @@ int pkt_close(void)
 	    packet_bsy = FALSE;
 	    packet_node.zone = -1;
 	}
-	
+
 	/* Rename .tmp -> .pkt, if not the same name */
 	if( strcmp(packet_tmp, packet_name) )
 	    if(rename(packet_tmp, packet_name) == ERROR)
@@ -460,7 +460,7 @@ int pkt_get_string(FILE *fp, char *buf, int nbytes)
     }
     buf[i] = 0;
     i++;
-    
+
     return c!=0 ? ERROR : i;
 }
 
@@ -524,10 +524,10 @@ int pkt_get_msg_hdr(FILE *fp, Message *msg)
     pkt_get_string( fp, msg->subject  , sizeof(msg->subject  ));
 
     msg->area      = NULL;
-    
+
     if(verbose >= 6)
 	pkt_debug_msg_hdr(stderr, msg, "Reading ");
-    
+
     return ferror(fp);
 }
 
@@ -558,7 +558,7 @@ void pkt_put_string(FILE *fp, char *s)
 {
     fputs(s, fp);
     putc(0, fp);
-    
+
     return;
 }
 
@@ -578,7 +578,7 @@ void pkt_put_line(FILE *fp, char *s)
 
     return;
 }
-    
+
 
 
 /*
@@ -612,7 +612,7 @@ void pkt_put_date(FILE *pkt, time_t t)
 	    t += 2;
 	last = t;
     }
-    
+
     /* Date according to FTS-0001 */
     pkt_put_string(pkt, date(DATE_FTS_0001, &t) );
 
@@ -640,7 +640,7 @@ int pkt_put_msg_hdr(FILE *pkt, Message *msg, int kludge_flag)
     pkt_put_int16 (pkt, msg->node_to  .net );
     pkt_put_int16 (pkt, msg->attr          );
     pkt_put_int16 (pkt, msg->cost          );
-    
+
     pkt_put_date  (pkt, msg->date          );
     pkt_put_string(pkt, msg->name_to       );
     pkt_put_string(pkt, msg->name_from     );
@@ -648,16 +648,16 @@ int pkt_put_msg_hdr(FILE *pkt, Message *msg, int kludge_flag)
 
     if(!kludge_flag)
 	goto pkt_put_msg_hdr_ret;
-    
+
     /*
      * Write area tag / zone, point adressing kludges
      */
     if(msg->area)
 	fprintf(pkt, "AREA:%s\r\n", msg->area);
-    else 
+    else
     {
 	Node tmpf, tmpt;
-	
+
 	tmpf = msg->node_from; tmpf.point = 0; tmpf.domain[0] = 0;
 	tmpt = msg->node_to;   tmpt.point = 0; tmpt.domain[0] = 0;
 	fprintf(pkt, "\001INTL %s %s\r\n", znf1(&tmpt), znf2(&tmpf));
@@ -702,14 +702,14 @@ long pkt_get_int16(FILE *fp)
 int pkt_get_nbytes(FILE *fp, char *buf, int n)
 {
     int c;
-    
+
     while(n--)
     {
 	if((c = getc(fp)) == EOF)
 	    return ERROR;
 	*buf++ = c;
     }
-    
+
     return ferror(fp);
 }
 
@@ -729,7 +729,7 @@ int pkt_get_hdr(FILE *fp, Packet *pkt)
     struct tm *tm;
     TIMEINFO ti;
     int auxnet;
-    
+
     retVal = OK;
     GetTimeInfo(&ti);
     tm = localtime(&ti.time);
@@ -892,7 +892,7 @@ int pkt_get_hdr(FILE *fp, Packet *pkt)
 	    pkt->from.net = pkt->to.net;
 	debug(9, "Packet: FSC-0048 orig net: %d -> %d", 0xFFFF, pkt->from.net);
     }
-    
+
     if(ferror(fp) == ERROR)
 	return ERROR;
     return retVal;
@@ -915,7 +915,7 @@ void pkt_debug_hdr(FILE *out, Packet *pkt, char *txt)
     fprintf(out, "    Pass: \"%s\"\n", pkt->passwd);
     fprintf(out, "    Capw: %04x\n", pkt->capword & 0xffff);
 }
-    
+
 
 
 /*
@@ -928,7 +928,7 @@ int pkt_put_string_padded(FILE *fp, char *s, int n)
 	putc(*s, fp);
     for(; i<n; i++)
 	putc(0, fp);
-    
+
     return ferror(fp);
 }
 

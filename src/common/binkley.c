@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -57,8 +57,8 @@ outb_types[NOUTB] =
     { FLAV_CRASH , "clo", "cut", "Crash" , "C" }
 };
 
-	
-	
+
+
 /*
  * FLAV_* flavor code to string
  */
@@ -142,7 +142,7 @@ char *bink_bsy_name(Node *node)
 {
     static char buf[MAXPATH];
     char *out;
-    
+
     out = bink_out_name(node);
     if(!out)
 	return NULL;
@@ -183,7 +183,7 @@ int bink_bsy_create(Node *node, int wait)
     /* Create directory if necessary */
     if(bink_mkdir(node) == ERROR)
 	return ERROR;
-    
+
     /* Create BSY file */
 # ifdef NFS_SAFE_LOCK_FILES
     return lock_lockfile_nfs(name, wait, NULL);
@@ -205,7 +205,7 @@ int bink_bsy_delete(Node *node)
 #ifdef DO_BSY_FILES
     char *name = bink_bsy_name(node);
     int ret;
-    
+
     if(!name)
 	return ERROR;
 
@@ -233,11 +233,11 @@ char *bink_find_flo(Node *node, char *flav)
     static char buf[MAXPATH];
     char *outb, *flo=NULL;
     int i;
-    
+
     outb = bink_out_name(node);
     if(!outb)
 	return NULL;
-    
+
     /*
      * Search existing FLO files first
      */
@@ -287,11 +287,11 @@ char *bink_find_out(Node *node, char *flav)
     static char buf[MAXPATH];
     char *outb, *out=NULL;
     int i;
-    
+
     outb = bink_out_name(node);
     if(!outb)
 	return NULL;
-    
+
     /*
      * Search existing OUT files first
      */
@@ -386,7 +386,7 @@ int bink_attach(Node *node, int mode, char *name, char *flav, int bsy)
 	    debug(5, "           found entry");
 	}
     }
-    
+
     /* We're there ...  */
     if(found)
 	debug(4, "FLO file already contains an entry, not attaching file");
@@ -412,10 +412,10 @@ int bink_attach(Node *node, int mode, char *name, char *flav, int bsy)
 int check_access(char *name, int check)
 {
     struct stat st;
-    
+
     if(stat(name, &st) == -1)
 	return ERROR;
-    
+
     if(check==CHECK_FILE && S_ISREG(st.st_mode))
 	return TRUE;
     if(check==CHECK_DIR  && S_ISDIR(st.st_mode))
@@ -435,7 +435,7 @@ int bink_mkdir(Node *node)
     char *base;
     size_t rest;
     int aso = FALSE;
-	
+
     if (cf_get_string("AmigaStyleOutbound", TRUE) != NULL)
 	aso = TRUE;
 
@@ -448,7 +448,7 @@ int bink_mkdir(Node *node)
 	base = cf_zones_out(0);
     else
 	base = cf_zones_out(node->zone);
-	    
+
     if (base == NULL)
 	return ERROR;
     BUF_APPEND(buf, base);
@@ -495,7 +495,7 @@ int bink_mkdir(Node *node)
 long check_size(char *name)
 {
     struct stat st;
-    
+
     if(stat(name, &st) == -1)
 	return ERROR;
     else
@@ -512,10 +512,10 @@ int check_old(char *name, time_t dt)
     struct stat st;
     TIMEINFO ti;
     time_t t;
-    
+
     GetTimeInfo(&ti);
     t = ti.time;
-    
+
     if(stat(name, &st) == -1)
 	return ERROR;
 

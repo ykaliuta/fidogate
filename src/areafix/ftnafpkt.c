@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -84,7 +84,7 @@ int do_netmail(Message *msg, MsgBody *body)
     Message outmsg;
     Textline *ptr;
     char *p;
-    
+
     Textlist tmp;
     Textline *tp;
     int ln=1;
@@ -95,7 +95,7 @@ int do_netmail(Message *msg, MsgBody *body)
 
     if(s_flag == TRUE)
     {
-/*	areafix_answer(&msg->node_from, &msg->name_from, &body->body, 
+/*	areafix_answer(&msg->node_from, &msg->name_from, &body->body,
 						(r_flag ? NULL : &outbody) );*/
     }
     else
@@ -105,7 +105,7 @@ int do_netmail(Message *msg, MsgBody *body)
 
     if(r_flag)
 	return OK;
-    
+
     /* Send reply */
     node_clear(&outmsg.node_from);
     node_clear(&outmsg.node_orig);
@@ -145,11 +145,11 @@ int do_netmail(Message *msg, MsgBody *body)
 	    tl_append(&tmp,tp->line);
 	}
 	ln++;
-    }    
+    }
 
     tl_clear(&outbody);
 
-    return OK; 
+    return OK;
 }
 
 
@@ -167,15 +167,15 @@ int do_netmail(Message *msg, MsgBody *body)
 */
 //	strip_crlf(p);				/* Strip CR/LF */
 //	strip_space(p);				/* Strip spaces */
-	
+
 /*	area = strsave(strtok(p, " \t"));
-	type = strsave(p+strlen(area));	
+	type = strsave(p+strlen(area));
 
 	str_lower(type);
 
 	if( (action = answ_lookup(Node *node, char *answ)) )
 	{
-	    
+
 	}
 	xfree(area);
 	xfree(type);
@@ -188,7 +188,7 @@ int do_netmail(Message *msg, MsgBody *body)
 int do_echomail(Message *msg, MsgBody *body)
 {
     fglog("WARNING: echomail message from %s not processed", znfp1(&msg->node_orig));
-    
+
     return OK;
 }
 
@@ -203,7 +203,7 @@ int do_packet(FILE *pkt_file, Packet *pkt)
     Textlist tl;			/* Textlist for message body */
     MsgBody body;			/* Message body of FTN message */
     int type, ret_n;
-    
+
     /* Initialize */
     tl_init(&tl);
     msg_body_init(&body);
@@ -218,7 +218,7 @@ int do_packet(FILE *pkt_file, Packet *pkt)
 	    fglog("WARNING: premature EOF reading input packet");
 	    TMPS_RETURN(OK);
 	}
-	
+
 	fglog("ERROR: reading input packet");
 	TMPS_RETURN(ERROR);
     }
@@ -233,7 +233,7 @@ int do_packet(FILE *pkt_file, Packet *pkt)
 	    fglog("ERROR: reading input packet");
 	    TMPS_RETURN(ERROR);
 	}
-	
+
 	/* Read & parse message body */
 	if( pkt_get_body_parse(pkt_file, &body, &msg.node_from, &msg.node_to) != OK )
 	    fglog("ERROR: parsing message body");
@@ -252,7 +252,7 @@ int do_packet(FILE *pkt_file, Packet *pkt)
 	    if(ret_n == ERROR)
 		TMPS_RETURN(ERROR);
 	}
-	else 
+	else
 	{
 	    /* Retrieve address information from * Origin line */
 	    if(msg_parse_origin(body.origin, &msg.node_orig) == ERROR)
@@ -290,7 +290,7 @@ int do_file(char *pkt_name)
     Packet pkt;
     FILE *pkt_file;
     long pkt_size;
-    
+
     /* Open packet and read header */
     pkt_file = fopen(pkt_name, R_MODE);
     if(!pkt_file) {
@@ -305,20 +305,20 @@ int do_file(char *pkt_name)
 	rename_bad(pkt_name);
 	TMPS_RETURN(OK);
     }
-    
+
     /* Process it */
     pkt_size = check_size(pkt_name);
     fglog("packet %s (%ldb) from %s to %s", pkt_name, pkt_size,
 	znfp1(&pkt.from), znfp2(&pkt.to) );
-    
-    if(do_packet(pkt_file, &pkt) == ERROR) 
+
+    if(do_packet(pkt_file, &pkt) == ERROR)
     {
 	fglog("ERROR: processing %s", pkt_name);
 	fclose(pkt_file);
 	rename_bad(pkt_name);
 	TMPS_RETURN(severe_error);
     }
-    
+
     fclose(pkt_file);
 
     if (unlink(pkt_name)) {
@@ -340,7 +340,7 @@ void prog_signal(int signum)
     char *name = "";
 
     signal_exit = TRUE;
-    
+
     switch(signum)
     {
     case SIGHUP:
@@ -372,7 +372,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] [packet ...]\n\n", PROGRAM);
     fprintf(stderr, "\
 options: -I --in-dir DIR              set input packet directory\n\
@@ -408,7 +408,7 @@ int main(int argc, char **argv)
     char *cs_in=NULL, *cs_out=NULL, *p;
     int areafix=TRUE;
     char bbslock[MAXPATH];
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -431,7 +431,7 @@ int main(int argc, char **argv)
 
     /* Log name */
     log_program(PROGRAM);
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -464,7 +464,7 @@ int main(int argc, char **argv)
 	case 's':
 	    s_flag = TRUE;
 	    break;
-	    
+
 	/***** Common options *****/
 	case 'v':
 	    verbose++;
@@ -502,7 +502,7 @@ int main(int argc, char **argv)
     if(u_flag)
 	cf_set_uplink(u_flag);
     cf_debug();
-    
+
     if ( (p = cf_get_string ("DefaultCharset", TRUE)) )
     {
 	cs_out = strtok (p, ":");
@@ -516,7 +516,7 @@ int main(int argc, char **argv)
     /* Process local options */
     BUF_EXPAND(in_dir, I_flag ? I_flag : cf_p_pinbound());
     pkt_outdir(O_flag ? O_flag : cf_p_outpkt(), NULL);
-    
+
     /* Install signal/exit handlers */
     signal(SIGHUP,  prog_signal);
     signal(SIGINT,  prog_signal);
@@ -535,7 +535,7 @@ int main(int argc, char **argv)
 
     /***** Main processing loop *****/
     ret = EXIT_OK;
-    
+
     if(optind >= argc)
     {
 	/* process packet files in directory */
@@ -546,7 +546,7 @@ int main(int argc, char **argv)
 	    exit_free();
 	    return EXIT_ERROR;
 	}
-    
+
 	/* Lock file */
 	if(l_flag)
 	    if(lock_program(PROGRAM, NOWAIT) == ERROR)
@@ -571,7 +571,7 @@ int main(int argc, char **argv)
 	    exit_free();
 	    return EXIT_ERROR;
 	}
-	
+
 	for(pkt_name=dir_get(TRUE); pkt_name; pkt_name=dir_get(FALSE))
 	{
 	    if(do_file(pkt_name) == ERROR)
@@ -587,7 +587,7 @@ int main(int argc, char **argv)
 	}
 
 	dir_close();
-	
+
 	/* Rewrite areas.bbs */
 	if(ret==EXIT_OK && !n_flag)
 	    if( areasbbs_rewrite() == ERROR )
@@ -618,7 +618,7 @@ int main(int argc, char **argv)
 	    exit_free();
 	    return EXIT_ERROR;
 	}
-	
+
 	/* Process packet files on command line */
 	for(; optind<argc; optind++)
 	{
@@ -643,7 +643,7 @@ int main(int argc, char **argv)
 	if(l_flag)
 	    unlock_program(PROGRAM);
     }
-    
+
     areafix_free();
     exit_free();
     return ret;

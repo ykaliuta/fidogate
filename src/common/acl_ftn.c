@@ -8,7 +8,7 @@
  *
  *****************************************************************************
  * Copyright (C) 2001
- * 
+ *
  *    Dmitry Fedotov            FIDO:      2:5030/1229
  *				Internet:  dyff@users.sourceforge.net
  *
@@ -23,7 +23,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -107,7 +107,7 @@ static ftn_acl_t *ftnacl_parse_line(char *buf)
             atype = TYPE_READONLY;
         else if(strieq(t1, "mandatory") )
             atype = TYPE_MANDATORY;
-	else 
+	else
 	    fglog("acl_ftn: area mask not specified, ignoring line");
     }
     else
@@ -209,7 +209,7 @@ void ftnacl_do_file(char *name)
     {
 	fglog( "$acl_ftn: can't open %s", name );
     }
-    
+
     return;
 }
 

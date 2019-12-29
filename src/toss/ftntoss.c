@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -133,9 +133,9 @@ char dupe_check    = FALSE;		/* config: DupeCheck */
 char kill_dupe     = FALSE;		/* config: KillDupe */
 char kill_nomsgid  = FALSE;		/* config: KillNoMSGID */
 char kill_old      = FALSE;		/* config: KillOld */
-char echomail4d    = FALSE;		/* config: EchoMail4D */ 
+char echomail4d    = FALSE;		/* config: EchoMail4D */
 char no_empty_path = FALSE;		/* config: NoEmptyPath */
-char add_other_aka = FALSE;		/* config: AddOtherAKAs */ 
+char add_other_aka = FALSE;		/* config: AddOtherAKAs */
 #ifdef FTN_ACL
 char uplink_can_be_readonly = FALSE;	/* config: UplinkCanBeReadonly */
 #endif /* FTN_ACL */
@@ -202,7 +202,7 @@ void addtoseenby_init(void)
 {
     char *s, *parea, *pnodes;
     AddToSeenBy *p;
-    
+
     for(s = cf_get_string("AddToSeenBy",TRUE);
 	s && *s;
 	s = cf_get_string("AddToSeenBy",FALSE) )
@@ -213,7 +213,7 @@ void addtoseenby_init(void)
 
 	if(!parea || !pnodes)
 	    continue;
-	    
+
 	p = (AddToSeenBy *)xmalloc(sizeof(AddToSeenBy));
 	p->next = NULL;
 	p->area = strsave(parea);
@@ -252,7 +252,7 @@ void deleteseenby_init(void)
 {
     char *s;
     DeleteSeenBy *p;
-    
+
     for(s = cf_get_string("DeleteSeenBy",TRUE);
 	s && *s;
 	s = cf_get_string("DeleteSeenBy",FALSE) )
@@ -269,7 +269,7 @@ void deleteseenby_init(void)
 	deleteseenby_last = p;
     }
 }
-    
+
 
 
 /*
@@ -294,7 +294,7 @@ void deletepath_init(void)
 {
     char *s;
     DeletePath *p;
-    
+
     for(s = cf_get_string("DeletePath",TRUE);
 	s && *s;
 	s = cf_get_string("DeletePath",FALSE) )
@@ -330,7 +330,7 @@ void zonegate_init(void)
 {
     char *s;
     ZoneGate *p;
-    
+
     for(s = cf_get_string("ZoneGate",TRUE);
 	s && *s;
 	s = cf_get_string("ZoneGate",FALSE) )
@@ -346,14 +346,14 @@ void zonegate_init(void)
 	}
 	else
 	    node_invalid(&p->node);
-	
+
 	if(zonegate_first)
 	    zonegate_last->next = p;
 	else
 	    zonegate_first = p;
 	zonegate_last = p;
     }
-}    
+}
 
 
 /*
@@ -367,7 +367,7 @@ int lon_to_kludge(Textlist *tl, char *text, LON *lon)
     Node old;
     char *s = NULL;
     int n = 0;
-    
+
     BUF_COPY(buffer, text);
     node_invalid(&old);
     old.zone = cf_zone();
@@ -378,15 +378,15 @@ int lon_to_kludge(Textlist *tl, char *text, LON *lon)
 	    p->node.zone = cf_zone();		/* No zone, use current one */
 	    s = node_to_asc_diff(&p->node, &old);
 	    old = p->node;
-	    
+
 	    if(strlen_zero(buffer)+strlen_zero(s)+1 > MAX_LENGTH)
 	    {
 		BUF_APPEND(buffer, "\r\n");
 		tl_append(tl, buffer);
-		
+
 		node_invalid(&old);
 		old.zone = cf_zone();
-		
+
 		s = node_to_asc_diff(&p->node, &old);
 		old = p->node;
 		BUF_COPY3(buffer, text, " ", s);
@@ -396,7 +396,7 @@ int lon_to_kludge(Textlist *tl, char *text, LON *lon)
 
 	    n = TRUE;
 	}
-    
+
     BUF_APPEND(buffer, "\r\n");
     tl_append(tl, buffer);
 
@@ -411,7 +411,7 @@ void lon_to_kludge_sorted(Textlist *tl, char *text, LON *lon)
     int i;
 
     lon_sort(lon, FALSE);
-    
+
     BUF_COPY(buffer, text);
     node_invalid(&old);
     old.zone = cf_zone();
@@ -422,15 +422,15 @@ void lon_to_kludge_sorted(Textlist *tl, char *text, LON *lon)
 	    lon->sorted[i]->zone = cf_zone();	/* No zone, use current one */
 	    s = node_to_asc_diff(lon->sorted[i], &old);
 	    old = *lon->sorted[i];
-	    
+
 	    if(strlen_zero(buffer)+strlen_zero(s)+1 > MAX_LENGTH)
 	    {
 		BUF_APPEND(buffer, "\r\n");
 		tl_append(tl, buffer);
-		
+
 		node_invalid(&old);
 		old.zone = cf_zone();
-		
+
 		s = node_to_asc_diff(lon->sorted[i], &old);
 		old = *lon->sorted[i];
 		BUF_COPY3(buffer, text, " ", s);
@@ -438,14 +438,14 @@ void lon_to_kludge_sorted(Textlist *tl, char *text, LON *lon)
 	    else
 		BUF_APPEND2(buffer, " ", s);
 	    }
-    
+
     BUF_APPEND(buffer, "\r\n");
     tl_append(tl, buffer);
 
     return;
 }
 
-    
+
 
 /*
  * Toss EchoMail, writing message to packet for each downlink
@@ -457,7 +457,7 @@ int toss_echomail(Message *msg, MsgBody *body, LON *seenby, LON *path,
     FILE *fp;
     Textlist save = { NULL, NULL, 0 };
     char is_saved;
-    
+
     for(p=nodes->first; p; p=p->next)
     {
 	is_saved = FALSE;
@@ -471,7 +471,7 @@ int toss_echomail(Message *msg, MsgBody *body, LON *seenby, LON *path,
 	if(zonegate_first)
 	{
 	    ZoneGate *pz;
-	    
+
 	    for(pz=zonegate_first; pz; pz=pz->next)
 		if(node_eq(&p->node, &pz->node))
 		{
@@ -507,10 +507,10 @@ int toss_echomail(Message *msg, MsgBody *body, LON *seenby, LON *path,
 	    tl_clear(&body->seenby);
 	    body->seenby = save;
 	}
-	
+
 	msgs_echomail++;
     }
-    
+
     return OK;
 }
 
@@ -547,7 +547,7 @@ void kludge_to_lon(Textlist *tl, LON *lon)
 		old = node;
 	    }
     }
-	
+
     return;
 }
 
@@ -560,7 +560,7 @@ int node_eq_echo(Node *a, Node *b)
 {
     if(a==NULL || b==NULL)
 	return FALSE;
-    
+
     return
 	a->net  == b->net  &&
 	a->node == b->node && a->point ==b->point   ;
@@ -576,7 +576,7 @@ int node_eq_echo_pa(Node *a, Node *b)
 {
     if(a==NULL || b==NULL)
 	return FALSE;
-    
+
     return
 	a->net==b->net  &&  a->node==b->node  &&
 	(a->point==0 || a->point==b->point);
@@ -590,11 +590,11 @@ int node_eq_echo_pa(Node *a, Node *b)
 int lon_search_echo(LON *lon, Node *node)
 {
     LNode *p;
-    
+
     for(p=lon->first; p; p=p->next)
 	if(node_eq_echo(&p->node, node))
 	    return TRUE;
-    
+
     return FALSE;
 }
 
@@ -607,14 +607,14 @@ int is_local_addr(Node *node, char only3d)
 {
     Node *n;
     char found = FALSE;
-    
+
     for(n=cf_addr_trav(TRUE); n; n=cf_addr_trav(FALSE))
 	if(only3d ? node_eq_echo(node, n) : node_eq(node, n))
 	{
 	    found = TRUE;
 	    break;
 	}
-    
+
     return found;
 }
 
@@ -644,7 +644,7 @@ void do_seenby(LON *seenby, LON *nodes, LON *new, LON *passive, int cup, Node *f
 		    lon_add(new, &p->node);
 	    }
 	}
-	    
+
     return;
 }
 
@@ -658,7 +658,7 @@ void do_path(LON *path)
     if(path->last && node_eq_echo(&path->last->node, cf_addr()))
 	/* Already there */
 	return;
-    
+
     lon_add(path, cf_addr());
     return;
 }
@@ -671,12 +671,12 @@ void do_path(LON *path)
 int do_check_path(LON *path)
 {
     LNode *p;
-    
+
     for(p=path->first; p; p=p->next)
 	if(p->next)		/* Don't check last node in list */
 	    if(is_local_addr(&p->node, TRUE))
 		return ERROR;
-    
+
     return OK;
 }
 
@@ -698,7 +698,7 @@ int do_bad_msg(Message *msg, MsgBody *body)
 	return severe_error=ERROR;
     if( msg_put_msgbody(fp, body) != OK )
 	return severe_error=ERROR;
-    
+
     return OK;
 }
 
@@ -710,7 +710,7 @@ Node *lon_first(LON *lon)
 {
     if(lon->first)
 	return &lon->first->node;
-    
+
     return NULL;
 }
 
@@ -739,7 +739,7 @@ void do_4dpoint(LON *seenby, LON *path, Node *from, Node *addr)
      */
     if( !lon_search_echo(seenby, cf_addr()) )
 	lon_add(seenby, cf_addr());
-    
+
     return;
 }
 
@@ -762,7 +762,7 @@ void do_deleteseenby(LON *seenby)
     {
         if( lon_search(seenby, &p->node) )
 	{
-	    debug(7, "do_deleteseenby(): Found SEEN-BY for removing: %s", 
+	    debug(7, "do_deleteseenby(): Found SEEN-BY for removing: %s",
 		  znf1(&p->node));
 	    lon_remove(seenby, &p->node);
 	}
@@ -780,7 +780,7 @@ void do_deletepath(LON *path)
     LON *ln;
 
     ln = &deleteseenby_first->deleteseenby;
-    
+
     lon_debug(9, "do_deletepath(): List of PATH for removing: ", ln, FALSE);
 
     for(p=ln->first; p; p=p->next)
@@ -837,7 +837,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
     BUF_COPY(areaname, body->area + 5);
     strip_crlf(areaname);
     debug(5, "EchoMail AREA: %s", areaname);
-    
+
 #ifdef SECURITY
     /*
      * Security checks
@@ -968,7 +968,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
     if(area->addr.zone != -1)
 	cf_set_curr(&area->addr);
 
-    
+
     (area->msgs_in)++;
 
 
@@ -979,7 +979,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
     {
 	char *p, *msgid;
 	Textline *tl;
-	
+
 	if( (p = kludge_get(&body->kludge, "MSGID", &tl)) )
 	{
 	    /* ^AMSGID */
@@ -994,7 +994,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 		if(*p=='\t' || *p=='\r' || *p=='\n')
 		    *p = '_';
 	}
-	else 
+	else
 	{
 	    /* If KillNoMSGID ... */
 	    if(kill_nomsgid)
@@ -1048,12 +1048,12 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 		return OK;
 	    }
 	}
-	
+
 	/* Check for existence in MSGID history */
 	if(hi_test(msgid))
 	{
 	    /* Dupe! */
-	    fglog("dupe from %s(%s): %s", znfp1(&msg->node_from), 
+	    fglog("dupe from %s(%s): %s", znfp1(&msg->node_from),
 		    znfp2(&pkt->from), msgid);
 	    msgs_dupe++;
 	    (area->msgs_dupe)++;
@@ -1073,14 +1073,14 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 	}
     }
 
-    
+
     /*
      * Lookup area in AddToSeenBy list
      */
     for(addto=addto_first; addto; addto=addto->next)
 	if( wildmatch(area->area, addto->area, TRUE) )
 	    break;
-    
+
     /*
      * Check that this message is addressed to one of our AKAs
      */
@@ -1100,7 +1100,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 	    return OK;
 	}
     }
-    
+
     /*
      * Check that origin is listed in AREAS.BBS
      */
@@ -1119,7 +1119,7 @@ int do_echomail(Packet *pkt, Message *msg, MsgBody *body)
 	    return OK;
 	}
     }
-    
+
 #ifdef FTN_ACL
     /*
      * Check if link is read only
@@ -1170,7 +1170,7 @@ area have status read-only\r\n\r\n\
 
     /* Special processing if message is from a 4d point */
     do_4dpoint(&seenby, &path, &msg->node_from, cf_addr());
-    
+
     /* Make sure that sender/recipient are in SEEN-BY */
     if( !lon_search_echo(&seenby, &msg->node_from) )
 	lon_add(&seenby, &msg->node_from);
@@ -1190,7 +1190,7 @@ area have status read-only\r\n\r\n\
 	lon_add(&path, &pkt->from);
     }
 #endif /* SECURITY */
-    
+
     /* Add nodes not already in SEEN-BY to seenby and new */
     do_seenby(&seenby, &area->nodes, &new, &(area->passive), area->uplinks, &msg->node_from);
 
@@ -1199,7 +1199,7 @@ area have status read-only\r\n\r\n\
 	do_seenby(&seenby, &addto->add, NULL, NULL, 0,  &msg->node_from);
 
     /* Add all AKAs for the current zone, if AddOtherAKA is set */
-    if(add_other_aka) 
+    if(add_other_aka)
     {
 	short z;
 
@@ -1208,7 +1208,7 @@ area have status read-only\r\n\r\n\
 	    if(node->zone == z && !lon_search_echo(&seenby, node))
 		lon_add(&seenby, node);
     }
-    
+
     /* Delete nodes from SEEN-BY */
     if(deleteseenby_first)
 	do_deleteseenby(&seenby);
@@ -1219,7 +1219,7 @@ area have status read-only\r\n\r\n\
        ! (area->flags & AREASBBS_PASSTHRU)    &&
        ! node_eq(&msg->node_from, cf_addr())    )
 	lon_add(&new, cf_addr());
-    else if (! p_flag && 
+    else if (! p_flag &&
 	! node_eq(&msg->node_from, cf_addr()) &&
 	lon_search(&area->nodes, cf_addr()))
 	lon_add(&new, cf_addr());
@@ -1281,7 +1281,7 @@ area have status 'W' (no traffic from uplink)\r\n\r\n\
 	return OK;
 
     }
-    
+
     if (NULL != area->state)
     {
 	if( areasbbs_isstate(area->state, 'U') ||
@@ -1308,7 +1308,7 @@ area have status 'W' (no traffic from uplink)\r\n\r\n\
 
     if(no_empty_path && ret==0)
 	tl_clear(&body->path);
-    
+
     /*
      * Send message to all downlinks in new
      */
@@ -1370,12 +1370,12 @@ void change_addr(Node *node, Node *newpat)
 void do_rewrite(Message *msg)
 {
     Rewrite *r;
-    
+
     for(r=rewrite_first; r; r=r->next)
     {
 	/* From */
 	if(node_match(&msg->node_from, &r->from))
-	    if(r->type==CMD_REWRITE || (r->type==CMD_REWRITE_FROM && 
+	    if(r->type==CMD_REWRITE || (r->type==CMD_REWRITE_FROM &&
 		    wildmatch(msg->name_from, r->name, TRUE)))
 	    {
 		fglog("rewrite(from): %s @ %s -> %s", msg->name_from,
@@ -1388,7 +1388,7 @@ void do_rewrite(Message *msg)
 	/* To */
 	if(node_match(&msg->node_to, &r->from))
 	    if(r->type==CMD_REWRITE ||(r->type==CMD_REWRITE_TO &&
-		    wildmatch(msg->name_to, r->name, TRUE))) 
+		    wildmatch(msg->name_to, r->name, TRUE)))
 	    {
 		fglog("rewrite(to): %s @ %s -> %s", msg->name_from,
 			znfp1(&msg->node_from),
@@ -1412,7 +1412,7 @@ int do_remap(Message *msg)
     Remap *r;
     Node node;
     char kill = FALSE;
-    
+
     for(r=remap_first; r; r=r->next)
 	if(
 
@@ -1432,7 +1432,7 @@ int do_remap(Message *msg)
 	    if(msg->node_to.zone==0 && msg->node_to.net==0 &&
 	       msg->node_to.node==0 && msg->node_to.point==0)
 		kill = TRUE;
-	    
+
 	    if(! node_eq(&node, &msg->node_to))
 	    {
 		if(r->type == CMD_REMAP_TO)
@@ -1444,7 +1444,7 @@ int do_remap(Message *msg)
 			znfp1(&msg->node_from),
 			!kill ? znfp2(&msg->node_to) : "KILLED");
 	    }
-	    
+
 	    break;
 	}
 
@@ -1461,7 +1461,7 @@ int do_remap(Message *msg)
 int check_empty(MsgBody *body)
 {
     Textline *pl;
-    
+
     if(body->rfc.n)
 	return FALSE;
     if(body->tear || body->origin)
@@ -1472,7 +1472,7 @@ int check_empty(MsgBody *body)
     for(pl=body->body.first; pl; pl=pl->next)
 	if(pl->line[0] && pl->line[0]!='\r')
 	    return FALSE;
-    
+
     return TRUE;
 }
 
@@ -1516,7 +1516,7 @@ int do_netmail(Packet *pkt, Message *msg, MsgBody *body, int forwarded)
     {
 	fglog("file attach %s", msg->subject);
     }
-    
+
     /*
      * Check for empty NetMail message addressed to one of our AKAs
      */
@@ -1527,11 +1527,11 @@ int do_netmail(Packet *pkt, Message *msg, MsgBody *body, int forwarded)
 	    fglog("killing empty msg from %s @ %s",
 		msg->name_from, znfp1(&msg->node_from));
 	    msgs_empty++;
-	    
+
 	    return OK;
 	}
     }
-    
+
     /*
      * Rewrite from/to addresses according to ROUTING rules
      */
@@ -1540,7 +1540,7 @@ int do_netmail(Packet *pkt, Message *msg, MsgBody *body, int forwarded)
 #else
     do_rewrite(msg);
 #endif /* DO_NOT_TOSS_NETMAIL */
-    
+
     /*
      * Remap to address according to ROUTING rules
      */
@@ -1553,8 +1553,8 @@ int do_netmail(Packet *pkt, Message *msg, MsgBody *body, int forwarded)
 	/* Kill this message, remapped to 0:0/0.0 */
 	return OK;
     }
-    
-    
+
+
     /*
      * Write to output packet
      */
@@ -1599,7 +1599,7 @@ int do_netmail(Packet *pkt, Message *msg, MsgBody *body, int forwarded)
 #endif /* DO_NOT_TOSS_NETMAIL */
 
     msgs_netmail++;
-    
+
     return OK;
 }
 
@@ -1618,7 +1618,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
     char old_subject [MSG_MAXSUBJ];
 #endif /* SPYES */
     int type;
-    
+
     /*
      * Initialize
      */
@@ -1637,7 +1637,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    fglog("$WARNING: premature EOF reading input packet");
 	    TMPS_RETURN(OK);
 	}
-	
+
 	fglog("ERROR: reading input packet");
 	TMPS_RETURN(ERROR);
     }
@@ -1655,7 +1655,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    fglog("ERROR: reading input packet");
 	    TMPS_RETURN(ERROR);
 	}
-	
+
 	/*
 	 * Read message body
 	 */
@@ -1677,7 +1677,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	}
 	msgs_in++;
 	msg_count++;
-	
+
 	/*
 	 * Parse message body
 	 */
@@ -1691,7 +1691,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	}
 	msgs_in++;
 	msg_count++;
-#endif	
+#endif
 	/* Retrieve address information from kludges for NetMail */
 	if(body.area == NULL)
 	{
@@ -1734,7 +1734,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    }
 #endif /* !SPYES */
 	}
-	else 
+	else
 	{
 	    /* Specially for echomail */
 	    msg.node_from = pkt->from;
@@ -1764,7 +1764,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    msg_count = 0;
 	    TMPS_RETURN(severe_error=ERROR);
 	}
-	
+
 	/*
 	 * Check for number of messages exceeding maxmsg
 	 */
@@ -1794,7 +1794,7 @@ int unpack_file(char *pkt_name)
     FILE *pkt_file;
     TIMEINFO ti;
     long pkt_size;
-    
+
     /* Update time info for old messages */
     GetTimeInfo(&ti);
     now_sec = ti.time;
@@ -1804,7 +1804,7 @@ int unpack_file(char *pkt_name)
 	exp_sec = 0;
     debug(4, "now=%ld max=%ld, old < %ld",
 	    (long)now_sec, (long)max_sec, (long)exp_sec);
-    
+
     /* Open packet and read header */
     pkt_file = fopen(pkt_name, R_MODE);
     if(!pkt_file) {
@@ -1819,22 +1819,22 @@ int unpack_file(char *pkt_name)
 	rename_bad(pkt_name);
 	TMPS_RETURN(OK);
     }
-    
+
     /* Unpack it */
     pkt_size = check_size(pkt_name);
     fglog("packet %s (%ldb) from %s to %s", pkt_name, pkt_size,
 	znfp1(&pkt.from), znfp2(&pkt.to) );
     pkts_in++;
     pkts_bytes += pkt_size;
-    
-    if(unpack(pkt_file, &pkt) == ERROR) 
+
+    if(unpack(pkt_file, &pkt) == ERROR)
     {
 	fglog("ERROR: processing %s", pkt_name);
 	fclose(pkt_file);
 	rename_bad(pkt_name);
 	TMPS_RETURN(severe_error);
     }
-    
+
     fclose(pkt_file);
 
     if (unlink(pkt_name)) {
@@ -1856,7 +1856,7 @@ void prog_signal(int signum)
     char *name = "";
 
     signal_exit = TRUE;
-    
+
     switch(signum)
     {
     case SIGHUP:
@@ -1888,7 +1888,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] [packet ...]\n\n", PROGRAM);
     fprintf(stderr, "\
 options: -d --no-dupecheck            disable dupe check\n\
@@ -1932,7 +1932,7 @@ int main(int argc, char **argv)
     time_t toss_start, toss_delta;
     AreasBBS *area;
     char bbslock[MAXPATH];
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -2014,7 +2014,7 @@ int main(int argc, char **argv)
 	case 'p':
 	    p_flag = TRUE;
 	    break;
-	    
+
 	/***** Common options *****/
 	case 'v':
 	    verbose++;
@@ -2059,7 +2059,7 @@ int main(int argc, char **argv)
 	cf_set_uplink(u_flag);
 
     cf_debug();
-    
+
     /*
      * Process optional config statements
      */
@@ -2211,7 +2211,7 @@ int main(int argc, char **argv)
     BUF_EXPAND(in_dir, I_flag ? I_flag : cf_p_pinbound());
     pkt_outdir(O_flag ? O_flag : cf_p_toss_toss(), NULL);
     pkt_baddir(O_flag ? O_flag : cf_p_toss_bad() , NULL);
-    
+
     /*
      * Get name of areas.bbs file from config file
      */
@@ -2223,7 +2223,7 @@ int main(int argc, char **argv)
 	exit_free();
 	return EX_USAGE;
     }
-    
+
     routing_init(r_flag ? r_flag : cf_p_routing() );
     BUF_COPY2(bbslock, areas_bbs, ".lock");
     if (lock_path(bbslock, w_flag ? w_flag : NOWAIT) == ERROR)
@@ -2234,7 +2234,7 @@ int main(int argc, char **argv)
     areasbbs_init(areas_bbs);
     passwd_init();
 
-    
+
     /* Install signal/exit handlers */
     signal(SIGHUP,  prog_signal);
     signal(SIGINT,  prog_signal);
@@ -2244,7 +2244,7 @@ int main(int argc, char **argv)
     toss_start = time(NULL);
 
     c = EXIT_OK;
-    
+
     if(optind >= argc)
     {
 	/* process packet files in directory */
@@ -2304,7 +2304,7 @@ int main(int argc, char **argv)
 	    unlock_program(cf_p_lock_history());
 	    hi_close();
 	}
-	
+
 	dir_close();
 
 	/* Lock file */
@@ -2321,7 +2321,7 @@ int main(int argc, char **argv)
 		exit_free();
 		return EXIT_BUSY;
 	    }
-	
+
 	/* Open history */
 	if(dupe_check)
 	{
@@ -2338,7 +2338,7 @@ int main(int argc, char **argv)
 	    }
 	    hi_init_history();
 	}
-	
+
 	/* Process packet files on command line */
 	for(; optind<argc; optind++)
 	{
@@ -2353,19 +2353,19 @@ int main(int argc, char **argv)
 		break;
 	    }
 	}
-	
+
 	/* Close history */
 	if(dupe_check)
 	{
 	    unlock_program(cf_p_lock_history());
 	    hi_close();
 	}
-	
+
 	/* Lock file */
 	if(l_flag)
 	    unlock_program(PROGRAM);
     }
-    
+
     outpkt_close();
 
     /* Stop time */
@@ -2409,12 +2409,12 @@ int main(int argc, char **argv)
 	    }
 	}
     }
-    
+
     if(pkts_in)
 	fglog("pkts processed: %ld, %ld Kbyte in %ld s, %.2f Kbyte/s",
 	    pkts_in, pkts_bytes/1024, (long)toss_delta,
 	    (double)pkts_bytes/1024./toss_delta                      );
-    
+
     if(msgs_in)
     {
 	fglog("msgs processed: %ld in, %ld out (%ld mail, %ld echo)",
@@ -2422,7 +2422,7 @@ int main(int argc, char **argv)
 	fglog("msgs processed: %ld in %ld s, %.6f msgs/s",
 	    msgs_in, (long)toss_delta, (double)msgs_in/toss_delta);
     }
-    
+
     if(msgs_unknown || msgs_routed || msgs_insecure || msgs_empty)
 	fglog("msgs killed:    %ld empty, %ld unknown, %ld routed, %ld insecure",
 	    msgs_empty, msgs_unknown, msgs_routed, msgs_insecure             );
@@ -2442,7 +2442,7 @@ int main(int argc, char **argv)
 	fglog("error while rewriting areas.bbs");
 
     unlock_path(bbslock);
-    
+
     exit_free();
     return c;
 }

@@ -25,10 +25,10 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
- * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
+ * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  *****************************************************************************/
 
 #include "fidogate.h"
@@ -68,7 +68,7 @@ static Alias *alias_parse_line( char *buf ) {
     char *u, *n, *f;
     Node node;
     char *un, *ud;
-    
+
     u = xstrtok( buf,  " \t" );
     if( u ) {					/* User name */
         n = xstrtok( NULL, " \t" );	        /* FTN node */
@@ -97,12 +97,12 @@ static Alias *alias_parse_line( char *buf ) {
                 p->userdom  = ud ? strsave( ud ) : NULL;
                 p->fullname = strsave( f );
                 p->type = type;
-    
+
                 if( p->userdom )
             	    debug( 15, "aliases: %s@%s %s %s %c", p->username,
 		          p->userdom, znfp1( &p->node ), p->fullname, p->type );
                 else
-	            debug( 15, "aliases: %s %s %s %c", p->username, 
+	            debug( 15, "aliases: %s %s %s %c", p->username,
 	                  znfp1( &p->node ), p->fullname, p->type );
 	    }
         }
@@ -159,7 +159,7 @@ void alias_do_file( char *name ) {
  */
 Alias *alias_lookup( Node *node, char *username ) {
     Alias *a;
-    
+
     for( a = alias_list; a; a = a->next ) {
 	if( a->type != FTN2RFC && username &&
 	   !stricmp( a->username, username ) &&
@@ -175,7 +175,7 @@ Alias *alias_lookup_strict( Node *node, char *fullname ) {
     Alias *a;
 
     for( a = alias_list; a; a = a->next ) {
-	if( a->type != RFC2FTN && fullname && 
+	if( a->type != RFC2FTN && fullname &&
 	   ( wildmatch( fullname, a->fullname, TRUE ) )
 		&& node_eq( node, &a->node ) )
 		return a;

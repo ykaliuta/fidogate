@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -945,7 +945,7 @@ int mime_qp_decode(char **dst, char *src, size_t len)
 	    *d = '\n';
 	    break;
 	}
-	
+
 	vh = mime_qptoint(src[i++]);
 	if (ERROR == vh)
 	{
@@ -1241,7 +1241,7 @@ static char* mime_fetch_attribute(char *str, char *attr)
 static int mime_parse_header(Textlist *line, char *str)
 {
     char *p = NULL;
-    
+
     if(line == NULL || str == NULL)
 	return ERROR;
 
@@ -1258,7 +1258,7 @@ static int mime_parse_header(Textlist *line, char *str)
 static char* mime_attr_value(char *str)
 {
     char *p, *q = NULL;
-     
+
     if(str == NULL)
 	return NULL;
 
@@ -1283,13 +1283,13 @@ static char* mime_attr_value(char *str)
 static MIMEInfo *get_mime_disposition(char *ver, char *type, char *enc, char *disp)
 {
     MIMEInfo *mime;
-    
+
     Textlist header_line = { NULL, NULL };
     Textline *tmp_line;
     char *tmp_str = NULL;
-    
+
     mime = (MIMEInfo*)s_alloc(sizeof(*mime));
-    
+
     mime->version       = ver;
     mime->type          = type;
     mime->type_type     = NULL;
@@ -1305,7 +1305,7 @@ static MIMEInfo *get_mime_disposition(char *ver, char *type, char *enc, char *di
 	mime_parse_header(&header_line, tmp_str);
 	if(header_line.first != NULL && header_line.first->line != NULL)
 	    mime->type_type = s_copy(header_line.first->line);
-	
+
 	tmp_line = tl_get(&header_line, "charset", strlen("charset"));
 	if(tmp_line != NULL)
 	{
@@ -1333,7 +1333,7 @@ static MIMEInfo *get_mime_disposition(char *ver, char *type, char *enc, char *di
 	mime->disposition_filename = s_copy(tmp_str);
 	tl_clear(&header_line);
     }
-    
+
     debug(6, "RFC MIME-Version:              %s",
 	  mime->version ? mime->version : "-NONE-");
     debug(6, "RFC Content-Type:              %s",
@@ -1354,7 +1354,7 @@ static MIMEInfo *get_mime_disposition(char *ver, char *type, char *enc, char *di
     return mime;
 }
 
- 
+
 MIMEInfo *get_mime(char *ver, char *type, char *enc)
 {
     return get_mime_disposition(ver, type, enc, NULL);
@@ -1385,7 +1385,7 @@ static char* mime_debody_flush_str(Textlist *body, char *str)
     int len;
     if(str == NULL || body == NULL)
 	return NULL;
-    
+
     len = strlen(str);
     if(len < 2)
 	return NULL;
@@ -1401,7 +1401,7 @@ static char* mime_debody_flush_str(Textlist *body, char *str)
 	str[len + 1] = '\0';
     }
 
-    tl_append(body, str); 
+    tl_append(body, str);
     str[0] = '\0';
 
     return str;
@@ -1411,7 +1411,7 @@ static Textlist* mime_debody_qp(Textlist *body)
 {
     char *dec_str, *tmp_str;
     long len;
-    
+
     Textlist *dec_body;
     Textlist *full_line;
 
@@ -1422,7 +1422,7 @@ static Textlist* mime_debody_qp(Textlist *body)
 
     full_line = xmalloc(sizeof(*full_line));
     memset(full_line, 0, sizeof(*full_line));
-    
+
     for(line = body->first; line != NULL; line = line->next)
     {
 	len = strlen(line->line);
@@ -1435,7 +1435,7 @@ static Textlist* mime_debody_qp(Textlist *body)
 
 	if(streq(line->line + (len - 2), "=\n") || streq(line->line + (len - 3), "=\r\n"))
 	    continue;
-	
+
 	len = tl_size(full_line);
 
 	tmp_str = xmalloc(len + 2);
@@ -1450,7 +1450,7 @@ static Textlist* mime_debody_qp(Textlist *body)
 	xfree(tmp_str);
 	tl_clear(full_line);
     }
-    
+
     tl_clear(full_line);
     xfree(full_line);
     return dec_body;
@@ -1483,7 +1483,7 @@ static Textlist* mime_debody_base64(Textlist *body)
 
     dec_body = xmalloc(sizeof(*dec_body));
     memset(dec_body, 0, sizeof(*dec_body));
-    
+
     /* len + \n + \0 */
     out_ptr = out_str = xmalloc(max_len + 2);
     out_str[0] = '\0';
@@ -1495,7 +1495,7 @@ static Textlist* mime_debody_base64(Textlist *body)
 	enc_len = (xstrnlen(line->line, MIME_ENC_STRING_LIMIT) / 4) * 4;
 	if(mime_b64_decode(&dec_str, line->line, enc_len) == ERROR)
 	    goto exit;
-    
+
 	dec_prev_ptr = dec_str;
 	while((dec_ptr = strchr(dec_prev_ptr, '\n')) != NULL)
 	{
@@ -1536,7 +1536,7 @@ static Textlist* mime_debody_base64(Textlist *body)
 
 	    }
 	} while(dec_str_len > 0);
-	
+
     }
     if(left != max_len)
 	mime_debody_flush_str(dec_body, out_str);
@@ -1554,7 +1554,7 @@ static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime, char *to)
     Textline *line;
 
     Textlist *dec_body, *ptr_body, tmp_body = { NULL, NULL };
-    
+
     char *boundary = NULL;
     char *fin_boundary = NULL;
 
@@ -1574,11 +1574,11 @@ static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime, char *to)
     fin_boundary = xmalloc(strlen(boundary) + 3);
     strcpy(fin_boundary, boundary);
     strcat(fin_boundary, "--");
-    
+
     for(line = body->first; line != NULL; line = line->next)
 	if(strneq(line->line, boundary, strlen(boundary)))
 	    break;
-    
+
     for(line = line->next; line != NULL; line = line->next)
     {
 	if(!strneq(line->line, boundary, strlen(boundary)))
@@ -1603,7 +1603,7 @@ static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime, char *to)
 		break;
 	}
     }
-    
+
     xfree(boundary);
     xfree(fin_boundary);
     return dec_body;
@@ -1618,7 +1618,7 @@ static int mime_decharset_section(Textlist *body, MIMEInfo *mime, char *to)
     int rc;
     Textline *line;
     char *tmp;
-    
+
     if(body == NULL || mime == NULL)
 	return ERROR;
 
@@ -1647,7 +1647,7 @@ static int mime_decharset_section(Textlist *body, MIMEInfo *mime, char *to)
 exit:
     return rc;
 }
-    
+
 
 static Textlist* mime_debody_section(Textlist *body, Textlist *header, char *to)
 {
@@ -1696,7 +1696,7 @@ static Textlist* mime_debody_section(Textlist *body, Textlist *header, char *to)
 exit:
     mime_free();
     return dec_body;
-    
+
 }
 
 
@@ -1709,7 +1709,7 @@ int mime_body_dec(Textlist *body, char *to)
 
     if((header = header_get_list()) == NULL)
 	return ERROR;
-    
+
     if((dec_body = mime_debody_section(body, header, to)) == NULL)
 	return ERROR;
 
@@ -1742,7 +1742,7 @@ int mime_body_dec(Textlist *body, char *to)
 void mime_free(void)
 {
     MIMEInfo *mime, *n;
-    
+
     for(mime=mime_list; mime; mime=n)
     {
 	n = mime->next;

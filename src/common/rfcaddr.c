@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -76,7 +76,7 @@ RFCAddr rfcaddr_from_ftn(char *name, Node *node)
     int must_quote;
 
 //    rfc.flags = 0;
-    
+
     /*
      * Internet address part
      */
@@ -111,7 +111,7 @@ RFCAddr rfcaddr_from_ftn(char *name, Node *node)
     for(p=buf; *p; p++)
 	if(strchr(NOT_ALLOWED_ATOMS, *p))
 	    must_quote = TRUE;
-    
+
     i = 0;
     if(must_quote)
 	rfc.user[i++] = '\"';			/* " makes C-mode happy */
@@ -132,7 +132,7 @@ RFCAddr rfcaddr_from_ftn(char *name, Node *node)
 	/* Add "%p.f.n.z" to user name */
 	BUF_APPEND2(rfc.user, "%", node_to_pfnz(node));
 #endif
-    
+
     /*
      * Copy name to real name field, removing addressing after `@' or `%'
      */
@@ -146,7 +146,7 @@ RFCAddr rfcaddr_from_ftn(char *name, Node *node)
 	    rfc.real[i] = 0;
 	else
 	    break;
-    
+
     return rfc;
 }
 
@@ -169,7 +169,7 @@ RFCAddr rfcaddr_from_rfc(char *addr)
     int i;
 
 //    rfc.flags = 0;
-    
+
     /*
      * Full name <user@domain>
      */
@@ -203,7 +203,7 @@ RFCAddr rfcaddr_from_rfc(char *addr)
     /*
      * user@domain
      */
-    else 
+    else
     {
 	/* No full name */
 	bufn[0] = 0;
@@ -237,7 +237,7 @@ RFCAddr rfcaddr_from_rfc(char *addr)
      */
     for(p=bufa; is_space(*p); p++) ;
     for(i=strlen(p)-1; i>=0 && is_space(p[i]); p[i--]=0) ;
-    
+
     /*
      * Address type  user@domain
      */
@@ -290,8 +290,8 @@ RFCAddr rfcaddr_from_rfc(char *addr)
 	/* Internet address */
 	rfc.addr[0] = 0;
     }
-    
-    
+
+
     return rfc;
 }
 
@@ -305,14 +305,14 @@ char *s_rfcaddr_to_asc(RFCAddr *rfc, int real_flag)
 {
     if(real_flag && rfc->real[0])
     {
-	if(addr_mode == 0) 
+	if(addr_mode == 0)
 	{
 	    /* user@do.main (Real Name) */
 	    return s_printf("%s%s%s (%s)",
 			    rfc->user, rfc->addr[0] ? "@" : "",
 			    rfc->addr, rfc->real               );
 	}
-	if(addr_mode == 1) 
+	if(addr_mode == 1)
 	{
 	    /* Real Name <user@do.main> */
 	    return s_printf("%s <%s%s%s>",
@@ -321,7 +321,7 @@ char *s_rfcaddr_to_asc(RFCAddr *rfc, int real_flag)
 			    rfc->addr                          );
 	}
     }
-    
+
     /* Default, no real name: user@do.main */
     return s_printf("%s%s%s",
 		    rfc->user, rfc->addr[0] ? "@" : "", rfc->addr );
@@ -341,22 +341,22 @@ int main(int argc, char *argv[])
     cf_initialize();
     cf_read_config_file(CONFIG_GATE);
     hosts_init();
-    
+
     if(argc != 3)
     {
 	fprintf(stderr, "usage: testrfc name Z:N/F.P\n");
 	exit(1);
     }
-    
+
     name = argv[1];
     if(asc_to_node(argv[2], &node, FALSE) == ERROR)
     {
 	fprintf(stderr, "testrfc: invalid FTN address\n");
 	exit(1);
     }
-    
+
     rfc = rfcaddr_from_ftn(name, &node);
-    
+
     printf("RFCAddr: %s@%s (%s)\n", rfc.user, rfc.addr, rfc.real);
 #endif
 
@@ -367,19 +367,19 @@ int main(int argc, char *argv[])
     cf_initialize();
     cf_read_config_file(CONFIG_GATE);
     hosts_init();
-    
+
     if(argc != 2)
     {
 	fprintf(stderr, "usage: testrfc addr");
 	exit(1);
     }
-    
+
     addr = argv[1];
 
     rfc = rfcaddr_from_rfc(addr);
     printf("RFCAddr: %s@%s (%s)\n", rfc.user, rfc.addr, rfc.real);
 #endif
-    
+
     exit(0);
 }
 

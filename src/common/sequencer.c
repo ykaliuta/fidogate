@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -64,13 +64,13 @@ long sequencer_nx(char *seqname, int err_abort)
 		}
 		else
 		    return ERROR;
-		    
+
 	    }
 	}
-	    
+
     if(fp == NULL)
     {
-	if(err_abort) 
+	if(err_abort)
 	{
 	    fglog("$ERROR: can't access sequencer file %s", filename);
 	    exit(EX_OSFILE);
@@ -78,7 +78,7 @@ long sequencer_nx(char *seqname, int err_abort)
 	else
 	    return ERROR;
     }
-    
+
     /* Lock file, get number and increment it */
     lock_file(fp);
 
@@ -90,7 +90,7 @@ long sequencer_nx(char *seqname, int err_abort)
     seqn++;
     if(seqn < 0)
 	seqn = 0;
-    
+
     rewind(fp);
     fprintf(fp, "%ld\n", seqn);
     rewind(fp);
@@ -98,4 +98,4 @@ long sequencer_nx(char *seqname, int err_abort)
     fclose(fp);
 
     return seqn;
-}		
+}

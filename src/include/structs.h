@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -198,7 +198,7 @@ typedef struct st_host {	/* hosts entry */
 #define HOST_POINT	1	/* Addresses with pX point address */
 #define HOST_DOWN	2	/* Temporary down */
 #ifdef AI_1
-#define HOST_ADDR	4	/* Real Fidonet address in .pkt file. 
+#define HOST_ADDR	4	/* Real Fidonet address in .pkt file.
                                    Like key '-a' in command line rfc2ftn    */
 #endif
 
@@ -336,7 +336,7 @@ typedef struct st_arcprog
     int pack;
     char *name;
     char *prog;
-    
+
     struct st_arcprog *next;
 }
 ArcProg;
@@ -352,7 +352,7 @@ typedef struct st_packing
     int type;
     LON nodes;
     long maxarc;
-    
+
     struct st_packing *next;
 }
 Packing;
@@ -366,7 +366,7 @@ typedef struct st_unpacking
     char *unarc;
     char *list;
     char *iden;
-    
+
     struct st_unpacking *next;
 }
 Unpacking;
@@ -381,7 +381,7 @@ typedef struct st_runtoss
     char *fadir;
     char *grade;
     char *flags;
-    
+
     struct st_runtoss *next;
 }
 Runtoss;
@@ -431,7 +431,7 @@ typedef struct st_body {
     Textlist path;		/* EchoMail: ^APATH lines */
     Textlist via;		/* NetMail: ^AVia lines */
 } MsgBody;
-    
+
 
 
 /*

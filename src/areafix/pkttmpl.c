@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -65,7 +65,7 @@ static int signal_exit  = FALSE;	/* Flag: TRUE if signal received */
  */
 int do_netmail(Message *msg, MsgBody *body)
 {
-    
+
     return OK;
 }
 
@@ -76,7 +76,7 @@ int do_netmail(Message *msg, MsgBody *body)
  */
 int do_echomail(Message *msg, MsgBody *body)
 {
-    
+
     return OK;
 }
 
@@ -91,7 +91,7 @@ int do_packet(FILE *pkt_file, Packet *pkt)
     Textlist tl;			/* Textlist for message body */
     MsgBody body;			/* Message body of FTN message */
     int type, ret_n;
-    
+
     /* Initialize */
     tl_init(&tl);
     msg_body_init(&body);
@@ -106,7 +106,7 @@ int do_packet(FILE *pkt_file, Packet *pkt)
 	    fglog("WARNING: premature EOF reading input packet");
 	    TMPS_RETURN(OK);
 	}
-	
+
 	fglog("ERROR: reading input packet");
 	TMPS_RETURN(ERROR);
     }
@@ -121,7 +121,7 @@ int do_packet(FILE *pkt_file, Packet *pkt)
 	    fglog("ERROR: reading input packet");
 	    TMPS_RETURN(ERROR);
 	}
-	
+
 	/* Read & parse message body */
 	if( pkt_get_body_parse(pkt_file, &body, &msg.node_from, &msg.node_to) != OK )
 	    fglog("ERROR: parsing message body");
@@ -140,7 +140,7 @@ int do_packet(FILE *pkt_file, Packet *pkt)
 	    if(ret_n == ERROR)
 		TMPS_RETURN(ERROR);
 	}
-	else 
+	else
 	{
 	    /* Retrieve address information from * Origin line */
 	    if(msg_parse_origin(body.origin, &msg.node_orig) == ERROR)
@@ -178,7 +178,7 @@ int do_file(char *pkt_name)
     Packet pkt;
     FILE *pkt_file;
     long pkt_size;
-    
+
     /* Open packet and read header */
     pkt_file = fopen(pkt_name, R_MODE);
     if(!pkt_file) {
@@ -193,20 +193,20 @@ int do_file(char *pkt_name)
 	rename_bad(pkt_name);
 	TMPS_RETURN(OK);
     }
-    
+
     /* Process it */
     pkt_size = check_size(pkt_name);
     fglog("packet %s (%ldb) from %s to %s", pkt_name, pkt_size,
 	znfp1(&pkt.from), znfp2(&pkt.to) );
-    
-    if(do_packet(pkt_file, &pkt) == ERROR) 
+
+    if(do_packet(pkt_file, &pkt) == ERROR)
     {
 	fglog("ERROR: processing %s", pkt_name);
 	fclose(pkt_file);
 	rename_bad(pkt_name);
 	TMPS_RETURN(severe_error);
     }
-    
+
     fclose(pkt_file);
 
     if (unlink(pkt_name)) {
@@ -228,7 +228,7 @@ void prog_signal(int signum)
     char *name = "";
 
     signal_exit = TRUE;
-    
+
     switch(signum)
     {
     case SIGHUP:
@@ -260,7 +260,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] [packet ...]\n\n", PROGRAM);
     fprintf(stderr, "\
 options: -I --in-dir DIR              set input packet directory\n\
@@ -286,7 +286,7 @@ int main(int argc, char **argv)
     char *c_flag=NULL;
     char *a_flag=NULL, *u_flag=NULL;
     char *pkt_name;
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -304,7 +304,7 @@ int main(int argc, char **argv)
 
     /* Log name */
     log_program(PROGRAM);
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -322,7 +322,7 @@ int main(int argc, char **argv)
 	case 'O':
 	    O_flag = optarg;
 	    break;
-	    
+
 	/***** Common options *****/
 	case 'v':
 	    verbose++;
@@ -356,7 +356,7 @@ int main(int argc, char **argv)
 	cf_set_uplink(u_flag);
 
     cf_debug();
-    
+
     /* Process optional config statements */
     if(cf_get_string("XXX", TRUE))
     {
@@ -367,7 +367,7 @@ int main(int argc, char **argv)
     /* Process local options */
     BUF_EXPAND(in_dir, I_flag ? I_flag : cf_p_pinbound());
     pkt_outdir(O_flag ? O_flag : cf_p_outpkt(), NULL);
-    
+
     /* Install signal/exit handlers */
     signal(SIGHUP,  prog_signal);
     signal(SIGINT,  prog_signal);
@@ -376,7 +376,7 @@ int main(int argc, char **argv)
 
     /***** Main processing loop *****/
     ret = EXIT_OK;
-    
+
     if(optind >= argc)
     {
 	/* process packet files in directory */
@@ -387,7 +387,7 @@ int main(int argc, char **argv)
 	    exit_free();
 	    return EX_OSERR;
 	}
-    
+
 	/* Lock file */
 	if(l_flag)
 	    if(lock_program(PROGRAM, FALSE) == ERROR)
@@ -427,7 +427,7 @@ int main(int argc, char **argv)
 		exit_free();
 		return EXIT_BUSY;
 	    }
-	
+
 	/* Process packet files on command line */
 	for(; optind<argc; optind++)
 	{
@@ -442,12 +442,12 @@ int main(int argc, char **argv)
 		break;
 	    }
 	}
-	
+
 	/* Lock file */
 	if(l_flag)
 	    unlock_program(PROGRAM);
     }
-    
+
     exit_free();
     return ret;
 }

@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -59,7 +59,7 @@ int znfp_get_number(char **ps)
 	    val = val*10 + *s++ - '0';
 
     *ps = s;
-    
+
     return val;
 }
 
@@ -79,7 +79,7 @@ int znfp_parse_partial(char *asc, Node *node)
     /* Set Node n to empty */
     n.zone = n.net = n.node = n.point = EMPTY;
     n.domain[0] = 0;
-    
+
     /* Special case global wildcard "*", "All", or "World" */
     if(streq(asc, "*") || strieq(asc, "all") || strieq(asc, "world"))
     {
@@ -88,7 +88,7 @@ int znfp_parse_partial(char *asc, Node *node)
 	    *node = n;
 	return OK;
     }
-    
+
     /* Now for the dirty parsing ... ;-) */
     if(!*s)
 	return ERROR;
@@ -137,7 +137,7 @@ int znfp_parse_partial(char *asc, Node *node)
     }
     if(val1 != -1)			/* number only: val1 is node */
 	n.node = val1;
-    
+
     if(*s == '@')			/* Domain address may follow */
     {
 	s++;
@@ -180,7 +180,7 @@ int znfp_parse_diff(char *asc, Node *node, Node *oldnode)
 	    }
 	}
     }
-    
+
     return OK;
 }
 
@@ -201,7 +201,7 @@ char *znfp_put_number(int val, int wildcards)
     return buf;
 }
 
-	
+
 #define LEN_ZNFP 48
 
 
@@ -216,7 +216,7 @@ char *s_znfp_print(Node *node, int wildcards)
 }
 
 
-char *str_znfp_print(char *s, size_t len, 
+char *str_znfp_print(char *s, size_t len,
 		     Node *node, int point0, int wildcards, int zp_print)
 {
     /* Clear */
@@ -225,7 +225,7 @@ char *str_znfp_print(char *s, size_t len,
     /* Always display point address if wildcards==TRUE */
     if(wildcards)
 	point0 = TRUE;
-    
+
     /* Invalid address */
     if(node->zone==INVALID && node->net==INVALID &&
        node->node==INVALID && node->point==INVALID  )
@@ -243,7 +243,7 @@ char *str_znfp_print(char *s, size_t len,
 	return s;
     }
 
-    
+
     /* Zone */
     if(node->zone != EMPTY && zp_print == TRUE)
     {
@@ -335,7 +335,7 @@ char *nf1(Node *node)
 
 int wild_compare_node(Node *a, Node *b)
 {
-    return (a->zone==WILDCARD || a->zone==b->zone) && 
+    return (a->zone==WILDCARD || a->zone==b->zone) &&
 	   (a->net==WILDCARD || a->net==b->net) &&
 	   (a->node==WILDCARD || a->node==b->node);
 }
@@ -350,7 +350,7 @@ int wild_compare_node(Node *a, Node *b)
 int main(int argc, char *argv[])
 {
     Node o, n;
-    
+
     if(argc!=2 && argc!=3)
     {
 	fprintf(stderr,
@@ -372,7 +372,7 @@ int main(int argc, char *argv[])
 	printf("             str=%s\n", znfp1(&n));
 	exit(0);
     }
-    
+
     /* Old and new FTN address */
     if(argc == 3)
     {

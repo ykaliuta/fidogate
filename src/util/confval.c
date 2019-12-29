@@ -8,7 +8,7 @@
  *
  *****************************************************************************
  * Copyright (C) 2001-2002
- * 
+ *
  *    Dmitry Fedotov            FIDO:      2:5030/1229
  *				Internet:  dyff@users.sourceforge.net
  *
@@ -23,7 +23,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -40,7 +40,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] \n\n", PROGRAM);
     fprintf(stderr, "\
 	  -p --param VARIABLE          value of read param\n\
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 	{ "param",        1, 0, 'p'},
 	{ 0,              0, 0, 0  }
     };
-	
+
     /* Set log and debug output */
     log_program(PROGRAM);
 
@@ -94,7 +94,7 @@ int main(int argc, char **argv)
     /* Init configuration */
     cf_initialize();
     cf_read_config_file(c_flag ? c_flag : CONFIG);
-    
+
     for(pFirst = config_first(); pFirst; pFirst = pFirst->next)
     {
 	if(argc == 1)

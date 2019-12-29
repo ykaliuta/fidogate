@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -43,7 +43,7 @@ int pfnz_to_node(char *pfnz, Node *node)
     int val, c;
 
     node->zone = node->net = node->node = node->point = -1;
-    
+
     s = pfnz;
 
     debug(8, "pfnz_to_node(): %s", s);
@@ -65,7 +65,7 @@ int pfnz_to_node(char *pfnz, Node *node)
 		return ERROR;
 	    if(*s)
 		s++;
-	    
+
 	    /* Put into Node field */
 	    switch(c)
 	    {
@@ -107,7 +107,7 @@ int pfnz_to_node(char *pfnz, Node *node)
 
     debug(8, "pfnz_to_node(): %d:%d/%d.%d", node->zone, node->net,
 	  node->node, node->point );
-    
+
     return OK;
 }
 
@@ -129,7 +129,7 @@ int asc_to_node(char *asc, Node *node, int point_flag)
     /* Empty zone, use default */
     if(node->zone==EMPTY)
 	node->zone = cf_defzone();
-    
+
     /* Net, node must be set */
     if(node->net==EMPTY || node->node==EMPTY)
 	return ERROR;
@@ -209,7 +209,7 @@ int asc_to_node_diff(char *asc, Node *node, Node *oldnode)
 {
     if(znfp_parse_diff(asc, node, oldnode) == ERROR)
 	return ERROR;
-    
+
     /* Wildcards are not allowed here */
     if(node->zone==WILDCARD || node->net==WILDCARD ||
        node->node==WILDCARD || node->point==WILDCARD)
@@ -218,7 +218,7 @@ int asc_to_node_diff(char *asc, Node *node, Node *oldnode)
     /* Zone, net, node must be set */
     if(node->zone==EMPTY || node->net==EMPTY || node->node==EMPTY)
 	return ERROR;
-	    
+
     /* Empty point is 0 */
     if(node->point==EMPTY)
 	node->point = 0;
@@ -246,11 +246,11 @@ int asc_to_node_diff_acl(char *asc, Node *node, Node *oldnode)
 
     if(znfp_parse_diff(asc, node, oldnode) == ERROR)
 	return ERROR;
-    
+
     /* Zone, net, node must be set */
     if(node->zone==EMPTY || node->net==EMPTY || node->node==EMPTY)
 	return ERROR;
-	    
+
     /* Empty point is 0 */
     if(node->point==EMPTY)
 	node->point = 0;
@@ -291,7 +291,7 @@ char *node_to_asc_diff(Node *node, Node *oldnode)
     else
 	str_printf(buf, sizeof(buf), node->point ? "%d:%d/%d.%d" : "%d:%d/%d",
 		   node->zone, node->net, node->node, node->point   );
-    
+
     return buf;
 }
 
@@ -359,7 +359,7 @@ char *node_to_asc_diff_acl(Node *node, Node *oldnode)
 		       str_zone, str_net, str_node, str_point   );
 	}
     }
-    
+
     return buf;
 }
 #endif /* FTN_ACL */
@@ -415,7 +415,7 @@ void lon_init(LON *lon)
 void lon_delete(LON *lon)
 {
     LNode *p, *n;
-    
+
     xfree(lon->sorted);
     for(p=lon->first; p; )
     {
@@ -423,7 +423,7 @@ void lon_delete(LON *lon)
 	xfree(p);
 	p = n;
     }
-    
+
     lon_init(lon);
 }
 
@@ -435,11 +435,11 @@ void lon_delete(LON *lon)
 void lon_add(LON *lon, Node *node)
 {
     LNode *p;
-    
+
     p = (LNode *)xmalloc(sizeof(LNode));
-    
+
     p->node = *node;
-    
+
     if(lon->first)
 	lon->last->next = p;
     else
@@ -459,7 +459,7 @@ void lon_add(LON *lon, Node *node)
 void lon_remove(LON *lon, Node *node)
 {
     LNode *p;
-    
+
     for(p=lon->first; p; p=p->next)
 	if(node_eq(&p->node, node))
 	{
@@ -477,7 +477,7 @@ void lon_remove(LON *lon, Node *node)
 
 	    return;
 	}
-    
+
     return;
 }
 
@@ -489,11 +489,11 @@ void lon_remove(LON *lon, Node *node)
 int lon_search(LON *lon, Node *node)
 {
     LNode *p;
-    
+
     for(p=lon->first; p; p=p->next)
 	if(node_eq(&p->node, node))
 	    return TRUE;
-    
+
     return FALSE;
 }
 
@@ -504,11 +504,11 @@ int lon_search(LON *lon, Node *node)
 int lon_search_wild(LON *lon, Node *node)
 {
     LNode *p;
-    
+
     for(p=lon->first; p; p=p->next)
 	if(node_match(node, &p->node))
 	    return TRUE;
-    
+
     return FALSE;
 }
 
@@ -529,7 +529,7 @@ int lon_search_acl(LON *lon, Node *node)
 	    else
 		return TRUE;
 	}
-    
+
     return FALSE;
 }
 #endif /* FTN_ACL */
@@ -555,12 +555,12 @@ void lon_add_string(LON *lon, char *s)
 {
     Node node, old;
     char *p, *save;
-    
+
     old.zone = cf_zone();
     old.net = old.node = old.point = -1;
 
     save = strsave(s);
-    
+
     for(p=strtok(save, " \t\r\n"); p; p=strtok(NULL, " \t\r\n"))
     {
 	if( asc_to_node_diff(p, &node, &old) == OK )
@@ -587,7 +587,7 @@ void lon_print(LON *lon, FILE *fp, char short_flag)
     Node old;
 
     node_invalid(&old);
-    
+
     for(p=lon->first; p; p=p->next)
     {
 	if(short_flag)
@@ -613,9 +613,9 @@ static int lon_sort_compare	(const void *, const void *);
 
 static int lon_sort_compare(const void *a, const void *b)
 #ifdef __STDC__
-                      
+
 #else
-                
+
 #endif
 {
     return node_cmp(*(Node **)a, *(Node **)b);
@@ -630,15 +630,15 @@ void lon_sort(LON *lon, short off)
     lon->sorted = NULL;
     if(n <= 0)				/* Really nothing to do */
 	return;
-    
+
     lon->sorted = (Node **)xmalloc(n * sizeof(Node *));
-    
+
     for(i=0, p=lon->first; i<n && p; i++, p=p->next)
 	lon->sorted[i] = &p->node;
-    
+
     if(n <= off)			/* Nothing to do */
 	return;
-    
+
     qsort((void *)&lon->sorted[off], n-off, sizeof(Node *), lon_sort_compare);
 }
 
@@ -649,11 +649,11 @@ void lon_print_sorted(LON *lon, FILE *fp, int cup)
 {
     int i;
     Node old;
-    
+
     node_invalid(&old);
 
     lon_sort(lon, cup);
-    
+
     for(i=0; i<lon->size; i++)
     {
 	fputs(node_to_asc_diff(lon->sorted[i], &old), fp);
@@ -666,7 +666,7 @@ void lon_print_sorted(LON *lon, FILE *fp, int cup)
 
     xfree(lon->sorted);
     lon->sorted = NULL;
-    
+
     return;
 }
 
@@ -716,7 +716,7 @@ void lon_debug(char lvl, char *text, LON *lon, char short_flag)
 void lon_join(LON *lon, LON *add)
 {
     LNode *p;
-    
+
     for(p=add->first; p; p=p->next)
 	lon_add(lon, &p->node);
 }

@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -61,7 +61,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] user@domain ...\n\n", PROGRAM);
     fprintf(stderr, "\
 options: -a --addr                    (passed on as -a AND -u)\n\
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
     char cmd[MAXPATH];
     char O_opt[MAXPATH];
     char *args[MAXARGS];
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -109,7 +109,7 @@ int main(int argc, char **argv)
     /* init configuration */
     cf_initialize();
     cf_read_config_file(CONFIG);
-    
+
     while ((c = getopt_long(argc, argv, "a:iO:hv",
 			    long_options, &option_index     )) != EOF)
 	switch (c) {
@@ -123,7 +123,7 @@ int main(int argc, char **argv)
 	case 'O':
 	    O_flag = optarg;
 	    break;
-	    
+
 	/***** common options *****/
 	case 'h':
 	    usage();
@@ -171,7 +171,7 @@ int main(int argc, char **argv)
 	    s++;
 	}
     }
-    
+
     /* build args[] */
     n = 0;
     args[n++] = RFC2FTN;
@@ -196,7 +196,7 @@ int main(int argc, char **argv)
 
     while(n<MAXARGS-1 && optind<argc)
 	args[n++] = argv[optind++];
-    
+
     args[n++] = NULL;
 
 #if 0
@@ -211,7 +211,7 @@ int main(int argc, char **argv)
     /* exec */
     if( execv(cmd, args) == ERROR )
 	fglog("$can't exec %s", cmd);
-	
+
     /* Only reached if error */
     exit_free();
     exit(1);

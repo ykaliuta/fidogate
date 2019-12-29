@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -61,10 +61,10 @@ void header_ca_rfc(FILE *out, int rfc_level)
 	Textline *p;
 	int len;
 	int ok = FALSE;
-	
+
 	for(p=headers->first; p; p=p->next)
 	{
-	    if(*p->line && !is_space(p->line[0])) 
+	    if(*p->line && !is_space(p->line[0]))
 	    {
 		ok = FALSE;
 		for(name=rfc_lvl_1; *name; name++)
@@ -85,7 +85,7 @@ void header_ca_rfc(FILE *out, int rfc_level)
 #endif /* RECODE_ALL_RFC */
 	}
     }
-    
+
     /* RFC level 2 - all ^ARFC-Xxxx kludges */
     else if(rfc_level == 2)
     {
@@ -96,7 +96,7 @@ void header_ca_rfc(FILE *out, int rfc_level)
 	crlf = "";
 	for(p=headers->first; p; p=p->next)
 	{
-	    if(*p->line && !is_space(p->line[0])) 
+	    if(*p->line && !is_space(p->line[0]))
 	    {
 #ifndef RECODE_ALL_RFC
 		fprintf(out, "%s\001RFC-%s", crlf, p->line);
@@ -121,11 +121,11 @@ void header_ca_rfc(FILE *out, int rfc_level)
 	int ok = FALSE;
 	char *crlf;
 	int i;
-	
+
 	crlf = "";
 	for(p=headers->first; p; p=p->next)
 	{
-	    if(*p->line && !is_space(p->line[0])) 
+	    if(*p->line && !is_space(p->line[0]))
 	    {
 		ok = FALSE;
 		for(name=rfc_lvl_3; *name; name++)
@@ -156,7 +156,7 @@ void header_ca_rfc(FILE *out, int rfc_level)
 	}
         fprintf(out, "%s", crlf );
     }
-    
+
     return;
 }
 
@@ -184,7 +184,7 @@ void header_read(FILE *file)
     static char queue[BUFFERSIZE];
     short int first = TRUE;
     Textlist *headers = &the_header.headers;
-    
+
     queue[0]='\0';
 
     tl_clear(headers);
@@ -219,13 +219,13 @@ int header_read_list(Textlist *body, Textlist *header)
     static char buf[BUFFERSIZE];
     static char queue[BUFFERSIZE];
     short int first = TRUE;
-    Textline *line; 
-    
+    Textline *line;
+
     if(body == NULL || header == NULL)
 	return ERROR;
-    
+
     queue[0]='\0';
-    
+
     tl_clear(header);
 
     for(line = body->first; line != NULL; line = line->next)
@@ -258,8 +258,8 @@ int header_read_list(Textlist *body, Textlist *header)
 int header_delete_from_body(Textlist *body)
 {
     char *buf;
-    Textline *line; 
-    
+    Textline *line;
+
     if(body == NULL)
 	return ERROR;
 
@@ -275,7 +275,7 @@ int header_delete_from_body(Textlist *body)
     }
     return OK;
 }
-    
+
 /*
  * header_hops() --- return # of hops (Received headers) of message
  */
@@ -288,7 +288,7 @@ short header_hops(void)
 
     len  = strlen(name);
     hops = 0;
-    
+
     for(p=headers->first; p; p=p->next)
     {
 #ifdef RECEIVED_BY_MAILER
@@ -313,9 +313,9 @@ char *rfcheader_get(Textlist *tl, char *name)
     int len;
     char *s;
     RFCHeader *header = &the_header;
-    
+
     len = strlen(name);
-    
+
     for(p=tl->first; p; p=p->next)
     {
 	if(!strnicmp(p->line, name, len) && p->line[len]==':')
@@ -325,7 +325,7 @@ char *rfcheader_get(Textlist *tl, char *name)
 	    return s;
 	}
     }
-    
+
     header->last_header = NULL;
     return NULL;
 }
@@ -361,7 +361,7 @@ static char *rfcheader_geth(RFCHeader *header, char *name, int first)
     int len;
     char *s;
     Textlist *tl = &header->headers;
-    
+
     if(first)
     {
 	/* Restart search */
@@ -374,7 +374,7 @@ static char *rfcheader_geth(RFCHeader *header, char *name, int first)
 	p_last = p_last->next;
         p      = p_last;
 	/* Check for continuation header, white space at start of line */
-	if(p_last && is_space(p_last->line[0])) 
+	if(p_last && is_space(p_last->line[0]))
 	{
 	    for(s=p_last->line; is_space(*s); s++) ;
 	    return s;
@@ -384,14 +384,14 @@ static char *rfcheader_geth(RFCHeader *header, char *name, int first)
     {
 	p = NULL;
     }
-    
+
     /* If p or name is NULL, stop here */
     if(!p || !name)
     {
 	p_last = NULL;
 	return NULL;
     }
-    
+
     /* Search for header line starting with NAME: */
     len = strlen(name);
     for(; p; p=p->next)
@@ -403,7 +403,7 @@ static char *rfcheader_geth(RFCHeader *header, char *name, int first)
 	    return s;
 	}
     }
-    
+
     p_last = NULL;
     return NULL;
 }
@@ -430,7 +430,7 @@ char *header_getnext(void)
 {
     char *s;
     RFCHeader *header = &the_header;
-    
+
     if(header->last_header == NULL)
 	return NULL;
 
@@ -442,7 +442,7 @@ char *header_getnext(void)
 	header->last_header = NULL;
 	return NULL;
     }
-    
+
     for(s=header->last_header->line; is_space(*s); s++) ;
     return s;
 }
@@ -468,7 +468,7 @@ char *s_header_getcomplete(char *name)
 	    str_append(s->s, s->len, " ");
 	    str_append(s->s, s->len, p);
 	}
-	
+
 	tmps_stripsize(s);
 	return s->s;
     }
@@ -485,7 +485,7 @@ int header_alter(Textlist *header, char *name, char *newval)
 {
     Textline *line;
     char *new_header;
-    
+
     if(header == NULL || name == NULL)
 	return ERROR;
 
@@ -520,7 +520,7 @@ char *addr_token(char *line)
     static char *save_p	   = NULL;
     int level;
     char *s, *p;
-    
+
     if(line)
     {
 	/*
@@ -532,12 +532,12 @@ char *addr_token(char *line)
 
     if(save_p == NULL)
 	return NULL;
-    if(!*save_p) 
+    if(!*save_p)
     {
 	save_p = NULL;
 	return NULL;
     }
-    
+
     level = 0;
     for(p=s=save_p; *p; p++)
     {
@@ -551,9 +551,9 @@ char *addr_token(char *line)
     if(*p)
 	*p++ = 0;
     save_p = p;
-	
+
     return s;
-}   
+}
 
 struct decoding_state {
     char *charset;
@@ -597,13 +597,13 @@ int main(int argc, char *argv[])
 {
     char *h, *p;
     RFCHeader *header = &the_header;
-    
+
     if(argc != 2)
     {
 	fprintf(stderr, "usage: testheader header < RFC-messsage\n");
 	exit(1);
     }
-    
+
     h = argv[1];
 
     header_read(stdin);
@@ -617,13 +617,13 @@ int main(int argc, char *argv[])
     }
     printf("----------------------------------------\n");
     for( p = header_geth(h, TRUE);
-	 p;		 
+	 p;
 	 p = header_geth(NULL, FALSE) )
     {
 	printf("%s:    %s\n", h, p);
     }
     printf("----------------------------------------\n");
-    
+
     exit(0);
     /**NOT REACHED**/
     return 0;
