@@ -1151,7 +1151,7 @@ int cmd_listall(Node *node)
     AreasBBS *p;
     AreaUplink *a;
     LON *l;
-    int first, find;
+    int find;
     char *n, *f1, *f2;
     char *t;
     FILE *fp;
@@ -1242,11 +1242,8 @@ int cmd_listall(Node *node)
 	    areafix_printf("Areas from uplink %s", znfp1(&a->uplink));
 	    areafix_printf("");
 
-	    first = TRUE;
-
 	    for ( n = strtok (t, ","); n; n = strtok (NULL, ","))
 	    {
-		first=FALSE;
 		if(is_wildcard(n))
 		    continue;
 
