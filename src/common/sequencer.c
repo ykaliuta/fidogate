@@ -56,15 +56,19 @@ long sequencer_nx(char *seqname, int err_abort)
 	{
 	    if( !(fp = fopen(filename, WP_MODE)))
 	    {
-		fopen(cf_p_seq_pack(), RP_MODE);
-		if(errno == ENOENT)
-		{
-		    mkdir(cf_p_seq_pack(), DIR_MODE);
-		    fp = fopen(filename, WP_MODE);
-		}
-		else
+		fp = fopen(cf_p_seq_pack(), RP_MODE);
+		if (fp == NULL) {
+		    if(errno == ENOENT)
+		    {
+			mkdir(cf_p_seq_pack(), DIR_MODE);
+			fp = fopen(filename, WP_MODE);
+		    }
+		    else
+			return ERROR;
+		} else {
+		    fclose(fp);
 		    return ERROR;
-
+		}
 	    }
 	}
 
