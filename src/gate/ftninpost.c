@@ -273,11 +273,16 @@ int do_dir(char *cdir, int mode)
 	}
 	if( pr == TRUE )
 	{
+	    ret = OK;
 	    debug( 8, "exec: %s", p );
-	    freopen( rfc_file, R_MODE, stdin );
-	    ret = run_system( p );
-	    fclose( stdin );
-	    if(ret)
+	    fp = freopen( rfc_file, R_MODE, stdin );
+	    if (fp != NULL) {
+		ret = run_system( p );
+		fclose( stdin );
+	    } else {
+		fglog("$ERROR: could not redirect stdin");
+	    }
+	    if((fp == NULL) || (ret != OK))
 	    {
 		char bad[MAXPATH];
 		fglog( "$WARNING: %s returned non-zero status", p );
