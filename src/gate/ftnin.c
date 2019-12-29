@@ -92,10 +92,8 @@ void args_add(char *s)
  */
 int do_flo_line(char *s)
 {
-    int mode = 0;
-    
     if(*s == '^' || *s == '#')
-	mode = *s++;
+	s++; /* mode is unused */
 
     if(!wildmatch(s, "*.pkt", TRUE))		/* only *.pkt */
     {
@@ -125,7 +123,6 @@ int do_packets(void)
 {
     char *name;
     Node *node;
-    int ret = OK;
     char *p;
     
     /*
@@ -146,8 +143,7 @@ int do_packets(void)
 	    if((name = bink_find_out(node, NULL)))
 	    {
 		debug(5, "OUT file=%s", name);
-		if(exec_ftn2rfc(name) == ERROR)
-		    ret = ERROR;
+		exec_ftn2rfc(name);
 	    }
 	    
 	    /* Try *.?LO with *.pkt */
@@ -156,7 +152,6 @@ int do_packets(void)
 		debug(5, "FLO file=%s", name);
 		if(flo_open(node, FALSE) == ERROR)
 		{
-		    ret = ERROR;
 		    continue;
 		}
 		
@@ -165,12 +160,11 @@ int do_packets(void)
 		    if(*p==';' || *p=='~')
 			continue;
 		    if(do_flo_line(p) == ERROR)
-			ret = ERROR;
+			fglog("ERROR: processing line %s", p);
 		    flo_mark();
 		}
 
-		if(flo_close(node, FALSE, TRUE) == ERROR)
-		    ret = ERROR;
+		flo_close(node, FALSE, TRUE);
 	    }
 	    
 	    bink_bsy_delete(node);
