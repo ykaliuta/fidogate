@@ -2,8 +2,6 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: ftninpost.c,v 5.2 2004/11/23 00:50:41 anray Exp $
- *
  * Processing inbound packets
  *
  *****************************************************************************
@@ -224,32 +222,43 @@ int do_dir(char *cdir, int mode)
             case 1:
 	    	if( ( p = strstr( ftnin_sendmail, " -f" ) ) )
 		{
-    		    for( p+=3; p && *p == ' '; p++ );
+		    for( p+=3; p && *p == ' '; p++ )
+			; /* skip spaces */
+
+		    if( *p == '%' && p[1] == 's' )
 		    {
-			if( *p == '%' && p[1] == 's' )
+			fp = fopen( rfc_file, "r" );
+			if( !fp )
+			    break;
+			p = fgets( buffer, sizeof( buffer ), fp );
+			fclose( fp );
+			if( !p )
 			{
-			    fp = fopen( rfc_file, "r" );
-			    if( !fp )
-		    		break;
-			    p = fgets( buffer, sizeof( buffer ), fp );
-                	    fclose( fp );
-			    if( !p )
-		    		break;
-			    if( strncmp( p, "From ", 5 ) )
-			    {
-		    		debug( 9, "WARNING: \"From\" string not found" );
-                	    }
-			    else
-			    {
-				p = xstrtok( p+5, " \t" );
-				str_printf( buf, sizeof(buf), ftnin_sendmail, p ); 
-			    }
+			    fglog("ERROR: could not read %s", rfc_file);
+			    break;
+			}
+			if( strncmp( p, "From ", 5 ) )
+			{
+			    debug( 9, "WARNING: \"From\" string not found" );
+			    break;
+			}
+			else
+			{
+			    p = xstrtok( p+5, " \t" );
+			    str_printf( buf, sizeof(buf), ftnin_sendmail, p );
+			    p = buf;
 			}
 		    }
-            	    p = buf;
+		    else
+		    {
+			p = ftnin_sendmail;
+		    }
 		}
 		else
-		p = ftnin_sendmail;
+		{
+		    p = ftnin_sendmail;
+		}
+
 		pr = TRUE;
 		break;
 
