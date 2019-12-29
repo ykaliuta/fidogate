@@ -86,12 +86,6 @@ static void file_deinit(struct logger *);
 
 static void stream_log(struct logger *, const char *, va_list);
 
-static void syslog_debug(struct logger *, const char *, va_list);
-static void syslog_suppressed(struct logger *, const char *, ...);
-static void syslog_log(struct logger *, const char *, va_list);
-static void syslog_deinit(struct logger *);
-static void syslog_name_changed(struct logger *);
-
 static void default_log(struct logger *, const char *, va_list);
 
 #define DEFAULT_PROG "FIDOGATE"
@@ -109,13 +103,7 @@ static struct logger_ops stream_ops = {
     .log = stream_log,
 };
 
-static struct logger_ops syslog_ops = {
-    .debug = syslog_debug,
-    .suppressed = syslog_suppressed,
-    .log = syslog_log,
-    .deinit = syslog_deinit,
-    .name_changed = syslog_name_changed,
-};
+/* see syslog_ops below under syslog condition */
 
 static struct logger_ops default_ops = {
     .debug = file_debug,
@@ -145,23 +133,8 @@ static int log_init_syslog(struct logger *l)
 {
     return ERROR;
 }
-static void syslog_debug(struct logger *l,
-			 const char *fmt, va_list args)
-{
-}
-static void syslog_suppressed(struct logger *l, const char *fmt, ...)
-{
-}
-static void syslog_log(struct logger *l, const char *fmt, va_list args)
-{
-}
-static void syslog_deinit(struct logger *l)
-{
-}
-static void syslog_name_changed(struct logger *l)
-{
-}
 #else /* SYSLOG ENABLED */
+
 static void syslog_debug(struct logger *l,
 			 const char *fmt, va_list args)
 {
@@ -206,6 +179,14 @@ static void syslog_name_changed(struct logger *l)
     syslog_deinit(l);
     log_init_syslog(l);
 }
+
+static struct logger_ops syslog_ops = {
+    .debug = syslog_debug,
+    .suppressed = syslog_suppressed,
+    .log = syslog_log,
+    .deinit = syslog_deinit,
+    .name_changed = syslog_name_changed,
+};
 
 #endif /* defined(HAVE_SYSLOG) || !defined(HAVE_SYSLOG_H) */
 
