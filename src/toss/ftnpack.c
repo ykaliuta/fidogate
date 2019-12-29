@@ -602,7 +602,7 @@ int do_arcmail(char *name, Node *arcnode, Node *flonode,
 	       PktDesc *desc, FILE *file, char *prog, char *dir, long max_arc)
 {
     char *arcn, *pktn;
-    int ret, newfile;
+    int ret;
     
     arcn = arcmail_name(arcnode, dir);
     pktn = packing_pkt_name(NULL, name);
@@ -620,8 +620,6 @@ int do_arcmail(char *name, Node *arcnode, Node *flonode,
     debug(4, "Archiving %s for %s arc", name, znfp1(arcnode));
     debug(4, "    Packet  name: %s", pktn);
     debug(4, "    Archive name: %s", arcn);
-
-    newfile = check_access(arcn, CHECK_FILE) == ERROR;
 
     /* Rename/copy packet */
     if(desc->type == TYPE_ECHOMAIL)
