@@ -1,0 +1,5 @@
+fidogate (@VERSION@-1) unstable; urgency=medium
+
+  * @VERSION@ release
+
+ -- Automatic fidogate build <y.kaliuta@gmail.com>  @DATE@

@@ -1233,6 +1233,9 @@ DOMAINNAME=`hostname|sed -e "s/$HOSTNAME//"`
 AC_SUBST(HOSTNAME)
 AC_SUBST(DOMAINNAME)
 
+DATE="$(date -R)"
+AC_SUBST(DATE)
+
 AC_CONFIG_MACRO_DIRS([m4])
 
 AC_CONFIG_COMMANDS([build_headers],[build/subst.pl -h])
@@ -1241,7 +1244,8 @@ AC_CONFIG_FILES([build/config.make \
                  Makefile \
 		 src/Makefile \
 		 tests/Makefile \
-		 packages/rpm/fidogate.spec ])
+		 packages/rpm/fidogate.spec \
+		 debian/changelog ])
 AC_OUTPUT
 
 # as template taken from kmod

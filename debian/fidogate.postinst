@@ -1,0 +1,65 @@
+#!/bin/sh
+
+set -e
+
+PACKAGE=fidogate
+
+case "$1" in
+    configure)
+
+	if ! grep -s ftn /etc/group >/dev/null 2>&1; then
+            addgroup --gid 64000 ftn  
+        fi
+        
+        if ! id ftn >/dev/null 2>&1; then
+            adduser --system --home /var/spool/ftn --gid 64000 --uid 64000 \
+            --disabled-password --gecos Fidonet ftn
+            chsh -s /bin/bash ftn
+            adduser ftn dialout
+	    adduser ftn uucp
+        fi
+
+	if ! id news | grep ftn >/dev/null 2>&1; then
+	    adduser news ftn
+	fi
+	
+	if ! egrep -q '^(ftn:|#-- ftn)' /etc/aliases; then
+	    cat >>/etc/aliases <<EOF
+#-- ftn begin
+ftn:    root
+sysop:  root
+#-- ftn end
+EOF
+	    newaliases || echo "newaliases command not available."
+	fi
+
+# Fix permissions
+	chown -R ftn:ftn /etc/$PACKAGE
+	chown ftn:ftn /var/lock/$PACKAGE/ \
+	    /var/log/$PACKAGE/ \
+	    /var/spool/ftn  /var/run/$PACKAGE
+	chown -R ftn:ftn /var/spool/$PACKAGE/  /var/lib/$PACKAGE
+	chmod -R ug+rw /var/log/$PACKAGE /var/spool/$PACKAGE/
+	chown news:ftn /usr/bin/ngoper
+	chown ftn:news /usr/lib/$PACKAGE/rfc2ftn
+
+	chmod 4755 /usr/lib/$PACKAGE/rfc2ftn
+	chmod 4750 /usr/bin/ngoper
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+
+#DEBHELPER#
+
+exit 0
+
+

@@ -67,6 +67,27 @@ EXTRA_DIST += build/rules.make build/subst.pl config.pl
 EXTRA_DIST += autogen.sh
 EXTRA_DIST += packages/rpm/fidogate.spec
 
+#debian
+EXTRA_DIST += debian/copyright \
+            debian/fidogate.dirs \
+            debian/fidogate-doc.docs \
+            debian/fidogate-postfix.install \
+            debian/fidogate-postfix.dirs \
+            debian/fidogate.postrm \
+            debian/patches/02inbound.dpatch \
+            debian/patches/series \
+            debian/source/format \
+            debian/fidogate.postinst \
+            debian/fidogate.install \
+            debian/fidogate.cron.d \
+            debian/rules \
+            debian/compat \
+            debian/changelog \
+            debian/fidogate-sendmail.install \
+            debian/control \
+            debian/fidogate.logrotate \
+            debian/fidogate-sendmail.dirs
+
 noinst_HEADERS = version.h
 
 ########## scripts

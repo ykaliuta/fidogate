@@ -1,0 +1,16 @@
+etc/fidogate
+usr/bin
+usr/lib/fidogate
+usr/share/fidogate
+var/log/fidogate
+var/lock/fidogate
+var/lib/fidogate/seq
+var/spool/fidogate/toss/bad
+var/spool/fidogate/toss/pack
+var/spool/fidogate/toss/route
+var/spool/fidogate/toss/toss
+var/spool/fidogate/outpkt/mail
+var/spool/fidogate/outpkt/news
+var/spool/fidogate/outrfc/mail
+var/spool/fidogate/outrfc/news
+var/spool/ftn/outb

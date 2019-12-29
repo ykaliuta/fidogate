@@ -1,0 +1,62 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE=1
+
+PACKAGE = fidogate
+BUILDROOT = $(CURDIR)/debian/tmp
+
+configure_options := \
+	--prefix=/usr \
+	--sysconfdir=/etc/$(PACKAGE) \
+	--libexecdir=/usr/lib/$(PACKAGE) \
+	--with-logdir=/var/log/$(PACKAGE) \
+	--with-vardir=/var/lib/$(PACKAGE) \
+	--with-spooldir=/var/spool/$(PACKAGE) \
+	--with-btbasedir=/var/spool/ftn \
+	--with-newsbindir=/usr/lib/news/bin\
+	--with-owner=ftn --with-group=news \
+	--with-sendmail=/usr/sbin/sendmail \
+	--enable-dbc-history \
+	--disable-desc-dir \
+	--enable-aliases-local \
+	--disable-fecho-pass \
+	--enable-af-ansok \
+	--enable-afses \
+	--enable-pid2rd-tid2gtv \
+	--enable-sep-pkt \
+	--enable-best-aka \
+	--with-inndir=/usr/lib/news \
+	--with-innetcdir=/etc/news \
+	--with-inndbdir=/var/lib/news \
+	--with-innspooldir=/var/spool/news
+
+override_dh_auto_test:
+
+override_dh_auto_configure:
+	dh_auto_configure -- $(configure_options)
+
+
+override_dh_auto_build:
+	dh_auto_build
+
+override_dh_auto_install:
+	dh_auto_install
+
+	cat $(BUILDROOT)/usr/lib/fidogate/send-fidogate | \
+		sed 's|log/fidogate|log/news|g' > \
+			$(BUILDROOT)/usr/bin/send-fidogate
+	chmod +x $(BUILDROOT)/usr/bin/send-fidogate
+
+	install -d $(BUILDROOT)/usr/share/sendmail/cf/mailer
+	install -m 644 doc/mailer/sendmail/mailer/ftn.m4 \
+		$(BUILDROOT)/usr/share/sendmail/cf/mailer
+
+	install -d $(BUILDROOT)/etc/postfix
+	install -m 644 doc/mailer/postfix/master.cf \
+			$(BUILDROOT)/etc/postfix/master.cf-$(PACKAGE)
+	install -m 644 doc/mailer/postfix/transport \
+			$(BUILDROOT)/etc/postfix/transport-$(PACKAGE)
+	install -m 644 src/charset/charset.bin \
+		$(BUILDROOT)/usr/lib/fidogate
+%:
+	dh $@ 
