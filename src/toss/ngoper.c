@@ -27,6 +27,8 @@ main(int argc, char **argv)
   char *c_flag=NULL;
   char *p;
   char  buf[BUFSIZ];
+  FILE *fp;
+
   static struct option long_options[] =
   {
     { "verbose",      0, 0, 'v' },	/* More verbose */
@@ -120,9 +122,15 @@ main(int argc, char **argv)
       return 1;
     }
 
-  freopen("/dev/null", "w", stdout);
-  freopen("/dev/null", "w", stderr);
-  freopen("/dev/null", "r", stdin);
+  fp = freopen("/dev/null", "w", stdout);
+  if (fp == NULL)
+      fglog("$ERROR: could not redirect stdout");
+  fp = freopen("/dev/null", "w", stderr);
+  if (fp == NULL)
+      fglog("$ERROR: could not redirect stderr");
+  fp = freopen("/dev/null", "r", stdin);
+  if (fp == NULL)
+      fglog("$ERROR: could not redirect stdin");
 
   if (!remove)
     {
