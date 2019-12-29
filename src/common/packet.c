@@ -728,6 +728,7 @@ int pkt_get_hdr(FILE *fp, Packet *pkt)
     char xpkt[4];
     struct tm *tm;
     TIMEINFO ti;
+    int auxnet;
     
     retVal = OK;
     GetTimeInfo(&ti);
@@ -830,7 +831,7 @@ int pkt_get_hdr(FILE *fp, Packet *pkt)
     if(dzone)
 	pkt->to.zone = dzone;
     /* Spare (auxNet in FSC-0048) */
-    if((val = pkt_get_int16(fp)) == ERROR)  return ERROR;
+    if((auxnet = pkt_get_int16(fp)) == ERROR)  return ERROR;
     /* Cap word byte-swapped copy */
     if((val = getc(fp)) == ERROR)           return ERROR;
     swap = val << 8;
@@ -881,6 +882,16 @@ int pkt_get_hdr(FILE *fp, Packet *pkt)
 
     if(verbose >= 3)
 	pkt_debug_hdr(stderr, pkt, "Reading ");
+
+    /* FSC-0048 point packet check */
+    if (pkt->from.net == 0xFFFF) {
+	if (pkt->from.point != 0)
+	    pkt->from.net = auxnet;
+	else
+	    /* hpt does it */
+	    pkt->from.net = pkt->to.net;
+	debug(9, "Packet: FSC-0048 orig net: %d -> %d", 0xFFFF, pkt->from.net);
+    }
     
     if(ferror(fp) == ERROR)
 	return ERROR;
