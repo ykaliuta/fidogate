@@ -24,7 +24,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -84,7 +84,7 @@ int do_expire(int type)
 {
     FILE *hi_o, *hi_n, *fp;
     TIMEINFO ti;
-    
+
     /* Filenames */
     if (type == 1)
     {
@@ -135,14 +135,14 @@ int do_expire(int type)
 	  (long)now_sec, (long)max_sec, (long)exp_sec);
 
     /* Open old history for reading */
-    if( (hi_o = fopen(history, R_MODE)) == NULL ) 
+    if( (hi_o = fopen(history, R_MODE)) == NULL )
     {
 	fglog("$ERROR: open MSGID history %s failed", history);
 	return ERROR;
     }
 
     /* Open new history for writing */
-    if( (hi_n = fopen(history_n, W_MODE)) == NULL ) 
+    if( (hi_n = fopen(history_n, W_MODE)) == NULL )
     {
 	fglog("$ERROR: open MSGID history %s failed", history_n);
 	fclose(hi_o);
@@ -150,7 +150,7 @@ int do_expire(int type)
     }
 
     /* Create empty new .dir and .pag*/
-    if( (fp = fopen(history_n_dir, W_MODE)) == NULL ) 
+    if( (fp = fopen(history_n_dir, W_MODE)) == NULL )
     {
 	fglog("$ERROR: open MSGID history %s failed", history_n_dir);
 	fclose(hi_o);
@@ -158,7 +158,7 @@ int do_expire(int type)
 	return ERROR;
     }
     fclose(fp);
-    if( (fp = fopen(history_n_pag, W_MODE)) == NULL ) 
+    if( (fp = fopen(history_n_pag, W_MODE)) == NULL )
     {
 	fglog("$ERROR: open MSGID history %s failed", history_n_pag);
 	fclose(hi_o);
@@ -166,7 +166,7 @@ int do_expire(int type)
 	return ERROR;
     }
     fclose(fp);
-    
+
     /* Initialize the new DBZ file */
     dbzincore(1);
     if (dbzagain(history_n, history) < 0)
@@ -183,7 +183,7 @@ int do_expire(int type)
     {
 	do_line(hi_n, buffer, type);
     }
-    
+
 
     /* Close everything */
     /**FIXME: error checking**/
@@ -208,7 +208,7 @@ int do_expire(int type)
 	fglog("$ERROR: rename %s -> %s failed", history_n_pag, history_pag);
 	return ERROR;
     }
-    
+
     return OK;
 }
 
@@ -229,13 +229,13 @@ int do_line(FILE *hi_n, char *line, int type)
     /* Parse old entry */
     strip_crlf(line);
     history_line++;
-    
+
     if (type == 1)
     {
 	msgid	  = strtok(line, "\t");
 	rfc_msgid = strtok(NULL, "\t");
 	p     	  = strtok(NULL, "\t");
-	
+
 	if(!msgid || !p || !rfc_msgid)
 	{
 	    fglog("$WARNING: illegal entry in %s, line %ld", history, history_line);
@@ -253,7 +253,7 @@ int do_line(FILE *hi_n, char *line, int type)
 	    return ERROR;
 	}
     }
-        
+
     /* Check expire */
     t = atol(p);
     expired = t < exp_sec;
@@ -261,7 +261,7 @@ int do_line(FILE *hi_n, char *line, int type)
 	  msgid, (long)t, expired ? "YES" : "NO");
 
     /* Write if not expired */
-    if(!expired) 
+    if(!expired)
     {
 	/* Get offset in history text file */
 	if( (offset = ftell(hi_n)) == ERROR)
@@ -275,12 +275,12 @@ int do_line(FILE *hi_n, char *line, int type)
 	else
 	    ret = fprintf(hi_n, "%s\t%ld\n", msgid, (long)t);
 
-	    if (ret == ERROR || fflush(hi_n) == ERROR)
-	    {
-		fglog("$ERROR: write to MSGID history failed");
-		return ERROR;
-	    }
-	
+	if (ret == ERROR || fflush(hi_n) == ERROR)
+	{
+	    fglog("$ERROR: write to MSGID history failed");
+	    return ERROR;
+	}
+
 	/* Write database record */
 	key.dptr  = msgid;			/* Key */
 	key.dsize = strlen(msgid) + 1;
@@ -295,7 +295,7 @@ int do_line(FILE *hi_n, char *line, int type)
 	n_expired++;
 
     n_processed++;
-    
+
     return OK;
 }
 
@@ -315,7 +315,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options]\n\n", PROGRAM);
     fprintf(stderr, "\
 options: -m --maxhistory DAYS         set max number of days in history\n\
@@ -341,9 +341,9 @@ int main(int argc, char **argv)
     char *c_flag=NULL;
     int type = 0;
 
-    
+
     time_t expire_start, expire_delta;
-    
+
     int option_index;
     static struct option long_options[] =
     {
@@ -359,7 +359,7 @@ int main(int argc, char **argv)
     };
 
     log_program(PROGRAM);
-    
+
     /* Init configuration */
     cf_initialize();
 
@@ -377,7 +377,7 @@ int main(int argc, char **argv)
 	    else
 		w_flag = WAIT;
 	    break;
-	    
+
 	/***** Common options *****/
 	case 'v':
 	    verbose++;
@@ -460,10 +460,10 @@ int main(int argc, char **argv)
     fglog("ids processed: %ld total, %ld expired in %ld s, %.2f ids/s",
 	n_processed, n_expired,
 	(long)expire_delta, (double)n_processed/expire_delta);
-    
+
     unlock_program(cf_p_lock_history());
 
-    
+
     exit_free();
     return ret;
 }
