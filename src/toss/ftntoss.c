@@ -2328,9 +2328,10 @@ int main(int argc, char **argv)
 	    if(lock_program(cf_p_lock_history(), w_flag ? w_flag : NOWAIT) == ERROR )
 	    {
 		/* Already busy, exit */
-		if(l_flag)
+		if(l_flag) {
 		    unlock_program(PROGRAM);
 		    unlock_path(bbslock);
+		}
 
 		exit_free();
 		return EXIT_BUSY;
