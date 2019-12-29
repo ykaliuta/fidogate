@@ -408,6 +408,7 @@ int rfc_parse(RFCAddr *rfc, char *name, Node *node, int gw)
 	    p[len-1] = 0;
 	}
 	strncpy(name, p, MSG_MAXNAME);
+	name[MSG_MAXNAME -1] = '\0';
     }
 
     if(!node)
@@ -688,6 +689,7 @@ char *mail_sender(RFCAddr *rfc, Node *node)
 {
     static char name[MSG_MAXNAME];
     Alias *alias;
+    int rc;
     Node n;
 #ifdef PASSTHRU_NETMAIL
     int ret;
@@ -746,7 +748,9 @@ char *mail_sender(RFCAddr *rfc, Node *node)
 
     if (cf_get_string("ForceRFCAddrInFrom", TRUE))
     {
-	snprintf(name, sizeof(name), "%s@%s", rfc->user, rfc->addr);
+	rc = snprintf(name, sizeof(name), "%s@%s", rfc->user, rfc->addr);
+	if (rc > sizeof(name))
+	    fglog("WARNING: name is truncated");
 	debug(5, "Forcing email address for sender name: %s", name);
 	return name;
     }
