@@ -359,15 +359,10 @@ static int recode_header(Textline *tl, struct encoding_state *state)
 
     len = strlen(tl->line);
     size = len + 1;
-    /*
-     * max utf8 symbol size is 4 bytes, min source 1 byte,
-     * max increase -- 4 times
-     */
-    new_size = len * 4 + 1;
-    tmpbuf = xmalloc(new_size);
+
     /* recode with the header's name, hopefully no charset amend ascii */
-    rc = charset_recode_string(tmpbuf, &new_size, tl->line, &size,
-			       state->cs_in, state->cs_out);
+    rc = charset_recode_buf(&tmpbuf, &new_size, tl->line, size,
+			    state->cs_in, state->cs_out);
 
     if (rc != OK) {
 	fglog("ERROR: could not recode header from %s to %s\n",
@@ -459,14 +454,9 @@ static int recode_body(Textline *tl, void *arg)
 
     len = strlen(line);
     size = len + 1;
-    /*
-     * max utf8 symbol size is 4 bytes, min source 1 byte,
-     * mac increase -- 4 times
-     */
-    new_size = len * 4 + 1;
-    tmpbuf = xmalloc(new_size);
-    rc = charset_recode_string(tmpbuf, &new_size, line, &size,
-			       state->cs_in, state->cs_out);
+
+    rc = charset_recode_buf(&tmpbuf, &new_size, line, size,
+			    state->cs_in, state->cs_out);
 
     if (rc != OK) {
 	fglog("ERROR: could not recode body line from %s to %s\n",

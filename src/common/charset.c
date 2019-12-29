@@ -254,7 +254,7 @@ char *charset_map_c(int c, int qp)
 char *
 xlat_s(char *s1, char *s2)
 {
-    char *dst;
+    char *dst = NULL;
     size_t src_len;
     size_t dst_len;
     int rc;
@@ -266,12 +266,10 @@ xlat_s(char *s1, char *s2)
 	return NULL;
 
     src_len = strlen(s1);
-    dst_len = src_len * MAX_CHARSET_OUT;
-    dst = xmalloc(dst_len + 1);
     src_len++; /* recode also final \0 */
 
-    rc = charset_recode_string(dst, &dst_len, s1, &src_len,
-			       orig_in, orig_out);
+    rc = charset_recode_buf(&dst, &dst_len, s1, src_len,
+			    orig_in, orig_out);
     if (rc == OK)
 	return dst;
 
@@ -605,14 +603,20 @@ void charset_free(void)
 }
 
 #ifdef HAVE_ICONV
-static int _charset_recode_iconv(char *dst, size_t *dstlen,
-				 char *src, size_t *srclen,
+static int _charset_recode_iconv(char **res, size_t *res_len,
+				 char *src, size_t src_len,
 				 char *from, char *_to)
 {
     int rc;
     iconv_t desc;
     size_t size;
     char *to;
+    char *dst;
+    size_t dst_size;
+    size_t inc = src_len;
+    char *cur;
+    size_t cur_size;
+    size_t dst_len; /* successfuly converted to dst */
 
     debug(6, "Using ICONV");
 
@@ -627,43 +631,51 @@ static int _charset_recode_iconv(char *dst, size_t *dstlen,
 	return ERROR;
     }
 
-    while(*srclen > 0)
-    {
-	rc = iconv(desc, &src, srclen, &dst, dstlen);
-	if(rc != -1)
-	    continue;
+    dst_size = src_len;
+    dst = xmalloc(dst_size);
+    cur = dst;
+    cur_size = dst_size;
 
-	if((errno == E2BIG) || (*dstlen == 0))
-	{
-	    rc = ERROR;
-	    goto exit;
+    while(src_len > 0)
+    {
+	rc = iconv(desc, &src, &src_len, &cur, &cur_size);
+	if(rc != -1)
+	    break;
+
+	if (errno != E2BIG) {
+	    src++;
+	    src_len--;
+	    *cur++ = '?';
+	    cur_size--;
+	    continue;
 	}
 
-	/* Only if wrong symbol (or sequence), try to skip it */
-	(*srclen)--;
-	src++;
-
-	*dst++ = '?';
-	(*dstlen)--;
+	/* after iconv call cur_size contains size of unused space */
+	dst_len = dst_size - cur_size;
+	dst = xrealloc(dst, dst_size + inc);
+	dst_size += inc;
+	cur = dst + dst_len;
+	/* unused + new */
+	cur_size += inc;
     }
 
     /*
      * write sequence to get to the initial state if needed
      * https://www.gnu.org/software/libc/manual/html_node/iconv-Examples.html
      */
-    iconv(desc, NULL, NULL, &dst, dstlen);
-    rc = OK;
-
-exit:
-    *dst = '\0';
+    iconv(desc, NULL, NULL, &cur, &cur_size);
+    dst_len = dst_size - cur_size;
     iconv_close(desc);
     free(to);
 
-    return rc;
+    *res = dst;
+    *res_len = dst_len;
+
+    return OK;
 }
 
-static int charset_recode_iconv(char *dst, size_t *dstlen,
-				char *src, size_t *srclen,
+static int charset_recode_iconv(char **dst, size_t *dstlen,
+				char *src, size_t srclen,
 				char *from, char *to)
 {
     int rc;
@@ -696,8 +708,8 @@ static int charset_recode_iconv(char *dst, size_t *dstlen,
 }
 
 #else
-static int charset_recode_iconv(char *dst, size_t *dstlen,
-				char *src, size_t *srclen,
+static int charset_recode_iconv(char **dst, size_t *dstlen,
+				char *src, size_t srclen,
 				char *from, char *to)
 {
 	return ERROR;
@@ -705,49 +717,60 @@ static int charset_recode_iconv(char *dst, size_t *dstlen,
 #endif
 
 /* uses internal recode */
-static int charset_recode_int(char *dst, size_t *dstlen,
-			      char *src, size_t *srclen,
+static int charset_recode_int(char **dst, size_t *dstlen,
+			      char *src, size_t srclen,
 			      char *from, char *to)
 {
+    size_t d_len;
+    size_t size;
+    char *d;
+
+    d_len = srclen * MAX_CHARSET_OUT;
+    size = d_len + 1;
+    d = xmalloc(size);
 
     charset_set_in_out(from, to);
-    *dst = '\0';
 
-    for(; (*srclen > 0 ) && (*dstlen > 0); (*srclen)--, (*dstlen)--)
-	strcat(dst, charset_map_c(*(src++), 0));
+    *d = '\0';
+
+    for(; (srclen > 0 ) && (d_len > 0); srclen--, d_len--)
+	strcat(d, charset_map_c(*src++, 0));
+
+    if ((d_len == 0) && (srclen != 0))
+	fglog("ERROR: recoding buffer too small");
+
+    *dst = d;
+    *dstlen = size - d_len - 1;
 
     return OK;
 }
 
 /*
- * get source string, lenght of it, buffer for the destination string
- * and its length.
- * Return in srclen -- rest of undecoded characters (0 if ok)
- * in dstlen -- number of unused bytes in the dst buffer
+ * Gets source buffer, lenght of it, allocates buffer for the result.
+ * Return dst -- allocated buffer
+ *        dstlen -- number of used bytes in it
  * The argument's order is like in str/mem functions
  *
- * Adjust given length to string's length
+ * Adjusts given length to string's length
  */
-int charset_recode_string(char *dst, size_t *dstlen,
-			  char *src, size_t *srclen,
-			  char *from, char *to)
+int charset_recode_buf(char **dst, size_t *dstlen,
+		       char *src, size_t srclen,
+		       char *from, char *to)
 {
     int rc;
-    size_t len;
 
-    if(src == NULL || dst == NULL || srclen == NULL || dstlen == NULL)
+    if (src == NULL || dst == NULL)
 	return ERROR;
 
-    if(*srclen == 0 || *dstlen == 0)
+    if (srclen == 0)
 	return ERROR;
 
     debug(6, "mime charset: recoding from %s to %s", from, to);
 
     if (strieq(from, to)) {
-	len = MIN(*dstlen, *srclen);
-	memcpy(dst, src, len);
-	*dstlen -= len;
-	*srclen -= len;
+	*dst = xmalloc(srclen);
+	memcpy(*dst, src, srclen);
+	*dstlen = srclen;
 	return OK;
     }
 

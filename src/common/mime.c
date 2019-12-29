@@ -1154,8 +1154,9 @@ char *mime_header_dec(char *d, size_t d_max, char *s, char *to)
     char charset[MIME_MAX_ENC_LEN + 1];
     int rc;
     size_t d_left = d_max - 1;
-    size_t d_size;
     size_t s_handled;
+    char *recoded;
+    size_t recoded_len;
 
     while (d_left != 0 && *s != '\0') {
 	if (isspace(*s)) {
@@ -1184,20 +1185,24 @@ char *mime_header_dec(char *d, size_t d_max, char *s, char *to)
 	}
 
 	debug(6, "header charset: %s", charset);
-	d_size = d_left;
-	rc = charset_recode_string(d, &d_size, buf, &len,
-				   charset, to);
-	free(buf);
-
-	/* unused space was returned in d_size */
-	d += d_left - d_size;
-
+	rc = charset_recode_buf(&recoded, &recoded_len, buf, len,
+				charset, to);
 	if (rc != OK) {
 	    debug(6, "Could not recode header %s", buf);
 	    goto out;
 	}
 
-	d_left = d_size;
+	free(buf);
+
+	if (recoded_len > d_left) {
+	    fglog("ERROR: header buffer too small");
+	    recoded_len = d_left;
+	}
+
+	memcpy(d, recoded, recoded_len);
+	d += recoded_len;
+	d_left -= recoded_len;
+
 	s += s_handled;
     }
 
@@ -1623,20 +1628,14 @@ static int mime_decharset_section(Textlist *body, MIMEInfo *mime, char *to)
 
     for(line = body->first; line != NULL; line = line->next)
     {
-	src_len = strlen(line->line);
-	res_len = src_len * MAX_CHARSET_OUT + 1;
-	src_len++; /* recode final \0 also */
-	res_str = xmalloc(res_len);
+	src_len = strlen(line->line) + 1; /* recode final \0 also */
 
-	rc = charset_recode_string(res_str, &res_len, line->line, &src_len,
-				   mime->type_charset, to);
+	rc = charset_recode_buf(&res_str, &res_len, line->line, src_len,
+				mime->type_charset, to);
 
 	if(rc == ERROR)
 	{
-	    if(src_len != 0 && res_len == 0)
-		fglog("WARNING: no space in the destination buffer for iconv");
-	    else
-		goto exit; /* something really wrong */
+	    goto exit; /* something really wrong */
 	}
 
 	tmp = line->line;

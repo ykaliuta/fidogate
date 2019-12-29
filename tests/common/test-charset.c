@@ -17,13 +17,14 @@ Ensure(charset_recodes_latin1)
 {
 	char *src = "\xf8";
 	char *exp = "ø";
-	char res[16];
-	size_t dstlen = sizeof(res);
+	char *res;
+	size_t dstlen;
 	size_t srclen = strlen(src) + 1;
 
-	charset_recode_string(res, &dstlen, src, &srclen, "LATIN-1", "UTF-8");
+	charset_recode_buf(&res, &dstlen, src, srclen, "LATIN-1", "UTF-8");
 
 	assert_that(res, is_equal_to_string(exp));
+	free(res);
 }
 
 static TestSuite *create_mime_suite(void)

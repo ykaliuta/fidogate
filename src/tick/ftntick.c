@@ -822,6 +822,7 @@ int add_files_bbs(Tick *tic, char *dir)
 #ifdef RECODE_FILE_DESC
     char buf1[BUFSIZ];
     char buf[BUFSIZ];
+    char *p;
 #endif /* RECODE_FILE_DESC */
     char files_bbs[MAXPATH];
 #ifdef DESC_DIR
@@ -851,13 +852,14 @@ int add_files_bbs(Tick *tic, char *dir)
     if (tic->desc.first)
     {
 	size_t srclen;
-	size_t dstlen = sizeof(buf);
+	size_t dstlen;
 
 	BUF_COPY (buf1, tic->desc.first->line);
 	msg_xlate_line (buf1, sizeof (buf1), tic->desc.first->line, ignore_soft_cr);
 
 	srclen = strlen(buf1) + 1;
-	charset_recode_string(buf, &dstlen, buf1, &srclen, cs_def, cs_out);
+	charset_recode_buf(&p, &dstlen, buf1, srclen, cs_def, cs_out);
+	BUF_COPY (buf, p);
     }
     else
     {

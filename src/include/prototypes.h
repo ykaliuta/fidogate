@@ -164,9 +164,8 @@ int	charset_write_bin	(char *);
 int	charset_read_bin	(char *);
 char   *charset_map_c		(int, int);
 char   *xlat_s			(char *, char *);
-int     charset_recode_string   (char *dst, size_t *dstlen,
-				 char *src, size_t *srclen,
-				 char *from, char *to);
+int     charset_recode_buf      (char **, size_t *, char *, size_t,
+				 char *, char *);
 char   *charset_alias_fsc	(char *);
 char   *charset_alias_rfc	(char *);
 void	charset_set_in_out	(char *, char *);

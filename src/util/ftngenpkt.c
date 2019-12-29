@@ -115,11 +115,10 @@ static char *recode_string(char *s, char *charset)
 	return NULL;
 
     /* most likely UTF-8 to 8 bit recoding */
-    d_len = s_len = strlen(s) + 1;
-    d = xmalloc(d_len);
+    s_len = strlen(s) + 1;
 
     /* "" should mean locale charset */
-    rc = charset_recode_string(d, &d_len, s, &s_len, "", charset);
+    rc = charset_recode_buf(&d, &d_len, s, s_len, "", charset);
     if (rc != OK) {
 	fprintf(stderr, "Could not recode string %s\n", s);
 	abort();
