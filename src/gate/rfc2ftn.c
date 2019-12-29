@@ -689,15 +689,18 @@ time_t mail_date(void)
 char *mail_sender(RFCAddr *rfc, Node *node)
 {
     static char name[MSG_MAXNAME];
-    Node n;
-    int ret;
     Alias *alias;
+    Node n;
+#ifdef PASSTHRU_NETMAIL
+    int ret;
+#endif
 
     *name = 0;
     *node = cf_n_addr();
+#ifndef PASSTHRU_NETMAIL
+    rfc_parse(rfc, name, &n, FALSE);
+#else
     ret = rfc_parse(rfc, name, &n, FALSE);
-    
-#ifdef PASSTHRU_NETMAIL
     /*
      * If the from address is an FTN address, convert and pass it via
      * parameter node. This may cause problems when operating different
