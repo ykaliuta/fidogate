@@ -1870,8 +1870,6 @@ void prog_signal(int signum)
     }
 
     fglog("KILLED%s: exit forced", name);
-    if(strspn(name, "SIGHUP"));
-	exit(EX_USAGE);
 }
 
 
