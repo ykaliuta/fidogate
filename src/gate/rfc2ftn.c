@@ -2,8 +2,6 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway software UNIX <-> FIDO
  *
- * $Id: rfc2ftn.c,v 5.7 2007/09/12 16:59:58 anray Exp $
- *
  * Read mail or news from standard input and convert it to a FIDO packet.
  *
  *****************************************************************************
@@ -24,7 +22,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with FIDOGATE; see the file COPYING.  If not, write to the Free
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -93,7 +91,7 @@ static int no_from_line	= FALSE;	/* NoFromLine          	 */
 static int no_fsc_0035 = FALSE;		/* NoFSC0035           	 */
 static int no_fsc_0035_if_alias = FALSE; /* NoFSC0035ifAlias	 */
 static int no_fsc_0047 = FALSE;		/* NoFSC0047           	 */
-static int echomail4d = FALSE;		/* EchoMail4d          	 */ 
+static int echomail4d = FALSE;		/* EchoMail4d          	 */
 static int x_flags_policy = 0;		/* XFlagsPolicy        	 */
 static int dont_use_reply_to = FALSE;	/* DontUseReplyTo      	 */
 static int replyaddr_ifmail_tx = FALSE;	/* ReplyAddrIfmailTX   	 */
@@ -155,12 +153,12 @@ char *get_name_from_body(void)
     int found = FALSE;
     int i;
 #endif
-    
+
     /* First non-empty line of message body */
     for(tl=body.first; tl && tl->line && is_blank_line(tl->line); tl=tl->next);
     if(!tl || !tl->line)
 	return NULL;
-    
+
     BUF_COPY(line1, tl->line);
     strip_space(line1);
     tl = tl->next;
@@ -178,7 +176,7 @@ char *get_name_from_body(void)
     }
     debug(9, "body 1st line: %s", line1);
 
-#if 0    
+#if 0
     /*
      * nn-style quote:
      *   user@@do.main (User Name) writes:
@@ -258,11 +256,11 @@ char *get_name_from_body(void)
 	return buf;
     }
 #endif
-    
+
     return NULL;
 }
 
-    
+
 
 
 /*
@@ -271,7 +269,7 @@ char *get_name_from_body(void)
 void sendback(const char *fmt, ...)
 {
     va_list args;
-    
+
     va_start(args, fmt);
 
     fprintf(stderr, "Internet -> FIDO gateway / FIDOGATE %s @@ %s\n",
@@ -312,7 +310,7 @@ RFCAddr rfc_sender(void)
 
     rfcaddr_init(&rfc);
     rfcaddr_init(&rfc1);
-    
+
     /*
      * Use From or Reply-To header
      */
@@ -361,7 +359,7 @@ RFCAddr rfc_sender(void)
     /*
      * No sender ?!?
      */
-    else 
+    else
     {
 	BUF_COPY(rfc.user, "nobody");
 	BUF_COPY(rfc.real, "Unknown User");
@@ -387,7 +385,7 @@ int rfc_parse(RFCAddr *rfc, char *name, Node *node, int gw)
     Node *n;
     Host *h;
     int addr_is_restricted = FALSE;
-    
+
     rfc_isfido_flag = FALSE;
 
     debug(3, "    Name:     %s", rfc->user[0] ? rfc->user : rfc->real);
@@ -414,7 +412,7 @@ int rfc_parse(RFCAddr *rfc, char *name, Node *node, int gw)
 
     if(!node)
 	return OK;
-    
+
     n = inet_to_ftn(rfc->addr);
     if(!n)
     {
@@ -422,7 +420,7 @@ int rfc_parse(RFCAddr *rfc, char *name, Node *node, int gw)
 	if(asc_to_node(rfc->addr, &nn, FALSE) == OK)
 	    n = &nn;
     }
-    
+
     if(n)
     {
 	*node = *n;
@@ -471,7 +469,7 @@ int rfc_parse(RFCAddr *rfc, char *name, Node *node, int gw)
 		       znfp1(n), n->zone);
 	    ret = ERROR;
 	}
-	
+
     }
     else if(gw && cf_gateway().zone)
     {
@@ -482,7 +480,7 @@ int rfc_parse(RFCAddr *rfc, char *name, Node *node, int gw)
 	*node = cf_gateway();
 	if(name)
 	    str_copy(name, MSG_MAXNAME, "UUCP");
-	
+
 	ret = OK;
     }
     else
@@ -509,7 +507,7 @@ void cvt_user_name(char *s)
 {
     int c, convert_flag, us_flag;
     char *t;
-    
+
     /*
      * If name contains one or more percent character it's rfc address.
      * So convert last '%' into '@' and don't make other changes.
@@ -527,7 +525,7 @@ void cvt_user_name(char *s)
      */
     convert_flag = isupper(*s) ? -1 : 1;
     us_flag      = strchr(s, '_') || strchr(s, ' ') || strchr(s, '@');
-    
+
     for(; *s; s++)
     {
 	c = *s;
@@ -568,7 +566,7 @@ char *receiver(char *to, Node *node)
 {
     static char name[MSG_MAXNAME];
     Alias *alias;
-    
+
     /*
      * Check for name alias
      */
@@ -584,10 +582,10 @@ char *receiver(char *to, Node *node)
 	 * message to the point specified in ALIASES, if the message
 	 * addressed to node without point address.  */
 	*node = alias->node;
-	
+
 	return name;
     }
-    
+
     /*
      * Alias not found. Return the the original receiver processed by
      * convert_user_name().
@@ -601,7 +599,7 @@ char *receiver(char *to, Node *node)
      */
     if(!stricmp(name, "postmaster"))
 	BUF_COPY(name, "Sysop");
-    
+
     debug(5, "No alias found: return %s", name);
 
     return name;
@@ -618,7 +616,7 @@ char *mail_receiver(RFCAddr *rfc, Node *node)
     char *to;
     char name[MSG_MAXNAME];
     RFCAddr h;
-    
+
     if(rfc->user[0])
     {
 	/*
@@ -638,7 +636,7 @@ char *mail_receiver(RFCAddr *rfc, Node *node)
 	 */
 	*node = cf_n_uplink();
 	BUF_COPY(name, "All");
-    
+
 	/*
 	 * User-defined header line X-Comment-To for gateway software
 	 * (can be patched into news reader)
@@ -758,7 +756,7 @@ char *mail_sender(RFCAddr *rfc, Node *node)
      */
     if(!rfc->real[0])
 	cvt_user_name(name);
-    
+
     return name;
 }
 
@@ -771,10 +769,10 @@ int check_downlinks(char *area)
 {
     AreasBBS *a;
     int n;
-    
+
     if( (a = areasbbs_lookup(area)) == NULL )
 	return ERROR;
-    
+
     n = a->nodes.size;
     debug(5, "area %s, LON size %d", area, n);
     if( a->nodes.first && node_eq(&a->nodes.first->node, cf_addr()) )
@@ -783,7 +781,7 @@ int check_downlinks(char *area)
 	n--;
 	debug(5, "     # downlinks is %d", n);
     }
-    
+
     return n;
 }
 
@@ -812,7 +810,7 @@ int snd_mail(RFCAddr rfc_to, long size)
     node_clear(&node_from);
     node_clear(&node_to);
     tl_init(&tl);
-    
+
     if(rfc_to.user[0])
 	debug(3, "RFC To:       %s", s_rfcaddr_to_asc(&rfc_to, TRUE));
 
@@ -836,7 +834,7 @@ int snd_mail(RFCAddr rfc_to, long size)
      */
     rfcaddr_init(&rfc_from);
     rfc_from = rfc_sender();
-    
+
     /*
      * To name/node
      */
@@ -860,7 +858,7 @@ int snd_mail(RFCAddr rfc_to, long size)
      */
     p = mail_sender(&rfc_from, &node_from);
     BUF_COPY(msg.name_from, p);
-	
+
 
     /*
      * Date
@@ -875,7 +873,7 @@ int snd_mail(RFCAddr rfc_to, long size)
     flags = header_get("X-Flags");
     if(flags)
 	str_lower(flags);
-    
+
     if(private)
     {
 	/* Check message size limit */
@@ -890,17 +888,17 @@ int snd_mail(RFCAddr rfc_to, long size)
 		     s_rfcaddr_to_asc(&rfc_to, TRUE), size, limitsize      );
 	    TMPS_RETURN(EX_UNAVAILABLE);
 	}
-	
+
 	msg.attr |= MSG_PRIVATE;
 
 	from_is_local = addr_is_local( s_header_getcomplete("From") );
 
-	if(x_flags_policy > 0) 
+	if(x_flags_policy > 0)
 	{
 	    char *hf = s_header_getcomplete("From");
 	    char *hr = s_header_getcomplete("Reply-To");
-		
-	    if(x_flags_policy == 1) 
+
+	    if(x_flags_policy == 1)
 	    {
 		/* Allow only local users to use the X-Flags header */
 		if(from_is_local && header_hops() <= 1)
@@ -916,7 +914,7 @@ int snd_mail(RFCAddr rfc_to, long size)
 	    /* Let's at least log what's going on ... */
 	    if(flags)
 		fglog("X-Flags: %s, From: %s", flags, hf ? hf : "<>");
-	    
+
 	    p = flags;
 	    if(p)
 	    {
@@ -956,8 +954,8 @@ int snd_mail(RFCAddr rfc_to, long size)
 		fglog("FORBIDDEN X-Flags: %s, From: %s", flags, hf ? hf : "<>");
 	    flags = NULL;
 	}
-	
-	
+
+
 	/*
 	 * Return-Receipt-To -> RRREQ flag
 	 */
@@ -965,7 +963,7 @@ int snd_mail(RFCAddr rfc_to, long size)
 	   (p = header_get("Return-Receipt-To")) )
 	    msg.attr |= MSG_RRREQ;
     }
-    
+
     if(newsmode)
     {
 	Area *pa;
@@ -1009,7 +1007,7 @@ int snd_mail(RFCAddr rfc_to, long size)
 	    else
 	    {
 		AreasBBS *ab;
-		
+
 		ab = areasbbs_lookup(pa->area);
 		if(ab)
 		{
@@ -1030,7 +1028,7 @@ int snd_mail(RFCAddr rfc_to, long size)
 		    else
 			pa->addr = ab->addr;
 		}
-		
+
 		/* Set address or zone aka for this area */
 		debug(5, "Found: %s %s Zone=%d Addr=%s",
 		      pa->area, pa->group, pa->zone, znfp1(&pa->addr) );
@@ -1355,18 +1353,18 @@ int snd_message(Message *msg, Area *parea,
 		return EX_CANTCREAT;
 	}
     }
-    
+
     last_zone = cf_zone();
 
     /* Decode and recode (charset) the body */
     if(mime_body_dec(&body, cs_out) != OK)
 	return ERROR;
-    
+
     /*
      * Compute number of split messages if any
      */
     maxsize = parea ? parea->maxsize : areas_get_maxmsgsize();
- 
+
     if(maxsize > 0)
     {
 	split = 1;
@@ -1385,14 +1383,14 @@ int snd_message(Message *msg, Area *parea,
 
 	if(split == 1)
 	    split = 0;
-	
+
 	if(split)
 	    debug(5, "Must split message: size=%ld max=%ld parts=%d",
 		  size, maxsize, split);
     }
     else
 	split = 0;
-    
+
 again:
 
     pt = xlat_s(subj, NULL);
@@ -1454,7 +1452,7 @@ again:
 #endif /* MAXMSGHEADRLEN */
 	    BUF_COPY(msg->name_from, pt);
     }
-    
+
 
     /* Header */
     nmsg++;
@@ -1493,7 +1491,7 @@ again:
     }
     else
 	print_local_msgid(sf, node_from);
-	
+
     if((header = s_header_getcomplete("References")) ||
        (header = s_header_getcomplete("In-Reply-To")))
     {
@@ -1536,7 +1534,7 @@ again:
 	/*
 	 * Generate ^AFLAGS KFS
 	 * Indicates that FrontDoor deletes the file-attach,
-	 * after it has been sent. 
+	 * after it has been sent.
 	 */
 	fprintf(sf, "\001FLAGS KFS\r\n");
     }
@@ -1581,7 +1579,7 @@ again:
 
     if(x_from_kludge)
 	fprintf( sf, "\001X-From: %s\r\n", s_rfcaddr_to_asc(&rfc_from, TRUE));
-	
+
     /* Misc kludges */
     p3 = NULL;
     for( p2 = header_geth("X-FTN-Kludge", TRUE);
@@ -1602,10 +1600,10 @@ again:
 	fprintf( sf, "\001PID: %s\r\n", header );
     fprintf( sf, "\001TID: FIDOGATE-%s\r\n", version_global());
 #endif  /* PID_READER_TID_GTV */
-    
+
     add_empty = FALSE;
 
-    
+
     /***** Text header*******************************************************/
 
     /*
@@ -1683,16 +1681,16 @@ again:
 	if(split)
 	{
 	    char buf[20];
-	    
+
 	    if(part == 1)
 	    {
 		time_split = time(NULL);
 		seq        = sequencer(cf_p_seq_split()) % 100000;/* Max. 5 digits */
 	    }
-	    
+
 	    str_printf(buf, sizeof(buf),
 		       "%d/%d", cf_addr()->net, cf_addr()->node);
-	    
+
 	    fprintf(sf,
 		    "\001SPLIT: %-18s @@%-11.11s %-5ld %02d/%02d +++++++++++\r\n",
 		    date(DATE_SPLIT, &time_split), buf, seq, part, split);
@@ -1778,7 +1776,7 @@ again:
     if(newsmode)
     {
 	char *origin;
-	
+
 	if(parea && parea->origin)
 	    origin = parea->origin;
 	else if(use_organization_for_origin && organization)
@@ -1951,7 +1949,7 @@ int print_origin(FILE *fp, char *origin, Node *node_from)
     {
 	fprintf(fp, "\001PATH: %d/%d\r\n", cf_addr()->net, cf_addr()->node);
     }
-    
+
     return ferror(fp);
 }
 
@@ -2008,7 +2006,7 @@ int snd_to_cc_bcc(long int size)
     char *header, *p;
     int status=EX_OK, st;
     RFCAddr rfc_to;
-    
+
     /*
      * To:
      */
@@ -2068,7 +2066,7 @@ void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
 	    version_global(), PROGRAM, version_local(VERSION) );
-    
+
     fprintf(stderr, "usage:   %s [-options] [user ...]\n\n", PROGRAM);
     fprintf(stderr, "\
 options: -b --news-batch              process news batch\n\
@@ -2112,7 +2110,7 @@ int main(int argc, char **argv)
     char article[MAXPATH];
     long pos;
     char posfile[MAXPATH];
-    
+
     int option_index;
     static struct option long_options[] =
 	{
@@ -2138,13 +2136,13 @@ int main(int argc, char **argv)
 	};
 
     log_program(PROGRAM);
-    
+
     /* Init configuration */
     cf_initialize();
-    
+
     newsmode = FALSE;
 
-    
+
 
     while ((c = getopt_long(argc, argv, "bB:f:o:m:niO:w:Wtvhc:a:u:",
 			    long_options, &option_index     )) != EOF)
@@ -2195,7 +2193,7 @@ int main(int argc, char **argv)
 	case 't':
 	    t_flag = TRUE;
 	    break;
-	    
+
 	    /***** Common options *****/
 	case 'v':
 	    verbose++;
@@ -2265,7 +2263,7 @@ int main(int argc, char **argv)
     if( (p = cf_get_string("MaxMsgSize", TRUE)) )
     {
 	long sz;
-	
+
 	sz = atol(p);
 	if(sz <= 0)
 	    fglog("WARNING: illegal MaxMsgSize value %s", p);
@@ -2275,7 +2273,7 @@ int main(int argc, char **argv)
     if( (p = cf_get_string("LimitMsgSize", TRUE)) )
     {
 	long sz;
-	
+
 	sz = atol(p);
 	if(sz <= 0)
 	    fglog("WARNING: illegal LimitMsgSize value %s", p);
@@ -2298,7 +2296,7 @@ int main(int argc, char **argv)
     }
     if( (p = cf_get_string("XFlagsPolicy", TRUE)) )
     {
-	switch(*p) 
+	switch(*p)
 	{
 	case 'n': case 'N': case '0':
 	    x_flags_policy = 0;			/* No X-Flags */
@@ -2320,7 +2318,7 @@ int main(int argc, char **argv)
     {
 	int m = 0;
 
-	switch(*p) 
+	switch(*p)
 	{
 	case '(': case 'p': case '0':
 	    m = 0;				/* user@@do.main (Real Name) */
@@ -2440,11 +2438,11 @@ int main(int argc, char **argv)
 #ifdef MSDOS
     /* ??? */
 #endif
-    
+
     /**
      ** Main loop: read message(s), batches if -b, list if -f
      **/
-    if(f_flag)  
+    if(f_flag)
     {
 	debug(3, "processing article list %s", f_flag);
 	if( ! (fp = fopen_expand_name(f_flag, R_MODE, TRUE)) )
@@ -2465,12 +2463,12 @@ int main(int argc, char **argv)
 		      pos, f_flag);
 	}
     }
-    
+
     nmsg = 0;
     while(TRUE)
     {
 	fpart = stdin;
-	
+
 	/* File with list of new articles */
 	if(f_flag)
 	{
@@ -2484,7 +2482,7 @@ int main(int argc, char **argv)
 		fprintf(fppos, "%ld\n", pos);
 		fclose(fppos);
 	    }
-	    
+
 	    /* Get next article file */
 	    if(! fgets(buffer, sizeof(buffer), fp) )
 		break;
@@ -2517,7 +2515,7 @@ int main(int argc, char **argv)
 		break;
 	    debug(3, "Batch: message #%ld size %ld", nmsg, size);
 	}
-	
+
 	/* Read message header from fpart */
 	header_delete();
 	/* read and decode mime */
@@ -2526,7 +2524,7 @@ int main(int argc, char **argv)
 	/* Get Organization header */
 	if(use_organization_for_origin)
 	    organization = s_header_getcomplete("Organization");
-	
+
 	/*
 	 * Read message body from fpart and count size
 	 */
@@ -2541,7 +2539,7 @@ int main(int argc, char **argv)
 	    fclose(fpart);
 
 	rfcaddr_init(&rfc_to);
-	
+
 	if(newsmode)
 	{
 	    /* Send mail to echo feed for news messages */
@@ -2566,7 +2564,7 @@ int main(int argc, char **argv)
 		    tmps_freeall();
 		}
 	    }
-	
+
 	if(!b_flag && !f_flag)
 	    break;
     }
@@ -2580,7 +2578,7 @@ int main(int argc, char **argv)
 	debug(3, "Removing position file %s", posfile);
 	unlink(posfile);
     }
-    
+
     exit_free();
     return status;
 }
