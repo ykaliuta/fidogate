@@ -38,6 +38,7 @@
  * DotNames option from config file: User.Name instead of User_Name
  */
 static int dot_names = FALSE;
+static char *fallback_username;
 
 void rfcaddr_dot_names(void)
 {
@@ -57,7 +58,10 @@ void rfcaddr_mode(int m)
     addr_mode = m;
 }
 
-
+void rfcaddr_fallback_username(char *name)
+{
+    fallback_username = name;
+}
 
 /*
  * rfcaddr_from_ftn() --- Generate RFCAddr struct from FTN name and node
@@ -90,14 +94,21 @@ RFCAddr rfcaddr_from_ftn(char *name, Node *node)
 	else
 	    str_ftn_to_inet(rfc.addr, sizeof(rfc.addr), node, FALSE);
 
+    /* RFC name part must be 7 bit only */
+    if (!charset_is_7bit(name, strlen(name)) && fallback_username) {
+	strncpy(rfc.user, fallback_username, sizeof(rfc.user) - 1);
+	rfc.user[sizeof(rfc.user) - 1] = '\0';
+	goto skip_name_check;
+    }
+
     /*
-     * Translate special chars >= 0x80 and removed ctrl chars
+     * Translate special chars and removed ctrl chars
      */
-    for(i=0; *name && i<MAXUSERNAME-1; )
+    for(i=0, p = name; *p && i<MAXUSERNAME-1; )
     {
-	c = (unsigned char)(*name++);
+	c = (unsigned char)(*p++);
 	if (c < ' ')
-	    continue;
+	    c = '_';
 	buf[i++] = c;
     }
     buf[i] = 0;
@@ -127,6 +138,8 @@ RFCAddr rfcaddr_from_ftn(char *name, Node *node)
 	rfc.user[i++] = '\"';			/* " makes C-mode happy */
     rfc.user[i] = 0;
 
+skip_name_check:
+
 #ifdef LOCAL_FTN_ADDRESSES
     if( ! hosts_lookup(node, NULL) )
 	/* Add "%p.f.n.z" to user name */
@@ -134,18 +147,17 @@ RFCAddr rfcaddr_from_ftn(char *name, Node *node)
 #endif
 
     /*
-     * Copy name to real name field, removing addressing after `@' or `%'
+     * Copy ftn name to real name field
      */
     i = 0;
-    for(p=buf; i<MAXUSERNAME-1 && *p && *p!='@' && *p!='%'; p++)
+    for(p = name; i < (sizeof(rfc.real) - 1) && *p; p++)
 	if(!strchr(NOT_ALLOWED_FULLNAME, *p))
 	    rfc.real[i++] = *p;
     rfc.real[i] = 0;
-    for(i=strlen(rfc.real)-1; i>=0; i++)	/* Remove trailing spaces */
-	if(rfc.real[i] == ' ')
-	    rfc.real[i] = 0;
-	else
-	    break;
+
+    /* Remove trailing spaces */
+    for (;i >= 0 && rfc.real[i] == ' '; i--)
+	rfc.real[i] = '\0';
 
     return rfc;
 }

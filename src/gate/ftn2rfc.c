@@ -1987,6 +1987,10 @@ int main(int argc, char **argv)
     {
 	rfcaddr_dot_names();
     }
+    if ((p = cf_get_string("FallbackUsername", TRUE)) != NULL)
+    {
+	rfcaddr_fallback_username(p);
+    }
     if( (p = cf_get_string("X-FTN", TRUE)) )
     {
 	while(*p)

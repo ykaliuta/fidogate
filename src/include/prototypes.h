@@ -561,6 +561,7 @@ void	rfcaddr_mode		(int);
 RFCAddr	rfcaddr_from_ftn	(char *, Node *);
 RFCAddr	rfcaddr_from_rfc	(char *);
 char   *s_rfcaddr_to_asc	(RFCAddr *, int);
+void    rfcaddr_fallback_username(char *);
 
 /* rfcheader.c */
 Textlist* header_get_list	(void);
