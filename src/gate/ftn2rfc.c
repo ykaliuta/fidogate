@@ -1586,10 +1586,10 @@ carbon:
 	{
 	    if(x_ftn_f)
 		tl_appendf(&theader, "X-FTN-From: %s @ %s\n",
-			   addr_from.real, znfp1(&msg.node_orig));
+			   msg.name_from, znfp1(&msg.node_orig));
 	    if(x_ftn_t)
 		tl_appendf(&theader, "X-FTN-To: %s @ %s\n",
-			   addr_to.real, znfp1(&msg.node_to));
+			   msg.name_to, znfp1(&msg.node_to));
 	    if(x_ftn_F)
 	    {
 		BUF_COPY(buffer, "");
@@ -1614,7 +1614,7 @@ carbon:
 	{
 	    if(x_ftn_f)
 		tl_appendf(&theader, "X-FTN-From: %s @ %s\n",
-			   addr_from.real, znfp1(&msg.node_orig));
+			   msg.name_from, znfp1(&msg.node_orig));
 	    if(x_ftn_F)
 	    {
 		BUF_COPY(buffer, "");
