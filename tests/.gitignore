@@ -1,2 +1,14 @@
 !gate/Makefile
 !common/Makefile
+*.log
+*.trs
+gate/testroot/log
+gate/testroot/outrfc_news
+gate/testroot/seq
+cmp-pkt
+test_charset
+test_config
+test_log
+test_mime
+test_packet
+test_rfc2ftn
