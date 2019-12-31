@@ -2047,6 +2047,18 @@ int snd_to_cc_bcc(long int size)
     return status;
 }
 
+static void set_newsmode(void)
+{
+    private = FALSE;
+    newsmode = TRUE;
+}
+
+static void set_mailmode(void)
+{
+    private = TRUE;
+    newsmode = FALSE;
+}
+
 /*
  * wrapper to read the header and decode mime
  */
@@ -2114,6 +2126,7 @@ int main(int argc, char **argv)
     char article[MAXPATH];
     long pos;
     char posfile[MAXPATH];
+    int n_flag = FALSE;
 
     int option_index;
     static struct option long_options[] =
@@ -2144,10 +2157,6 @@ int main(int argc, char **argv)
     /* Init configuration */
     cf_initialize();
 
-    newsmode = FALSE;
-
-
-
     while ((c = getopt_long(argc, argv, "bB:f:o:m:niO:w:Wtvhc:a:u:",
 			    long_options, &option_index     )) != EOF)
 	switch (c)
@@ -2156,8 +2165,6 @@ int main(int argc, char **argv)
 	case 'b':
 	    /* News batch flag */
 	    b_flag   = TRUE;
-	    newsmode = TRUE;
-	    private  = FALSE;
 	    break;
 	case 'B':
 	    B_flag = optarg;
@@ -2165,8 +2172,6 @@ int main(int argc, char **argv)
 	case 'f':
 	    /* Use list of news articles in file */
 	    f_flag = optarg;
-	    newsmode = TRUE;
-	    private  = FALSE;
 	    break;
 	case 'o':
 	    /* Set packet file name */
@@ -2177,8 +2182,7 @@ int main(int argc, char **argv)
 	    break;
 	case 'n':
 	    /* Set news-mode */
-	    newsmode = TRUE;
-	    private  = FALSE;
+	    n_flag = TRUE;
 	    break;
 	case 'i':
 	    /* Don't bounce unknown hosts */
@@ -2338,19 +2342,16 @@ int main(int argc, char **argv)
     {
 	replyaddr_ifmail_tx = TRUE;
     }
-    if(newsmode && cf_get_string("CheckAreasBBS", TRUE))
+    if(cf_get_string("CheckAreasBBS", TRUE))
     {
 	check_areas_bbs = TRUE;
     }
-    if(check_areas_bbs || newsmode)
+    areas_bbs = cf_get_string("AreasBBS", TRUE);
+    if (areas_bbs == NULL)
     {
-	areas_bbs = cf_get_string("AreasBBS", TRUE);
-	if (areas_bbs == NULL)
-	{
-	    fprintf(stderr, "%s: no areas.bbs specified\n", PROGRAM);
-	    exit_free();
-	    return EX_USAGE;
-	}
+	fprintf(stderr, "%s: no areas.bbs specified\n", PROGRAM);
+	exit_free();
+	return EX_USAGE;
     }
     if(cf_get_string("UseXHeaderForTearline", TRUE))
     {
@@ -2409,25 +2410,13 @@ int main(int argc, char **argv)
     }
 
     /*
-     * Process local options
-     */
-    if(newsmode)
-	pkt_outdir(cf_p_outpkt_news(), NULL);
-    else
-	pkt_outdir(cf_p_outpkt_mail(), NULL);
-    if(O_flag)
-	pkt_outdir(O_flag, NULL);
-
-    /*
      * Init various modules
      */
-    if(newsmode)
-	areas_init();
+    areas_init();
     hosts_init();
     alias_init();
     passwd_init();
-    if(check_areas_bbs || newsmode)
-	areasbbs_init(areas_bbs);
+    areasbbs_init(areas_bbs);
     acl_init();
     charset_init();
 #ifdef HAS_POSIX_REGEX
@@ -2530,6 +2519,33 @@ int main(int argc, char **argv)
 	    organization = s_header_getcomplete("Organization");
 
 	/*
+	 * Work in news mode if forced by switches
+	 * OR mail mode not forced (with -f switch) and it's an
+	 * article
+	 */
+	if (b_flag || f_flag || n_flag
+	    ||
+	    ((header_geth("Newsgroups", TRUE) != NULL) && !t_flag))
+	{
+	    set_newsmode();
+
+	}
+	else
+	{
+	    set_mailmode();
+	}
+
+	/*
+	 * Process local options
+	 */
+	if(newsmode)
+	    pkt_outdir(cf_p_outpkt_news(), NULL);
+	else
+	    pkt_outdir(cf_p_outpkt_mail(), NULL);
+	if(O_flag)
+	    pkt_outdir(O_flag, NULL);
+
+	/*
 	 * Read message body from fpart and count size
 	 */
 	size = 0;
@@ -2551,7 +2567,7 @@ int main(int argc, char **argv)
 	    tmps_freeall();
 	}
 	else
-	    if(t_flag)
+	    if(t_flag || optind >= argc) /* flag or no arguments */
 	    {
 		/* Send mail to addresses from headers */
 		status = snd_to_cc_bcc(size);
