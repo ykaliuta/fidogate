@@ -57,12 +57,14 @@ static void packet_free(struct packet *pkt)
     } while(0);
 
 #define STRING_CMP(val_name) do {				\
-	if ((h1->val_name == NULL) != (h2->val_name == NULL))	\
-	    ret = 1;						\
-	if (h1->val_name == NULL)				\
-	    break;						\
-	if (strcmp(h1->val_name, h2->val_name) != 0)	\
-	    OUT(val_name);				\
+    if ((h1->val_name == NULL) != (h2->val_name == NULL)) {	\
+	ret = 1;						\
+	break;							\
+    }								\
+    if (h1->val_name == NULL)					\
+	break;							\
+    if (strcmp(h1->val_name, h2->val_name) != 0)		\
+	OUT(val_name);						\
     } while(0);
 
 #define TL_CMP(val_name) do {						\
