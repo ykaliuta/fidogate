@@ -134,7 +134,8 @@ static int message_body_cmp(struct message *m1, struct message *m2)
     STRING_CMP(origin);
     TL_CMP(seenby);
     TL_CMP(path);
-    TL_CMP(via);
+    /* skip via, contains time */
+    /* TL_CMP(via); */
 
     return ret;
 }
