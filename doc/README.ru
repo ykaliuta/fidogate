@@ -1126,6 +1126,9 @@ AddressIsLocalForXPost  *[@.]vsu.ru,*[@.]f8.n5025.z2.fidonet.org
 # Генерировать `User.Name@do.main' вместо `User_Name@do.main'.
 #DotNames
 
+# Использовать указанное имя вместо User.Name/User_Name если оно не 7 бит
+FallbackUsername sysop
+
 # Не гейтовать сообщения с неизвестной зоной в `^AMSGID' (известные нам зоны
 # определяются в fidogate.conf опциями Zone).
 #KillUnknownMSGIDZone
