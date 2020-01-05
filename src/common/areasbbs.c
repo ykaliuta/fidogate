@@ -488,7 +488,7 @@ int areasbbs_rewrite(void)
      * Write new one as AREAS.NEW
      */
     BUF_COPY(new, buffer);
-    BUF_COPY(new+ovwr, "new");
+    str_copy(new+ovwr, sizeof(new) - ovwr, "new");
     debug(4, "Writing %s", new);
 
     if( (fp = fopen(new, W_MODE)) == NULL )
@@ -531,9 +531,9 @@ int areasbbs_rewrite(void)
      * Rename AREAS.BBS -> AREAS.O01
      */
     BUF_COPY(old, buffer);
-    BUF_COPY(old+ovwr, "bbs");
+    str_copy(old+ovwr, sizeof(old) - ovwr, "bbs");
     BUF_COPY(new, buffer);
-    BUF_COPY(new+ovwr, "o01");
+    str_copy(new+ovwr, sizeof(new) - ovwr, "o01");
     debug(4, "Renaming %s -> %s", old, new);
     rename(old, new);
 
@@ -541,9 +541,9 @@ int areasbbs_rewrite(void)
      * Rename AREAS.NEW -> AREAS.BBS
      */
     BUF_COPY(old, buffer);
-    BUF_COPY(old+ovwr, "new");
+    str_copy(old+ovwr, sizeof(old) - ovwr, "new");
     BUF_COPY(new, buffer);
-    BUF_COPY(new+ovwr, "bbs");
+    str_copy(new+ovwr, sizeof(new) - ovwr, "bbs");
     debug(4, "Renaming %s -> %s", old, new);
     rename(old, new);
 
