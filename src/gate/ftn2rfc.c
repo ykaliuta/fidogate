@@ -1594,7 +1594,7 @@ carbon:
 	    {
 		BUF_COPY(buffer, "");
 		if(msg.attr & MSG_CRASH)
-		    BUF_APPEND(buffer,"óra ");
+		    BUF_APPEND(buffer,"Cra ");
 		if(msg.attr & MSG_PRIVATE)
 		    BUF_APPEND(buffer,"Prv ");
 		if(msg.attr & MSG_HOLD)
@@ -1619,7 +1619,7 @@ carbon:
 	    {
 		BUF_COPY(buffer, "");
 		if(msg.attr & MSG_CRASH)
-		    BUF_APPEND(buffer,"óra ");
+		    BUF_APPEND(buffer,"Cra ");
 		if(msg.attr & MSG_PRIVATE)
 		    BUF_APPEND(buffer,"Prv ");
 		if(msg.attr & MSG_HOLD)
