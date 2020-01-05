@@ -21,7 +21,9 @@ static const char errno_log_msg[]  = "$some log";
 static char config_file[] = "mocked_file";
 static char config_stdout[] = "stdout";
 
+#if defined(HAVE_SYSLOG) && defined(HAVE_SYSLOG_H)
 static int syslog_debug_level = -1;
+#endif
 
 static FILE *dummy_fp = (FILE *)0x12345678;
 

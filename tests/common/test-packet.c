@@ -5,6 +5,7 @@
  *  March 06, 2016 Yauheni Kaliuta
  *
  */
+#include "fidogate.h"
 #include <cgreen/cgreen.h>
 #include <stdio.h>
 
