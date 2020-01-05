@@ -2,8 +2,6 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway software UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: version.h,v 5.4 2006/05/18 18:35:08 anray Exp $
- *
  * Global version number, patch level
  *****************************************************************************/
 
@@ -12,7 +10,7 @@
 
 #include <config.h>
 #define VERSION_MAJOR	5
-#define VERSION_MINOR	5
+#define VERSION_MINOR	6
 
 #ifdef GIT_HASH_STR
 #define EXTRAVERSION	"-g" GIT_HASH_STR
