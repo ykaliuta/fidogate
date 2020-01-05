@@ -23,7 +23,6 @@ configure_options := \
 	--enable-af-ansok \
 	--enable-afses \
 	--enable-pid2rd-tid2gtv \
-	--enable-sep-pkt \
 	--enable-best-aka \
 	--with-inndir=/usr/lib/news \
 	--with-innetcdir=/etc/news \

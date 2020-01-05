@@ -39,7 +39,6 @@ FIDOGATE Version 5
 	--enable-af-ansok \
 	--enable-afses \
 	--enable-pid2rd-tid2gtv \
-	--enable-sep-pkt \
 	--enable-best-aka \
 	--with-inndir=/usr \
 	--with-innetcdir=/etc/news \
