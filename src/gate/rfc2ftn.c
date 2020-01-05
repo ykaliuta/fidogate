@@ -122,7 +122,7 @@ static char *netmail_charset_out = NULL;
 static int use_organization_for_origin = FALSE;
 static char *organization = NULL;
 static int echogate_alias = FALSE;
-
+static int single_pkts;
 
 /* Private mail (default) */
 int private = TRUE;
@@ -1312,12 +1312,10 @@ int snd_message(Message *msg, Area *parea,
     /*
      * Open output packet
      */
-#ifndef SEP_RFC2FTN_PKT
-    if( (!o_flag && cf_zone()!=last_zone) ||
-	(maxmsg  && nmsg >= maxmsg)         )
-#else
-    if(pkt_isopen())
-#endif /* !SEP_RFC2FTN_PKT */
+    if (pkt_isopen()
+	&& (single_pkts
+	    || (!o_flag && cf_zone()!=last_zone)
+	    || (maxmsg  && nmsg >= maxmsg)))
     {
 	pkt_close();
 	nmsg = 0;
@@ -2408,6 +2406,7 @@ int main(int argc, char **argv)
     {
 	echogate_alias = TRUE;
     }
+    single_pkts = (cf_get_string("SinglePKTs", TRUE) != NULL);
 
     /*
      * Init various modules

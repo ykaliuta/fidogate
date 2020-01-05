@@ -1,8 +1,8 @@
 dnl Copyright (c) 2003-2008 Andrey Slusar <anrays@gmail.com>
 dnl Copyright (c) 2003-2004 Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
-dnl Copyright (c) 2015-2019 Yauheni Kaliuta <y.kaliuta@gmail.com>
+dnl Copyright (c) 2015-2020 Yauheni Kaliuta <y.kaliuta@gmail.com>
 dnl
-AC_REVISION([Revision: 1026])
+AC_REVISION([Revision: 1027])
 AC_PREREQ(2.53)
 AC_INIT([fidogate],[5.5],[y.kaliuta@gmail.com])
 AC_DISABLE_OPTION_CHECKING
@@ -728,21 +728,6 @@ if test $enable_dnt_netmail = yes; then
     AC_DEFINE(DO_NOT_TOSS_NETMAIL,
               1,
 	      [Disable tosting netmail and set directory for incoming and outgoing pkt's])
-fi
-
-AC_ARG_ENABLE(sep-pkt,
-[  --enable-sep-pkt        separate message to individual pkt (rfc->ftn)],dnl
-   [case "${enableval}" in
-    yes) enable_sep_pkt=yes ;;
-     no) enable_sep_pkt=no ;;
-      *) AC_MSG_ERROR(bad value ${enableval} for --enable-sep-pkt) ;;
-    esac],dnl
-    enable_sep_pkt=no)
-
-if test $enable_sep_pkt = yes; then
-    AC_DEFINE(SEP_RFC2FTN_PKT,
-              1,
-	      [Separate outouing message to individual pkt file])
 fi
 
 AC_ARG_ENABLE(owfl,
