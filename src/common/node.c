@@ -273,13 +273,16 @@ char *node_to_asc_diff(Node *node, Node *oldnode)
 {
     static char buf[MAXINETADDR];
 
+    buf[0] = '\0'; /* for all equal non-point case */
     if(node->zone == oldnode->zone)
     {
 	if(node->net == oldnode->net)
 	{
 	    if(node->node == oldnode->node)
-		str_printf(buf, sizeof(buf), node->point ? ".%d" : "",
-			   node->point                      );
+	    {
+		if (node->point != 0)
+		    str_printf(buf, sizeof(buf), ".%d", node->point);
+	    }
 	    else
 		str_printf(buf, sizeof(buf), node->point ? "%d.%d" : "%d",
 			node->node, node->point              );
