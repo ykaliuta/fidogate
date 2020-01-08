@@ -502,8 +502,8 @@ char *charset_chrs_name(char *s)
 	      name, p);
 	return p;
 
-    case 2:
-	debug(5, "FSC-0054 level 2 charset=%s", name);
+    default:
+	debug(5, "FSC-0054 level %d charset=%s", level, name);
 	return name;
     }
 
