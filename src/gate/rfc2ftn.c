@@ -1209,7 +1209,7 @@ static char *get_charset_from_header(void)
  * Headers are recoded in the beginning to the internal charset.
  */
 static void determine_charsets(Area *parea, char **in, char **out,
-			       char **out_fsc)
+			       char **out_fsc, int *out_level)
 {
     char *cs_in;
     char *cs_out = NULL;
@@ -1246,6 +1246,11 @@ static void determine_charsets(Area *parea, char **in, char **out,
     *in = cs_in;
     *out = cs_out;
     *out_fsc = cs_out_fsc;
+
+    if (stricmp(cs_out, "UTF-8") == 0)
+	*out_level = 4;
+    else
+	*out_level = 2;
 }
 
 int snd_message(Message *msg, Area *parea,
@@ -1285,6 +1290,7 @@ int snd_message(Message *msg, Area *parea,
 #endif
     char *cs_in, *cs_out;		/* Charset in(=RFC), out(=FTN) */
     char *cs_out_fsc;
+    int cs_out_fsc_level;
     char *cs_enc = "8bit"; /* all converted to 8 bit now */
     char *pt;
 
@@ -1306,7 +1312,7 @@ int snd_message(Message *msg, Area *parea,
     if(parea && parea->rfc_lvl!=-1)
 	rfc_level = parea->rfc_lvl;
 
-    determine_charsets(parea, &cs_in, &cs_out, &cs_out_fsc);
+    determine_charsets(parea, &cs_in, &cs_out, &cs_out_fsc, &cs_out_fsc_level);
     charset_set_in_out(cs_in, cs_out);
 
     /*
@@ -1543,7 +1549,7 @@ again:
 
     /* charset */
     if(!no_chrs_kludge)
-	fprintf(sf, "\001CHRS: %s 2\r\n", cs_out_fsc);
+	fprintf(sf, "\001CHRS: %s %d\r\n", cs_out_fsc, cs_out_fsc_level);
 
     if(!x_flags_n)
     {
