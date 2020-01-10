@@ -443,25 +443,39 @@ int pkt_close(void)
 
 
 /*
- * Read null-terminated string from packet file
+ * Read NUL-terminated string from packet file.
+ * If the buffer not big enough put nbytes - 1 to the buffer, make it
+ * NUL-terminated and read the string (move the file pointer) up to
+ * its NUL-terminator.
+ *
+ * Returns the number of read bytes (can be more than @nbytes).
  */
-int pkt_get_string(FILE *fp, char *buf, int nbytes)
+size_t pkt_get_string(FILE *fp, char *buf, size_t nbytes)
 {
     int c, i;
 
     for(i=0; TRUE; i++)
     {
 	c = getc(fp);
+
 	if(c==0 || c==EOF)
 	    break;
-	if(i >= nbytes-1)
-	    break;
-	buf[i] = c;
-    }
-    buf[i] = 0;
-    i++;
 
-    return c!=0 ? ERROR : i;
+	if(i<nbytes-1)
+	{
+	    buf[i] = c;
+	    continue;
+	}
+
+	if(i == nbytes-1)
+	    buf[i] = '\0';
+    }
+
+    if (i<nbytes-1)
+	buf[i] = '\0';
+
+    i += (c!=EOF); /* EOF means the byte was not actually read */
+    return i;
 }
 
 

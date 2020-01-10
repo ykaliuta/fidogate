@@ -506,7 +506,7 @@ char   *pkt_name		(void);
 char   *pkt_tmpname		(void);
 int	pkt_isopen		(void);
 
-int	pkt_get_string		(FILE *, char *, int);
+size_t	pkt_get_string		(FILE *, char *, size_t);
 time_t	pkt_get_date		(FILE *);
 int	pkt_get_msg_hdr		(FILE *, Message *);
 void	pkt_debug_msg_hdr	(FILE *, Message *, char *);
