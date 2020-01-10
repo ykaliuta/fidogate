@@ -2,7 +2,7 @@ dnl Copyright (c) 2003-2008 Andrey Slusar <anrays@gmail.com>
 dnl Copyright (c) 2003-2004 Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 dnl Copyright (c) 2015-2020 Yauheni Kaliuta <y.kaliuta@gmail.com>
 dnl
-AC_REVISION([Revision: 1028])
+AC_REVISION([Revision: 1029])
 AC_PREREQ(2.53)
 AC_INIT([fidogate],[5.6],[y.kaliuta@gmail.com])
 AC_DISABLE_OPTION_CHECKING
@@ -265,15 +265,6 @@ case "$with_group" in
 esac
 ])
 AC_SUBST(GROUP)
-
-AC_ARG_WITH(group, dnl
-  --with-libname=GROUP 	  library file name,
-            [dnl
-case "$with_group" in
-''|news) ;;
-*) group="$withval" ;;
-esac
-])
 
 AC_ARG_WITH(default-mailer,dnl
   [--with-default-mailer=COMMAND default mailer comand],dnl
