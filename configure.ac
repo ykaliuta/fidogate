@@ -2,7 +2,7 @@ dnl Copyright (c) 2003-2008 Andrey Slusar <anrays@gmail.com>
 dnl Copyright (c) 2003-2004 Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 dnl Copyright (c) 2015-2020 Yauheni Kaliuta <y.kaliuta@gmail.com>
 dnl
-AC_REVISION([Revision: 1029])
+AC_REVISION([Revision: 1030])
 AC_PREREQ(2.53)
 AC_INIT([fidogate],[5.6],[y.kaliuta@gmail.com])
 AC_DISABLE_OPTION_CHECKING
@@ -183,7 +183,7 @@ AC_SUBST(netmaildir)
 
 dnl# Check for a --with-newsbindir argument
 AC_ARG_WITH(newsbindir, dnl
-  --with-newsbindir=DIR		set INN bin directory, PATHBIN,
+  --with-newsbindir=DIR		set INN bin directory; PATHBIN,
 	    [dnl
 case "$with_newsbindir" in
 yes) AC_MSG_ERROR([--with-newsbindir requires an argument; use --with-newsbindir=DIR]) ;;
