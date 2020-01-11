@@ -185,27 +185,6 @@ HOSTNAME    = @HOSTNAME@
 DOMAINNAME  = @DOMAINNAME@
 
 ##############################################################################
-
-# The old names back again ... (to be out-phased)
-CONFIGDIR	= $(DEFAULT_V_CONFIGDIR)
-LIBEXECDIR	= $(DEFAULT_V_LIBEXECDIR)
-BINDIR		= $(DEFAULT_V_BINDIR)
-SPOOLDIR	= $(DEFAULT_V_SPOOLDIR)
-LOGDIR		= $(DEFAULT_V_LOGDIR)
-OUTBOUND	= $(DEFAULT_V_BTBASEDIR)
-INBOUND		= $(DEFAULT_V_INBOUND)
-PINBOUND	= $(DEFAULT_V_PINBOUND)
-UUINBOUND	= $(DEFAULT_V_UUINBOUND)
-FTPINBOUND	= $(DEFAULT_V_FTPINBOUND)
-
-NEWSBINDIR	= $(DEFAULT_V_NEWSBINDIR)
-NEWSETCDIR	= $(DEFAULT_F_NEWSETCDIR)
-NEWSVARDIR	= $(DEFAULT_F_NEWSVARDIR)
-NEWSLIBDIR	= $(DEFAULT_F_NEWSLIBDIR)
-NEWSSPOOLDIR	= $(DEFAULT_F_NEWSSPOOLDIR)
-
-
-##############################################################################
 #           S Y S T E M   S P E C I F I C   D E F I N I T I O N S            #
 ##############################################################################
 # GNU m4
