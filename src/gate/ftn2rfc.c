@@ -1388,7 +1388,10 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	    msg.date = time(NULL);
 	}
 
-	tl_appendf(&theader, "Date: %s\n", date(NULL, &msg.date));
+	tl_appendf(&theader, "Date: %s\n",
+		   date_tz(NULL,
+			   &msg.date,
+			   kludge_get(&body.kludge, "TZUTC", NULL)));
 	tl_appendf(&theader, "From: %s\n", from_line);
 
 	if(!reply_to_line && gate_rfc_kludge)

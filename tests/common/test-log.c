@@ -30,7 +30,7 @@ static FILE *dummy_fp = (FILE *)0x12345678;
 #include "test-log-api.c"
 
 /* mocks */
-char *date_buf(char *buf, size_t len, char *fmt, time_t *t)
+char *date_buf(char *buf, size_t len, char *fmt, time_t *t, long tz)
 {
     strncpy(buf, date_const, len);
     buf[len - 1] = '\0';

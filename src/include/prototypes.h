@@ -237,7 +237,8 @@ unsigned long crc32_file	(char *);
 
 /* date.c */
 char   *date			(char *, time_t *);
-char   *date_buf		(char *, size_t, char *, time_t *);
+char   *date_buf		(char *, size_t, char *, time_t *, long);
+char   *date_tz                 (char *, time_t *, char *);
 
 /* dir.c */
 #define DIR_SORTNAME	'n'

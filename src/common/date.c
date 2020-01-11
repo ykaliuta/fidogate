@@ -61,20 +61,51 @@ static char *get_tz_name(struct tm *tm)
 #endif
 }
 
+/* Format date/time with TZ info from ^ATZUTC kludge */
+char *date_tz(char *fmt, time_t *t, char *tz_str)
+{
+    static char buf[128];
+    long tz = -1;
+    unsigned hours;
+    unsigned mins;
+    int mult = 1; /* or -1 */
+    int rc;
 
+    if (tz_str == NULL)
+	goto out;
+
+    if (tz_str[0] == '+') { /* should not be */
+	tz_str++;
+    } else if (tz_str[0] == '-') {
+	mult = -1;
+	tz_str++;
+    }
+
+    rc = sscanf(tz_str, "%02u%02u", &hours, &mins);
+    if (rc != 2) {
+	fglog("WARNING: could not parse TZUTC: %s", tz_str);
+	goto out;
+    }
+
+    /*
+     * minus since TIMEINFO keeps difference = UTC - local,
+     * while local = UTC + TZUTC => TZUTC = local - UTC
+     */
+    tz = - mult * (hours * 60 + mins);
+out:
+    return date_buf(buf, sizeof(buf), fmt, t, tz);
+}
 
 /*
  * Format date/time according to strftime() format string
  */
 char *date(char *fmt, time_t *t)
 {
-    static char buf[128];
-
-    return date_buf(buf, sizeof(buf), fmt, t);
+    return date_tz(fmt, t, NULL);
 }
 
-
-char *date_buf(char *buf, size_t len, char *fmt, time_t *t)
+/* @tz in minutes */
+char *date_buf(char *buf, size_t len, char *fmt, time_t *t, long tz)
 {
     TIMEINFO ti;
     struct tm *tm;
@@ -107,6 +138,9 @@ char *date_buf(char *buf, size_t len, char *fmt, time_t *t)
     tm = localtime(&ti.time);
     if(tm->tm_isdst)
 	ti.tzone -= DST_OFFSET * 60;
+
+    if(tz != -1)
+	ti.tzone = tz;
 
     /* Default format string */
     if(!fmt)

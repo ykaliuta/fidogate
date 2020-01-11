@@ -286,7 +286,7 @@ static void log_print(FILE *stream, char *name, int err,
     char buf[32];
 
     fprintf(stream, "%s %s ",
-	    date_buf(buf, sizeof(buf), DATE_LOG, NULL), name);
+	    date_buf(buf, sizeof(buf), DATE_LOG, NULL, -1), name);
     vfprintf(stream, *fmt == '$' ? fmt + 1 : fmt, args);
     if (*fmt == '$')
 	fprintf(stream, " (errno=%d: %s)",
