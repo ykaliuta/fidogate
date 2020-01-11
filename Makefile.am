@@ -74,7 +74,6 @@ EXTRA_DIST += debian/copyright \
             debian/fidogate-postfix.install \
             debian/fidogate-postfix.dirs \
             debian/fidogate.postrm \
-            debian/patches/02inbound.dpatch \
             debian/patches/series \
             debian/source/format \
             debian/fidogate.postinst \
