@@ -1602,7 +1602,7 @@ again:
     }
     p3 = xlat_s(NULL, p3);
     if(tzutc_kludge)
-        fprintf( sf, "\001TZUTC: %s\r\n", date("%O", NULL));
+        fprintf( sf, "\001TZUTC: %s\r\n", date("%N", NULL));
 #ifdef PID_READER_TID_GTV
     if( (header = s_header_getcomplete("User-Agent")) )
 	fprintf( sf, "\001PID: %s\r\n", header );
