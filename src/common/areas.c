@@ -314,9 +314,9 @@ Area *areas_lookup(char *area, char *group, Node *aka)
      */
     for(p=area_list; p; p=p->next)
     {
-	if(area)
+	if(area && (!aka || node_eq(&p->addr, aka)))
 	{
-	    if(p->flags & AREA_HIERARCHY && (!aka || node_eq(&p->addr, aka)))
+	    if(p->flags & AREA_HIERARCHY)
 	    {
 		if( 0 == strlen( p->area ) || !strnicmp(area, p->area, strlen(p->area)))
 		    return p->flags & AREA_NO ? NULL
@@ -324,7 +324,7 @@ Area *areas_lookup(char *area, char *group, Node *aka)
 	    }
 	    else
 	    {
-		if(!stricmp(area,  p->area ) && (!aka || !node_eq(&p->addr, aka)))
+		if(!stricmp(area,  p->area ))
 		    return p->flags & AREA_NO ? NULL : p;
 	    }
 	}
