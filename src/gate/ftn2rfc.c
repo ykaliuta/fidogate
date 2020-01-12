@@ -1381,8 +1381,8 @@ int unpack(FILE *pkt_file, Packet *pkt)
 			   news_path_tail                         );
 	}
 
-	/* Common header */
-	if(msg.date > time(NULL))
+	/* not greater than time with possible timezone */
+	if(msg.date > (time(NULL) + (24 * 60 * 60)))
 	{
 	    tl_appendf(&theader, "X-Original-Date: %s\n", date(NULL, &msg.date));
 	    msg.date = time(NULL);
