@@ -55,7 +55,5 @@ override_dh_auto_install:
 			$(BUILDROOT)/etc/postfix/master.cf-$(PACKAGE)
 	install -m 644 doc/mailer/postfix/transport \
 			$(BUILDROOT)/etc/postfix/transport-$(PACKAGE)
-	install -m 644 src/charset/charset.bin \
-		$(BUILDROOT)/usr/lib/fidogate
 %:
 	dh $@ 
