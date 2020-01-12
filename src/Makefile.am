@@ -101,30 +101,11 @@ install_hooks 			+= areafix_install
 areafix-install:
 	chmod 4755 $(DESTDIR)$(libexecdir)/ftnafmail$(EXEEXT)
 
-########## charset
-
-CHARSET_GENERATED	= charset/charset.bin
-libexec_PROGRAMS	+= charset/charsetc
-libexec_SCRIPTS		= $(CHARSET_GENERATED)
-CLEANFILES		+= $(CHARSET_GENERATED)
-
-EXTRA_DIST		+= $(CHARSET_GENERATED) \
-			   charset/charset.map \
-			   charset/cyrillic.map
-
-$(CHARSET_GENERATED): charset/charsetc
-	$(AM_V_GEN)cd charset && \
-		./charsetc -v charset.map charset.bin
-
-install_hooks		+= charset_install
-charset_install:
-	chmod 0644 $(DESTDIR)$(libexecdir)/charset.bin
-
 ########## gate
 
 gate_scripts		= gate/ftninrecomb gate/send-fidogate
 EXTRA_DIST		+= $(gate_scripts:=.in)
-libexec_SCRIPTS		+= $(gate_scripts)
+libexec_SCRIPTS		= $(gate_scripts)
 
 if ftnnews
 FTNNEWS			= gate/ftnnews

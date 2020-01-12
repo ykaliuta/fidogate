@@ -40,213 +40,8 @@
 static CharsetAlias *fsc_aliases;
 static CharsetAlias *charset_name_map;
 
-/*
- * Alias linked list
- */
-static CharsetAlias *charset_alias_list = NULL;
-static CharsetAlias *charset_alias_last = NULL;
-
-/*
- * Table linked list
- */
-static CharsetTable *charset_table_list = NULL;
-static CharsetTable *charset_table_last = NULL;
-
-/*
- * Current charset mapping table
- */
-static CharsetTable *charset_table_used = NULL;
 static char *orig_in;
 static char *orig_out;
-
-/*
- * Alloc new CharsetTable and put into linked list
- */
-CharsetTable *charset_table_new(void)
-{
-    CharsetTable *p;
-
-    /* Alloc and clear */
-    p = (CharsetTable *)xmalloc(sizeof(CharsetTable));
-    memset(p, 0, sizeof(CharsetTable));
-    p->next = NULL;			/* Just to be sure */
-
-    /* Put into linked list */
-    if(charset_table_list)
-	charset_table_last->next = p;
-    else
-	charset_table_list       = p;
-    charset_table_last       = p;
-
-    return p;
-}
-
-
-
-/*
- * Alloc new CharsetAlias and put into linked list
- */
-CharsetAlias *charset_alias_new(void)
-{
-    CharsetAlias *p;
-
-    /* Alloc and clear */
-    p = (CharsetAlias *)xmalloc(sizeof(CharsetAlias));
-    memset(p, 0, sizeof(CharsetAlias));
-    p->next = NULL;			/* Just to be sure */
-
-    /* Put into linked list */
-    if(charset_alias_list)
-	charset_alias_last->next = p;
-    else
-	charset_alias_list       = p;
-    charset_alias_last       = p;
-
-    return p;
-}
-
-
-
-/*
- * Write binary mapping file
- */
-int charset_write_bin(char *name)
-{
-    FILE *fp;
-    CharsetTable *pt;
-    CharsetAlias *pa;
-
-    debug(14, "Writing charset.bin file %s", name);
-
-    fp = fopen_expand_name(name, W_MODE, FALSE);
-    if(!fp)
-	return ERROR;
-
-    /* Write aliases */
-    for(pa = charset_alias_list; pa; pa=pa->next)
-    {
-	fputc(CHARSET_FILE_ALIAS, fp);
-	fwrite(pa, sizeof(CharsetAlias), 1, fp);
-	if(ferror(fp))
-	{
-	    fclose(fp);
-	    return ERROR;
-	}
-    }
-    /* Write tables */
-    for(pt = charset_table_list; pt; pt=pt->next)
-    {
-	fputc(CHARSET_FILE_TABLE, fp);
-	fwrite(pt, sizeof(CharsetTable), 1, fp);
-	if(ferror(fp))
-	{
-	    fclose(fp);
-	    return ERROR;
-	}
-    }
-
-    fclose(fp);
-    return OK;
-}
-
-
-
-/*
- * Read binary mapping file
- */
-int charset_read_bin(char *name)
-{
-    FILE *fp;
-    int c, n;
-    CharsetTable *pt;
-    CharsetAlias *pa;
-
-    debug(14, "Reading charset.bin file %s", name);
-
-    fp = fopen_expand_name(name, R_MODE, TRUE);
-
-    while( (c = fgetc(fp)) != EOF )
-    {
-	switch(c)
-	{
-	case CHARSET_FILE_ALIAS:
-	    pa = charset_alias_new();
-	    n = fread((void *)pa, sizeof(CharsetAlias), 1, fp);
-	    pa->next = NULL;			/* overwritten by fread() */
-	    if(n != 1)
-		return ERROR;
-	    debug(15, "read charset alias: %s -> %s", pa->alias, pa->name);
-	    break;
-	case CHARSET_FILE_TABLE:
-	    pt = charset_table_new();
-	    n = fread((void *)pt, sizeof(CharsetTable), 1, fp);
-	    pt->next = NULL;			/* overwritten by fread() */
-	    if(n != 1)
-		return ERROR;
-	    debug(15, "read charset table: %s -> %s", pt->in, pt->out);
-	    break;
-	default:
-	    return ERROR;
-	    break;
-	}
-    }
-
-    if(ferror(fp))
-	return ERROR;
-    fclose(fp);
-    return OK;
-}
-
-
-
-/*
- * Convert to MIME quoted-printable =XX if qp==TRUE
- */
-static char *charset_qpen(int c, int qp)
-{
-    static char buf[4];
-
-    c &= 0xff;
-
-    if( qp && (c == '=' || c >= 0x80) )
-	str_printf(buf, sizeof(buf), "=%2.2X", c & 0xff);
-    else
-    {
-	buf[0] = c;
-	buf[1] = 0;
-    }
-
-    return buf;
-}
-
-
-
-/*
- * Map single character
- */
-char *charset_map_c(int c, int qp)
-{
-    static char buf[MAX_CHARSET_OUT * 4];
-    char *s;
-
-    c &= 0xff;
-    buf[0] = 0;
-
-    if(charset_table_used && c>=0x80)
-    {
-	s = charset_table_used->map[c - 0x80];
-	while(*s)
-	    BUF_APPEND(buf, charset_qpen(*s++, qp));
-    }
-    else
-    {
-	BUF_COPY(buf, charset_qpen(c, qp));
-    }
-
-    return buf;
-}
-
-
 
 /*
  * Translate string
@@ -282,9 +77,6 @@ xlat_s(char *s1, char *s2)
  */
 void charset_set_in_out(char *in, char *out)
 {
-    CharsetTable *pt;
-    CharsetAlias *pa;
-
     if(!in || !out)
 	return;
 
@@ -292,29 +84,6 @@ void charset_set_in_out(char *in, char *out)
 
     orig_in = in;
     orig_out = out;
-
-    /* Search for aliases */
-    for(pa = charset_alias_list; pa; pa=pa->next)
-    {
-	if(strieq(pa->alias, in))
-	    in = pa->name;
-	if(strieq(pa->alias, out))
-	    out = pa->name;
-    }
-
-    /* Search for matching table */
-    for(pt = charset_table_list; pt; pt=pt->next)
-    {
-	if(strieq(pt->in, in) && strieq(pt->out, out))
-	{
-	    debug(5, "charset: table found in=%s out=%s", pt->in, pt->out);
-	    charset_table_used = pt;
-	    return;
-	}
-    }
-
-    charset_table_used = NULL;
-    return;
 }
 
 static void charset_fsc_aliases_add(char **list)
@@ -425,13 +194,6 @@ static void charset_name_map_init(void)
  */
 void charset_init(void)
 {
-    if(charset_read_bin( cf_p_charsetmap() ) == ERROR)
-    {
-	fglog("ERROR: reading from %s", cf_p_charsetmap());
-	exit(EX_SOFTWARE);
-    }
-
-    charset_table_used = NULL;
     charset_fsc_aliases_init();
     charset_name_map_init();
 }
@@ -510,57 +272,6 @@ char *charset_chrs_name(char *s)
     return NULL;
 }
 
-
-
-
-#ifdef TEST
-/*
- * Charset mapping test
- */
-int main(int argc, char *argv[])
-{
-    char *in  = "ibmpc";
-    char *out = "iso-8859-1";
-
-    if(argc < 2)
-    {
-	fprintf(stderr, "usage: testcharset CHARSET.BIN [IN] [OUT]\n");
-	exit(EXIT_ERROR);
-    }
-
-    verbose = 15;
-
-/*    charset_init(); */
-
-    if(charset_read_bin(argv[1]) == ERROR)
-    {
-	fprintf(stderr, "testcharset: can't read %s\n", argv[1]);
-	exit(EXIT_ERROR);
-    }
-
-    if(argc > 2)
-	in = argv[2];
-    if(argc > 3)
-	out = argv[3];
-
-    charset_set_in_out(in, out);
-
-    while(TRUE)
-    {
-	printf("Enter char: ");
-	fflush(stdout);
-	fgets(buffer, sizeof(buffer), stdin);
-
-	if(buffer[0] == '\n')
-	    break;
-
-	printf("qp=FALSE  : %s\n", charset_map_c(buffer[0], FALSE));
-	printf("qp=TRUE   : %s\n", charset_map_c(buffer[0], TRUE ));
-    }
-
-    exit(EXIT_OK);}
-#endif /**TEST**/
-
 static void charset_fsc_aliases_free(void)
 {
     CharsetAlias *pa, *pa1;
@@ -585,24 +296,10 @@ static void charset_name_map_free(void)
 
 void charset_free(void)
 {
-    CharsetAlias *pa, *pa1;
-    CharsetTable *pt, *pt1;
-
-    for(pa = charset_alias_list; pa; pa=pa1)
-    {
-	pa1=pa->next;
-	xfree(pa);
-    }
-    for(pt = charset_table_list; pt; pt=pt1)
-    {
-	pt1=pt->next;
-	xfree(pt);
-    }
     charset_fsc_aliases_free();
     charset_name_map_free();
 }
 
-#ifdef HAVE_ICONV
 static int _charset_recode_iconv(char **res, size_t *res_len,
 				 char *src, size_t src_len,
 				 char *from, char *_to)
@@ -707,44 +404,6 @@ static int charset_recode_iconv(char **dst, size_t *dstlen,
     return rc;
 }
 
-#else
-static int charset_recode_iconv(char **dst, size_t *dstlen,
-				char *src, size_t srclen,
-				char *from, char *to)
-{
-	return ERROR;
-}
-#endif
-
-/* uses internal recode */
-static int charset_recode_int(char **dst, size_t *dstlen,
-			      char *src, size_t srclen,
-			      char *from, char *to)
-{
-    size_t d_len;
-    size_t size;
-    char *d;
-
-    d_len = srclen * MAX_CHARSET_OUT;
-    size = d_len + 1;
-    d = xmalloc(size);
-
-    charset_set_in_out(from, to);
-
-    *d = '\0';
-
-    for(; (srclen > 0 ) && (d_len > 0); srclen--, d_len--)
-	strcat(d, charset_map_c(*src++, 0));
-
-    if ((d_len == 0) && (srclen != 0))
-	fglog("ERROR: recoding buffer too small");
-
-    *dst = d;
-    *dstlen = size - d_len - 1;
-
-    return OK;
-}
-
 /*
  * Gets source buffer, lenght of it, allocates buffer for the result.
  * Return dst -- allocated buffer
@@ -757,8 +416,6 @@ int charset_recode_buf(char **dst, size_t *dstlen,
 		       char *src, size_t srclen,
 		       char *from, char *to)
 {
-    int rc;
-
     if (src == NULL || dst == NULL)
 	return ERROR;
 
@@ -774,12 +431,7 @@ int charset_recode_buf(char **dst, size_t *dstlen,
 	return OK;
     }
 
-    rc = charset_recode_iconv(dst, dstlen, src, srclen, from, to);
-    if (rc == OK)
-	    return OK;
-
-    rc = charset_recode_int(dst, dstlen, src, srclen, from, to);
-    return rc;
+    return charset_recode_iconv(dst, dstlen, src, srclen, from, to);
 }
 
 int charset_is_7bit(char *buffer, size_t len)
