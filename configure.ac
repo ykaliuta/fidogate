@@ -2,7 +2,7 @@ dnl Copyright (c) 2003-2008 Andrey Slusar <anrays@gmail.com>
 dnl Copyright (c) 2003-2004 Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 dnl Copyright (c) 2015-2020 Yauheni Kaliuta <y.kaliuta@gmail.com>
 dnl
-AC_REVISION([Revision: 1030])
+AC_REVISION([Revision: 1031])
 AC_PREREQ(2.53)
 AC_INIT([fidogate],[5.6],[y.kaliuta@gmail.com])
 AC_DISABLE_OPTION_CHECKING
@@ -88,10 +88,10 @@ AC_PATH_PROG(ARC, arc, no)
 AC_PATH_PROG(LHA, lzh, no)
 AC_PATH_PROG(UUDECODE, uudecode, no)
 
-dnl took from libgd
-dnl if we're configuring on a system w/out gettext, don't fall over
-m4_ifndef([AM_ICONV],[m4_define([AM_ICONV],[:])])
 AM_ICONV
+
+AS_IF([test x$am_func_iconv != xyes],
+       AC_MSG_ERROR([working iconv not found]))
 
 config_vars=
 # Check for a --with-logdir argument
