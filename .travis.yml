@@ -1,0 +1,38 @@
+language: c
+
+dist: bionic
+
+branches:
+  only:
+    - /^v\.\d.*/
+    - master
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install build-essential devscripts debhelper bison rpm  software-properties-common
+  - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu disco  main'
+  - sudo apt-get install automake
+
+script:
+  - ./autogen.sh
+  - ./configure --without-news --with-sendmail=/usr/sbin/sendmail
+  - mkdir -p $HOME/rpmbuild/SOURCES
+  # on travis' ubuntu there are no rpm dependencies
+  - sed -i -e 's/^BuildRequires:.*//' packages/rpm/fidogate.spec
+  - make dist
+  - cp *.tar.gz packages/rpm/*.service $HOME/rpmbuild/SOURCES
+  - rpmbuild -tb $HOME/rpmbuild/SOURCES/*.tar.gz
+  - sudo dpkg-buildpackage -b --no-sign
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_OAUTH_TOKEN
+  file_glob: true
+  file:
+    - ../*.deb
+    - $HOME/rpmbuild/RPMS/*/*.rpm
+  skip_cleanup: true
+  draft: true
+  on:
+#    tags: true
+    branch: master
