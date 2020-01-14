@@ -18,6 +18,10 @@ FIDOGATE Version 5
 
 %define user news
 
+%if 0%{?_unitdir} == 0
+%global _unitdir /usr/lib/systemd/system
+%endif
+
 %prep
 %setup -q -n %{name}-%{version}
 #%patch0 -p0
