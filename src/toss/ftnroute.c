@@ -89,6 +89,7 @@ static int severe_error = OK;		/* ERROR: exit after error */
 
 static int signal_exit = FALSE;		/* Flag: TRUE if signal received */
 
+static bool strict;
 
 #define MODE_PVT	1
 #define MODE_HOLD	2
@@ -694,7 +695,7 @@ int do_packet(char *pkt_name, FILE *pkt_file, Packet *pkt, PktDesc *desc)
 	 */
 	msg.node_from = pkt->from;
 	msg.node_to   = pkt->to;
-	if(pkt_get_msg_hdr(pkt_file, &msg) == ERROR)
+	if(pkt_get_msg_hdr(pkt_file, &msg, strict) == ERROR)
 	{
 	    fglog("ERROR: reading input packet");
 	    ret = ERROR;
@@ -1057,6 +1058,7 @@ int main(int argc, char **argv)
     if (cf_get_string("AmigaStyleOutbound", TRUE) != NULL)
 	aso = TRUE;
 
+    strict = (cf_get_string("FTNStrictPktCheck", TRUE) != NULL);
     /*
      * Process local options
      */

@@ -190,7 +190,7 @@ static struct packet *packet_read_fp(FILE *fp)
 	if (type != MSG_TYPE)
 	    goto err;
 
-	rc = pkt_get_msg_hdr(fp, &pkt->msgs[0].hdr);
+	rc = pkt_get_msg_hdr(fp, &pkt->msgs[0].hdr, false);
 	if (rc == ERROR)
 	    goto err;
 

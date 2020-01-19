@@ -253,7 +253,7 @@ int main(int argc, char **argv)
 	    {
 		msg.node_from = pkt.from;
 		msg.node_to   = pkt.to;
-		if( pkt_get_msg_hdr(fp, &msg) == ERROR )
+		if( pkt_get_msg_hdr(fp, &msg, false) == ERROR )
 		{
 		    printf("ERROR: %s: reading message header\n", name);
 		    break;

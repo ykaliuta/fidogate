@@ -140,6 +140,7 @@ static char *news_path_tail = "fidogate!not-for-mail";
 static short int ignore_chrs 	= FALSE;
 static short int ignore_soft_cr	= FALSE;
 static short int ignore_mime_type	= TRUE;
+static bool strict;
 
 /*
  * Get header for
@@ -652,7 +653,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	msg.node_from = pkt->from;
 	msg.node_to   = pkt->to;
 
-	if( pkt_get_msg_hdr(pkt_file, &msg) == ERROR )
+	if( pkt_get_msg_hdr(pkt_file, &msg, strict) == ERROR )
 	{
 	    fglog("ERROR: reading input packet");
 	    ret = ERROR;
@@ -2138,6 +2139,7 @@ int main(int argc, char **argv)
     {
 	gate_rfc_kludge = TRUE;
     }
+    strict = (cf_get_string("FTNStrictPktCheck", TRUE) != NULL);
 
     /* Init various modules */
     areas_init();

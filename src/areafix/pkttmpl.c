@@ -57,7 +57,7 @@ static char in_dir[MAXPATH];		/* Input directory */
 static int must_exit    = FALSE;	/* Flag for -x operation */
 static int severe_error = OK;		/* ERROR: exit after error */
 static int signal_exit  = FALSE;	/* Flag: TRUE if signal received */
-
+static bool strict;
 
 
 /*
@@ -116,7 +116,7 @@ int do_packet(FILE *pkt_file, Packet *pkt)
 	/* Read message header */
 	msg.node_from = pkt->from;
 	msg.node_to   = pkt->to;
-	if(pkt_get_msg_hdr(pkt_file, &msg) == ERROR)
+	if(pkt_get_msg_hdr(pkt_file, &msg, strict) == ERROR)
 	{
 	    fglog("ERROR: reading input packet");
 	    TMPS_RETURN(ERROR);
@@ -363,6 +363,7 @@ int main(int argc, char **argv)
 	debug(8, "config: XXX");
 
     }
+    strict = (cf_get_string("FTNStrictPktCheck", TRUE) != NULL);
 
     /* Process local options */
     BUF_EXPAND(in_dir, I_flag ? I_flag : cf_p_pinbound());

@@ -62,6 +62,7 @@ static char *o_flag=NULL;	/* -o --out-packet-file option */
  */
 Node gate_a;			/* FTN address in network A */
 Node gate_b;			/* FTN address in network B */
+static bool strict;
 
 
 
@@ -189,7 +190,7 @@ int unpack(Node *gate, FILE *pkt_file, Packet *pkt)
     {
 	msg.node_from = pkt->from;
 	msg.node_to   = pkt->to;
-	if(pkt_get_msg_hdr(pkt_file, &msg) == ERROR)
+	if(pkt_get_msg_hdr(pkt_file, &msg, strict) == ERROR)
 	    TMPS_RETURN(ERROR);
 
 	if( pkt_get_body_parse(pkt_file, &body, &msg.node_from, &msg.node_to) != OK )
@@ -421,6 +422,7 @@ int main(int argc, char **argv)
     debug(4, "gateway address A: %s", znfp1(&gate_a));
     debug(4, "gateway address B: %s", znfp1(&gate_b));
 
+    strict = (cf_get_string("FTNStrictPktCheck", TRUE) != NULL);
 
     /*
      * Process local options

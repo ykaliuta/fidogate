@@ -192,6 +192,7 @@ AddToSeenBy;
 
 static AddToSeenBy *addto_first = NULL;
 static AddToSeenBy *addto_last  = NULL;
+static bool strict;
 
 
 
@@ -1650,7 +1651,7 @@ int unpack(FILE *pkt_file, Packet *pkt)
 	msg.node_from = pkt->from;
 	msg.node_to   = pkt->to;
 
-	if(pkt_get_msg_hdr(pkt_file, &msg) == ERROR)
+	if(pkt_get_msg_hdr(pkt_file, &msg, strict) == ERROR)
 	{
 	    fglog("ERROR: reading input packet");
 	    TMPS_RETURN(ERROR);
@@ -2191,6 +2192,7 @@ int main(int argc, char **argv)
        no_rewrite=TRUE;
     }
 #endif /* DO_NOT_TOSS_NETMAIL */
+    strict = (cf_get_string("FTNStrictPktCheck", TRUE) != NULL);
 
     zonegate_init();
     addtoseenby_init();

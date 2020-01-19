@@ -509,7 +509,7 @@ int	pkt_isopen		(void);
 
 size_t	pkt_get_string		(FILE *, char *, size_t);
 time_t	pkt_get_date		(FILE *);
-int	pkt_get_msg_hdr		(FILE *, Message *);
+int	pkt_get_msg_hdr		(FILE *, Message *, bool);
 void	pkt_debug_msg_hdr	(FILE *, Message *, char *);
 void	pkt_put_string		(FILE *, char *);
 void	pkt_put_line		(FILE *, char *);

@@ -61,6 +61,8 @@ static int signal_exit = FALSE;		/* Flag: TRUE if signal received */
 
 int bundle_disp;
 
+static bool strict;
+
 
 /* "noarc" packer program */
 static ArcProg noarc =
@@ -714,7 +716,7 @@ int do_noarc(char *name, Node *flonode,
 	/* Read message header */
 	node_clear(&msg.node_from);
 	node_clear(&msg.node_to);
-	if(pkt_get_msg_hdr(pkt_file, &msg) != OK)
+	if(pkt_get_msg_hdr(pkt_file, &msg, strict) != OK)
 	{
 	    fglog("$ERROR reading input packet %s", name);
 	    pkt_close();
@@ -1307,6 +1309,7 @@ int main(int argc, char **argv)
     } else
 	bundle_disp = 0;
 
+    strict = (cf_get_string("FTNStrictPktCheck", TRUE) != NULL);
     /*
      * Process local options
      */

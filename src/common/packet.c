@@ -518,19 +518,20 @@ time_t pkt_get_date(FILE *fp)
 }
 
 
-#define READ_MSG_FIELD(fp, s, f) do {					\
+#define READ_MSG_FIELD(fp, s, f, strict) do {					\
     size_t rc;								\
     rc = pkt_get_string(fp, s->f, sizeof(s->f));			\
     if (rc > sizeof(s->f)) {						\
-	fglog("ERROR: %s is longer than %lu", #f, (unsigned long)sizeof(s->f)); \
-	return ERROR;							\
+        fglog("ERROR: %s is longer than %lu", #f, (unsigned long)sizeof(s->f)); \
+	if (strict)							\
+	    return ERROR;						\
     }									\
     } while (0);
 
 /*
  * Read message header from packet file
  */
-int pkt_get_msg_hdr(FILE *fp, Message *msg)
+int pkt_get_msg_hdr(FILE *fp, Message *msg, bool strict)
 {
     msg->node_from.node = pkt_get_int16(fp);
     msg->node_to  .node = pkt_get_int16(fp);
@@ -541,9 +542,9 @@ int pkt_get_msg_hdr(FILE *fp, Message *msg)
     msg->cost           = pkt_get_int16(fp);
     msg->date           = pkt_get_date(fp);
 
-    READ_MSG_FIELD(fp, msg, name_to);
-    READ_MSG_FIELD(fp, msg, name_from);
-    READ_MSG_FIELD(fp, msg, subject);
+    READ_MSG_FIELD(fp, msg, name_to, strict);
+    READ_MSG_FIELD(fp, msg, name_from, strict);
+    READ_MSG_FIELD(fp, msg, subject, strict);
 
     msg->area      = NULL;
 
