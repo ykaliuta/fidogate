@@ -32,36 +32,27 @@
 
 #include "fidogate.h"
 
-
-
 /*
  * struct for sorted dir
  */
-typedef struct st_direntry
-{
-    char  *name;
-    off_t  size;
+typedef struct st_direntry {
+    char *name;
+    off_t size;
     time_t mtime;
-}
-DirEntry;
+} DirEntry;
 
 #define DIR_INITSIZE	50
 
-
-static DirEntry *dir_array  = NULL;		/* Array sorted dir */
-static int       dir_narray = 0;		/* Array size */
-static int	 dir_nentry = 0;		/* Array entries */
-static int       dir_smode  = DIR_SORTNAME;	/* Sort mode */
-
-
+static DirEntry *dir_array = NULL;  /* Array sorted dir */
+static int dir_narray = 0;      /* Array size */
+static int dir_nentry = 0;      /* Array entries */
+static int dir_smode = DIR_SORTNAME;    /* Sort mode */
 
 /*
  * Prototypes
  */
-static void dir_resize		(int);
-static int  dir_compare		(const void *, const void *);
-
-
+static void dir_resize(int);
+static int dir_compare(const void *, const void *);
 
 /*
  * Resize DirEntry array
@@ -73,26 +64,23 @@ static void dir_resize(int new)
 
     old = dir_array;
 
-    dir_array = (DirEntry *)xmalloc(new * sizeof(DirEntry));
+    dir_array = (DirEntry *) xmalloc(new * sizeof(DirEntry));
 
     /* Copy old entries */
-    for(i=0; i<dir_narray; i++)
-	dir_array[i] = old[i];
+    for (i = 0; i < dir_narray; i++)
+        dir_array[i] = old[i];
 
     /* Init new entries */
-    for(; i<new; i++)
-    {
-	dir_array[i].name  = NULL;
-	dir_array[i].size  = 0;
-	dir_array[i].mtime = 0;
+    for (; i < new; i++) {
+        dir_array[i].name = NULL;
+        dir_array[i].size = 0;
+        dir_array[i].mtime = 0;
     }
 
     xfree(old);
 
     dir_narray = new;
 }
-
-
 
 /*
  * Comparison function for qsort()
@@ -102,33 +90,32 @@ int dir_compare(const void *pa, const void *pb)
     DirEntry *a, *b;
     int ret;
 
-    a = (DirEntry *)pa;
-    b = (DirEntry *)pb;
+    a = (DirEntry *) pa;
+    b = (DirEntry *) pb;
 
-    switch(dir_smode)
-    {
+    switch (dir_smode) {
     case DIR_SORTNAME:
-	return strcmp(a->name, b->name);
+        return strcmp(a->name, b->name);
     case DIR_SORTNAMEI:
-	return stricmp(a->name, b->name);
+        return stricmp(a->name, b->name);
     case DIR_SORTSIZE:
-	ret = a->size - b->size;
-	if(ret != 0) return ret;
-	return strcmp(a->name, b->name);
+        ret = a->size - b->size;
+        if (ret != 0)
+            return ret;
+        return strcmp(a->name, b->name);
     case DIR_SORTMTIME:
-	ret = a->mtime - b->mtime;
-	if(ret != 0) return ret;
-	return strcmp(a->name, b->name);
+        ret = a->mtime - b->mtime;
+        if (ret != 0)
+            return ret;
+        return strcmp(a->name, b->name);
     case DIR_SORTNONE:
     default:
-	return 0;
+        return 0;
     }
 
     /**NOT REACHED**/
     return 0;
 }
-
-
 
 /*
  * Read dir into memory and sort
@@ -144,34 +131,32 @@ int dir_open(char *dirname, char *pattern, int ic)
 
     BUF_EXPAND(name, dirname);
 
-    if(dir_array)
-	dir_close();
+    if (dir_array)
+        dir_close();
 
     /* Open and read directory */
-    if( ! (dp = opendir(name)) )
-	return ERROR;
+    if (!(dp = opendir(name)))
+        return ERROR;
 
     dir_resize(DIR_INITSIZE);
 
-    while((dir = readdir(dp)))
-	if(pattern==NULL || wildmatch(dir->d_name, pattern, ic))
-	{
-	    BUF_COPY3(buf, name, "/", dir->d_name);
+    while ((dir = readdir(dp)))
+        if (pattern == NULL || wildmatch(dir->d_name, pattern, ic)) {
+            BUF_COPY3(buf, name, "/", dir->d_name);
 
-	    if(stat(buf, &st) == ERROR)
-	    {
-		dir_close();
-		return ERROR;
-	    }
+            if (stat(buf, &st) == ERROR) {
+                dir_close();
+                return ERROR;
+            }
 
-	    if(dir_nentry >= dir_narray)
-		dir_resize(2 * dir_narray);
-	    dir_array[dir_nentry].name  = strsave(buf);
-	    dir_array[dir_nentry].size  = st.st_size;
-	    dir_array[dir_nentry].mtime = st.st_mtime;
+            if (dir_nentry >= dir_narray)
+                dir_resize(2 * dir_narray);
+            dir_array[dir_nentry].name = strsave(buf);
+            dir_array[dir_nentry].size = st.st_size;
+            dir_array[dir_nentry].mtime = st.st_mtime;
 
-	    dir_nentry++;
-	}
+            dir_nentry++;
+        }
 
     closedir(dp);
 
@@ -181,8 +166,6 @@ int dir_open(char *dirname, char *pattern, int ic)
     return OK;
 }
 
-
-
 /*
  * Delete sorted directory array
  */
@@ -190,17 +173,15 @@ void dir_close(void)
 {
     int i;
 
-    for(i=0; i<dir_nentry; i++)
-	xfree(dir_array[i].name);
+    for (i = 0; i < dir_nentry; i++)
+        xfree(dir_array[i].name);
 
     xfree(dir_array);
 
-    dir_array  = NULL;
+    dir_array = NULL;
     dir_narray = 0;
     dir_nentry = 0;
 }
-
-
 
 /*
  * Set sort mode
@@ -210,8 +191,6 @@ void dir_sortmode(int mode)
     dir_smode = mode;
 }
 
-
-
 /*
  * Get first/next entry
  */
@@ -219,28 +198,27 @@ char *dir_get(int first)
 {
     static int index = 0;
 
-    if(first)
-	index = 0;
+    if (first)
+        index = 0;
 
-    if(index < dir_nentry)
-	return dir_array[index++].name;
+    if (index < dir_nentry)
+        return dir_array[index++].name;
 
     return NULL;
 }
-
 
 char *dir_get_mtime(time_t mtime, char first)
 {
     static int index = 0;
 
-    if(first)
-	index = 0;
+    if (first)
+        index = 0;
     else
-	index++;
+        index++;
 
-    for(;index < dir_nentry; index++)
-	if(mtime < dir_array[index].mtime)
-	    return dir_array[index].name;
+    for (; index < dir_nentry; index++)
+        if (mtime < dir_array[index].mtime)
+            return dir_array[index].name;
 
     return NULL;
 }
@@ -258,98 +236,89 @@ char *dir_search(char *dirname, char *filename)
     BUF_EXPAND(name, dirname);
 
     /* Open and read directory */
-    if( ! (dp = opendir(name)) )
-	return NULL;
+    if (!(dp = opendir(name)))
+        return NULL;
 
-    while((dir = readdir(dp)))
-	if(!stricmp(dir->d_name, filename))
-	{
-	    str_copy(filename, strlen(filename)+1, dir->d_name);
-	    closedir(dp);
-	    return filename;
-	}
+    while ((dir = readdir(dp)))
+        if (!stricmp(dir->d_name, filename)) {
+            str_copy(filename, strlen(filename) + 1, dir->d_name);
+            closedir(dp);
+            return filename;
+        }
 
     closedir(dp);
     return NULL;
 }
 
-
 int mkdir_r(char *dir, mode_t mode)
 {
     char tmp[MAXPATH] = "";
-    int i=0, n;
+    int i = 0, n;
     char *p;
 
-    if(check_access(dir, CHECK_DIR) == TRUE)
-	return OK;
-    if ( mkdir(dir, mode) == 0)
-	return OK;
-    if ( errno == EEXIST)
-	return OK;
+    if (check_access(dir, CHECK_DIR) == TRUE)
+        return OK;
+    if (mkdir(dir, mode) == 0)
+        return OK;
+    if (errno == EEXIST)
+        return OK;
 
     p = dir;
     n = strlen(dir);
 
-    while( n > i )
-    {
-	tmp[i] = *p;
-	p++;
-	i++;
-	while( n > i )
-	{
-	    if(*p != '/')
-		tmp[i] = *p;
-	    else
-		break;
-	    p++;
-	    i++;
-	}
-	tmp[i+1]=0;
+    while (n > i) {
+        tmp[i] = *p;
+        p++;
+        i++;
+        while (n > i) {
+            if (*p != '/')
+                tmp[i] = *p;
+            else
+                break;
+            p++;
+            i++;
+        }
+        tmp[i + 1] = 0;
 
-	if(check_access(tmp, CHECK_DIR) != TRUE)
-	{
-	    fglog("make directory %s", tmp);
-	    if(mkdir(tmp, mode) != 0)
-		return ERROR;
-	}
+        if (check_access(tmp, CHECK_DIR) != TRUE) {
+            fglog("make directory %s", tmp);
+            if (mkdir(tmp, mode) != 0)
+                return ERROR;
+        }
     }
 
     return OK;
 }
 
-
 #ifdef TEST
 
 int main(int argc, char *argv[])
 {
-    if(argc != 2)
-    {
-	fprintf(stderr, "usage: testdir dir\n");
-    }
-    else
-    {
-	char *n;
+    if (argc != 2) {
+        fprintf(stderr, "usage: testdir dir\n");
+    } else {
+        char *n;
 
-	printf("%s (name):\n", argv[1]);
-	dir_sortmode(DIR_SORTNAME);
-	dir_open(argv[1], NULL, FALSE);
-	for(n=dir_get(TRUE); n; n=dir_get(FALSE))
-	    printf(" %s\n", n);
-	printf("\n");
+        printf("%s (name):\n", argv[1]);
+        dir_sortmode(DIR_SORTNAME);
+        dir_open(argv[1], NULL, FALSE);
+        for (n = dir_get(TRUE); n; n = dir_get(FALSE))
+            printf(" %s\n", n);
+        printf("\n");
 
-	printf("%s (size):\n", argv[1]);
-	dir_sortmode(DIR_SORTSIZE);
-	dir_open(argv[1], NULL, FALSE);
-	for(n=dir_get(TRUE); n; n=dir_get(FALSE))
-	    printf(" %s\n", n);
-	printf("\n");
+        printf("%s (size):\n", argv[1]);
+        dir_sortmode(DIR_SORTSIZE);
+        dir_open(argv[1], NULL, FALSE);
+        for (n = dir_get(TRUE); n; n = dir_get(FALSE))
+            printf(" %s\n", n);
+        printf("\n");
 
-	printf("%s (*.pkt, mtime):\n", argv[1]);
-	dir_sortmode(DIR_SORTMTIME);
-	dir_open(argv[1], "*.pkt", TRUE);
-	for(n=dir_get(TRUE); n; n=dir_get(FALSE))
-	    printf(" %s\n", n);
-	printf("\n");
+        printf("%s (*.pkt, mtime):\n", argv[1]);
+        dir_sortmode(DIR_SORTMTIME);
+        dir_open(argv[1], "*.pkt", TRUE);
+        for (n = dir_get(TRUE); n; n = dir_get(FALSE))
+            printf(" %s\n", n);
+        printf("\n");
     }
 
     return 0;

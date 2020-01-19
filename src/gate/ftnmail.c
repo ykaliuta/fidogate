@@ -35,16 +35,12 @@
 
 #include <signal.h>
 
-
-
 #define PROGRAM		"ftnmail"
 #define CONFIG		DEFAULT_CONFIG_GATE
 
 #define RFC2FTN		"rfc2ftn"
 
 #define MAXARGS		64
-
-
 
 /*
  * Usage messages
@@ -56,11 +52,10 @@ void short_usage(void)
     exit(EX_USAGE);
 }
 
-
 void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
-	    version_global(), PROGRAM, version_local(VERSION) );
+            version_global(), PROGRAM, version_local(VERSION));
 
     fprintf(stderr, "usage:   %s [-options] user@domain ...\n\n", PROGRAM);
     fprintf(stderr, "\
@@ -73,30 +68,27 @@ options: -a --addr                    (passed on as -a AND -u)\n\
     exit(0);
 }
 
-
-
 /***** main() ****************************************************************/
 
 int main(int argc, char **argv)
 {
     int c, n;
-    char *a_flag=NULL;
-    int i_flag=FALSE;
-    char *O_flag=NULL;
+    char *a_flag = NULL;
+    int i_flag = FALSE;
+    char *O_flag = NULL;
     char *s;
     char cmd[MAXPATH];
     char O_opt[MAXPATH];
     char *args[MAXARGS];
 
     int option_index;
-    static struct option long_options[] =
-    {
-	{ "addr",         1, 0, 'a'},	/* Set FIDO address */
-	{ "ignore-hosts", 0, 0, 'i'},	/* Do not bounce unknown hosts */
-	{ "out-dir",      1, 0, 'O'},	/* Set packet directory */
+    static struct option long_options[] = {
+        {"addr", 1, 0, 'a'},    /* Set FIDO address */
+        {"ignore-hosts", 0, 0, 'i'},    /* Do not bounce unknown hosts */
+        {"out-dir", 1, 0, 'O'}, /* Set packet directory */
 
-	{ "help",         0, 0, 'h'},	/* Help */
-	{ 0,              0, 0, 0  }
+        {"help", 0, 0, 'h'},    /* Help */
+        {0, 0, 0, 0}
     };
 
 #ifdef SIGPIPE
@@ -111,106 +103,98 @@ int main(int argc, char **argv)
     cf_read_config_file(CONFIG);
 
     while ((c = getopt_long(argc, argv, "a:iO:hv",
-			    long_options, &option_index     )) != EOF)
-	switch (c) {
-	/***** ftnmail options *****/
-	case 'a':
-	    a_flag = optarg;
-	    break;
-	case 'i':
-	    i_flag = TRUE;
-	    break;
-	case 'O':
-	    O_flag = optarg;
-	    break;
+                            long_options, &option_index)) != EOF)
+        switch (c) {
+    /***** ftnmail options *****/
+        case 'a':
+            a_flag = optarg;
+            break;
+        case 'i':
+            i_flag = TRUE;
+            break;
+        case 'O':
+            O_flag = optarg;
+            break;
 
-	/***** common options *****/
-	case 'h':
-	    usage();
-	    exit(0);
-	    break;
-	case 'v':
-	    verbose++;
-	    break;
-	default:
-	    short_usage();
-	    exit(EX_USAGE);
-	    break;
-	}
+    /***** common options *****/
+        case 'h':
+            usage();
+            exit(0);
+            break;
+        case 'v':
+            verbose++;
+            break;
+        default:
+            short_usage();
+            exit(EX_USAGE);
+            break;
+        }
 
     /* complete path of rfc2ftn */
     BUF_COPY3(cmd, cf_p_libexecdir(), "/", RFC2FTN);
 
     /* check -O option */
-    if(O_flag)
-    {
-	s = O_flag;
-	if(*s=='/' || *s=='%')
-	{
-	    fprintf(stderr, "%s:-O %s: must not start with `%c'\n",
-		    PROGRAM, O_flag, s[0]);
-	    exit_free();
-	    exit(EX_USAGE);
-	}
-	while(*s)
-	{
-	    if(s[0]=='.' && s[1]=='.')
-	    {
-		fprintf(stderr, "%s:-O %s: must not contain `..'\n",
-			PROGRAM, O_flag);
-		exit_free();
-		exit(EX_USAGE);
-	    }
-	    if(s[0]=='/' && s[1]=='/')
-	    {
-		fprintf(stderr, "%s:-O %s: must not contain `//'\n",
-			PROGRAM, O_flag);
-		exit_free();
-		exit(EX_USAGE);
-	    }
-	    s++;
-	}
+    if (O_flag) {
+        s = O_flag;
+        if (*s == '/' || *s == '%') {
+            fprintf(stderr, "%s:-O %s: must not start with `%c'\n",
+                    PROGRAM, O_flag, s[0]);
+            exit_free();
+            exit(EX_USAGE);
+        }
+        while (*s) {
+            if (s[0] == '.' && s[1] == '.') {
+                fprintf(stderr, "%s:-O %s: must not contain `..'\n",
+                        PROGRAM, O_flag);
+                exit_free();
+                exit(EX_USAGE);
+            }
+            if (s[0] == '/' && s[1] == '/') {
+                fprintf(stderr, "%s:-O %s: must not contain `//'\n",
+                        PROGRAM, O_flag);
+                exit_free();
+                exit(EX_USAGE);
+            }
+            s++;
+        }
     }
 
     /* build args[] */
     n = 0;
     args[n++] = RFC2FTN;
-    if(a_flag)
-    {
-	args[n++] = "-a";
-	args[n++] = a_flag;
-	args[n++] = "-u";
-	args[n++] = a_flag;
+    if (a_flag) {
+        args[n++] = "-a";
+        args[n++] = a_flag;
+        args[n++] = "-u";
+        args[n++] = a_flag;
     }
-    if(i_flag)
-    {
-	args[n++] = "-i";
+    if (i_flag) {
+        args[n++] = "-i";
     }
-    if(O_flag)
-    {
-	BUF_COPY2(O_opt, "%S/", O_flag);
-	args[n++] = "-O";
-	args[n++] = O_opt;
+    if (O_flag) {
+        BUF_COPY2(O_opt, "%S/", O_flag);
+        args[n++] = "-O";
+        args[n++] = O_opt;
     }
     args[n++] = "--";
 
-    while(n<MAXARGS-1 && optind<argc)
-	args[n++] = argv[optind++];
+    while (n < MAXARGS - 1 && optind < argc)
+        args[n++] = argv[optind++];
 
     args[n++] = NULL;
 
 #if 0
     /* debug */
     printf("cmd=%s\n", cmd);
-    for(n=0; args[n]; n++)
-	printf("args[%d]=%s\n", n, args[n]);
+    for (n = 0; args[n]; n++)
+        printf("args[%d]=%s\n", n, args[n]);
     exit_free();
     exit(0);
 #endif
 
     /* exec */
-    if( execv(cmd, args) == ERROR )
-	fglog("$can't exec %s", cmd);
+    if (execv(cmd, args) == ERROR)
+        fglog("$can't exec %s", cmd);
 
     /* Only reached if error */
     exit_free();

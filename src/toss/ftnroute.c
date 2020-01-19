@@ -36,14 +36,10 @@
 #include <utime.h>
 #include <signal.h>
 
-
-
 #define PROGRAM 	"ftnroute"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
-
-typedef struct st_nodelist
-{
+typedef struct st_nodelist {
     Node node;
     char mode;
     struct st_nodelist *next;
@@ -52,42 +48,40 @@ typedef struct st_nodelist
 /*
  * Prototypes
  */
-short	int 			repack_mode = FALSE;
-int	do_routing		(char *, FILE *, Packet *);
-int	do_move			(char *, FILE *, PktDesc *);
-int	do_cmd			(PktDesc *, Routing *, Node *);
-int	do_packet		(char *, FILE *, Packet *, PktDesc *);
-void	add_via			(Textlist *, Node *);
-int	do_file			(char *);
-int	do_repack		(char *, char *, int);
-void	prog_signal		(int);
-void	short_usage		(void);
-void	usage			(void);
-int	do_cmd_mkroute		(PktDesc *, MkRoute *);
-short int	hi_init		(char *);
-int	nodelist_read		(void);
-void	hubroute_write		(void);
-nodelist	*save_node	(int, int, int, char);
-int	troute_scan		(char *, int);
-
-
+short int repack_mode = FALSE;
+int do_routing(char *, FILE *, Packet *);
+int do_move(char *, FILE *, PktDesc *);
+int do_cmd(PktDesc *, Routing *, Node *);
+int do_packet(char *, FILE *, Packet *, PktDesc *);
+void add_via(Textlist *, Node *);
+int do_file(char *);
+int do_repack(char *, char *, int);
+void prog_signal(int);
+void short_usage(void);
+void usage(void);
+int do_cmd_mkroute(PktDesc *, MkRoute *);
+short int hi_init(char *);
+int nodelist_read(void);
+void hubroute_write(void);
+nodelist *save_node(int, int, int, char);
+int troute_scan(char *, int);
 
 /*
  * Command line options
  */
-int		g_flag = 0;
-int		hist_init = FALSE;
-char		*nl_file    = NULL;
-nodelist	*nl_list  = NULL;
-nodelist	*rou_list = NULL;
-nodelist	*tru_list = NULL;
-int		zone = 0, net = 0, node = 0;
+int g_flag = 0;
+int hist_init = FALSE;
+char *nl_file = NULL;
+nodelist *nl_list = NULL;
+nodelist *rou_list = NULL;
+nodelist *tru_list = NULL;
+int zone = 0, net = 0, node = 0;
 
-static char in_dir [MAXPATH];
+static char in_dir[MAXPATH];
 
-static int severe_error = OK;		/* ERROR: exit after error */
+static int severe_error = OK;   /* ERROR: exit after error */
 
-static int signal_exit = FALSE;		/* Flag: TRUE if signal received */
+static int signal_exit = FALSE; /* Flag: TRUE if signal received */
 
 static bool strict;
 
@@ -110,52 +104,45 @@ int troute_scan(char *file, int flag)
     debug(5, "reading %s file", file);
 
     fp = fopen(file, "r");
-    if(!fp)
-    {
-	fglog("$ERROR: reading %s", file);
-	return ERROR;
+    if (!fp) {
+        fglog("$ERROR: reading %s", file);
+        return ERROR;
     }
 
-    while((s = fgets(buffer, sizeof(buffer), fp)))
-    {
-	if(*s == ';' || *s == '\r' || *s == '\0')
-	    continue;
+    while ((s = fgets(buffer, sizeof(buffer), fp))) {
+        if (*s == ';' || *s == '\r' || *s == '\0')
+            continue;
 
-	s = strtok(buffer, " \t");
-	asc_to_node(s, &addr, FALSE);
-	node = addr.node;
-	mode = MODE_HUB;
+        s = strtok(buffer, " \t");
+        asc_to_node(s, &addr, FALSE);
+        node = addr.node;
+        mode = MODE_HUB;
 
-	for(;s;s = strtok(NULL, " \t"), mode = MODE_NORMAL)
-	{
-	    if(s && *s > 47 && *s < 58)
-	    {
-		if(node == 0)
-		    node = atoi(s);
-		if( (p = save_node(addr.zone, addr.net, node, mode)) )
-		{
-			if(stat)
-			    last->next = p;
-			else
-			{
-			    if(flag)
-		    		tru_list = p;
-			    else
-				rou_list = p;
-			    stat = TRUE;
-			}
+        for (; s; s = strtok(NULL, " \t"), mode = MODE_NORMAL) {
+            if (s && *s > 47 && *s < 58) {
+                if (node == 0)
+                    node = atoi(s);
+                if ((p = save_node(addr.zone, addr.net, node, mode))) {
+                    if (stat)
+                        last->next = p;
+                    else {
+                        if (flag)
+                            tru_list = p;
+                        else
+                            rou_list = p;
+                        stat = TRUE;
+                    }
 
-		    last = p;
-		}
-		node = 0;
-	    }
-	}
+                    last = p;
+                }
+                node = 0;
+            }
+        }
     }
     fclose(fp);
 
     return OK;
 }
-
 
 nodelist *save_node(int zone, int net, int node, char mode)
 {
@@ -163,30 +150,29 @@ nodelist *save_node(int zone, int net, int node, char mode)
 
     debug(9, "%d:%d/%d mode=%d", zone, net, node, mode);
 
-    p = (nodelist *)xmalloc(sizeof(nodelist));
+    p = (nodelist *) xmalloc(sizeof(nodelist));
 
     node_clear(&p->node);
     p->next = NULL;
     p->node.zone = zone;
-    p->node.net  = net;
+    p->node.net = net;
     p->node.node = node;
     p->mode = mode;
 
     return p;
 }
 
-
-char *f_read(char *buffer, int len, FILE *fp)
+char *f_read(char *buffer, int len, FILE * fp)
 {
     char *p;
     long cf_lineno = 0;
 
     while (fgets(buffer, len, fp)) {
-	cf_lineno++;
-	strip_crlf(buffer);
-	for(p=buffer; *p && is_space(*p); p++) ; /* Skip white spaces */
-	if (*p != ';')
-	    return p;
+        cf_lineno++;
+        strip_crlf(buffer);
+        for (p = buffer; *p && is_space(*p); p++) ; /* Skip white spaces */
+        if (*p != ';')
+            return p;
     }
     return NULL;
 }
@@ -206,96 +192,76 @@ int nodelist_read(void)
 
     struct stat statnl, statdb;
 
-    for(p=cf_get_string("NlFile", TRUE); p; p=cf_get_string("NlFile", FALSE))
-    {
-	nl_file = p;
+    for (p = cf_get_string("NlFile", TRUE); p;
+         p = cf_get_string("NlFile", FALSE)) {
+        nl_file = p;
 
-	if( (stat(nl_file, &statnl)) != 0 )
-	{
-	    fglog("$ERROR: can't stat file %s, %s", nl_file, strerror(errno));
-	    continue;
-	}
-	if( ( stat(cf_p_hubroutedb(), &statdb)) == 0 )
-	    if(statnl.st_mtime < statdb.st_mtime)
-		continue;
+        if ((stat(nl_file, &statnl)) != 0) {
+            fglog("$ERROR: can't stat file %s, %s", nl_file, strerror(errno));
+            continue;
+        }
+        if ((stat(cf_p_hubroutedb(), &statdb)) == 0)
+            if (statnl.st_mtime < statdb.st_mtime)
+                continue;
 
-	proc = TRUE;
+        proc = TRUE;
 
-	fp = fopen(nl_file, "r");
-	if(!fp)
-	{
-	    fglog("$ERROR: reading %s", nl_file);
-		continue;
-	}
+        fp = fopen(nl_file, "r");
+        if (!fp) {
+            fglog("$ERROR: reading %s", nl_file);
+            continue;
+        }
 
-	while(f_read(buffer, sizeof(buffer), fp))
-	{
-	    if(buffer[0] == ',' && (p = xstrtok(buffer+1, ",")))
-	    {
-		node = atoi(p);
-		if(net == 0 || zonegate == TRUE)
-		{
-		    net = node;
-		    node = 0;
-		    zonegate = TRUE;
-		}
-		mode =  MODE_NORMAL;
-	    }
-	    else if( (p = xstrtok(buffer, ",")) && (s = xstrtok(NULL, ",")) )
-	    {
-		if(!stricmp(p, "Zone") )
-		{
-		    zone = atoi(s);
-		    net = node = 0;
-		    mode = MODE_ZONE;
-		}
-		else if(!stricmp(p, "Host") || !stricmp(p, "Region"))
-		{
-		    net  = atoi(s);
-		    node = 0;
-		    mode = MODE_HOST;
-		    zonegate = FALSE;
-		}
-		else if(!stricmp(p, "Hub"))
-		{
-		    node = atoi(s);
-		    mode = MODE_HUB;
-		}
-		else if(!stricmp(p, "Hold"))
-		{
-		    node = atoi(s);
-		    mode = MODE_HOLD;
-		}
-		else if(!stricmp(p, "Down"))
-		{
-		    node = atoi(s);
-		    mode = MODE_DOWN;
-		}
-		else if(!stricmp(p, "Pvt"))
-		{
-		    node = atoi(s);
-		    mode = MODE_PVT;
-		}
-	    }
-	    if( (p1 = save_node(zone, net, node, mode)) )
-	    {
-		if(nl_list)
-		    nl_last->next = p1;
-		else
-		    nl_list = p1;
-		nl_last = p1;
-	    }
-	}
-	fclose(fp);
+        while (f_read(buffer, sizeof(buffer), fp)) {
+            if (buffer[0] == ',' && (p = xstrtok(buffer + 1, ","))) {
+                node = atoi(p);
+                if (net == 0 || zonegate == TRUE) {
+                    net = node;
+                    node = 0;
+                    zonegate = TRUE;
+                }
+                mode = MODE_NORMAL;
+            } else if ((p = xstrtok(buffer, ",")) && (s = xstrtok(NULL, ","))) {
+                if (!stricmp(p, "Zone")) {
+                    zone = atoi(s);
+                    net = node = 0;
+                    mode = MODE_ZONE;
+                } else if (!stricmp(p, "Host") || !stricmp(p, "Region")) {
+                    net = atoi(s);
+                    node = 0;
+                    mode = MODE_HOST;
+                    zonegate = FALSE;
+                } else if (!stricmp(p, "Hub")) {
+                    node = atoi(s);
+                    mode = MODE_HUB;
+                } else if (!stricmp(p, "Hold")) {
+                    node = atoi(s);
+                    mode = MODE_HOLD;
+                } else if (!stricmp(p, "Down")) {
+                    node = atoi(s);
+                    mode = MODE_DOWN;
+                } else if (!stricmp(p, "Pvt")) {
+                    node = atoi(s);
+                    mode = MODE_PVT;
+                }
+            }
+            if ((p1 = save_node(zone, net, node, mode))) {
+                if (nl_list)
+                    nl_last->next = p1;
+                else
+                    nl_list = p1;
+                nl_last = p1;
+            }
+        }
+        fclose(fp);
     }
-    if(!nl_file)
-    {
-	fglog("ERROR: can't find nodelist file in global config");
-	return ERROR;
+    if (!nl_file) {
+        fglog("ERROR: can't find nodelist file in global config");
+        return ERROR;
     }
 
-    if(proc)
-	hubroute_write();
+    if (proc)
+        hubroute_write();
 
     return OK;
 }
@@ -318,41 +284,34 @@ void hubroute_write(void)
     debug(9, "init database %s", cf_p_hubroutedb());
     hi_init(cf_p_hubroutedb());
 
+    for (s = nl_list; s; s = s->next) {
+        link = s->node;
 
-    for(s=nl_list; s; s=s->next)
-    {
-	link = s->node;
+        if (s->mode == MODE_HUB || s->mode == MODE_HOST || s->mode == MODE_ZONE) {
+            uplink = link;
+            sprintf(buffer, "%d$%s", s->mode, old.zone ? znfp1(&old) :
+                    znfp2(&link));
+            hi_write_avail(znfp2(&link), buffer);
 
-	if(s->mode == MODE_HUB || s->mode == MODE_HOST || s->mode == MODE_ZONE)
-	{
-	    uplink = link;
-	    sprintf(buffer, "%d$%s", s->mode, old.zone ? znfp1(&old) :
-			znfp2(&link));
-	    hi_write_avail(znfp2(&link), buffer);
-
-	    if(s->mode == MODE_HOST || s->mode == MODE_ZONE)
-		old = link;
-	}
-	else
-	{
-	    sprintf(buffer, "%d$%s", s->mode, znfp2(&uplink));
-	    hi_write_avail(znfp1(&link), buffer);
-	}
+            if (s->mode == MODE_HOST || s->mode == MODE_ZONE)
+                old = link;
+        } else {
+            sprintf(buffer, "%d$%s", s->mode, znfp2(&uplink));
+            hi_write_avail(znfp1(&link), buffer);
+        }
     }
     hi_close();
 
-    for(s=nl_list; s; s=s1)
-    {
-	s1 = s->next;
-	xfree(s);
+    for (s = nl_list; s; s = s1) {
+        s1 = s->next;
+        xfree(s);
     }
 }
-
 
 /*
  * Route packet
  */
-int do_routing(char *name, FILE *fp, Packet *pkt)
+int do_routing(char *name, FILE * fp, Packet * pkt)
 {
     PktDesc *desc;
     Routing *r;
@@ -361,70 +320,63 @@ int do_routing(char *name, FILE *fp, Packet *pkt)
     Node match;
 
     desc = parse_pkt_name(name, &pkt->from, &pkt->to);
-    if(desc == NULL)
-	return ERROR;
+    if (desc == NULL)
+        return ERROR;
 
     debug(2, "Source packet: from=%s to=%s grade=%c type=%c flav=%c",
-	  znfp1(&desc->from), znfp2(&desc->to),
-	  desc->grade, desc->type, desc->flav);
+          znfp1(&desc->from), znfp2(&desc->to),
+          desc->grade, desc->type, desc->flav);
 
     /*
      * Search for matching routing commands
      */
-    if(desc->type == TYPE_NETMAIL)
-	for(r1=mkroute_first; r1; r1=r1->next)
-	{
-	    if(do_cmd_mkroute(desc, r1))
-	    	goto ready;
-	}
-
+    if (desc->type == TYPE_NETMAIL)
+        for (r1 = mkroute_first; r1; r1 = r1->next) {
+            if (do_cmd_mkroute(desc, r1))
+                goto ready;
+        }
 
     /*
      * Search for matching routing commands
      */
-    for(r=routing_first; r; r=r->next)
-	if(desc->type == r->type)
-	    for(p=r->nodes.first; p; p=p->next)
-		if(node_match(&desc->to, &p->node))
-		{
-		    match = p->node;
-		    debug(4, "routing: type=%c cmd=%c flav=%c flav_new=%c "
-			  "match=%s",
-			  r->type, r->cmd, r->flav, r->flav_new,
-			  s_znfp_print(&match, TRUE)                   );
+    for (r = routing_first; r; r = r->next)
+        if (desc->type == r->type)
+            for (p = r->nodes.first; p; p = p->next)
+                if (node_match(&desc->to, &p->node)) {
+                    match = p->node;
+                    debug(4, "routing: type=%c cmd=%c flav=%c flav_new=%c "
+                          "match=%s",
+                          r->type, r->cmd, r->flav, r->flav_new,
+                          s_znfp_print(&match, TRUE));
 
-		    if(do_cmd(desc, r, &match))
-			goto ready;
+                    if (do_cmd(desc, r, &match))
+                        goto ready;
 
-		    break;			/* Inner for loop */
-		}
+                    break;      /* Inner for loop */
+                }
 
  ready:
     /*
      * Write contents of this packet to output packet
      */
     debug(2, "Target packet: from=%s to=%s grade=%c type=%c flav=%c",
-	  znfp1(&desc->from), znfp2(&desc->to),
-	  desc->grade, desc->type, desc->flav);
+          znfp1(&desc->from), znfp2(&desc->to),
+          desc->grade, desc->type, desc->flav);
 
-
-    if(node_eq(&desc->to, &pkt->to))
-	fglog("packet for %s (%s)", znfp1(&pkt->to),
-	    flav_to_asc(desc->flav)                              );
+    if (node_eq(&desc->to, &pkt->to))
+        fglog("packet for %s (%s)", znfp1(&pkt->to), flav_to_asc(desc->flav));
     else
-	fglog("packet for %s via %s (%s)", znfp1(&pkt->to),
-	    znfp2(&desc->to), flav_to_asc(desc->flav)     );
+        fglog("packet for %s via %s (%s)", znfp1(&pkt->to),
+              znfp2(&desc->to), flav_to_asc(desc->flav));
 
     return desc->move_only ? do_move(name, fp, desc)
-	                   : do_packet(name, fp, pkt, desc);
+        : do_packet(name, fp, pkt, desc);
 }
-
-
 
 /*
  * Move packet instead of copying (for SENDMOVE command)
  */
-int do_move(char *name, FILE *fp, PktDesc *desc)
+int do_move(char *name, FILE * fp, PktDesc * desc)
 {
     long n;
 
@@ -432,234 +384,206 @@ int do_move(char *name, FILE *fp, PktDesc *desc)
 
     n = outpkt_sequencer();
     outpkt_outputname(buffer, pkt_get_outdir(),
-		      desc->grade, desc->type, desc->flav, n, "pkt");
+                      desc->grade, desc->type, desc->flav, n, "pkt");
 
     debug(5, "Rename %s -> %s", name, buffer);
-    if(rename(name, buffer) == ERROR)
-    {
-	fglog("$ERROR: can't rename %s -> %s", name, buffer);
-	return ERROR;
+    if (rename(name, buffer) == ERROR) {
+        fglog("$ERROR: can't rename %s -> %s", name, buffer);
+        return ERROR;
     }
 
     /* Set a/mtime to current time after renaming */
-    if(utime(buffer, NULL) == ERROR)
-    {
-#ifndef __CYGWIN32__		/* Some problems with utime() here */
-	fglog("$WARNING: can't set time of %s", buffer);
+    if (utime(buffer, NULL) == ERROR) {
+#ifndef __CYGWIN32__            /* Some problems with utime() here */
+        fglog("$WARNING: can't set time of %s", buffer);
 #endif
 #if 0
-	return ERROR;
+        return ERROR;
 #endif
     }
 
     return OK;
 }
 
-
-
 /*
  * Exec routing command
  */
-int do_cmd(PktDesc *desc, Routing *r, Node *match)
+int do_cmd(PktDesc * desc, Routing * r, Node * match)
 {
     int ret = FALSE;
 
-    switch(r->cmd)
-    {
+    switch (r->cmd) {
     case CMD_SEND:
-	if(desc->flav == FLAV_NORMAL)
-	{
-	    debug(4, "send %c %s", r->flav, znfp1(&desc->to));
-	    desc->flav = r->flav;
-	    desc->move_only = FALSE;
-	    /*
-	     * Special SEND syntax:
-	     *   send 1:2/3  ==  route 1:2/3.0 1:2/3.*
-	     */
-	    if(match->point == EMPTY)
-		desc->to.point = 0;
-	    ret = TRUE;
-	}
-	break;
+        if (desc->flav == FLAV_NORMAL) {
+            debug(4, "send %c %s", r->flav, znfp1(&desc->to));
+            desc->flav = r->flav;
+            desc->move_only = FALSE;
+            /*
+             * Special SEND syntax:
+             *   send 1:2/3  ==  route 1:2/3.0 1:2/3.*
+             */
+            if (match->point == EMPTY)
+                desc->to.point = 0;
+            ret = TRUE;
+        }
+        break;
 
     case CMD_SENDMOVE:
-	if(desc->flav == FLAV_NORMAL)
-	{
-	    debug(4, "sendmove %c %s", r->flav,
-		  znfp1(&desc->to));
-	    desc->flav = r->flav;
-	    desc->move_only = TRUE;
-	    ret = TRUE;
-	}
-	break;
+        if (desc->flav == FLAV_NORMAL) {
+            debug(4, "sendmove %c %s", r->flav, znfp1(&desc->to));
+            desc->flav = r->flav;
+            desc->move_only = TRUE;
+            ret = TRUE;
+        }
+        break;
 
     case CMD_ROUTE:
-	if(desc->flav == FLAV_NORMAL)
-	{
-	    debug(4, "route %c %s -> %s", r->flav,
-		  znfp1(&desc->to),
-		  znfp2(&r->nodes.first->node) );
-	    desc->flav = r->flav;
-	    desc->to = r->nodes.first->node;
-	    desc->move_only = FALSE;
-	    ret = TRUE;
-	}
-	break;
+        if (desc->flav == FLAV_NORMAL) {
+            debug(4, "route %c %s -> %s", r->flav,
+                  znfp1(&desc->to), znfp2(&r->nodes.first->node));
+            desc->flav = r->flav;
+            desc->to = r->nodes.first->node;
+            desc->move_only = FALSE;
+            ret = TRUE;
+        }
+        break;
 
     case CMD_CHANGE:
-	if(desc->flav == r->flav)
-	{
-	    debug(4, "change %c -> %c %s", r->flav, r->flav_new,
-		  znfp1(&desc->to)                );
-	    desc->flav = r->flav_new;
-	    desc->move_only = FALSE;
-	    ret = TRUE;
-	}
-	break;
+        if (desc->flav == r->flav) {
+            debug(4, "change %c -> %c %s", r->flav, r->flav_new,
+                  znfp1(&desc->to));
+            desc->flav = r->flav_new;
+            desc->move_only = FALSE;
+            ret = TRUE;
+        }
+        break;
 
     default:
-	debug(2, "unknown routing command, strange");
-	break;
+        debug(2, "unknown routing command, strange");
+        break;
     }
 
     /*
      * Set all -1 values to 0
      */
-    if(desc->to.zone ==EMPTY || desc->to.zone ==WILDCARD)
-	desc->to.zone  = 0;
-    if(desc->to.net  ==EMPTY || desc->to.net  ==WILDCARD)
-	desc->to.net   = 0;
-    if(desc->to.node ==EMPTY || desc->to.node ==WILDCARD)
-	desc->to.node  = 0;
-    if(desc->to.point==EMPTY || desc->to.point==WILDCARD)
-	desc->to.point = 0;
+    if (desc->to.zone == EMPTY || desc->to.zone == WILDCARD)
+        desc->to.zone = 0;
+    if (desc->to.net == EMPTY || desc->to.net == WILDCARD)
+        desc->to.net = 0;
+    if (desc->to.node == EMPTY || desc->to.node == WILDCARD)
+        desc->to.node = 0;
+    if (desc->to.point == EMPTY || desc->to.point == WILDCARD)
+        desc->to.point = 0;
 
     return ret;
 }
 
-
-int do_cmd_mkroute(PktDesc *desc, MkRoute *r1)
+int do_cmd_mkroute(PktDesc * desc, MkRoute * r1)
 {
     int ret = FALSE;
 
-    switch(r1->cmd)
-    {
-	case CMD_XROUTE:
-	    if(node_match(&desc->from, &((r1->links).first->node)) &&
-		node_match(&desc->to, &((r1->links).first->next->node)))
-	    {
-		debug(4, "xroute: cmd=%c flav=%c match_from=%s, match_to=%s",
-		    r1->cmd, r1->flav,
-		    s_znfp_print(&((r1->links).first->node), TRUE),
-		    s_znfp_print(&((r1->links).first->next->node), TRUE));
-		desc->to = r1->uplink;
-		desc->flav = r1->flav;
-		desc->move_only = FALSE;
-		ret = TRUE;
-	    }
-	    break;
+    switch (r1->cmd) {
+    case CMD_XROUTE:
+        if (node_match(&desc->from, &((r1->links).first->node)) &&
+            node_match(&desc->to, &((r1->links).first->next->node))) {
+            debug(4, "xroute: cmd=%c flav=%c match_from=%s, match_to=%s",
+                  r1->cmd, r1->flav,
+                  s_znfp_print(&((r1->links).first->node), TRUE),
+                  s_znfp_print(&((r1->links).first->next->node), TRUE));
+            desc->to = r1->uplink;
+            desc->flav = r1->flav;
+            desc->move_only = FALSE;
+            ret = TRUE;
+        }
+        break;
 
-	case CMD_HOSTROUTE:
-	    if(lon_search_wild(&r1->links, &desc->to))
-	    {
-		debug(4, "hostroute %c %s", r1->flav, znfp1(&desc->to));
-		desc->flav = r1->flav;
-		desc->to.node  = 0;
-		desc->to.point = 0;
-		desc->move_only = FALSE;
-		ret = TRUE;
-	    }
-	    break;
+    case CMD_HOSTROUTE:
+        if (lon_search_wild(&r1->links, &desc->to)) {
+            debug(4, "hostroute %c %s", r1->flav, znfp1(&desc->to));
+            desc->flav = r1->flav;
+            desc->to.node = 0;
+            desc->to.point = 0;
+            desc->move_only = FALSE;
+            ret = TRUE;
+        }
+        break;
 
-	case CMD_HUBROUTE:
-	    if(lon_search_wild(&r1->links, &desc->to))
-	    {
-		char *p, *p1;
-		Node node;
+    case CMD_HUBROUTE:
+        if (lon_search_wild(&r1->links, &desc->to)) {
+            char *p, *p1;
+            Node node;
 
-		if(!hist_init && nodelist_read())
-		{
-		    hi_init(cf_p_hubroutedb());
-		    hist_init = TRUE;
-		}
-		if( (p = hi_fetch(znfp1(&desc->to), 1)) )
-		{
-		    p1 = xstrtok(p, " $");
-		    if(*p1 && znfp_parse_partial(p, &node))
-		    {
-			desc->to = node;
-			desc->to.point = 0;
-			desc->move_only = FALSE;
-			ret = TRUE;
-		    }
-		}
-		else
-		{
-		    fglog("ERROR: hub for node=%s not found", znfp1(&desc->to));
-		    break;
-		}
+            if (!hist_init && nodelist_read()) {
+                hi_init(cf_p_hubroutedb());
+                hist_init = TRUE;
+            }
+            if ((p = hi_fetch(znfp1(&desc->to), 1))) {
+                p1 = xstrtok(p, " $");
+                if (*p1 && znfp_parse_partial(p, &node)) {
+                    desc->to = node;
+                    desc->to.point = 0;
+                    desc->move_only = FALSE;
+                    ret = TRUE;
+                }
+            } else {
+                fglog("ERROR: hub for node=%s not found", znfp1(&desc->to));
+                break;
+            }
 
-		desc->move_only = FALSE;
-		ret = TRUE;
-	    }
-	    break;
+            desc->move_only = FALSE;
+            ret = TRUE;
+        }
+        break;
 
-	case CMD_BOSSROUTE:
-	    if(desc->flav == r1->flav && lon_search_wild(&r1->links, &desc->to))
-	    {
-		debug(4, "route %c %s -> boss", r1->flav,
-		     znfp1(&desc->to)      );
-		desc->to.point = 0;
-		desc->move_only = FALSE;
-		ret = TRUE;
-	    }
-	    break;
+    case CMD_BOSSROUTE:
+        if (desc->flav == r1->flav && lon_search_wild(&r1->links, &desc->to)) {
+            debug(4, "route %c %s -> boss", r1->flav, znfp1(&desc->to));
+            desc->to.point = 0;
+            desc->move_only = FALSE;
+            ret = TRUE;
+        }
+        break;
     }
 
     /*
      * Set all -1 values to 0
      */
-    if(desc->to.zone ==EMPTY || desc->to.zone ==WILDCARD)
-	desc->to.zone  = 0;
-    if(desc->to.net  ==EMPTY || desc->to.net  ==WILDCARD)
-	desc->to.net   = 0;
-    if(desc->to.node ==EMPTY || desc->to.node ==WILDCARD)
-	desc->to.node  = 0;
-    if(desc->to.point==EMPTY || desc->to.point==WILDCARD)
-	desc->to.point = 0;
+    if (desc->to.zone == EMPTY || desc->to.zone == WILDCARD)
+        desc->to.zone = 0;
+    if (desc->to.net == EMPTY || desc->to.net == WILDCARD)
+        desc->to.net = 0;
+    if (desc->to.node == EMPTY || desc->to.node == WILDCARD)
+        desc->to.node = 0;
+    if (desc->to.point == EMPTY || desc->to.point == WILDCARD)
+        desc->to.point = 0;
 
     return ret;
 
 }
-
 
 /*
  * Add our ^AVia line
  */
-void add_via(Textlist *list, Node *gate)
+void add_via(Textlist * list, Node * gate)
 {
-    if(!repack_mode)
+    if (!repack_mode)
 #ifndef FTS_VIA
-    tl_appendf(list, "\001Via FIDOGATE/%s %s, %s\r",
-		     PROGRAM, znf1(gate),
-		     date(DATE_VIA, NULL)  );
+        tl_appendf(list, "\001Via FIDOGATE/%s %s, %s\r",
+                   PROGRAM, znf1(gate), date(DATE_VIA, NULL));
 #else
-    tl_appendf(list, "\001Via %s @%s FIDOGATE/%s\r",
-		     znf1(gate),
-		     date(DATE_VIA, NULL), PROGRAM );
-#endif /* FTS_VIA */
+        tl_appendf(list, "\001Via %s @%s FIDOGATE/%s\r",
+                   znf1(gate), date(DATE_VIA, NULL), PROGRAM);
+#endif                          /* FTS_VIA */
 }
-
-
 
 /*
  * Read and process packets, writing messages to output packet
  */
-int do_packet(char *pkt_name, FILE *pkt_file, Packet *pkt, PktDesc *desc)
+int do_packet(char *pkt_name, FILE * pkt_file, Packet * pkt, PktDesc * desc)
 {
-    Message msg;			/* Message header */
-    Textlist tl;			/* Textlist for message body */
-    MsgBody body;			/* Message body of FTN message */
+    Message msg;                /* Message header */
+    Textlist tl;                /* Textlist for message body */
+    MsgBody body;               /* Message body of FTN message */
     int type, ret;
     FILE *fp;
 
@@ -675,117 +599,101 @@ int do_packet(char *pkt_name, FILE *pkt_file, Packet *pkt, PktDesc *desc)
     cf_set_zone(desc->to.zone);
 
     fp = outpkt_open(&desc->from, &desc->to,
-		      desc->grade, desc->type, desc->flav, FALSE);
-    if(fp == NULL)
-    {
-	fclose(pkt_file);
-	TMPS_RETURN(ERROR);
+                     desc->grade, desc->type, desc->flav, FALSE);
+    if (fp == NULL) {
+        fclose(pkt_file);
+        TMPS_RETURN(ERROR);
     }
 
     /*
      * Read message from input packet and write to output packet
      */
     type = pkt_get_int16(pkt_file);
-    ret  = OK;
+    ret = OK;
 
-    while(type == MSG_TYPE && !xfeof(pkt_file))
-    {
-	/*
-	 * Read message header
-	 */
-	msg.node_from = pkt->from;
-	msg.node_to   = pkt->to;
-	if(pkt_get_msg_hdr(pkt_file, &msg, strict) == ERROR)
-	{
-	    fglog("ERROR: reading input packet");
-	    ret = ERROR;
-	    break;
-	}
+    while (type == MSG_TYPE && !xfeof(pkt_file)) {
+        /*
+         * Read message header
+         */
+        msg.node_from = pkt->from;
+        msg.node_to = pkt->to;
+        if (pkt_get_msg_hdr(pkt_file, &msg, strict) == ERROR) {
+            fglog("ERROR: reading input packet");
+            ret = ERROR;
+            break;
+        }
 
-	if(msg.attr & MSG_DIRECT && !node_eq(&desc->to, &pkt->to))
-	{
-	    fclose(fp);
-	    debug(1,"routing: direct (%s)", znfp1(&pkt->to));
-	    desc->to = pkt->to;
-	    return do_move(pkt_name, pkt_file, desc);
-	}
+        if (msg.attr & MSG_DIRECT && !node_eq(&desc->to, &pkt->to)) {
+            fclose(fp);
+            debug(1, "routing: direct (%s)", znfp1(&pkt->to));
+            desc->to = pkt->to;
+            return do_move(pkt_name, pkt_file, desc);
+        }
 
-	/*
-	 * Read & parse message body
-	 */
-	if( pkt_get_body_parse(pkt_file, &body, &msg.node_from, &msg.node_to) != OK )
-	{
-	    fglog("ERROR: parsing message body");
-	    fclose(pkt_file);
-	    TMPS_RETURN(ERROR);
-	}
+        /*
+         * Read & parse message body
+         */
+        if (pkt_get_body_parse(pkt_file, &body, &msg.node_from, &msg.node_to) !=
+            OK) {
+            fglog("ERROR: parsing message body");
+            fclose(pkt_file);
+            TMPS_RETURN(ERROR);
+        }
 
-	if(body.area == NULL)
-	{
-	    /*
-	     * NetMail
-	     */
-	    /* Retrieve address from kludges */
-	    kludge_pt_intl(&body, &msg, TRUE);
-	    /* Write message header and body */
-	    if( pkt_put_msg_hdr(fp, &msg, TRUE) != OK )
-	    {
-		ret = severe_error=ERROR;
-		break;
-	    }
-	    if( msg_put_msgbody(fp, &body) != OK )
-	    {
-		ret = severe_error=ERROR;
-		break;
-	    }
-	}
-	else
-	{
-	    /*
-	     * EchoMail
-	     */
-	    /* Write message header and body */
-	    if( pkt_put_msg_hdr(fp, &msg, FALSE) != OK )
-	    {
-		ret = severe_error=ERROR;
-		break;
-	    }
-	    if( msg_put_msgbody(fp, &body) != OK )
-	    {
-		ret = severe_error=ERROR;
-		break;
-	    }
-	}
+        if (body.area == NULL) {
+            /*
+             * NetMail
+             */
+            /* Retrieve address from kludges */
+            kludge_pt_intl(&body, &msg, TRUE);
+            /* Write message header and body */
+            if (pkt_put_msg_hdr(fp, &msg, TRUE) != OK) {
+                ret = severe_error = ERROR;
+                break;
+            }
+            if (msg_put_msgbody(fp, &body) != OK) {
+                ret = severe_error = ERROR;
+                break;
+            }
+        } else {
+            /*
+             * EchoMail
+             */
+            /* Write message header and body */
+            if (pkt_put_msg_hdr(fp, &msg, FALSE) != OK) {
+                ret = severe_error = ERROR;
+                break;
+            }
+            if (msg_put_msgbody(fp, &body) != OK) {
+                ret = severe_error = ERROR;
+                break;
+            }
+        }
 
-	/*
-	 * Exit if signal received
-	 */
-	if(signal_exit)
-	{
-	    ret = severe_error=ERROR;
-	    break;
-	}
+        /*
+         * Exit if signal received
+         */
+        if (signal_exit) {
+            ret = severe_error = ERROR;
+            break;
+        }
 
-	tmps_freeall();
+        tmps_freeall();
     } /**while(type == MSG_TYPE)**/
 
-
-    if(fclose(pkt_file) == ERROR)
-    {
-	fglog("$ERROR: can't close packet %s", pkt_name);
-	TMPS_RETURN(severe_error=ERROR);
+    if (fclose(pkt_file) == ERROR) {
+        fglog("$ERROR: can't close packet %s", pkt_name);
+        TMPS_RETURN(severe_error = ERROR);
     }
 
-    if(ret == OK && *pkt_name != '\0')
-	if ( unlink(pkt_name)) {
-	    fglog("$ERROR: can't unlink packet %s", pkt_name);
-	    TMPS_RETURN(ERROR);
-	}
+    if (ret == OK && *pkt_name != '\0')
+        if (unlink(pkt_name)) {
+            fglog("$ERROR: can't unlink packet %s", pkt_name);
+            TMPS_RETURN(ERROR);
+        }
 
     TMPS_RETURN(ret);
 }
-
-
 
 /*
  * Process one packet file
@@ -799,24 +707,22 @@ int do_file(char *pkt_name)
      * Open packet and read header
      */
     pkt_file = fopen(pkt_name, R_MODE);
-    if(!pkt_file) {
-	fglog("$ERROR: can't open packet %s", pkt_name);
-	TMPS_RETURN(ERROR);
+    if (!pkt_file) {
+        fglog("$ERROR: can't open packet %s", pkt_name);
+        TMPS_RETURN(ERROR);
     }
 
-    if(pkt_get_hdr(pkt_file, &pkt) == ERROR)
-    {
-	fglog("ERROR: reading header from %s", pkt_name);
-	TMPS_RETURN(ERROR);
+    if (pkt_get_hdr(pkt_file, &pkt) == ERROR) {
+        fglog("ERROR: reading header from %s", pkt_name);
+        TMPS_RETURN(ERROR);
     }
 
     /*
      * Route it
      */
-    if(do_routing(pkt_name, pkt_file, &pkt) == ERROR)
-    {
-	fglog("ERROR: in processing %s", pkt_name);
-	TMPS_RETURN(ERROR);
+    if (do_routing(pkt_name, pkt_file, &pkt) == ERROR) {
+        fglog("ERROR: in processing %s", pkt_name);
+        TMPS_RETURN(ERROR);
     }
 
     TMPS_RETURN(OK);
@@ -829,56 +735,51 @@ int do_repack(char *dir, char *wildcard, int repack_time)
     char *pkt_name;
     char buf[MAXPATH];
 
-
-    if(repack_time != -1)
-	now = time(NULL) - repack_time;
+    if (repack_time != -1)
+        now = time(NULL) - repack_time;
     else
-	now = 0;
+        now = 0;
 
     dir_sortmode(DIR_SORTMTIME);
 
-    if(dir_open(dir, wildcard, TRUE) == ERROR)
-    {
-	return ERROR;
+    if (dir_open(dir, wildcard, TRUE) == ERROR) {
+        return ERROR;
     }
 
-    for(pkt_name=dir_get_mtime(now, TRUE); pkt_name;
-			    pkt_name=dir_get_mtime(now, FALSE))
-    {
+    for (pkt_name = dir_get_mtime(now, TRUE); pkt_name;
+         pkt_name = dir_get_mtime(now, FALSE)) {
 #ifdef DO_BSY_FILES
-	BUF_COPY(buf, pkt_name);
-	buf[strlen_zero(buf)-3] = '\0';
-	BUF_APPEND(buf, "bsy");
+        BUF_COPY(buf, pkt_name);
+        buf[strlen_zero(buf) - 3] = '\0';
+        BUF_APPEND(buf, "bsy");
 
-# ifdef NFS_SAFE_LOCK_FILES
-    if(lock_lockfile_nfs(buf, NOWAIT, NULL) == ERROR)
-# else
-    if(lock_lockfile(buf, NOWAIT) == ERROR)
-# endif
-	continue;
-#endif /* DO_BSY_FILES */
+#ifdef NFS_SAFE_LOCK_FILES
+        if (lock_lockfile_nfs(buf, NOWAIT, NULL) == ERROR)
+#else
+        if (lock_lockfile(buf, NOWAIT) == ERROR)
+#endif
+            continue;
+#endif                          /* DO_BSY_FILES */
 
-	sprintf(buf, "%s/toss/route/m%c%c%05lx.pkt", cf_p_spooldir(),
-	    TYPE_NETMAIL, FLAV_NORMAL, outpkt_sequencer());
+        sprintf(buf, "%s/toss/route/m%c%c%05lx.pkt", cf_p_spooldir(),
+                TYPE_NETMAIL, FLAV_NORMAL, outpkt_sequencer());
 
-	debug(5, "rename %s -> %s", pkt_name, buf);
-	rename(pkt_name, buf);
+        debug(5, "rename %s -> %s", pkt_name, buf);
+        rename(pkt_name, buf);
 
-	if(do_file(buf) == ERROR)
-	{
-	    dir_close();
-	    debug(3,"do_file(): error processing");
-	    return ERROR;
-	}
-	if ( unlink(buf)) {
-	    debug(1,"$ERROR: can't unlink packet %s", buf);
-	}
+        if (do_file(buf) == ERROR) {
+            dir_close();
+            debug(3, "do_file(): error processing");
+            return ERROR;
+        }
+        if (unlink(buf)) {
+            debug(1, "$ERROR: can't unlink packet %s", buf);
+        }
     }
     dir_close();
 
     return OK;
 }
-
 
 /*
  * Function called on SIGINT
@@ -889,22 +790,23 @@ void prog_signal(int signum)
 
     signal_exit = TRUE;
 
-    switch(signum)
-    {
+    switch (signum) {
     case SIGHUP:
-	name = " by SIGHUP";  break;
+        name = " by SIGHUP";
+        break;
     case SIGINT:
-	name = " by SIGINT";  break;
+        name = " by SIGINT";
+        break;
     case SIGQUIT:
-	name = " by SIGQUIT"; break;
+        name = " by SIGQUIT";
+        break;
     default:
-	name = "";            break;
+        name = "";
+        break;
     }
 
     fglog("KILLED%s: exit forced", name);
 }
-
-
 
 /*
  * Usage messages
@@ -915,11 +817,10 @@ void short_usage(void)
     fprintf(stderr, "       %s --help  for more information\n", PROGRAM);
 }
 
-
 void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
-	    version_global(), PROGRAM, version_local(VERSION) );
+            version_global(), PROGRAM, version_local(VERSION));
 
     fprintf(stderr, "usage:   %s [-options] [packet ...]\n\n", PROGRAM);
     fprintf(stderr, "\
@@ -938,8 +839,6 @@ options: -g --grade G                 processing grade\n\
 	 -u --uplink-addr Z:N/F.P     set FTN uplink address\n");
 }
 
-
-
 /***** main() ****************************************************************/
 
 int main(int argc, char **argv)
@@ -948,31 +847,30 @@ int main(int argc, char **argv)
     char *p;
     short int l_flag = FALSE;
     char p_flag = FALSE;
-    char *I_flag=NULL, *O_flag=NULL, *r_flag=NULL, *M_flag=NULL;
-    char *c_flag=NULL;
-    char *a_flag=NULL, *u_flag=NULL;
+    char *I_flag = NULL, *O_flag = NULL, *r_flag = NULL, *M_flag = NULL;
+    char *c_flag = NULL;
+    char *a_flag = NULL, *u_flag = NULL;
     int repack_time = -1;
     char *pkt_name;
     char pattern[16];
     int aso = FALSE;
 
     int option_index;
-    static struct option long_options[] =
-    {
-	{ "grade",        1, 0, 'g'},	/* grade */
-	{ "in-dir",       1, 0, 'I'},	/* Set inbound packets directory */
-	{ "lock-file",    0, 0, 'l'},	/* Create lock file while processing */
-	{ "out-dir",      1, 0, 'O'},	/* Set packet directory */
-	{ "routing-file", 1, 0, 'r'},	/* Set routing file */
-	{ "maxopen",      1, 0, 'M'},	/* Set max # open packet files */
-	{ "repack",       1, 0, 'p'},
+    static struct option long_options[] = {
+        {"grade", 1, 0, 'g'},   /* grade */
+        {"in-dir", 1, 0, 'I'},  /* Set inbound packets directory */
+        {"lock-file", 0, 0, 'l'},   /* Create lock file while processing */
+        {"out-dir", 1, 0, 'O'}, /* Set packet directory */
+        {"routing-file", 1, 0, 'r'},    /* Set routing file */
+        {"maxopen", 1, 0, 'M'}, /* Set max # open packet files */
+        {"repack", 1, 0, 'p'},
 
-	{ "verbose",      0, 0, 'v'},	/* More verbose */
-	{ "help",         0, 0, 'h'},	/* Help */
-	{ "config",       1, 0, 'c'},	/* Config file */
-	{ "addr",         1, 0, 'a'},	/* Set FIDO address */
-	{ "uplink-addr",  1, 0, 'u'},	/* Set FIDO uplink address */
-	{ 0,              0, 0, 0  }
+        {"verbose", 0, 0, 'v'}, /* More verbose */
+        {"help", 0, 0, 'h'},    /* Help */
+        {"config", 1, 0, 'c'},  /* Config file */
+        {"addr", 1, 0, 'a'},    /* Set FIDO address */
+        {"uplink-addr", 1, 0, 'u'}, /* Set FIDO uplink address */
+        {0, 0, 0, 0}
     };
 
     log_program(PROGRAM);
@@ -980,55 +878,54 @@ int main(int argc, char **argv)
     /* Init configuration */
     cf_initialize();
 
-
     while ((c = getopt_long(argc, argv, "g:O:pI:lr:M:vhc:a:u:",
-			    long_options, &option_index     )) != EOF)
-	switch (c) {
-	/***** ftnroute options *****/
-	case 'g':
-	    g_flag = *optarg;
-	    break;
-	case 'I':
-	    I_flag = optarg;
-	    break;
-        case 'l':
-	    l_flag = TRUE;
+                            long_options, &option_index)) != EOF)
+        switch (c) {
+    /***** ftnroute options *****/
+        case 'g':
+            g_flag = *optarg;
             break;
-	case 'O':
-	    O_flag = optarg;
-	    break;
-	case 'r':
-	    r_flag = optarg;
-	    break;
-	case 'M':
-	    M_flag = optarg;
-	    break;
+        case 'I':
+            I_flag = optarg;
+            break;
+        case 'l':
+            l_flag = TRUE;
+            break;
+        case 'O':
+            O_flag = optarg;
+            break;
+        case 'r':
+            r_flag = optarg;
+            break;
+        case 'M':
+            M_flag = optarg;
+            break;
         case 'p':
-	    p_flag = TRUE;
+            p_flag = TRUE;
             break;
 
-	/***** Common options *****/
-	case 'v':
-	    verbose++;
-	    break;
-	case 'h':
-	    usage();
-	    return 0;
-	    break;
-	case 'c':
-	    c_flag = optarg;
-	    break;
-	case 'a':
-	    a_flag = optarg;
-	    break;
-	case 'u':
-	    u_flag = optarg;
-	    break;
-	default:
-	    short_usage();
-	    return EX_USAGE;
-	    break;
-	}
+    /***** Common options *****/
+        case 'v':
+            verbose++;
+            break;
+        case 'h':
+            usage();
+            return 0;
+            break;
+        case 'c':
+            c_flag = optarg;
+            break;
+        case 'a':
+            a_flag = optarg;
+            break;
+        case 'u':
+            u_flag = optarg;
+            break;
+        default:
+            short_usage();
+            return EX_USAGE;
+            break;
+        }
 
     /*
      * Read config file
@@ -1038,25 +935,24 @@ int main(int argc, char **argv)
     /*
      * Process config options
      */
-    if(a_flag)
-	cf_set_addr(a_flag);
-    if(u_flag)
-	cf_set_uplink(u_flag);
+    if (a_flag)
+        cf_set_addr(a_flag);
+    if (u_flag)
+        cf_set_uplink(u_flag);
 
     cf_debug();
 
     /*
      * Process optional config statements
      */
-    if(!M_flag && (p = cf_get_string("MaxOpenFiles", TRUE)))
-    {
-	M_flag = p;
+    if (!M_flag && (p = cf_get_string("MaxOpenFiles", TRUE))) {
+        M_flag = p;
     }
-    if(M_flag)
-	outpkt_set_maxopen(atoi(M_flag));
+    if (M_flag)
+        outpkt_set_maxopen(atoi(M_flag));
 
     if (cf_get_string("AmigaStyleOutbound", TRUE) != NULL)
-	aso = TRUE;
+        aso = TRUE;
 
     strict = (cf_get_string("FTNStrictPktCheck", TRUE) != NULL);
     /*
@@ -1065,199 +961,167 @@ int main(int argc, char **argv)
     BUF_EXPAND(in_dir, I_flag ? I_flag : cf_p_toss_toss());
     pkt_outdir(O_flag ? O_flag : cf_p_toss_route(), NULL);
 
-    routing_init(r_flag ? r_flag : cf_p_routing() );
+    routing_init(r_flag ? r_flag : cf_p_routing());
     passwd_init();
 
     /* Install signal/exit handlers */
-    signal(SIGHUP,  prog_signal);
-    signal(SIGINT,  prog_signal);
+    signal(SIGHUP, prog_signal);
+    signal(SIGINT, prog_signal);
     signal(SIGQUIT, prog_signal);
-
 
     ret = EXIT_OK;
 
-    if(p_flag)
-    {
-	char buf[MAXPATH];
-	char *base;
-	char *btbase;
+    if (p_flag) {
+        char buf[MAXPATH];
+        char *base;
+        char *btbase;
 
-	if((p = cf_get_string("RepackMailTime", TRUE)))
-	{
-	    repack_time = atoi(p) * 3600;
-	}
+        if ((p = cf_get_string("RepackMailTime", TRUE))) {
+            repack_time = atoi(p) * 3600;
+        }
 
-	btbase = cf_p_btbasedir();
+        btbase = cf_p_btbasedir();
 
-	BUF_COPY(pattern, "*.[codh]ut");
-	if(g_flag)
-    	    pattern[0] = g_flag;
+        BUF_COPY(pattern, "*.[codh]ut");
+        if (g_flag)
+            pattern[0] = g_flag;
 
-	/* Lock file */
-	if(l_flag)
-	    if(lock_program(PROGRAM, NOWAIT) == ERROR )
-	    {
-		/* Already busy */
-		exit_free();
-		return EXIT_BUSY;
-	    }
+        /* Lock file */
+        if (l_flag)
+            if (lock_program(PROGRAM, NOWAIT) == ERROR) {
+                /* Already busy */
+                exit_free();
+                return EXIT_BUSY;
+            }
 
+        repack_mode = TRUE;
 
-	repack_mode = TRUE;
+        if (aso) {
 
-	if (aso)
-	{
+            if ((base = cf_out_get(0)) == NULL) {
+                fglog("$ERROR: can't find ASO outbound directory (%s/..)",
+                      btbase);
+                exit_free();
+                return EX_OSERR;
+            } else {
+                BUF_COPY3(buf, btbase, "/", base);
 
-	    if( (base = cf_out_get(0)) == NULL )
-	    {
-		fglog("$ERROR: can't find ASO outbound directory (%s/..)",
-		      btbase);
-		exit_free();
-		return EX_OSERR;
-	    }
-	    else
-	    {
-		BUF_COPY3(buf, btbase, "/", base);
+                if (do_repack(buf, pattern, repack_time) == ERROR) {
+                    debug(1, "error processing %s", buf);
+                }
+            }
+        } else {                /* non-aso */
+            for (c = 0; (base = cf_out_get(c)) != NULL; c++) {
+                BUF_COPY3(buf, btbase, "/", base);
 
-		if(do_repack(buf, pattern, repack_time) == ERROR)
-		{
-		    debug(1, "error processing %s", buf);
-		}
-	    }
-	}
-	else /* non-aso */
-	{
-	    for(c=0; (base = cf_out_get(c)) != NULL; c++)
-	    {
-		BUF_COPY3(buf, btbase, "/", base);
+                if (do_repack(buf, pattern, repack_time) == ERROR) {
+                    debug(1, "error processing %s", buf);
+                    continue;
+                }
+                /* Open and read directory */
+                if (dir_open(buf, "?????????.pnt", TRUE) == ERROR) {
+                    fglog("$ERROR: can't open directory %s", buf);
+                    exit_free();
+                    return EX_OSERR;
+                } else {
+                    char *buf2;
+                    for (buf2 = dir_get(TRUE); buf2; buf2 = dir_get(FALSE)) {
+                        if (do_repack(buf2, pattern, repack_time) == ERROR) {
+                            ret = EXIT_ERROR;
+                            break;
+                        }
+                    }
+                    dir_close();
+                    if (ret == EXIT_ERROR)
+                        break;
+                }
+            }
+        }                       /* non-aso */
+        /* Lock file */
 
-		if(do_repack(buf, pattern, repack_time) == ERROR)
-		{
-		    debug(1, "error processing %s", buf);
-		    continue;
-		}
-		/* Open and read directory */
-		if(dir_open(buf, "?????????.pnt", TRUE) == ERROR)
-		{
-		    fglog("$ERROR: can't open directory %s", buf);
-		    exit_free();
-		    return EX_OSERR;
-		}
-		else
-		{
-		    char *buf2;
-		    for(buf2=dir_get(TRUE); buf2; buf2=dir_get(FALSE))
-		    {
-			if(do_repack(buf2, pattern, repack_time) == ERROR)
-			{
-			    ret = EXIT_ERROR;
-			    break;
-			}
-		    }
-		    dir_close();
-		    if(ret == EXIT_ERROR)
-			break;
-		}
-	    }
-	} /* non-aso */
-	/* Lock file */
+        if (l_flag)
+            unlock_program(PROGRAM);
 
-	if(l_flag)
-	    unlock_program(PROGRAM);
+    } else if (optind >= argc) {
+        BUF_COPY(pattern, "????????.pkt");
+        if (g_flag)
+            pattern[0] = g_flag;
 
-    }
-    else if(optind >= argc)
-    {
-	BUF_COPY(pattern, "????????.pkt");
-	if(g_flag)
-	    pattern[0] = g_flag;
+        /* process packet files in directory */
+        dir_sortmode(DIR_SORTMTIME);
+        if (dir_open(in_dir, pattern, TRUE) == ERROR) {
+            fglog("$ERROR: can't open directory %s", in_dir);
+            exit_free();
+            return EX_OSERR;
+        }
 
-	/* process packet files in directory */
-	dir_sortmode(DIR_SORTMTIME);
-	if(dir_open(in_dir, pattern, TRUE) == ERROR)
-	{
-	    fglog("$ERROR: can't open directory %s", in_dir);
-	    exit_free();
-	    return EX_OSERR;
-	}
+        /* Lock file */
+        if (l_flag)
+            if (lock_program(PROGRAM, NOWAIT) == ERROR) {
+                /* Already busy */
+                exit_free();
+                return EXIT_BUSY;
+            }
 
-	/* Lock file */
-	if(l_flag)
-	    if(lock_program(PROGRAM, NOWAIT) == ERROR)
-	    {
-		/* Already busy */
-		exit_free();
-		return EXIT_BUSY;
-	    }
+        repack_mode = FALSE;
 
-	repack_mode = FALSE;
+        for (pkt_name = dir_get(TRUE); pkt_name; pkt_name = dir_get(FALSE))
+            if (do_file(pkt_name) == ERROR) {
+                ret = EXIT_ERROR;
+                break;
+            }
 
-	for(pkt_name=dir_get(TRUE); pkt_name; pkt_name=dir_get(FALSE))
-	    if(do_file(pkt_name) == ERROR)
-	    {
-		ret = EXIT_ERROR;
-		break;
-	    }
+        dir_close();
 
+        /* Lock file */
+        if (l_flag)
+            unlock_program(PROGRAM);
+    } else {
+        /* Lock file */
+        if (l_flag)
+            if (lock_program(PROGRAM, NOWAIT) == ERROR) {
+                /* Already busy */
+                exit_free();
+                return EXIT_BUSY;
+            }
 
-	dir_close();
+        /*
+         * Process packet files on command line
+         */
+        repack_mode = FALSE;
 
-	/* Lock file */
-	if(l_flag)
-	    unlock_program(PROGRAM);
-    }
-    else
-    {
-	/* Lock file */
-	if(l_flag)
-	    if(lock_program(PROGRAM, NOWAIT) == ERROR)
-	    {
-		/* Already busy */
-		exit_free();
-		return EXIT_BUSY;
-	    }
+        for (; optind < argc; optind++)
+            if (do_file(argv[optind]) == ERROR) {
+                ret = EXIT_ERROR;
+                break;
+            }
 
-	/*
-	 * Process packet files on command line
-	 */
-	repack_mode = FALSE;
-
-	for(; optind<argc; optind++)
-	    if(do_file(argv[optind]) == ERROR)
-	    {
-		ret = EXIT_ERROR;
-		break;
-	    }
-
-	/* Lock file */
-	if(l_flag)
-	    unlock_program(PROGRAM);
+        /* Lock file */
+        if (l_flag)
+            unlock_program(PROGRAM);
     }
 
     outpkt_close();
 
-    if(p_flag)
-    {
-	BUF_COPY4(buffer, cf_p_libexecdir(), "/ftnpack -I ", cf_p_spooldir(),
-			    "/toss/route");
-	debug(9, "exec: %s", buffer);
+    if (p_flag) {
+        BUF_COPY4(buffer, cf_p_libexecdir(), "/ftnpack -I ", cf_p_spooldir(),
+                  "/toss/route");
+        debug(9, "exec: %s", buffer);
 
-	if(verbose)
-	{
-    	    log_file("stdout");
-	    BUF_APPEND(buffer, " -");
-	    for(c = verbose; c; c--)
-		BUF_APPEND(buffer, "v");
+        if (verbose) {
+            log_file("stdout");
+            BUF_APPEND(buffer, " -");
+            for (c = verbose; c; c--)
+                BUF_APPEND(buffer, "v");
         }
 
-	c = run_system(buffer);
-	debug(5,"ftnpack exit (%d)", c);
+        c = run_system(buffer);
+        debug(5, "ftnpack exit (%d)", c);
     }
 
-    if(hist_init)
-	hi_close();
+    if (hist_init)
+        hi_close();
 
     exit_free();
     return ret;
 }
-

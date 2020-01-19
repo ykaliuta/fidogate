@@ -32,8 +32,6 @@
 
 #include "fidogate.h"
 
-
-
 /*
  * Sequencer: read number from file and increment it
  */
@@ -41,7 +39,6 @@ long sequencer(char *seqname)
 {
     return sequencer_nx(seqname, TRUE);
 }
-
 
 long sequencer_nx(char *seqname, int err_abort)
 {
@@ -51,49 +48,42 @@ long sequencer_nx(char *seqname, int err_abort)
 
     /* Open file, create if necessary */
     BUF_EXPAND(filename, seqname);
-    if( (fp = fopen(filename, RP_MODE)) == NULL )
-	if(errno == ENOENT)
-	{
-	    if( !(fp = fopen(filename, WP_MODE)))
-	    {
-		fp = fopen(cf_p_seq_pack(), RP_MODE);
-		if (fp == NULL) {
-		    if(errno == ENOENT)
-		    {
-			mkdir(cf_p_seq_pack(), DIR_MODE);
-			fp = fopen(filename, WP_MODE);
-		    }
-		    else
-			return ERROR;
-		} else {
-		    fclose(fp);
-		    return ERROR;
-		}
-	    }
-	}
+    if ((fp = fopen(filename, RP_MODE)) == NULL)
+        if (errno == ENOENT) {
+            if (!(fp = fopen(filename, WP_MODE))) {
+                fp = fopen(cf_p_seq_pack(), RP_MODE);
+                if (fp == NULL) {
+                    if (errno == ENOENT) {
+                        mkdir(cf_p_seq_pack(), DIR_MODE);
+                        fp = fopen(filename, WP_MODE);
+                    } else
+                        return ERROR;
+                } else {
+                    fclose(fp);
+                    return ERROR;
+                }
+            }
+        }
 
-    if(fp == NULL)
-    {
-	if(err_abort)
-	{
-	    fglog("$ERROR: can't access sequencer file %s", filename);
-	    exit(EX_OSFILE);
-	}
-	else
-	    return ERROR;
+    if (fp == NULL) {
+        if (err_abort) {
+            fglog("$ERROR: can't access sequencer file %s", filename);
+            exit(EX_OSFILE);
+        } else
+            return ERROR;
     }
 
     /* Lock file, get number and increment it */
     lock_file(fp);
 
     /* filename[] is also used as a buffer for reading the seq value */
-    if(fgets(filename, sizeof(filename), fp))
-	seqn = atol(filename);
+    if (fgets(filename, sizeof(filename), fp))
+        seqn = atol(filename);
     else
-	seqn = 0;
+        seqn = 0;
     seqn++;
-    if(seqn < 0)
-	seqn = 0;
+    if (seqn < 0)
+        seqn = 0;
 
     rewind(fp);
     fprintf(fp, "%ld\n", seqn);

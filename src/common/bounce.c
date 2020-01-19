@@ -28,8 +28,6 @@
 
 #include "fidogate.h"
 
-
-
 /*
  * Set CC address for bounced messages
  */
@@ -40,120 +38,110 @@ void bounce_set_cc(char *cc)
     bounce_ccmail = cc;
 }
 
-
-
 /*
  * Print text file with substitutions for %x
  */
-int print_file_subst(FILE *in, FILE *out, Message *msg, char *rfc_to, Textlist *body)
+int print_file_subst(FILE * in, FILE * out, Message * msg, char *rfc_to,
+                     Textlist * body)
 {
     int c;
     char *hg;
 
-    while((c = getc(in)) != EOF)
-    {
-	if(c == '%')
-	{
-	    c = getc(in);
-	    switch(c)
-	    {
-	    case 'F':			/* From node */
-		fputs( znfp1(&msg->node_from), out);
-		break;
-	    case 'T':			/* To node */
-		fputs( znfp1(&msg->node_to), out);
-		break;
-	    case 'O':			/* Orig node */
-		fputs( znfp1(&msg->node_orig), out);
-		break;
-	    case 'd':			/* Date */
-		fputs( date(NULL, &msg->date), out);
-		break;
-	    case 't':			/* To name */
-		fputs( msg->name_to, out);
-		break;
-	    case 'f':			/* From name */
-		fputs( msg->name_from, out);
-		break;
-	    case 's':			/* Subject */
-		fputs( msg->subject, out);
-		break;
-	    case 'R':			/* RFC To: */
-		fputs( rfc_to, out);
-		break;
-	    case 'M':			/* Message */
-		tl_print(body, out);
-		break;
-	    case 'A':			/* RFC From: */
-		if((hg = s_header_getcomplete("From")))
-		    fputs( hg, out);
-		break;
-	    case 'D':			/* RFC Date: */
-	    	if((hg = header_get("Date")))
-		    fputs( hg, out);
-		break;
-	    case 'N':			/* RFC Newsgroups: */
-		if((hg = header_get("Newsgroups")))
-		    fputs( hg, out);
-		break;
-	    case 'S':			/* RFC Subject: */
-		if((hg = header_get("Subject")))
-		    fputs( hg, out);
-		break;
-	    }
-	}
-	else
-	    putc(c, out);
+    while ((c = getc(in)) != EOF) {
+        if (c == '%') {
+            c = getc(in);
+            switch (c) {
+            case 'F':          /* From node */
+                fputs(znfp1(&msg->node_from), out);
+                break;
+            case 'T':          /* To node */
+                fputs(znfp1(&msg->node_to), out);
+                break;
+            case 'O':          /* Orig node */
+                fputs(znfp1(&msg->node_orig), out);
+                break;
+            case 'd':          /* Date */
+                fputs(date(NULL, &msg->date), out);
+                break;
+            case 't':          /* To name */
+                fputs(msg->name_to, out);
+                break;
+            case 'f':          /* From name */
+                fputs(msg->name_from, out);
+                break;
+            case 's':          /* Subject */
+                fputs(msg->subject, out);
+                break;
+            case 'R':          /* RFC To: */
+                fputs(rfc_to, out);
+                break;
+            case 'M':          /* Message */
+                tl_print(body, out);
+                break;
+            case 'A':          /* RFC From: */
+                if ((hg = s_header_getcomplete("From")))
+                    fputs(hg, out);
+                break;
+            case 'D':          /* RFC Date: */
+                if ((hg = header_get("Date")))
+                    fputs(hg, out);
+                break;
+            case 'N':          /* RFC Newsgroups: */
+                if ((hg = header_get("Newsgroups")))
+                    fputs(hg, out);
+                break;
+            case 'S':          /* RFC Subject: */
+                if ((hg = header_get("Subject")))
+                    fputs(hg, out);
+                break;
+            }
+        } else
+            putc(c, out);
     }
 
     return ferror(in);
 }
 
-
-
 /*
  * Create header for bounced mail
  */
 int bounce_header(char *to)
-             				/* To: */
+                            /* To: */
 {
     /*
      * Open new mail
      */
-    if(mail_open('m') == ERROR)
-	return ERROR;
+    if (mail_open('m') == ERROR)
+        return ERROR;
 
     /*
      * Create RFC header
      */
+    fprintf(mail_file('m'), "From Mailer-Daemon %s\n", date(DATE_FROM, NULL));
+    fprintf(mail_file('m'), "Date: %s\n", date(NULL, NULL));
     fprintf(mail_file('m'),
-	    "From Mailer-Daemon %s\n", date(DATE_FROM, NULL) );
-    fprintf(mail_file('m'),
-	    "Date: %s\n", date(NULL, NULL) );
-    fprintf(mail_file('m'),
-	    "From: Mailer-Daemon@%s (Mail Delivery Subsystem)\n", cf_fqdn() );
+            "From: Mailer-Daemon@%s (Mail Delivery Subsystem)\n", cf_fqdn());
     fprintf(mail_file('m'), "To: %s\n", to);
-    if(bounce_ccmail)
-	fprintf(mail_file('m'), "Cc: %s\n", bounce_ccmail);
+    if (bounce_ccmail)
+        fprintf(mail_file('m'), "Cc: %s\n", bounce_ccmail);
     /* Additional header may follow in message file */
 
     return OK;
 }
 
-
-
 /*
  * Bounce mail
  */
-void bounce_mail(char *reason, RFCAddr *addr_from, Message *msg, char *rfc_to, Textlist *body)
+void bounce_mail(char *reason, RFCAddr * addr_from, Message * msg, char *rfc_to,
+                 Textlist * body)
 {
     char *to;
     FILE *in;
 
     to = s_rfcaddr_to_asc(addr_from, TRUE);
 
-    if( bounce_header(to) == ERROR)
-	return;
+    if (bounce_header(to) == ERROR)
+        return;
 
     BUF_COPY3(buffer, cf_p_configdir(), "/bounce.", reason);
 

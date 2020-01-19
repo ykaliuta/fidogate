@@ -32,29 +32,23 @@
 
 #include "fidogate.h"
 
-
-
 /*
  * Initialize FTNAddr
  */
-void ftnaddr_init(FTNAddr *ftn)
+void ftnaddr_init(FTNAddr * ftn)
 {
     ftn->name[0] = 0;
     node_clear(&ftn->node);
 }
 
-
-
 /*
  * Invalidate FTNAddr
  */
-void ftnaddr_invalid(FTNAddr *ftn)
+void ftnaddr_invalid(FTNAddr * ftn)
 {
     ftn->name[0] = 0;
     node_invalid(&ftn->node);
 }
-
-
 
 /*
  * Parse string, return FTNAddr
@@ -72,40 +66,34 @@ FTNAddr ftnaddr_parse(char *s)
 
     /* Delimiter is first '@' */
     d = strchr(s, '@');
-    if(!d)
-	d = s + strlen(s);
+    if (!d)
+        d = s + strlen(s);
 
     /* Copy user name */
     str_copy_range(ftn.name, sizeof(ftn.name), s, d);
     strip_space(ftn.name);
 
     /* Parse address */
-    if(*d == '@')
-	d++;
-    while(*d && is_space(*d))
-	d++;
-    if(*d)
-    {
-	if(asc_to_node(d, &ftn.node, FALSE) == ERROR)
-	    node_invalid(&ftn.node);
-    }
-    else
-	node_clear(&ftn.node);
+    if (*d == '@')
+        d++;
+    while (*d && is_space(*d))
+        d++;
+    if (*d) {
+        if (asc_to_node(d, &ftn.node, FALSE) == ERROR)
+            node_invalid(&ftn.node);
+    } else
+        node_clear(&ftn.node);
 
     return ftn;
 }
 
-
-
 /*
  * Output FTNAddr
  */
-char *s_ftnaddr_print(FTNAddr *ftn)
+char *s_ftnaddr_print(FTNAddr * ftn)
 {
     return s_printf("%s @ %s", ftn->name, s_znfp_print(&ftn->node, FALSE));
 }
-
-
 
 #ifdef TEST /****************************************************************/
 
@@ -117,10 +105,9 @@ int main(int argc, char *argv[])
     cf_initialize();
     cf_read_config_file(DEFAULT_CONFIG_MAIN);
 
-    if(argc != 2)
-    {
-	fprintf(stderr, "usage: ftnaddr 'user name @ Z:N/F.P'\n");
-	exit(1);
+    if (argc != 2) {
+        fprintf(stderr, "usage: ftnaddr 'user name @ Z:N/F.P'\n");
+        exit(1);
     }
 
     ftn = ftnaddr_parse(argv[1]);

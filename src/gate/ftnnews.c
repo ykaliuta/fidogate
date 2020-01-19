@@ -36,16 +36,12 @@
 #include <signal.h>
 #include <string.h>
 
-
-
 #define PROGRAM		"ftnnews"
 #define CONFIG		DEFAULT_CONFIG_GATE
 
 #define RFC2FTN		"rfc2ftn"
 
 #define MAXARGS		64
-
-
 
 /*
  * Usage messages
@@ -57,11 +53,10 @@ void short_usage(void)
     exit(EX_USAGE);
 }
 
-
 void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
-	    version_global(), PROGRAM, version_local(VERSION) );
+            version_global(), PROGRAM, version_local(VERSION));
 
     fprintf(stderr, "usage:   %s [-options]\n\n", PROGRAM);
     fprintf(stderr, "\
@@ -75,30 +70,27 @@ options: -b --news-batch              (passed on as -b)\n\
     exit(0);
 }
 
-
-
 /***** main() ****************************************************************/
 
 int main(int argc, char **argv)
 {
     int c, n;
-    int b_flag=FALSE;
-    int n_flag=FALSE;
-    char *f_flag=NULL;
-    char *m_flag=NULL;
+    int b_flag = FALSE;
+    int n_flag = FALSE;
+    char *f_flag = NULL;
+    char *m_flag = NULL;
     char cmd[MAXPATH];
     char *args[MAXARGS];
 
     int option_index;
-    static struct option long_options[] =
-    {
-	{ "news-batch",   0, 0, 'b'},	/* Process news batch */
-	{ "news-mode",    0, 0, 'n'},	/* Set news mode */
-	{ "batch-file",   1, 0, 'f'},	/* Read batch file for list of articles */
-	{ "maxmsg",       1, 0, 'm'},	/* New output packet after N msgs */
+    static struct option long_options[] = {
+        {"news-batch", 0, 0, 'b'},  /* Process news batch */
+        {"news-mode", 0, 0, 'n'},   /* Set news mode */
+        {"batch-file", 1, 0, 'f'},  /* Read batch file for list of articles */
+        {"maxmsg", 1, 0, 'm'},  /* New output packet after N msgs */
 
-	{ "help",         0, 0, 'h'},	/* Help */
-	{ 0,              0, 0, 0  }
+        {"help", 0, 0, 'h'},    /* Help */
+        {0, 0, 0, 0}
     };
 
 #ifdef SIGPIPE
@@ -113,32 +105,32 @@ int main(int argc, char **argv)
     cf_read_config_file(CONFIG);
 
     while ((c = getopt_long(argc, argv, "bnf:m:h",
-			    long_options, &option_index     )) != EOF)
-	switch (c) {
-	/***** ftnmail options *****/
-	case 'b':
-	    b_flag = TRUE;
-	    break;
-	case 'n':
-	    n_flag = TRUE;
-	    break;
-	case 'f':
-	    f_flag = optarg;
-	    break;
-	case 'm':
-	    m_flag = optarg;
-	    break;
+                            long_options, &option_index)) != EOF)
+        switch (c) {
+    /***** ftnmail options *****/
+        case 'b':
+            b_flag = TRUE;
+            break;
+        case 'n':
+            n_flag = TRUE;
+            break;
+        case 'f':
+            f_flag = optarg;
+            break;
+        case 'm':
+            m_flag = optarg;
+            break;
 
-	/***** common options *****/
-	case 'h':
-	    usage();
-	    exit(0);
-	    break;
-	default:
-	    short_usage();
-	    exit(EX_USAGE);
-	    break;
-	}
+    /***** common options *****/
+        case 'h':
+            usage();
+            exit(0);
+            break;
+        default:
+            short_usage();
+            exit(EX_USAGE);
+            break;
+        }
 
     /* complete path of rfc2ftn */
     BUF_COPY3(cmd, cf_p_libexecdir(), "/", RFC2FTN);
@@ -146,23 +138,19 @@ int main(int argc, char **argv)
     /* build args[] */
     n = 0;
     args[n++] = RFC2FTN;
-    if(b_flag)
-    {
-	args[n++] = "-b";
+    if (b_flag) {
+        args[n++] = "-b";
     }
-    if(n_flag)
-    {
-	args[n++] = "-n";
+    if (n_flag) {
+        args[n++] = "-n";
     }
-    if(f_flag)
-    {
-	args[n++] = "-f";
-	args[n++] = f_flag;
+    if (f_flag) {
+        args[n++] = "-f";
+        args[n++] = f_flag;
     }
-    if(m_flag)
-    {
-	args[n++] = "-m";
-	args[n++] = m_flag;
+    if (m_flag) {
+        args[n++] = "-m";
+        args[n++] = m_flag;
     }
 
     args[n++] = NULL;
@@ -170,14 +158,14 @@ int main(int argc, char **argv)
 #if 0
     /* debug */
     printf("cmd=%s\n", cmd);
-    for(n=0; args[n]; n++)
-	printf("args[%d]=%s\n", n, args[n]);
+    for (n = 0; args[n]; n++)
+        printf("args[%d]=%s\n", n, args[n]);
     exit(0);
 #endif
 
     /* exec */
-    if( execv(cmd, args) == ERROR )
-	fglog("$can't exec %s", cmd);
+    if (execv(cmd, args) == ERROR)
+        fglog("$can't exec %s", cmd);
 
     /* Only reached if error */
     exit(1);

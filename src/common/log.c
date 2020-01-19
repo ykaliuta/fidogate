@@ -40,7 +40,6 @@ int verbose = 0;
 #include <syslog.h>
 #endif
 
-
 #ifndef HAVE_STRERROR
 /*
  * strerror()  ---  get string from sys_errlist[]
@@ -48,14 +47,14 @@ int verbose = 0;
 char *strerror(int errnum)
 {
 #ifndef OS2
-# ifndef __FreeBSD__
+#ifndef __FreeBSD__
     extern int sys_nerr;
     extern char *sys_errlist[];
-# endif
+#endif
 #endif
 
     if (errnum > 0 && errnum < sys_nerr)
-	return sys_errlist[errnum];
+        return sys_errlist[errnum];
     return "unknown error";
 }
 #endif /**HAVE_STRERROR**/
@@ -125,7 +124,7 @@ static void log_finish_init(struct logger *l)
      * environment variables in this case.
      */
     if (getuid() != geteuid())
-	l->suppress_debug = TRUE;
+        l->suppress_debug = TRUE;
 }
 
 #if !defined(HAVE_SYSLOG) || !defined(HAVE_SYSLOG_H)
@@ -133,10 +132,9 @@ static int log_init_syslog(struct logger *l)
 {
     return ERROR;
 }
-#else /* SYSLOG ENABLED */
+#else                           /* SYSLOG ENABLED */
 
-static void syslog_debug(struct logger *l,
-			 const char *fmt, va_list args)
+static void syslog_debug(struct logger *l, const char *fmt, va_list args)
 {
     vsyslog(LOG_DEBUG, fmt, args);
 }
@@ -166,7 +164,7 @@ static void syslog_log(struct logger *l, const char *fmt, va_list args)
 {
     vsyslog(LOG_NOTICE, *fmt == '$' ? fmt + 1 : fmt, args);
     if (*fmt == '$')
-	syslog(LOG_NOTICE, "(errno=%d: %m)", errno);
+        syslog(LOG_NOTICE, "(errno=%d: %m)", errno);
 }
 
 static void syslog_deinit(struct logger *l)
@@ -188,9 +186,9 @@ static struct logger_ops syslog_ops = {
     .name_changed = syslog_name_changed,
 };
 
-#endif /* defined(HAVE_SYSLOG) || !defined(HAVE_SYSLOG_H) */
+#endif                          /* defined(HAVE_SYSLOG) || !defined(HAVE_SYSLOG_H) */
 
-static void log_init_stream(struct logger *l, FILE *f)
+static void log_init_stream(struct logger *l, FILE * f)
 {
     BUF_COPY(l->logfile_fullname, "-");
     l->logfile = f;
@@ -212,30 +210,30 @@ static void log_init_file_or_stream(struct logger *l, char *fname)
     FILE *f = NULL;
 
     if (streq(fname, "stdout"))
-	f = stdout;
+        f = stdout;
     if (streq(fname, "stderr"))
-	f = stderr;
+        f = stderr;
 
     if (f == NULL)
-	log_init_file(l, fname);
+        log_init_file(l, fname);
     else
-	log_init_stream(l, f);
+        log_init_stream(l, f);
 }
 
 static int log_init(struct logger *l, char *fname)
 {
     if (l->inited) {
-	fprintf(stderr, "ERROR: log subsystem already inited\n");
-	return ERROR;
+        fprintf(stderr, "ERROR: log subsystem already inited\n");
+        return ERROR;
     }
 
     if (fname == NULL)
-	fname = cf_p_logfile();
+        fname = cf_p_logfile();
 
     if (streq(fname, "syslog"))
-	log_init_syslog(l);
+        log_init_syslog(l);
     else
-	log_init_file_or_stream(l, fname);
+        log_init_file_or_stream(l, fname);
 
     log_finish_init(l);
     l->inited = TRUE;
@@ -246,7 +244,7 @@ static int log_init(struct logger *l, char *fname)
 static void log_deinit(struct logger *l)
 {
     if (l->ops->deinit)
-	l->ops->deinit(l);
+        l->ops->deinit(l);
     l->inited = FALSE;
 }
 
@@ -255,19 +253,19 @@ static int open_logfile(struct logger *l)
     FILE *f;
 
     if (l->logfile) {
-	fprintf(stderr, "ERROR: Logfile (%s) already openned\n",
-		l->logfile_fullname);
-	return ERROR;
+        fprintf(stderr, "ERROR: Logfile (%s) already openned\n",
+                l->logfile_fullname);
+        return ERROR;
     }
 
     f = fopen(l->logfile_fullname, A_MODE);
     if (f == NULL) {
-	fprintf(stderr,
-		"%s WARNING: can't open log file %s (errno=%d: %s)\n",
-		l->strid, l->logfile_fullname, errno, strerror(errno));
-	if (!verbose)
-	    verbose = -1;
-	return ERROR;
+        fprintf(stderr,
+                "%s WARNING: can't open log file %s (errno=%d: %s)\n",
+                l->strid, l->logfile_fullname, errno, strerror(errno));
+        if (!verbose)
+            verbose = -1;
+        return ERROR;
     }
     l->logfile = f;
     return OK;
@@ -276,21 +274,20 @@ static int open_logfile(struct logger *l)
 static void close_logfile(struct logger *l)
 {
     if (l->logfile)
-	fclose(l->logfile);
+        fclose(l->logfile);
     l->logfile = NULL;
 }
 
-static void log_print(FILE *stream, char *name, int err,
-		      const char *fmt, va_list args)
+static void log_print(FILE * stream, char *name, int err,
+                      const char *fmt, va_list args)
 {
     char buf[32];
 
     fprintf(stream, "%s %s ",
-	    date_buf(buf, sizeof(buf), DATE_LOG, NULL, -1), name);
+            date_buf(buf, sizeof(buf), DATE_LOG, NULL, -1), name);
     vfprintf(stream, *fmt == '$' ? fmt + 1 : fmt, args);
     if (*fmt == '$')
-	fprintf(stream, " (errno=%d: %s)",
-		err, strerror(err));
+        fprintf(stream, " (errno=%d: %s)", err, strerror(err));
     fprintf(stream, "\n");
 }
 
@@ -303,7 +300,7 @@ static void file_log(struct logger *l, const char *fmt, va_list args)
 
     r = open_logfile(l);
     if (r != OK)
-	return;
+        return;
 
     log_print(l->logfile, l->strid, save_errno, fmt, args);
 
@@ -330,6 +327,7 @@ static void file_deinit(struct logger *l)
 {
     close_logfile(l);
 }
+
 /* STREAM variants */
 
 static void stream_log(struct logger *l, const char *fmt, va_list args)
@@ -339,11 +337,10 @@ static void stream_log(struct logger *l, const char *fmt, va_list args)
 
 /* DEFAULT */
 
-static void default_log(struct logger *l,
-			const char *fmt, va_list args)
+static void default_log(struct logger *l, const char *fmt, va_list args)
 {
     if (!l->inited)
-	log_init(l, NULL);
+        log_init(l, NULL);
     l->ops->log(l, fmt, args);
 }
 
@@ -366,25 +363,24 @@ void debug(int lvl, const char *fmt, ...)
     va_list args;
 
     if (verbose < lvl)
-	return;
+        return;
 
     if (!l->inited) {
-	l->debugfile = stderr;
-	log_finish_init(l);
+        l->debugfile = stderr;
+        log_finish_init(l);
     }
 
     va_start(args, fmt);
 
     if (l->suppress_debug) {
-	l->ops->suppressed(l,
-			   "debug called for uid=%d euid=%d, "
-			   "output disabled\n",
-			   (int)getuid(), (int)geteuid());
-	goto out;
+        l->ops->suppressed(l,
+                           "debug called for uid=%d euid=%d, "
+                           "output disabled\n", (int)getuid(), (int)geteuid());
+        goto out;
     }
 
     l->ops->debug(l, fmt, args);
-out:
+ out:
     va_end(args);
 }
 
@@ -401,10 +397,10 @@ void log_program(char *name)
 {
     struct logger *l = &the_logger;
 
-    if (name == NULL) /* shouldn't happen */
-	return;
+    if (name == NULL)           /* shouldn't happen */
+        return;
 
     BUF_COPY(l->strid, name);
     if (l->ops->name_changed)
-	l->ops->name_changed(l);
+        l->ops->name_changed(l);
 }

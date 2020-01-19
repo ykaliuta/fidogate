@@ -33,31 +33,23 @@
 #include "fidogate.h"
 #include "getopt.h"
 
-
-
 #define PROGRAM		"ftnhatch"
 #define CONFIG		DEFAULT_CONFIG_MAIN
-
-
 
 #define CREATOR		"by FIDOGATE/ftnhatch"
 
 #define MY_AREASBBS	"FAreasBBS"
 #define MY_CONTEXT	"ff"
 
-
-
 /*
  * Prototypes
  */
-static  mode_t			tick_mode = 0600;
-static  char    		pass_path[MAXPATH];
+static mode_t tick_mode = 0600;
+static char pass_path[MAXPATH];
 
-int	hatch			(char *, char *, char *, char *);
-void	short_usage		(void);
-void	usage			(void);
-
-
+int hatch(char *, char *, char *, char *);
+void short_usage(void);
+void usage(void);
 
 /*
  * Hatch file
@@ -77,37 +69,34 @@ int hatch(char *area, char *file, char *desc, char *replaces)
     /*
      * Lookup area
      */
-    if( (bbs = areasbbs_lookup(area)) == NULL )
-    {
-	/* Unknown area: log it, dump it. ;-) */
-	fglog("ERROR: unknown area %s", area);
-	return EXIT_ERROR;
+    if ((bbs = areasbbs_lookup(area)) == NULL) {
+        /* Unknown area: log it, dump it. ;-) */
+        fglog("ERROR: unknown area %s", area);
+        return EXIT_ERROR;
     }
-    if( bbs->zone != -1 )
-	cf_set_zone( bbs->zone );
-    if( bbs->addr.zone != -1 )
-	cf_set_curr( &bbs->addr );
+    if (bbs->zone != -1)
+        cf_set_zone(bbs->zone);
+    if (bbs->addr.zone != -1)
+        cf_set_curr(&bbs->addr);
 #ifdef BEST_AKA
-    else if(bbs->nodes.first)
-	cf_set_best(bbs->nodes.first->node.zone, bbs->nodes.first->node.net,
-	            bbs->nodes.first->node.node);
-#endif /* BEST_AKA */
+    else if (bbs->nodes.first)
+        cf_set_best(bbs->nodes.first->node.zone, bbs->nodes.first->node.net,
+                    bbs->nodes.first->node.node);
+#endif                          /* BEST_AKA */
     /*
      * Make sure that file exists
      */
     BUF_COPY3(file_name, bbs->dir, "/", file);
-    if(stat(file_name, &st) == ERROR)
-    {
-	fglog("$ERROR: can't stat() file %s", file_name);
-	return EXIT_ERROR;
+    if (stat(file_name, &st) == ERROR) {
+        fglog("$ERROR: can't stat() file %s", file_name);
+        return EXIT_ERROR;
     }
     file_size = st.st_size;
     file_time = st.st_mtime;
-    file_crc  = crc32_file(file_name);
+    file_crc = crc32_file(file_name);
 
     debug(4, "file: name=%s size=%ld time=%ld crc=%08lx",
-	  file_name, file_size, (long)file_time, file_crc);
-
+          file_name, file_size, (long)file_time, file_crc);
 
     /*
      * Build Tick struct
@@ -116,48 +105,45 @@ int hatch(char *area, char *file, char *desc, char *replaces)
 
     now = time(NULL);
 
-    tic.origin	 = cf_n_addr();
-    tic.from	 = cf_n_addr();
+    tic.origin = cf_n_addr();
+    tic.from = cf_n_addr();
     /* tic.to set by hatch_one() */
-    tic.area	 = area;
-    tic.file	 = file;
+    tic.area = area;
+    tic.file = file;
     tic.replaces = replaces;
-    tl_append( &tic.desc, xlat_s( desc, NULL ) );
-    tic.crc	 = file_crc;
-    tic.created	 = CREATOR;
-    tic.size	 = file_size;
+    tl_append(&tic.desc, xlat_s(desc, NULL));
+    tic.crc = file_crc;
+    tic.created = CREATOR;
+    tic.size = file_size;
     tl_appendf(&tic.path, "%s %ld %s",
-	       znf1(cf_addr()), (long)now, date(NULL, &now) );
+               znf1(cf_addr()), (long)now, date(NULL, &now));
     lon_add(&tic.seenby, cf_addr());
     lon_join(&tic.seenby, &bbs->nodes);
     /* tic.pw set by hatch_one() */
-    tic.date	 = file_time;
+    tic.date = file_time;
 
     /*
      * Send to all nodes
      */
     ret = EXIT_OK;
-    for(p=bbs->nodes.first; p; p=p->next)
-    {
-	if (lon_search(&(bbs->passive),&(p->node)))
-	    continue;
-	node = p->node;
-	if(cf_addr()->zone == node.zone && cf_addr()->net == node.net &&
-	   cf_addr()->node == node.node && cf_addr()->point == node.point)
-	    continue;
-	debug(4, "sending to %s", znfp1(&node));
+    for (p = bbs->nodes.first; p; p = p->next) {
+        if (lon_search(&(bbs->passive), &(p->node)))
+            continue;
+        node = p->node;
+        if (cf_addr()->zone == node.zone && cf_addr()->net == node.net &&
+            cf_addr()->node == node.node && cf_addr()->point == node.point)
+            continue;
+        debug(4, "sending to %s", znfp1(&node));
 #ifndef FECHO_PASSTHROUGHT
-	if(tick_send(&tic, &node, file_name, tick_mode) == ERROR)
+        if (tick_send(&tic, &node, file_name, tick_mode) == ERROR)
 #else
-	if(tick_send(&tic, &node, file_name,0, tick_mode, pass_path) == ERROR)
-#endif /* FECHO_PASSTHROUGHT */
-	    ret = EXIT_ERROR;
+        if (tick_send(&tic, &node, file_name, 0, tick_mode, pass_path) == ERROR)
+#endif                          /* FECHO_PASSTHROUGHT */
+            ret = EXIT_ERROR;
     }
 
     return ret;
 }
-
-
 
 /*
  * Usage messages
@@ -165,19 +151,18 @@ int hatch(char *area, char *file, char *desc, char *replaces)
 void short_usage(void)
 {
     fprintf(stderr, "usage: %s [-options] AREA FILE \"DESCRIPTION\"\n",
-	    PROGRAM);
+            PROGRAM);
     fprintf(stderr, "       %s --help  for more information\n", PROGRAM);
     exit(EX_USAGE);
 }
 
-
 void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
-	    version_global(), PROGRAM, version_local(VERSION) );
+            version_global(), PROGRAM, version_local(VERSION));
 
     fprintf(stderr, "usage:   %s [-options] AREA FILE \"DESCRIPTION\"\n\n",
-	    PROGRAM);
+            PROGRAM);
     fprintf(stderr, "\
 options: -b --fareas-bbs NAME         use alternate FAREAS.BBS\n\
          -r --replaces FILES          add Replaces entry\n\
@@ -191,73 +176,68 @@ options: -b --fareas-bbs NAME         use alternate FAREAS.BBS\n\
     exit(0);
 }
 
-
-
 int main(int argc, char **argv)
 {
     char *areas_bbs = NULL;
-    char *r_flag=NULL;
+    char *r_flag = NULL;
     int c;
-    char *c_flag=NULL;
-    char *a_flag=NULL, *u_flag=NULL;
+    char *c_flag = NULL;
+    char *a_flag = NULL, *u_flag = NULL;
     int ret;
     char *area, *file, *desc, *p;
-    char *cs_out = NULL, *cs_in  = NULL;
+    char *cs_out = NULL, *cs_in = NULL;
 
     int option_index;
-    static struct option long_options[] =
-	{
-	    { "fareas-bbs",   1, 0, 'b'},
-	    { "replaces",     1, 0, 'r'},
+    static struct option long_options[] = {
+        {"fareas-bbs", 1, 0, 'b'},
+        {"replaces", 1, 0, 'r'},
 
-	    { "verbose",      0, 0, 'v'},	/* More verbose */
-	    { "help",         0, 0, 'h'},	/* Help */
-	    { "config",       1, 0, 'c'},	/* Config file */
-	    { "addr",         1, 0, 'a'},	/* Set FIDO address */
-	    { "uplink-addr",  1, 0, 'u'},	/* Set FIDO uplink address */
-	    { 0,              0, 0, 0  }
-	};
+        {"verbose", 0, 0, 'v'}, /* More verbose */
+        {"help", 0, 0, 'h'},    /* Help */
+        {"config", 1, 0, 'c'},  /* Config file */
+        {"addr", 1, 0, 'a'},    /* Set FIDO address */
+        {"uplink-addr", 1, 0, 'u'}, /* Set FIDO uplink address */
+        {0, 0, 0, 0}
+    };
 
     log_program(PROGRAM);
 
     /* Init configuration */
     cf_initialize();
 
-
     while ((c = getopt_long(argc, argv, "b:r:vhc:a:u:",
-			    long_options, &option_index     )) != EOF)
-	switch (c)
-	{
-	    /***** ftnhatch options *****/
-	case 'b':
-	    areas_bbs = optarg;
-	    break;
-	case 'r':
-	    r_flag = optarg;
-	    break;
+                            long_options, &option_index)) != EOF)
+        switch (c) {
+        /***** ftnhatch options *****/
+        case 'b':
+            areas_bbs = optarg;
+            break;
+        case 'r':
+            r_flag = optarg;
+            break;
 
-	    /***** Common options *****/
-	case 'v':
-	    verbose++;
-	    break;
-	case 'h':
-	    usage();
-	    exit(0);
-	    break;
-	case 'c':
-	    c_flag = optarg;
-	    break;
-	case 'a':
-	    a_flag = optarg;
-	    break;
-	case 'u':
-	    u_flag = optarg;
-	    break;
-	default:
-	    short_usage();
-	    exit(EX_USAGE);
-	    break;
-	}
+        /***** Common options *****/
+        case 'v':
+            verbose++;
+            break;
+        case 'h':
+            usage();
+            exit(0);
+            break;
+        case 'c':
+            c_flag = optarg;
+            break;
+        case 'a':
+            a_flag = optarg;
+            break;
+        case 'u':
+            u_flag = optarg;
+            break;
+        default:
+            short_usage();
+            exit(EX_USAGE);
+            break;
+        }
 
     /*
      * Read config file
@@ -267,20 +247,20 @@ int main(int argc, char **argv)
     /*
      * Process config options
      */
-    if(a_flag)
-	cf_set_addr(a_flag);
-    if(u_flag)
-	cf_set_uplink(u_flag);
+    if (a_flag)
+        cf_set_addr(a_flag);
+    if (u_flag)
+        cf_set_uplink(u_flag);
 
     cf_debug();
 
-    routing_init(cf_p_routing());	/* SNP:FIXME: add `-r' command-line option? */
+    routing_init(cf_p_routing());   /* SNP:FIXME: add `-r' command-line option? */
 
     /*
      * Command line parameters
      */
-    if(argc-optind != 3)
-	short_usage();
+    if (argc - optind != 3)
+        short_usage();
     area = argv[optind++];
     file = argv[optind++];
     desc = argv[optind++];
@@ -289,45 +269,38 @@ int main(int argc, char **argv)
      * Get name of fareas.bbs file from config file
      */
     if (areas_bbs == NULL)
-	areas_bbs = cf_get_string(MY_AREASBBS, TRUE);
+        areas_bbs = cf_get_string(MY_AREASBBS, TRUE);
 
-    if(areas_bbs == NULL)
-    {
-	fprintf(stderr, "%s: no areas.bbs specified\n", PROGRAM);
-	exit_free();
-	exit(EX_USAGE);
+    if (areas_bbs == NULL) {
+        fprintf(stderr, "%s: no areas.bbs specified\n", PROGRAM);
+        exit_free();
+        exit(EX_USAGE);
     }
 
-    if ( (p = cf_get_string("TickMode", TRUE)) )
-    {
-	tick_mode = atooct(p) & 0777;
-    }
-    else
-    {
-	tick_mode = PACKET_MODE;
+    if ((p = cf_get_string("TickMode", TRUE))) {
+        tick_mode = atooct(p) & 0777;
+    } else {
+        tick_mode = PACKET_MODE;
     }
 #if defined(USE_FILEBOX) || defined (FECHO_PASSTHROUGHT)
-    if( (p = cf_get_string("PassthroughtBoxesDir", TRUE)) )
-    {
-	BUF_EXPAND(pass_path, p);
+    if ((p = cf_get_string("PassthroughtBoxesDir", TRUE))) {
+        BUF_EXPAND(pass_path, p);
     }
-#endif /* USE_FILEBOX || FECHO_PASSTHROUGHT */
-    if( ( p = cf_get_string( "DefaultCharset", TRUE ) ) )
-    {
-	cs_out = xstrtok( p, ":" );
-	xstrtok( NULL, ":" );
-	cs_in = xstrtok( NULL, ":" );
-	charset_init();
-	charset_set_in_out( cs_in, cs_out );
+#endif                          /* USE_FILEBOX || FECHO_PASSTHROUGHT */
+    if ((p = cf_get_string("DefaultCharset", TRUE))) {
+        cs_out = xstrtok(p, ":");
+        xstrtok(NULL, ":");
+        cs_in = xstrtok(NULL, ":");
+        charset_init();
+        charset_set_in_out(cs_in, cs_out);
     }
 
     /* Read PASSWD */
     passwd_init();
     /* Read FAreas.BBS */
-    if(areasbbs_init(areas_bbs) == ERROR)
-    {
-	fglog("$ERROR: can't open %s", areas_bbs);
-	ret = EX_OSFILE;
+    if (areasbbs_init(areas_bbs) == ERROR) {
+        fglog("$ERROR: can't open %s", areas_bbs);
+        ret = EX_OSFILE;
     }
 
     /* Hatch it! */

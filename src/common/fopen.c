@@ -32,32 +32,28 @@
 
 #include "fidogate.h"
 
-
-
 /*
  * fopen_expand_name() --- expand file name and open file
  */
-FILE *fopen_expand_name( char *name, char *mode, int err_abort ) {
+FILE *fopen_expand_name(char *name, char *mode, int err_abort)
+{
 
     char xname[MAXPATH];
     FILE *fp = NULL;
 
-    if( name ) {
-        BUF_EXPAND( xname, name );
-        fp = fopen( xname, mode );
-        if( fp == NULL ) {
-	    if( err_abort ) {
-	        fglog( "$ERROR: can't open %s", xname );
-	        exit( EX_OSFILE );
-	    }
-	    else
-	        fglog( "$WARNING: can't open %s", xname );
+    if (name) {
+        BUF_EXPAND(xname, name);
+        fp = fopen(xname, mode);
+        if (fp == NULL) {
+            if (err_abort) {
+                fglog("$ERROR: can't open %s", xname);
+                exit(EX_OSFILE);
+            } else
+                fglog("$WARNING: can't open %s", xname);
         }
     }
     return fp;
 }
-
-
 
 /*
  * xfopen() --- expand file name, open file, check for error

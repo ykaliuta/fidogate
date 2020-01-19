@@ -32,87 +32,70 @@
 
 #include "fidogate.h"
 
-static int is_qpx		(int);
-static int x2toi		(char *);
-void	   mime_free		(void);
+static int is_qpx(int);
+static int x2toi(char *);
+void mime_free(void);
 
 static MIMEInfo *mime_list = NULL;
 
-
-
-static char* mime_get_main_charset()
+static char *mime_get_main_charset()
 {
     MIMEInfo *mime;
     char *charset;
-    mime = get_mime( s_header_getcomplete("MIME-Version"),
-		     s_header_getcomplete("Content-Type"),
-		     s_header_getcomplete("Content-Transfer-Encoding"));
+    mime = get_mime(s_header_getcomplete("MIME-Version"),
+                    s_header_getcomplete("Content-Type"),
+                    s_header_getcomplete("Content-Transfer-Encoding"));
     charset = strsave(mime->type_charset);
     mime_free();
     return charset;
 }
-
 
 static int is_qpx(int c)
 {
     return isxdigit(c) /**is_digit(c) || (c>='A' && c<='F')**/ ;
 }
 
-
 static int x2toi(char *s)
 {
     int val = 0;
     int n;
 
-    n = toupper(*s) - (isalpha(*s) ? 'A'-10 : '0');
-    val = val*16 + n;
+    n = toupper(*s) - (isalpha(*s) ? 'A' - 10 : '0');
+    val = val * 16 + n;
     s++;
-    n = toupper(*s) - (isalpha(*s) ? 'A'-10 : '0');
-    val = val*16 + n;
+    n = toupper(*s) - (isalpha(*s) ? 'A' - 10 : '0');
+    val = val * 16 + n;
 
     return val;
 }
-
-
 
 /*
  * Dequote string with MIME-style quoted-printable =XX
  */
 char *mime_dequote(char *d, size_t n, char *s)
 {
-    int i, c=0;
+    int i, c = 0;
 
-    for(i=0; i<n-1 && *s; i++, s++)
-    {
-	if(s[0] == '=')/* MIME quoted printable */
-	{
-	    if(is_qpx(s[1]) && is_qpx(s[2]))	/* =XX */
-	    {
-	        c = x2toi(s+1);
-		s += 2;
-	    }
-	    else if(s[1]=='\n'           ||		/* =<LF> and */
-		    (s[1]=='\r' && s[2]=='\n')  )	/* =<CR><LF> */
-	    {
-		break;
-	    }
-	}
-	else if( s[0] == '_' ) /* Underscore */
-	{
-	    c = ' ';
-	}
-	else
-	{					   	 /* Nothing special to do */
-	    c = *s;
-	}
-	d[i] = c;
+    for (i = 0; i < n - 1 && *s; i++, s++) {
+        if (s[0] == '=') {      /* MIME quoted printable */
+            if (is_qpx(s[1]) && is_qpx(s[2])) { /* =XX */
+                c = x2toi(s + 1);
+                s += 2;
+            } else if (s[1] == '\n' ||  /* =<LF> and */
+                       (s[1] == '\r' && s[2] == '\n')) {    /* =<CR><LF> */
+                break;
+            }
+        } else if (s[0] == '_') {   /* Underscore */
+            c = ' ';
+        } else {                /* Nothing special to do */
+            c = *s;
+        }
+        d[i] = c;
     }
     d[i] = 0;
 
     return d;
 }
-
-
 
 /*
  * Decode MIME RFC1522 header
@@ -141,25 +124,32 @@ char *mime_dequote(char *d, size_t n, char *s)
  */
 int mime_b64toint(char c)
 {
-    if (('A' <= c) && ('Z' >= c)) return (       c - 'A');
-    else if (('a' <= c) && ('z' >= c)) return (0x1a + c - 'a');
-    else if (('0' <= c) && ('9' >= c)) return (0x34 + c - '0');
-    else if ('+' == c)                 return 0x3e;
-    else if ('/' == c)                 return 0x3f;
-    else if ('=' == c)                 return 0x40;
-    else                               return ERROR;
+    if (('A' <= c) && ('Z' >= c))
+        return (c - 'A');
+    else if (('a' <= c) && ('z' >= c))
+        return (0x1a + c - 'a');
+    else if (('0' <= c) && ('9' >= c))
+        return (0x34 + c - '0');
+    else if ('+' == c)
+        return 0x3e;
+    else if ('/' == c)
+        return 0x3f;
+    else if ('=' == c)
+        return 0x40;
+    else
+        return ERROR;
 }
 
 char mime_inttob64(int a)
 {
     char c = (char)(a & 0x0000003f);
-    if(c <= 0x19)
+    if (c <= 0x19)
         return c + 'A';
-    if(c <= 0x33)
+    if (c <= 0x33)
         return c - 0x1a + 'a';
-    if(c <= 0x3d)
+    if (c <= 0x3d)
         return c - 0x34 + '0';
-    if(c == 0x3e)
+    if (c == 0x3e)
         return '+';
     else
         return '/';
@@ -167,18 +157,22 @@ char mime_inttob64(int a)
 
 int mime_qptoint(char c)
 {
-    if (('0' <= c) && ('9' >= c))	return (       c - '0');
-    else if (('A' <= c) && ('F' >= c))	return (0x0a + c - 'A');
-    else if (('a' <= c) && ('f' >= c))	return (0x0a + c - 'a');
-    else                              	return ERROR;
+    if (('0' <= c) && ('9' >= c))
+        return (c - '0');
+    else if (('A' <= c) && ('F' >= c))
+        return (0x0a + c - 'A');
+    else if (('a' <= c) && ('f' >= c))
+        return (0x0a + c - 'a');
+    else
+        return ERROR;
 }
 
 /* rfc 2045 */
 static bool mime_qp_is_plain(int c)
 {
     return ((c >= '%') && (c < '@') && (c != '='))
-	|| ((c >= 'A') && (c <= 'Z'))
-	|| ((c >= 'a') && (c <= 'z'));
+        || ((c >= 'A') && (c <= 'Z'))
+        || ((c >= 'a') && (c <= 'z'));
 }
 
 #define B64_ENC_CHUNK 3
@@ -189,16 +183,15 @@ static bool mime_qp_is_plain(int c)
  * dst will not be NUL-terminated
  * Max 3 source octets encoded
  */
-static size_t mime_b64_encode_chunk(char *dst,
-				    unsigned char *src, unsigned len)
+static size_t mime_b64_encode_chunk(char *dst, unsigned char *src, unsigned len)
 {
     int padding;
 
     if (len == 0)
-	return 0;
+        return 0;
 
     if (len > B64_ENC_CHUNK)
-	len = B64_ENC_CHUNK;
+        len = B64_ENC_CHUNK;
 
     padding = B64_ENC_CHUNK - len;
 
@@ -206,18 +199,18 @@ static size_t mime_b64_encode_chunk(char *dst,
     dst[1] = mime_inttob64(src[0] << 4);
 
     if (len < 2)
-	goto out;
+        goto out;
 
     dst[1] = mime_inttob64((src[0] << 4) | (src[1] >> 4));
     dst[2] = mime_inttob64(src[1] << 2);
 
     if (len < 3)
-	goto out;
+        goto out;
 
     dst[2] = mime_inttob64((src[1] << 2) | (src[2] >> 6));
     dst[3] = mime_inttob64(src[2]);
 
-out:
+ out:
     for (; padding > 0; padding--)
         dst[B64_NLET_PER_CHUNK - padding] = '=';
 
@@ -230,15 +223,15 @@ struct mime_word_enc_state {
     size_t charset_len;
     size_t size;
     size_t inc;
-    size_t pos; /* position in the string */
-    size_t vpos; /* visual position in the line */
-    size_t limit; /* in 7 bit chars, no line endings */
+    size_t pos;                 /* position in the string */
+    size_t vpos;                /* visual position in the line */
+    size_t limit;               /* in 7 bit chars, no line endings */
     size_t rem_len;
     char *encoding;
     size_t (*calc_len)(char *token, size_t len);
-    size_t (*encode)(struct mime_word_enc_state *state, char *p, size_t len);
+    size_t (*encode)(struct mime_word_enc_state * state, char *p, size_t len);
     char rem[B64_ENC_CHUNK];
-    bool is_mime; /* previous word is not plain */
+    bool is_mime;               /* previous word is not plain */
 };
 
 static size_t mime_b64_calc_len(char *t, size_t len)
@@ -264,7 +257,7 @@ static void mime_strcat(struct mime_word_enc_state *state, char *str)
 }
 
 static void mime_strlcpy(struct mime_word_enc_state *state,
-			 char *str, size_t len)
+                         char *str, size_t len)
 {
     strncpy(state->encoded_line + state->pos, str, len);
 
@@ -289,9 +282,8 @@ static void mime_strlcpy(struct mime_word_enc_state *state,
  * the new line.
  */
 static size_t mime_word_calc_len(struct mime_word_enc_state *state,
-				 char *token, size_t len,
-				 char **start) /* first non-space */
-{
+                                 char *token, size_t len, char **start)
+{                               /* first non-space */
     size_t encoded_len;
     char *p;
     bool prev_mime = state->is_mime;
@@ -299,28 +291,25 @@ static size_t mime_word_calc_len(struct mime_word_enc_state *state,
     bool is_7bit;
 
     for (p = token; p - token < len; p++) {
-	if (!isspace(*p))
-	    break;
+        if (!isspace(*p))
+            break;
     }
 
     is_7bit = charset_is_7bit(token, len);
 
     if (prev_mime) {
-	if (is_7bit) {
-	    encoded_len = strlen(MIME_HEADER_CODE_END) + len;
-	} else {
-	    encoded_len = state->calc_len(token, len); /* with spaces */
-	}
+        if (is_7bit) {
+            encoded_len = strlen(MIME_HEADER_CODE_END) + len;
+        } else {
+            encoded_len = state->calc_len(token, len);  /* with spaces */
+        }
     } else {
-	if (is_7bit) {
-	    encoded_len = len;
-	} else {
-	    encoded_len = 1 + /* space */
-		strlen(MIME_HEADER_CODE_START) +
-		charset_len +
-		strlen(MIME_HEADER_CODE_MIDDLE_B64) +
-		state->calc_len(p, len); /* without spaces */
-	}
+        if (is_7bit) {
+            encoded_len = len;
+        } else {
+            encoded_len = 1 +   /* space */
+                strlen(MIME_HEADER_CODE_START) + charset_len + strlen(MIME_HEADER_CODE_MIDDLE_B64) + state->calc_len(p, len);   /* without spaces */
+        }
     }
 
     encoded_len += state->rem_len ? B64_NLET_PER_CHUNK : 0;
@@ -332,11 +321,10 @@ static size_t mime_word_calc_len(struct mime_word_enc_state *state,
 static void mime_flush_reminder(struct mime_word_enc_state *state)
 {
     if (state->rem_len == 0)
-	return;
+        return;
 
     mime_b64_encode_chunk(state->encoded_line + state->pos,
-			  (unsigned char *)state->rem,
-			  state->rem_len);
+                          (unsigned char *)state->rem, state->rem_len);
 
     state->pos += B64_NLET_PER_CHUNK;
     state->vpos += B64_NLET_PER_CHUNK;
@@ -344,27 +332,27 @@ static void mime_flush_reminder(struct mime_word_enc_state *state)
 }
 
 static size_t mime_add_reminder(struct mime_word_enc_state *state,
-				char **p, size_t *len, size_t limit)
+                                char **p, size_t *len, size_t limit)
 {
     size_t ret;
     size_t rem_left;
 
     if (state->rem_len == 0)
-	return 0;
+        return 0;
 
     if (state->rem_len + *len < B64_ENC_CHUNK) {
-	memcpy(&state->rem[state->rem_len], *p, *len);
+        memcpy(&state->rem[state->rem_len], *p, *len);
 
-	state->rem_len += *len;
-	(*p) += *len;
+        state->rem_len += *len;
+        (*p) += *len;
 
-	ret = *len;
-	*len = 0;
-	return ret;
+        ret = *len;
+        *len = 0;
+        return ret;
     }
 
     if (state->vpos + B64_NLET_PER_CHUNK > limit)
-	return 0;
+        return 0;
 
     rem_left = sizeof(state->rem) - state->rem_len;
 
@@ -379,11 +367,11 @@ static size_t mime_add_reminder(struct mime_word_enc_state *state,
 }
 
 static size_t mime_save_reminder(struct mime_word_enc_state *state,
-				 char *p, size_t len)
+                                 char *p, size_t len)
 {
     if (len > sizeof(state->rem)) {
-	fprintf(stderr, "ERROR: too big reminder: %zu\n", len);
-	abort();
+        fprintf(stderr, "ERROR: too big reminder: %zu\n", len);
+        abort();
     }
 
     memcpy(state->rem, p, len);
@@ -395,7 +383,7 @@ static size_t mime_save_reminder(struct mime_word_enc_state *state,
 static void mime_word_end(struct mime_word_enc_state *state)
 {
     if (!state->is_mime)
-	return;
+        return;
 
     mime_strcat(state, MIME_HEADER_CODE_END);
 
@@ -420,13 +408,12 @@ static void mime_word_start(struct mime_word_enc_state *state)
     size_t len;
 
     len = 1 + strlen(MIME_HEADER_CODE_START)
-	+ state->charset_len
-	+ strlen(MIME_HEADER_CODE_MIDDLE_B64)
-	+ B64_NLET_PER_CHUNK /* at least one */
-	+ strlen(MIME_HEADER_CODE_END);
+        + state->charset_len + strlen(MIME_HEADER_CODE_MIDDLE_B64)
+        + B64_NLET_PER_CHUNK    /* at least one */
+        + strlen(MIME_HEADER_CODE_END);
 
     if (state->vpos + len > state->limit)
-	mime_line_break(state);
+        mime_line_break(state);
 
     mime_strcat(state, " ");
     mime_strcat(state, MIME_HEADER_CODE_START);
@@ -438,26 +425,26 @@ static void mime_word_start(struct mime_word_enc_state *state)
 
 static void mime_switch_to_plain(struct mime_word_enc_state *state)
 {
-	size_t end_len = strlen(MIME_HEADER_CODE_END);
-	size_t extra_len = state->rem_len ? B64_NLET_PER_CHUNK : 0;
+    size_t end_len = strlen(MIME_HEADER_CODE_END);
+    size_t extra_len = state->rem_len ? B64_NLET_PER_CHUNK : 0;
 
-	if (!state->is_mime)
-	    return;
+    if (!state->is_mime)
+        return;
 
-	if (state->vpos + extra_len + end_len > state->limit) {
-	    mime_line_break(state);
-	    mime_word_start(state);
-	}
+    if (state->vpos + extra_len + end_len > state->limit) {
+        mime_line_break(state);
+        mime_word_start(state);
+    }
 
-	mime_flush_reminder(state);
-	mime_word_end(state);
+    mime_flush_reminder(state);
+    mime_word_end(state);
 }
 
 /*
  * Encodes part of word, that fits the current line
  */
 static size_t mime_word_enc_b64(struct mime_word_enc_state *state,
-				char *p, size_t len)
+                                char *p, size_t len)
 {
     size_t limit;
     size_t left;
@@ -471,29 +458,29 @@ static size_t mime_word_enc_b64(struct mime_word_enc_state *state,
     left = len;
 
     while (left >= B64_ENC_CHUNK) {
-	if (state->vpos + B64_NLET_PER_CHUNK > limit)
-	    break;
+        if (state->vpos + B64_NLET_PER_CHUNK > limit)
+            break;
 
-	chunk = mime_b64_encode_chunk(state->encoded_line + state->pos,
-				      (unsigned char *)p, left);
+        chunk = mime_b64_encode_chunk(state->encoded_line + state->pos,
+                                      (unsigned char *)p, left);
 
-	left -= chunk;
-	done += chunk;
-	p += chunk;
-	state->pos += B64_NLET_PER_CHUNK;
-	state->vpos += B64_NLET_PER_CHUNK;
+        left -= chunk;
+        done += chunk;
+        p += chunk;
+        state->pos += B64_NLET_PER_CHUNK;
+        state->vpos += B64_NLET_PER_CHUNK;
     }
 
     *(state->encoded_line + state->pos) = '\0';
 
     if (left < B64_ENC_CHUNK)
-	done += mime_save_reminder(state, p, left);
+        done += mime_save_reminder(state, p, left);
 
     return done;
 }
 
 static int mime_7bit_try(struct mime_word_enc_state *state,
-			 char *token, size_t len)
+                         char *token, size_t len)
 {
     size_t encoded_len;
     char *p = NULL;
@@ -503,38 +490,38 @@ static int mime_7bit_try(struct mime_word_enc_state *state,
     mime_switch_to_plain(state);
 
     if (len > state->limit)
-	return ERROR;
+        return ERROR;
 
     encoded_len = mime_word_calc_len(state, token, len, &p);
 
     if (state->vpos + encoded_len > state->limit)
-	mime_line_break(state);
+        mime_line_break(state);
 
     for (i = 0; i < p - token; i++) {
-	if (token[i] != '\n')
-	    continue;
+        if (token[i] != '\n')
+            continue;
 
-	/* replace original spaces if there is \n */
-	mime_strcat(state, " ");
-	len -= p - token;
-	token = p;
+        /* replace original spaces if there is \n */
+        mime_strcat(state, " ");
+        len -= p - token;
+        token = p;
     }
 
     mime_strlcpy(state, token, len);
     return OK;
 }
 
-#define QP_NLET_MAX 3 /* =XX */
+#define QP_NLET_MAX 3           /* =XX */
 
 static size_t mime_qp_calc_len(char *s, size_t len)
 {
     size_t sum = 0;
 
     for (; len > 0; --len, s++) {
-	if (mime_qp_is_plain(*s))
-	    sum += 1;
-	else
-	    sum += QP_NLET_MAX;
+        if (mime_qp_is_plain(*s))
+            sum += 1;
+        else
+            sum += QP_NLET_MAX;
     }
 
     return sum;
@@ -549,11 +536,11 @@ static size_t mime_qp_calc_len(char *s, size_t len)
 static size_t mime_qp_encode_octet(char *out, unsigned char in)
 {
     int len;
-    char buf[QP_NLET_MAX + 1]; /* max encoded length =XX\0 */
+    char buf[QP_NLET_MAX + 1];  /* max encoded length =XX\0 */
 
     if (mime_qp_is_plain(in)) {
-           *out = in;
-           return sizeof(*out);
+        *out = in;
+        return sizeof(*out);
     }
 
     len = snprintf(buf, sizeof(buf), "=%02X", in);
@@ -565,7 +552,7 @@ static size_t mime_qp_encode_octet(char *out, unsigned char in)
  * Encodes the word, extending the line if necessary
  */
 static size_t mime_word_enc_qp(struct mime_word_enc_state *state,
-			       char *p, size_t len)
+                               char *p, size_t len)
 {
     size_t limit;
     size_t left;
@@ -574,12 +561,12 @@ static size_t mime_word_enc_qp(struct mime_word_enc_state *state,
     limit = state->limit - strlen(MIME_HEADER_CODE_END);
 
     for (left = len; left > 0; left--, p++) {
-	if (state->vpos + QP_NLET_MAX > limit)
-	    break;
+        if (state->vpos + QP_NLET_MAX > limit)
+            break;
 
-	produced = mime_qp_encode_octet(state->encoded_line + state->pos, *p);
-	state->pos += produced;
-	state->vpos += produced;
+        produced = mime_qp_encode_octet(state->encoded_line + state->pos, *p);
+        state->pos += produced;
+        state->vpos += produced;
     }
 
     *(state->encoded_line + state->pos) = '\0';
@@ -598,7 +585,7 @@ static size_t mime_8bit_calc_len(char *s, size_t len)
  * Takes token with the leading spaces when exist
  */
 static void mime_word_enc(struct mime_word_enc_state *state,
-			  char *token, size_t len)
+                          char *token, size_t len)
 {
     char *p;
     size_t left;
@@ -607,9 +594,9 @@ static void mime_word_enc(struct mime_word_enc_state *state,
     /* simple case, no encoding */
     if (charset_is_7bit(token, len)) {
 
-	/* switches to plain mode with flushing reminder */
-	if (mime_7bit_try(state, token, len) == OK)
-	    return;
+        /* switches to plain mode with flushing reminder */
+        if (mime_7bit_try(state, token, len) == OK)
+            return;
     }
 
     /* encode if non-7bit or very long */
@@ -617,30 +604,30 @@ static void mime_word_enc(struct mime_word_enc_state *state,
 
     left = len;
     if (!state->is_mime)
-	left -= (p - token); /* skip spaces */
+        left -= (p - token);    /* skip spaces */
     else
-	p = token; /* encode with the spaces */
+        p = token;              /* encode with the spaces */
 
     for (;;) {
-	if (!state->is_mime) {
-	    mime_word_start(state);
-	}
+        if (!state->is_mime) {
+            mime_word_start(state);
+        }
 
-	consumed = state->encode(state, p, left);
+        consumed = state->encode(state, p, left);
 
-	p += consumed;
-	left -= consumed;
-	if (left == 0)
-	    break;
+        p += consumed;
+        left -= consumed;
+        if (left == 0)
+            break;
 
-	mime_line_break(state);
+        mime_line_break(state);
     }
 }
 
 static void mime_header_enc_start(struct mime_word_enc_state *state,
-				  char *charset, int type)
+                                  char *charset, int type)
 {
-    size_t size = MIME_STRING_LIMIT + sizeof(MIME_HEADER_STR_DELIM);/* \0 counted */
+    size_t size = MIME_STRING_LIMIT + sizeof(MIME_HEADER_STR_DELIM);    /* \0 counted */
     char *p;
 
     p = xmalloc(size);
@@ -649,7 +636,7 @@ static void mime_header_enc_start(struct mime_word_enc_state *state,
     state->encoded_line = p;
     state->charset = charset;
     state->charset_len = strlen(charset);
-    state->inc = size - 1; /* only one \0 */
+    state->inc = size - 1;      /* only one \0 */
     state->pos = 0;
     state->vpos = 0;
     state->limit = MIME_STRING_LIMIT;
@@ -658,19 +645,19 @@ static void mime_header_enc_start(struct mime_word_enc_state *state,
 
     switch (type) {
     case MIME_QP:
-	state->encoding = MIME_HEADER_CODE_MIDDLE_QP;
-	state->calc_len = mime_qp_calc_len;
-	state->encode = mime_word_enc_qp;
-	break;
+        state->encoding = MIME_HEADER_CODE_MIDDLE_QP;
+        state->calc_len = mime_qp_calc_len;
+        state->encode = mime_word_enc_qp;
+        break;
     case MIME_B64:
-	state->encoding = MIME_HEADER_CODE_MIDDLE_B64;
-	state->calc_len = mime_b64_calc_len;
-	state->encode = mime_word_enc_b64;
-	break;
+        state->encoding = MIME_HEADER_CODE_MIDDLE_B64;
+        state->calc_len = mime_b64_calc_len;
+        state->encode = mime_word_enc_b64;
+        break;
     default:
-	state->encoding = NULL;
-	state->calc_len = mime_8bit_calc_len;
-	state->encode = NULL;
+        state->encoding = NULL;
+        state->calc_len = mime_8bit_calc_len;
+        state->encode = NULL;
     }
 }
 
@@ -679,24 +666,25 @@ static char *mime_header_enc_end(struct mime_word_enc_state *state)
     size_t len;
 
     if (state->is_mime) {
-	len = strlen(MIME_HEADER_CODE_END);
-	if (state->rem_len)
-	    len += B64_NLET_PER_CHUNK;
+        len = strlen(MIME_HEADER_CODE_END);
+        if (state->rem_len)
+            len += B64_NLET_PER_CHUNK;
 
-	if (state->vpos + len > state->limit) {
-	    mime_line_break(state);
-	    mime_word_start(state);
-	}
+        if (state->vpos + len > state->limit) {
+            mime_line_break(state);
+            mime_word_start(state);
+        }
 
-	mime_flush_reminder(state);
-	mime_word_end(state);
+        mime_flush_reminder(state);
+        mime_word_end(state);
     }
 
     if (state->encoded_line[state->pos - 1] != '\n')
-	strcat(state->encoded_line, MIME_HEADER_STR_DELIM);
+        strcat(state->encoded_line, MIME_HEADER_STR_DELIM);
 
     return state->encoded_line;
 }
+
 /*
  * Mime encodes 8bit header, splitting lines when necessary.
  * src must be NUL-terminated
@@ -720,29 +708,29 @@ int mime_header_enc(char **dst, char *src, char *charset, int enc)
     token = src;
     token_end = strchr(src, ' ');
     if (token_end == NULL) {
-	fglog("ERROR: misformatted header: %s\n", src);
-	return ERROR;
+        fglog("ERROR: misformatted header: %s\n", src);
+        return ERROR;
     }
 
     while (token != NULL) {
-	mime_word_enc(&state, token, token_end - token);
+        mime_word_enc(&state, token, token_end - token);
 
-	token = token_end;
+        token = token_end;
 
-	/* first skip spaces */
-	while ((*token_end == ' ' || *token_end == '\t' || *token == '\n')
-	       && *token_end != '\0')
-	    token_end++;
+        /* first skip spaces */
+        while ((*token_end == ' ' || *token_end == '\t' || *token == '\n')
+               && *token_end != '\0')
+            token_end++;
 
-	if (*token_end == '\0') {
-	    token = NULL;
-	    continue;
-	}
+        if (*token_end == '\0') {
+            token = NULL;
+            continue;
+        }
 
-	/* then find next space or EOL */
-	while (*token_end != ' ' && *token_end != '\t' && *token != '\n'
-	       && *token_end != '\0')
-	    token_end++;
+        /* then find next space or EOL */
+        while (*token_end != ' ' && *token_end != '\t' && *token != '\n'
+               && *token_end != '\0')
+            token_end++;
     }
 
     mime_header_enc_end(&state);
@@ -753,7 +741,7 @@ int mime_header_enc(char **dst, char *src, char *charset, int enc)
     return OK;
 }
 
-void mime_b64_encode_tl(Textlist *in, Textlist *out)
+void mime_b64_encode_tl(Textlist * in, Textlist * out)
 {
     TextlistIterator iter;
     /* + \n\0, no \r needed */
@@ -769,17 +757,17 @@ void mime_b64_encode_tl(Textlist *in, Textlist *out)
     len = tl_iterator_next(&iter, ibuf, sizeof(ibuf));
 
     while (len > 0) {
-	if (pos + B64_NLET_PER_CHUNK > MIME_STRING_LIMIT) {
-	    buf[pos++] = '\n';
-	    buf[pos++] = '\0';
+        if (pos + B64_NLET_PER_CHUNK > MIME_STRING_LIMIT) {
+            buf[pos++] = '\n';
+            buf[pos++] = '\0';
 
-	    tl_append(out, buf);
-	    pos = 0;
-	}
+            tl_append(out, buf);
+            pos = 0;
+        }
 
-	mime_b64_encode_chunk(buf + pos, (unsigned char *)ibuf, len);
-	pos += B64_NLET_PER_CHUNK;
-	len = tl_iterator_next(&iter, ibuf, sizeof(ibuf));
+        mime_b64_encode_chunk(buf + pos, (unsigned char *)ibuf, len);
+        pos += B64_NLET_PER_CHUNK;
+        len = tl_iterator_next(&iter, ibuf, sizeof(ibuf));
     }
 
     buf[pos++] = '\n';
@@ -798,65 +786,57 @@ int mime_b64_decode(char **dst, char *src, size_t len)
     int rc = OK;
 
     if (0 != (len % 4))
-	return ERROR;
+        return ERROR;
 
     buflen = ((len / 4) * 3) + 1;
     buf = xmalloc(buflen);
     memset(buf, 0, buflen);
     i = 0;
     d = buf;
-    while (len > i)
-    {
-	v1 = mime_b64toint(src[i++]);
-	if (ERROR == v1)
-	{
-	    rc = ERROR;
-	    break;
-	}
+    while (len > i) {
+        v1 = mime_b64toint(src[i++]);
+        if (ERROR == v1) {
+            rc = ERROR;
+            break;
+        }
 
-	v2 = mime_b64toint(src[i++]);
-	if (ERROR == v2)
-	{
-	    rc = ERROR;
-	    break;
-	}
+        v2 = mime_b64toint(src[i++]);
+        if (ERROR == v2) {
+            rc = ERROR;
+            break;
+        }
 
-	v3 = mime_b64toint(src[i++]);
-	if (ERROR == v3)
-	{
-	    rc = ERROR;
-	    break;
-	}
+        v3 = mime_b64toint(src[i++]);
+        if (ERROR == v3) {
+            rc = ERROR;
+            break;
+        }
 
-	v4 = mime_b64toint(src[i++]);
-	if (ERROR == v4)
-	{
-	    rc = ERROR;
-	    break;
-	}
+        v4 = mime_b64toint(src[i++]);
+        if (ERROR == v4) {
+            rc = ERROR;
+            break;
+        }
 
-	*d++ = (v1 << 2) | (v2 >> 4);
-	if (0x40 > v3)
-	{
-	    *d++ = ((v2 << 4) & 0xf0) | (v3 >> 2);
-	    if (0x40 > v4)
-		*d++ = ((v3 << 6) & 0xc0) | v4;
-	}
-	else if (0x40 > v4)
-	{
-	    rc = ERROR;
-	    break;
-	}
+        *d++ = (v1 << 2) | (v2 >> 4);
+        if (0x40 > v3) {
+            *d++ = ((v2 << 4) & 0xf0) | (v3 >> 2);
+            if (0x40 > v4)
+                *d++ = ((v3 << 6) & 0xc0) | v4;
+        } else if (0x40 > v4) {
+            rc = ERROR;
+            break;
+        }
     }
 
     if (ERROR == rc)
-	xfree(buf);
+        xfree(buf);
     else
-	*dst = buf;
+        *dst = buf;
     return rc;
 }
 
-void mime_qp_encode_tl(Textlist *in, Textlist *out)
+void mime_qp_encode_tl(Textlist * in, Textlist * out)
 {
     TextlistIterator iter;
     /* + =\n\0 */
@@ -873,19 +853,18 @@ void mime_qp_encode_tl(Textlist *in, Textlist *out)
     len = tl_iterator_next(&iter, ibuf, sizeof(ibuf));
 
     while (len > 0) {
-	if (pos + QP_NLET_MAX > MIME_STRING_LIMIT) {
-	    buf[pos++] = '=';
-	    buf[pos++] = '\n';
-	    buf[pos++] = '\0';
+        if (pos + QP_NLET_MAX > MIME_STRING_LIMIT) {
+            buf[pos++] = '=';
+            buf[pos++] = '\n';
+            buf[pos++] = '\0';
 
-	    tl_append(out, buf);
-	    pos = 0;
-	}
+            tl_append(out, buf);
+            pos = 0;
+        }
 
-	len_encoded =
-	    mime_qp_encode_octet(buf + pos, ibuf[0]);
-	pos += len_encoded;
-	len = tl_iterator_next(&iter, ibuf, sizeof(ibuf));
+        len_encoded = mime_qp_encode_octet(buf + pos, ibuf[0]);
+        pos += len_encoded;
+        len = tl_iterator_next(&iter, ibuf, sizeof(ibuf));
     }
 
     buf[pos++] = '\n';
@@ -906,10 +885,9 @@ int mime_qp_decode(char **dst, char *src, size_t len)
 
     p1 = src;
     j = 0;
-    while (NULL != (p2 = strchr(p1, '_')))
-    {
-	p1 = ++p2;
-	j++;
+    while (NULL != (p2 = strchr(p1, '_'))) {
+        p1 = ++p2;
+        j++;
     }
 
     buf = xmalloc(len + 1);
@@ -917,58 +895,52 @@ int mime_qp_decode(char **dst, char *src, size_t len)
 
     i = 0;
     d = buf;
-    while (len > i)
-    {
-	if(src[i] == '\n' || src[i] == '\r')
-	{
-	    *d = '\n';
-	    break;
-	}
+    while (len > i) {
+        if (src[i] == '\n' || src[i] == '\r') {
+            *d = '\n';
+            break;
+        }
 
-	if ('_' == src[i])
-	{
-	    *d++ = ' ';
-	    i++;
-	    continue;
-	}
+        if ('_' == src[i]) {
+            *d++ = ' ';
+            i++;
+            continue;
+        }
 
-	if ('=' != src[i])
-	{
-	    *d++ = src[i++] & 0x7F;
-	    continue;
-	}
+        if ('=' != src[i]) {
+            *d++ = src[i++] & 0x7F;
+            continue;
+        }
 
-	i++;
+        i++;
 
-	if(src[i] == '\n' || src[i] == '\r')
-	{
-	    *d = '\n';
-	    break;
-	}
+        if (src[i] == '\n' || src[i] == '\r') {
+            *d = '\n';
+            break;
+        }
 
-	vh = mime_qptoint(src[i++]);
-	if (ERROR == vh)
-	{
-	    rc = ERROR;
-	    break;
-	}
+        vh = mime_qptoint(src[i++]);
+        if (ERROR == vh) {
+            rc = ERROR;
+            break;
+        }
 
-	vl = mime_qptoint(src[i++]);
-	if (ERROR == vl)
-	{
-	    rc = ERROR;
-	    break;
-	}
+        vl = mime_qptoint(src[i++]);
+        if (ERROR == vl) {
+            rc = ERROR;
+            break;
+        }
 
-	*d++ = (char)(((vh << 4) & 0xf0) | (vl & 0x0f));
+        *d++ = (char)(((vh << 4) & 0xf0) | (vl & 0x0f));
     }
 
     if (ERROR == rc)
-	xfree(buf);
+        xfree(buf);
     else
-	*dst = buf;
+        *dst = buf;
     return rc;
 }
+
 /*
  * mime word is a mime encoded string, separated by space
  * from other mime words.
@@ -982,9 +954,8 @@ int mime_qp_decode(char **dst, char *src, size_t len)
  *        and the charset (from the mime info)
  */
 static int mime_handle_mimed_word(char *s, char **out, size_t *out_len,
-				  bool *is_mime,
-				  char *charset, size_t ch_size, char *to)
-
+                                  bool *is_mime,
+                                  char *charset, size_t ch_size, char *to)
 {
     char *p;
     size_t len;
@@ -997,12 +968,13 @@ static int mime_handle_mimed_word(char *s, char **out, size_t *out_len,
     /* May be MIME (b64 or qp) */
     p = strchr(s + strlen(MIME_HEADER_CODE_START), '?');
     if (p == NULL)
-	goto fallback;
+        goto fallback;
 
     tmp_len = p - (s + strlen(MIME_HEADER_CODE_START));
     if (tmp_len > MIME_MAX_ENC_LEN) {
-	fglog("ERROR: charset name's length too long, %zd. Do not recode", tmp_len);
-	goto fallback;
+        fglog("ERROR: charset name's length too long, %zd. Do not recode",
+              tmp_len);
+        goto fallback;
     }
 
     tmp_len = MIN(tmp_len + 1, ch_size);
@@ -1010,35 +982,35 @@ static int mime_handle_mimed_word(char *s, char **out, size_t *out_len,
 
     /* Check if b64 or qp */
     if (strnieq(p,
-		MIME_HEADER_CODE_MIDDLE_QP,
-		strlen(MIME_HEADER_CODE_MIDDLE_QP))) {
-	/* May be qp */
-	decoder = mime_qp_decode;
-	beg = p + strlen(MIME_HEADER_CODE_MIDDLE_QP);
+                MIME_HEADER_CODE_MIDDLE_QP,
+                strlen(MIME_HEADER_CODE_MIDDLE_QP))) {
+        /* May be qp */
+        decoder = mime_qp_decode;
+        beg = p + strlen(MIME_HEADER_CODE_MIDDLE_QP);
 
     } else if (strnieq(p,
-		       MIME_HEADER_CODE_MIDDLE_B64,
-		       strlen(MIME_HEADER_CODE_MIDDLE_B64))) {
-	/* May be b64 */
-	decoder = mime_b64_decode;
-	beg = p + strlen(MIME_HEADER_CODE_MIDDLE_B64);
+                       MIME_HEADER_CODE_MIDDLE_B64,
+                       strlen(MIME_HEADER_CODE_MIDDLE_B64))) {
+        /* May be b64 */
+        decoder = mime_b64_decode;
+        beg = p + strlen(MIME_HEADER_CODE_MIDDLE_B64);
     } else {
-	fglog("ERROR: subject looks like mime, but does not have proper header");
-	goto fallback;
+        fglog
+            ("ERROR: subject looks like mime, but does not have proper header");
+        goto fallback;
     }
 
     end = strchr(beg, '?');
 
     if (end == NULL ||
-	!strnieq(end,
-		 MIME_HEADER_CODE_END,
-		 strlen(MIME_HEADER_CODE_END))) {
-	fglog("ERROR: subject looks like mime, but does not have proper ending");
-	goto fallback;
+        !strnieq(end, MIME_HEADER_CODE_END, strlen(MIME_HEADER_CODE_END))) {
+        fglog
+            ("ERROR: subject looks like mime, but does not have proper ending");
+        goto fallback;
     }
     if (decoder(&buf, beg, end - beg) == ERROR) {
-	fglog("ERROR: subject mime deconding failed");
-	goto fallback;
+        fglog("ERROR: subject mime deconding failed");
+        goto fallback;
     }
 
     *out_len = strlen(buf);
@@ -1046,7 +1018,7 @@ static int mime_handle_mimed_word(char *s, char **out, size_t *out_len,
     *is_mime = true;
     return end + strlen(MIME_HEADER_CODE_END) - s;
 
-fallback:
+ fallback:
     /*
      * Keep it as is.
      * Will work correctly with utf-8 plain headers, iconv and utf-8
@@ -1055,7 +1027,7 @@ fallback:
     debug(6, "Could not unmime subject '%s', leaving as is", s);
     len = strlen(s);
     *out = xmalloc(len);
-    memcpy(*out, s, len); /* no '\0' */
+    memcpy(*out, s, len);       /* no '\0' */
     snprintf(charset, ch_size, "%s", to);
     *is_mime = false;
     *out_len = len;
@@ -1064,8 +1036,7 @@ fallback:
 }
 
 static int mime_handle_plain_word(char *s, char **out, size_t *out_len,
-				  char *charset, size_t ch_size, char *to)
-
+                                  char *charset, size_t ch_size, char *to)
 {
     char *plain_charset = CHARSET_STDRFC;
     char *mime_charset = NULL;
@@ -1080,9 +1051,9 @@ static int mime_handle_plain_word(char *s, char **out, size_t *out_len,
      */
     p = strchr(s, ' ');
     if (p != NULL)
-	    len = p - s;
+        len = p - s;
     else
-	    len = strlen(s);
+        len = strlen(s);
 
     /*
      * There must be no plain 8 bit headers except utf-8.
@@ -1092,15 +1063,14 @@ static int mime_handle_plain_word(char *s, char **out, size_t *out_len,
      *   default.
      */
     if (!charset_is_7bit(s, len) && charset_is_valid_utf8(s, len)) {
-	plain_charset = "utf-8";
+        plain_charset = "utf-8";
     } else {
-	mime_charset = mime_get_main_charset();
+        mime_charset = mime_get_main_charset();
 
-	if ((mime_charset != NULL) &&
-	    (strcmp(mime_charset, CHARSET_STD7BIT) != 0))
-	{
-	    plain_charset = mime_charset;
-	}
+        if ((mime_charset != NULL) &&
+            (strcmp(mime_charset, CHARSET_STD7BIT) != 0)) {
+            plain_charset = mime_charset;
+        }
     }
 
     strncpy(charset, plain_charset, ch_size - 1);
@@ -1127,16 +1097,13 @@ static int mime_handle_plain_word(char *s, char **out, size_t *out_len,
  * @returns the number of bytes, handled in the source string.
  */
 static int mime_handle_word(char *s, char **out, size_t *out_len,
-			    bool *is_mime, char *charset, size_t ch_size,
-			    char *to)
+                            bool *is_mime, char *charset, size_t ch_size,
+                            char *to)
 {
-    if (strnieq(s,
-		MIME_HEADER_CODE_START,
-		strlen(MIME_HEADER_CODE_START))) {
-	return mime_handle_mimed_word(s,
-				      out, out_len,
-				      is_mime,
-				      charset, ch_size, to);
+    if (strnieq(s, MIME_HEADER_CODE_START, strlen(MIME_HEADER_CODE_START))) {
+        return mime_handle_mimed_word(s,
+                                      out, out_len,
+                                      is_mime, charset, ch_size, to);
     }
 
     *is_mime = false;
@@ -1159,54 +1126,53 @@ char *mime_header_dec(char *d, size_t d_max, char *s, char *to)
     size_t recoded_len;
 
     while (d_left != 0 && *s != '\0') {
-	if (isspace(*s)) {
-	    /* just skip spaces between mime words */
-	    if (!is_mime) {
-		*d++ = *s;
-		d_left--;
-	    }
-	    s++;
-	    continue;
-	}
+        if (isspace(*s)) {
+            /* just skip spaces between mime words */
+            if (!is_mime) {
+                *d++ = *s;
+                d_left--;
+            }
+            s++;
+            continue;
+        }
 
-	is_prev_mime = is_mime;
+        is_prev_mime = is_mime;
 
         /* it means mime "word" -- encoded or plain part */
-	s_handled = mime_handle_word(s, &buf, &len, &is_mime,
-				     charset, sizeof(charset), to);
+        s_handled = mime_handle_word(s, &buf, &len, &is_mime,
+                                     charset, sizeof(charset), to);
 
-	/* keep at least one space between mime and non-mime words */
-	if (is_prev_mime && !is_mime) {
-	    *d++ = ' ';
-	    d_left--;
+        /* keep at least one space between mime and non-mime words */
+        if (is_prev_mime && !is_mime) {
+            *d++ = ' ';
+            d_left--;
 
-	    if (d_left == 0)
-		break;
-	}
+            if (d_left == 0)
+                break;
+        }
 
-	debug(6, "header charset: %s", charset);
-	rc = charset_recode_buf(&recoded, &recoded_len, buf, len,
-				charset, to);
-	if (rc != OK) {
-	    debug(6, "Could not recode header %s", buf);
-	    goto out;
-	}
+        debug(6, "header charset: %s", charset);
+        rc = charset_recode_buf(&recoded, &recoded_len, buf, len, charset, to);
+        if (rc != OK) {
+            debug(6, "Could not recode header %s", buf);
+            goto out;
+        }
 
-	free(buf);
+        free(buf);
 
-	if (recoded_len > d_left) {
-	    fglog("ERROR: header buffer too small");
-	    recoded_len = d_left;
-	}
+        if (recoded_len > d_left) {
+            fglog("ERROR: header buffer too small");
+            recoded_len = d_left;
+        }
 
-	memcpy(d, recoded, recoded_len);
-	d += recoded_len;
-	d_left -= recoded_len;
+        memcpy(d, recoded, recoded_len);
+        d += recoded_len;
+        d_left -= recoded_len;
 
-	s += s_handled;
+        s += s_handled;
     }
 
-out:
+ out:
     *d = '\0';
     return save_d;
 }
@@ -1238,40 +1204,38 @@ static char* mime_fetch_attribute(char *str, char *attr)
 }
 */
 
-static int mime_parse_header(Textlist *line, char *str)
+static int mime_parse_header(Textlist * line, char *str)
 {
     char *p = NULL;
 
-    if(line == NULL || str == NULL)
-	return ERROR;
+    if (line == NULL || str == NULL)
+        return ERROR;
 
     debug(6, "Parsing header %s", str);
-    for(p = strtok(str, ";"); p != NULL; p = strtok(NULL, ";"))
-    {
-	debug(6, "Recording header attribute %s", p);
-	p = strip_space(p);
-	tl_append(line, p);
+    for (p = strtok(str, ";"); p != NULL; p = strtok(NULL, ";")) {
+        debug(6, "Recording header attribute %s", p);
+        p = strip_space(p);
+        tl_append(line, p);
     }
     return OK;
 }
 
-static char* mime_attr_value(char *str)
+static char *mime_attr_value(char *str)
 {
     char *p, *q = NULL;
 
-    if(str == NULL)
-	return NULL;
+    if (str == NULL)
+        return NULL;
 
     p = strchr(str, '=');
-    if(p != NULL)
-    {
-	if(*(++p) == '\"')
-	    p++;
-	for(q = p; *q != '\0'; q++)
-	    if(*q == '\"' || is_space(*q))
-		break;
-	*q = 0;
-	p = strsave(p);
+    if (p != NULL) {
+        if (*(++p) == '\"')
+            p++;
+        for (q = p; *q != '\0'; q++)
+            if (*q == '\"' || is_space(*q))
+                break;
+        *q = 0;
+        p = strsave(p);
     }
     return p;
 }
@@ -1280,7 +1244,8 @@ static char* mime_attr_value(char *str)
  * Return MIME header
  */
 
-static MIMEInfo *get_mime_disposition(char *ver, char *type, char *enc, char *disp)
+static MIMEInfo *get_mime_disposition(char *ver, char *type, char *enc,
+                                      char *disp)
 {
     MIMEInfo *mime;
 
@@ -1288,72 +1253,67 @@ static MIMEInfo *get_mime_disposition(char *ver, char *type, char *enc, char *di
     Textline *tmp_line;
     char *tmp_str = NULL;
 
-    mime = (MIMEInfo*)s_alloc(sizeof(*mime));
+    mime = (MIMEInfo *) s_alloc(sizeof(*mime));
 
-    mime->version       = ver;
-    mime->type          = type;
-    mime->type_type     = NULL;
-    mime->type_charset  = NULL;
+    mime->version = ver;
+    mime->type = type;
+    mime->type_type = NULL;
+    mime->type_charset = NULL;
     mime->type_boundary = NULL;
-    mime->encoding      = enc;
-    mime->disposition   = disp;
+    mime->encoding = enc;
+    mime->disposition = disp;
     mime->disposition_filename = NULL;
 
-    if(type != NULL)
-    {
-	tmp_str = s_copy(type);
-	mime_parse_header(&header_line, tmp_str);
-	if(header_line.first != NULL && header_line.first->line != NULL)
-	    mime->type_type = s_copy(header_line.first->line);
+    if (type != NULL) {
+        tmp_str = s_copy(type);
+        mime_parse_header(&header_line, tmp_str);
+        if (header_line.first != NULL && header_line.first->line != NULL)
+            mime->type_type = s_copy(header_line.first->line);
 
-	tmp_line = tl_get(&header_line, "charset", strlen("charset"));
-	if(tmp_line != NULL)
-	{
-	    tmp_str = mime_attr_value(tmp_line->line);
-	    mime->type_charset = s_copy(tmp_str);
-	    xfree(tmp_str);
-	}
-	tmp_line = tl_get(&header_line, "boundary", strlen("boundary"));
-	if(tmp_line != NULL)
-	{
-	    tmp_str = mime_attr_value(tmp_line->line);
-	    mime->type_boundary = s_copy(tmp_str);
-	    xfree(tmp_str);
-	}
-	tl_clear(&header_line);
+        tmp_line = tl_get(&header_line, "charset", strlen("charset"));
+        if (tmp_line != NULL) {
+            tmp_str = mime_attr_value(tmp_line->line);
+            mime->type_charset = s_copy(tmp_str);
+            xfree(tmp_str);
+        }
+        tmp_line = tl_get(&header_line, "boundary", strlen("boundary"));
+        if (tmp_line != NULL) {
+            tmp_str = mime_attr_value(tmp_line->line);
+            mime->type_boundary = s_copy(tmp_str);
+            xfree(tmp_str);
+        }
+        tl_clear(&header_line);
     }
 
-    if(disp != NULL)
-    {
-	tmp_str = s_copy(disp);
-	mime_parse_header(&header_line, tmp_str);
-	tmp_line = tl_get(&header_line, "filename", strlen("filename"));
-	if(tmp_line != NULL)
-	    tmp_str = mime_attr_value(tmp_line->line);
-	mime->disposition_filename = s_copy(tmp_str);
-	tl_clear(&header_line);
+    if (disp != NULL) {
+        tmp_str = s_copy(disp);
+        mime_parse_header(&header_line, tmp_str);
+        tmp_line = tl_get(&header_line, "filename", strlen("filename"));
+        if (tmp_line != NULL)
+            tmp_str = mime_attr_value(tmp_line->line);
+        mime->disposition_filename = s_copy(tmp_str);
+        tl_clear(&header_line);
     }
 
     debug(6, "RFC MIME-Version:              %s",
-	  mime->version ? mime->version : "-NONE-");
+          mime->version ? mime->version : "-NONE-");
     debug(6, "RFC Content-Type:              %s",
-	  mime->type ? mime->type : "-NONE-");
+          mime->type ? mime->type : "-NONE-");
     debug(6, "                        type = %s",
-	  mime->type_type ? mime->type_type : "");
+          mime->type_type ? mime->type_type : "");
     debug(6, "                     charset = %s",
-	  mime->type_charset ? mime->type_charset : "");
+          mime->type_charset ? mime->type_charset : "");
     debug(6, "                    boundary = %s",
-	  mime->type_boundary ? mime->type_boundary : "");
+          mime->type_boundary ? mime->type_boundary : "");
     debug(6, "RFC Content-Transfer-Encoding: %s",
-	  mime->encoding ? mime->encoding : "-NONE-");
+          mime->encoding ? mime->encoding : "-NONE-");
     debug(6, "RFC Content-Disposition: %s",
-	  mime->disposition ? mime->disposition : "-NONE-");
+          mime->disposition ? mime->disposition : "-NONE-");
     debug(6, "                    filename = %s",
-	  mime->disposition_filename ? mime->disposition_filename : "");
+          mime->disposition_filename ? mime->disposition_filename : "");
 
     return mime;
 }
-
 
 MIMEInfo *get_mime(char *ver, char *type, char *enc)
 {
@@ -1362,43 +1322,42 @@ MIMEInfo *get_mime(char *ver, char *type, char *enc)
 
 /* TODO smth like s_header_getcomplete() */
 
-MIMEInfo* get_mime_from_header (Textlist *header)
+MIMEInfo *get_mime_from_header(Textlist * header)
 {
-    if(header == NULL)
-	return get_mime_disposition(header_get("Mime-Version"),
-				    header_get("Content-Type"),
-				    header_get("Content-Transfer-Encoding"),
-				    header_get("Content-Disposition"));
+    if (header == NULL)
+        return get_mime_disposition(header_get("Mime-Version"),
+                                    header_get("Content-Type"),
+                                    header_get("Content-Transfer-Encoding"),
+                                    header_get("Content-Disposition"));
     else
-	return get_mime_disposition(rfcheader_get(header, "Mime-Version"),
-				    rfcheader_get(header, "Content-Type"),
-				    rfcheader_get(header, "Content-Transfer-Encoding"),
-				    rfcheader_get(header, "Content-Disposition"));
+        return get_mime_disposition(rfcheader_get(header, "Mime-Version"),
+                                    rfcheader_get(header, "Content-Type"),
+                                    rfcheader_get(header,
+                                                  "Content-Transfer-Encoding"),
+                                    rfcheader_get(header,
+                                                  "Content-Disposition"));
 }
 
 /* Garantee [^\r]\n\0 in the end of string since our
    output subroutine adds '\r'
    str should have space for 1 extra symbol */
 
-static char* mime_debody_flush_str(Textlist *body, char *str)
+static char *mime_debody_flush_str(Textlist * body, char *str)
 {
     int len;
-    if(str == NULL || body == NULL)
-	return NULL;
+    if (str == NULL || body == NULL)
+        return NULL;
 
     len = strlen(str);
-    if(len < 2)
-	return NULL;
+    if (len < 2)
+        return NULL;
 
-    if(str[len - 2] == '\r')
-    {
-	str[len - 2] = '\n';
-	str[len - 1] = '\0';
-    }
-    else if(str[len - 1] != '\n')
-    {
-	str[len] = '\n';
-	str[len + 1] = '\0';
+    if (str[len - 2] == '\r') {
+        str[len - 2] = '\n';
+        str[len - 1] = '\0';
+    } else if (str[len - 1] != '\n') {
+        str[len] = '\n';
+        str[len + 1] = '\0';
     }
 
     tl_append(body, str);
@@ -1407,7 +1366,7 @@ static char* mime_debody_flush_str(Textlist *body, char *str)
     return str;
 }
 
-static Textlist* mime_debody_qp(Textlist *body)
+static Textlist *mime_debody_qp(Textlist * body)
 {
     char *dec_str, *tmp_str;
     long len;
@@ -1423,39 +1382,40 @@ static Textlist* mime_debody_qp(Textlist *body)
     full_line = xmalloc(sizeof(*full_line));
     memset(full_line, 0, sizeof(*full_line));
 
-    for(line = body->first; line != NULL; line = line->next)
-    {
-	len = strlen(line->line);
-	if(mime_qp_decode(&dec_str, line->line, len) == ERROR)
-	    goto fail;
+    for (line = body->first; line != NULL; line = line->next) {
+        len = strlen(line->line);
+        if (mime_qp_decode(&dec_str, line->line, len) == ERROR)
+            goto fail;
 
-	strip_crlf(dec_str);
-	tl_append(full_line, dec_str);
-	xfree(dec_str);
+        strip_crlf(dec_str);
+        tl_append(full_line, dec_str);
+        xfree(dec_str);
 
-	if(streq(line->line + (len - 2), "=\n") || streq(line->line + (len - 3), "=\r\n"))
-	    continue;
+        if (streq(line->line + (len - 2), "=\n")
+            || streq(line->line + (len - 3), "=\r\n"))
+            continue;
 
-	len = tl_size(full_line);
+        len = tl_size(full_line);
 
-	tmp_str = xmalloc(len + 2);
-	memset(tmp_str, 0, len + 2);
+        tmp_str = xmalloc(len + 2);
+        memset(tmp_str, 0, len + 2);
 
-	for(subline = full_line->first; subline != NULL; subline = subline->next)
-	    strcat(tmp_str, subline->line);
+        for (subline = full_line->first; subline != NULL;
+             subline = subline->next)
+            strcat(tmp_str, subline->line);
 
-	tmp_str[len] = '\n';
+        tmp_str[len] = '\n';
 
-	tl_append(dec_body, tmp_str);
-	xfree(tmp_str);
-	tl_clear(full_line);
+        tl_append(dec_body, tmp_str);
+        xfree(tmp_str);
+        tl_clear(full_line);
     }
 
     tl_clear(full_line);
     xfree(full_line);
     return dec_body;
 
-fail:
+ fail:
     fglog("ERROR: decoding quoted-printable, skipping section");
     tl_clear(dec_body);
     xfree(dec_body);
@@ -1466,8 +1426,7 @@ fail:
 
 /* decode base64 body */
 
-
-static Textlist* mime_debody_base64(Textlist *body)
+static Textlist *mime_debody_base64(Textlist * body)
 {
     char *out_str;
     char *dec_str;
@@ -1489,66 +1448,59 @@ static Textlist* mime_debody_base64(Textlist *body)
     out_str[0] = '\0';
     left = max_len;
 
-    for(line = body->first; line != NULL; line = line->next)
-    {
+    for (line = body->first; line != NULL; line = line->next) {
 
-	enc_len = (xstrnlen(line->line, MIME_ENC_STRING_LIMIT) / 4) * 4;
-	if(mime_b64_decode(&dec_str, line->line, enc_len) == ERROR)
-	    goto exit;
+        enc_len = (xstrnlen(line->line, MIME_ENC_STRING_LIMIT) / 4) * 4;
+        if (mime_b64_decode(&dec_str, line->line, enc_len) == ERROR)
+            goto exit;
 
-	dec_prev_ptr = dec_str;
-	while((dec_ptr = strchr(dec_prev_ptr, '\n')) != NULL)
-	{
-	    dec_str_len = dec_ptr - dec_prev_ptr + 1;
-	    if(dec_str_len <= left)
-	    {
-		strncat(out_str, dec_prev_ptr, dec_str_len);
-		dec_prev_ptr = dec_ptr+1;
-	    }
-	    else
-	    {
-		strncat(out_str, dec_prev_ptr, left);
-		dec_prev_ptr += left;
-	    }
+        dec_prev_ptr = dec_str;
+        while ((dec_ptr = strchr(dec_prev_ptr, '\n')) != NULL) {
+            dec_str_len = dec_ptr - dec_prev_ptr + 1;
+            if (dec_str_len <= left) {
+                strncat(out_str, dec_prev_ptr, dec_str_len);
+                dec_prev_ptr = dec_ptr + 1;
+            } else {
+                strncat(out_str, dec_prev_ptr, left);
+                dec_prev_ptr += left;
+            }
 
-	    mime_debody_flush_str(dec_body, out_str);
-	    left = max_len;
-	}
+            mime_debody_flush_str(dec_body, out_str);
+            left = max_len;
+        }
 
-	dec_str_len = strlen(dec_str) - (dec_prev_ptr - dec_str);
-	do
-	{
-	    if(dec_str_len < left)
-	    {
-		strncat(out_str, dec_prev_ptr, dec_str_len);
-		out_ptr += dec_str_len;
-		left -= dec_str_len;
-		dec_str_len = 0;
-	    }
-	    else
-	    {
-		strncat(out_str, dec_prev_ptr, left);
-		dec_prev_ptr += left;
-		dec_str_len -= left;
+        dec_str_len = strlen(dec_str) - (dec_prev_ptr - dec_str);
+        do {
+            if (dec_str_len < left) {
+                strncat(out_str, dec_prev_ptr, dec_str_len);
+                out_ptr += dec_str_len;
+                left -= dec_str_len;
+                dec_str_len = 0;
+            } else {
+                strncat(out_str, dec_prev_ptr, left);
+                dec_prev_ptr += left;
+                dec_str_len -= left;
 
-		mime_debody_flush_str(dec_body, out_str);
-		left = max_len;
+                mime_debody_flush_str(dec_body, out_str);
+                left = max_len;
 
-	    }
-	} while(dec_str_len > 0);
+            }
+        } while (dec_str_len > 0);
 
     }
-    if(left != max_len)
-	mime_debody_flush_str(dec_body, out_str);
+    if (left != max_len)
+        mime_debody_flush_str(dec_body, out_str);
 
-exit:
+ exit:
     xfree(out_str);
     return dec_body;
 }
 
-static Textlist* mime_debody_section(Textlist *body, Textlist *header, char *to);
+static Textlist *mime_debody_section(Textlist * body, Textlist * header,
+                                     char *to);
 
-static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime, char *to)
+static Textlist *mime_debody_multipart(Textlist * body, MIMEInfo * mime,
+                                       char *to)
 {
     Textlist header = { NULL, NULL };
     Textline *line;
@@ -1558,8 +1510,8 @@ static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime, char *to)
     char *boundary = NULL;
     char *fin_boundary = NULL;
 
-    if(mime->type_boundary == NULL)
-	return NULL;
+    if (mime->type_boundary == NULL)
+        return NULL;
 
     dec_body = xmalloc(sizeof(*dec_body));
     dec_body->first = NULL;
@@ -1575,33 +1527,28 @@ static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime, char *to)
     strcpy(fin_boundary, boundary);
     strcat(fin_boundary, "--");
 
-    for(line = body->first; line != NULL; line = line->next)
-	if(strneq(line->line, boundary, strlen(boundary)))
-	    break;
+    for (line = body->first; line != NULL; line = line->next)
+        if (strneq(line->line, boundary, strlen(boundary)))
+            break;
 
-    for(line = line->next; line != NULL; line = line->next)
-    {
-	if(!strneq(line->line, boundary, strlen(boundary)))
-	{
-	    tl_append(&tmp_body, line->line);
-	}
-	else
-	{
-	    header_read_list(&tmp_body, &header);
-	    header_delete_from_body(&tmp_body);
+    for (line = line->next; line != NULL; line = line->next) {
+        if (!strneq(line->line, boundary, strlen(boundary))) {
+            tl_append(&tmp_body, line->line);
+        } else {
+            header_read_list(&tmp_body, &header);
+            header_delete_from_body(&tmp_body);
 
-	    ptr_body = mime_debody_section(&tmp_body, &header, to);
-	    if(ptr_body != NULL)
-	    {
-		tl_addtl(dec_body, ptr_body);
-		if(ptr_body != &tmp_body)
-		    xfree(ptr_body);
-	    }
-	    tl_clear(&tmp_body);
+            ptr_body = mime_debody_section(&tmp_body, &header, to);
+            if (ptr_body != NULL) {
+                tl_addtl(dec_body, ptr_body);
+                if (ptr_body != &tmp_body)
+                    xfree(ptr_body);
+            }
+            tl_clear(&tmp_body);
 
-	    if(strneq(line->line, fin_boundary, strlen(fin_boundary)))
-		break;
-	}
+            if (strneq(line->line, fin_boundary, strlen(fin_boundary)))
+                break;
+        }
     }
 
     xfree(boundary);
@@ -1609,8 +1556,7 @@ static Textlist* mime_debody_multipart(Textlist *body, MIMEInfo *mime, char *to)
     return dec_body;
 }
 
-
-static int mime_decharset_section(Textlist *body, MIMEInfo *mime, char *to)
+static int mime_decharset_section(Textlist * body, MIMEInfo * mime, char *to)
 {
 
     char *res_str = NULL;
@@ -1619,112 +1565,96 @@ static int mime_decharset_section(Textlist *body, MIMEInfo *mime, char *to)
     Textline *line;
     char *tmp;
 
-    if(body == NULL || mime == NULL)
-	return ERROR;
+    if (body == NULL || mime == NULL)
+        return ERROR;
 
     /* if no charset, us-ascii assumed */
-    if(mime->type_charset == NULL || strieq(mime->type_charset, to))
-	return OK;
+    if (mime->type_charset == NULL || strieq(mime->type_charset, to))
+        return OK;
 
-    for(line = body->first; line != NULL; line = line->next)
-    {
-	src_len = strlen(line->line) + 1; /* recode final \0 also */
+    for (line = body->first; line != NULL; line = line->next) {
+        src_len = strlen(line->line) + 1;   /* recode final \0 also */
 
-	rc = charset_recode_buf(&res_str, &res_len, line->line, src_len,
-				mime->type_charset, to);
+        rc = charset_recode_buf(&res_str, &res_len, line->line, src_len,
+                                mime->type_charset, to);
 
-	if(rc == ERROR)
-	{
-	    goto exit; /* something really wrong */
-	}
+        if (rc == ERROR) {
+            goto exit;          /* something really wrong */
+        }
 
-	tmp = line->line;
-	line->line = res_str;
-	free(tmp);
+        tmp = line->line;
+        line->line = res_str;
+        free(tmp);
     }
 
     rc = OK;
-exit:
+ exit:
     return rc;
 }
 
-
-static Textlist* mime_debody_section(Textlist *body, Textlist *header, char *to)
+static Textlist *mime_debody_section(Textlist * body, Textlist * header,
+                                     char *to)
 {
 
     Textlist *dec_body;
     MIMEInfo *mime;
 
-    if((mime = get_mime_from_header(header)) == NULL)
-	return NULL;
+    if ((mime = get_mime_from_header(header)) == NULL)
+        return NULL;
 
-    if((mime->type_type == NULL) || strieq(mime->type_type, "text/plain")
-       || (mime->type == NULL))
-    {
-	if((mime->encoding == NULL) || strieq(mime->encoding, "8bit")
-	   || strieq(mime->encoding, "7bit"))
-	{
-	    dec_body = body;
-	}
-	else if(strieq(mime->encoding, "base64"))
-	{
-	    dec_body = mime_debody_base64(body);
-	}
-	else if(strieq(mime->encoding, "quoted-printable"))
-	{
-	    dec_body = mime_debody_qp(body);
-	}
-	else
-	{
-	    fglog("WARNING: Skipped unsupported transfer encoding %s", mime->encoding);
-	    dec_body = NULL;
-	    goto exit;
-	}
-	mime_decharset_section(dec_body, mime, to);
+    if ((mime->type_type == NULL) || strieq(mime->type_type, "text/plain")
+        || (mime->type == NULL)) {
+        if ((mime->encoding == NULL) || strieq(mime->encoding, "8bit")
+            || strieq(mime->encoding, "7bit")) {
+            dec_body = body;
+        } else if (strieq(mime->encoding, "base64")) {
+            dec_body = mime_debody_base64(body);
+        } else if (strieq(mime->encoding, "quoted-printable")) {
+            dec_body = mime_debody_qp(body);
+        } else {
+            fglog("WARNING: Skipped unsupported transfer encoding %s",
+                  mime->encoding);
+            dec_body = NULL;
+            goto exit;
+        }
+        mime_decharset_section(dec_body, mime, to);
+    } else if (strieq(mime->type_type, "multipart/mixed") ||
+               strieq(mime->type_type, "multipart/alternative")) {
+        dec_body = mime_debody_multipart(body, mime, to);
+    } else {
+        fglog("WARNING: Skipped unsupported mime type  %s", mime->type_type);
+        dec_body = NULL;
+        goto exit;
     }
-    else if(strieq(mime->type_type, "multipart/mixed") ||
-	    strieq(mime->type_type, "multipart/alternative"))
-    {
-	dec_body = mime_debody_multipart(body, mime, to);
-    }
-    else
-    {
-	fglog("WARNING: Skipped unsupported mime type  %s", mime->type_type);
-	dec_body = NULL;
-	goto exit;
-    }
-exit:
+ exit:
     mime_free();
     return dec_body;
 
 }
 
-
-int mime_body_dec(Textlist *body, char *to)
+int mime_body_dec(Textlist * body, char *to)
 {
     Textlist *dec_body;
     Textlist *header;
     int len;
     char *buf;
 
-    if((header = header_get_list()) == NULL)
-	return ERROR;
+    if ((header = header_get_list()) == NULL)
+        return ERROR;
 
-    if((dec_body = mime_debody_section(body, header, to)) == NULL)
-	return ERROR;
+    if ((dec_body = mime_debody_section(body, header, to)) == NULL)
+        return ERROR;
 
-    if(dec_body->first == NULL)
-    {
-	fglog("ERROR: could not decode mime body");
-	xfree(dec_body);
-	return ERROR;
+    if (dec_body->first == NULL) {
+        fglog("ERROR: could not decode mime body");
+        xfree(dec_body);
+        return ERROR;
     }
 
-    if(dec_body != body)
-    {
-	tl_clear(body);
-	*body = *dec_body;
-	xfree(dec_body);
+    if (dec_body != body) {
+        tl_clear(body);
+        *body = *dec_body;
+        xfree(dec_body);
     }
 
     len = snprintf(NULL, 0, "text/plain; charset=%s", to);
@@ -1743,19 +1673,18 @@ void mime_free(void)
 {
     MIMEInfo *mime, *n;
 
-    for(mime=mime_list; mime; mime=n)
-    {
-	n = mime->next;
+    for (mime = mime_list; mime; mime = n) {
+        n = mime->next;
 
-	xfree(mime->version);
-	xfree(mime->type);
-	xfree(mime->type_type);
-	xfree(mime->type_charset);
-	xfree(mime->type_boundary);
-	xfree(mime->encoding);
-	xfree(mime->disposition);
-	xfree(mime->disposition_filename);
-	xfree(mime);
+        xfree(mime->version);
+        xfree(mime->type);
+        xfree(mime->type_type);
+        xfree(mime->type_charset);
+        xfree(mime->type_boundary);
+        xfree(mime->encoding);
+        xfree(mime->disposition);
+        xfree(mime->disposition_filename);
+        xfree(mime);
     }
 
 }

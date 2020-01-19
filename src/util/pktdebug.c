@@ -34,77 +34,66 @@
 
 #include "getopt.h"
 
-
-
 #define PROGRAM		"pktdebug"
 
-static void debug_line		(FILE *, char *, int);
-void	msg_body_debug		(FILE *, MsgBody *, char);
+static void debug_line(FILE *, char *, int);
+void msg_body_debug(FILE *, MsgBody *, char);
 
 
 /*
  * Debug output of line
  */
-static void debug_line(FILE *out, char *line, int crlf)
+static void debug_line(FILE * out, char *line, int crlf)
 {
     int c;
 
-    while( (c = *line++) )
-	if( !(c & 0xe0) )
-	{
-	    if(crlf || (c!='\r' && c!='\n'))
-		fprintf(out, "^%c", '@' + c);
-	}
-	else
-	    putc(c, out);
+    while ((c = *line++))
+        if (!(c & 0xe0)) {
+            if (crlf || (c != '\r' && c != '\n'))
+                fprintf(out, "^%c", '@' + c);
+        } else
+            putc(c, out);
     putc('\n', out);
 }
-
-
 
 /*
  * Debug output of message body
  */
-void msg_body_debug(FILE *out, MsgBody *body, char crlf)
+void msg_body_debug(FILE * out, MsgBody * body, char crlf)
 {
     Textline *p;
 
     fprintf(out, "----------------------------------------"
-	         "--------------------------------------\n");
-    if(body->area)
-	debug_line(out, body->area, crlf);
-    for(p=body->kludge.first; p; p=p->next)
-	debug_line(out, p->line, crlf);
+            "--------------------------------------\n");
+    if (body->area)
+        debug_line(out, body->area, crlf);
+    for (p = body->kludge.first; p; p = p->next)
+        debug_line(out, p->line, crlf);
     fprintf(out, "----------------------------------------"
-	            "--------------------------------------\n");
-    if(body->rfc.first)
-    {
-	for(p=body->rfc.first; p; p=p->next)
-	    debug_line(out, p->line, crlf);
-	fprintf(out, "----------------------------------------"
-		     "--------------------------------------\n");
+            "--------------------------------------\n");
+    if (body->rfc.first) {
+        for (p = body->rfc.first; p; p = p->next)
+            debug_line(out, p->line, crlf);
+        fprintf(out, "----------------------------------------"
+                "--------------------------------------\n");
     }
-    for(p=body->body.first; p; p=p->next)
-	debug_line(out, p->line, crlf);
+    for (p = body->body.first; p; p = p->next)
+        debug_line(out, p->line, crlf);
     fprintf(out, "----------------------------------------"
-	         "--------------------------------------\n");
-    if(body->tear)
-	debug_line(out, body->tear, crlf);
-    if(body->origin)
-	debug_line(out, body->origin, crlf);
-    for(p=body->seenby.first; p; p=p->next)
-	debug_line(out, p->line, crlf);
-    for(p=body->path.first; p; p=p->next)
-	debug_line(out, p->line, crlf);
-    for(p=body->via.first; p; p=p->next)
-	debug_line(out, p->line, crlf);
+            "--------------------------------------\n");
+    if (body->tear)
+        debug_line(out, body->tear, crlf);
+    if (body->origin)
+        debug_line(out, body->origin, crlf);
+    for (p = body->seenby.first; p; p = p->next)
+        debug_line(out, p->line, crlf);
+    for (p = body->path.first; p; p = p->next)
+        debug_line(out, p->line, crlf);
+    for (p = body->via.first; p; p = p->next)
+        debug_line(out, p->line, crlf);
     fprintf(out, "========================================"
-	         "======================================\n");
+            "======================================\n");
 }
-
-
-
-
 
 /*
  * Usage messages
@@ -116,11 +105,10 @@ void short_usage(void)
     exit(EX_USAGE);
 }
 
-
 void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
-	    version_global(), PROGRAM, version_local(VERSION) );
+            version_global(), PROGRAM, version_local(VERSION));
 
     fprintf(stderr, "usage:   %s [-options] file ...\n\n", PROGRAM);
     fprintf(stderr, "\
@@ -134,8 +122,6 @@ options:  -m --msg-header              print message header\n\
     exit(0);
 }
 
-
-
 /***** main() ****************************************************************/
 
 int main(int argc, char **argv)
@@ -146,19 +132,18 @@ int main(int argc, char **argv)
     Textlist tl;
     int c, type;
     char *name;
-    int m_flag=FALSE, t_flag=0, s_flag=FALSE;
+    int m_flag = FALSE, t_flag = 0, s_flag = FALSE;
     MsgBody body;
     long n_mail, n_echo;
 
     int option_index;
-    static struct option long_options[] =
-    {
-	{ "msg-header",   0, 0, 'm'},
-	{ "msg-text",     0, 0, 't'},
-	{ "short",        0, 0, 's'},
-	{ "verbose",      0, 0, 'v'},	/* More verbose */
-	{ "help",         0, 0, 'h'},	/* Help */
-	{ 0,              0, 0, 0  }
+    static struct option long_options[] = {
+        {"msg-header", 0, 0, 'm'},
+        {"msg-text", 0, 0, 't'},
+        {"short", 0, 0, 's'},
+        {"verbose", 0, 0, 'v'}, /* More verbose */
+        {"help", 0, 0, 'h'},    /* Help */
+        {0, 0, 0, 0}
     };
 
     log_file("stdout");
@@ -168,153 +153,136 @@ int main(int argc, char **argv)
     msg_body_init(&body);
 
     while ((c = getopt_long(argc, argv, "mtsvh",
-			    long_options, &option_index     )) != EOF)
-	switch (c) {
-	case 'm':
-	    m_flag = TRUE;
-	    break;
-	case 't':
-	    m_flag = TRUE;
-	    t_flag++;
-	    break;
-	case 's':
-	    s_flag = TRUE;
-	    break;
+                            long_options, &option_index)) != EOF)
+        switch (c) {
+        case 'm':
+            m_flag = TRUE;
+            break;
+        case 't':
+            m_flag = TRUE;
+            t_flag++;
+            break;
+        case 's':
+            s_flag = TRUE;
+            break;
 
-	/***** Common options *****/
-	case 'v':
-	    verbose++;
-	    break;
-	case 'h':
-	    usage();
-	    break;
-	default:
-	    short_usage();
-	    break;
-	}
+    /***** Common options *****/
+        case 'v':
+            verbose++;
+            break;
+        case 'h':
+            usage();
+            break;
+        default:
+            short_usage();
+            break;
+        }
 
     /*
      * Process following command line arguments
      */
-    if(optind == argc)
-	short_usage();
+    if (optind == argc)
+        short_usage();
 
     /* Files */
-    for(; optind<argc; optind++)
-    {
-	name = argv[optind];
+    for (; optind < argc; optind++) {
+        name = argv[optind];
 
-	if(!strcmp(name, "-"))		/* "-" = stdin */
-	    fp = stdin;
-	else
-	    fp = xfopen(name, R_MODE);
+        if (!strcmp(name, "-")) /* "-" = stdin */
+            fp = stdin;
+        else
+            fp = xfopen(name, R_MODE);
 
-	n_mail = n_echo = 0;
+        n_mail = n_echo = 0;
 
-	do
-	{
-	    if( pkt_get_hdr(fp, &pkt) == ERROR )
-	    {
-		printf("ERROR: %s: reading packet header\n", name);
-		if(!s_flag)
-		{
-		    printf("Partially read ");
-		    pkt_debug_hdr(stdout, &pkt, "");
-		}
-		break;
-	    }
+        do {
+            if (pkt_get_hdr(fp, &pkt) == ERROR) {
+                printf("ERROR: %s: reading packet header\n", name);
+                if (!s_flag) {
+                    printf("Partially read ");
+                    pkt_debug_hdr(stdout, &pkt, "");
+                }
+                break;
+            }
 
-	    if(!s_flag)
-	    {
-		if(t_flag)
-		    fprintf(stdout,
-			    "========================================"
-			    "======================================\n");
-		pkt_debug_hdr(stdout, &pkt, "");
-		if(t_flag)
-		    fprintf(stdout,
-			    "========================================"
-			    "======================================\n");
-	    }
+            if (!s_flag) {
+                if (t_flag)
+                    fprintf(stdout,
+                            "========================================"
+                            "======================================\n");
+                pkt_debug_hdr(stdout, &pkt, "");
+                if (t_flag)
+                    fprintf(stdout,
+                            "========================================"
+                            "======================================\n");
+            }
 
-	    type = pkt_get_int16(fp);
-	    if(type == ERROR)
-	    {
-		if(feof(fp))
-		{
-		    printf("WARNING: %s: premature EOF reading input packet\n",
-			   name);
-		    break;
-		}
-		printf("ERROR: %s: reading input packet\n", name);
-		break;
-	    }
-	    while((type == MSG_TYPE) && !xfeof(fp))
-	    {
-		msg.node_from = pkt.from;
-		msg.node_to   = pkt.to;
-		if( pkt_get_msg_hdr(fp, &msg, false) == ERROR )
-		{
-		    printf("ERROR: %s: reading message header\n", name);
-		    break;
-		}
+            type = pkt_get_int16(fp);
+            if (type == ERROR) {
+                if (feof(fp)) {
+                    printf("WARNING: %s: premature EOF reading input packet\n",
+                           name);
+                    break;
+                }
+                printf("ERROR: %s: reading input packet\n", name);
+                break;
+            }
+            while ((type == MSG_TYPE) && !xfeof(fp)) {
+                msg.node_from = pkt.from;
+                msg.node_to = pkt.to;
+                if (pkt_get_msg_hdr(fp, &msg, false) == ERROR) {
+                    printf("ERROR: %s: reading message header\n", name);
+                    break;
+                }
 #ifdef OLD_TOSS
-		type = pkt_get_body(fp, &tl);
-		if(type == ERROR)
-		{
-		    if(feof(fp))
-		    {
-			printf("WARNING: %s: premature EOF reading "
-				"input packet\n", name);
-		    }
-		    else
-		    {
-			printf("ERROR: %s: reading input packet\n", name);
-			break;
-		    }
-		}
-		if( (c = msg_body_parse(&tl, &body)) != OK)
+                type = pkt_get_body(fp, &tl);
+                if (type == ERROR) {
+                    if (feof(fp)) {
+                        printf("WARNING: %s: premature EOF reading "
+                               "input packet\n", name);
+                    } else {
+                        printf("ERROR: %s: reading input packet\n", name);
+                        break;
+                    }
+                }
+                if ((c = msg_body_parse(&tl, &body)) != OK)
 #else
-		if( (c = pkt_get_body_parse(fp, &body, &msg.node_from,
-			    &msg.node_to)) != OK )
+                if ((c = pkt_get_body_parse(fp, &body, &msg.node_from,
+                                            &msg.node_to)) != OK)
 #endif
-		    fprintf(stdout, "ERROR: %s: parsing message "
-			    "body failed (%d)\n", name, c);
-		if(body.area == NULL)
-		{
-		    /* NetMail */
-		    n_mail++;
-		    /* Retrieve complete address from kludges */
-		    kludge_pt_intl(&body, &msg, FALSE);
-		}
-		else
-		{
-		    /* EchoMail */
-		    n_echo++;
-		}
+                    fprintf(stdout, "ERROR: %s: parsing message "
+                            "body failed (%d)\n", name, c);
+                if (body.area == NULL) {
+                    /* NetMail */
+                    n_mail++;
+                    /* Retrieve complete address from kludges */
+                    kludge_pt_intl(&body, &msg, FALSE);
+                } else {
+                    /* EchoMail */
+                    n_echo++;
+                }
 
-		if(m_flag)
-		    pkt_debug_msg_hdr(stdout, &msg, "");
-		if(t_flag)
-		    msg_body_debug(stdout, &body, t_flag>1 ? TRUE : FALSE);
+                if (m_flag)
+                    pkt_debug_msg_hdr(stdout, &msg, "");
+                if (t_flag)
+                    msg_body_debug(stdout, &body, t_flag > 1 ? TRUE : FALSE);
 
-		tmps_freeall();
-	    }
-	}
-	while(0);
+                tmps_freeall();
+            }
+        }
+        while (0);
 
-	if(fp != stdin)
-	    fclose(fp);
+        if (fp != stdin)
+            fclose(fp);
 
-	/* Short format output */
-	if(s_flag)
-	    printf("%s: %s -> %s, %ld mail, %ld echo\n",
-		   name, znfp1(&pkt.from), znfp2(&pkt.to), n_mail, n_echo);
+        /* Short format output */
+        if (s_flag)
+            printf("%s: %s -> %s, %ld mail, %ld echo\n",
+                   name, znfp1(&pkt.from), znfp2(&pkt.to), n_mail, n_echo);
 
-	tmps_freeall();
+        tmps_freeall();
     }
 
     exit_free();
     exit(0);
 }
-

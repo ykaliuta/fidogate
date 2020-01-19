@@ -41,8 +41,6 @@
 
 #include "fidogate.h"
 
-
-
 /***** compute_crc32() --- Compute 32 bit CRC value of buffer ****************/
 
  /*--------------------------------------------------------------------
@@ -83,8 +81,7 @@
 
    --------------------------------------------------------------------*/
 
-static unsigned long crc_32_tab[] =
-{
+static unsigned long crc_32_tab[] = {
     0x00000000L, 0x77073096L, 0xee0e612cL, 0x990951baL, 0x076dc419L,
     0x706af48fL, 0xe963a535L, 0x9e6495a3L, 0x0edb8832L, 0x79dcb8a4L,
     0xe0d5e91eL, 0x97d2d988L, 0x09b64c2bL, 0x7eb17cbdL, 0xe7b82d07L,
@@ -139,17 +136,14 @@ static unsigned long crc_32_tab[] =
     0x2d02ef8dL
 };
 
-
 unsigned long compute_crc32(unsigned char *s, int len)
-
-
 /* Compute CRC value for buffer s, length len */
 {
     register unsigned long crcval = 0xffffffff;
 
     while (len--)
-	crcval = crc_32_tab[((unsigned char) crcval ^ (*s++)) & 0xff]
-	       ^ (crcval >> 8);
+        crcval = crc_32_tab[((unsigned char)crcval ^ (*s++)) & 0xff]
+            ^ (crcval >> 8);
     return ~crcval & 0xffffffff;
 }
 
@@ -167,22 +161,20 @@ void crc32_init(void)
 void crc32_compute(unsigned char *s, int len)
 {
     while (len--)
-	crcval = crc_32_tab[((unsigned char) crcval ^ (*s++)) & 0xff]
-		    ^ (crcval >> 8);
+        crcval = crc_32_tab[((unsigned char)crcval ^ (*s++)) & 0xff]
+            ^ (crcval >> 8);
 }
 
 void crc32_update(int c)
 {
-    crcval = crc_32_tab[((unsigned char) crcval ^ c) & 0xff]
-	^ (crcval >> 8);
+    crcval = crc_32_tab[((unsigned char)crcval ^ c) & 0xff]
+        ^ (crcval >> 8);
 }
 
 unsigned long crc32_value(void)
 {
     return ~crcval & 0xffffffff;
 }
-
-
 
 /*
  * Compute CRC32 for entire file
@@ -192,23 +184,19 @@ unsigned long crc32_file(char *name)
     FILE *fp;
     int c;
 
-    if((fp = fopen(name, R_MODE)) == NULL)
-    {
-	fglog("$crc32_file(): can't open %s", name);
-	return 0;
+    if ((fp = fopen(name, R_MODE)) == NULL) {
+        fglog("$crc32_file(): can't open %s", name);
+        return 0;
     }
 
     crc32_init();
-    while((c = getc(fp)) != EOF)
-	crc32_update(c);
+    while ((c = getc(fp)) != EOF)
+        crc32_update(c);
 
     fclose(fp);
 
     return crc32_value();
 }
-
-
-
 
 #ifdef TEST
 /***** Test ******************************************************************/
@@ -220,9 +208,9 @@ main(int argc, char *argv[])
     buffer[0] = 0;
     crc32_init();
 
-    while(--argc) {
-	argv++;
-	crc32_compute(*argv, strlen(*argv));
+    while (--argc) {
+        argv++;
+        crc32_compute(*argv, strlen(*argv));
     }
     printf("CRC=%08lx\n", crc32_value());
 }

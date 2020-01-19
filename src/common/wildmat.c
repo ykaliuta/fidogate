@@ -94,37 +94,35 @@ were, I'd use the code I mentioned above.
 
 #include "fidogate.h"
 
-
-
 /*
  * Compare two chars
  */
 static int char_eq(int c1, int c2, int ic)
 {
-    if(ic)
-    {
-	if(islower(c1)) c1 = toupper(c1);
-	if(islower(c2)) c2 = toupper(c2);
+    if (ic) {
+        if (islower(c1))
+            c1 = toupper(c1);
+        if (islower(c2))
+            c2 = toupper(c2);
     }
     return c1 == c2;
 }
-
 
 /*
  * Compare with range
  */
 static int char_range(int c, int c1, int c2, int ic)
 {
-    if(ic)
-    {
-	if(islower(c))  c  = toupper(c);
-	if(islower(c1)) c1 = toupper(c1);
-	if(islower(c2)) c2 = toupper(c2);
+    if (ic) {
+        if (islower(c))
+            c = toupper(c);
+        if (islower(c1))
+            c1 = toupper(c1);
+        if (islower(c2))
+            c2 = toupper(c2);
     }
-    return c>=c1 && c<=c2;
+    return c >= c1 && c <= c2;
 }
-
-
 
 /*
  * Compatibility with old wildmat() function
@@ -134,85 +132,67 @@ int wildmat(char *s, char *pat)
     return wildmatch(s, pat, FALSE);
 }
 
-
-
 /* Tryes to find string in file. Every line of file must contain only one
  * pattern. All characters from space or tabulation till end of line are
  * ignored
  */
-int
-wildmatch_file(char *s, char *path, int ic)
+int wildmatch_file(char *s, char *path, int ic)
 {
-  char buf[BUFSIZ];
-  char *p;
-  int rc = FALSE;
-  FILE *fp;
+    char buf[BUFSIZ];
+    char *p;
+    int rc = FALSE;
+    FILE *fp;
 
-  if ( ! (fp = fopen_expand_name(path, R_MODE_T, FALSE)))
-      return FALSE;
+    if (!(fp = fopen_expand_name(path, R_MODE_T, FALSE)))
+        return FALSE;
 
-  while (fgets(buf, sizeof(buf), fp))
-    {
-      for (p = buf; '\0' != *p; p++)
-	{
-	  if (' '  == *p || '\t' == *p ||
-	      '\r' == *p || '\n' == *p)
-	    {
-	      *p = '\0';
-	      break;
-	    }
-	}
-      if (wildmatch(s, buf, ic))
-	{
-	  rc = TRUE;
-	  break;
-	}
+    while (fgets(buf, sizeof(buf), fp)) {
+        for (p = buf; '\0' != *p; p++) {
+            if (' ' == *p || '\t' == *p || '\r' == *p || '\n' == *p) {
+                *p = '\0';
+                break;
+            }
+        }
+        if (wildmatch(s, buf, ic)) {
+            rc = TRUE;
+            break;
+        }
     }
 
-  fclose( fp );
+    fclose(fp);
 
-  return rc;
+    return rc;
 }
-
-
 
 #ifdef FTN_ACL
 /* Tryes to find string in comma separated patterns
  */
-int
-wildmatch_string(char *s, char *string, int ic)
+int wildmatch_string(char *s, char *string, int ic)
 {
-  char   *tmp;
-  char   *p;
-  int     matched = FALSE;
+    char *tmp;
+    char *p;
+    int matched = FALSE;
 
-  /* strtok corrupts string */
-  tmp = strsave(string);
+    /* strtok corrupts string */
+    tmp = strsave(string);
 
-  for (p = xstrtok(tmp, ","); p && *p; p = xstrtok(NULL, ","))
-    {
-      if ('!' == p[0])
-	{
-	  if (wildmatch(s, &p[1], ic))
-	    break;
-	}
-      else
-	{
-	  if (wildmatch(s, p, ic))
-	    {
-	      matched = TRUE;
-	      break;
-	    }
-	}
+    for (p = xstrtok(tmp, ","); p && *p; p = xstrtok(NULL, ",")) {
+        if ('!' == p[0]) {
+            if (wildmatch(s, &p[1], ic))
+                break;
+        } else {
+            if (wildmatch(s, p, ic)) {
+                matched = TRUE;
+                break;
+            }
+        }
     }
 
-  xfree(tmp);
+    xfree(tmp);
 
-  return matched;
+    return matched;
 }
 #endif
-
-
 
 /*
  * Compare string with shell-style wildcard pattern ?*[a-z]
@@ -224,83 +204,78 @@ int wildmatch(char *s, char *p, int ic)
      * ic --- TRUE=ignore case, FALSE=don't
      */
 {
-    char *saved_s, *saved_p=NULL;
+    char *saved_s, *saved_p = NULL;
     char *tmp;
 
-    saved_s = "\0"; /* for BackTrack */
-    if(ic == TRUE+1)
-    {
-	tmp = s;
-	s = p;
-	p = tmp;
+    saved_s = "\0";             /* for BackTrack */
+    if (ic == TRUE + 1) {
+        tmp = s;
+        s = p;
+        p = tmp;
     }
 
-TryAgain:
+ TryAgain:
 
-    for ( ; *p; s++, p++)
+    for (; *p; s++, p++)
         switch (*p) {
-            case '\\':
-                /* Literal match with following character; fall through. */
-                p++;
-            default:
-                if(!char_eq(*s, *p, ic))
-                    goto BackTrack;
-                continue;
-            case '?':
-                /* Match anything. */
-                if (*s == '\0')
-                    return(FALSE);
-                continue;
-            case '*':
-                /* Trailing star matches everything. */
-                if (!*++p) return(TRUE);
-                saved_s = s;
-                saved_p = p;
-                goto TryAgain;
-            case '[':
-	    {
+        case '\\':
+            /* Literal match with following character; fall through. */
+            p++;
+        default:
+            if (!char_eq(*s, *p, ic))
+                goto BackTrack;
+            continue;
+        case '?':
+            /* Match anything. */
+            if (*s == '\0')
+                return (FALSE);
+            continue;
+        case '*':
+            /* Trailing star matches everything. */
+            if (!*++p)
+                return (TRUE);
+            saved_s = s;
+            saved_p = p;
+            goto TryAgain;
+        case '[':
+            {
                 int last;
                 int matched;
                 int reverse;
 
                 /* [^....] means inverse character class. */
-                if ( ( reverse = (p[1] == '^') ) )
+                if ((reverse = (p[1] == '^')))
                     p++;
-                for (last = 0400, matched = FALSE; *++p && *p != ']'; last=*p)
-                    if( *p=='-' ? char_range(*s, last, *++p, ic)
-			        : char_eq(*s, *p, ic) )
+                for (last = 0400, matched = FALSE; *++p && *p != ']'; last = *p)
+                    if (*p == '-' ? char_range(*s, last, *++p, ic)
+                        : char_eq(*s, *p, ic))
                         matched = TRUE;
                 if (matched == reverse)
                     goto BackTrack;
                 continue;
-              }
+            }
         }
 
     if (*s == '\0')
-	return TRUE ;
+        return TRUE;
 
-BackTrack:
+ BackTrack:
     if (*saved_s == '\0' || *(s = ++saved_s) == '\0')
         return FALSE;
     p = saved_p;
     goto TryAgain;
 }
 
-
 int is_wildcard(char *s)
 {
-    return
-	strchr(s, '*') ||
-	strchr(s, '?') ||
-	strchr(s, '[')    ;
+    return strchr(s, '*') || strchr(s, '?') || strchr(s, '[');
 }
 
 /*****************************************************************************/
 #ifdef  TEST
 #include <stdio.h>
 
-extern char     *gets();
-
+extern char *gets();
 
 int main(void)
 {
@@ -308,21 +283,23 @@ int main(void)
     char text[80];
 
     while (TRUE) {
-        printf("Enter pattern: "); fflush(stdout);
+        printf("Enter pattern: ");
+        fflush(stdout);
         if (fgets(pattern, sizeof(pattern), stdin) == NULL)
             break;
-	strip_crlf(pattern);
+        strip_crlf(pattern);
         while (TRUE) {
-            printf("Enter text:    "); fflush(stdout);
+            printf("Enter text:    ");
+            fflush(stdout);
             if (fgets(text, sizeof(text), stdin) == NULL)
                 exit(0);
-	    strip_crlf(text);
+            strip_crlf(text);
             if (text[0] == '\0')
                 /* Blank line; go back and get a new pattern. */
                 break;
             printf("wildmatch(): noic=%d ic=%d\n",
-		   wildmatch(text, pattern, FALSE),
-		   wildmatch(text, pattern, TRUE ) );
+                   wildmatch(text, pattern, FALSE),
+                   wildmatch(text, pattern, TRUE));
         }
     }
     exit(0);
@@ -330,4 +307,4 @@ int main(void)
     /**NOT REACHED**/
     return 0;
 }
-#endif  /* TEST */
+#endif                          /* TEST */

@@ -32,7 +32,6 @@
 
 #include "fidogate.h"
 
-
 /*
  * Rename file: NAME.pkt -> NAME.bad
  */
@@ -43,10 +42,9 @@ void rename_bad(char *name)
     str_change_ext(bad, sizeof(bad), name, ".bad");
 
     fglog("ERROR: bad packet renamed to %s", bad);
-    if(rename(name, bad) == ERROR)
-    {
-	fglog("$ERROR: can't rename %s -> %s", name, bad);
-	return;
+    if (rename(name, bad) == ERROR) {
+        fglog("$ERROR: can't rename %s -> %s", name, bad);
+        return;
     }
 
     return;

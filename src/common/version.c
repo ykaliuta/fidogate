@@ -33,8 +33,6 @@
 #include "fidogate.h"
 #include "version.h"
 
-
-
 /*
  * version_global() --- Get global FIDOGATE version string
  */
@@ -43,11 +41,9 @@ char *version_global(void)
     static char id[32];
 
     str_printf(id, sizeof(id), "%d.%d%s",
-	       VERSION_MAJOR, VERSION_MINOR, EXTRAVERSION);
+               VERSION_MAJOR, VERSION_MINOR, EXTRAVERSION);
     return id;
 }
-
-
 
 /*
  * get_keyword_arg()
@@ -56,20 +52,18 @@ static char *get_keyword_arg(char *s)
 {
     char *p;
 
-    while(*s && *s!=':')
-	s++;
-    if(*s == ':')
-	s++;
-    while(*s && *s==' ')
-	s++;
+    while (*s && *s != ':')
+        s++;
+    if (*s == ':')
+        s++;
+    while (*s && *s == ' ')
+        s++;
 
-    for(p=s; *p && *p!=' '; p++) ;
+    for (p = s; *p && *p != ' '; p++) ;
     *p = 0;
 
     return s;
 }
-
-
 
 /*
  * version_local() --- Get local version from passed RCS/CVS Revision string
@@ -82,8 +76,6 @@ char *version_local(char *rev)
 
     return get_keyword_arg(id);
 }
-
-
 
 /*
  * Get major/minor version number

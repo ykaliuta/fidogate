@@ -31,24 +31,19 @@
 
 #ifdef SPYES
 
-
-
 /*
  * Local prototypes
  */
-static int    anodeeq		(Node *, Node *);
-static Spy    *spyes_parse_line	(char *);
-static int    spyes_do_file	(char *);
-static int    spyes_check_dups  (Node *);
-
+static int anodeeq(Node *, Node *);
+static Spy *spyes_parse_line(char *);
+static int spyes_do_file(char *);
+static int spyes_check_dups(Node *);
 
 /*
  * Spyes list
  */
 static Spy *spyes_list = NULL;
 static Spy *spyes_last = NULL;
-
-
 
 /*
  * Read list of spy nodes from CONFIGDIR/SPYES file.
@@ -62,42 +57,37 @@ static Spy *spyes_parse_line(char *buf)
     char *n, *r;
     Node node, forward_node;
 
-    n = xstrtok(buf,  " \t");	/* Node */
-    r = xstrtok(NULL, " \t");	/* Forward node */
-    if(n==NULL || r==NULL)
-	return NULL;
-    if(strieq(n, "include"))
-    {
-	spyes_do_file(r);
-	return NULL;
+    n = xstrtok(buf, " \t");    /* Node */
+    r = xstrtok(NULL, " \t");   /* Forward node */
+    if (n == NULL || r == NULL)
+        return NULL;
+    if (strieq(n, "include")) {
+        spyes_do_file(r);
+        return NULL;
     }
 
-    if( asc_to_node(n, &node, TRUE) == ERROR )
-    {
-	fglog("spyes: illegal FTN address %s", n);
-	return NULL;
+    if (asc_to_node(n, &node, TRUE) == ERROR) {
+        fglog("spyes: illegal FTN address %s", n);
+        return NULL;
     }
-    if( spyes_check_dups(&node) )
-    {
-	fglog("spyes: duplicate spy entry %s", n);
-	return NULL;
+    if (spyes_check_dups(&node)) {
+        fglog("spyes: duplicate spy entry %s", n);
+        return NULL;
     }
-    if( asc_to_node(r, &forward_node, TRUE) == ERROR )
-    {
-	fglog("spyes: illegal FTN address %s", r);
-	return NULL;
+    if (asc_to_node(r, &forward_node, TRUE) == ERROR) {
+        fglog("spyes: illegal FTN address %s", r);
+        return NULL;
     }
 
-    p = (Spy *)xmalloc(sizeof(Spy));
-    p->next     	= NULL;
-    p->node     	= node;
-    p->forward_node     = forward_node;
+    p = (Spy *) xmalloc(sizeof(Spy));
+    p->next = NULL;
+    p->node = node;
+    p->forward_node = forward_node;
 
     debug(15, "spyes: %s %s", znfp1(&p->node), znfp2(&p->forward_node));
 
     return p;
 }
-
 
 static int spyes_do_file(char *name)
 {
@@ -107,23 +97,22 @@ static int spyes_do_file(char *name)
     debug(14, "Reading spyes file %s", name);
 
     fp = fopen_expand_name(name, R_MODE_T, FALSE);
-    if(!fp)
-	return ERROR;
+    if (!fp)
+        return ERROR;
 
-    while(cf_getline(buffer, BUFFERSIZE, fp))
-    {
-	p = spyes_parse_line(buffer);
-	if(!p)
-	    continue;
+    while (cf_getline(buffer, BUFFERSIZE, fp)) {
+        p = spyes_parse_line(buffer);
+        if (!p)
+            continue;
 
-	/*
-	 * Put into linked list
-	 */
-	if(spyes_list)
-	    spyes_last->next = p;
-	else
-	    spyes_list       = p;
-	spyes_last       = p;
+        /*
+         * Put into linked list
+         */
+        if (spyes_list)
+            spyes_last->next = p;
+        else
+            spyes_list = p;
+        spyes_last = p;
     }
 
     fclose(fp);
@@ -131,26 +120,22 @@ static int spyes_do_file(char *name)
     return OK;
 }
 
-static int spyes_check_dups(Node *node)
+static int spyes_check_dups(Node * node)
 {
     Spy *a;
 
-    for(a=spyes_list; a; a=a->next)
-    {
-	if (anodeeq(node, &a->node))
-	    return TRUE;
+    for (a = spyes_list; a; a = a->next) {
+        if (anodeeq(node, &a->node))
+            return TRUE;
     }
 
     return FALSE;
 }
 
-
 void spyes_init(void)
 {
-    spyes_do_file( cf_p_spyes() );
+    spyes_do_file(cf_p_spyes());
 }
-
-
 
 /*
  * Lookup spy in spyes_list
@@ -159,14 +144,13 @@ void spyes_init(void)
  *     node --- lookup by FTN node for forward_node
  *
  */
-Spy *spyes_lookup(Node *node)
+Spy *spyes_lookup(Node * node)
 {
     Spy *a;
 
-    for(a=spyes_list; a; a=a->next)
-    {
-	if (wild_compare_node(node, &a->node))
-	    return a;
+    for (a = spyes_list; a; a = a->next) {
+        if (wild_compare_node(node, &a->node))
+            return a;
     }
 
     return NULL;
@@ -178,10 +162,10 @@ Spy *spyes_lookup(Node *node)
  * Compare complete FTN addresses.
  *
  */
-static int anodeeq(Node *a, Node *b)
+static int anodeeq(Node * a, Node * b)
 {
-    return a->zone==b->zone && a->net==b->net && a->node==b->node &&
-	   a->point==b->point;
+    return a->zone == b->zone && a->net == b->net && a->node == b->node &&
+        a->point == b->point;
 }
 
-#endif /* SPYES */
+#endif                          /* SPYES */

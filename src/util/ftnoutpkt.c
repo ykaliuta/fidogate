@@ -33,65 +33,59 @@
 #include "fidogate.h"
 #include "getopt.h"
 
-
-
 #define PROGRAM		"ftnoutpkt"
 #define CONFIG		DEFAULT_CONFIG_MAIN
-
-
 
 /*
  * Send one message
  */
-int do_addr(FTNAddr *from, FTNAddr *to, char *subj, Textlist *tl, char *area,
-		char *origin, char *tearline)
+int do_addr(FTNAddr * from, FTNAddr * to, char *subj, Textlist * tl, char *area,
+            char *origin, char *tearline)
 {
     Message msg;
     Textline *ptr;
     char *p;
 
-    subj = xlat_s( subj, NULL );
+    subj = xlat_s(subj, NULL);
 
     msg.node_from = from->node;
-    msg.node_to   = to->node;
+    msg.node_to = to->node;
     node_invalid(&msg.node_orig);
-    msg.attr      = 0;
-    msg.cost      = 0;
-    msg.date      = time(NULL);
+    msg.attr = 0;
+    msg.cost = 0;
+    msg.date = time(NULL);
     BUF_COPY(msg.name_from, from->name);
     BUF_COPY(msg.name_to, to->name);
     BUF_COPY(msg.subject, subj);
-    msg.area      = area;
+    msg.area = area;
 
-    for ( ptr = tl->first; NULL != ptr; ptr = ptr->next )
-    {
-	p = xlat_s( ptr->line, NULL );
-	xfree( ptr->line );
-	ptr->line = strsave( p );
-	xfree( p );
+    for (ptr = tl->first; NULL != ptr; ptr = ptr->next) {
+        p = xlat_s(ptr->line, NULL);
+        xfree(ptr->line);
+        ptr->line = strsave(p);
+        xfree(p);
     }
 
     TMPS_RETURN(outpkt_netmail(&msg, tl, PROGRAM, origin, tearline));
 }
-
-
 
 /*
  * Usage messages
  */
 void short_usage(void)
 {
-    fprintf(stderr, "usage: %s [-options] 'User Name @ Z:N/F.P' ...\n", PROGRAM);
+    fprintf(stderr, "usage: %s [-options] 'User Name @ Z:N/F.P' ...\n",
+            PROGRAM);
     fprintf(stderr, "       %s --help  for more information\n", PROGRAM);
 }
-
 
 void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
-	    version_global(), PROGRAM, version_local(VERSION) );
+            version_global(), PROGRAM, version_local(VERSION));
 
-    fprintf(stderr, "usage:   %s [-options] 'User Name @ Z:N/F.P' ...\n\n", PROGRAM);
+    fprintf(stderr, "usage:   %s [-options] 'User Name @ Z:N/F.P' ...\n\n",
+            PROGRAM);
     fprintf(stderr, "\
 options:  -f --from NAME@Z:N/F.P       set from FTN address\n\
           -s --subject SUBJECT         set subject of message\n\
@@ -107,42 +101,39 @@ options:  -f --from NAME@Z:N/F.P       set from FTN address\n\
 	  -o --origin ORIGIN           set origin\n");
 }
 
-
-
 /***** main() ****************************************************************/
 
 int main(int argc, char **argv)
 {
     int c;
-    char *f_flag=NULL, *s_flag=NULL;
-    char *A_flag=NULL;
-    char *O_flag=NULL;
-    char *c_flag=NULL;
-    char *a_flag=NULL, *u_flag=NULL;
+    char *f_flag = NULL, *s_flag = NULL;
+    char *A_flag = NULL;
+    char *O_flag = NULL;
+    char *c_flag = NULL;
+    char *a_flag = NULL, *u_flag = NULL;
     char *tmp;
-    char *cs_in=NULL, *cs_out=NULL, *p;
-    char *o_flag=NULL;
-    char *t_flag=NULL;
+    char *cs_in = NULL, *cs_out = NULL, *p;
+    char *o_flag = NULL;
+    char *t_flag = NULL;
 
     FTNAddr to, from;
     Textlist tl;
 
     int option_index;
-    static struct option long_options[] =
-    {
-	{ "from",         1, 0, 'f'},	/* From */
-	{ "subject",      1, 0, 's'},	/* Subject */
-	{ "area",         1, 0, 'A'},	/* Area name */
-	{ "out-dir",      1, 0, 'O'},	/* Output dir */
+    static struct option long_options[] = {
+        {"from", 1, 0, 'f'},    /* From */
+        {"subject", 1, 0, 's'}, /* Subject */
+        {"area", 1, 0, 'A'},    /* Area name */
+        {"out-dir", 1, 0, 'O'}, /* Output dir */
 
-	{ "verbose",      0, 0, 'v'},	/* More verbose */
-	{ "help",         0, 0, 'h'},	/* Help */
-	{ "config",       1, 0, 'c'},	/* Config file */
-	{ "addr",         1, 0, 'a'},	/* Set FIDO address */
-	{ "uplink-addr",  1, 0, 'u'},	/* Set FIDO uplink address */
-	{ "origin",       1, 0, 'o'},	/* set Origin */
-	{ "tearline",     1, 0, 't'},	/* set Tearline */
-	{ 0,              0, 0, 0  }
+        {"verbose", 0, 0, 'v'}, /* More verbose */
+        {"help", 0, 0, 'h'},    /* Help */
+        {"config", 1, 0, 'c'},  /* Config file */
+        {"addr", 1, 0, 'a'},    /* Set FIDO address */
+        {"uplink-addr", 1, 0, 'u'}, /* Set FIDO uplink address */
+        {"origin", 1, 0, 'o'},  /* set Origin */
+        {"tearline", 1, 0, 't'},    /* set Tearline */
+        {0, 0, 0, 0}
     };
 
     log_program(PROGRAM);
@@ -150,56 +141,54 @@ int main(int argc, char **argv)
     /* Init configuration */
     cf_initialize();
 
-
     while ((c = getopt_long(argc, argv, "f:s:A:O:vhc:a:u:o:t:",
-			    long_options, &option_index     )) != EOF)
-	switch (c) {
-	case 'f':
-	    f_flag = optarg;
-	    break;
-	case 's':
-	    s_flag = optarg;
-	    break;
-	case 'A':
-	    A_flag = optarg;
-	    break;
-	case 'O':
-	    O_flag = optarg;
-	    break;
+                            long_options, &option_index)) != EOF)
+        switch (c) {
+        case 'f':
+            f_flag = optarg;
+            break;
+        case 's':
+            s_flag = optarg;
+            break;
+        case 'A':
+            A_flag = optarg;
+            break;
+        case 'O':
+            O_flag = optarg;
+            break;
 
-	/***** Common options *****/
-	case 'v':
-	    verbose++;
-	    break;
-	case 'h':
-	    usage();
-	    return 0;
-	    break;
-	case 'c':
-	    c_flag = optarg;
-	    break;
-	case 'a':
-	    a_flag = optarg;
-	    break;
-	case 'u':
-	    u_flag = optarg;
-	    break;
-	case 'o':
-	    o_flag = optarg;
-	    break;
-	case 't':
-	    t_flag = optarg;
-	    break;
-	default:
-	    short_usage();
-	    return EX_USAGE;
-	    break;
-	}
+    /***** Common options *****/
+        case 'v':
+            verbose++;
+            break;
+        case 'h':
+            usage();
+            return 0;
+            break;
+        case 'c':
+            c_flag = optarg;
+            break;
+        case 'a':
+            a_flag = optarg;
+            break;
+        case 'u':
+            u_flag = optarg;
+            break;
+        case 'o':
+            o_flag = optarg;
+            break;
+        case 't':
+            t_flag = optarg;
+            break;
+        default:
+            short_usage();
+            return EX_USAGE;
+            break;
+        }
 
-
-    if(optind >= argc) {
-	short_usage();
-	return EX_USAGE;
+    if (optind >= argc) {
+        short_usage();
+        return EX_USAGE;
     }
 
     /*
@@ -207,73 +196,66 @@ int main(int argc, char **argv)
      */
     cf_read_config_file(c_flag ? c_flag : CONFIG);
 
-
     /*
      * Process config options
      */
-    if(a_flag)
-	cf_set_addr(a_flag);
-    if(u_flag)
-	cf_set_uplink(u_flag);
-    if(f_flag)
-    {
-	from = ftnaddr_parse(f_flag);
-	if(from.node.zone == INVALID)
-	{
-	    fprintf(stderr, "%s: illegal address -f %s\n", PROGRAM, f_flag);
-	    exit_free();
-	    return EX_USAGE;
-	}
-    }
-    else
-    {
-	BUF_COPY(from.name, "nobody");
-	node_clear(&from.node);
+    if (a_flag)
+        cf_set_addr(a_flag);
+    if (u_flag)
+        cf_set_uplink(u_flag);
+    if (f_flag) {
+        from = ftnaddr_parse(f_flag);
+        if (from.node.zone == INVALID) {
+            fprintf(stderr, "%s: illegal address -f %s\n", PROGRAM, f_flag);
+            exit_free();
+            return EX_USAGE;
+        }
+    } else {
+        BUF_COPY(from.name, "nobody");
+        node_clear(&from.node);
     }
     passwd_init();
 
-    if(!s_flag)
-	s_flag = "(no subject)";
-    if(O_flag)
-	pkt_outdir(O_flag, NULL);
+    if (!s_flag)
+        s_flag = "(no subject)";
+    if (O_flag)
+        pkt_outdir(O_flag, NULL);
     else
-	pkt_outdir(cf_p_outpkt(), NULL);
+        pkt_outdir(cf_p_outpkt(), NULL);
 
     cf_debug();
 
-    if ( (p = cf_get_string ("DefaultCharset", TRUE)) )
-    {
-	cs_out = strtok (p, ":");
-	strtok (NULL, ":");
-	cs_in = strtok (NULL, ":");
+    if ((p = cf_get_string("DefaultCharset", TRUE))) {
+        cs_out = strtok(p, ":");
+        strtok(NULL, ":");
+        cs_in = strtok(NULL, ":");
 
-	charset_init ();
-	charset_set_in_out (cs_in, cs_out);
+        charset_init();
+        charset_set_in_out(cs_in, cs_out);
     }
 
     /* Read stdin, put into textlist */
     tl_init(&tl);
-    while(fgets(buffer, BUFFERSIZE, stdin)) {
-	strip_crlf(buffer);
-	tl_append(&tl, buffer);
+    while (fgets(buffer, BUFFERSIZE, stdin)) {
+        strip_crlf(buffer);
+        tl_append(&tl, buffer);
     }
 
     /* FTN to addresses */
 //    for(; optind<argc; optind++)
     {
-	to = ftnaddr_parse(argv[optind]);
-	if(to.node.zone == INVALID)
-	{
-	    fprintf(stderr, "%s: illegal address %s\n", PROGRAM, argv[optind]);
-	    exit_free();
-	    return EX_USAGE;
-	}
-	if ( NULL != A_flag ) {
-	    tmp = A_flag;
-	    while ( '\0' != *tmp )
-		toupper( *(tmp++) );
-	}
-	do_addr(&from, &to, s_flag, &tl, A_flag, o_flag, t_flag);
+        to = ftnaddr_parse(argv[optind]);
+        if (to.node.zone == INVALID) {
+            fprintf(stderr, "%s: illegal address %s\n", PROGRAM, argv[optind]);
+            exit_free();
+            return EX_USAGE;
+        }
+        if (NULL != A_flag) {
+            tmp = A_flag;
+            while ('\0' != *tmp)
+                toupper(*(tmp++));
+        }
+        do_addr(&from, &to, s_flag, &tl, A_flag, o_flag, t_flag);
     }
 
     exit_free();

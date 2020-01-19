@@ -32,32 +32,28 @@
 
 #include "fidogate.h"
 
-
-
 /*
  * Write Textlist to file
  */
-void tl_fput(FILE *fp, Textlist *list)
+void tl_fput(FILE * fp, Textlist * list)
 {
     Textline *p;
 
-    for(p=list->first; p; p=p->next)
-	fputs(p->line, fp);
+    for (p = list->first; p; p = p->next)
+        fputs(p->line, fp);
 
     return;
 }
 
-
-
 /*
  * tl_add() --- append Textline to Textlist
  */
-void tl_add(Textlist *list, Textline *line)
+void tl_add(Textlist * list, Textline * line)
 {
-    if(list->last)
-	list->last->next = line;
+    if (list->last)
+        list->last->next = line;
     else
-	list->first = line;
+        list->first = line;
 
     line->next = NULL;
     line->prev = list->last;
@@ -66,22 +62,20 @@ void tl_add(Textlist *list, Textline *line)
     list->n++;
 }
 
-
-
 /*
  * tl_remove() --- remove Textline from Textlist
  */
-void tl_remove(Textlist *list, Textline *line)
+void tl_remove(Textlist * list, Textline * line)
 {
-    if(list->first == line)
-	list->first = line->next;
+    if (list->first == line)
+        list->first = line->next;
     else
-	line->prev->next = line->next;
+        line->prev->next = line->next;
 
-    if(list->last == line)
-	list->last = line->prev;
+    if (list->last == line)
+        list->last = line->prev;
     else
-	line->next->prev = line->prev;
+        line->next->prev = line->prev;
 
     line->next = NULL;
     line->prev = NULL;
@@ -89,73 +83,63 @@ void tl_remove(Textlist *list, Textline *line)
     list->n--;
 }
 
-
-
 /*
  * tl_delete() --- remove Textline from Textlist, delete Textline
  */
-void tl_delete(Textlist *list, Textline *line)
+void tl_delete(Textlist * list, Textline * line)
 {
     tl_remove(list, line);
     xfree(line->line);
     xfree(line);
 }
 
-
-
 /***** tl_init() --- Initialize structure ******************************/
 
-void tl_init(Textlist *list)
+void tl_init(Textlist * list)
 {
     list->first = NULL;
-    list->last	= NULL;
-    list->n     = 0;
+    list->last = NULL;
+    list->n = 0;
 }
-
-
 
 /***** tl_clear() --- Delete text lines and chain **********************/
 
-void tl_clear(Textlist *list)
+void tl_clear(Textlist * list)
 {
     Textline *p, *pn;
 
-    for(p=list->first; p;) {
-	pn = p->next;
-	xfree(p->line);
-	xfree(p);
-	p  = pn;
+    for (p = list->first; p;) {
+        pn = p->next;
+        xfree(p->line);
+        xfree(p);
+        p = pn;
     }
 
     list->first = NULL;
-    list->last	= NULL;
-    list->n     = 0;
+    list->last = NULL;
+    list->n = 0;
 }
-
-
 
 /***** tl_append() --- Append string to text line chain ****************/
 
-void tl_append(Textlist *list, char *s)
+void tl_append(Textlist * list, char *s)
 {
     Textline *p;
 
-    if(!s)
-	return;
+    if (!s)
+        return;
 
     s = strsave(s);
-    p	    = (Textline *)xmalloc(sizeof(Textline));
+    p = (Textline *) xmalloc(sizeof(Textline));
     p->line = s;
     p->next = NULL;
 
     tl_add(list, p);
 }
 
-
-
 /***** tl_appendf() --- Append text to chain, printf like formatting ***/
 
-void tl_appendf(Textlist *list, char *fmt, ...)
+void tl_appendf(Textlist * list, char *fmt, ...)
 {
     static char buf[4096];
 #ifndef HAVE_SNPRINTF
@@ -169,8 +153,7 @@ void tl_appendf(Textlist *list, char *fmt, ...)
     vsnprintf(buf, sizeof(buf), fmt, args);
 #else
     n = vsprintf(buf, fmt, args);
-    if(n >= sizeof(buf))
-    {
+    if (n >= sizeof(buf)) {
         fatal("Internal error - tl_appendf() buf overflow", EX_SOFTWARE);
         /**NOT REACHED**/
         return;
@@ -181,35 +164,30 @@ void tl_appendf(Textlist *list, char *fmt, ...)
     va_end(args);
 }
 
-
-
 /***** tl_print() --- Write text line chain to file ********************/
 
-void tl_print(Textlist *list, FILE *fp)
+void tl_print(Textlist * list, FILE * fp)
 {
     Textline *p;
 
-    for(p=list->first; p; p=p->next)
-	fputs(p->line, fp);
+    for (p = list->first; p; p = p->next)
+        fputs(p->line, fp);
 
     return;
 }
 
-
-
-void tl_print_xx(Textlist *list, FILE *fp, char *prefix, char *suffix)
+void tl_print_xx(Textlist * list, FILE * fp, char *prefix, char *suffix)
 {
     Textline *p;
 
-    for(p=list->first; p; p=p->next)
-    {
-	if (prefix)
-	    fputs(prefix, fp);
+    for (p = list->first; p; p = p->next) {
+        if (prefix)
+            fputs(prefix, fp);
 
-	fputs(p->line, fp);
+        fputs(p->line, fp);
 
-	if (suffix)
-	    fputs(suffix, fp);
+        if (suffix)
+            fputs(suffix, fp);
     }
 
     return;
@@ -218,91 +196,84 @@ void tl_print_xx(Textlist *list, FILE *fp, char *prefix, char *suffix)
 /*
  * Output complete textlist with extra end-of-line
  */
-void tl_print_x(Textlist *list, FILE *fp, char *extra)
+void tl_print_x(Textlist * list, FILE * fp, char *extra)
 {
     tl_print_xx(list, fp, NULL, extra);
 }
 
 /***** tl_size() --- Compute size of text in chain *********************/
 
-long tl_size(Textlist *list)
+long tl_size(Textlist * list)
 {
     Textline *p;
-    long n=0;
+    long n = 0;
 
-    for(p=list->first; p; p=p->next)
-	n += strlen(p->line);
+    for (p = list->first; p; p = p->next)
+        n += strlen(p->line);
 
     return n;
 }
 
-
-
 /***** tl_add() --- Add another textlist ******************************/
 
-void tl_addtl(Textlist *d, Textlist *s)
+void tl_addtl(Textlist * d, Textlist * s)
 {
     Textline *p;
 
-    for(p=s->first; p; p=p->next)
-	tl_append(d, p->line);
+    for (p = s->first; p; p = p->next)
+        tl_append(d, p->line);
 }
 
-Textline* tl_get(Textlist *list, char *str, int len)
+Textline *tl_get(Textlist * list, char *str, int len)
 {
     Textline *p = NULL;
 
-    for(p = list->first; p != NULL; p = p->next)
-    {
-	if(len == 0)
-	{
-	     if(stricmp(p->line, str) == 0)
-		break;
-	}
-	else
-	{
-	    if(strnicmp(p->line, str, len) == 0)
-		break;
-	}
+    for (p = list->first; p != NULL; p = p->next) {
+        if (len == 0) {
+            if (stricmp(p->line, str) == 0)
+                break;
+        } else {
+            if (strnicmp(p->line, str, len) == 0)
+                break;
+        }
     }
     return p;
 }
 
-char* tl_get_str(Textlist *list, char *str, int len)
+char *tl_get_str(Textlist * list, char *str, int len)
 {
     Textline *p;
     char *new_str = NULL;
 
     p = tl_get(list, str, len);
-    if(p != NULL)
-	new_str = strsave(p->line);
+    if (p != NULL)
+        new_str = strsave(p->line);
     return new_str;
 }
 
-int tl_copy(Textlist *dst, Textlist *src)
+int tl_copy(Textlist * dst, Textlist * src)
 {
     Textline *p;
 
-    for(p = src->first; p != NULL; p = p->next)
-	tl_append(dst, p->line);
+    for (p = src->first; p != NULL; p = p->next)
+        tl_append(dst, p->line);
     return OK;
 }
 
-int tl_for_each(Textlist *list, int (*func)(Textline *, void *), void *arg)
+int tl_for_each(Textlist * list, int (*func)(Textline *, void *), void *arg)
 {
     Textline *p;
     int r;
 
-    for(p = list->first; p != NULL; p = p->next)
-    {
-	r = func(p, arg);
-	if (r != OK)
-	    return r;
+    for (p = list->first; p != NULL; p = p->next) {
+        r = func(p, arg);
+        if (r != OK)
+            return r;
     }
     return OK;
 }
 
-void tl_iterator_start(TextlistIterator *iter, Textlist *list)
+void tl_iterator_start(TextlistIterator * iter, Textlist * list)
 {
     iter->list = list;
     iter->cur = list->first;
@@ -310,35 +281,35 @@ void tl_iterator_start(TextlistIterator *iter, Textlist *list)
     iter->pos = 0;
 }
 
-size_t tl_iterator_next(TextlistIterator *iter, char *buf, size_t len)
+size_t tl_iterator_next(TextlistIterator * iter, char *buf, size_t len)
 {
-    size_t left; /* in current line */
+    size_t left;                /* in current line */
     size_t moved;
 
     if (iter->cur == NULL)
-	return 0;
+        return 0;
 
     left = iter->len - iter->pos;
 
     moved = 0;
     while (len > 0) {
-	size_t to_move = MIN(left, len);
+        size_t to_move = MIN(left, len);
 
-	memcpy(buf + moved, &iter->cur->line[iter->pos], to_move);
-	moved += to_move;
-	iter->pos += to_move;
-	len -= to_move;
-	left -= to_move;
+        memcpy(buf + moved, &iter->cur->line[iter->pos], to_move);
+        moved += to_move;
+        iter->pos += to_move;
+        len -= to_move;
+        left -= to_move;
 
-	if (left == 0) {
-	    iter->cur = iter->cur->next;
-	    if (iter->cur == NULL)
-		return moved;
+        if (left == 0) {
+            iter->cur = iter->cur->next;
+            if (iter->cur == NULL)
+                return moved;
 
-	    iter->len = strlen(iter->cur->line);
-	    left = iter->len;
-	    iter->pos = 0;
-	}
+            iter->len = strlen(iter->cur->line);
+            left = iter->len;
+            iter->pos = 0;
+        }
     }
     return moved;
 }

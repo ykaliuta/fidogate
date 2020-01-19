@@ -33,7 +33,6 @@
 
 #include "fidogate.h"
 
-
 #define RFC2FTN 'r'
 #define FTN2RFC 'f'
 #define ALL	'a'
@@ -42,10 +41,9 @@
  * Local prototypes
  */
 #if 0
-static int    anodeeq		( Node *, Node * );
+static int anodeeq(Node *, Node *);
 #endif
-static Alias *alias_parse_line	( char * );
-
+static Alias *alias_parse_line(char *);
 
 /*
  * Alias list
@@ -54,93 +52,90 @@ static Alias *alias_list = NULL;
 static Alias *alias_last = NULL;
 static char type = ALL;
 
-
-
 /*
  * Read list of aliases from CONFIGDIR/ALIASES file.
  *
  * Format:
  *     ALIAS	NODE	"FULL NAME"
  */
-static Alias *alias_parse_line( char *buf ) {
+static Alias *alias_parse_line(char *buf)
+{
 
     Alias *p = NULL;
     char *u, *n, *f;
     Node node;
     char *un, *ud;
 
-    u = xstrtok( buf,  " \t" );
-    if( u ) {					/* User name */
-        n = xstrtok( NULL, " \t" );	        /* FTN node */
-        f = xstrtok( NULL, " \t" );        	/* Full name */
+    u = xstrtok(buf, " \t");
+    if (u) {                    /* User name */
+        n = xstrtok(NULL, " \t");   /* FTN node */
+        f = xstrtok(NULL, " \t");   /* Full name */
 
-        if( !stricmp( u, "rfc2ftn" ) )
-	    type = RFC2FTN;
-        else if( !stricmp( u, "ftn2rfc" ) )
-	    type = FTN2RFC;
-        else if( n != NULL ) {
-            if( strieq( u, "include" ) ) {
-	        alias_do_file( n );
-	        return NULL;
+        if (!stricmp(u, "rfc2ftn"))
+            type = RFC2FTN;
+        else if (!stricmp(u, "ftn2rfc"))
+            type = FTN2RFC;
+        else if (n != NULL) {
+            if (strieq(u, "include")) {
+                alias_do_file(n);
+                return NULL;
             }
-            if( f != NULL ) {
-                if( asc_to_node( n, &node, FALSE ) == ERROR ) {
-	            fglog( "hosts: illegal FTN address %s", n );
-	            return NULL;
+            if (f != NULL) {
+                if (asc_to_node(n, &node, FALSE) == ERROR) {
+                    fglog("hosts: illegal FTN address %s", n);
+                    return NULL;
                 }
-                p = ( Alias * )xmalloc( sizeof( Alias ) );
-                p->next     = NULL;
-                p->node     = node;
-                un = xstrtok( u,  "@" );	/* User name */
-                ud = xstrtok( NULL, " \t" );	/* User domain */
-                p->username = strsave( un );
-                p->userdom  = ud ? strsave( ud ) : NULL;
-                p->fullname = strsave( f );
+                p = (Alias *) xmalloc(sizeof(Alias));
+                p->next = NULL;
+                p->node = node;
+                un = xstrtok(u, "@");   /* User name */
+                ud = xstrtok(NULL, " \t");  /* User domain */
+                p->username = strsave(un);
+                p->userdom = ud ? strsave(ud) : NULL;
+                p->fullname = strsave(f);
                 p->type = type;
 
-                if( p->userdom )
-            	    debug( 15, "aliases: %s@%s %s %s %c", p->username,
-		          p->userdom, znfp1( &p->node ), p->fullname, p->type );
+                if (p->userdom)
+                    debug(15, "aliases: %s@%s %s %s %c", p->username,
+                          p->userdom, znfp1(&p->node), p->fullname, p->type);
                 else
-	            debug( 15, "aliases: %s %s %s %c", p->username,
-	                  znfp1( &p->node ), p->fullname, p->type );
-	    }
+                    debug(15, "aliases: %s %s %s %c", p->username,
+                          znfp1(&p->node), p->fullname, p->type);
+            }
         }
     }
     return p;
 }
 
-
-void alias_do_file( char *name ) {
+void alias_do_file(char *name)
+{
 
     FILE *fp;
     Alias *p;
 
-    debug( 14, "Reading aliases file %s", name );
+    debug(14, "Reading aliases file %s", name);
 
-    fp = fopen_expand_name( name, R_MODE_T, FALSE );
-    if( fp ) {
+    fp = fopen_expand_name(name, R_MODE_T, FALSE);
+    if (fp) {
 
-        while( cf_getline( buffer, BUFFERSIZE, fp ) ) {
-    	    p = alias_parse_line( buffer );
-            if( p ) {
-	        /*
-	         * Put into linked list
-	         */
-	        if(alias_list)
-	            alias_last->next = p;
-	        else
-	            alias_list       = p;
-	        alias_last           = p;
-	    }
+        while (cf_getline(buffer, BUFFERSIZE, fp)) {
+            p = alias_parse_line(buffer);
+            if (p) {
+                /*
+                 * Put into linked list
+                 */
+                if (alias_list)
+                    alias_last->next = p;
+                else
+                    alias_list = p;
+                alias_last = p;
+            }
         }
-        fclose( fp );
+        fclose(fp);
     }
 
     return;
 }
-
-
 
 /*
  * Lookup alias in alias_list
@@ -157,48 +152,47 @@ void alias_do_file( char *name ) {
  * An alias_lookup(2:2452/110.1, "mj", NULL) as well as
  * alias_lookkup(2:2452/110, "mj", NULL) will return this alias entry.
  */
-Alias *alias_lookup( Node *node, char *username ) {
+Alias *alias_lookup(Node * node, char *username)
+{
     Alias *a;
 
-    for( a = alias_list; a; a = a->next ) {
-	if( a->type != FTN2RFC && username &&
-	   !stricmp( a->username, username ) &&
-	   ( !node || node_eq( node, &a->node ) ) )
-		return a;
+    for (a = alias_list; a; a = a->next) {
+        if (a->type != FTN2RFC && username &&
+            !stricmp(a->username, username) &&
+            (!node || node_eq(node, &a->node)))
+            return a;
     }
     return NULL;
 }
 
-
-
-Alias *alias_lookup_strict( Node *node, char *fullname ) {
+Alias *alias_lookup_strict(Node * node, char *fullname)
+{
     Alias *a;
 
-    for( a = alias_list; a; a = a->next ) {
-	if( a->type != RFC2FTN && fullname &&
-	   ( wildmatch( fullname, a->fullname, TRUE ) )
-		&& node_eq( node, &a->node ) )
-		return a;
+    for (a = alias_list; a; a = a->next) {
+        if (a->type != RFC2FTN && fullname &&
+            (wildmatch(fullname, a->fullname, TRUE))
+            && node_eq(node, &a->node))
+            return a;
     }
 
     return NULL;
 }
 
-Alias *alias_lookup_userdom( RFCAddr *rfc ) {
+Alias *alias_lookup_userdom(RFCAddr * rfc)
+{
     Alias *a;
 
-    if( rfc ) {
-        for( a = alias_list; a; a = a->next ) {
-	    if( a->type != FTN2RFC && a->userdom &&
-	        ( !stricmp( a->username, rfc->user ) &&
-		!stricmp( a->userdom, rfc->addr ) ) )
-	        return a;
-	}
+    if (rfc) {
+        for (a = alias_list; a; a = a->next) {
+            if (a->type != FTN2RFC && a->userdom &&
+                (!stricmp(a->username, rfc->user) &&
+                 !stricmp(a->userdom, rfc->addr)))
+                return a;
+        }
     }
     return NULL;
 }
-
-
 
 /*
  * anodeeq() --- compare node adresses
@@ -208,16 +202,14 @@ Alias *alias_lookup_userdom( RFCAddr *rfc ) {
  * address.
  */
 #if 0
-static int anodeeq(Node *a, Node *b)
-            			/* Sender/receiver address */
-            			/* ALIASES address */
+static int anodeeq(Node * a, Node * b)
+                        /* Sender/receiver address */
+                        /* ALIASES address */
 {
     return a->point && b->point
-	   ?
-	   a->zone==b->zone && a->net==b->net && a->node==b->node &&
-	   a->point==b->point
-	   :
-	   a->zone==b->zone && a->net==b->net && a->node==b->node
-	   ;
+        ?
+        a->zone == b->zone && a->net == b->net && a->node == b->node &&
+        a->point == b->point
+        : a->zone == b->zone && a->net == b->net && a->node == b->node;
 }
 #endif

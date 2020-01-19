@@ -36,34 +36,34 @@
 
 #ifdef HAVE_SYSEXITS_H
 
-# include <sysexits.h>			/* EX_* defines */
+#include <sysexits.h>           /* EX_* defines */
 
 #else
 
 /* BSD error codes (used by sendmail */
-# define EX_OK		 0		/* successful termination */
-# define EX_USAGE	64		/* command line usage error */
-# define EX_DATAERR	65		/* data format error */
-# define EX_NOINPUT	66		/* cannot open input */
-# define EX_NOHOST	68		/* host name unknown */
-# define EX_UNAVAILABLE	69		/* service unavailable */
-# define EX_SOFTWARE	70		/* internal software error */
-# define EX_OSERR	71		/* system error (e.g., can't fork) */
-# define EX_OSFILE	72		/* critical OS file missing */
-# define EX_CANTCREAT	73		/* can't create (user) output file */
-# define EX_IOERR	74		/* input/output error */
+#define EX_OK		 0          /* successful termination */
+#define EX_USAGE	64          /* command line usage error */
+#define EX_DATAERR	65          /* data format error */
+#define EX_NOINPUT	66          /* cannot open input */
+#define EX_NOHOST	68          /* host name unknown */
+#define EX_UNAVAILABLE	69      /* service unavailable */
+#define EX_SOFTWARE	70          /* internal software error */
+#define EX_OSERR	71          /* system error (e.g., can't fork) */
+#define EX_OSFILE	72          /* critical OS file missing */
+#define EX_CANTCREAT	73      /* can't create (user) output file */
+#define EX_IOERR	74          /* input/output error */
 
-#endif /* HAVE_SYSEXITS_H */
+#endif                          /* HAVE_SYSEXITS_H */
 
 /*
  * Exit codes used by FIDOGATE
  */
-#define EXIT_OK		0		/* successful */
-#define EXIT_ERROR	1		/* error */
-#define EXIT_BUSY	2		/* program already running */
-#define EXIT_CONTINUE	3		/* still work to do */
+#define EXIT_OK		0           /* successful */
+#define EXIT_ERROR	1           /* error */
+#define EXIT_BUSY	2           /* program already running */
+#define EXIT_CONTINUE	3       /* still work to do */
 
-#define EXIT_KILL	32		/* killed: exit code = 32 + signum */
+#define EXIT_KILL	32          /* killed: exit code = 32 + signum */
 
 /*
  * Values
@@ -88,8 +88,6 @@
  */
 #define MSGID_FIDONET_DOMAIN	".fidonet.org"
 
-
-
 /****************************************************************************
  *                                                                          *
  *              Think twice before changing anything below!!!               *
@@ -99,12 +97,12 @@
 /*
  * Permissions
  */
-#define PACKET_MODE	0660		/* Mode for outbound packets */
-#define BSY_MODE	0664		/* Mode for BSY files */
-#define FLO_MODE	0664		/* Mode for FLO files */
-#define DIR_MODE	0775		/* Mode for directories */
-#define FILE_DIR_MODE	0770		/* Mode for create fileecho directories */
-#define CONF_MODE	0660		/* Mode for written config files */
+#define PACKET_MODE	0660        /* Mode for outbound packets */
+#define BSY_MODE	0664        /* Mode for BSY files */
+#define FLO_MODE	0664        /* Mode for FLO files */
+#define DIR_MODE	0775        /* Mode for directories */
+#define FILE_DIR_MODE	0770    /* Mode for create fileecho directories */
+#define CONF_MODE	0660        /* Mode for written config files */
 
 /*
  * RFC headers recognized at beginning of FTN message body
@@ -174,19 +172,19 @@
  * Open modes for fopen(), binary for system requiring this.
  */
 #ifdef DO_BINARY
-# define R_MODE		"rb"
-# define W_MODE		"wb"
-# define A_MODE		"ab"
-# define RP_MODE	"r+b"
-# define WP_MODE	"w+b"
-# define AP_MODE	"a+b"
+#define R_MODE		"rb"
+#define W_MODE		"wb"
+#define A_MODE		"ab"
+#define RP_MODE	"r+b"
+#define WP_MODE	"w+b"
+#define AP_MODE	"a+b"
 #else
-# define R_MODE		"r"
-# define W_MODE		"w"
-# define A_MODE		"a"
-# define RP_MODE	"r+"
-# define WP_MODE	"w+"
-# define AP_MODE	"a+"
+#define R_MODE		"r"
+#define W_MODE		"w"
+#define A_MODE		"a"
+#define RP_MODE	"r+"
+#define WP_MODE	"w+"
+#define AP_MODE	"a+"
 #endif /**DO_BINARY**/
 #define R_MODE_T	"r"
 #define W_MODE_T	"w"
@@ -211,27 +209,27 @@
 #define DATE_VIA	"%a %b %d %Y at %H:%M:%S %Z"
 #else
 //
-//	%a	Abbr. weekly
-//	%b	Abbr. Month
-//	%d	Day of month
-//	%H	Hour (local 24h)
-//	%G	Hour (UTC 24h)
-//	%V	Minute (UTC)
-//	%U	"UTC" word
-//	%j	Day of year
-//	%m	Month
-//	%M	Minutes (local)
-//	%S	Second
-//	%w	Day of week
-//	%x	Date (Mon DD YYYY)
-//	%X	Time (HH:MM:SS)
-//	%y	Year (00-99)
-//	%Y	Year (1900...)
-//	%Z	Timezone (example: MSK)
-//	%N	Time diff to TZUTC (if diff +03:30 - "+0330")
-//	%O	Time diff to UTC (if diff +03:30 - "0330")
+//  %a  Abbr. weekly
+//  %b  Abbr. Month
+//  %d  Day of month
+//  %H  Hour (local 24h)
+//  %G  Hour (UTC 24h)
+//  %V  Minute (UTC)
+//  %U  "UTC" word
+//  %j  Day of year
+//  %m  Month
+//  %M  Minutes (local)
+//  %S  Second
+//  %w  Day of week
+//  %x  Date (Mon DD YYYY)
+//  %X  Time (HH:MM:SS)
+//  %y  Year (00-99)
+//  %Y  Year (1900...)
+//  %Z  Timezone (example: MSK)
+//  %N  Time diff to TZUTC (if diff +03:30 - "+0330")
+//  %O  Time diff to UTC (if diff +03:30 - "0330")
 #define DATE_VIA	"%Y%m%d.%H%M%S.%N"
-#endif /* FTS_VIA */
+#endif                          /* FTS_VIA */
 #define DATE_SPLIT	"%d %b %y %H:%M:%S"
 
 /*
@@ -243,32 +241,32 @@
 /*
  * Hard limits compiled into FIDOGATE
  */
-#define MAXADDRESS	32		/* Max. # of FTN address in CONFIG */
+#define MAXADDRESS	32          /* Max. # of FTN address in CONFIG */
 
-#define MAXMSGHEADRLEN	71		/* Max. length message field */
+#define MAXMSGHEADRLEN	71      /* Max. length message field */
 
-#define MAXDOSDRIVE	16		/* Max. # of DOS drives in CONFIG */
+#define MAXDOSDRIVE	16          /* Max. # of DOS drives in CONFIG */
 
-#ifndef MAXPATH				/* Already defined by DJGPP */
-# define MAXPATH	128		/* Max. size of path names */
+#ifndef MAXPATH                 /* Already defined by DJGPP */
+#define MAXPATH	128             /* Max. size of path names */
 #endif
 
-#define MAXINETADDR	128		/* Max. size of an Internet address */
+#define MAXINETADDR	128         /* Max. size of an Internet address */
 
-#define MAXUSERNAME	128		/* Max. size of an user name */
+#define MAXUSERNAME	128         /* Max. size of an user name */
 
-#define MAXOPENFILES	10		/* Max. # of open packet files used
-					 * by ftntoss/ftnroute, this value
-					 * should work on all supported
-					 * systems, it can be incremented with
-					 * ftntoss/ftnroute's -M option */
+#define MAXOPENFILES	10      /* Max. # of open packet files used
+                                 * by ftntoss/ftnroute, this value
+                                 * should work on all supported
+                                 * systems, it can be incremented with
+                                 * ftntoss/ftnroute's -M option */
 
 #ifdef HAVE_ICONV
 #define INTERNAL_CHARSET "utf-8"
 #else
 #define INTERNAL_CHARSET "cp866"
-#endif /* HAVE_ICONV */
+#endif                          /* HAVE_ICONV */
 
 #define INTERNAL_ENCODING "8bit"
 
-#endif /* FIDOGATE_CONSTANTS_H */
+#endif                          /* FIDOGATE_CONSTANTS_H */

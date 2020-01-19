@@ -30,14 +30,13 @@
 #include "fidogate.h"
 #include "getopt.h"
 
-
 #define PROGRAM 	"ftninpost"
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 typedef struct split_t {
     char *id;
-    int  part;
-    int  parts;
+    int part;
+    int parts;
     char *fname;
     struct split_t *next;
 } split;
@@ -45,16 +44,16 @@ typedef struct split_t {
 /*
  * Prototypes
  */
-void	short_usage		(void);
-void	usage			(void);
+void short_usage(void);
+void usage(void);
 
+int do_dir(char *, int);
 
-int	do_dir			(char *, int);
+char ftnin_sendmail[MAXPATH] = { 0 };
 
-char	ftnin_sendmail[MAXPATH] = {0};
-char   *ftnin_rnews;
-split  *split_first = NULL;
-split  *split_last;
+char *ftnin_rnews;
+split *split_first = NULL;
+split *split_last;
 
 /*
  * Usage messages
@@ -65,11 +64,10 @@ void short_usage(void)
     fprintf(stderr, "       %s --help  for more information\n", PROGRAM);
 }
 
-
 void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
-	    version_global(), PROGRAM, version_local(VERSION) );
+            version_global(), PROGRAM, version_local(VERSION));
 
     fprintf(stderr, "usage:   %s [-options]\n\n", PROGRAM);
     fprintf(stderr, "\
@@ -198,123 +196,105 @@ int unsplit_mail()
 int do_dir(char *cdir, int mode)
 {
     char *rfc_file;
-    char buf[MAXPATH+MAXINETADDR];
+    char buf[MAXPATH + MAXINETADDR];
 
-    if(dir_open(cdir, "*.rfc", TRUE) == ERROR)
-    {
-	debug(7,"can't open directory %s", cdir);
-	return ERROR;
+    if (dir_open(cdir, "*.rfc", TRUE) == ERROR) {
+        debug(7, "can't open directory %s", cdir);
+        return ERROR;
     }
-    for(rfc_file=dir_get(TRUE); rfc_file; rfc_file=dir_get(FALSE))
-    {
-	FILE *fp;
-	char *p = NULL;
-	int ret, pr = FALSE;
+    for (rfc_file = dir_get(TRUE); rfc_file; rfc_file = dir_get(FALSE)) {
+        FILE *fp;
+        char *p = NULL;
+        int ret, pr = FALSE;
 
-	debug( 8, "Processing %s", rfc_file );
+        debug(8, "Processing %s", rfc_file);
 
-	switch( mode )
-	{
-	    case 0:
+        switch (mode) {
+        case 0:
 /*		unsplit_mail_count(rfc_file);
 		unsplit_mail();*/
-	    	break;
-            case 1:
-	    	if( ( p = strstr( ftnin_sendmail, " -f" ) ) )
-		{
-		    for( p+=3; p && *p == ' '; p++ )
-			; /* skip spaces */
+            break;
+        case 1:
+            if ((p = strstr(ftnin_sendmail, " -f"))) {
+                for (p += 3; p && *p == ' '; p++) ; /* skip spaces */
 
-		    if( *p == '%' && p[1] == 's' )
-		    {
-			fp = fopen( rfc_file, "r" );
-			if( !fp )
-			    break;
-			p = fgets( buffer, sizeof( buffer ), fp );
-			fclose( fp );
-			if( !p )
-			{
-			    fglog("ERROR: could not read %s", rfc_file);
-			    break;
-			}
-			if( strncmp( p, "From ", 5 ) )
-			{
-			    debug( 9, "WARNING: \"From\" string not found" );
-			    break;
-			}
-			else
-			{
-			    p = xstrtok( p+5, " \t" );
-			    str_printf( buf, sizeof(buf), ftnin_sendmail, p );
-			    p = buf;
-			}
-		    }
-		    else
-		    {
-			p = ftnin_sendmail;
-		    }
-		}
-		else
-		{
-		    p = ftnin_sendmail;
-		}
+                if (*p == '%' && p[1] == 's') {
+                    fp = fopen(rfc_file, "r");
+                    if (!fp)
+                        break;
+                    p = fgets(buffer, sizeof(buffer), fp);
+                    fclose(fp);
+                    if (!p) {
+                        fglog("ERROR: could not read %s", rfc_file);
+                        break;
+                    }
+                    if (strncmp(p, "From ", 5)) {
+                        debug(9, "WARNING: \"From\" string not found");
+                        break;
+                    } else {
+                        p = xstrtok(p + 5, " \t");
+                        str_printf(buf, sizeof(buf), ftnin_sendmail, p);
+                        p = buf;
+                    }
+                } else {
+                    p = ftnin_sendmail;
+                }
+            } else {
+                p = ftnin_sendmail;
+            }
 
-		pr = TRUE;
-		break;
+            pr = TRUE;
+            break;
 
-	    case 2:
-		p = ftnin_rnews;
-		pr = TRUE;
-		break;
+        case 2:
+            p = ftnin_rnews;
+            pr = TRUE;
+            break;
 
-	    default:
-		debug( 1, "unknown mode %d", mode );
-		break;
-	}
-	if( pr == TRUE )
-	{
-	    ret = OK;
-	    debug( 8, "exec: %s", p );
-	    fp = freopen( rfc_file, R_MODE, stdin );
-	    if (fp != NULL) {
-		ret = run_system( p );
-		fclose( stdin );
-	    } else {
-		fglog("$ERROR: could not redirect stdin");
-	    }
-	    if((fp == NULL) || (ret != OK))
-	    {
-		char bad[MAXPATH];
-		fglog( "$WARNING: %s returned non-zero status", p );
-		str_change_ext(bad, sizeof(bad), rfc_file, ".bad");
-		fglog("ERROR: bad rfcbatch renamed to %s", bad);
-		rename(rfc_file, bad);
-	    }
-	    unlink( rfc_file );
-	}
+        default:
+            debug(1, "unknown mode %d", mode);
+            break;
+        }
+        if (pr == TRUE) {
+            ret = OK;
+            debug(8, "exec: %s", p);
+            fp = freopen(rfc_file, R_MODE, stdin);
+            if (fp != NULL) {
+                ret = run_system(p);
+                fclose(stdin);
+            } else {
+                fglog("$ERROR: could not redirect stdin");
+            }
+            if ((fp == NULL) || (ret != OK)) {
+                char bad[MAXPATH];
+                fglog("$WARNING: %s returned non-zero status", p);
+                str_change_ext(bad, sizeof(bad), rfc_file, ".bad");
+                fglog("ERROR: bad rfcbatch renamed to %s", bad);
+                rename(rfc_file, bad);
+            }
+            unlink(rfc_file);
+        }
     }
     dir_close();
 
     return OK;
 }
 
-
 /***** main() ****************************************************************/
 
 int main(int argc, char **argv)
 {
     int c;
-    char *c_flag=NULL;
-    char buf[MAXPATH] = {0};
+    char *c_flag = NULL;
+    char buf[MAXPATH] = { 0 };
     char *p;
 
     int option_index;
-    static struct option long_options[] =
-    {
-	{ "verbose",      0, 0, 'v'},	/* More verbose */
-	{ "help",         0, 0, 'h'},	/* Help */
-	{ "config",       1, 0, 'c'},	/* Config file */
-	{ 0,              0, 0, 0  }
+    static struct option long_options[] = {
+        {"verbose", 0, 0, 'v'}, /* More verbose */
+        {"help", 0, 0, 'h'},    /* Help */
+        {"config", 1, 0, 'c'},  /* Config file */
+        {0, 0, 0, 0}
     };
 
     log_program(PROGRAM);
@@ -322,26 +302,25 @@ int main(int argc, char **argv)
     /* Init configuration */
     cf_initialize();
 
-
     while ((c = getopt_long(argc, argv, "vhc:",
-			    long_options, &option_index     )) != EOF)
-	switch (c) {
-	/***** Common options *****/
-	case 'v':
-	    verbose++;
-	    break;
-	case 'h':
-	    usage();
-	    return 0;
-	    break;
-	case 'c':
-	    c_flag = optarg;
-	    break;
-	default:
-	    short_usage();
-	    return EX_USAGE;
-	    break;
-	}
+                            long_options, &option_index)) != EOF)
+        switch (c) {
+    /***** Common options *****/
+        case 'v':
+            verbose++;
+            break;
+        case 'h':
+            usage();
+            return 0;
+            break;
+        case 'c':
+            c_flag = optarg;
+            break;
+        default:
+            short_usage();
+            return EX_USAGE;
+            break;
+        }
 
     /*
      * Read config file
@@ -354,32 +333,28 @@ int main(int argc, char **argv)
 
     ftnin_rnews = NULL;
 
-    if( (p = cf_get_string("FTNInSendmail", TRUE)) )
-    {
-	BUF_COPY(ftnin_sendmail, p);
-    }
-    else
-	debug(9, "WARNING: FTNInSendmail not defined in %s", c_flag ? c_flag : CONFIG);
+    if ((p = cf_get_string("FTNInSendmail", TRUE))) {
+        BUF_COPY(ftnin_sendmail, p);
+    } else
+        debug(9, "WARNING: FTNInSendmail not defined in %s",
+              c_flag ? c_flag : CONFIG);
 
-    if( (p = cf_get_string("FTNInRnews", TRUE)) )
-    {
-	ftnin_rnews = p;
-    }
-    else
-	debug(9, "WARNING: FTNInRnews not defined in %s", c_flag ? c_flag : CONFIG);
+    if ((p = cf_get_string("FTNInRnews", TRUE))) {
+        ftnin_rnews = p;
+    } else
+        debug(9, "WARNING: FTNInRnews not defined in %s",
+              c_flag ? c_flag : CONFIG);
 
-    if(!cf_get_string("SingleArticles", TRUE))
-    {
-	if( (p = cf_get_string("FTNInRecombine", TRUE)) )
-	{
-	    BUF_EXPAND(buf, p);
-	}
-	else
-	    debug(9, "WARNING: FTNInRecombine not defined in %s", c_flag ? c_flag : CONFIG);
+    if (!cf_get_string("SingleArticles", TRUE)) {
+        if ((p = cf_get_string("FTNInRecombine", TRUE))) {
+            BUF_EXPAND(buf, p);
+        } else
+            debug(9, "WARNING: FTNInRecombine not defined in %s",
+                  c_flag ? c_flag : CONFIG);
     }
 
-    if(*buf)
-	run_system(buf);
+    if (*buf)
+        run_system(buf);
 
     BUF_EXPAND(buf, cf_p_outrfc_mail());
 //    do_dir(buf, 0);

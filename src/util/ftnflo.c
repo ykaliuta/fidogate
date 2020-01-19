@@ -33,12 +33,8 @@
 #include "fidogate.h"
 #include "getopt.h"
 
-
-
 #define PROGRAM		"ftnflo"
 #define CONFIG		DEFAULT_CONFIG_MAIN
-
-
 
 /*
  * Command for script
@@ -52,12 +48,10 @@ int l_flag = FALSE;
 int n_flag = FALSE;
 int x_flag = FALSE;
 
-
-
 /*
  * Process FLO file of one node
  */
-int do_flo(Node *node)
+int do_flo(Node * node)
 {
     int mode, ret, del_ok, fd;
     char *line;
@@ -66,75 +60,67 @@ int do_flo(Node *node)
     del_ok = TRUE;
 
     /* Open FLO file */
-    if(flo_open(node, TRUE) == ERROR)
-    {
+    if (flo_open(node, TRUE) == ERROR) {
 /*	fglog("nothing on hold for %s", znfp1(node)); */
-	return OK;
+        return OK;
     }
 
     /* Read FLO entries */
-    while( (line = flo_gets(buffer, sizeof(buffer))) )
-    {
-	if(*line == '~')
-	    continue;
-	mode = ' ';
-	if(*line == '^' || *line == '#')
-	    mode = *line++;
-	if(cf_dos())
-	    line = cf_unix_xlate(line);
+    while ((line = flo_gets(buffer, sizeof(buffer)))) {
+        if (*line == '~')
+            continue;
+        mode = ' ';
+        if (*line == '^' || *line == '#')
+            mode = *line++;
+        if (cf_dos())
+            line = cf_unix_xlate(line);
 
-	debug(2, "FLO entry: %c %s", mode, line);
+        debug(2, "FLO entry: %c %s", mode, line);
 
-	if(l_flag)
-	{
-	    printf("%10ld    %c %s\n", check_size(line), mode, line);
-	}
-	if(x_flag)
-	{
-	    /* Command */
-	    str_printf(buf, sizeof(buf), script, line);
-	    debug(2, "Command: %s", buf);
+        if (l_flag) {
+            printf("%10ld    %c %s\n", check_size(line), mode, line);
+        }
+        if (x_flag) {
+            /* Command */
+            str_printf(buf, sizeof(buf), script, line);
+            debug(2, "Command: %s", buf);
 
-	    if(!n_flag)
-	    {
-		ret = run_system(buf);
-		debug(2, "Exit code=%d", ret);
-		if(ret)
-		{
-		    fglog("ERROR: running command %s", buf);
-		    flo_close(node, TRUE, FALSE);
-		    return ERROR;
-		}
+            if (!n_flag) {
+                ret = run_system(buf);
+                debug(2, "Exit code=%d", ret);
+                if (ret) {
+                    fglog("ERROR: running command %s", buf);
+                    flo_close(node, TRUE, FALSE);
+                    return ERROR;
+                }
 
-		/* According to mode ... */
-		switch(mode)
-		{
-		case '^':
-		    /* ... delete */
-		    debug(2, "Removing %s", line);
-		    if(unlink(line) == ERROR)
-			fglog("ERROR: can't remove %s", line);
-		    break;
+                /* According to mode ... */
+                switch (mode) {
+                case '^':
+                    /* ... delete */
+                    debug(2, "Removing %s", line);
+                    if (unlink(line) == ERROR)
+                        fglog("ERROR: can't remove %s", line);
+                    break;
 
-		case '#':
-		    /* ... truncate */
-		    debug(2, "Truncating %s", line);
-#if 0 /* truncate() is not a POSIX function */
-		    if(truncate(line, 0) == ERROR)
-			fglog("ERROR: can't truncate %s", line);
+                case '#':
+                    /* ... truncate */
+                    debug(2, "Truncating %s", line);
+#if 0                           /* truncate() is not a POSIX function */
+                    if (truncate(line, 0) == ERROR)
+                        fglog("ERROR: can't truncate %s", line);
 #endif
-		    if( (fd = open(line, O_WRONLY|O_TRUNC)) == ERROR )
-			fglog("ERROR: can't truncate %s", line);
-		    close(fd);
-		    break;
-		}
+                    if ((fd = open(line, O_WRONLY | O_TRUNC)) == ERROR)
+                        fglog("ERROR: can't truncate %s", line);
+                    close(fd);
+                    break;
+                }
 
-		/* Mark as sent */
-		flo_mark();
-	    }
-	}
-	else
-	    del_ok = FALSE;
+                /* Mark as sent */
+                flo_mark();
+            }
+        } else
+            del_ok = FALSE;
     }
 
     /* Close and delete if completed FLO file */
@@ -142,8 +128,6 @@ int do_flo(Node *node)
 
     return OK;
 }
-
-
 
 /*
  * Usage messages
@@ -154,11 +138,10 @@ void short_usage(void)
     fprintf(stderr, "       %s --help  for more information\n", PROGRAM);
 }
 
-
 void usage(void)
 {
     fprintf(stderr, "FIDOGATE %s  %s %s\n\n",
-	    version_global(), PROGRAM, version_local(VERSION) );
+            version_global(), PROGRAM, version_local(VERSION));
 
     fprintf(stderr, "usage:   %s [-options] Z:N/F.P ...\n\n", PROGRAM);
     fprintf(stderr, "\
@@ -172,29 +155,26 @@ options:  -B --binkley NAME            set Binkley-style outbound directory\n\
           -c --config name             read config file (\"\" = none)\n");
 }
 
-
-
 /***** main() ****************************************************************/
 
 int main(int argc, char **argv)
 {
     int c;
-    char *B_flag=NULL;
-    char *c_flag=NULL;
+    char *B_flag = NULL;
+    char *c_flag = NULL;
     Node node;
 
     int option_index;
-    static struct option long_options[] =
-    {
-	{ "binkley",      1, 0, 'B'},	/* Binkley outbound base dir */
-	{ "exec",         1, 0, 'x'},	/* Execute script */
-	{ "list",         1, 0, 'l'},	/* List entries */
-	{ "no-delete",    0, 0, 'n'},	/* Don't delete/truncate entries */
+    static struct option long_options[] = {
+        {"binkley", 1, 0, 'B'}, /* Binkley outbound base dir */
+        {"exec", 1, 0, 'x'},    /* Execute script */
+        {"list", 1, 0, 'l'},    /* List entries */
+        {"no-delete", 0, 0, 'n'},   /* Don't delete/truncate entries */
 
-	{ "verbose",      0, 0, 'v'},	/* More verbose */
-	{ "help",         0, 0, 'h'},	/* Help */
-	{ "config",       1, 0, 'c'},	/* Config file */
-	{ 0,              0, 0, 0  }
+        {"verbose", 0, 0, 'v'}, /* More verbose */
+        {"help", 0, 0, 'h'},    /* Help */
+        {"config", 1, 0, 'c'},  /* Config file */
+        {0, 0, 0, 0}
     };
 
     log_program(PROGRAM);
@@ -203,44 +183,43 @@ int main(int argc, char **argv)
     /* Init configuration */
     cf_initialize();
 
-
     while ((c = getopt_long(argc, argv, "B:x:lnvhc:",
-			    long_options, &option_index     )) != EOF)
-	switch (c) {
-	case 'B':
-	    B_flag = optarg;
-	    break;
-	case 'l':
-	    l_flag = TRUE;
-	    break;
-	case 'n':
-	    n_flag = TRUE;
-	    break;
-	case 'x':
-	    x_flag = TRUE;
-	    BUF_COPY(script, optarg);
-	    break;
+                            long_options, &option_index)) != EOF)
+        switch (c) {
+        case 'B':
+            B_flag = optarg;
+            break;
+        case 'l':
+            l_flag = TRUE;
+            break;
+        case 'n':
+            n_flag = TRUE;
+            break;
+        case 'x':
+            x_flag = TRUE;
+            BUF_COPY(script, optarg);
+            break;
 
-	/***** Common options *****/
-	case 'v':
-	    verbose++;
-	    break;
-	case 'h':
-	    usage();
-	    return 0;
-	    break;
-	case 'c':
-	    c_flag = optarg;
-	    break;
-	default:
-	    short_usage();
-	    return EX_USAGE;
-	    break;
-	}
+    /***** Common options *****/
+        case 'v':
+            verbose++;
+            break;
+        case 'h':
+            usage();
+            return 0;
+            break;
+        case 'c':
+            c_flag = optarg;
+            break;
+        default:
+            short_usage();
+            return EX_USAGE;
+            break;
+        }
 
     /* Default: -l */
-    if(!l_flag && !x_flag)
-	l_flag = TRUE;
+    if (!l_flag && !x_flag)
+        l_flag = TRUE;
 
     /*
      * Read config file
@@ -250,29 +229,27 @@ int main(int argc, char **argv)
     /*
      * Process config options
      */
-    if(B_flag)
-	cf_s_btbasedir(B_flag);
+    if (B_flag)
+        cf_s_btbasedir(B_flag);
 
     cf_debug();
 
     /*
      * Process following command line arguments
      */
-    if(optind >= argc) {
-	short_usage();
-	return EX_USAGE;
+    if (optind >= argc) {
+        short_usage();
+        return EX_USAGE;
     }
 
     /* Nodes */
-    for(; optind<argc; optind++)
-    {
-	if(asc_to_node(argv[optind], &node, FALSE) == ERROR)
-	{
-	    fprintf(stderr, "%s: not an FTN address: %s\n",
-		    PROGRAM, argv[optind]);
-	    continue;
-	}
-	do_flo(&node);
+    for (; optind < argc; optind++) {
+        if (asc_to_node(argv[optind], &node, FALSE) == ERROR) {
+            fprintf(stderr, "%s: not an FTN address: %s\n",
+                    PROGRAM, argv[optind]);
+            continue;
+        }
+        do_flo(&node);
     }
 
     exit_free();

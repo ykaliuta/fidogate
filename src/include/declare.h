@@ -30,16 +30,13 @@
  * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  *****************************************************************************/
 
-
 /*
  * errno might not be declared extern in errno.h
  */
 extern int errno;
 
-
-
 #ifdef __sun__ /**************************************************************/
-# ifndef __svr4__
+#ifndef __svr4__
 /*
  * SUNOS 4.1.x, GNU gcc 2.x
  */
@@ -48,54 +45,53 @@ extern int errno;
  * Non-standard functions
  */
 /* sys/time.h */
-int    gettimeofday (/*struct timeval *, struct timezone * */);
+int gettimeofday( /*struct timeval *, struct timezone * */ );
 
 /* unistd.h */
-int    lockf	(int, int, long);
-
+int lockf(int, int, long);
 
 /*
  * Standard-C functions undeclared in header files
  */
 
 /* stdio.h */
-int    _filbuf	();			/* Internal, no standard */
-int    _flsbuf	();			/* Internal, no standard */
+int _filbuf();                  /* Internal, no standard */
+int _flsbuf();                  /* Internal, no standard */
 
-int    fclose	(FILE *);
-int    fflush	(FILE *);
-int    fprintf	(FILE *, const char *, ...);
-int    fputs	(const char *, FILE *);
-size_t fread	(void *, size_t, size_t, FILE *);
-int    fseek	(FILE *, long, int);
-size_t fwrite	(const void *, size_t, size_t, FILE *);
-void   perror	(const char *);
-int    printf	(const char *, ...);
-int    puts	(const char *);
-int    rename	(const char *, const char *);
-void   rewind	(FILE *);
-int    sscanf	(char *, const char *, ...);
-int    ungetc	(int, FILE *);
-int    vfprintf	(FILE *, const char *, va_list);
-int    vsprintf	(char *, const char *, va_list);
+int fclose(FILE *);
+int fflush(FILE *);
+int fprintf(FILE *, const char *, ...);
+int fputs(const char *, FILE *);
+size_t fread(void *, size_t, size_t, FILE *);
+int fseek(FILE *, long, int);
+size_t fwrite(const void *, size_t, size_t, FILE *);
+void perror(const char *);
+int printf(const char *, ...);
+int puts(const char *);
+int rename(const char *, const char *);
+void rewind(FILE *);
+int sscanf(char *, const char *, ...);
+int ungetc(int, FILE *);
+int vfprintf(FILE *, const char *, va_list);
+int vsprintf(char *, const char *, va_list);
 /* Not ANSI-C or POSIX but missing anyway ... */
-int    pclose	(FILE *);
+int pclose(FILE *);
 
 /* string.h */
 /* Not ANSI-C or POSIX */
-int	strcasecmp	(char *, char *);
-int	strncasecmp	(char *, char *, int);
+int strcasecmp(char *, char *);
+int strncasecmp(char *, char *, int);
 
 /* stdlib.h */
-int    system	(const char *);
+int system(const char *);
 
 /* time.h */
-time_t time	(time_t *);
-size_t strftime (char *, size_t, const char *, const struct tm*);
+time_t time(time_t *);
+size_t strftime(char *, size_t, const char *, const struct tm *);
 /* Looks like SUN's timelocal() is the same as Standard-C mktime() */
 #ifndef HAVE_MKTIME
 #define mktime  timelocal
-#endif /* HAVE_MKTIME */
+#endif                          /* HAVE_MKTIME */
 
-# endif /**svr4***************************************************************/
+#endif  /**svr4***************************************************************/
 #endif  /**sun****************************************************************/

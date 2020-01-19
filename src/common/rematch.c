@@ -32,7 +32,6 @@
 
 #include "fidogate.h"
 
-
 #ifdef HAS_POSIX_REGEX /*******************************************************/
 #ifdef HAVE_RX
 #include <rxposix.h>
@@ -40,21 +39,17 @@
 #include <regex.h>
 #endif
 
-
 /*
  * List of regular expressions
  */
 typedef struct st_regex {
     struct st_regex *next;
-    char            *re_s;
-    regex_t          re_c;
+    char *re_s;
+    regex_t re_c;
 } Regex;
-
 
 static Regex *regex_list = NULL;
 static Regex *regex_last = NULL;
-
-
 
 /*
  * Alloc and init new Regex struct
@@ -63,16 +58,14 @@ static Regex *regex_new(void)
 {
     Regex *p;
 
-    p = (Regex *)xmalloc(sizeof(Regex));
+    p = (Regex *) xmalloc(sizeof(Regex));
 
     /* Init */
-    p->next  = NULL;
-    p->re_s  = NULL;
+    p->next = NULL;
+    p->re_s = NULL;
 
     return p;
 }
-
-
 
 /*
  * Create new Regex struct for string
@@ -86,19 +79,17 @@ static Regex *regex_parse_line(char *s)
     p = regex_new();
 
     p->re_s = strsave(s);
-    err = regcomp(&p->re_c, p->re_s, REG_EXTENDED|REG_ICASE);
-    if(err) {
-	fglog("WARNING: error compiling regex %s", p->re_s);
-	xfree(p);
-	return NULL;
+    err = regcomp(&p->re_c, p->re_s, REG_EXTENDED | REG_ICASE);
+    if (err) {
+        fglog("WARNING: error compiling regex %s", p->re_s);
+        xfree(p);
+        return NULL;
     }
 
     debug(15, "regex: pattern=%s", p->re_s);
 
     return p;
 }
-
-
 
 /*
  * Put regex into linked list
@@ -108,20 +99,18 @@ static int regex_do_entry(char *s)
     Regex *p;
 
     p = regex_parse_line(s);
-    if(!p)
-	return ERROR;
+    if (!p)
+        return ERROR;
 
     /* Put into linked list */
-    if(regex_list)
-	regex_last->next = p;
+    if (regex_list)
+        regex_last->next = p;
     else
-	regex_list       = p;
-    regex_last       = p;
+        regex_list = p;
+    regex_last = p;
 
     return OK;
 }
-
-
 
 /*
  * Match string against regex list
@@ -130,30 +119,24 @@ static int regex_do_entry(char *s)
 
 static regmatch_t regex_pmatch[MAXREGMATCH];
 
-
 int regex_match(const char *s)
 {
     Regex *p;
 
-    for(p=regex_list; p; p=p->next)
-    {
-	if(regexec(&p->re_c, s, MAXREGMATCH, regex_pmatch, 0) == OK)
-	    return TRUE;
+    for (p = regex_list; p; p = p->next) {
+        if (regexec(&p->re_c, s, MAXREGMATCH, regex_pmatch, 0) == OK)
+            return TRUE;
     }
     return FALSE;
 }
-
-
 
 /*
  * Get i'th sub-expression from regex match
  */
 static regmatch_t *regex_match_sub(int i)
 {
-    return i<0 || i>=MAXREGMATCH ? NULL : &regex_pmatch[i];
+    return i < 0 || i >= MAXREGMATCH ? NULL : &regex_pmatch[i];
 }
-
-
 
 /*
  * Copy i'th sub-expression to string buffer
@@ -164,20 +147,17 @@ char *str_regex_match_sub(char *buf, size_t len, int idx, const char *s)
     int i, j;
 
     p = regex_match_sub(idx);
-    if(p == NULL)
-    {
-	buf[0] = 0;
-	return NULL;
+    if (p == NULL) {
+        buf[0] = 0;
+        return NULL;
     }
 
-    for(i=0, j=p->rm_so; i<len-1 && j<p->rm_eo; i++, j++)
-	buf[i] = s[j];
+    for (i = 0, j = p->rm_so; i < len - 1 && j < p->rm_eo; i++, j++)
+        buf[i] = s[j];
     buf[i] = 0;
 
     return buf;
 }
-
-
 
 /*
  * Initialize regex list
@@ -187,17 +167,12 @@ void regex_init(void)
     char *s;
 
     /* regex patterns from fidogate.conf */
-    for(s = cf_get_string("Regex1stLine",TRUE);
-	s;
-	s = cf_get_string("Regex1stLine",FALSE) )
-	regex_do_entry(s);
+    for (s = cf_get_string("Regex1stLine", TRUE);
+         s; s = cf_get_string("Regex1stLine", FALSE))
+        regex_do_entry(s);
 }
 
-
 #endif /** HAS_POSIX_REGEX ****************************************************/
-
-
-
 
 /***** TEST ******************************************************************/
 
@@ -209,13 +184,12 @@ void debug_subs(void)
     int i;
 
     printf("pmatch[]:");
-    for(i=0; i<MAXREGMATCH; i++)
-	if(regex_pmatch[i].rm_so != -1)
-	    printf(" %d-%d", regex_pmatch[i].rm_so, regex_pmatch[i].rm_eo);
+    for (i = 0; i < MAXREGMATCH; i++)
+        if (regex_pmatch[i].rm_so != -1)
+            printf(" %d-%d", regex_pmatch[i].rm_so, regex_pmatch[i].rm_eo);
     printf("\n");
 }
 #endif
-
 
 /*
  * Function test
@@ -227,44 +201,38 @@ int main(int argc, char *argv[])
 
     regex_init();
 
-# if 0
-    do
-    {
-	printf("Enter regex pattern [ENTER=end of list]: ");
-	fflush(stdout);
-	fgets(buffer, sizeof(buffer), stdin);
-	strip_crlf(buffer);
-	if(buffer[0])
-	    regex_do_entry(buffer);
+#if 0
+    do {
+        printf("Enter regex pattern [ENTER=end of list]: ");
+        fflush(stdout);
+        fgets(buffer, sizeof(buffer), stdin);
+        strip_crlf(buffer);
+        if (buffer[0])
+            regex_do_entry(buffer);
     }
-    while(buffer[0]);
+    while (buffer[0]);
 
     printf("\n");
-# endif
+#endif
 
     /* Read strings to match */
-    do
-    {
-	printf("Enter string [ENTER=end]: ");
-	fflush(stdout);
-	fgets(buffer, sizeof(buffer), stdin);
-	strip_crlf(buffer);
-	if(buffer[0])
-	{
-	    if(regex_match(buffer))
-	    {
-		printf("MATCH, ");
-		debug_subs();
-		str_regex_match_sub(buf, sizeof(buf), 1, buffer);
-		printf("       (1) = \"%s\"\n", buf);
-	    }
-	    else
-	    {
-		printf("NO MATCH\n");
-	    }
-	}
+    do {
+        printf("Enter string [ENTER=end]: ");
+        fflush(stdout);
+        fgets(buffer, sizeof(buffer), stdin);
+        strip_crlf(buffer);
+        if (buffer[0]) {
+            if (regex_match(buffer)) {
+                printf("MATCH, ");
+                debug_subs();
+                str_regex_match_sub(buf, sizeof(buf), 1, buffer);
+                printf("       (1) = \"%s\"\n", buf);
+            } else {
+                printf("NO MATCH\n");
+            }
+        }
     }
-    while(buffer[0]);
+    while (buffer[0]);
 #endif
 
     exit(0);
