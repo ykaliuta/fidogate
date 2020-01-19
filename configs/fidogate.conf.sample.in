@@ -526,6 +526,9 @@ FallbackUsername sysop
 # Don't gate split messages with a ^ASPLIT kludge
 #KillSplit
 
+# Move to bad packets if a message's name or subject length violates standard
+#FTNStrictPktCheck
+
 # X-FTN header:
 #
 #     f    X-FTN-From
