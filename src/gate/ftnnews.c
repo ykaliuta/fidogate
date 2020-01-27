@@ -2,7 +2,6 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: ftnnews.c,v 5.2 2004/11/23 00:50:41 anray Exp $
  *
  * setuid frontend for rfc2ftn, limiting options for security reasons
  *

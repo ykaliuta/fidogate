@@ -1,6 +1,5 @@
 #!<PERL5>
 #
-# $Id: logstat.in,v 5.2 2004/11/23 00:50:39 anray Exp $
 #
 # Statistics for ftntoss/ftnroute/ftnpack log files
 #

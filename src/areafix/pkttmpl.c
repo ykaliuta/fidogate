@@ -2,7 +2,6 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: pkttmpl.c,v 5.2 2004/11/23 00:50:39 anray Exp $
  *
  * Template for utility processing FTN packets
  *

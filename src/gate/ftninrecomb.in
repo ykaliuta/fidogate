@@ -1,6 +1,5 @@
 #!<PERL5>
 #
-# $Id: ftninrecomb.in,v 5.2 2004/11/23 00:50:41 anray Exp $
 #
 # Recombine split mail and news messages.
 #

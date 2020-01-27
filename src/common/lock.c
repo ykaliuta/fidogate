@@ -2,7 +2,6 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: lock.c,v 5.6 2006/10/20 10:18:11 anray Exp $
  *
  * File locking
  *

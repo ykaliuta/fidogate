@@ -2,7 +2,6 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: fopen.c,v 5.2 2004/11/23 00:50:40 anray Exp $
  *
  * Specialized fopen()-like functions
  *

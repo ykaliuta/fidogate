@@ -1,6 +1,5 @@
 #!<PERL5>
 #
-# $Id: ftntickpost.in,v 5.2 2004/11/23 00:50:41 anray Exp $
 #
 # Postprocessor for TIC files to be run by ftntick -x.
 # Currently only a skeleton.

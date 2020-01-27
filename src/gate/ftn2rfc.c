@@ -2,7 +2,6 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: ftn2rfc.c,v 5.5 2006/12/28 17:51:39 anray Exp $
  *
  * Convert FTN mail packets to RFC mail and news batches
  *

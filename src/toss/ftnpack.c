@@ -2,7 +2,6 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: ftnpack.c,v 5.4 2005/04/19 17:34:12 anray Exp $
  *
  * Pack output packets of ftnroute for Binkley outbound (ArcMail)
  *

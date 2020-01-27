@@ -2,7 +2,6 @@
 @c
 @c FIDOGATE documentation for 4.4
 @c
-@c $Id: fidogate.texi,v 5.2 2004/11/23 00:50:38 anray Exp $
 @c
 
 @setfilename fidogate.info

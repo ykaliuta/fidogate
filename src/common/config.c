@@ -2,7 +2,6 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: config.c,v 5.2 2004/11/23 00:50:40 anray Exp $
  *
  * Configuration data and functions
  *

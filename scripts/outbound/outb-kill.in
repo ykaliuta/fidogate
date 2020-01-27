@@ -1,6 +1,5 @@
 #!<SHELL>
 #
-# $Id: outb-kill.in,v 5.3 2007/01/10 00:10:37 anray Exp $
 #
 # Remove node from areas.bbs, kill outbound files
 #

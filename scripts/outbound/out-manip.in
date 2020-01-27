@@ -1,6 +1,5 @@
 #!<PERL5> -U
 #
-# $Id: out-manip.in,v 5.2 2004/11/23 00:50:39 anray Exp $
 #
 # This script can change the flavor of outbound files and create empty
 # FLO files.

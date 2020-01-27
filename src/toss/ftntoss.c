@@ -2,7 +2,6 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: ftntoss.c,v 5.10 2007/04/07 20:04:09 anray Exp $
  *
  * Toss FTN NetMail/EchoMail
  *

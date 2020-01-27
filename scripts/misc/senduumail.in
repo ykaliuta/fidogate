@@ -1,6 +1,5 @@
 #!<SHELL>
 #
-# $Id: senduumail.in,v 5.2 2004/11/23 00:50:39 anray Exp $
 #
 # Send file as UUENCODEd mail
 #

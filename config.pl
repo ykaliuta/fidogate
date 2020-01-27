@@ -1,6 +1,5 @@
 ##############################################################################
 #
-# $Id: config.pl,v 5.2 2004/11/23 00:50:35 anray Exp $
 #
 # Perl functions to read FIDOGATE config file,
 # included by <INCLUDE config.pl> when running subst.pl

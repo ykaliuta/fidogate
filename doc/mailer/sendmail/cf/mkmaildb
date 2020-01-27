@@ -1,6 +1,5 @@
 #!/bin/sh
 #
-# $Id: mkmaildb,v 5.2 2004/11/23 00:50:37 anray Exp $
 #
 # Update db maps in /etc/mail
 #

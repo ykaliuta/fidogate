@@ -2,7 +2,6 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: charset.c,v 5.2 2004/11/23 00:50:40 anray Exp $
  *
  * NEW charset.c code using charset.bin mapping file
  *

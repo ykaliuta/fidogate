@@ -1,6 +1,5 @@
 #!<SHELL>
 #
-# $Id: out-rmbsy.in,v 5.2 2004/11/23 00:50:39 anray Exp $
 #
 # Remove BSY files in outbound, older than 4 hours
 #

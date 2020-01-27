@@ -1,5 +1,4 @@
 #!<PERL5>
-# $Id: html-tmpl.in,v 5.2 2004/11/23 00:50:39 anray Exp $
 #
 # Perl routines for doing substitutions in HTML template
 #

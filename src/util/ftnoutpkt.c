@@ -2,7 +2,6 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FIDO NetMail/EchoMail
  *
- * $Id: ftnoutpkt.c,v 5.3 2007/01/17 22:45:57 anray Exp $
  *
  * Create packet in OUTPKT with message from stdin.
  *

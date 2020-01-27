@@ -2,7 +2,6 @@
 /*****************************************************************************
  * FIDOGATE --- Gateway UNIX Mail/News <-> FTN NetMail/EchoMail
  *
- * $Id: strtok_r.c,v 5.2 2004/11/23 00:50:40 anray Exp $
  *
  * Specialized strtok() variants for FIDOGATE
  *

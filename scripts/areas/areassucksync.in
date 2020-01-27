@@ -1,6 +1,5 @@
 #!<PERL5> -w
 #
-# $Id: areassucksync.in,v 5.2 2004/11/23 00:50:39 anray Exp $
 #
 # Syncronize groups between areas.bbs, active, sucknewsrc, NNTP list
 #
