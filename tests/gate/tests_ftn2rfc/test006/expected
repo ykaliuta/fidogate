@@ -9,7 +9,6 @@ Organization: Default origin
 Lines: 1
 X-Gateway: FIDO f1.n4500.z2.fidonet.by [FIDOGATE 5.5-g578233ba762a]
 X-FTN-From: ZK @ 2:4500/1.0
-X-FTN-Flags: 
 X-FTN-Tearline: (none)
 X-FTN-Origin: Default origin(2:4500/1.0)
 X-FTN-Domain: Z0@fidonet

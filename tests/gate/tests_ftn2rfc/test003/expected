@@ -13,7 +13,6 @@ Organization: Belarus FTN IP network
 Lines: 1
 X-Gateway: FIDO f1.n4500.z2.fidonet.by [FIDOGATE 5.3-gb1a4a5e4c1c4]
 X-FTN-From: =?utf-8?B?0JbQtdC90Y8g0JbQtdC90Y8=?= iuta @ 2:4500/1.0
-X-FTN-Flags: 
 X-FTN-Tearline: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 X-FTN-Origin: Belarus FTN IP network (2:4500/1)
 X-FTN-Domain: Z2@fidonet
