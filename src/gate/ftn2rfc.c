@@ -1480,7 +1480,9 @@ int unpack(FILE * pkt_file, Packet * pkt)
                 if (msg.attr & MSG_AUDIT)
                     BUF_APPEND(buffer, "Aud ");
 
-                tl_appendf(&theader, "X-FTN-Flags: %s\n", buffer);
+		/* do not put blank headers, breaks some newsreaders */
+		if (buffer[0] != '\0')
+		    tl_appendf(&theader, "X-FTN-Flags: %s\n", buffer);
             }
         }
 #ifdef X_FTN_FROM_ECHOMAIL
@@ -1503,7 +1505,8 @@ int unpack(FILE * pkt_file, Packet * pkt)
                 if (msg.attr & MSG_AUDIT)
                     BUF_APPEND(buffer, "Aud ");
 
-                tl_appendf(&theader, "X-FTN-Flags: %s\n", buffer);
+		if (buffer[0] != '\0')
+		    tl_appendf(&theader, "X-FTN-Flags: %s\n", buffer);
             }
         }
 #endif                          /* X_FTN_FROM_ECHOMAIL */
