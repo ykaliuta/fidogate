@@ -1617,8 +1617,8 @@ static Textlist *mime_debody_section(Textlist * body, Textlist * header,
             goto exit;
         }
         mime_decharset_section(dec_body, mime, to);
-    } else if (strieq(mime->type_type, "multipart/mixed") ||
-               strieq(mime->type_type, "multipart/alternative")) {
+    } else if(strnieq(mime->type_type,
+		      "multipart/", sizeof("multipart/") - 1)) {
         dec_body = mime_debody_multipart(body, mime, to);
     } else {
         fglog("WARNING: Skipped unsupported mime type  %s", mime->type_type);
