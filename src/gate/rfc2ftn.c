@@ -1268,6 +1268,13 @@ int snd_message(Message * msg, Area * parea,
     } else
         split = 0;
 
+
+    /*
+     * Set pointer to first line in message body
+     * Must be set before `again` lable to keep splitting working.
+     */
+    p = body.first;
+
  again:
 
     pt = xlat_s(subj, NULL);
@@ -1543,11 +1550,6 @@ int snd_message(Message * msg, Area * parea,
     }
 
     /***** Message body *****************************************************/
-
-    /*
-     * Set pointer to first line in message body
-     */
-    p = body.first;
 
     lsize = 0;
     while (p) {
