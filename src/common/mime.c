@@ -114,6 +114,8 @@ char *mime_dequote(char *d, size_t n, char *s)
 #define MIME_ENC_STRING_LIMIT 80
 #define MIME_MAX_ENC_LEN 31
 
+#define MAX_UTF8_LEN 4
+
 /* A..Z -- 0x00..0x19
  * a..z -- 0x1a..0x33
  * 0..9 -- 0x34..0x3d
@@ -227,6 +229,7 @@ struct mime_word_enc_state {
     size_t limit;               /* in 7 bit chars, no line endings */
     size_t rem_len;
     char *encoding;
+    size_t max_mb_chunks;       /* max decoder's chunks to flush mb seq */
     size_t (*calc_len)(char *token, size_t len);
     size_t (*encode)(struct mime_word_enc_state * state, char *p, size_t len);
     char rem[B64_ENC_CHUNK];
@@ -439,6 +442,26 @@ static void mime_switch_to_plain(struct mime_word_enc_state *state)
     mime_word_end(state);
 }
 
+/* Get size of unfinished multibyte sequence. Only utf-8 supported */
+static size_t mime_get_mb_tail(struct mime_word_enc_state *state, char *p)
+{
+    unsigned char c;
+    char *save_p;
+
+    if (state->max_mb_chunks == 0)
+	return 0;
+
+    if (!strieq(state->charset, "utf-8"))
+	return 0;
+
+    save_p = p;
+    for (c = *p;
+	 ((c & 0x80) == 0x80) && ((c & 0x40) == 0);
+	 c = *++p)
+	;
+    return p - save_p;
+}
+
 /*
  * Encodes part of word, that fits the current line
  */
@@ -449,6 +472,8 @@ static size_t mime_word_enc_b64(struct mime_word_enc_state *state,
     size_t left;
     size_t done;
     size_t chunk;
+    size_t to_encode;
+    bool end_of_line = false;
 
     limit = state->limit - strlen(MIME_HEADER_CODE_END);
 
@@ -456,18 +481,32 @@ static size_t mime_word_enc_b64(struct mime_word_enc_state *state,
 
     left = len;
 
-    while (left >= B64_ENC_CHUNK) {
-        if (state->vpos + B64_NLET_PER_CHUNK > limit)
-            break;
+    while ((left >= B64_ENC_CHUNK) && !end_of_line) {
+
+	/* space to flush multibyte and encode current */
+	if (state->vpos
+	    + (state->max_mb_chunks + 1) * B64_NLET_PER_CHUNK > limit) {
+
+	    end_of_line = true;
+
+            /* flush multibyte sequence */
+	    to_encode = mime_get_mb_tail(state, p);
+	} else {
+	    to_encode = left;
+	}
 
         chunk = mime_b64_encode_chunk(state->encoded_line + state->pos,
-                                      (unsigned char *)p, left);
+                                      (unsigned char *)p, to_encode);
 
         left -= chunk;
         done += chunk;
         p += chunk;
-        state->pos += B64_NLET_PER_CHUNK;
-        state->vpos += B64_NLET_PER_CHUNK;
+
+	if (chunk > 0) {
+	    state->pos += B64_NLET_PER_CHUNK;
+	    state->vpos += B64_NLET_PER_CHUNK;
+	}
+
     }
 
     *(state->encoded_line + state->pos) = '\0';
@@ -476,6 +515,14 @@ static size_t mime_word_enc_b64(struct mime_word_enc_state *state,
         done += mime_save_reminder(state, p, left);
 
     return done;
+}
+
+static size_t mime_max_mb_chunks_b64(char *charset)
+{
+    if (!strieq(charset, "utf-8"))
+	return 0;
+
+    return ((MAX_UTF8_LEN - 1) + (B64_ENC_CHUNK - 1)) / B64_ENC_CHUNK;
 }
 
 static int mime_7bit_try(struct mime_word_enc_state *state,
@@ -532,7 +579,7 @@ static size_t mime_qp_calc_len(char *s, size_t len)
  *
  * Returns amount of bytes written
  */
-static size_t mime_qp_encode_octet(char *out, unsigned char in)
+static size_t _mime_qp_encode_octet(char *out, unsigned char in)
 {
     int len;
     char buf[QP_NLET_MAX + 1];  /* max encoded length =XX\0 */
@@ -547,6 +594,28 @@ static size_t mime_qp_encode_octet(char *out, unsigned char in)
     return len;
 }
 
+static void mime_qp_encode_octet(struct mime_word_enc_state *state,
+				 unsigned char in)
+{
+    size_t produced;
+
+    produced = _mime_qp_encode_octet(state->encoded_line + state->pos, in);
+    state->pos += produced;
+    state->vpos += produced;
+}
+
+static size_t mime_word_enc_qp_flush_mb(struct mime_word_enc_state *state,
+					char *p)
+{
+    size_t to_encode = mime_get_mb_tail(state, p);
+    int i;
+
+    for (i = 0; i < to_encode; i++)
+        mime_qp_encode_octet(state, p[i]);
+
+    return to_encode;
+}
+
 /*
  * Encodes the word, extending the line if necessary
  */
@@ -555,22 +624,32 @@ static size_t mime_word_enc_qp(struct mime_word_enc_state *state,
 {
     size_t limit;
     size_t left;
-    size_t produced;
 
     limit = state->limit - strlen(MIME_HEADER_CODE_END);
 
     for (left = len; left > 0; left--, p++) {
-        if (state->vpos + QP_NLET_MAX > limit)
+	/* space to flush multibyte and encode current */
+        if (state->vpos + (state->max_mb_chunks + 1) * QP_NLET_MAX > limit) {
+	    /* flush multibyte sequence */
+	    left -= mime_word_enc_qp_flush_mb(state, p);
             break;
+	}
 
-        produced = mime_qp_encode_octet(state->encoded_line + state->pos, *p);
-        state->pos += produced;
-        state->vpos += produced;
+        mime_qp_encode_octet(state, *p);
     }
 
     *(state->encoded_line + state->pos) = '\0';
 
     return len - left;
+}
+
+static size_t mime_max_mb_chunks_qp(char *charset)
+{
+    if (!strieq(charset, "utf-8"))
+	return 0;
+
+    /* QP encoding chunk is one byte, encoded is QP_NLET_MAX */
+    return MAX_UTF8_LEN - 1;
 }
 
 static size_t mime_8bit_calc_len(char *s, size_t len)
@@ -647,11 +726,13 @@ static void mime_header_enc_start(struct mime_word_enc_state *state,
         state->encoding = MIME_HEADER_CODE_MIDDLE_QP;
         state->calc_len = mime_qp_calc_len;
         state->encode = mime_word_enc_qp;
+	state->max_mb_chunks = mime_max_mb_chunks_qp(charset);
         break;
     case MIME_B64:
         state->encoding = MIME_HEADER_CODE_MIDDLE_B64;
         state->calc_len = mime_b64_calc_len;
         state->encode = mime_word_enc_b64;
+	state->max_mb_chunks = mime_max_mb_chunks_b64(charset);
         break;
     default:
         state->encoding = NULL;
@@ -861,7 +942,7 @@ void mime_qp_encode_tl(Textlist * in, Textlist * out)
             pos = 0;
         }
 
-        len_encoded = mime_qp_encode_octet(buf + pos, ibuf[0]);
+        len_encoded = _mime_qp_encode_octet(buf + pos, ibuf[0]);
         pos += len_encoded;
         len = tl_iterator_next(&iter, ibuf, sizeof(ibuf));
     }
