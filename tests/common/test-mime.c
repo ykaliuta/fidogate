@@ -44,6 +44,18 @@ Ensure(hdr_enc_encodes_cyrillic2)
 	free(res);
 }
 
+Ensure(hdr_enc_does_not_break_utf8)
+{
+	char *src = "Subject: Это ваше ФИДО (переиздание)";
+	char *exp = "Subject: =?utf-8?B?0K3RgtC+INCy0LDRiNC1INCk0JjQlNCeICjQv9C10YDQtdC4?=\n =?utf-8?B?0LfQtNCw0L3QuNC1KQ==?=\n";
+	char *res = NULL;
+
+	mime_header_enc(&res, src, "utf-8", MIME_B64);
+
+	assert_that(res, is_equal_to_string(exp));
+	free(res);
+}
+
 Ensure(hdr_enc_encodes_long_line)
 {
 	char *src = "Field: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
@@ -59,7 +71,7 @@ Ensure(hdr_enc_encodes_long_line)
 Ensure(hdr_enc_qp_encodes_cyrillic)
 {
 	char *src = "Subject: tеsт кириллица latinitsa, оdna, двeee, триiiiiiii";
-	char *exp = "Subject: =?utf-8?Q?t=D0=B5s=D1=82=20=D0=BA=D0=B8=D1=80=D0=B8=D0=BB=D0=BB?=\n =?utf-8?Q?=D0=B8=D1=86=D0=B0?= latinitsa, =?utf-8?Q?=D0=BEdna,=20=D0=B4?=\n =?utf-8?Q?=D0=B2eee,=20=D1=82=D1=80=D0=B8iiiiiii?=\n";
+	char *exp = "Subject: =?utf-8?Q?t=D0=B5s=D1=82=20=D0=BA=D0=B8=D1=80=D0=B8=D0=BB?=\n =?utf-8?Q?=D0=BB=D0=B8=D1=86=D0=B0?= latinitsa, =?utf-8?Q?=D0=BE?=\n =?utf-8?Q?dna,=20=D0=B4=D0=B2eee,=20=D1=82=D1=80=D0=B8iiiiiii?=\n";
 	char *res = NULL;
 
 	mime_header_enc(&res, src, "utf-8", MIME_QP);
@@ -70,11 +82,11 @@ Ensure(hdr_enc_qp_encodes_cyrillic)
 
 Ensure(hdr_enc_b64_wraps_reminder)
 {
-	/* =?utf-8?Q?XXXXxxxx?= 20 chars */ 
-	char *src = "Subject: aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaa бббб";
-	char *exp = "Subject: aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaa =?utf-8?B?0LHQsdCx?=\n =?utf-8?B?0LE=?=\n";
+	/* =?utf-8?Q?XXXXxxxx?= 20 chars */
+	char *src = "Subject: aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaa ббббб";
+	char *exp = "Subject: aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaa =?utf-8?B?0LHQsQ==?=\n =?utf-8?B?0LHQsdCx?=\n";
 	char *res = NULL;
-	
+
 	mime_header_enc(&res, src, "utf-8", MIME_B64);
 
 	assert_that(res, is_equal_to_string(exp));
@@ -194,6 +206,7 @@ static TestSuite *create_mime_suite(void)
 	    "MIME suite");
     add_test(suite, hdr_enc_encodes_cyrillic);
     add_test(suite, hdr_enc_encodes_cyrillic2);
+    add_test(suite, hdr_enc_does_not_break_utf8);
     add_test(suite, hdr_enc_encodes_long_line);
     add_test(suite, hdr_enc_qp_encodes_cyrillic);
     add_test(suite, hdr_enc_b64_wraps_reminder);
