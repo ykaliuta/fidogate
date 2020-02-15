@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ROOT=$WORKDIR/testroot
+ROOT=${WORKDIR:-${PWD}}/testroot
 
 export FIDOGATE_CONFIGDIR=$ROOT/etc
 export FIDOGATE_OUTPKT_NEWS=$ROOT/outpkt_news
