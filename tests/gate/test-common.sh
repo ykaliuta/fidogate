@@ -11,13 +11,16 @@ export FIDOGATE_LOGFILE=$ROOT/log/log
 export FIDOGATE_SEQ_PKT=$ROOT/seq/pkt
 export FIDOGATE_SEQ_MAIL=$ROOT/seq/mail
 export FIDOGATE_SEQ_NEWS=$ROOT/seq/news
+export FIDOGATE_SEQ_PACK=$ROOT/seq/news
+export FIDOGATE_SEQ_SPLIT=$ROOT/seq/news
 export FIDOGATE_LIBEXECDIR=$ROOT/lib
+export FIDOGATE_VARDIR=$ROOT/var
 export FIDOGATE_INBOUND=$ROOT/in
 
 
 DIRS="$FIDOGATE_OUTPKT_NEWS $FIDOGATE_OUTPKT_MAIL \
       $FIDOGATE_OUTRFC_NEWS $FIDOGATE_OUTRFC_MAIL \
-      $ROOT/log $ROOT/seq \
+      $ROOT/log $ROOT/seq $ROOT/lib $ROOT/var \
       $FIDOGATE_INBOUND"
 
 create_dirs()
@@ -40,6 +43,8 @@ reset_seq()
     echo 0 > $FIDOGATE_SEQ_PKT
     echo 0 > $FIDOGATE_SEQ_MAIL
     echo 0 > $FIDOGATE_SEQ_NEWS
+    echo 0 > $FIDOGATE_SEQ_PACK
+    echo 0 > $FIDOGATE_SEQ_SPLIT
 }
 
 clear_log()

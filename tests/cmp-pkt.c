@@ -3,6 +3,7 @@
  */
 
 #include "fidogate.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -15,6 +16,11 @@ struct packet {
     Packet hdr;
     size_t n_msgs;
     struct message msgs[];
+};
+
+static char *skip_kludges[] = {
+    "SPLIT:", /* contains date */
+    NULL,
 };
 
 static struct packet *packet_new(void)
@@ -68,11 +74,36 @@ static void packet_free(struct packet *pkt)
     } while(0);
 
 #define TL_CMP(val_name) do {						\
-	if (tl_cmp(# val_name, &h1->val_name, &h2->val_name) != 0)	\
+	if (tl_cmp(# val_name,						\
+		   &h1->val_name, &h2->val_name, NULL) != 0)		\
 	    OUT(val_name);						\
     } while(0);
 
-static int tl_cmp(const char *field, Textlist *tl1, Textlist *tl2)
+#define KLUDGES_CMP(val_name) do {					\
+	if (tl_cmp(# val_name,						\
+		   &h1->val_name, &h2->val_name, skip_kludges) != 0)	\
+	    OUT(val_name);						\
+    } while(0);
+
+static bool same_prefix(char **prefixes, char *l1, char *l2)
+{
+    size_t len;
+
+    if (prefixes == NULL)
+	return false;
+
+    for (; *prefixes != NULL; prefixes++) {
+	len = strlen(*prefixes);
+	/* Skip first ^A */
+	if ((strncmp(*prefixes, l1 + 1, len) == 0) &&
+	    (strncmp(*prefixes, l2 + 1, len) == 0))
+	    return true;
+    }
+    return false;
+}
+
+static int tl_cmp(const char *field, Textlist *tl1, Textlist *tl2,
+		  char **skip_prefixes)
 {
     Textline *l1, *l2;
     int ret = 0;
@@ -80,7 +111,12 @@ static int tl_cmp(const char *field, Textlist *tl1, Textlist *tl2)
     for (l1 = tl1->first, l2 = tl2->first;
 	 (l1 != NULL) && (l2 != NULL);
 	 l1 = l1->next, l2 = l2->next) {
+
 	if (strcmp(l1->line, l2->line) != 0) {
+
+	    if (same_prefix(skip_prefixes, l1->line, l2->line))
+		continue;
+
 	    fprintf(stderr, "- %s line1: %s\n", field, l1->line);
 	    fprintf(stderr, "+ %s line2: %s\n", field, l2->line);
 	    ret = 1;
@@ -127,7 +163,7 @@ static int message_body_cmp(struct message *m1, struct message *m2)
     int ret = 0;
 
     STRING_CMP(area);
-    TL_CMP(kludge);
+    KLUDGES_CMP(kludge);
     TL_CMP(rfc);
     TL_CMP(body);
     STRING_CMP(tear);
