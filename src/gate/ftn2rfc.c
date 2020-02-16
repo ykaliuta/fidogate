@@ -373,6 +373,7 @@ static char *encode_skip[] = {
     "Path:",
     "Message-ID:",
     "References:",
+    "From ",
 };
 
 static int encode_header(Textline * tl, void *arg)
