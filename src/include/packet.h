@@ -99,7 +99,7 @@ typedef struct {
     char name_to[MSG_MAXNAME];  /* To name */
     char name_from[MSG_MAXNAME];    /* From name */
     char subject[MSG_MAXSUBJ];  /* Subject */
-
+    int translated;             /* name_* and subject already xlat'ed */
     char *area;                 /* EchoMail area or NULL */
 } Message;
 

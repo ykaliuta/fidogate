@@ -722,7 +722,7 @@ int snd_mail(RFCAddr rfc_to, long size)
     char *p;
     char subj[MSG_MAXSUBJ * 4 + 1];
     int status, fido;
-    Message msg;
+    Message msg = { 0 };
     char *flags = NULL;
     MIMEInfo *mime;
     int from_is_local = FALSE;
@@ -1277,55 +1277,60 @@ int snd_message(Message * msg, Area * parea,
 
  again:
 
-    pt = xlat_s(subj, NULL);
-
-    /* Subject with split part indication */
-    if (split && part > 1) {
-        str_printf(msg->subject, sizeof(msg->subject), "%02d: ", part);
-        BUF_APPEND(msg->subject, pt ? pt : subj);
+    if (msg->translated) {
+	pt = NULL;
     } else {
-        BUF_COPY(msg->subject, pt ? pt : subj);
-#ifdef MAXMSGHEADRLEN
-        if (strlen(msg->subject) > MAXMSGHEADRLEN) {
-            BUF_COPY(tmp_msg, buffer);
-            sprintf(buffer, "Subject: %s\n", pt);
-            BUF_APPEND(buffer, tmp_msg);
-            size++;
-            BUF_COPY(msg->subject, "(no subject)");
-        }
-#endif                          /* MAXMSGHEADRLEN */
-    }
+	msg->translated = true;
 
-    pt = xlat_s(msg->name_to, pt);
-    if (pt) {
-#ifdef MAXMSGHEADRLEN
-        if (strlen(msg->name_to) > MAXMSGHEADRLEN) {
-            BUF_COPY(tmp_msg, buffer);
-            sprintf(buffer, "To: %s\n", msg->name_to);
-            BUF_APPEND(buffer, tmp_msg);
-            size++;
-            if (!parea && msg->node_to.node == 128)
-                BUF_COPY(msg->subject, "UUCP");
-            else
-                BUF_COPY(msg->subject, "SysOp");
-        } else
-#endif                          /* MAXMSGHEADRLEN */
-            BUF_COPY(msg->name_to, pt);
-    }
+	pt = xlat_s(subj, NULL);
 
-    pt = xlat_s(msg->name_from, pt);
-    if (pt) {
+	/* Subject with split part indication */
+	if (split && part > 1) {
+	    str_printf(msg->subject, sizeof(msg->subject), "%02d: ", part);
+	    BUF_APPEND(msg->subject, pt ? pt : subj);
+	} else {
+	    BUF_COPY(msg->subject, pt ? pt : subj);
 #ifdef MAXMSGHEADRLEN
-        if (strlen(msg->name_from) > MAXMSGHEADRLEN) {
-            BUF_COPY(tmp_msg, buffer);
-            sprintf(buffer, "From: %s\n", msg->name_from);
-            BUF_APPEND(buffer, tmp_msg);
-            size++;
-        } else
+	    if (strlen(msg->subject) > MAXMSGHEADRLEN) {
+		BUF_COPY(tmp_msg, buffer);
+		sprintf(buffer, "Subject: %s\n", pt);
+		BUF_APPEND(buffer, tmp_msg);
+		size++;
+		BUF_COPY(msg->subject, "(no subject)");
+	    }
 #endif                          /* MAXMSGHEADRLEN */
-            BUF_COPY(msg->name_from, pt);
-    }
+	}
 
+	pt = xlat_s(msg->name_to, pt);
+	if (pt) {
+#ifdef MAXMSGHEADRLEN
+	    if (strlen(msg->name_to) > MAXMSGHEADRLEN) {
+		BUF_COPY(tmp_msg, buffer);
+		sprintf(buffer, "To: %s\n", msg->name_to);
+		BUF_APPEND(buffer, tmp_msg);
+		size++;
+		if (!parea && msg->node_to.node == 128)
+		    BUF_COPY(msg->subject, "UUCP");
+		else
+		    BUF_COPY(msg->subject, "SysOp");
+	    } else
+#endif                          /* MAXMSGHEADRLEN */
+		BUF_COPY(msg->name_to, pt);
+	}
+
+	pt = xlat_s(msg->name_from, pt);
+	if (pt) {
+#ifdef MAXMSGHEADRLEN
+	    if (strlen(msg->name_from) > MAXMSGHEADRLEN) {
+		BUF_COPY(tmp_msg, buffer);
+		sprintf(buffer, "From: %s\n", msg->name_from);
+		BUF_APPEND(buffer, tmp_msg);
+		size++;
+	    } else
+#endif                          /* MAXMSGHEADRLEN */
+		BUF_COPY(msg->name_from, pt);
+	}
+    }
     /* Header */
     nmsg++;
     pkt_put_msg_hdr(sf, msg, TRUE);
