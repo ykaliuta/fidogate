@@ -1491,7 +1491,7 @@ int cmd_sub(Node * node, char *area_in, Textlist * upl)
     char area[strlen(area_in) + 1];
     int an;
 #ifdef AFSEND_ECHO_STATUS
-    char tmp[35];
+    char tmp[64];
 #endif                          /* AFSEND_ECHO_STATUS */
 #ifdef SUB_LIMIT
     int lim_a;
@@ -1634,9 +1634,8 @@ int cmd_sub(Node * node, char *area_in, Textlist * upl)
                 BUF_APPEND(buffer, "Ok");
 #endif                          /* ANSWER_OK */
 #ifdef AFSEND_ECHO_STATUS
-                sprintf(tmp, " Stat: '%s' last msg: %s",
+                snprintf(tmp, sizeof(tmp), " Stat: '%s' last msg: %s",
                         p->state, ctime(&p->time));
-                tmp[strlen(tmp) - 1] = 0;
                 BUF_APPEND(buffer, tmp);
 #endif                          /* AFSEND_ECHO_STATUS */
                 areafix_printf("%s", buffer);
