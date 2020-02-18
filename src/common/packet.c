@@ -467,9 +467,10 @@ time_t pkt_get_date(FILE * fp)
 
 #define READ_MSG_FIELD(fp, s, f, strict) do {					\
     size_t rc;								\
+    size_t limit = f ## _limit;						\
     rc = pkt_get_string(fp, s->f, sizeof(s->f));			\
-    if (rc > sizeof(s->f)) {						\
-        fglog("ERROR: %s is longer than %lu", #f, (unsigned long)sizeof(s->f)); \
+    if (rc > limit) {							\
+        fglog("ERROR: %s is longer than %lu", #f, limit);		\
 	if (strict)							\
 	    return ERROR;						\
     }									\
@@ -480,6 +481,10 @@ time_t pkt_get_date(FILE * fp)
  */
 int pkt_get_msg_hdr(FILE * fp, Message * msg, bool strict)
 {
+    size_t name_to_limit = MSG_MAXNAME;
+    size_t name_from_limit = MSG_MAXNAME;
+    size_t subject_limit = MSG_MAXSUBJ;
+
     msg->node_from.node = pkt_get_int16(fp);
     msg->node_to.node = pkt_get_int16(fp);
     msg->node_from.net = pkt_get_int16(fp);
@@ -580,6 +585,48 @@ void pkt_put_date(FILE * pkt, time_t t)
 }
 
 /*
+ * name_* / subj can come long from rfc
+ * Make sure they are not breaking FTS
+ */
+static void pkt_msg_sanitize_strings(Message *msg)
+{
+    int i;
+    size_t len;
+    struct field {
+	char *str;
+	size_t limit;
+	char *name;
+    } fields[] = {
+	{
+	    .str = msg->name_to,
+	    .limit = MSG_MAXNAME,
+	    .name = "`To`",
+	},
+	{
+	    .str = msg->name_from,
+	    .limit = MSG_MAXNAME,
+	    .name = "`From`",
+	},
+	{
+	    .str = msg->subject,
+	    .limit = MSG_MAXSUBJ,
+	    .name = "`Subject`",
+	}
+    };
+
+    for (i = 0; i < sizeof(fields)/sizeof(fields[0]); i++) {
+	len = strlen(fields[i].str);
+	if (len < fields[i].limit)
+	    continue;
+
+	fglog("WARNING: truncating %s from %zu to %zu",
+	      fields[i].name, len, fields[i].limit - 1);
+
+	fields[i].str[fields[i].limit - 1] = '\0';
+    }
+}
+
+/*
  * Write message header to packet.
  */
 int pkt_put_msg_hdr(FILE * pkt, Message * msg, int kludge_flag)
@@ -600,6 +647,9 @@ int pkt_put_msg_hdr(FILE * pkt, Message * msg, int kludge_flag)
     pkt_put_int16(pkt, msg->cost);
 
     pkt_put_date(pkt, msg->date);
+
+    pkt_msg_sanitize_strings(msg);
+
     pkt_put_string(pkt, msg->name_to);
     pkt_put_string(pkt, msg->name_from);
     pkt_put_string(pkt, msg->subject);

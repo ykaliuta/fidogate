@@ -90,14 +90,17 @@ typedef struct {
 
 #define MSG_MASK	0x7413      /* attr AND before packeting */
 
+/* max UTF-8 char is 4 */
+#define NAMEBUFSIZE (MSG_MAXNAME * 4)
+
 typedef struct {
     Node node_from, node_to;    /* FTN address from, to */
     Node node_orig;             /* FTN address sender */
     int attr;                   /* Attribute flags */
     int cost;                   /* Cost */
     time_t date;                /* Date */
-    char name_to[MSG_MAXNAME];  /* To name */
-    char name_from[MSG_MAXNAME];    /* From name */
+    char name_to[NAMEBUFSIZE];  /* To name */
+    char name_from[NAMEBUFSIZE];    /* From name */
     char subject[MSG_MAXSUBJ];  /* Subject */
     int translated;             /* name_* and subject already xlat'ed */
     char *area;                 /* EchoMail area or NULL */
