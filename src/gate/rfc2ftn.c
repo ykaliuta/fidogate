@@ -48,7 +48,7 @@ char *get_name_from_body(void);
 void sendback(const char *, ...);
 void rfcaddr_init(RFCAddr *);
 RFCAddr rfc_sender(void);
-int rfc_parse(RFCAddr *, char *, Node *, int);
+int rfc_parse(RFCAddr *, char *, size_t, Node *, int);
 int rfc_isfido(void);
 void cvt_user_name(char *);
 char *receiver(char *, Node *);
@@ -341,7 +341,7 @@ RFCAddr rfc_sender(void)
  */
 static int rfc_isfido_flag = FALSE;
 
-int rfc_parse(RFCAddr * rfc, char *name, Node * node, int gw)
+int rfc_parse(RFCAddr * rfc, char *name, size_t name_size, Node * node, int gw)
 {
     char *p;
     int len, ret = OK;
@@ -369,8 +369,7 @@ int rfc_parse(RFCAddr * rfc, char *name, Node * node, int gw)
             if (p[len - 1] == '\"') /* " makes C-mode happy */
                 p[len - 1] = 0;
         }
-        strncpy(name, p, MSG_MAXNAME);
-        name[MSG_MAXNAME - 1] = '\0';
+	snprintf(name, name_size, "%s", p);
     }
 
     if (!node)
@@ -433,7 +432,7 @@ int rfc_parse(RFCAddr * rfc, char *name, Node * node, int gw)
          */
         *node = cf_gateway();
         if (name)
-            str_copy(name, MSG_MAXNAME, "UUCP");
+	    snprintf(name, name_size, "%s", "UUCP");
 
         ret = OK;
     } else
@@ -507,7 +506,7 @@ void cvt_user_name(char *s)
  */
 char *receiver(char *to, Node * node)
 {
-    static char name[MSG_MAXNAME];
+    static char name[MAXUSERNAME];
     Alias *alias;
 
     /*
@@ -554,14 +553,14 @@ char *receiver(char *to, Node * node)
 char *mail_receiver(RFCAddr * rfc, Node * node)
 {
     char *to;
-    char name[MSG_MAXNAME];
+    char name[MAXUSERNAME];
     RFCAddr h;
 
     if (rfc->user[0]) {
         /*
          * Address is argument
          */
-        if (rfc_parse(rfc, name, node, TRUE) == ERROR) {
+        if (rfc_parse(rfc, name, sizeof(name), node, TRUE) == ERROR) {
             fglog("BOUNCE: <%s>, %s", s_rfcaddr_to_asc(rfc, TRUE),
                   (*address_error ? address_error : "unknown"));
             return NULL;
@@ -579,10 +578,10 @@ char *mail_receiver(RFCAddr * rfc, Node * node)
          */
         if ((to = header_get("X-Comment-To"))) {
             h = rfcaddr_from_rfc(to);
-            rfc_parse(&h, name, NULL, FALSE);
+            rfc_parse(&h, name, sizeof(name), NULL, FALSE);
         } else if ((to = get_name_from_body())) {
             h = rfcaddr_from_rfc(to);
-            rfc_parse(&h, name, NULL, FALSE);
+            rfc_parse(&h, name, sizeof(name), NULL, FALSE);
         }
     }
 
@@ -614,7 +613,7 @@ time_t mail_date(void)
  */
 char *mail_sender(RFCAddr * rfc, Node * node)
 {
-    static char name[MSG_MAXNAME];
+    static char name[MAXUSERNAME];
     Alias *alias;
     int rc;
     Node n;
@@ -625,9 +624,9 @@ char *mail_sender(RFCAddr * rfc, Node * node)
     *name = 0;
     *node = cf_n_addr();
 #ifndef PASSTHRU_NETMAIL
-    rfc_parse(rfc, name, &n, FALSE);
+    rfc_parse(rfc, name, sizeof(name), &n, FALSE);
 #else
-    ret = rfc_parse(rfc, name, &n, FALSE);
+    ret = rfc_parse(rfc, name, sizeof(name), &n, FALSE);
     /*
      * If the from address is an FTN address, convert and pass it via
      * parameter node. This may cause problems when operating different

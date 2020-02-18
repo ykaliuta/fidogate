@@ -96,8 +96,8 @@ typedef struct {
     int attr;                   /* Attribute flags */
     int cost;                   /* Cost */
     time_t date;                /* Date */
-    char name_to[MSG_MAXNAME];  /* To name */
-    char name_from[MSG_MAXNAME];    /* From name */
+    char name_to[MAXUSERNAME];  /* To name */
+    char name_from[MAXUSERNAME];    /* From name */
     char subject[MSG_MAXSUBJ];  /* Subject */
     int translated;             /* name_* and subject already xlat'ed */
     char *area;                 /* EchoMail area or NULL */
