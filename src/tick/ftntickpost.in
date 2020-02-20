@@ -30,7 +30,7 @@ File          Size       Area             Origin         From
 
 format BODY =
 @<<<<<<<<<<<< @<<<<<<<<< @<<<<<<<<<<<<<<< @<<<<<<<<<<<<< @<<<<<<<<<<<<<<<<
-$tic{file}    $tic{size} $tic{area}   $tic{origin}  $tic{from}
+$tic{file},   $tic{size},$tic{area},      $tic{origin},  $tic{from}
                          ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 			 $tic{desc}
 ~~                       ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
