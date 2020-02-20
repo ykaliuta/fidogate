@@ -1134,6 +1134,36 @@ static void determine_charsets(Area * parea, char **in, char **out,
         *out_level = 2;
 }
 
+static void rfc2ftn_add_tzutc(FILE *f)
+{
+    char *header_date;
+    char *p;
+
+    fprintf(f, "\001TZUTC: ");
+
+    header_date = header_get("Date");
+
+    if (header_date == NULL)
+	goto fallback;
+
+    p = strrchr(header_date, ' ');
+    if (p == NULL)
+	goto fallback;
+
+    p++;
+    if ((*p != '+') && (*p != '-'))
+	goto fallback;
+
+    if (*p == '+')
+	p++;
+
+    fprintf(f, "%s\r\n", p);
+    return;
+
+fallback:
+    fprintf(f, "%s\r\n", date("%N", NULL));
+}
+
 int snd_message(Message * msg, Area * parea,
                 RFCAddr rfc_from, RFCAddr rfc_to, char *subj,
                 long size, char *flags, int fido, MIMEInfo * mime,
@@ -1458,8 +1488,10 @@ int snd_message(Message * msg, Area * parea,
         fprintf(sf, "\001%s\r\n", p3);
     }
     p3 = xlat_s(NULL, p3);
+
     if (tzutc_kludge)
-        fprintf(sf, "\001TZUTC: %s\r\n", date("%N", NULL));
+	rfc2ftn_add_tzutc(sf);
+
 #ifdef PID_READER_TID_GTV
     if ((header = s_header_getcomplete("User-Agent")))
         fprintf(sf, "\001PID: %s\r\n", header);
