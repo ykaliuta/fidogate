@@ -329,15 +329,15 @@ int outpkt_netmail(Message * msg, Textlist * tl, char *program, char *origin,
     /* Write message header */
     pkt_put_msg_hdr(fp, msg, TRUE);
     /* Additional kludges */
-    fprintf(fp, "\001MSGID: %s %08lx\r\n",
+    fprintf(fp, "\001MSGID: %s %08lx\r",
             znf1(&msg->node_from), sequencer(cf_p_seq_msgid()));
     /* Write message body */
-    tl_print_x(tl, fp, "\r\n");
+    tl_print_x(tl, fp, "\r");
     /* Additional kludges */
     if (!tearline)
-        fprintf(fp, "\r\n--- FIDOGATE %s\r\n", version_global());
+        fprintf(fp, "\r--- FIDOGATE %s\r", version_global());
     else
-        fprintf(fp, "\r\n--- %s\r\n", tearline);
+        fprintf(fp, "\r--- %s\r", tearline);
 
     if (NULL == msg->area) {
 #ifndef FTS_VIA
@@ -348,7 +348,7 @@ int outpkt_netmail(Message * msg, Textlist * tl, char *program, char *origin,
                 znf1(&msg->node_from), date(DATE_VIA, NULL), program);
 #endif                          /* FTS_VIA */
     } else {
-        fprintf(fp, " * Origin: %s(%s)\r\n", origin, znfp1(&msg->node_from));
+        fprintf(fp, " * Origin: %s(%s)\r", origin, znfp1(&msg->node_from));
     }
 
     /* Terminating 0-byte */

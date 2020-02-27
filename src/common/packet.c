@@ -530,14 +530,15 @@ void pkt_put_string(FILE * fp, char *s)
 }
 
 /*
- * Write line to packet, replacing \n with \r\n
+ * Write line to packet, replacing \n with \r
  */
 void pkt_put_line(FILE * fp, char *s)
 {
     for (; *s; s++) {
         if (*s == '\n')
-            putc('\r', fp);
-        putc(*s, fp);
+	    putc('\r', fp);
+	else
+	    putc(*s, fp);
     }
 
     return;
@@ -610,7 +611,7 @@ int pkt_put_msg_hdr(FILE * pkt, Message * msg, int kludge_flag)
      * Write area tag / zone, point adressing kludges
      */
     if (msg->area)
-        fprintf(pkt, "AREA:%s\r\n", msg->area);
+        fprintf(pkt, "AREA:%s\r", msg->area);
     else {
         Node tmpf, tmpt;
 
@@ -620,12 +621,12 @@ int pkt_put_msg_hdr(FILE * pkt, Message * msg, int kludge_flag)
         tmpt = msg->node_to;
         tmpt.point = 0;
         tmpt.domain[0] = 0;
-        fprintf(pkt, "\001INTL %s %s\r\n", znf1(&tmpt), znf2(&tmpf));
+        fprintf(pkt, "\001INTL %s %s\r", znf1(&tmpt), znf2(&tmpf));
 
         if (msg->node_from.point > 0)
-            fprintf(pkt, "\001FMPT %d\r\n", msg->node_from.point);
+            fprintf(pkt, "\001FMPT %d\r", msg->node_from.point);
         if (msg->node_to.point > 0)
-            fprintf(pkt, "\001TOPT %d\r\n", msg->node_to.point);
+            fprintf(pkt, "\001TOPT %d\r", msg->node_to.point);
     }
 
  pkt_put_msg_hdr_ret:

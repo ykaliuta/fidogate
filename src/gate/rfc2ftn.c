@@ -1157,11 +1157,11 @@ static void rfc2ftn_add_tzutc(FILE *f)
     if (*p == '+')
 	p++;
 
-    fprintf(f, "%s\r\n", p);
+    fprintf(f, "%s\r", p);
     return;
 
 fallback:
-    fprintf(f, "%s\r\n", date("%N", NULL));
+    fprintf(f, "%s\r", date("%N", NULL));
 }
 
 int snd_message(Message * msg, Area * parea,
@@ -1374,22 +1374,22 @@ int snd_message(Message * msg, Area * parea,
              s_msgid_rfc_to_fido(&flag, header, part, split != 0, msg->area,
                                  dont_flush_dbc_history, 0))) {
             if (!echogate_alias)
-                fprintf(sf, "\001MSGID: %s %s\r\n", znfp1(&msg->node_from), id);
+                fprintf(sf, "\001MSGID: %s %s\r", znfp1(&msg->node_from), id);
             else
-                fprintf(sf, "\001MSGID: %s %s\r\n", znf1(node_from), id);
+                fprintf(sf, "\001MSGID: %s %s\r", znf1(node_from), id);
         }
 #else
         if ((id =
              s_msgid_rfc_to_fido(&flag, header, part, split != 0, msg->area,
                                  x_flags_m, 0))) {
             if (!x_flags_m)     /* X-Flags: m */
-                fprintf(sf, "\001MSGID: %s\r\n", id);
+                fprintf(sf, "\001MSGID: %s\r", id);
             else {
                 if (!echogate_alias)
-                    fprintf(sf, "\001MSGID: %s %s\r\n", znfp1(&msg->node_from),
+                    fprintf(sf, "\001MSGID: %s %s\r", znfp1(&msg->node_from),
                             id);
                 else
-                    fprintf(sf, "\001MSGID: %s %s\r\n", znf1(node_from), id);
+                    fprintf(sf, "\001MSGID: %s %s\r", znf1(node_from), id);
             }
         }
 #endif
@@ -1404,7 +1404,7 @@ int snd_message(Message * msg, Area * parea,
         if ((id = s_msgid_rfc_to_fido(&flag, header, 0, 0, msg->area,
                                       x_flags_m, 1)))
 #endif
-            fprintf(sf, "\001REPLY: %s\r\n", id);
+            fprintf(sf, "\001REPLY: %s\r", id);
     }
 
     if (!no_fsc_0035)
@@ -1412,21 +1412,21 @@ int snd_message(Message * msg, Area * parea,
             /* Generate FSC-0035 ^AREPLYADDR, ^AREPLYTO */
             pt = xlat_s(s_rfcaddr_to_asc(&rfc_from, FALSE), pt);
             if (replyaddr_ifmail_tx)
-                fprintf(sf, "\001REPLYADDR: %s <%s>\r\n", msg->name_from,
+                fprintf(sf, "\001REPLYADDR: %s <%s>\r", msg->name_from,
                         pt ? pt : s_rfcaddr_to_asc(&rfc_from, FALSE));
             else
-                fprintf(sf, "\001REPLYADDR %s\r\n",
+                fprintf(sf, "\001REPLYADDR %s\r",
                         pt ? pt : s_rfcaddr_to_asc(&rfc_from, TRUE));
 #ifdef AI_1
             if (verify_host_flag(node_from) || alias_extended)
-                fprintf(sf, "\001REPLYTO %s %s\r\n",
+                fprintf(sf, "\001REPLYTO %s %s\r",
                         znf1(node_from), msg->name_from);
             else
 #endif
             if (replyaddr_ifmail_tx)
-                fprintf(sf, "\001REPLYTO: %s UUCP\r\n", znf1(cf_addr()));
+                fprintf(sf, "\001REPLYTO: %s UUCP\r", znf1(cf_addr()));
             else
-                fprintf(sf, "\001REPLYTO %s %s\r\n", znf1(cf_addr()),
+                fprintf(sf, "\001REPLYTO %s %s\r", znf1(cf_addr()),
                         msg->name_from);
         }
 
@@ -1436,17 +1436,17 @@ int snd_message(Message * msg, Area * parea,
          * Indicates that FrontDoor deletes the file-attach,
          * after it has been sent.
          */
-        fprintf(sf, "\001FLAGS KFS\r\n");
+        fprintf(sf, "\001FLAGS KFS\r");
     }
 
     /* charset */
     if (!no_chrs_kludge)
-        fprintf(sf, "\001CHRS: %s %d\r\n", cs_out_fsc, cs_out_fsc_level);
+        fprintf(sf, "\001CHRS: %s %d\r", cs_out_fsc, cs_out_fsc_level);
 
     if (!x_flags_n) {
         /* Add ^ARFC header lines */
         if (!no_rfc_kludge)
-            fprintf(sf, "\001RFC: %d 0\r\n", rfc_level);
+            fprintf(sf, "\001RFC: %d 0\r", rfc_level);
 
         header_ca_rfc(sf, rfc_level);
         /* Add ^ARFC MIME header lines */
@@ -1458,24 +1458,24 @@ int snd_message(Message * msg, Area * parea,
             (mime->type_type ? strnicmp(mime->type_type, "text/plain", 10) : 0))
 #endif                          /* DEL_MIME_IF_RFC2 */
             fprintf(sf,
-                    "\001RFC-MIME-Version: 1.0\r\n"
-                    "\001RFC-Content-Type: %s\r\n"
-                    "\001RFC-Content-Transfer-Encoding: %s\r\n",
+                    "\001RFC-MIME-Version: 1.0\r"
+                    "\001RFC-Content-Type: %s\r"
+                    "\001RFC-Content-Transfer-Encoding: %s\r",
                     mime->type, cs_enc);
         /* Add ^AGATEWAY header */
         if (!no_gateway_kludge) {
             if ((header = s_header_getcomplete("X-Gateway")))
-                fprintf(sf, "\001GATEWAY: RFC1036/822 %s [FIDOGATE %s], %s\r\n",
+                fprintf(sf, "\001GATEWAY: RFC1036/822 %s [FIDOGATE %s], %s\r",
                         cf_fqdn(), version_global(), header);
             else
-                fprintf(sf, "\001GATEWAY: RFC1036/822 %s [FIDOGATE %s]\r\n",
+                fprintf(sf, "\001GATEWAY: RFC1036/822 %s [FIDOGATE %s]\r",
                         cf_fqdn(), version_global());
         }
 
     }
 
     if (x_from_kludge)
-        fprintf(sf, "\001X-From: %s\r\n", s_rfcaddr_to_asc(&rfc_from, TRUE));
+        fprintf(sf, "\001X-From: %s\r", s_rfcaddr_to_asc(&rfc_from, TRUE));
 
     /* Misc kludges */
     p3 = NULL;
@@ -1485,7 +1485,7 @@ int snd_message(Message * msg, Area * parea,
             continue;
 
         p3 = xlat_s(p2, p3);
-        fprintf(sf, "\001%s\r\n", p3);
+        fprintf(sf, "\001%s\r", p3);
     }
     p3 = xlat_s(NULL, p3);
 
@@ -1494,8 +1494,8 @@ int snd_message(Message * msg, Area * parea,
 
 #ifdef PID_READER_TID_GTV
     if ((header = s_header_getcomplete("User-Agent")))
-        fprintf(sf, "\001PID: %s\r\n", header);
-    fprintf(sf, "\001TID: FIDOGATE-%s\r\n", version_global());
+        fprintf(sf, "\001PID: %s\r", header);
+    fprintf(sf, "\001TID: FIDOGATE-%s\r", version_global());
 #endif                          /* PID_READER_TID_GTV */
 
     add_empty = FALSE;
@@ -1508,7 +1508,7 @@ int snd_message(Message * msg, Area * parea,
      */
     if (cf_gateway().zone && rfc_to.user[0] && !fido) {
         pt = xlat_s(s_rfcaddr_to_asc(&rfc_to, TRUE), pt);
-        fprintf(sf, "To: %s\r\n", pt ? pt : s_rfcaddr_to_asc(&rfc_to, TRUE));
+        fprintf(sf, "To: %s\r", pt ? pt : s_rfcaddr_to_asc(&rfc_to, TRUE));
         add_empty = TRUE;
     }
 
@@ -1517,32 +1517,32 @@ int snd_message(Message * msg, Area * parea,
             /* From, Reply-To */
             if ((header = s_header_getcomplete("From"))) {
                 pt = xlat_s(header, pt);
-                fprintf(sf, "From: %s\r\n", pt ? pt : header);
+                fprintf(sf, "From: %s\r", pt ? pt : header);
             }
             if ((header = s_header_getcomplete("Reply-To"))) {
                 pt = xlat_s(header, pt);
-                fprintf(sf, "Reply-To: %s\r\n", pt ? pt : header);
+                fprintf(sf, "Reply-To: %s\r", pt ? pt : header);
             }
 
             /* Sender, To, Cc (only for mail) */
             if (private) {
                 if ((header = s_header_getcomplete("Sender"))) {
                     pt = xlat_s(header, pt);
-                    fprintf(sf, "Sender: %s\r\n", pt ? pt : header);
+                    fprintf(sf, "Sender: %s\r", pt ? pt : header);
                 } else if ((header = s_header_getcomplete("Resent-From"))) {
                     pt = xlat_s(header, pt);
-                    fprintf(sf, "Sender: %s\r\n", pt ? pt : header);
+                    fprintf(sf, "Sender: %s\r", pt ? pt : header);
                 }
 
                 /* If Sender/Resent-From is present also include To, Cc */
                 if (header) {
                     if ((header = s_header_getcomplete("To"))) {
                         pt = xlat_s(header, pt);
-                        fprintf(sf, "Header-To: %s\r\n", pt ? pt : header);
+                        fprintf(sf, "Header-To: %s\r", pt ? pt : header);
                     }
                     if ((header = s_header_getcomplete("Cc"))) {
                         pt = xlat_s(header, pt);
-                        fprintf(sf, "Header-Cc: %s\r\n", pt ? pt : header);
+                        fprintf(sf, "Header-Cc: %s\r", pt ? pt : header);
                     }
                 }
             }
@@ -1551,7 +1551,7 @@ int snd_message(Message * msg, Area * parea,
         }
     }
     if (add_empty)
-        fprintf(sf, "\r\n");
+        fprintf(sf, "\r");
 
     if (!no_fsc_0047) {
         /*
@@ -1573,7 +1573,7 @@ int snd_message(Message * msg, Area * parea,
                        "%d/%d", cf_addr()->net, cf_addr()->node);
 
             fprintf(sf,
-                    "\001SPLIT: %-18s @@%-11.11s %-5ld %02d/%02d +++++++++++\r\n",
+                    "\001SPLIT: %-18s @@%-11.11s %-5ld %02d/%02d +++++++++++\r",
                     date(DATE_SPLIT, &time_split), buf, seq, part, split);
         }
     } else {
@@ -1582,7 +1582,7 @@ int snd_message(Message * msg, Area * parea,
          */
         if (split)
             fprintf(sf,
-                    " * Large message split by FIDOGATE: part %02d/%02d\r\n\r\n",
+                    " * Large message split by FIDOGATE: part %02d/%02d\r\r",
                     part, split);
     }
 
@@ -1681,12 +1681,12 @@ int print_tear_line(FILE * fp)
             BUF_COPY(buffer, p);
             /* TODO: no xlat when converted directly to FTN charset */
             pt = xlat_s(buffer, NULL);
-            fprintf(fp, "--- %s\r\n", pt ? pt : buffer);
+            fprintf(fp, "--- %s\r", pt ? pt : buffer);
             pt = xlat_s(NULL, pt);
             return ferror(fp);
         }
     }
-    fprintf(fp, "--- FIDOGATE %s\r\n", version_global());
+    fprintf(fp, "--- FIDOGATE %s\r", version_global());
 
     return ferror(fp);
 }
@@ -1743,7 +1743,7 @@ int print_origin(FILE * fp, char *origin, Node * node_from)
         BUF_APPEND2(buf, " (", bufa);
         BUF_APPEND(buf, ")");
     }
-    fprintf(fp, "%s\r\n", buf);
+    fprintf(fp, "%s\r", buf);
 
     /*
      * SEEN-BY
@@ -1755,13 +1755,13 @@ int print_origin(FILE * fp, char *origin, Node * node_from)
      */
     for (p = header_geth("X-FTN-Seen-By", TRUE);
          p; p = header_geth("X-FTN-Seen-By", FALSE))
-        fprintf(fp, "SEEN-BY: %s\r\n", p);
+        fprintf(fp, "SEEN-BY: %s\r", p);
 #endif
     if (cf_addr()->point) {     /* Generate 4D addresses */
         fprintf(fp, "SEEN-BY: %d/%d", cf_addr()->net, cf_addr()->node);
         if (echomail4d)
             fprintf(fp, ".%d", cf_addr()->point);
-        fprintf(fp, "\r\n");
+        fprintf(fp, "\r");
     } else {                    /* Generate 3D addresses */
         fprintf(fp, "SEEN-BY: %d/%d", cf_addr()->net, cf_addr()->node);
         if (cf_uplink()->zone && cf_uplink()->net) {
@@ -1770,7 +1770,7 @@ int print_origin(FILE * fp, char *origin, Node * node_from)
             else if (cf_uplink()->node != cf_addr()->node)
                 fprintf(fp, " %d", cf_uplink()->node);
         }
-        fprintf(fp, "\r\n");
+        fprintf(fp, "\r");
     }
 
     /*
@@ -1781,15 +1781,15 @@ int print_origin(FILE * fp, char *origin, Node * node_from)
        run afterwards to compact ^APATH */
     for (p = header_geth("X-FTN-Path", TRUE);
          p; p = header_geth("X-FTN-Path", FALSE))
-        fprintf(fp, "\001PATH: %s\r\n", p);
+        fprintf(fp, "\001PATH: %s\r", p);
 #endif
     if (cf_addr()->point) {     /* Generate 4D addresses */
         fprintf(fp, "\001PATH: %d/%d", cf_addr()->net, cf_addr()->node);
         if (echomail4d)
             fprintf(fp, ".%d", cf_addr()->point);
-        fputs("\r\n", fp);
+        fputs("\r", fp);
     } else {                    /* Generate 3D addresses */
-        fprintf(fp, "\001PATH: %d/%d\r\n", cf_addr()->net, cf_addr()->node);
+        fprintf(fp, "\001PATH: %d/%d\r", cf_addr()->net, cf_addr()->node);
     }
 
     return ferror(fp);
@@ -1809,9 +1809,9 @@ int print_local_msgid(FILE * fp, Node * node_from)
 #else
     if (echogate_alias)
 #endif
-        fprintf(fp, "\001MSGID: %s %08lx\r\n", znf1(node_from), msgid);
+        fprintf(fp, "\001MSGID: %s %08lx\r", znf1(node_from), msgid);
     else
-        fprintf(fp, "\001MSGID: %s %08lx\r\n", znf1(cf_addr()), msgid);
+        fprintf(fp, "\001MSGID: %s %08lx\r", znf1(cf_addr()), msgid);
 
     return ferror(fp);
 }
