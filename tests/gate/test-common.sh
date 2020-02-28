@@ -66,9 +66,17 @@ run_dir()
 {
     local command="$1"
     local dir="$2"
+    local onetest="$3"
     local testdir="$(basename $2)"
+    local tests
 
-    for t in $(ls -1d $dir/test*); do
+    if [ -n "$onetest" ]; then
+        tests="$dir/$onetest"
+    else
+        tests="$(ls -1d $dir/test*)"
+    fi
+
+    for t in $tests; do
         if [ -d "$t/etc" ]; then
             export FIDOGATE_CONFIGDIR="$(realpath $t/etc)"
         fi

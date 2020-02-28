@@ -1,5 +1,7 @@
 #!/bin/sh
 
+ONETEST="$1"
+
 WORKDIR=$(dirname $(realpath $0))
 
 . $WORKDIR/test-common.sh
@@ -29,5 +31,5 @@ run_one()
 
 # run_dir is in test-common.sh
 
-run_dir "$COMMAND" $TEST_DIR
+run_dir "$COMMAND" $TEST_DIR "$ONETEST"
 [ -z $FAIL ]
