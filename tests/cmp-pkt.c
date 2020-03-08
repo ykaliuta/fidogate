@@ -15,7 +15,7 @@ struct message {
 struct packet {
     Packet hdr;
     size_t n_msgs;
-    struct message msgs[];
+    struct message *msgs;
 };
 
 static char *skip_kludges[] = {
@@ -27,23 +27,38 @@ static struct packet *packet_new(void)
 {
     struct packet *pkt;
 
-    /* only one message needed now */
-    pkt = malloc(sizeof(*pkt) + sizeof(pkt->msgs[0]));
+    pkt = malloc(sizeof(*pkt));
+    memset(pkt, 0, sizeof(*pkt));
     if (pkt == NULL)
 	abort();
 
-    memset(pkt, 0, sizeof(*pkt) + sizeof(pkt->msgs[0]));
-    pkt->n_msgs = 1;
-
     return pkt;
+}
+
+static struct message *packet_msg_new(struct packet *pkt)
+{
+    pkt->n_msgs++;
+
+    pkt->msgs = realloc(pkt->msgs, sizeof(*pkt->msgs) * pkt->n_msgs);
+    if (pkt->msgs == NULL)
+	abort();
+
+    memset(pkt->msgs + (pkt->n_msgs - 1), 0, sizeof(*pkt->msgs));
+    return pkt->msgs + (pkt->n_msgs - 1);
+
 }
 
 static void packet_free(struct packet *pkt)
 {
     int i;
 
+    if (pkt == NULL)
+	return;
+
     for (i = 0; i < pkt->n_msgs; i++)
 	msg_body_clear(&pkt->msgs[i].body);
+
+    free(pkt->msgs);
     free(pkt);
 }
 
@@ -200,12 +215,22 @@ static int message_cmp(struct message *m1, struct message *m2)
 
 static int packet_cmp(struct packet *p1, struct packet *p2)
 {
-    int rc1;
-    int rc2;
+    int rc;
+    int i;
 
-    rc1 = packet_hdr_cmp(p1, p2);
-    rc2 = message_cmp(&p1->msgs[0], &p2->msgs[0]);
-    return rc1 | rc2;
+    if (p1->n_msgs != p2->n_msgs)
+	return -1;
+
+    rc = packet_hdr_cmp(p1, p2);
+    if (rc != 0)
+	return rc;
+
+    for (i = 0; i < p1->n_msgs; i++) {
+	rc = message_cmp(&p1->msgs[i], &p2->msgs[i]);
+	if (rc != 0)
+	    return rc;
+    }
+    return 0;
 }
 
 static struct packet *packet_read_fp(FILE *fp)
@@ -213,7 +238,7 @@ static struct packet *packet_read_fp(FILE *fp)
 	Node dummy_to = { 0 };
 	Node dummy_from = { 0 };
 	struct packet *pkt;
-	int type;
+	struct message *msg;
 	int rc;
 
 	pkt = packet_new();
@@ -222,17 +247,23 @@ static struct packet *packet_read_fp(FILE *fp)
 	if (rc == ERROR)
 	    goto err;
 
-	type = pkt_get_int16(fp);
-	if (type != MSG_TYPE)
+	rc = pkt_get_int16(fp);
+	if (rc != MSG_TYPE)
 	    goto err;
 
-	rc = pkt_get_msg_hdr(fp, &pkt->msgs[0].hdr, false);
-	if (rc == ERROR)
-	    goto err;
+	/* xfeof() is not a feof() wrapper */
+	while (!xfeof(fp)) {
 
-	rc = pkt_get_body_parse(fp, &pkt->msgs[0].body, &dummy_from, &dummy_to);
-	if (rc == ERROR)
-	    goto err;
+	    msg = packet_msg_new(pkt);
+
+	    rc = pkt_get_msg_hdr(fp, &msg->hdr, false);
+	    if (rc == ERROR)
+		goto err;
+
+	    rc = pkt_get_body_parse(fp, &msg->body, &dummy_from, &dummy_to);
+	    if (rc == ERROR)
+		goto err;
+	}
 
 	return pkt;
 err:
@@ -263,6 +294,7 @@ static void usage(void)
 int main(int argc, char **argv)
 {
     struct packet *pkt1, *pkt2;
+    int ret = 0;
 
     if (argc != 3) {
 	usage();
@@ -274,11 +306,15 @@ int main(int argc, char **argv)
 
     if ((pkt1 == NULL) || (pkt2 == NULL)) {
 	fprintf(stderr, "Could not open one file\n");
-	return 2;
+	ret = 2;
+	goto out;
     }
 
     if (packet_cmp(pkt1, pkt2) != 0)
-	return 3;
+	ret = 3;
+out:
+    packet_free(pkt2);
+    packet_free(pkt1);
 
-    return 0;
+    return ret;
 }
