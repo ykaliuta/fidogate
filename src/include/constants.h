@@ -243,8 +243,6 @@
  */
 #define MAXADDRESS	32          /* Max. # of FTN address in CONFIG */
 
-#define MAXMSGHEADRLEN	71      /* Max. length message field */
-
 #define MAXDOSDRIVE	16          /* Max. # of DOS drives in CONFIG */
 
 #ifndef MAXPATH                 /* Already defined by DJGPP */
