@@ -1,0 +1,18 @@
+#
+#
+
+rfc2ftn
+
+NetMail
+*							*
+
+EchoMail
+*				*
+
+ftn2rfc
+
+NetMail
+2:4500/1			*
+
+EchoMail
+2:4500/1			*
