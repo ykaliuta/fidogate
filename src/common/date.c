@@ -63,7 +63,7 @@ char *date_tz(char *fmt, time_t * t, char *tz_str)
     long tz = -1;
     unsigned hours;
     unsigned mins;
-    int mult = 1;               /* or -1 */
+    long mult = 1;               /* or -1 */
     int rc;
 
     if (tz_str == NULL)
@@ -104,6 +104,7 @@ char *date_buf(char *buf, size_t len, char *fmt, time_t * t, long tz)
 {
     TIMEINFO ti;
     struct tm *tm;
+    time_t adjusted_time;
 
     /* names for weekdays */
     static char *weekdays[] = {
@@ -123,19 +124,18 @@ char *date_buf(char *buf, size_t len, char *fmt, time_t * t, long tz)
     if (fmt == NULL && t && *t == -1)
         return "INVALID";
 
+    if (tz != -1)
+	timezone = tz * 60;
+
     GetTimeInfo(&ti);
-    tm = localtime(&ti.time);
-    if (tm->tm_isdst)
-        ti.tzone += DST_OFFSET * 60;
 
     if (t)
         ti.time = *t;
-    tm = localtime(&ti.time);
-    if (tm->tm_isdst)
-        ti.tzone -= DST_OFFSET * 60;
-
     if (tz != -1)
         ti.tzone = tz;
+
+    adjusted_time = ti.time - (ti.tzone * 60);
+    tm = gmtime(&adjusted_time);
 
     /* Default format string */
     if (!fmt)
