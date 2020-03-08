@@ -235,6 +235,7 @@ unsigned long crc32_file(char *);
 char *date(char *, time_t *);
 char *date_buf(char *, size_t, char *, time_t *, long);
 char *date_tz(char *, time_t *, char *);
+char *date_rfc_tz(char *);
 
 /* dir.c */
 #define DIR_SORTNAME	'n'
@@ -510,7 +511,7 @@ void pkt_debug_msg_hdr(FILE *, Message *, char *);
 void pkt_put_string(FILE *, char *);
 void pkt_put_line(FILE *, char *);
 void pkt_put_int16(FILE *, int);
-void pkt_put_date(FILE *, time_t);
+void pkt_put_date(FILE *, time_t, char *);
 int pkt_put_msg_hdr(FILE *, Message *, int);
 long pkt_get_int16(FILE *);
 int pkt_get_nbytes(FILE *, char *, int);

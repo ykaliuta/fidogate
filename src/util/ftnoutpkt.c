@@ -41,7 +41,7 @@
 int do_addr(FTNAddr * from, FTNAddr * to, char *subj, Textlist * tl, char *area,
             char *origin, char *tearline)
 {
-    Message msg;
+    Message msg = { 0 };
     Textline *ptr;
     char *p;
 

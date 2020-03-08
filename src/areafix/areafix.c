@@ -2141,7 +2141,7 @@ void send_request(Textlist * upl)
     char links[BUFSIZ];
     char *link = NULL, *l, *s;
     Node tmp;
-    Message msg;
+    Message msg = { 0 };
 
     tl_init(&out);
     tl_init(&send);
@@ -2211,7 +2211,7 @@ void send_request(Textlist * upl)
 short int send_rules(Node * link, char *area)
 {
     FILE *fp;
-    Message msg;
+    Message msg = { 0 };
     Textlist send;
     char *filen = NULL;
     char *p;

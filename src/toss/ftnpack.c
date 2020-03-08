@@ -600,7 +600,7 @@ int do_noarc(char *name, Node * flonode,
     /* outname --- name of .pkt file, if not NULL */
 {
     FILE *fp;
-    Message msg;
+    Message msg = { 0 };
     Textlist tl;
     int type;
 

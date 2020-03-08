@@ -1453,7 +1453,7 @@ int do_netmail(Packet * pkt, Message * msg, MsgBody * body, int forwarded)
  */
 int unpack(FILE * pkt_file, Packet * pkt)
 {
-    Message msg;                /* Message header */
+    Message msg = { 0 };        /* Message header */
     Textlist tl;                /* Textlist for message body */
     MsgBody body;               /* Message body of FTN message */
 #ifdef SPYES

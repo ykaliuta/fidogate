@@ -274,7 +274,7 @@ static void body_recode(Textlist * body, char *charset)
 static int _packet_write(struct cfg *cfg, Textlist * body, FILE * fp)
 {
     Packet pkt;
-    Message msg;
+    Message msg = { 0 };
     int write_kludges = !cfg->raw;
     int rc;
 

@@ -99,7 +99,8 @@ typedef struct {
     Node node_orig;             /* FTN address sender */
     int attr;                   /* Attribute flags */
     int cost;                   /* Cost */
-    time_t date;                /* Date */
+    time_t date;                /* Date, seconds from 1970-01-01 UTC */
+    char *tz;			/* Keep timezone info */
     char name_to[NAMEBUFSIZE];  /* To name */
     char name_from[NAMEBUFSIZE];    /* From name */
     char subject[SUBJBUFSIZE];  /* Subject */

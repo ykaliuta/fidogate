@@ -74,7 +74,7 @@ static bool strict;             /* strict check for names and subject */
 int do_netmail(Message * msg, MsgBody * body)
 {
     Textlist outbody;
-    Message outmsg;
+    Message outmsg = { 0 };
     Textline *ptr;
     char *p;
 
@@ -183,7 +183,7 @@ int do_echomail(Message * msg, MsgBody * body)
  */
 int do_packet(FILE * pkt_file, Packet * pkt)
 {
-    Message msg;                /* Message header */
+    Message msg = { 0 };        /* Message header */
     Textlist tl;                /* Textlist for message body */
     MsgBody body;               /* Message body of FTN message */
     int type, ret_n;

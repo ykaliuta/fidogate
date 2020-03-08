@@ -580,7 +580,7 @@ void add_via(Textlist * list, Node * gate)
  */
 int do_packet(char *pkt_name, FILE * pkt_file, Packet * pkt, PktDesc * desc)
 {
-    Message msg;                /* Message header */
+    Message msg = { 0 };        /* Message header */
     Textlist tl;                /* Textlist for message body */
     MsgBody body;               /* Message body of FTN message */
     int type, ret;

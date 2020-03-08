@@ -554,7 +554,7 @@ static char *charset_from_kludge(MsgBody * body)
  */
 int unpack(FILE * pkt_file, Packet * pkt)
 {
-    Message msg;                /* Message header */
+    Message msg = { 0 };        /* Message header */
     RFCAddr addr_from, addr_to;
     Textlist tl;                /* Textlist for message body */
     MsgBody body;               /* Message body of FTN message */

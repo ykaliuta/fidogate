@@ -158,7 +158,7 @@ int do_message(Node * gate, Message * msg, MsgBody * body)
  */
 int unpack(Node * gate, FILE * pkt_file, Packet * pkt)
 {
-    Message msg;
+    Message msg = { 0 };
     Textlist tl;
     MsgBody body;
     int type;

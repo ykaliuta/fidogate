@@ -608,6 +608,15 @@ time_t mail_date(void)
     return timevar;
 }
 
+static char *mail_tz(void)
+{
+    char *header_date;
+
+    header_date = header_get("Date");
+
+    return date_rfc_tz(header_date);
+}
+
 /*
  * Mail sender name and node
  */
@@ -785,6 +794,7 @@ int snd_mail(RFCAddr rfc_to, long size)
      * Date
      */
     msg.date = mail_date();
+    msg.tz = mail_tz();
     msg.cost = 0;
     msg.attr = 0;
 
@@ -1133,30 +1143,26 @@ static void determine_charsets(Area * parea, char **in, char **out,
         *out_level = 2;
 }
 
-static void rfc2ftn_add_tzutc(FILE *f)
+static void rfc2ftn_add_tzutc(FILE *f, char *tz)
 {
-    char *header_date;
-    char *p;
+    char tz_buf[6]; /* -XXXX\0 */
+    size_t len;
 
     fprintf(f, "\001TZUTC: ");
 
-    header_date = header_get("Date");
-
-    if (header_date == NULL)
+    if (tz == NULL)
 	goto fallback;
 
-    p = strrchr(header_date, ' ');
-    if (p == NULL)
-	goto fallback;
+    len = sizeof (tz_buf);
 
-    p++;
-    if ((*p != '+') && (*p != '-'))
-	goto fallback;
+    if (*tz == '+') {
+	tz++;
+	len--;
+    }
 
-    if (*p == '+')
-	p++;
-
-    fprintf(f, "%s\r", p);
+    /* tz may contain tz name from rfc, cut it */
+    snprintf(tz_buf, len, "%s", tz);
+    fprintf(f, "%4s\r", tz_buf);
     return;
 
 fallback:
@@ -1457,7 +1463,7 @@ int snd_message(Message * msg, Area * parea,
     p3 = xlat_s(NULL, p3);
 
     if (tzutc_kludge)
-	rfc2ftn_add_tzutc(sf);
+	rfc2ftn_add_tzutc(sf, msg->tz);
 
 #ifdef PID_READER_TID_GTV
     if ((header = s_header_getcomplete("User-Agent")))

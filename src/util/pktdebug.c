@@ -127,7 +127,7 @@ int main(int argc, char **argv)
 {
     FILE *fp;
     Packet pkt;
-    Message msg;
+    Message msg = { 0 };
     Textlist tl;
     int c, type;
     char *name;

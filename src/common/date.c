@@ -272,3 +272,44 @@ char *date_buf(char *buf, size_t len, char *fmt, time_t * t, long tz)
 
     return buf;
 }
+
+/*
+ * Returns tz tail of rfc822 date or +0000 for UTC/GMT
+ * Sun, 8 Mar 2020 17:00:23 -0600         -> -0600
+ * Mon,  9 Mar 2020 00:05:20 +0100 (CET)  -> +0100 (CET)
+ * Sun, 8 Mar 2020 16:19:22 -0700 (PDT)   -> -0700 (PDT)
+ * 8 Mar 2020 23:34:03 GMT                -> +0000
+ * Sun, 08 Mar 2020 22:30:55 UTC          -> +0000
+ */
+char *date_rfc_tz(char *rfc_date)
+{
+    char *p;
+
+    if (rfc_date == NULL)
+	return NULL;
+
+    p = strrchr(rfc_date, ' ');
+    if (p == NULL)
+	return NULL;
+
+    if ((p[1] == '+') || (p[1] == '-'))
+	return p + 1;
+
+    if (strneq(p + 1, "GMT", sizeof("GMT") - 1)
+	|| strneq(p + 1, "UTC", sizeof("UTC") - 1))
+	return "+0000";
+
+    /* second word */
+    for (p--; p > rfc_date; p--) {
+	if (*p  == ' ')
+	    break;
+    }
+
+    if (*p != ' ')
+	return NULL;
+
+    if ((p[1] == '+') || (p[1] == '-'))
+	return p + 1;
+
+    return NULL;
+}

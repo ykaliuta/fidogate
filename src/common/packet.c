@@ -564,7 +564,7 @@ void pkt_put_int16(FILE * fp, int value)
 /*
  * Write date/time in FTS-0001 format
  */
-void pkt_put_date(FILE * pkt, time_t t)
+void pkt_put_date(FILE * pkt, time_t t, char *tz)
 {
     static time_t last = -1;
 
@@ -579,7 +579,7 @@ void pkt_put_date(FILE * pkt, time_t t)
     }
 
     /* Date according to FTS-0001 */
-    pkt_put_string(pkt, date(DATE_FTS_0001, &t));
+    pkt_put_string(pkt, date_tz(DATE_FTS_0001, &t, tz));
 
     return;
 }
@@ -646,7 +646,7 @@ int pkt_put_msg_hdr(FILE * pkt, Message * msg, int kludge_flag)
     pkt_put_int16(pkt, msg->attr);
     pkt_put_int16(pkt, msg->cost);
 
-    pkt_put_date(pkt, msg->date);
+    pkt_put_date(pkt, msg->date, msg->tz);
 
     pkt_msg_sanitize_strings(msg);
 
