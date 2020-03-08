@@ -92,6 +92,7 @@ typedef struct {
 
 /* max UTF-8 char is 4 */
 #define NAMEBUFSIZE (MSG_MAXNAME * 4)
+#define SUBJBUFSIZE (MSG_MAXNAME * 4)
 
 typedef struct {
     Node node_from, node_to;    /* FTN address from, to */
@@ -101,7 +102,7 @@ typedef struct {
     time_t date;                /* Date */
     char name_to[NAMEBUFSIZE];  /* To name */
     char name_from[NAMEBUFSIZE];    /* From name */
-    char subject[MSG_MAXSUBJ];  /* Subject */
+    char subject[SUBJBUFSIZE];  /* Subject */
     int translated;             /* name_* and subject already xlat'ed */
     char *area;                 /* EchoMail area or NULL */
 } Message;
