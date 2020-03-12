@@ -37,7 +37,7 @@ LIBFIDOGATE_MIN = $(top_srcdir)/src/common/xalloc.c \
 
 # common
 BINARIES_COMMON = common/test_log common/test_config common/test_packet \
-		  common/test_mime common/test_charset
+		  common/test_mime common/test_charset common/test_date
 TESTS_COMMON = $(BINARIES_COMMON)
 check_PROGRAMS += $(BINARIES_COMMON)
 
@@ -63,6 +63,13 @@ common_test_mime_SOURCES = common/test-mime.c \
 
 common_test_charset_SOURCES = common/test-charset.c \
 	$(LIBFIDOGATE_MIN)
+
+common_test_date_SOURCES = common/test-date.c \
+	$(LIBFIDOGATE_MIN) \
+	$(top_srcdir)/src/common/parsedate.c \
+	$(top_srcdir)/src/common/gettime.c \
+	$(top_srcdir)/src/common/date.c \
+	$(top_srcdir)/src/common/log.c
 
 
 # gate
