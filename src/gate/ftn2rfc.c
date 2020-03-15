@@ -550,6 +550,39 @@ static char *charset_from_kludge(MsgBody * body)
 }
 
 /*
+ * Must be called once.
+ *
+ * Since ftn date is local, adjust it according to the tz info
+ * (and save it to Message as well)
+ *
+ * Use local timezone if cannot parse/unexisted TZUTC
+ * It breaks invariant that msg.date is always in UTC, but keeps it
+ * compatible with the old code.
+ */
+static void msg_adjust_date_to_tz(Message *msg, char *tz_str)
+{
+    time_t tz;
+    TIMEINFO ti = { 0 };
+
+    /* date_tz_str_to_time() returns minutes */
+    tz = date_tz_str_to_time(tz_str);
+    if (tz == -1) {
+	tz = 0;
+    } else {
+	/*
+	 * pkt_get_date() uses parsedate() in a way that it adds local
+	 * timezone offset, adjust to it as well.
+	 */
+	GetTimeInfo(&ti);
+    }
+
+    /* local = UTC + TZUTC => UTC = local - TZUTC */
+
+    msg->date -= (tz + ti.tzone) * 60;
+    msg->tz = tz_str;
+}
+
+/*
  * Read and convert FTN mail packet
  */
 int unpack(FILE * pkt_file, Packet * pkt)
@@ -648,6 +681,10 @@ int unpack(FILE * pkt_file, Packet * pkt)
         if (pkt_get_body_parse(pkt_file, &body, &msg.node_from, &msg.node_to) !=
             OK)
             fglog("ERROR: parsing message body");
+
+	/* ftn date is local, need to parse body kludges to adjust. */
+	msg_adjust_date_to_tz(&msg, kludge_get(&body.kludge, "TZUTC", NULL));
+
         /* Retrieve address information from kludges for NetMail */
         if (body.area == NULL) {
 

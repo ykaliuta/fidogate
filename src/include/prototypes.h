@@ -236,6 +236,8 @@ char *date(char *, time_t *);
 char *date_buf(char *, size_t, char *, time_t *, long);
 char *date_tz(char *, time_t *, char *);
 char *date_rfc_tz(char *);
+time_t date_tz_str_to_time(char *);
+
 
 /* dir.c */
 #define DIR_SORTNAME	'n'

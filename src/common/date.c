@@ -56,11 +56,9 @@ static char *get_tz_name(struct tm *tm)
 #endif
 }
 
-/* Format date/time with TZ info from ^ATZUTC kludge */
-char *date_tz(char *fmt, time_t * t, char *tz_str)
+/* Converts tz string to tz offset in minutes */
+time_t date_tz_str_to_time(char *tz_str)
 {
-    static char buf[128];
-    long tz = -1;
     unsigned hours;
     unsigned mins;
     long mult = 1;               /* or -1 */
@@ -82,12 +80,29 @@ char *date_tz(char *fmt, time_t * t, char *tz_str)
         goto out;
     }
 
+    return mult * (hours * 60 + mins);
+
+out:
+    return -1;
+
+}
+
+/* Format date/time with TZ info from ^ATZUTC kludge */
+char *date_tz(char *fmt, time_t * t, char *tz_str)
+{
+    static char buf[128];
+    long tz = -1;
+
+    /* on error returns -1 which is default flag for date_buf() */
+    tz = date_tz_str_to_time(tz_str);
+
     /*
      * minus since TIMEINFO keeps difference = UTC - local,
      * while local = UTC + TZUTC => TZUTC = local - UTC
      */
-    tz = -mult * (hours * 60 + mins);
- out:
+    if (tz != -1)
+	tz = -tz;
+
     return date_buf(buf, sizeof(buf), fmt, t, tz);
 }
 
