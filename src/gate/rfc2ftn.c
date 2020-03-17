@@ -51,8 +51,6 @@ RFCAddr rfc_sender(void);
 int rfc_parse(RFCAddr *, char *, size_t, Node *, int);
 int rfc_isfido(void);
 void cvt_user_name(char *);
-char *receiver(char *, Node *);
-char *mail_receiver(RFCAddr *, Node *);
 time_t mail_date(void);
 int snd_mail(RFCAddr, long);
 int snd_message(Message *, Area *, RFCAddr, RFCAddr, char *,
@@ -370,6 +368,7 @@ int rfc_parse(RFCAddr * rfc, char *name, size_t name_size, Node * node, int gw)
                 p[len - 1] = 0;
         }
 	snprintf(name, name_size, "%s", p);
+	cvt_user_name(name);
     }
 
     if (!node)
@@ -502,69 +501,51 @@ void cvt_user_name(char *s)
 }
 
 /*
- * receiver() --- Check for aliases and beautify name
- */
-char *receiver(char *to, Node * node)
-{
-    static char name[NAMEBUFSIZE];
-    Alias *alias;
-
-    /*
-     * Check for name alias
-     */
-    debug(5, "Name for alias checking: %s", to);
-
-    /**FIXME: why && !alias->userdom?**/
-    if ((alias = alias_lookup(node, to)) && !alias->userdom) {
-        debug(5, "Alias found: %s %s %s", alias->username,
-              znfp1(&alias->node), alias->fullname);
-        BUF_COPY(name, alias->fullname);
-        /* Store address from ALIASES into node, this will reroute the
-         * message to the point specified in ALIASES, if the message
-         * addressed to node without point address.  */
-        *node = alias->node;
-
-        return name;
-    }
-
-    /*
-     * Alias not found. Return the the original receiver processed by
-     * convert_user_name().
-     */
-    BUF_COPY(name, to);
-    cvt_user_name(name);
-
-    /**FIXME: implement a generic alias with pattern matching**/
-    /*
-     * Convert "postmaster" to "sysop"
-     */
-    if (!stricmp(name, "postmaster"))
-        BUF_COPY(name, "Sysop");
-
-    debug(5, "No alias found: return %s", name);
-
-    return name;
-}
-
-/*
- * Return from field for FIDO message.
+ * Make from field for FIDO message into @o_name buffer
  * Alias checking is done by function receiver().
  */
-char *mail_receiver(RFCAddr * rfc, Node * node)
+static int mail_receiver(RFCAddr *rfc, Node *node, char *name, size_t size)
 {
     char *to;
-    char name[NAMEBUFSIZE];
     RFCAddr h;
+    Alias *alias;
 
     if (rfc->user[0]) {
         /*
          * Address is argument
          */
-        if (rfc_parse(rfc, name, sizeof(name), node, TRUE) == ERROR) {
+        if (rfc_parse(rfc, name, size, node, TRUE) == ERROR) {
             fglog("BOUNCE: <%s>, %s", s_rfcaddr_to_asc(rfc, TRUE),
                   (*address_error ? address_error : "unknown"));
-            return NULL;
+            return ERROR;
         }
+
+        /*
+         * Check for name alias
+         */
+        debug(5, "Name for alias checking: %s", name);
+
+        /**FIXME: why && !alias->userdom?**/
+        if ((alias = alias_lookup(node, name)) && !alias->userdom) {
+            debug(5, "Alias found: %s %s %s", alias->username,
+                  znfp1(&alias->node), alias->fullname);
+            str_copy(name, size, alias->fullname);
+            /* Store address from ALIASES into node, this will reroute the
+             * message to the point specified in ALIASES, if the message
+             * addressed to node without point address.  */
+            *node = alias->node;
+
+            return OK;
+        }
+
+        /**FIXME: implement a generic alias with pattern matching**/
+        /*
+         * Convert "postmaster" to "sysop"
+         */
+        if (!stricmp(name, "postmaster"))
+            str_copy(name, size, "Sysop");
+
+        debug(5, "No alias found: return %s", name);
     } else {
         /*
          * News/EchoMail: address is echo feed
@@ -578,14 +559,14 @@ char *mail_receiver(RFCAddr * rfc, Node * node)
          */
         if ((to = header_get("X-Comment-To"))) {
             h = rfcaddr_from_rfc(to);
-            rfc_parse(&h, name, sizeof(name), NULL, FALSE);
+            rfc_parse(&h, name, size, NULL, FALSE);
         } else if ((to = get_name_from_body())) {
             h = rfcaddr_from_rfc(to);
-            rfc_parse(&h, name, sizeof(name), NULL, FALSE);
+            rfc_parse(&h, name, size, NULL, FALSE);
         }
     }
 
-    return receiver(name, node);
+    return OK;
 }
 
 /*
@@ -737,6 +718,7 @@ int snd_mail(RFCAddr rfc_to, long size)
     long limitsize;
     Textlist tl;
     Textline *tp;
+    int rc;
 
     node_clear(&node_from);
     node_clear(&node_to);
@@ -769,8 +751,8 @@ int snd_mail(RFCAddr rfc_to, long size)
     /*
      * To name/node
      */
-    p = mail_receiver(&rfc_to, &node_to);
-    if (!p) {
+    rc = mail_receiver(&rfc_to, &node_to, msg.name_to, sizeof(msg.name_to));
+    if (rc == ERROR) {
         if (*address_error)
             sendback("Address %s:\n  %s",
                      s_rfcaddr_to_asc(&rfc_to, TRUE), address_error);
@@ -779,7 +761,6 @@ int snd_mail(RFCAddr rfc_to, long size)
                      s_rfcaddr_to_asc(&rfc_to, TRUE));
         TMPS_RETURN(EX_NOHOST);
     }
-    BUF_COPY(msg.name_to, p);
     fido = rfc_isfido();
 
     cf_set_best(node_to.zone, node_to.net, node_to.node);
