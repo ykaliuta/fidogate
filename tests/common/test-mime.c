@@ -200,6 +200,26 @@ Ensure(hdr_dec_skips_long_charset_decoding)
 	assert_that(dres, is_equal_to_string(exp));
 }
 
+Ensure(hdr_dec_decodes_email1)
+{
+	char *src = "=?UTF-8?B?0KfQtdGC0LLQtdGA0LjQutC+0LIg0Jou0JIu?= <chetverikov@mann-schroeder.ru>";
+	char *exp = "Четвериков К.В. <chetverikov@mann-schroeder.ru>";
+
+	mime_header_dec(dres, sizeof(dres), src, "UTF-8");
+
+	assert_that(dres, is_equal_to_string(exp));
+}
+
+Ensure(hdr_dec_decodes_email2)
+{
+	char *src = "chetverikov@mann-schroeder.ru (=?UTF-8?B?0KfQtdGC0LLQtdGA0LjQutC+0LIg0Jou0JIu?=)";
+	char *exp = "chetverikov@mann-schroeder.ru (Четвериков К.В.)";
+
+	mime_header_dec(dres, sizeof(dres), src, "UTF-8");
+
+	assert_that(dres, is_equal_to_string(exp));
+}
+
 static TestSuite *create_mime_suite(void)
 {
     TestSuite *suite = create_named_test_suite(
@@ -218,6 +238,8 @@ static TestSuite *create_mime_suite(void)
     add_test(suite, hdr_dec_handles_empty);
     add_test(suite, hdr_dec_preserves_non_mime);
     add_test(suite, hdr_dec_skips_long_charset_decoding);
+    add_test(suite, hdr_dec_decodes_email1);
+    add_test(suite, hdr_dec_decodes_email2);
     return suite;
 }
 
