@@ -1167,9 +1167,27 @@ static int mime_handle_plain_word(char *s, char **out, size_t *out_len,
     return *out_len;
 }
 
+static int mime_handle_brace(char *s, char **out, size_t *out_len,
+			     bool *is_mime, char *charset, size_t ch_size,
+			     char *to)
+{
+    char *b;
+    char *brace = "(";
+
+    /* client code requires malloc()ed buffer */
+    b = strsave(brace);
+    snprintf(charset, ch_size, "%s", "us-ascii");
+
+    *out = b;
+    *out_len = strlen(b);
+    *is_mime = false;
+
+    return strlen(brace);
+}
+
 /*
  * Fetches the mime word from the string. It can be mime-encoded
- * or plain part, separated with "space".
+ * or plain part, separated with "space", or mime in comment (rfc2047 5(2))
  * _Must_ start with non-space.
  * For mime-encoded parts decode it and fetch the charset.
  * For plain parts copy them as is, take the global charset.
@@ -1180,6 +1198,14 @@ static int mime_handle_word(char *s, char **out, size_t *out_len,
                             bool *is_mime, char *charset, size_t ch_size,
                             char *to)
 {
+    /* mime word can be inside "comment" not separated by whitespace */
+    if (strnieq(s,
+		"(" MIME_HEADER_CODE_START,
+		strlen("(" MIME_HEADER_CODE_START))) {
+	return mime_handle_brace(s, out, out_len,
+				 is_mime, charset, ch_size, to);
+    }
+
     if (strnieq(s, MIME_HEADER_CODE_START, strlen(MIME_HEADER_CODE_START))) {
         return mime_handle_mimed_word(s,
                                       out, out_len,
@@ -1223,7 +1249,11 @@ char *mime_header_dec(char *d, size_t d_max, char *s, char *to)
                                      charset, sizeof(charset), to);
 
         /* keep at least one space between mime and non-mime words */
-        if (is_prev_mime && !is_mime) {
+        if (is_prev_mime
+            && !is_mime
+            /* and not comment's `()` end */
+            && !((s_handled == 1) && (*s == ')'))) {
+
             *d++ = ' ';
             d_left--;
 
