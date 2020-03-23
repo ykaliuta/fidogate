@@ -103,7 +103,7 @@ areafix-install:
 
 ########## gate
 
-gate_scripts		= gate/ftninrecomb gate/send-fidogate
+gate_scripts		= gate/ftninrecomb gate/send-fidogate gate/xct
 EXTRA_DIST		+= $(gate_scripts:=.in)
 libexec_SCRIPTS		= $(gate_scripts)
 
@@ -126,6 +126,8 @@ gate_install:
 	if test `id -u` -eq 0; then \
 	chown news $(DESTDIR)$(libexecdir)/send-fidogate; \
 	echo " chown news $(DESTDIR)$(libexecdir)/send-fidogate"; \
+	chown news $(DESTDIR)$(libexecdir)/xct; \
+	echo " chown news $(DESTDIR)$(libexecdir)/xct"; \
 	fi; \
 	fi
 

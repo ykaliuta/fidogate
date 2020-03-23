@@ -1,0 +1,106 @@
+#!<PERL5>
+# Greatly provided by Nil Alexandrov (2:5015/46)
+# Parser code from scripts/inn/filter_nnrpd.pl
+require 5.010;
+my $GREPHISTORY = $ENV{PATHBIN} . '/grephistory';
+my $SM = $ENV{PATHBIN} . '/sm';
+
+sub lookup {
+    my $msgid = $_[0];
+    my $ret = "";
+    $msgid =~ s/[<>|;\s'"]//g; # !!!!! remove this line if grephistory requires msgid inclosed in <>
+    my $fn=`$GREPHISTORY \'$msgid\' 2>&1`;
+    if ((!($fn =~ /\/dev\/null/)) && (!($fn =~ /Not found/))) {
+        my $orig_from = `$SM $fn`;
+        my @orig_from = grep(/^From:/, split(/\n/, $orig_from));
+        $orig_from = shift @orig_from;
+        $orig_from =~ s/^From:\s*//;
+        $orig_from =~ s/^\s*(.+[^\s])\s*<[^\s><"\(\)\@]+\@[^\s><"\(\)\@]+>\s*$/$1/;
+        $orig_from =~ s/^\s*<{0,1}[^\s><"\(\)\@]+\@[^\s><"\(\)\@]+>{0,1}\s*\((.+)\)\s*$/$1/;
+        $orig_from =~ s/^"//;
+        $orig_from =~ s/"$//;
+        $ret = $orig_from;
+    }
+    return $ret;
+}
+
+sub process {
+    my $msg = $_[0];
+    my $is_header = 1;
+    my $is_already_present = 0;
+    my $last_header = "";
+    my $refs = "";
+    my @hdrs;
+    open my $fh, "<", \$msg;
+    while (my $line = <$fh>) {
+        if ($is_header) {
+            if ($line =~ /^[\r\n]+$/) {
+                # end of the headers
+                my $x_comment_to = "";
+                if (!$is_already_present && $refs) {
+                    # look up original sender to deduce the "To" name
+                    my $msgid = (split(/ /, $refs))[-1];
+                    my $name = lookup($msgid);
+                    if ($name) {
+                        $x_comment_to = "X-Comment-To: $name\n";
+                    }
+                }
+
+                # print out the message size
+                my $size = length($msg);
+                if ($x_comment_to) {
+                    $size += length($x_comment_to);
+                }
+                print "#! rnews $size\n";
+
+                # print out headers
+                foreach (@hdrs) {
+                    if (/^Xref:\s/ && $x_comment_to) {
+                        # add new X-Comment-To header right before the Xref one
+                        print $x_comment_to;
+                        $x_comment_to = "";
+                    }
+                    print $_;
+                }
+                if ($x_comment_to) {
+                    # there was no Xref header so just add a new X-Comment-To at the end
+                    print $x_comment_to;
+                }
+                # print out the header separator
+                print $line;
+                $is_header = 0;
+
+            } elsif ($line =~ /^(\S+):\s+(.+)/) {
+                # header
+                if ($1 eq "References") {
+                    $refs = $2;
+                } elsif ($1 ~~ ["Comment-To", "X-Comment-To", "X-FTN-To", "X-Fidonet-Comment-To", "X-Apparently-To"]) {
+                    # !!!!! "Smartmatch is experimental" warning ;-) you may need to replace that ~~ construction
+                    $is_already_present = 1;
+                }
+                $last_header = $1;
+
+            } elsif ($line =~ /^\s+(.+)/) {
+                # continuation of the header
+                if ($last_header eq "References") {
+                    $refs .= " " . $1;
+                }
+            }
+            push @hdrs, $line;
+
+        } else {
+            # pass message body unmodified
+            print $line;
+        }
+    }
+}
+
+while (<STDIN>) {
+    if (/#! rnews\s+(\d+)/) {
+        my $len = $1;
+        read(STDIN, my $msg, $len);
+        process($msg);
+    } else {
+        print STDERR "Skip junk line> $_";
+    }
+}

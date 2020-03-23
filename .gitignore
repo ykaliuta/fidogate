@@ -99,6 +99,7 @@ src/gate/ftnmail
 src/gate/ftnnews
 src/gate/rfc2ftn
 src/gate/send-fidogate
+src/gate/xct
 src/include/cf_funcs.h
 src/include/cf_funcs.mak
 src/include/paths.h
