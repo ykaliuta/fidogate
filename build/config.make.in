@@ -191,5 +191,6 @@ M4		= m4
 
 # Think twice before changing anything below!!!
 SEND_RFC2FTN    = @libexecdir@/@SRFC2FTN@
+XCT_WRAPPER     = @libexecdir@/@XCT@
 BATCHER		= @BATCHER@
 RNEWS		= @RNEWS@

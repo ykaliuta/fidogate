@@ -983,6 +983,23 @@ if test $enable_syslog = yes; then
 	      [Enable if you want use syslog for log messages])
 fi
 
+XCT="xct"
+AC_SUBST(XCT)
+
+AC_ARG_ENABLE(xct,
+[  --enable-xct    enable X-Comment-To wrapper for inn batches],
+   [case "${enableval}" in
+    yes | no) enable_xct="${enableval}" ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --enable-xct) ;;
+    esac],dnl
+    enable_xct=no)
+
+if test $enable_xct = yes; then
+    AC_DEFINE(USE_XCT,
+              1,
+	      [Enable if you want to add To header for FTN messages when gating rfc2ftn])
+fi
+
 dnl Libraries
 AC_SEARCH_LIBS(regcomp, rx regex, [
     AC_DEFINE(HAS_POSIX_REGEX,[],[Do we have a decent regex library?])
@@ -991,7 +1008,9 @@ AC_SEARCH_LIBS(regcomp, rx regex, [
 if test "$with_news" != no ;then
 
     AS_IF([test "x$enable_oldbatcher" != "xno"], [
-        BATCHER='time $PATHBIN/batcher -N $QUEUEJOBS -b500000 -p"$RFC2FTN -b -n" $SITE $BATCHFILE' ],
+        AS_IF([test "x$enable_xct" = "xyes"], [
+            BATCHER='time $PATHBIN/batcher -N $QUEUEJOBS -b500000 -p"$XCT|$RFC2FTN -b -n" $SITE $BATCHFILE' ],
+           [BATCHER='time $PATHBIN/batcher -N $QUEUEJOBS -b500000 -p"$RFC2FTN -b -n" $SITE $BATCHFILE' ])],
 	[BATCHER='time $RFC2FTN -f $BATCHFILE -m 500'])
 
 # MY CHECK IF
@@ -1093,7 +1112,9 @@ AC_MSG_ERROR([PLEASE INSTALL INN OR SET PATH TO innconfval DIR; use --with-newsb
     if $NEWSLIBDIR/bin/innconfval -v 2>&1 </dev/null | egrep 2\.\[3\|4\|5\|6] > /dev/null; then
 	AC_DEFINE(OLD_BATCHER, 1,
 	    [Enable use old batcher in runinc program])
-	BATCHER='time $PATHBIN/batcher -N $QUEUEJOBS -b500000 -p"$RFC2FTN -b -n" $SITE $BATCHFILE'
+        AS_IF([test "x$enable_xct" = "xyes"], [
+	    BATCHER='time $PATHBIN/batcher -N $QUEUEJOBS -b500000 -p"$XCT|$RFC2FTN -b -n" $SITE $BATCHFILE'],
+           [BATCHER='time $PATHBIN/batcher -N $QUEUEJOBS -b500000 -p"$RFC2FTN -b -n" $SITE $BATCHFILE'])
     else
 	BATCHER='time $RFC2FTN -f $BATCHFILE -m 500'
     fi
