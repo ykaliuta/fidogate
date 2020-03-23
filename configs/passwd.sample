@@ -40,7 +40,8 @@ packet	2:5030/1229.777		XXXXXXXX
 #
 # Context "af" - areafix passwords for ftnaf
 #         "ff" - filefix passwords for ftnaf -F,
-#                tick passwords for ftnhatch, ftntick.
+#                tick passwords for ftnhatch, ftntick (--disable-tick-password).
+#        "tic" - tick passwords for ftnhatch, ftntick (--enable-tick-password).
 #
 #					lvl key   name
 #					--- ---   ----

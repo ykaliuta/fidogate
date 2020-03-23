@@ -37,7 +37,11 @@
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 #define MY_AREASBBS	"FAreasBBS"
+#ifdef TIC_PASSWORD
+#define MY_CONTEXT	"tic"
+#else
 #define MY_CONTEXT	"ff"
+#endif                          /* TIC_PASSWORD */
 
 #define MY_FILESBBS	"files.bbs"
 
