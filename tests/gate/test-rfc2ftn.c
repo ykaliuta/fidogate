@@ -18,6 +18,69 @@
 /* From: "John Doe" <john.doe@example.com> -> John Doe */
 /* From: "john doe" <john.doe@example.com> -> john doe */
 
+Ensure(rfcsender_parses_no_realname)
+{
+    char *src = "john.doe@example.com";
+    char *user = "john.doe";
+    char *addr = "example.com";
+    char *real = "";
+
+    RFCAddr res;
+
+    res = _rfc_sender(src, NULL);
+
+    assert_that(res.user, is_equal_to_string(user));
+    assert_that(res.addr, is_equal_to_string(addr));
+    assert_that(res.real, is_equal_to_string(real));
+}
+
+Ensure(rfcsender_parses_comment)
+{
+    char *src = "john.doe@example.com (John Doe)";
+    char *user = "john.doe";
+    char *addr = "example.com";
+    char *real = "John Doe";
+
+    RFCAddr res;
+
+    res = _rfc_sender(src, NULL);
+
+    assert_that(res.user, is_equal_to_string(user));
+    assert_that(res.addr, is_equal_to_string(addr));
+    assert_that(res.real, is_equal_to_string(real));
+}
+
+Ensure(rfcsender_parses_no_quotes)
+{
+    char *src = "John Doe <john.doe@example.com>";
+    char *user = "john.doe";
+    char *addr = "example.com";
+    char *real = "John Doe";
+
+    RFCAddr res;
+
+    res = _rfc_sender(src, NULL);
+
+    assert_that(res.user, is_equal_to_string(user));
+    assert_that(res.addr, is_equal_to_string(addr));
+    assert_that(res.real, is_equal_to_string(real));
+}
+
+Ensure(rfcsender_parses_quotes)
+{
+    char *src = "\"John Doe\" <john.doe@example.com>";
+    char *user = "john.doe";
+    char *addr = "example.com";
+    char *real = "John Doe";
+
+    RFCAddr res;
+
+    res = _rfc_sender(src, NULL);
+
+    assert_that(res.user, is_equal_to_string(user));
+    assert_that(res.addr, is_equal_to_string(addr));
+    assert_that(res.real, is_equal_to_string(real));
+}
 
 Ensure(mailsender_converts_user_dot)
 {
@@ -91,6 +154,11 @@ static TestSuite *create_my_suite(void)
     add_test(suite, mailsender_converts_user_underscore);
     add_test(suite, mailsender_does_not_capitalizes_real);
     add_test(suite, mailsender_does_not_amend_dot_underscore_in_real);
+
+    add_test(suite, rfcsender_parses_no_realname);
+    add_test(suite, rfcsender_parses_comment);
+    add_test(suite, rfcsender_parses_no_quotes);
+    add_test(suite, rfcsender_parses_quotes);
 
     return suite;
 }
