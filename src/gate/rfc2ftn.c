@@ -47,7 +47,6 @@
 char *get_name_from_body(void);
 void sendback(const char *, ...);
 void rfcaddr_init(RFCAddr *);
-RFCAddr rfc_sender(void);
 int rfc_parse(RFCAddr *, char *, size_t, Node *, int);
 int rfc_isfido(void);
 void cvt_user_name(char *);
@@ -269,14 +268,11 @@ void rfcaddr_init(RFCAddr * rfc)
 /*
  * Return message sender as RFCAddr struct
  */
-RFCAddr rfc_sender(void)
+static RFCAddr _rfc_sender(char *from, char *reply_to)
 {
     RFCAddr rfc, rfc1;
-    char *from, *reply_to, *p;
+    char *p;
     struct passwd *pwd;
-
-    from = s_header_getcomplete("From");
-    reply_to = s_header_getcomplete("Reply-To");
 
     rfcaddr_init(&rfc);
     rfcaddr_init(&rfc1);
@@ -332,6 +328,17 @@ RFCAddr rfc_sender(void)
 
     debug(5, "RFC Sender:   %s", s_rfcaddr_to_asc(&rfc, TRUE));
     return rfc;
+}
+
+static RFCAddr rfc_sender(void)
+{
+    char *from;
+    char *reply_to;
+
+    from = s_header_getcomplete("From");
+    reply_to = s_header_getcomplete("Reply-To");
+
+    return _rfc_sender(from, reply_to);
 }
 
 /*
