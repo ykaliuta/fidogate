@@ -78,6 +78,6 @@ BINARIES_GATE = gate/test_rfc2ftn
 check_PROGRAMS += $(BINARIES_GATE)
 TESTS_GATE = $(BINARIES_GATE) gate/test_rfc2ftn.sh gate/test_ftn2rfc.sh
 
-gate_test_rfc2ftn_LDADD = $(TOP_SRC)/common/libfidogate.a
+gate_test_rfc2ftn_LDADD = $(TOP_SRC)/common/libfidogate.a -lcgreen
 gate_test_rfc2ftn_SOURCES = gate/test-rfc2ftn.c \
-			gate/rfc2ftn-wrapper.c gate/rfc2ftn-stubs.c
+			gate/rfc2ftn-stubs.c
