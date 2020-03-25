@@ -1016,3 +1016,12 @@ void config_free(void)
     }
 
 }
+
+/* For test suite */
+void cf_zones_add(struct st_zones *zone)
+{
+    if (scf_nzones >= MAXADDRESS)
+        return;
+
+    scf_zones[scf_nzones++] = *zone;
+};
