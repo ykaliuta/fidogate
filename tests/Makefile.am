@@ -37,12 +37,16 @@ LIBFIDOGATE_MIN = $(top_srcdir)/src/common/xalloc.c \
 
 # common
 BINARIES_COMMON = common/test_log common/test_config common/test_packet \
-		  common/test_mime common/test_charset common/test_date
+		  common/test_mime common/test_charset common/test_date \
+		  common/test_rfcaddr
+
 TESTS_COMMON = $(BINARIES_COMMON)
 check_PROGRAMS += $(BINARIES_COMMON)
 
 common_test_log_SOURCES = common/test-log.c
+
 common_test_config_SOURCES = common/test-config.c
+
 common_test_packet_SOURCES = common/test-packet-doubles.c
 common_test_packet_SOURCES += common/test-packet.c \
 	$(LIBFIDOGATE_MIN) \
@@ -70,6 +74,9 @@ common_test_date_SOURCES = common/test-date.c \
 	$(top_srcdir)/src/common/gettime.c \
 	$(top_srcdir)/src/common/date.c \
 	$(top_srcdir)/src/common/log.c
+
+common_test_rfcaddr_SOURCES = common/test-rfcaddr.c
+common_test_rfcaddr_LDADD = $(TOP_SRC)/common/libfidogate.a -lcgreen
 
 
 # gate
