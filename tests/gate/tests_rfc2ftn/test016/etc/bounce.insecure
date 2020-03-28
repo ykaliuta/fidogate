@@ -1,0 +1,27 @@
+Subject: Returned mail: Insecure message
+
+   ----- Transcript of session follows -----
+
+Your mail
+
+   From: %f @ %F
+   To:   %t @ %T
+   Date: %d
+   Subj: %s
+
+addressed to Internet
+
+   To:   %R
+
+was received via an insecure link (i.e. not password protected). The
+gateway does not forward insecure messages. Please route your messages
+via your bossnode or uplink.
+
+If you want to send mail to a local user at sungate.fido.de please omit
+the To line and put the user or real name in the FIDO header.
+
+For more information about this gateway and Fido.DE send a mail to
+INFO @ 2:5030/1229 or dyff@amilen.ru.
+
+   ----- Message follows -----
+%M
