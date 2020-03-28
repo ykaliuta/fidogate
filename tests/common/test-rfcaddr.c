@@ -25,6 +25,22 @@ static struct st_zones zone = {
     .out = "out",
 };
 
+Ensure(fromrfc_passes_noncapitals)
+{
+    char *src = "real <name@example.com>";
+    char *user = "name";
+    char *addr = "example.com";
+    char *real = "real";
+
+    RFCAddr res;
+
+    res = rfcaddr_from_rfc(src);
+
+    assert_that(res.user, is_equal_to_string(user));
+    assert_that(res.addr, is_equal_to_string(addr));
+    assert_that(res.real, is_equal_to_string(real));
+}
+
 Ensure(fromftn_passes_capitals)
 {
     Node node = {
@@ -109,6 +125,8 @@ static void rfcaddr_fromftn_setup(void)
 static TestSuite *create_my_suite(void)
 {
     TestSuite *suite = create_named_test_suite("RFCAddr suite");
+
+    add_test(suite, fromrfc_passes_noncapitals);
 
     add_test(suite, fromftn_passes_capitals);
     add_test(suite, fromftn_passes_noncapitals);

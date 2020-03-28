@@ -146,6 +146,36 @@ Ensure(mailsender_does_not_amend_dot_underscore_in_real)
     assert_that(res, is_equal_to_string(exp));
 }
 
+Ensure(rfcparse_converts_useronly)
+{
+    RFCAddr src = {
+        .real = "",
+        .user = "user",
+        .addr = "example.com",
+    };
+    char res[NAMEBUFSIZE];
+    char *exp = "User";
+
+    rfc_parse(&src, res, sizeof(res), NULL, FALSE);
+
+    assert_that(res, is_equal_to_string(exp));
+}
+
+Ensure(rfcparse_doesnot_convert_real)
+{
+    RFCAddr src = {
+        .real = "user",
+        .user = "user",
+        .addr = "example.com",
+    };
+    char res[NAMEBUFSIZE];
+    char *exp = "user";
+
+    rfc_parse(&src, res, sizeof(res), NULL, FALSE);
+
+    assert_that(res, is_equal_to_string(exp));
+}
+
 static TestSuite *create_my_suite(void)
 {
     TestSuite *suite = create_named_test_suite("rfc2ftn suite");
@@ -159,6 +189,9 @@ static TestSuite *create_my_suite(void)
     add_test(suite, rfcsender_parses_comment);
     add_test(suite, rfcsender_parses_no_quotes);
     add_test(suite, rfcsender_parses_quotes);
+
+    add_test(suite, rfcparse_converts_useronly);
+    add_test(suite, rfcparse_doesnot_convert_real);
 
     return suite;
 }
