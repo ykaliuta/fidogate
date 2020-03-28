@@ -563,11 +563,17 @@ static int mail_receiver(RFCAddr *rfc, Node *node, char *name, size_t size)
          * User-defined header line X-Comment-To for gateway software
          * (can be patched into news reader)
          */
-        if ((to = header_get("X-Comment-To"))) {
+        if ((to = header_get("X-Comment-To")) || (to = get_name_from_body())) {
             h = rfcaddr_from_rfc(to);
-            rfc_parse(&h, name, size, NULL, FALSE);
-        } else if ((to = get_name_from_body())) {
-            h = rfcaddr_from_rfc(to);
+
+            /*
+             * use single name as RealName. Not in rfcaddr_from_rfc()
+             * since single user name is a valid mail address (local
+             * user)
+             */
+            if ((h.real[0] == '\0') && (h.user[0] != '\0') && (h.addr[0] == '\0'))
+                BUF_COPY(h.real, h.user);
+
             rfc_parse(&h, name, size, NULL, FALSE);
         } else {
             str_copy(name, size, "All");
