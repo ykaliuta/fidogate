@@ -12,6 +12,9 @@ COMMAND="$WORKDIR/../../src/gate/ftn2rfc -1 -n"
 TEST_DIR=$WORKDIR/tests_ftn2rfc
 RESULT=$FIDOGATE_OUTRFC_NEWS/00000001.rfc
 
+# fix local server timezone
+export TZ='UTC-2'
+
 run_one()
 {
     local command="$1"
