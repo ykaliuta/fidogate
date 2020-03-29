@@ -21,6 +21,7 @@ void GetTimeInfo(TIMEINFO * Now)
 {
     static time_t LastTime;
     static long LastTzone;
+    static int last_dst;
     struct tm *tm;
 #ifdef HAVE_GETTIMEOFDAY
     struct timeval tv;
@@ -47,6 +48,7 @@ void GetTimeInfo(TIMEINFO * Now)
         LastTime = Now->time;
         if ((tm = localtime(&Now->time)) == NULL)
             return;
+        last_dst = tm->tm_isdst;
 #ifndef HAVE_TM_GMTOFF
         /* To get the timezone, compare localtime with GMT. */
         local = *tm;
@@ -72,5 +74,6 @@ void GetTimeInfo(TIMEINFO * Now)
 #endif
     }
     Now->tzone = LastTzone;
+    Now->isdst = last_dst;
     return;
 }

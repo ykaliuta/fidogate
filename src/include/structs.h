@@ -172,6 +172,7 @@ typedef struct _TIMEINFO {
     time_t time;
     long usec;
     long tzone;
+    int isdst;
 } TIMEINFO;
 
 /*

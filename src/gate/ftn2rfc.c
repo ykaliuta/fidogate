@@ -578,7 +578,7 @@ static void msg_adjust_date_to_tz(Message *msg, char *tz_str)
 
     /* local = UTC + TZUTC => UTC = local - TZUTC */
 
-    msg->date -= (tz + ti.tzone) * 60;
+    msg->date -= (tz + ti.tzone + (ti.isdst * 60)) * 60;
     msg->tz = tz_str;
 }
 
