@@ -139,9 +139,6 @@ char *date_buf(char *buf, size_t len, char *fmt, time_t * t, long tz)
     if (fmt == NULL && t && *t == -1)
         return "INVALID";
 
-    if (tz != -1)
-	timezone = tz * 60;
-
     GetTimeInfo(&ti);
 
     if (t)
