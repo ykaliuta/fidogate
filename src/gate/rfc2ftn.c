@@ -2341,6 +2341,14 @@ int main(int argc, char **argv)
         unlink(posfile);
     }
 
+#ifdef HAS_POSIX_REGEX
+    regex_free();
+    debug(9, "regex_free()");
+#endif
+    areas_free();
+    acl_free();
+    alias_free();
+
     exit_free();
     return status;
 }
