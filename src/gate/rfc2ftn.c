@@ -1894,7 +1894,7 @@ int main(int argc, char **argv)
     int i, c;
     int status = EX_OK, st;
     short log_artnf = TRUE;
-    long size, nmsg;
+    long size = 0, nmsg;
     char *p;
     int b_flag = FALSE, t_flag = FALSE;
     char *f_flag = NULL;
@@ -2262,7 +2262,6 @@ int main(int argc, char **argv)
         }
 
         /* Read message header from fpart */
-        header_delete();
         /* read and decode mime */
         rfc2ftn_header_read(fpart);
 
@@ -2296,8 +2295,6 @@ int main(int argc, char **argv)
         /*
          * Read message body from fpart and count size
          */
-        size = 0;
-        tl_clear(&body);
         while (read_line(buffer, BUFFERSIZE, fpart)) {
             tl_append(&body, buffer);
             size += strlen(buffer) + 1; /* `+1' for additional CR */
@@ -2325,6 +2322,11 @@ int main(int argc, char **argv)
                 tmps_freeall();
             }
         }
+
+	/* it frees the header memory */
+        header_delete();
+        tl_clear(&body);
+        size = 0;
 
         if (!b_flag && !f_flag)
             break;
