@@ -274,6 +274,21 @@ void areas_init(void)
     areas_do_file(cf_p_areas());
 }
 
+void areas_free(void)
+{
+    Area *p, *next;
+
+    for (p = area_list; p;) {
+        next = p->next;
+
+        free(p->area);
+        free(p->group);
+        free(p);
+
+        p = next;
+    }
+}
+
 /*
  * Lookup area/newsgroup in area_list
  *

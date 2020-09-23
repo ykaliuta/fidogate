@@ -110,7 +110,8 @@ long areas_get_limitmsgsize(void);
 void areas_init(void);
 Area *areas_parse_line(char *);
 Area *areas_lookup(char *, char *, Node *);
-void areasbbs_free(void);
+void areas_free(void);
+
 
 /* areasbbs.c */
 int areasbbs_rewrite(void);
@@ -126,6 +127,7 @@ AreasBBS *areasbbs_lookup(char *);
 void areasbbs_add(AreasBBS * p);
 int areasbbs_isstate(char *, char);
 int areasbbs_chstate(char **, char *, char);
+void areasbbs_free(void);
 
 /* binkley.c */
 #define NOWAIT		0
