@@ -118,6 +118,21 @@ char *acl_lookup(char *email, int type)
     return ngrp;
 }
 
+void acl_free(void)
+{
+    Acl *p, *next;
+
+    for (p = acl_list; p;) {
+        next = p->next;
+
+        free(p->email_pat);
+        free(p->ngrp_pat);
+        free(p);
+
+        p = next;
+    }
+}
+
 void acl_ngrp(RFCAddr rfc_from, int type)
 {
 
