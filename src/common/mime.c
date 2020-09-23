@@ -1544,6 +1544,7 @@ static Textlist *mime_debody_base64(Textlist * body)
     char *dec_str;
     char *out_ptr;
     char *dec_ptr, *dec_prev_ptr;
+    char *to_free;
 
     Textlist *dec_body = NULL;
     Textline *line;
@@ -1565,6 +1566,8 @@ static Textlist *mime_debody_base64(Textlist * body)
         enc_len = (xstrnlen(line->line, MIME_ENC_STRING_LIMIT) / 4) * 4;
         if (mime_b64_decode(&dec_str, line->line, enc_len) == ERROR)
             goto exit;
+
+	to_free = dec_str;
 
         dec_prev_ptr = dec_str;
         while ((dec_ptr = strchr(dec_prev_ptr, '\n')) != NULL) {
@@ -1599,6 +1602,7 @@ static Textlist *mime_debody_base64(Textlist * body)
             }
         } while (dec_str_len > 0);
 
+	free(to_free);
     }
     if (left != max_len)
         mime_debody_flush_str(dec_body, out_str);
