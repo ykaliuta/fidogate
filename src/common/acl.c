@@ -143,13 +143,22 @@ void acl_ngrp(RFCAddr rfc_from, int type)
     return;
 }
 
+void acl_ngrp_free(void)
+{
+    list_free(ngrp_pat_list);
+}
+
 int acl_ngrp_lookup(char *list)
 {
 
-    static char **ngrp_list = NULL;
+    char **ngrp_list = NULL;
+    int ret;
 
     list_init(&ngrp_list, list);
-    return list_match(ngrp_pat_list, ngrp_list);
+    ret = list_match(ngrp_pat_list, ngrp_list);
+    list_free(ngrp_list);
+
+    return ret;
 }
 
 void pna_notify_init(char *list)

@@ -52,6 +52,7 @@ int pna_notify(char *);
 int ftnacl_lookup(Node *, Node *, char *);
 void acl_ftn_free(void);
 void acl_free(void);
+void acl_ngrp_free(void);
 
 /* acl_ftn.c */
 #ifdef FTN_ACL

@@ -269,6 +269,7 @@ int addr_is_local_xpost(char *addr)
     if (!ailx) {
         list_init(&addr_list, addr);
         ailx = list_match(addr_is_local_pats, addr_list);
+        list_free(addr_list);
     }
     return ailx;
 }

@@ -993,6 +993,7 @@ int snd_mail(RFCAddr rfc_to, long size)
         }
 
         tl_clear(&tl);
+        acl_ngrp_free();
     } else {
         /*
          * NetMail message
@@ -1011,6 +1012,7 @@ int snd_mail(RFCAddr rfc_to, long size)
             msg.node_to = node_to;
             status = snd_message(&msg, NULL, rfc_from, rfc_to,
                                  subj, size, flags, fido, mime, &node_from);
+            acl_ngrp_free();
             TMPS_RETURN(status);
         } else {
             if (pna_notify(s_rfcaddr_to_asc(&rfc_from, FALSE))) {
@@ -1024,6 +1026,7 @@ int snd_mail(RFCAddr rfc_to, long size)
                      s_rfcaddr_to_asc(&rfc_from, FALSE), asc_node_to);
             }
 
+            acl_ngrp_free();
             TMPS_RETURN(EX_OK);
         }
     }
