@@ -212,3 +212,19 @@ static int anodeeq(Node * a, Node * b)
         : a->zone == b->zone && a->net == b->net && a->node == b->node;
 }
 #endif
+
+void alias_free(void)
+{
+    Alias *a, *next;
+
+    for (a = alias_list; a;) {
+        next = a->next;
+
+        free(a->username);
+        free(a->userdom);
+        free(a->fullname);
+        free(a);
+
+        a = next;
+    }
+}

@@ -92,6 +92,7 @@ void alias_do_file(char *);
 Alias *alias_lookup(Node *, char *);
 Alias *alias_lookup_strict(Node *, char *);
 Alias *alias_lookup_userdom(RFCAddr *);
+void alias_free(void);
 
 /* uplinks.c */
 void uplinks_init(void);
