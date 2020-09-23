@@ -1276,6 +1276,8 @@ char *mime_header_dec(char *d, size_t d_max, char *s, char *to)
         }
 
         memcpy(d, recoded, recoded_len);
+	free(recoded);
+
         d += recoded_len;
         d_left -= recoded_len;
 
