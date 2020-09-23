@@ -171,6 +171,21 @@ void regex_init(void)
         regex_do_entry(s);
 }
 
+void regex_free(void)
+{
+    Regex *p, *next;
+
+    for (p = regex_list; p;) {
+        next = p->next;
+
+        regfree(&p->re_c);
+        xfree(p->re_s);
+        xfree(p);
+
+        p = next;
+    }
+}
+
 #endif /** HAS_POSIX_REGEX ****************************************************/
 
 /***** TEST ******************************************************************/
