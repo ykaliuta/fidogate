@@ -55,10 +55,6 @@ int print_local_msgid(FILE *, Node *);
 int print_via(FILE *, Node *);
 void short_usage(void);
 void usage(void);
-static int snd_message(Message * msg, Area * parea,
-                RFCAddr rfc_from, RFCAddr rfc_to, char *subj,
-                long size, char *flags, int fido, MIMEInfo * mime,
-                Node * node_from, RFCHeader *h);
 
 static char *o_flag = NULL;     /* -o --out-packet-file         */
 static char *w_flag = NULL;     /* -w --write-outbound          */
@@ -706,336 +702,6 @@ int check_downlinks(char *area)
     return n;
 }
 
-/*
- * Process mail/news message
- */
-static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
-{
-    char groups[BUFSIZ];
-    Node node_from, node_to;
-    char *asc_node_to;
-    RFCAddr rfc_from;
-    char *p;
-    char subj[SUBJBUFSIZE];
-    int status, fido;
-    Message msg = { 0 };
-    char *flags = NULL;
-    MIMEInfo *mime;
-    int from_is_local = FALSE;
-    long limitsize;
-    Textlist tl;
-    Textline *tp;
-    int rc;
-
-    node_clear(&node_from);
-    node_clear(&node_to);
-    tl_init(&tl);
-
-    if (rfc_to.user[0])
-        debug(3, "RFC To:       %s", s_rfcaddr_to_asc(&rfc_to, TRUE));
-
-    /*
-     * Subject
-     */
-    if ((p = header_get(h, "Subject")))
-        BUF_COPY(subj, p);
-    else
-        BUF_COPY(subj, "(no subject)");
-
-    /*
-     * MIME header
-     */
-    mime = get_mime(s_header_getcomplete(h, "MIME-Version"),
-                    s_header_getcomplete(h, "Content-Type"),
-                    s_header_getcomplete(h, "Content-Transfer-Encoding"));
-
-    /*
-     * From RFCAddr
-     */
-    rfcaddr_init(&rfc_from);
-    rfc_from = rfc_sender(h);
-
-    /*
-     * To name/node
-     */
-    rc = mail_receiver(&rfc_to, &node_to, msg.name_to, sizeof(msg.name_to), h);
-    if (rc == ERROR) {
-        if (*address_error)
-            sendback("Address %s:\n  %s",
-                     s_rfcaddr_to_asc(&rfc_to, TRUE), address_error);
-        else
-            sendback("Address %s:\n  address/host is unknown",
-                     s_rfcaddr_to_asc(&rfc_to, TRUE));
-        TMPS_RETURN(EX_NOHOST);
-    }
-    fido = rfc_isfido();
-
-    cf_set_best(node_to.zone, node_to.net, node_to.node);
-
-    /*
-     * From name/node
-     */
-    alias_found = mail_sender(&rfc_from, &node_from,
-                              msg.name_from, sizeof(msg.name_from), h);
-    /*
-     * Date
-     */
-    msg.date = mail_date(h);
-    msg.tz = mail_tz(h);
-    msg.cost = 0;
-    msg.attr = 0;
-
-    /*
-     * X-Flags
-     */
-    flags = header_get(h, "X-Flags");
-    if (flags)
-        str_lower(flags);
-
-    if (newsmode) {
-        Area *pa;
-
-        acl_ngrp(rfc_from, TYPE_ECHOMAIL);
-        from_is_local = addr_is_local_xpost(s_rfcaddr_to_asc(&rfc_from, FALSE));
-        /*
-         * Check for news control message
-         */
-        if ((p = header_get(h, "Control"))) {
-            debug(3, "Skipping Control: %s", p);
-            TMPS_RETURN(EX_OK);
-        }
-
-        /*
-         * News message: get newsgroups and convert to FIDO areas
-         */
-        p = header_get(h, "Newsgroups");
-        if (!p) {
-            sendback("No Newsgroups header in news message");
-            TMPS_RETURN(EX_DATAERR);
-        }
-        BUF_COPY(groups, p);
-        debug(3, "RFC Newsgroups: %s", groups);
-
-        xpost_flag = strchr(groups, ',') != NULL;
-
-        /* List of newsgroups -> textlist (strtok is not reentrant!) */
-        for (p = strtok(groups, ","); p; p = strtok(NULL, ","))
-            tl_append(&tl, p);
-
-        for (tp = tl.first; tp; tp = tp->next) {
-            p = tp->line;
-            debug(5, "Look up newsgroup %s", p);
-            pa = areas_lookup(NULL, p, NULL);
-            if (!pa)
-                debug(5, "No FTN area");
-            else {
-                AreasBBS *ab;
-
-                ab = areasbbs_lookup(pa->area);
-                if (ab) {
-                    debug(5, "Found in areasbbs %d %s", ab->zone,
-                          znfp2(&ab->addr));
-                    pa->zone = ab->zone;
-                    if (ab->addr.zone == INVALID && ab->addr.net == INVALID &&
-                        ab->addr.node == INVALID && ab->addr.point == INVALID) {
-                        cf_set_best(ab->nodes.first->node.zone,
-                                    ab->nodes.first->node.net,
-                                    ab->nodes.first->node.node);
-                        pa->addr.zone = cf_addr()->zone;
-                        pa->addr.net = cf_addr()->net;
-                        pa->addr.node = cf_addr()->node;
-                        pa->addr.point = cf_addr()->point;
-                        debug(5, "Set addres %s", znfp1(&pa->addr));
-                    } else
-                        pa->addr = ab->addr;
-                }
-
-                /* Set address or zone aka for this area */
-                debug(5, "Found: %s %s Zone=%d Addr=%s",
-                      pa->area, pa->group, pa->zone, znfp1(&pa->addr));
-                if (pa->addr.zone != -1)
-                    cf_set_curr(&pa->addr);
-                else
-                    cf_set_zone(pa->zone);
-
-                /* Various checks */
-                if (check_areas_bbs && check_downlinks(pa->area) <= 0) {
-                    debug(5, "area %s, not listed or no downlinks", pa->area);
-                    continue;
-                }
-                if (xpost_flag && (pa->flags & AREA_NOXPOST)) {
-                    debug(5, "No cross-postings allowed - skipped");
-                    continue;
-                }
-                if (xpost_flag && (pa->flags & AREA_LOCALXPOST)) {
-                    if (from_is_local) {
-                        debug(5, "Local cross-posting - OK");
-                    } else {
-                        debug(5,
-                              "No non-local cross-postings allowed - skipped");
-                        continue;
-                    }
-                }
-
-                if (acl_ngrp_lookup(pa->group)) {
-                    debug(5, "Posting from address `%s' to group `%s' - o.k.",
-                          s_rfcaddr_to_asc(&rfc_from, FALSE), pa->group);
-                } else {
-                    if (pna_notify(s_rfcaddr_to_asc(&rfc_from, FALSE))) {
-                        fglog
-                            ("BOUNCE: Postings from address `%s' to group `%s' not allowed - skipped, sent notify",
-                             s_rfcaddr_to_asc(&rfc_from, FALSE), pa->group);
-                        bounce_mail("acl", &rfc_from, &msg, pa->group, &body, h);
-                    } else
-                        fglog
-                            ("BOUNCE: Postings from address `%s' to group `%s' not allowed - skipped",
-                             s_rfcaddr_to_asc(&rfc_from, FALSE), pa->group);
-                    continue;
-                }
-
-                /* Check message size limit */
-                limitsize = pa->limitsize;
-                if (limitsize > 0 && size > limitsize) {
-                    /* Too large, don't gate it */
-                    fglog("message too big (%ldb, limit %ldb) for area %s",
-                          size, limitsize, pa->area);
-                    continue;
-                }
-
-                /* Create and send message */
-                msg.area = pa->area;
-                msg.node_from = cf_n_addr();
-                msg.node_to = cf_n_uplink();
-                status = snd_message(&msg, pa, rfc_from, rfc_to,
-                                     subj, size, flags, fido, mime, &node_from, h);
-                if (status) {
-                    tl_clear(&tl);
-                    TMPS_RETURN(status);
-                }
-            }
-        }
-
-        tl_clear(&tl);
-        acl_ngrp_free();
-    } else {
-        /*
-         * NetMail message
-         */
-        /* Check message size limit */
-        limitsize = areas_get_limitmsgsize();
-        if (limitsize > 0 && size > limitsize) {
-            /* Too large, don't gate it */
-            fglog("message too big (%ldb, limit %ldb) for mail %s -> %s",
-                  size, limitsize, s_rfcaddr_to_asc(&rfc_from, TRUE),
-                  s_rfcaddr_to_asc(&rfc_to, TRUE));
-            sendback("Address %s:\n  message too big (%ldb, limit %ldb)",
-                     s_rfcaddr_to_asc(&rfc_to, TRUE), size, limitsize);
-            TMPS_RETURN(EX_UNAVAILABLE);
-        }
-
-        msg.attr |= MSG_PRIVATE;
-
-        from_is_local = addr_is_local(s_header_getcomplete(h, "From"));
-
-        if (x_flags_policy > 0) {
-            char *hf = s_header_getcomplete(h, "From");
-            char *hr = s_header_getcomplete(h, "Reply-To");
-
-            if (x_flags_policy == 1) {
-                /* Allow only local users to use the X-Flags header */
-                if (from_is_local && header_hops(h) <= 1)
-                    debug(5, "true local address - o.k.");
-                else {
-                    if (flags)
-                        fglog("NON-LOCAL From: %s, Reply-To: %s, X-Flags: %s",
-                              hf ? hf : "<>", hr ? hr : "<>", flags);
-                    flags = p = NULL;
-                }
-            }
-            /* Let's at least log what's going on ... */
-            if (flags)
-                fglog("X-Flags: %s, From: %s", flags, hf ? hf : "<>");
-
-            p = flags;
-            if (p) {
-                while (*p)
-                    switch (*p++) {
-                    case 'c':
-                        msg.attr |= MSG_CRASH;
-                        break;
-                    case 'p':
-                        msg.attr |= MSG_PRIVATE;
-                        break;
-                    case 'h':
-                        msg.attr |= MSG_HOLD;
-                        break;
-                    case 'f':
-                        msg.attr |= MSG_FILE;
-                        break;
-                    case 'r':
-                        msg.attr |= MSG_RRREQ;
-                        break;
-                    case 'd':
-                        msg.attr |= MSG_DIRECT;
-                        break;
-                    case 'a':
-                        msg.attr |= MSG_AUDIT;
-                        break;
-                    }
-            }
-        } else {
-            char *hf = s_header_getcomplete(h, "From");
-
-            /* Log what's going on ... */
-            if (flags)
-                fglog("FORBIDDEN X-Flags: %s, From: %s", flags, hf ? hf : "<>");
-            flags = NULL;
-        }
-
-        /*
-         * Return-Receipt-To -> RRREQ flag
-         */
-        if (!dont_process_return_receipt_to &&
-            (p = header_get(h, "Return-Receipt-To")))
-            msg.attr |= MSG_RRREQ;
-
-        acl_ngrp(rfc_from, TYPE_NETMAIL);
-        asc_node_to = znf1(&node_to);
-
-        if (acl_ngrp_lookup(asc_node_to)) {
-            debug(5, "Gateway netmail from address `%s' to `%s' - o.k.",
-                  s_rfcaddr_to_asc(&rfc_from, FALSE), asc_node_to);
-            fglog("MAIL: %s -> %s",
-                  s_rfcaddr_to_asc(&rfc_from, TRUE), s_rfcaddr_to_asc(&rfc_to,
-                                                                      TRUE));
-            msg.area = NULL;
-            msg.node_from = node_from;
-            msg.node_to = node_to;
-            status = snd_message(&msg, NULL, rfc_from, rfc_to,
-                                 subj, size, flags, fido, mime, &node_from, h);
-            acl_ngrp_free();
-            TMPS_RETURN(status);
-        } else {
-            if (pna_notify(s_rfcaddr_to_asc(&rfc_from, FALSE))) {
-                fglog
-                    ("BOUNCE: Gateway netmail from address `%s' to `%s' not allowed - skipped, sent notify",
-                     s_rfcaddr_to_asc(&rfc_from, FALSE), asc_node_to);
-                bounce_mail("acl_netmail", &rfc_from, &msg, asc_node_to, &body, h);
-            } else {
-                fglog
-                    ("BOUNCE: Gateway netmail from address `%s' to `%s' not allowed - skipped",
-                     s_rfcaddr_to_asc(&rfc_from, FALSE), asc_node_to);
-            }
-
-            acl_ngrp_free();
-            TMPS_RETURN(EX_OK);
-        }
-    }
-
-    /** NOT REACHED**/
-    return 0;
-}
-
 static char *get_chrs_header(RFCHeader *h)
 {
     char *p;
@@ -1630,6 +1296,336 @@ static int snd_message(Message * msg, Area * parea,
     putc(0, sf);
 
     return EX_OK;
+}
+
+/*
+ * Process mail/news message
+ */
+static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
+{
+    char groups[BUFSIZ];
+    Node node_from, node_to;
+    char *asc_node_to;
+    RFCAddr rfc_from;
+    char *p;
+    char subj[SUBJBUFSIZE];
+    int status, fido;
+    Message msg = { 0 };
+    char *flags = NULL;
+    MIMEInfo *mime;
+    int from_is_local = FALSE;
+    long limitsize;
+    Textlist tl;
+    Textline *tp;
+    int rc;
+
+    node_clear(&node_from);
+    node_clear(&node_to);
+    tl_init(&tl);
+
+    if (rfc_to.user[0])
+        debug(3, "RFC To:       %s", s_rfcaddr_to_asc(&rfc_to, TRUE));
+
+    /*
+     * Subject
+     */
+    if ((p = header_get(h, "Subject")))
+        BUF_COPY(subj, p);
+    else
+        BUF_COPY(subj, "(no subject)");
+
+    /*
+     * MIME header
+     */
+    mime = get_mime(s_header_getcomplete(h, "MIME-Version"),
+                    s_header_getcomplete(h, "Content-Type"),
+                    s_header_getcomplete(h, "Content-Transfer-Encoding"));
+
+    /*
+     * From RFCAddr
+     */
+    rfcaddr_init(&rfc_from);
+    rfc_from = rfc_sender(h);
+
+    /*
+     * To name/node
+     */
+    rc = mail_receiver(&rfc_to, &node_to, msg.name_to, sizeof(msg.name_to), h);
+    if (rc == ERROR) {
+        if (*address_error)
+            sendback("Address %s:\n  %s",
+                     s_rfcaddr_to_asc(&rfc_to, TRUE), address_error);
+        else
+            sendback("Address %s:\n  address/host is unknown",
+                     s_rfcaddr_to_asc(&rfc_to, TRUE));
+        TMPS_RETURN(EX_NOHOST);
+    }
+    fido = rfc_isfido();
+
+    cf_set_best(node_to.zone, node_to.net, node_to.node);
+
+    /*
+     * From name/node
+     */
+    alias_found = mail_sender(&rfc_from, &node_from,
+                              msg.name_from, sizeof(msg.name_from), h);
+    /*
+     * Date
+     */
+    msg.date = mail_date(h);
+    msg.tz = mail_tz(h);
+    msg.cost = 0;
+    msg.attr = 0;
+
+    /*
+     * X-Flags
+     */
+    flags = header_get(h, "X-Flags");
+    if (flags)
+        str_lower(flags);
+
+    if (newsmode) {
+        Area *pa;
+
+        acl_ngrp(rfc_from, TYPE_ECHOMAIL);
+        from_is_local = addr_is_local_xpost(s_rfcaddr_to_asc(&rfc_from, FALSE));
+        /*
+         * Check for news control message
+         */
+        if ((p = header_get(h, "Control"))) {
+            debug(3, "Skipping Control: %s", p);
+            TMPS_RETURN(EX_OK);
+        }
+
+        /*
+         * News message: get newsgroups and convert to FIDO areas
+         */
+        p = header_get(h, "Newsgroups");
+        if (!p) {
+            sendback("No Newsgroups header in news message");
+            TMPS_RETURN(EX_DATAERR);
+        }
+        BUF_COPY(groups, p);
+        debug(3, "RFC Newsgroups: %s", groups);
+
+        xpost_flag = strchr(groups, ',') != NULL;
+
+        /* List of newsgroups -> textlist (strtok is not reentrant!) */
+        for (p = strtok(groups, ","); p; p = strtok(NULL, ","))
+            tl_append(&tl, p);
+
+        for (tp = tl.first; tp; tp = tp->next) {
+            p = tp->line;
+            debug(5, "Look up newsgroup %s", p);
+            pa = areas_lookup(NULL, p, NULL);
+            if (!pa)
+                debug(5, "No FTN area");
+            else {
+                AreasBBS *ab;
+
+                ab = areasbbs_lookup(pa->area);
+                if (ab) {
+                    debug(5, "Found in areasbbs %d %s", ab->zone,
+                          znfp2(&ab->addr));
+                    pa->zone = ab->zone;
+                    if (ab->addr.zone == INVALID && ab->addr.net == INVALID &&
+                        ab->addr.node == INVALID && ab->addr.point == INVALID) {
+                        cf_set_best(ab->nodes.first->node.zone,
+                                    ab->nodes.first->node.net,
+                                    ab->nodes.first->node.node);
+                        pa->addr.zone = cf_addr()->zone;
+                        pa->addr.net = cf_addr()->net;
+                        pa->addr.node = cf_addr()->node;
+                        pa->addr.point = cf_addr()->point;
+                        debug(5, "Set addres %s", znfp1(&pa->addr));
+                    } else
+                        pa->addr = ab->addr;
+                }
+
+                /* Set address or zone aka for this area */
+                debug(5, "Found: %s %s Zone=%d Addr=%s",
+                      pa->area, pa->group, pa->zone, znfp1(&pa->addr));
+                if (pa->addr.zone != -1)
+                    cf_set_curr(&pa->addr);
+                else
+                    cf_set_zone(pa->zone);
+
+                /* Various checks */
+                if (check_areas_bbs && check_downlinks(pa->area) <= 0) {
+                    debug(5, "area %s, not listed or no downlinks", pa->area);
+                    continue;
+                }
+                if (xpost_flag && (pa->flags & AREA_NOXPOST)) {
+                    debug(5, "No cross-postings allowed - skipped");
+                    continue;
+                }
+                if (xpost_flag && (pa->flags & AREA_LOCALXPOST)) {
+                    if (from_is_local) {
+                        debug(5, "Local cross-posting - OK");
+                    } else {
+                        debug(5,
+                              "No non-local cross-postings allowed - skipped");
+                        continue;
+                    }
+                }
+
+                if (acl_ngrp_lookup(pa->group)) {
+                    debug(5, "Posting from address `%s' to group `%s' - o.k.",
+                          s_rfcaddr_to_asc(&rfc_from, FALSE), pa->group);
+                } else {
+                    if (pna_notify(s_rfcaddr_to_asc(&rfc_from, FALSE))) {
+                        fglog
+                            ("BOUNCE: Postings from address `%s' to group `%s' not allowed - skipped, sent notify",
+                             s_rfcaddr_to_asc(&rfc_from, FALSE), pa->group);
+                        bounce_mail("acl", &rfc_from, &msg, pa->group, &body, h);
+                    } else
+                        fglog
+                            ("BOUNCE: Postings from address `%s' to group `%s' not allowed - skipped",
+                             s_rfcaddr_to_asc(&rfc_from, FALSE), pa->group);
+                    continue;
+                }
+
+                /* Check message size limit */
+                limitsize = pa->limitsize;
+                if (limitsize > 0 && size > limitsize) {
+                    /* Too large, don't gate it */
+                    fglog("message too big (%ldb, limit %ldb) for area %s",
+                          size, limitsize, pa->area);
+                    continue;
+                }
+
+                /* Create and send message */
+                msg.area = pa->area;
+                msg.node_from = cf_n_addr();
+                msg.node_to = cf_n_uplink();
+                status = snd_message(&msg, pa, rfc_from, rfc_to,
+                                     subj, size, flags, fido, mime, &node_from, h);
+                if (status) {
+                    tl_clear(&tl);
+                    TMPS_RETURN(status);
+                }
+            }
+        }
+
+        tl_clear(&tl);
+        acl_ngrp_free();
+    } else {
+        /*
+         * NetMail message
+         */
+        /* Check message size limit */
+        limitsize = areas_get_limitmsgsize();
+        if (limitsize > 0 && size > limitsize) {
+            /* Too large, don't gate it */
+            fglog("message too big (%ldb, limit %ldb) for mail %s -> %s",
+                  size, limitsize, s_rfcaddr_to_asc(&rfc_from, TRUE),
+                  s_rfcaddr_to_asc(&rfc_to, TRUE));
+            sendback("Address %s:\n  message too big (%ldb, limit %ldb)",
+                     s_rfcaddr_to_asc(&rfc_to, TRUE), size, limitsize);
+            TMPS_RETURN(EX_UNAVAILABLE);
+        }
+
+        msg.attr |= MSG_PRIVATE;
+
+        from_is_local = addr_is_local(s_header_getcomplete(h, "From"));
+
+        if (x_flags_policy > 0) {
+            char *hf = s_header_getcomplete(h, "From");
+            char *hr = s_header_getcomplete(h, "Reply-To");
+
+            if (x_flags_policy == 1) {
+                /* Allow only local users to use the X-Flags header */
+                if (from_is_local && header_hops(h) <= 1)
+                    debug(5, "true local address - o.k.");
+                else {
+                    if (flags)
+                        fglog("NON-LOCAL From: %s, Reply-To: %s, X-Flags: %s",
+                              hf ? hf : "<>", hr ? hr : "<>", flags);
+                    flags = p = NULL;
+                }
+            }
+            /* Let's at least log what's going on ... */
+            if (flags)
+                fglog("X-Flags: %s, From: %s", flags, hf ? hf : "<>");
+
+            p = flags;
+            if (p) {
+                while (*p)
+                    switch (*p++) {
+                    case 'c':
+                        msg.attr |= MSG_CRASH;
+                        break;
+                    case 'p':
+                        msg.attr |= MSG_PRIVATE;
+                        break;
+                    case 'h':
+                        msg.attr |= MSG_HOLD;
+                        break;
+                    case 'f':
+                        msg.attr |= MSG_FILE;
+                        break;
+                    case 'r':
+                        msg.attr |= MSG_RRREQ;
+                        break;
+                    case 'd':
+                        msg.attr |= MSG_DIRECT;
+                        break;
+                    case 'a':
+                        msg.attr |= MSG_AUDIT;
+                        break;
+                    }
+            }
+        } else {
+            char *hf = s_header_getcomplete(h, "From");
+
+            /* Log what's going on ... */
+            if (flags)
+                fglog("FORBIDDEN X-Flags: %s, From: %s", flags, hf ? hf : "<>");
+            flags = NULL;
+        }
+
+        /*
+         * Return-Receipt-To -> RRREQ flag
+         */
+        if (!dont_process_return_receipt_to &&
+            (p = header_get(h, "Return-Receipt-To")))
+            msg.attr |= MSG_RRREQ;
+
+        acl_ngrp(rfc_from, TYPE_NETMAIL);
+        asc_node_to = znf1(&node_to);
+
+        if (acl_ngrp_lookup(asc_node_to)) {
+            debug(5, "Gateway netmail from address `%s' to `%s' - o.k.",
+                  s_rfcaddr_to_asc(&rfc_from, FALSE), asc_node_to);
+            fglog("MAIL: %s -> %s",
+                  s_rfcaddr_to_asc(&rfc_from, TRUE), s_rfcaddr_to_asc(&rfc_to,
+                                                                      TRUE));
+            msg.area = NULL;
+            msg.node_from = node_from;
+            msg.node_to = node_to;
+            status = snd_message(&msg, NULL, rfc_from, rfc_to,
+                                 subj, size, flags, fido, mime, &node_from, h);
+            acl_ngrp_free();
+            TMPS_RETURN(status);
+        } else {
+            if (pna_notify(s_rfcaddr_to_asc(&rfc_from, FALSE))) {
+                fglog
+                    ("BOUNCE: Gateway netmail from address `%s' to `%s' not allowed - skipped, sent notify",
+                     s_rfcaddr_to_asc(&rfc_from, FALSE), asc_node_to);
+                bounce_mail("acl_netmail", &rfc_from, &msg, asc_node_to, &body, h);
+            } else {
+                fglog
+                    ("BOUNCE: Gateway netmail from address `%s' to `%s' not allowed - skipped",
+                     s_rfcaddr_to_asc(&rfc_from, FALSE), asc_node_to);
+            }
+
+            acl_ngrp_free();
+            TMPS_RETURN(EX_OK);
+        }
+    }
+
+    /** NOT REACHED**/
+    return 0;
 }
 
 /*
