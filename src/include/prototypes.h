@@ -584,7 +584,7 @@ char *header_geth(RFCHeader *, char *, int);
 char *header_getnext(RFCHeader *);
 char *s_header_getcomplete(RFCHeader *, char *);
 char *addr_token(char *);
-void header_decode(RFCHeader *, char *);
+RFCHeader *header_decode(RFCHeader *, char *);
 
 /* routing.c */
 extern Routing *routing_first;

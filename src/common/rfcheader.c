@@ -145,6 +145,24 @@ void header_free(RFCHeader *header)
     free(header);
 }
 
+static RFCHeader *header_new(Textlist *tl)
+{
+    RFCHeader *header;
+
+    header = xmalloc(sizeof(*header));
+    memset(header, 0, sizeof(*header));
+
+    if (tl != NULL)
+        header->headers = *tl;
+
+    return header;
+}
+
+static void header_append(RFCHeader *header, char *line)
+{
+    tl_append(&header->headers, line);
+}
+
 /*
  * header_read() --- read header lines from file
  */
@@ -488,39 +506,27 @@ char *addr_token(char *line)
     return s;
 }
 
-struct decoding_state {
-    char *charset;
-    RFCHeader *header;
-};
-
-static int decode_header(Textline * tl, void *arg)
-{
-    struct decoding_state *state = arg;
-    char *decoded;
-
-    mime_header_dec(buffer, sizeof(buffer), tl->line,
-                    state->charset, state->header);
-    decoded = strdup(buffer);
-
-    free(tl->line);
-    tl->line = decoded;
-
-    return OK;
-}
-
 /*
  * Decodes the mimed headers and recodes them to @to charset
  * (source charset is part of the mime encoding)
  */
-void header_decode(RFCHeader *header, char *to)
+RFCHeader *header_decode(RFCHeader *header, char *to)
 {
-    Textlist *hdr;
-    struct decoding_state state = {
-        .charset = to,
-        .header = header,
-    };
+    TextlistIterator iter;
+    Textline *line;
+    RFCHeader *decoded;
 
-    hdr = &header->headers;
-    /* does recoding as well */
-    tl_for_each(hdr, decode_header, &state);
+    decoded = header_new(NULL);
+
+    tl_iterator_start(&iter, &header->headers);
+    line = tl_iterator_next(&iter);
+
+    for (; line; line = tl_iterator_next(&iter)) {
+
+        mime_header_dec(buffer, sizeof(buffer), line->line,
+                        to, header);
+        header_append(decoded, buffer);
+    }
+
+    return decoded;
 }

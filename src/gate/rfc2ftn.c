@@ -1858,11 +1858,13 @@ static void set_mailmode(void)
  */
 static RFCHeader *rfc2ftn_header_read(FILE * fpart)
 {
-    RFCHeader *h;
+    RFCHeader *h, *decoded;
 
     h = header_read(fpart);
-    header_decode(h, INTERNAL_CHARSET);
-    return h;
+    decoded = header_decode(h, INTERNAL_CHARSET);
+
+    header_free(h);
+    return decoded;
 }
 
 /*
