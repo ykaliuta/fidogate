@@ -104,7 +104,6 @@ typedef struct {
     char name_to[NAMEBUFSIZE];  /* To name */
     char name_from[NAMEBUFSIZE];    /* From name */
     char subject[SUBJBUFSIZE];  /* Subject */
-    int translated;             /* name_* and subject already xlat'ed */
     char *area;                 /* EchoMail area or NULL */
 } Message;
 

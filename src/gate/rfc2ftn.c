@@ -967,31 +967,26 @@ static int snd_message(Message * msg, Area * parea,
 
  again:
 
-    if (msg->translated) {
-	pt = NULL;
-    } else {
-	msg->translated = true;
+    pt = xlat_s(subj, NULL);
 
-	pt = xlat_s(subj, NULL);
-
-	/* Subject with split part indication */
-	if (split && part > 1) {
+    /* Subject with split part indication */
+    if (split && part > 1) {
 	    str_printf(msg->subject, sizeof(msg->subject), "%02d: ", part);
 	    BUF_APPEND(msg->subject, pt ? pt : subj);
-	} else {
+    } else {
 	    BUF_COPY(msg->subject, pt ? pt : subj);
-	}
-
-	pt = xlat_s(msg->name_to, pt);
-	if (pt) {
-	    BUF_COPY(msg->name_to, pt);
-	}
-
-	pt = xlat_s(msg->name_from, pt);
-	if (pt) {
-	    BUF_COPY(msg->name_from, pt);
-	}
     }
+
+    pt = xlat_s(msg->name_to, pt);
+    if (pt) {
+	    BUF_COPY(msg->name_to, pt);
+    }
+
+    pt = xlat_s(msg->name_from, pt);
+    if (pt) {
+	    BUF_COPY(msg->name_from, pt);
+    }
+
     /* Header */
     nmsg++;
     pkt_put_msg_hdr(sf, msg, TRUE);
@@ -1298,6 +1293,56 @@ static int snd_message(Message * msg, Area * parea,
     return EX_OK;
 }
 
+/* to be called after header decoded */
+static int snd_mail_prepare(RFCHeader *h,
+                            char *subj, size_t subj_size,
+                            RFCAddr *rfc_to, RFCAddr *rfc_from,
+                            Node *node_to, Node *node_from,
+                            Message *msg,
+                            int *is_fido, int *alias)
+{
+    int rc;
+    char *p;
+
+    /*
+     * Subject
+     */
+    if ((p = header_get(h, "Subject")))
+        str_copy(subj, subj_size, p);
+    else
+        str_copy(subj, subj_size, "(no subject)");
+
+    /*
+     * From RFCAddr
+     */
+    *rfc_from = rfc_sender(h);
+
+    /*
+     * To name/node
+     */
+    rc = mail_receiver(rfc_to, node_to, msg->name_to, sizeof(msg->name_to), h);
+    if (rc == ERROR) {
+        if (*address_error)
+            sendback("Address %s:\n  %s",
+                     s_rfcaddr_to_asc(rfc_to, TRUE), address_error);
+        else
+            sendback("Address %s:\n  address/host is unknown",
+                     s_rfcaddr_to_asc(rfc_to, TRUE));
+        return EX_NOHOST;
+    }
+    *is_fido = rfc_isfido();
+
+    cf_set_best(node_to->zone, node_to->net, node_to->node);
+
+    /*
+     * From name/node
+     */
+    *alias = mail_sender(rfc_from, node_from,
+                         msg->name_from, sizeof(msg->name_from), h);
+
+    return 0;
+}
+
 /*
  * Process mail/news message
  */
@@ -1327,48 +1372,12 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
         debug(3, "RFC To:       %s", s_rfcaddr_to_asc(&rfc_to, TRUE));
 
     /*
-     * Subject
-     */
-    if ((p = header_get(h, "Subject")))
-        BUF_COPY(subj, p);
-    else
-        BUF_COPY(subj, "(no subject)");
-
-    /*
      * MIME header
      */
     mime = get_mime(s_header_getcomplete(h, "MIME-Version"),
                     s_header_getcomplete(h, "Content-Type"),
                     s_header_getcomplete(h, "Content-Transfer-Encoding"));
 
-    /*
-     * From RFCAddr
-     */
-    rfcaddr_init(&rfc_from);
-    rfc_from = rfc_sender(h);
-
-    /*
-     * To name/node
-     */
-    rc = mail_receiver(&rfc_to, &node_to, msg.name_to, sizeof(msg.name_to), h);
-    if (rc == ERROR) {
-        if (*address_error)
-            sendback("Address %s:\n  %s",
-                     s_rfcaddr_to_asc(&rfc_to, TRUE), address_error);
-        else
-            sendback("Address %s:\n  address/host is unknown",
-                     s_rfcaddr_to_asc(&rfc_to, TRUE));
-        TMPS_RETURN(EX_NOHOST);
-    }
-    fido = rfc_isfido();
-
-    cf_set_best(node_to.zone, node_to.net, node_to.node);
-
-    /*
-     * From name/node
-     */
-    alias_found = mail_sender(&rfc_from, &node_from,
-                              msg.name_from, sizeof(msg.name_from), h);
     /*
      * Date
      */
@@ -1387,8 +1396,6 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
     if (newsmode) {
         Area *pa;
 
-        acl_ngrp(rfc_from, TYPE_ECHOMAIL);
-        from_is_local = addr_is_local_xpost(s_rfcaddr_to_asc(&rfc_from, FALSE));
         /*
          * Check for news control message
          */
@@ -1422,6 +1429,18 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
                 debug(5, "No FTN area");
             else {
                 AreasBBS *ab;
+
+                rc = snd_mail_prepare(h, subj, sizeof(subj),
+                                      &rfc_to, &rfc_from,
+                                      &node_to, &node_from,
+                                      &msg, &fido, &alias_found);
+                if (rc != 0)
+                    TMPS_RETURN(rc);
+
+                acl_ngrp(rfc_from, TYPE_ECHOMAIL);
+
+                from_is_local = addr_is_local_xpost(
+                    s_rfcaddr_to_asc(&rfc_from, FALSE));
 
                 ab = areasbbs_lookup(pa->area);
                 if (ab) {
@@ -1513,6 +1532,13 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
         /*
          * NetMail message
          */
+        rc = snd_mail_prepare(h, subj, sizeof(subj),
+                              &rfc_to, &rfc_from,
+                              &node_to, &node_from,
+                              &msg, &fido, &alias_found);
+        if (rc != 0)
+            TMPS_RETURN(rc);
+
         /* Check message size limit */
         limitsize = areas_get_limitmsgsize();
         if (limitsize > 0 && size > limitsize) {

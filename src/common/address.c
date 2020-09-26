@@ -256,7 +256,7 @@ int addr_is_local_xpost(char *addr)
 
     RFCAddr rfc;
     char ailx;
-    static char **addr_list = NULL;
+    char **addr_list = NULL;
 
     if (!addr)
         return FALSE;
