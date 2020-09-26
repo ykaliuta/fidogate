@@ -47,20 +47,18 @@
 char *get_name_from_body(void);
 void sendback(const char *, ...);
 void rfcaddr_init(RFCAddr *);
-int rfc_parse(RFCAddr *, char *, size_t, Node *, int);
 int rfc_isfido(void);
 void cvt_user_name(char *);
-time_t mail_date(void);
-int snd_mail(RFCAddr, long);
-int snd_message(Message *, Area *, RFCAddr, RFCAddr, char *,
-                long, char *, int, MIMEInfo *, Node *);
-int print_tear_line(FILE *);
-int print_origin(FILE *, char *, Node *);
+int print_tear_line(FILE *, RFCHeader *);
+int print_origin(FILE *, char *, Node *, RFCHeader *);
 int print_local_msgid(FILE *, Node *);
 int print_via(FILE *, Node *);
-int snd_to_cc_bcc(long);
 void short_usage(void);
 void usage(void);
+static int snd_message(Message * msg, Area * parea,
+                RFCAddr rfc_from, RFCAddr rfc_to, char *subj,
+                long size, char *flags, int fido, MIMEInfo * mime,
+                Node * node_from, RFCHeader *h);
 
 static char *o_flag = NULL;     /* -o --out-packet-file         */
 static char *w_flag = NULL;     /* -w --write-outbound          */
@@ -330,13 +328,13 @@ static RFCAddr _rfc_sender(char *from, char *reply_to)
     return rfc;
 }
 
-static RFCAddr rfc_sender(void)
+static RFCAddr rfc_sender(RFCHeader *h)
 {
     char *from;
     char *reply_to;
 
-    from = s_header_getcomplete("From");
-    reply_to = s_header_getcomplete("Reply-To");
+    from = s_header_getcomplete(h, "From");
+    reply_to = s_header_getcomplete(h, "Reply-To");
 
     return _rfc_sender(from, reply_to);
 }
@@ -346,13 +344,14 @@ static RFCAddr rfc_sender(void)
  */
 static int rfc_isfido_flag = FALSE;
 
-int rfc_parse(RFCAddr * rfc, char *name, size_t name_size, Node * node, int gw)
+static int rfc_parse(RFCAddr *rfc, char *name, size_t name_size,
+                     Node *node, int gw, RFCHeader *h)
 {
     char *p;
     int len, ret = OK;
     Node nn;
     Node *n;
-    Host *h;
+    Host *host;
     int addr_is_restricted = FALSE;
 
     rfc_isfido_flag = FALSE;
@@ -401,9 +400,9 @@ int rfc_parse(RFCAddr * rfc, char *name, size_t name_size, Node * node, int gw)
         /*
          * Look up in HOSTS
          */
-        if ((h = hosts_lookup(n, NULL))) {
-            if ((h->flags & HOST_DOWN)) {
-                if (!addr_is_domain(s_header_getcomplete("From"))) {
+        if ((host = hosts_lookup(n, NULL))) {
+            if ((host->flags & HOST_DOWN)) {
+                if (!addr_is_domain(s_header_getcomplete(h, "From"))) {
                     /* Node is down, bounce mail */
                     str_printf(address_error, sizeof(address_error),
                                "FTN address %s: currently down, unreachable",
@@ -511,17 +510,18 @@ void cvt_user_name(char *s)
 /*
  * Make from field for FIDO message into @name buffer
  */
-static int mail_receiver(RFCAddr *rfc, Node *node, char *name, size_t size)
+static int mail_receiver(RFCAddr *rfc, Node *node, char *name, size_t size,
+                         RFCHeader *h)
 {
     char *to;
-    RFCAddr h;
+    RFCAddr host;;
     Alias *alias;
 
     if (rfc->user[0]) {
         /*
          * Address is argument
          */
-        if (rfc_parse(rfc, name, size, node, TRUE) == ERROR) {
+        if (rfc_parse(rfc, name, size, node, TRUE, h) == ERROR) {
             fglog("BOUNCE: <%s>, %s", s_rfcaddr_to_asc(rfc, TRUE),
                   (*address_error ? address_error : "unknown"));
             return ERROR;
@@ -563,18 +563,20 @@ static int mail_receiver(RFCAddr *rfc, Node *node, char *name, size_t size)
          * User-defined header line X-Comment-To for gateway software
          * (can be patched into news reader)
          */
-        if ((to = header_get("X-Comment-To")) || (to = get_name_from_body())) {
-            h = rfcaddr_from_rfc(to);
+        if ((to = header_get(h, "X-Comment-To")) || (to = get_name_from_body())) {
+            host = rfcaddr_from_rfc(to);
 
             /*
              * use single name as RealName. Not in rfcaddr_from_rfc()
              * since single user name is a valid mail address (local
              * user)
              */
-            if ((h.real[0] == '\0') && (h.user[0] != '\0') && (h.addr[0] == '\0'))
-                BUF_COPY(h.real, h.user);
+            if ((host.real[0] == '\0') &&
+                (host.user[0] != '\0') &&
+                (host.addr[0] == '\0'))
+                BUF_COPY(host.real, host.user);
 
-            rfc_parse(&h, name, size, NULL, FALSE);
+            rfc_parse(&host, name, size, NULL, FALSE, h);
         } else {
             str_copy(name, size, "All");
         }
@@ -588,12 +590,12 @@ static int mail_receiver(RFCAddr *rfc, Node *node, char *name, size_t size)
  * Get date field for FIDO message. Look for `Date:' header or use
  * current time.
  */
-time_t mail_date(void)
+static time_t mail_date(RFCHeader *h)
 {
     time_t timevar = -1;
     char *header_date;
 
-    if ((header_date = header_get("Date"))) {
+    if ((header_date = header_get(h, "Date"))) {
         /* try to extract date and other information from it */
         debug(5, "RFC Date: %s", header_date);
         timevar = parsedate(header_date, NULL);
@@ -604,11 +606,11 @@ time_t mail_date(void)
     return timevar;
 }
 
-static char *mail_tz(void)
+static char *mail_tz(RFCHeader *h)
 {
     char *header_date;
 
-    header_date = header_get("Date");
+    header_date = header_get(h, "Date");
 
     return date_rfc_tz(header_date);
 }
@@ -617,7 +619,8 @@ static char *mail_tz(void)
  * Generate sender name and node from rfc address.
  * Return TRUE if found alias.
  */
-static int mail_sender(RFCAddr *rfc, Node *node, char *name, size_t size)
+static int mail_sender(RFCAddr *rfc, Node *node, char *name, size_t size,
+                       RFCHeader *h)
 {
     Alias *alias;
     int rc;
@@ -629,9 +632,9 @@ static int mail_sender(RFCAddr *rfc, Node *node, char *name, size_t size)
     *name = 0;
     *node = cf_n_addr();
 #ifndef PASSTHRU_NETMAIL
-    rfc_parse(rfc, name, size, &n, FALSE);
+    rfc_parse(rfc, name, size, &n, FALSE, h);
 #else
-    ret = rfc_parse(rfc, name, size, &n, FALSE);
+    ret = rfc_parse(rfc, name, size, &n, FALSE, h);
     /*
      * If the from address is an FTN address, convert and pass it via
      * parameter node. This may cause problems when operating different
@@ -706,7 +709,7 @@ int check_downlinks(char *area)
 /*
  * Process mail/news message
  */
-int snd_mail(RFCAddr rfc_to, long size)
+static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
 {
     char groups[BUFSIZ];
     Node node_from, node_to;
@@ -734,7 +737,7 @@ int snd_mail(RFCAddr rfc_to, long size)
     /*
      * Subject
      */
-    if ((p = header_get("Subject")))
+    if ((p = header_get(h, "Subject")))
         BUF_COPY(subj, p);
     else
         BUF_COPY(subj, "(no subject)");
@@ -742,20 +745,20 @@ int snd_mail(RFCAddr rfc_to, long size)
     /*
      * MIME header
      */
-    mime = get_mime(s_header_getcomplete("MIME-Version"),
-                    s_header_getcomplete("Content-Type"),
-                    s_header_getcomplete("Content-Transfer-Encoding"));
+    mime = get_mime(s_header_getcomplete(h, "MIME-Version"),
+                    s_header_getcomplete(h, "Content-Type"),
+                    s_header_getcomplete(h, "Content-Transfer-Encoding"));
 
     /*
      * From RFCAddr
      */
     rfcaddr_init(&rfc_from);
-    rfc_from = rfc_sender();
+    rfc_from = rfc_sender(h);
 
     /*
      * To name/node
      */
-    rc = mail_receiver(&rfc_to, &node_to, msg.name_to, sizeof(msg.name_to));
+    rc = mail_receiver(&rfc_to, &node_to, msg.name_to, sizeof(msg.name_to), h);
     if (rc == ERROR) {
         if (*address_error)
             sendback("Address %s:\n  %s",
@@ -773,19 +776,19 @@ int snd_mail(RFCAddr rfc_to, long size)
      * From name/node
      */
     alias_found = mail_sender(&rfc_from, &node_from,
-                              msg.name_from, sizeof(msg.name_from));
+                              msg.name_from, sizeof(msg.name_from), h);
     /*
      * Date
      */
-    msg.date = mail_date();
-    msg.tz = mail_tz();
+    msg.date = mail_date(h);
+    msg.tz = mail_tz(h);
     msg.cost = 0;
     msg.attr = 0;
 
     /*
      * X-Flags
      */
-    flags = header_get("X-Flags");
+    flags = header_get(h, "X-Flags");
     if (flags)
         str_lower(flags);
 
@@ -797,7 +800,7 @@ int snd_mail(RFCAddr rfc_to, long size)
         /*
          * Check for news control message
          */
-        if ((p = header_get("Control"))) {
+        if ((p = header_get(h, "Control"))) {
             debug(3, "Skipping Control: %s", p);
             TMPS_RETURN(EX_OK);
         }
@@ -805,7 +808,7 @@ int snd_mail(RFCAddr rfc_to, long size)
         /*
          * News message: get newsgroups and convert to FIDO areas
          */
-        p = header_get("Newsgroups");
+        p = header_get(h, "Newsgroups");
         if (!p) {
             sendback("No Newsgroups header in news message");
             TMPS_RETURN(EX_DATAERR);
@@ -882,7 +885,7 @@ int snd_mail(RFCAddr rfc_to, long size)
                         fglog
                             ("BOUNCE: Postings from address `%s' to group `%s' not allowed - skipped, sent notify",
                              s_rfcaddr_to_asc(&rfc_from, FALSE), pa->group);
-                        bounce_mail("acl", &rfc_from, &msg, pa->group, &body);
+                        bounce_mail("acl", &rfc_from, &msg, pa->group, &body, h);
                     } else
                         fglog
                             ("BOUNCE: Postings from address `%s' to group `%s' not allowed - skipped",
@@ -904,7 +907,7 @@ int snd_mail(RFCAddr rfc_to, long size)
                 msg.node_from = cf_n_addr();
                 msg.node_to = cf_n_uplink();
                 status = snd_message(&msg, pa, rfc_from, rfc_to,
-                                     subj, size, flags, fido, mime, &node_from);
+                                     subj, size, flags, fido, mime, &node_from, h);
                 if (status) {
                     tl_clear(&tl);
                     TMPS_RETURN(status);
@@ -932,15 +935,15 @@ int snd_mail(RFCAddr rfc_to, long size)
 
         msg.attr |= MSG_PRIVATE;
 
-        from_is_local = addr_is_local(s_header_getcomplete("From"));
+        from_is_local = addr_is_local(s_header_getcomplete(h, "From"));
 
         if (x_flags_policy > 0) {
-            char *hf = s_header_getcomplete("From");
-            char *hr = s_header_getcomplete("Reply-To");
+            char *hf = s_header_getcomplete(h, "From");
+            char *hr = s_header_getcomplete(h, "Reply-To");
 
             if (x_flags_policy == 1) {
                 /* Allow only local users to use the X-Flags header */
-                if (from_is_local && header_hops() <= 1)
+                if (from_is_local && header_hops(h) <= 1)
                     debug(5, "true local address - o.k.");
                 else {
                     if (flags)
@@ -981,7 +984,7 @@ int snd_mail(RFCAddr rfc_to, long size)
                     }
             }
         } else {
-            char *hf = s_header_getcomplete("From");
+            char *hf = s_header_getcomplete(h, "From");
 
             /* Log what's going on ... */
             if (flags)
@@ -993,7 +996,7 @@ int snd_mail(RFCAddr rfc_to, long size)
          * Return-Receipt-To -> RRREQ flag
          */
         if (!dont_process_return_receipt_to &&
-            (p = header_get("Return-Receipt-To")))
+            (p = header_get(h, "Return-Receipt-To")))
             msg.attr |= MSG_RRREQ;
 
         acl_ngrp(rfc_from, TYPE_NETMAIL);
@@ -1009,7 +1012,7 @@ int snd_mail(RFCAddr rfc_to, long size)
             msg.node_from = node_from;
             msg.node_to = node_to;
             status = snd_message(&msg, NULL, rfc_from, rfc_to,
-                                 subj, size, flags, fido, mime, &node_from);
+                                 subj, size, flags, fido, mime, &node_from, h);
             acl_ngrp_free();
             TMPS_RETURN(status);
         } else {
@@ -1017,7 +1020,7 @@ int snd_mail(RFCAddr rfc_to, long size)
                 fglog
                     ("BOUNCE: Gateway netmail from address `%s' to `%s' not allowed - skipped, sent notify",
                      s_rfcaddr_to_asc(&rfc_from, FALSE), asc_node_to);
-                bounce_mail("acl_netmail", &rfc_from, &msg, asc_node_to, &body);
+                bounce_mail("acl_netmail", &rfc_from, &msg, asc_node_to, &body, h);
             } else {
                 fglog
                     ("BOUNCE: Gateway netmail from address `%s' to `%s' not allowed - skipped",
@@ -1033,13 +1036,13 @@ int snd_mail(RFCAddr rfc_to, long size)
     return 0;
 }
 
-static char *get_chrs_header(void)
+static char *get_chrs_header(RFCHeader *h)
 {
     char *p;
     char *chrs = "CHRS:";
 
-    for (p = header_geth("X-FTN-Kludge", TRUE);
-         p; p = header_geth("X-FTN-Kludge", FALSE)) {
+    for (p = header_geth(h, "X-FTN-Kludge", TRUE);
+         p; p = header_geth(h, "X-FTN-Kludge", FALSE)) {
         if (strncmp(p, chrs, strlen(chrs)) == 0)
             return p;
     }
@@ -1056,13 +1059,13 @@ static bool should_skip_kludge(char *p)
     return false;
 }
 
-static char *get_charset_from_header(void)
+static char *get_charset_from_header(RFCHeader *h)
 {
     char *kludge;
     char *p;
     char *save;
 
-    kludge = get_chrs_header();
+    kludge = get_chrs_header(h);
     if (kludge == NULL)
         return NULL;
 
@@ -1086,7 +1089,8 @@ static char *get_charset_from_header(void)
  * Headers are recoded in the beginning to the internal charset.
  */
 static void determine_charsets(Area * parea, char **in, char **out,
-                               char **out_fsc, int *out_level)
+                               char **out_fsc, int *out_level,
+                               RFCHeader *h)
 {
     char *cs_in;
     char *cs_out = NULL;
@@ -1094,7 +1098,7 @@ static void determine_charsets(Area * parea, char **in, char **out,
     char *cs_save;
 
     cs_in = INTERNAL_CHARSET;
-    cs_out = get_charset_from_header();
+    cs_out = get_charset_from_header(h);
 
     if (!cs_out && parea) {     /* News */
         if (parea->charset) {
@@ -1154,10 +1158,10 @@ fallback:
     fprintf(f, "%s\r", date("%N", NULL));
 }
 
-int snd_message(Message * msg, Area * parea,
+static int snd_message(Message * msg, Area * parea,
                 RFCAddr rfc_from, RFCAddr rfc_to, char *subj,
                 long size, char *flags, int fido, MIMEInfo * mime,
-                Node * node_from)
+                Node * node_from, RFCHeader *h)
 /* msg       FTN nessage structure
  * parea     area/newsgroup description structure
  * rfc_from  Internet sender
@@ -1168,6 +1172,7 @@ int snd_message(Message * msg, Area * parea,
  * fido      TRUE: recipient is FTN address
  * mime      MIME stuff
  * node_from sender node from mail_sender()
+ * h         headers of the rfc message
  */
 {
     static int nmsg = 0;
@@ -1210,7 +1215,7 @@ int snd_message(Message * msg, Area * parea,
     if (parea && parea->rfc_lvl != -1)
         rfc_level = parea->rfc_lvl;
 
-    determine_charsets(parea, &cs_in, &cs_out, &cs_out_fsc, &cs_out_fsc_level);
+    determine_charsets(parea, &cs_in, &cs_out, &cs_out_fsc, &cs_out_fsc_level, h);
     charset_set_in_out(cs_in, cs_out);
 
     /*
@@ -1255,7 +1260,7 @@ int snd_message(Message * msg, Area * parea,
     last_zone = cf_zone();
 
     /* Decode and recode (charset) the body */
-    if (mime_body_dec(&body, cs_out) != OK)
+    if (mime_body_dec(&body, h, cs_out) != OK)
         return ERROR;
 
     /*
@@ -1326,7 +1331,7 @@ int snd_message(Message * msg, Area * parea,
     /***** ^A kludges *******************************************************/
 
     /* Add kludges for MSGID / REPLY */
-    if ((header = s_header_getcomplete("Message-ID"))) {
+    if ((header = s_header_getcomplete(h, "Message-ID"))) {
 #ifdef FIDO_STYLE_MSGID
         if ((id =
              s_msgid_rfc_to_fido(&flag, header, part, split != 0, msg->area,
@@ -1354,8 +1359,8 @@ int snd_message(Message * msg, Area * parea,
     } else
         print_local_msgid(sf, node_from);
 
-    if ((header = s_header_getcomplete("References")) ||
-        (header = s_header_getcomplete("In-Reply-To"))) {
+    if ((header = s_header_getcomplete(h, "References")) ||
+        (header = s_header_getcomplete(h, "In-Reply-To"))) {
 #ifdef FIDO_STYLE_MSGID
         if ((id = s_msgid_rfc_to_fido(&flag, header, 0, 0, msg->area, 0, 1)))
 #else
@@ -1406,7 +1411,7 @@ int snd_message(Message * msg, Area * parea,
         if (!no_rfc_kludge)
             fprintf(sf, "\001RFC: %d 0\r", rfc_level);
 
-        header_ca_rfc(sf, rfc_level);
+        header_ca_rfc(h, sf, rfc_level);
         /* Add ^ARFC MIME header lines */
 #ifndef DEL_MIME_IF_RFC2
         if (mime->version && rfc_level > 0 &&
@@ -1422,7 +1427,7 @@ int snd_message(Message * msg, Area * parea,
                     mime->type, cs_enc);
         /* Add ^AGATEWAY header */
         if (!no_gateway_kludge) {
-            if ((header = s_header_getcomplete("X-Gateway")))
+            if ((header = s_header_getcomplete(h, "X-Gateway")))
                 fprintf(sf, "\001GATEWAY: RFC1036/822 %s [FIDOGATE %s], %s\r",
                         cf_fqdn(), version_global(), header);
             else
@@ -1437,8 +1442,8 @@ int snd_message(Message * msg, Area * parea,
 
     /* Misc kludges */
     p3 = NULL;
-    for (p2 = header_geth("X-FTN-Kludge", TRUE);
-         p2; p2 = header_geth("X-FTN-Kludge", FALSE)) {
+    for (p2 = header_geth(h, "X-FTN-Kludge", TRUE);
+         p2; p2 = header_geth(h, "X-FTN-Kludge", FALSE)) {
         if (should_skip_kludge(p2))
             continue;
 
@@ -1451,7 +1456,7 @@ int snd_message(Message * msg, Area * parea,
 	rfc2ftn_add_tzutc(sf, msg->tz);
 
 #ifdef PID_READER_TID_GTV
-    if ((header = s_header_getcomplete("User-Agent")))
+    if ((header = s_header_getcomplete(h, "User-Agent")))
         fprintf(sf, "\001PID: %s\r", header);
     fprintf(sf, "\001TID: FIDOGATE-%s\r", version_global());
 #endif                          /* PID_READER_TID_GTV */
@@ -1473,32 +1478,32 @@ int snd_message(Message * msg, Area * parea,
     if (!x_flags_n) {
         if (!no_from_line && !(alias_found && no_fsc_0035_if_alias)) {
             /* From, Reply-To */
-            if ((header = s_header_getcomplete("From"))) {
+            if ((header = s_header_getcomplete(h, "From"))) {
                 pt = xlat_s(header, pt);
                 fprintf(sf, "From: %s\r", pt ? pt : header);
             }
-            if ((header = s_header_getcomplete("Reply-To"))) {
+            if ((header = s_header_getcomplete(h, "Reply-To"))) {
                 pt = xlat_s(header, pt);
                 fprintf(sf, "Reply-To: %s\r", pt ? pt : header);
             }
 
             /* Sender, To, Cc (only for mail) */
             if (private) {
-                if ((header = s_header_getcomplete("Sender"))) {
+                if ((header = s_header_getcomplete(h, "Sender"))) {
                     pt = xlat_s(header, pt);
                     fprintf(sf, "Sender: %s\r", pt ? pt : header);
-                } else if ((header = s_header_getcomplete("Resent-From"))) {
+                } else if ((header = s_header_getcomplete(h, "Resent-From"))) {
                     pt = xlat_s(header, pt);
                     fprintf(sf, "Sender: %s\r", pt ? pt : header);
                 }
 
                 /* If Sender/Resent-From is present also include To, Cc */
                 if (header) {
-                    if ((header = s_header_getcomplete("To"))) {
+                    if ((header = s_header_getcomplete(h, "To"))) {
                         pt = xlat_s(header, pt);
                         fprintf(sf, "Header-To: %s\r", pt ? pt : header);
                     }
-                    if ((header = s_header_getcomplete("Cc"))) {
+                    if ((header = s_header_getcomplete(h, "Cc"))) {
                         pt = xlat_s(header, pt);
                         fprintf(sf, "Header-Cc: %s\r", pt ? pt : header);
                     }
@@ -1563,7 +1568,7 @@ int snd_message(Message * msg, Area * parea,
             lsize++;            /* <CR><LF>          */
 
         if (split && lsize > maxsize) {
-            print_tear_line(sf);
+            print_tear_line(sf, h);
             if (newsmode) {
                 char *origin;
 
@@ -1573,11 +1578,11 @@ int snd_message(Message * msg, Area * parea,
                     origin = organization;
                     BUF_COPY(buffer, origin);
                     pt = xlat_s(buffer, pt);
-                    print_origin(sf, pt ? pt : buffer, node_from);
+                    print_origin(sf, pt ? pt : buffer, node_from, h);
                 } else {
                     origin = cf_p_origin();
                     pt = xlat_s(origin, pt);
-                    print_origin(sf, pt ? pt : origin, node_from);
+                    print_origin(sf, pt ? pt : origin, node_from, h);
                 }
             } else
                 print_via(sf, node_from);
@@ -1596,7 +1601,7 @@ int snd_message(Message * msg, Area * parea,
      * If message is for echo mail (-n flag) then add
      * tear, origin, seen-by and path line.
      */
-    print_tear_line(sf);
+    print_tear_line(sf, h);
     if (newsmode) {
         char *origin;
 
@@ -1606,11 +1611,11 @@ int snd_message(Message * msg, Area * parea,
             origin = organization;
             BUF_COPY(buffer, origin);
             pt = xlat_s(buffer, pt);
-            print_origin(sf, pt ? pt : buffer, node_from);
+            print_origin(sf, pt ? pt : buffer, node_from, h);
         } else {
             origin = cf_p_origin();
             pt = xlat_s(origin, pt);
-            print_origin(sf, pt ? pt : origin, node_from);
+            print_origin(sf, pt ? pt : origin, node_from, h);
         }
     } else
         print_via(sf, node_from);
@@ -1626,16 +1631,16 @@ int snd_message(Message * msg, Area * parea,
 /*
  * Output tear line
  */
-int print_tear_line(FILE * fp)
+int print_tear_line(FILE *fp, RFCHeader *h)
 {
     char *p, *pt;
 
     if (use_x_for_tearline) {
-        if ((p = header_get("X-FTN-Tearline")) ||
-            (p = header_get("X-Mailer")) ||
-            (p = header_get("User-Agent")) ||
-            (p = header_get("X-Newsreader")) ||
-            (p = header_get("X-GateSoftware"))) {
+        if ((p = header_get(h, "X-FTN-Tearline")) ||
+            (p = header_get(h, "X-Mailer")) ||
+            (p = header_get(h, "User-Agent")) ||
+            (p = header_get(h, "X-Newsreader")) ||
+            (p = header_get(h, "X-GateSoftware"))) {
             BUF_COPY(buffer, p);
             /* TODO: no xlat when converted directly to FTN charset */
             pt = xlat_s(buffer, NULL);
@@ -1652,7 +1657,7 @@ int print_tear_line(FILE * fp)
 /*
  * Generate origin, seen-by and path line
  */
-int print_origin(FILE * fp, char *origin, Node * node_from)
+int print_origin(FILE *fp, char *origin, Node *node_from, RFCHeader *h)
 {
     char buf[80];
     char bufa[30];
@@ -1676,7 +1681,7 @@ int print_origin(FILE * fp, char *origin, Node * node_from)
         BUF_COPY(bufa, znf1(node_from));
 
 #if defined(PASSTHRU_ECHOMAIL) && !defined(DOMAIN_TO_ORIGIN)
-    if ((p = header_get("X-FTN-Origin")))
+    if ((p = header_get(h, "X-FTN-Origin")))
         BUF_APPEND(buf, p);
     else
 #endif                          /* PASSTHRU_ECHOMAIL && !DOMAIN_TO_ORIGIN */
@@ -1711,8 +1716,8 @@ int print_origin(FILE * fp, char *origin, Node * node_from)
      * Additional SEEN-BYs from X-FTN-Seen-By headers, ftntoss must be
      * run afterwards to sort / compact SEEN-BY
      */
-    for (p = header_geth("X-FTN-Seen-By", TRUE);
-         p; p = header_geth("X-FTN-Seen-By", FALSE))
+    for (p = header_geth(h, "X-FTN-Seen-By", TRUE);
+         p; p = header_geth(h, "X-FTN-Seen-By", FALSE))
         fprintf(fp, "SEEN-BY: %s\r", p);
 #endif
     if (cf_addr()->point) {     /* Generate 4D addresses */
@@ -1737,8 +1742,8 @@ int print_origin(FILE * fp, char *origin, Node * node_from)
 #ifdef PASSTHRU_ECHOMAIL
     /* Additional ^APATHs from X-FTN-Path headers, ftntoss must be
        run afterwards to compact ^APATH */
-    for (p = header_geth("X-FTN-Path", TRUE);
-         p; p = header_geth("X-FTN-Path", FALSE))
+    for (p = header_geth(h, "X-FTN-Path", TRUE);
+         p; p = header_geth(h, "X-FTN-Path", FALSE))
         fprintf(fp, "\001PATH: %s\r", p);
 #endif
     if (cf_addr()->point) {     /* Generate 4D addresses */
@@ -1793,7 +1798,7 @@ int print_via(FILE * fp, Node * node_from)
 /*
  * Send mail to addresses taken from To, Cc, Bcc headers
  */
-int snd_to_cc_bcc(long int size)
+static int snd_to_cc_bcc(long int size, RFCHeader *h)
 {
     char *header, *p;
     int status = EX_OK, st;
@@ -1802,30 +1807,30 @@ int snd_to_cc_bcc(long int size)
     /*
      * To:
      */
-    for (header = header_get("To"); header; header = header_getnext())
+    for (header = header_get(h, "To"); header; header = header_getnext(h))
         for (p = addr_token(header); p; p = addr_token(NULL)) {
             rfc_to = rfcaddr_from_rfc(p);
-            if ((st = snd_mail(rfc_to, size)) != EX_OK)
+            if ((st = snd_mail(rfc_to, size, h)) != EX_OK)
                 status = st;
         }
 
     /*
      * Cc:
      */
-    for (header = header_get("Cc"); header; header = header_getnext())
+    for (header = header_get(h, "Cc"); header; header = header_getnext(h))
         for (p = addr_token(header); p; p = addr_token(NULL)) {
             rfc_to = rfcaddr_from_rfc(p);
-            if ((st = snd_mail(rfc_to, size)) != EX_OK)
+            if ((st = snd_mail(rfc_to, size, h)) != EX_OK)
                 status = st;
         }
 
     /*
      * Bcc:
      */
-    for (header = header_get("Bcc"); header; header = header_getnext())
+    for (header = header_get(h, "Bcc"); header; header = header_getnext(h))
         for (p = addr_token(header); p; p = addr_token(NULL)) {
             rfc_to = rfcaddr_from_rfc(p);
-            if ((st = snd_mail(rfc_to, size)) != EX_OK)
+            if ((st = snd_mail(rfc_to, size, h)) != EX_OK)
                 status = st;
         }
 
@@ -1847,10 +1852,13 @@ static void set_mailmode(void)
 /*
  * wrapper to read the header and decode mime
  */
-static void rfc2ftn_header_read(FILE * fpart)
+static RFCHeader *rfc2ftn_header_read(FILE * fpart)
 {
-    header_read(fpart);
-    header_decode(INTERNAL_CHARSET);
+    RFCHeader *h;
+
+    h = header_read(fpart);
+    header_decode(h, INTERNAL_CHARSET);
+    return h;
 }
 
 /*
@@ -1909,6 +1917,7 @@ int main(int argc, char **argv)
     long pos;
     char posfile[MAXPATH];
     int n_flag = FALSE;
+    RFCHeader *header;
 
     int option_index;
     static struct option long_options[] = {
@@ -2264,11 +2273,11 @@ int main(int argc, char **argv)
 
         /* Read message header from fpart */
         /* read and decode mime */
-        rfc2ftn_header_read(fpart);
+        header = rfc2ftn_header_read(fpart);
 
         /* Get Organization header */
         if (use_organization_for_origin)
-            organization = s_header_getcomplete("Organization");
+            organization = s_header_getcomplete(header, "Organization");
 
         /*
          * Work in news mode if forced by switches
@@ -2276,7 +2285,7 @@ int main(int argc, char **argv)
          * article
          */
         if (b_flag || f_flag || n_flag
-            || ((header_geth("Newsgroups", TRUE) != NULL) && !t_flag)) {
+            || ((header_geth(header, "Newsgroups", TRUE) != NULL) && !t_flag)) {
             set_newsmode();
 
         } else {
@@ -2308,24 +2317,23 @@ int main(int argc, char **argv)
 
         if (newsmode) {
             /* Send mail to echo feed for news messages */
-            status = snd_mail(rfc_to, size);
+            status = snd_mail(rfc_to, size, header);
             tmps_freeall();
         } else if (t_flag || optind >= argc) {  /* flag or no arguments */
             /* Send mail to addresses from headers */
-            status = snd_to_cc_bcc(size);
+            status = snd_to_cc_bcc(size, header);
             tmps_freeall();
         } else {
             /* Send mail to addresses from command line args */
             for (i = optind; i < argc; i++) {
                 rfc_to = rfcaddr_from_rfc(argv[i]);
-                if ((st = snd_mail(rfc_to, size)) != EX_OK)
+                if ((st = snd_mail(rfc_to, size, header)) != EX_OK)
                     status = st;
                 tmps_freeall();
             }
         }
 
-	/* it frees the header memory */
-        header_delete();
+        header_free(header);
         tl_clear(&body);
         size = 0;
 

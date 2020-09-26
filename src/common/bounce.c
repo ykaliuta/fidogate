@@ -42,7 +42,7 @@ void bounce_set_cc(char *cc)
  * Print text file with substitutions for %x
  */
 int print_file_subst(FILE * in, FILE * out, Message * msg, char *rfc_to,
-                     Textlist * body)
+                     Textlist * body, RFCHeader *h)
 {
     int c;
     char *hg;
@@ -79,19 +79,19 @@ int print_file_subst(FILE * in, FILE * out, Message * msg, char *rfc_to,
                 tl_print(body, out);
                 break;
             case 'A':          /* RFC From: */
-                if ((hg = s_header_getcomplete("From")))
+                if ((hg = s_header_getcomplete(h, "From")))
                     fputs(hg, out);
                 break;
             case 'D':          /* RFC Date: */
-                if ((hg = header_get("Date")))
+                if ((hg = header_get(h, "Date")))
                     fputs(hg, out);
                 break;
             case 'N':          /* RFC Newsgroups: */
-                if ((hg = header_get("Newsgroups")))
+                if ((hg = header_get(h, "Newsgroups")))
                     fputs(hg, out);
                 break;
             case 'S':          /* RFC Subject: */
-                if ((hg = header_get("Subject")))
+                if ((hg = header_get(h, "Subject")))
                     fputs(hg, out);
                 break;
             }
@@ -133,7 +133,7 @@ int bounce_header(char *to)
  * Bounce mail
  */
 void bounce_mail(char *reason, RFCAddr * addr_from, Message * msg, char *rfc_to,
-                 Textlist * body)
+                 Textlist * body, RFCHeader *h)
 {
     char *to;
     FILE *in;
@@ -146,7 +146,7 @@ void bounce_mail(char *reason, RFCAddr * addr_from, Message * msg, char *rfc_to,
     BUF_COPY3(buffer, cf_p_configdir(), "/bounce.", reason);
 
     in = xfopen(buffer, R_MODE);
-    print_file_subst(in, mail_file('m'), msg, rfc_to, body);
+    print_file_subst(in, mail_file('m'), msg, rfc_to, body, h);
     fclose(in);
 
     mail_close('m');

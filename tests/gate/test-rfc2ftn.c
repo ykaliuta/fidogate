@@ -93,7 +93,7 @@ Ensure(mailsender_converts_user_dot)
     char res[NAMEBUFSIZE];
     char *exp = "John Doe";
 
-    mail_sender(&rfc, &node, res, sizeof(res));
+    mail_sender(&rfc, &node, res, sizeof(res), NULL);
 
     assert_that(res, is_equal_to_string(exp));
 }
@@ -109,7 +109,7 @@ Ensure(mailsender_converts_user_underscore)
     char res[NAMEBUFSIZE];
     char *exp = "John Doe";
 
-    mail_sender(&rfc, &node, res, sizeof(res));
+    mail_sender(&rfc, &node, res, sizeof(res), NULL);
 
     assert_that(res, is_equal_to_string(exp));
 }
@@ -125,7 +125,7 @@ Ensure(mailsender_does_not_capitalizes_real)
     char res[NAMEBUFSIZE];
     char *exp = "john doe";
 
-    mail_sender(&rfc, &node, res, sizeof(res));
+    mail_sender(&rfc, &node, res, sizeof(res), NULL);
 
     assert_that(res, is_equal_to_string(exp));
 }
@@ -141,7 +141,7 @@ Ensure(mailsender_does_not_amend_dot_underscore_in_real)
     char res[NAMEBUFSIZE];
     char *exp = "john_doe.foo";
 
-    mail_sender(&rfc, &node, res, sizeof(res));
+    mail_sender(&rfc, &node, res, sizeof(res), NULL);
 
     assert_that(res, is_equal_to_string(exp));
 }
@@ -156,7 +156,7 @@ Ensure(rfcparse_converts_useronly)
     char res[NAMEBUFSIZE];
     char *exp = "User";
 
-    rfc_parse(&src, res, sizeof(res), NULL, FALSE);
+    rfc_parse(&src, res, sizeof(res), NULL, FALSE, NULL);
 
     assert_that(res, is_equal_to_string(exp));
 }
@@ -171,7 +171,7 @@ Ensure(rfcparse_doesnot_convert_real)
     char res[NAMEBUFSIZE];
     char *exp = "user";
 
-    rfc_parse(&src, res, sizeof(res), NULL, FALSE);
+    rfc_parse(&src, res, sizeof(res), NULL, FALSE, NULL);
 
     assert_that(res, is_equal_to_string(exp));
 }

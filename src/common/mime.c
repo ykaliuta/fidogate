@@ -37,13 +37,13 @@ void mime_free(void);
 
 static MIMEInfo *mime_list = NULL;
 
-static char *mime_get_main_charset()
+static char *mime_get_main_charset(RFCHeader *header)
 {
     MIMEInfo *mime;
     char *charset;
-    mime = get_mime(s_header_getcomplete("MIME-Version"),
-                    s_header_getcomplete("Content-Type"),
-                    s_header_getcomplete("Content-Transfer-Encoding"));
+    mime = get_mime(s_header_getcomplete(header, "MIME-Version"),
+                    s_header_getcomplete(header, "Content-Type"),
+                    s_header_getcomplete(header, "Content-Transfer-Encoding"));
     charset = strsave(mime->type_charset);
     mime_free();
     return charset;
@@ -1116,7 +1116,8 @@ static int mime_handle_mimed_word(char *s, char **out, size_t *out_len,
 }
 
 static int mime_handle_plain_word(char *s, char **out, size_t *out_len,
-                                  char *charset, size_t ch_size, char *to)
+                                  char *charset, size_t ch_size, char *to,
+				  RFCHeader *header)
 {
     char *plain_charset = CHARSET_STDRFC;
     char *mime_charset = NULL;
@@ -1145,7 +1146,7 @@ static int mime_handle_plain_word(char *s, char **out, size_t *out_len,
     if (!charset_is_7bit(s, len) && charset_is_valid_utf8(s, len)) {
         plain_charset = "utf-8";
     } else {
-        mime_charset = mime_get_main_charset();
+        mime_charset = mime_get_main_charset(header);
 
         if ((mime_charset != NULL) &&
             (strcmp(mime_charset, CHARSET_STD7BIT) != 0)) {
@@ -1196,7 +1197,7 @@ static int mime_handle_brace(char *s, char **out, size_t *out_len,
  */
 static int mime_handle_word(char *s, char **out, size_t *out_len,
                             bool *is_mime, char *charset, size_t ch_size,
-                            char *to)
+                            char *to, RFCHeader *header)
 {
     /* mime word can be inside "comment" not separated by whitespace */
     if (strnieq(s,
@@ -1213,11 +1214,11 @@ static int mime_handle_word(char *s, char **out, size_t *out_len,
     }
 
     *is_mime = false;
-    return mime_handle_plain_word(s, out, out_len, charset, ch_size, to);
+    return mime_handle_plain_word(s, out, out_len, charset, ch_size, to, header);
 }
 
 /* source @s must be '\0'-terminated */
-char *mime_header_dec(char *d, size_t d_max, char *s, char *to)
+char *mime_header_dec(char *d, size_t d_max, char *s, char *to, RFCHeader *header)
 {
     char *save_d = d;
     bool is_mime = false;
@@ -1246,7 +1247,7 @@ char *mime_header_dec(char *d, size_t d_max, char *s, char *to)
 
         /* it means mime "word" -- encoded or plain part */
         s_handled = mime_handle_word(s, &buf, &len, &is_mime,
-                                     charset, sizeof(charset), to);
+                                     charset, sizeof(charset), to, header);
 
         /* keep at least one space between mime and non-mime words */
         if (is_prev_mime
@@ -1434,19 +1435,13 @@ MIMEInfo *get_mime(char *ver, char *type, char *enc)
 
 /* TODO smth like s_header_getcomplete() */
 
-MIMEInfo *get_mime_from_header(Textlist * header)
+MIMEInfo *get_mime_from_header(RFCHeader *header)
 {
-    if (header == NULL)
-        return get_mime_disposition(header_get("Mime-Version"),
-                                    header_get("Content-Type"),
-                                    header_get("Content-Transfer-Encoding"),
-                                    header_get("Content-Disposition"));
-    else
-        return get_mime_disposition(rfcheader_get(header, "Mime-Version"),
-                                    rfcheader_get(header, "Content-Type"),
-                                    rfcheader_get(header,
+        return get_mime_disposition(header_get(header, "Mime-Version"),
+                                    header_get(header, "Content-Type"),
+                                    header_get(header,
                                                   "Content-Transfer-Encoding"),
-                                    rfcheader_get(header,
+                                    header_get(header,
                                                   "Content-Disposition"));
 }
 
@@ -1612,13 +1607,13 @@ static Textlist *mime_debody_base64(Textlist * body)
     return dec_body;
 }
 
-static Textlist *mime_debody_section(Textlist * body, Textlist * header,
+static Textlist *mime_debody_section(Textlist *body, RFCHeader* header,
                                      char *to);
 
 static Textlist *mime_debody_multipart(Textlist * body, MIMEInfo * mime,
                                        char *to)
 {
-    Textlist header = { NULL, NULL };
+    RFCHeader *header;
     Textline *line;
 
     Textlist *dec_body, *ptr_body, tmp_body = { NULL, NULL };
@@ -1651,16 +1646,17 @@ static Textlist *mime_debody_multipart(Textlist * body, MIMEInfo * mime,
         if (!strneq(line->line, boundary, strlen(boundary))) {
             tl_append(&tmp_body, line->line);
         } else {
-            header_read_list(&tmp_body, &header);
+            header = header_read_list(&tmp_body);
             header_delete_from_body(&tmp_body);
 
-            ptr_body = mime_debody_section(&tmp_body, &header, to);
+            ptr_body = mime_debody_section(&tmp_body, header, to);
             if (ptr_body != NULL) {
                 tl_addtl(dec_body, ptr_body);
                 if (ptr_body != &tmp_body)
                     xfree(ptr_body);
             }
             tl_clear(&tmp_body);
+            header_free(header);
 
             if (strneq(line->line, fin_boundary, strlen(fin_boundary)))
                 break;
@@ -1708,7 +1704,7 @@ static int mime_decharset_section(Textlist * body, MIMEInfo * mime, char *to)
     return rc;
 }
 
-static Textlist *mime_debody_section(Textlist * body, Textlist * header,
+static Textlist *mime_debody_section(Textlist *body, RFCHeader *header,
                                      char *to)
 {
 
@@ -1748,15 +1744,11 @@ static Textlist *mime_debody_section(Textlist * body, Textlist * header,
 
 }
 
-int mime_body_dec(Textlist * body, char *to)
+int mime_body_dec(Textlist *body, RFCHeader *header, char *to)
 {
     Textlist *dec_body;
-    Textlist *header;
     int len;
     char *buf;
-
-    if ((header = header_get_list()) == NULL)
-        return ERROR;
 
     if ((dec_body = mime_debody_section(body, header, to)) == NULL)
         return ERROR;

@@ -134,7 +134,7 @@ Ensure(hdr_dec_decodes_le28chars_line)
 		J J J J J J J J J J J J J J J J
 		J J J J J; /* 21 */
 
-	mime_header_dec(dres, sizeof(dres), src, "windows-1251");
+	mime_header_dec(dres, sizeof(dres), src, "windows-1251", NULL);
 
 	assert_that(dres, is_equal_to_string(exp));
 }
@@ -149,7 +149,7 @@ Ensure(hdr_dec_decodes_ge35chars_line)
 		J J J J J J J J J J J J J J J J
 		J J J J J; /* 37 */
 
-	mime_header_dec(dres, sizeof(dres), src, "windows-1251");
+	mime_header_dec(dres, sizeof(dres), src, "windows-1251", NULL);
 
 	assert_that(dres, is_equal_to_string(exp));
 }
@@ -159,7 +159,7 @@ Ensure(hdr_dec_decodes_nonmime_at_start)
 	char *src = "Re: Re: =?utf-8?B?0LnQudC50LnQuQ==?=";
 	char *exp = "Re: Re: " J J J J J;
 
-	mime_header_dec(dres, sizeof(dres), src, "windows-1251");
+	mime_header_dec(dres, sizeof(dres), src, "windows-1251", NULL);
 
 	assert_that(dres, is_equal_to_string(exp));
 }
@@ -170,7 +170,7 @@ Ensure(hdr_dec_handles_empty)
 	char *src = "";
 	char *exp = "";
 
-	mime_header_dec(dres, sizeof(dres), src, "ASCII");
+	mime_header_dec(dres, sizeof(dres), src, "ASCII", NULL);
 
 	assert_that(dres, is_equal_to_string(exp));
 }
@@ -182,7 +182,7 @@ Ensure(hdr_dec_preserves_non_mime)
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZ123456"; /* 64 */
 	char *exp = src;
 
-	mime_header_dec(dres, sizeof(dres), src, "ASCII");
+	mime_header_dec(dres, sizeof(dres), src, "ASCII", NULL);
 
 	assert_that(dres, is_equal_to_string(exp));
 }
@@ -195,7 +195,7 @@ Ensure(hdr_dec_skips_long_charset_decoding)
         /* cut to 71 + '\0' symbols */
 	char *exp = "=?UTF-8longlonglonglonglonglonglong?B?0LnQudC50LnQudC50LnQudC50LnQudC50";
 
-	mime_header_dec(dres, sizeof(dres), src, "ASCII");
+	mime_header_dec(dres, sizeof(dres), src, "ASCII", NULL);
 
 	assert_that(dres, is_equal_to_string(exp));
 }
@@ -205,7 +205,7 @@ Ensure(hdr_dec_decodes_email1)
 	char *src = "=?UTF-8?B?0KfQtdGC0LLQtdGA0LjQutC+0LIg0Jou0JIu?= <chetverikov@mann-schroeder.ru>";
 	char *exp = "Четвериков К.В. <chetverikov@mann-schroeder.ru>";
 
-	mime_header_dec(dres, sizeof(dres), src, "UTF-8");
+	mime_header_dec(dres, sizeof(dres), src, "UTF-8", NULL);
 
 	assert_that(dres, is_equal_to_string(exp));
 }
@@ -215,7 +215,7 @@ Ensure(hdr_dec_decodes_email2)
 	char *src = "chetverikov@mann-schroeder.ru (=?UTF-8?B?0KfQtdGC0LLQtdGA0LjQutC+0LIg0Jou0JIu?=)";
 	char *exp = "chetverikov@mann-schroeder.ru (Четвериков К.В.)";
 
-	mime_header_dec(dres, sizeof(dres), src, "UTF-8");
+	mime_header_dec(dres, sizeof(dres), src, "UTF-8", NULL);
 
 	assert_that(dres, is_equal_to_string(exp));
 }

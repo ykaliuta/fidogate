@@ -624,6 +624,7 @@ int unpack(FILE * pkt_file, Packet * pkt)
     char *carbon_group = NULL;
     int addr_is_restricted = FALSE;
     bool plain_headers = false;
+    RFCHeader *h;
 
     /*
      * Initialize
@@ -1061,7 +1062,9 @@ int unpack(FILE * pkt_file, Packet * pkt)
             debug(1, "Insecure message with To line");
             fglog("BOUNCE: insecure mail from %s",
                   s_rfcaddr_to_asc(&addr_from, TRUE));
-            bounce_mail("insecure", &addr_from, &msg, msgbody_rfc_to, &tbody);
+	    h = header_read_list(&theader);
+            bounce_mail("insecure", &addr_from, &msg, msgbody_rfc_to, &tbody, h);
+            header_free(h);
             tl_clear(&theader);
             tl_clear(&tbody);
             tl_clear(&tl);
@@ -1099,16 +1102,18 @@ int unpack(FILE * pkt_file, Packet * pkt)
 
         if (addr_is_restricted && !ignore_hosts &&
             area == NULL && msgbody_rfc_to && !addr_is_domain(msgbody_rfc_to)) {
-            Host *h;
+            Host *host;
 
             /* Lookup host */
-            if ((h = hosts_lookup(&msg.node_orig, NULL)) == NULL) {
+            if ((host = hosts_lookup(&msg.node_orig, NULL)) == NULL) {
                 /* Not registered in HOSTS */
                 debug(1, "Not a registered node: %s", znfp1(&msg.node_orig));
                 fglog("BOUNCE: mail from unregistered %s",
                       s_rfcaddr_to_asc(&addr_from, TRUE));
+                h = header_read_list(&theader);
                 bounce_mail("restricted", &addr_from, &msg,
-                            msgbody_rfc_to, &tbody);
+                            msgbody_rfc_to, &tbody, h);
+                free(h);
                 tl_clear(&theader);
                 tl_clear(&tbody);
                 tl_clear(&tl);
@@ -1117,11 +1122,13 @@ int unpack(FILE * pkt_file, Packet * pkt)
             }
 
             /* Bounce, if host is down */
-            if (h->flags & HOST_DOWN) {
+            if (host->flags & HOST_DOWN) {
                 debug(1, "Registered node is down: %s", znfp1(&msg.node_orig));
                 fglog("BOUNCE: mail from down %s",
                       s_rfcaddr_to_asc(&addr_from, TRUE));
-                bounce_mail("down", &addr_from, &msg, msgbody_rfc_to, &tbody);
+                h = header_read_list(&theader);
+                bounce_mail("down", &addr_from, &msg, msgbody_rfc_to, &tbody, h);
+                header_free(h);
                 tl_clear(&theader);
                 tl_clear(&tbody);
                 tl_clear(&tl);
@@ -1142,7 +1149,9 @@ int unpack(FILE * pkt_file, Packet * pkt)
                     debug(1, "Message with address in mail_to: %s", mail_to);
                     fglog("BOUNCE: mail from %s with address in to field: %s",
                           s_rfcaddr_to_asc(&addr_from, TRUE), mail_to);
-                    bounce_mail("addrinto", &addr_from, &msg, mail_to, &tbody);
+                    h = header_read_list(&theader);
+                    bounce_mail("addrinto", &addr_from, &msg, mail_to, &tbody, h);
+                    header_free(h);
                     tl_clear(&theader);
                     tl_clear(&tbody);
                     tl_clear(&tl);
@@ -1168,7 +1177,9 @@ int unpack(FILE * pkt_file, Packet * pkt)
                 debug(1, "Message to `UUCP' or `GATEWAY' without To line");
                 fglog("BOUNCE: mail from %s without To line",
                       s_rfcaddr_to_asc(&addr_from, TRUE));
-                bounce_mail("noto", &addr_from, &msg, msgbody_rfc_to, &tbody);
+                h = header_read_list(&theader);
+                bounce_mail("noto", &addr_from, &msg, msgbody_rfc_to, &tbody, h);
+                header_free(h);
                 tl_clear(&theader);
                 tl_clear(&tbody);
                 tl_clear(&tl);

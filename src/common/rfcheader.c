@@ -31,21 +31,14 @@
 
 #include "fidogate.h"
 
-static RFCHeader the_header;
-
-Textlist *header_get_list(void)
-{
-    return &the_header.headers;
-}
-
 /*
  * header_ca_rfc() --- Output ^ARFC-Xxxx kludges
  */
-void header_ca_rfc(FILE * out, int rfc_level)
+void header_ca_rfc(RFCHeader *header, FILE * out, int rfc_level)
 {
     static char *rfc_lvl_1[] = { RFC_LVL_1_HEADERS, NULL };
     static char *rfc_lvl_3[] = { RFC_LVL_3_HEADERS, NULL };
-    Textlist *headers = &the_header.headers;
+    Textlist *headers = &header->headers;
 
     /* RFC level 0 - no ^ARFC-Xxxx kludges */
     if (rfc_level <= 0) {
@@ -146,30 +139,28 @@ void header_ca_rfc(FILE * out, int rfc_level)
     return;
 }
 
-/*
- * header_delete() --- Delete headers
- */
-void header_delete(void)
+void header_free(RFCHeader *header)
 {
-    RFCHeader *header = &the_header;
-
     tl_clear(&header->headers);
-    header->last_header = NULL;
+    free(header);
 }
 
 /*
  * header_read() --- read header lines from file
  */
-void header_read(FILE * file)
+RFCHeader *header_read(FILE *file)
 {
     static char buf[BUFFERSIZE];
     static char queue[BUFFERSIZE];
     short int first = TRUE;
-    Textlist *headers = &the_header.headers;
+    Textlist *headers;
+    RFCHeader *header;
 
+    header = xmalloc(sizeof(*header));
+    memset(header, 0, sizeof(*header));
+
+    headers = &header->headers;
     queue[0] = '\0';
-
-    tl_clear(headers);
 
     while (read_line(buf, sizeof(buf), file)) {
         if (*buf == '\r' || *buf == '\n')
@@ -187,24 +178,31 @@ void header_read(FILE * file)
     }
     if (strlen(queue) > 1)
         tl_append(headers, queue);
+
+    return header;
 }
 
 /*
  * header_read_list() --- read header lines from Textlist
  */
-int header_read_list(Textlist * body, Textlist * header)
+RFCHeader *header_read_list(Textlist *body)
 {
     static char buf[BUFFERSIZE];
     static char queue[BUFFERSIZE];
     short int first = TRUE;
     Textline *line;
+    Textlist *headers;
+    RFCHeader *header;
 
-    if (body == NULL || header == NULL)
-        return ERROR;
+    if (body == NULL)
+        return NULL;
+
+    header = xmalloc(sizeof(*header));
+    memset(header, 0, sizeof(*header));
+
+    headers = &header->headers;
 
     queue[0] = '\0';
-
-    tl_clear(header);
 
     for (line = body->first; line != NULL; line = line->next) {
         strncpy(buf, line->line, BUFFERSIZE - 1);
@@ -216,15 +214,16 @@ int header_read_list(Textlist * body, Textlist * header)
             BUF_APPEND(queue, buf);
         } else {
             if (!first)
-                tl_append(header, queue);
+                tl_append(headers, queue);
             else
                 first = FALSE;
             BUF_COPY(queue, buf);
         }
     }
     if (strlen(queue) > 1)
-        tl_append(header, queue);
-    return OK;
+        tl_append(headers, queue);
+
+    return header;
 }
 
 /* delete rfc header from the beginning of body */
@@ -251,12 +250,12 @@ int header_delete_from_body(Textlist * body)
 /*
  * header_hops() --- return # of hops (Received headers) of message
  */
-short header_hops(void)
+int header_hops(RFCHeader *header)
 {
     char *name = "Received";
     Textline *p;
     int len, hops;
-    Textlist *headers = &the_header.headers;
+    Textlist *headers = &header->headers;
 
     len = strlen(name);
     hops = 0;
@@ -273,42 +272,43 @@ short header_hops(void)
     return hops;
 }
 
-/*
- * rfcheader_get() --- get header line
- */
-char *rfcheader_get(Textlist * tl, char *name)
+static char *header_get_from_tl(RFCHeader *header, Textlist *tl, char *name)
 {
     Textline *p;
     int len;
     char *s;
-    RFCHeader *header = &the_header;
 
     len = strlen(name);
 
     for (p = tl->first; p; p = p->next) {
         if (!strnicmp(p->line, name, len) && p->line[len] == ':') {
             for (s = p->line + len + 1; is_space(*s); s++) ;
-            header->last_header = p;
+            if (header != NULL)
+                header->last_header = p;
             return s;
         }
     }
 
-    header->last_header = NULL;
+    if (header != NULL)
+        header->last_header = NULL;
     return NULL;
 }
 
-/*
- * header_get() --- get header line
- */
-char *header_get(char *name)
+/* Keep for legacy ftn2rfc code */
+char *rfcheader_get(Textlist *tl, char *name)
 {
-    RFCHeader *header = &the_header;
+    return header_get_from_tl(NULL, tl, name);
+}
 
-    return rfcheader_get(&header->headers, name);
+char *header_get(RFCHeader *header, char *name)
+{
+    if (header == NULL)
+        return NULL;
+    return header_get_from_tl(header, &header->headers, name);
 }
 
 /*
- * rfcheader_geth() --- get 1st/next header line from Textlist
+ * header_geth() --- get 1st/next header line from Textlist
  *
  * Modi:   name="X",  first=TRUE	return 1st X header line
  *	   name=NULL, first=FALSE	return continuation header lines only
@@ -317,13 +317,16 @@ char *header_get(char *name)
  *
  * Return: contents of header lines or NULL.
  */
-static char *rfcheader_geth(RFCHeader * header, char *name, int first)
+char *header_geth(RFCHeader *header, char *name, int first)
 {
     static Textline *p_last;
     Textline *p;
     int len;
     char *s;
     Textlist *tl = &header->headers;
+
+    if (header == NULL)
+        return NULL;
 
     if (first) {
         /* Restart search */
@@ -363,23 +366,12 @@ static char *rfcheader_geth(RFCHeader * header, char *name, int first)
 }
 
 /*
- * header_geth() --- get header line
- */
-char *header_geth(char *name, int first)
-{
-    RFCHeader *header = &the_header;
-
-    return rfcheader_geth(header, name, first);
-}
-
-/*
  * header_getnext() --- get next header line
  */
 
-char *header_getnext(void)
+char *header_getnext(RFCHeader *header)
 {
     char *s;
-    RFCHeader *header = &the_header;
 
     if (header->last_header == NULL)
         return NULL;
@@ -401,16 +393,16 @@ char *header_getnext(void)
  */
 #define TMPS_LEN_GETCOMPLETE BUFFERSIZE
 
-char *s_header_getcomplete(char *name)
+char *s_header_getcomplete(RFCHeader *header, char *name)
 {
     char *p;
     TmpS *s;
 
-    if ((p = header_get(name))) {
+    if ((p = header_get(header, name))) {
         s = tmps_alloc(TMPS_LEN_GETCOMPLETE);
         str_copy(s->s, s->len, p);
 
-        while ((p = header_getnext())) {
+        while ((p = header_getnext(header))) {
             str_append(s->s, s->len, " ");
             str_append(s->s, s->len, p);
         }
@@ -426,20 +418,21 @@ char *s_header_getcomplete(char *name)
  * Change header line
  */
 
-int header_alter(Textlist * header, char *name, char *newval)
+int header_alter(RFCHeader *header, char *name, char *newval)
 {
     Textline *line;
     char *new_header;
+    Textlist *tl = &header->headers;
 
     if (header == NULL || name == NULL)
         return ERROR;
 
-    for (line = header->first; line != NULL; line = line->next) {
+    for (line = tl->first; line != NULL; line = line->next) {
         if (!strneq(line->line, name, strlen(name)))
             continue;
 
         if (newval == NULL) {
-            tl_delete(header, line);
+            tl_delete(tl, line);
             return OK;
         }
         /* name + ": " + newval + '\n' */
@@ -497,6 +490,7 @@ char *addr_token(char *line)
 
 struct decoding_state {
     char *charset;
+    RFCHeader *header;
 };
 
 static int decode_header(Textline * tl, void *arg)
@@ -504,7 +498,8 @@ static int decode_header(Textline * tl, void *arg)
     struct decoding_state *state = arg;
     char *decoded;
 
-    mime_header_dec(buffer, sizeof(buffer), tl->line, state->charset);
+    mime_header_dec(buffer, sizeof(buffer), tl->line,
+                    state->charset, state->header);
     decoded = strdup(buffer);
 
     free(tl->line);
@@ -514,52 +509,18 @@ static int decode_header(Textline * tl, void *arg)
 }
 
 /*
- * Use the static state
  * Decodes the mimed headers and recodes them to @to charset
  * (source charset is part of the mime encoding)
  */
-void header_decode(char *to)
+void header_decode(RFCHeader *header, char *to)
 {
     Textlist *hdr;
     struct decoding_state state = {
         .charset = to,
+        .header = header,
     };
 
-    hdr = header_get_list();
+    hdr = &header->headers;
     /* does recoding as well */
     tl_for_each(hdr, decode_header, &state);
 }
-
-#ifdef TEST /****************************************************************/
-
-int main(int argc, char *argv[])
-{
-    char *h, *p;
-    RFCHeader *header = &the_header;
-
-    if (argc != 2) {
-        fprintf(stderr, "usage: testheader header < RFC-messsage\n");
-        exit(1);
-    }
-
-    h = argv[1];
-
-    header_read(stdin);
-
-    printf("----------------------------------------\n");
-    for (p = rfcheader_geth(header, h, TRUE);
-         p; p = rfcheader_geth(header, h, FALSE)) {
-        printf("%s:    %s\n", h, p);
-    }
-    printf("----------------------------------------\n");
-    for (p = header_geth(h, TRUE); p; p = header_geth(NULL, FALSE)) {
-        printf("%s:    %s\n", h, p);
-    }
-    printf("----------------------------------------\n");
-
-    exit(0);
-    /**NOT REACHED**/
-    return 0;
-}
-
-#endif /**TEST***************************************************************/

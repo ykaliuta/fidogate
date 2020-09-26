@@ -155,9 +155,9 @@ int check_old(char *, time_t dt);
 
 /* bounce.c */
 void bounce_set_cc(char *);
-int print_file_subst(FILE *, FILE *, Message *, char *, Textlist *);
+int print_file_subst(FILE *, FILE *, Message *, char *, Textlist *, RFCHeader *);
 int bounce_header(char *);
-void bounce_mail(char *, RFCAddr *, Message *, char *, Textlist *);
+void bounce_mail(char *, RFCAddr *, Message *, char *, Textlist *, RFCHeader *);
 
 /* charset.c */
 CharsetTable *charset_table_new(void);
@@ -369,8 +369,8 @@ enum mime_encodings {
 #define MIME_STRING_LIMIT 76
 
 char *mime_dequote(char *, size_t, char *);
-char *mime_header_dec(char *, size_t, char *, char *);
-int mime_body_dec(Textlist *, char *);  /* decode mime body */
+char *mime_header_dec(char *, size_t, char *, char *, RFCHeader *);
+int mime_body_dec(Textlist *, RFCHeader *, char *);  /* decode mime body */
 int mime_header_enc(char **, char *, char *, int);
 void mime_b64_encode_tl(Textlist * in, Textlist * out);
 void mime_qp_encode_tl(Textlist * in, Textlist * out);
@@ -570,21 +570,21 @@ char *s_rfcaddr_to_asc(RFCAddr *, int);
 void rfcaddr_fallback_username(char *);
 
 /* rfcheader.c */
-Textlist *header_get_list(void);
-int header_alter(Textlist *, char *, char *);
-void header_ca_rfc(FILE *, int);
-void header_delete(void);
+int header_alter(RFCHeader *, char *, char *);
+void header_ca_rfc(RFCHeader *, FILE *, int);
+void header_free(RFCHeader *);
 int header_delete_from_body(Textlist *);
-void header_read(FILE *);
-int header_read_list(Textlist *, Textlist *);
-short header_hops(void);
+RFCHeader *header_read(FILE *);
+RFCHeader *header_read_list(Textlist *);
+int header_hops(RFCHeader *);
+char *header_get(RFCHeader *, char *);
+/* keep for legacy ftn2rfc */
 char *rfcheader_get(Textlist *, char *);
-char *header_get(char *);
-char *header_geth(char *, int);
-char *header_getnext(void);
-char *s_header_getcomplete(char *);
+char *header_geth(RFCHeader *, char *, int);
+char *header_getnext(RFCHeader *);
+char *s_header_getcomplete(RFCHeader *, char *);
 char *addr_token(char *);
-void header_decode(char *);
+void header_decode(RFCHeader *, char *);
 
 /* routing.c */
 extern Routing *routing_first;
@@ -716,7 +716,7 @@ char *strsave2(char *, char *);
 void exit_free(void);
 
 MIMEInfo *get_mime(char *, char *, char *);
-MIMEInfo *get_mime_from_header(Textlist *);
+MIMEInfo *get_mime_from_header(RFCHeader *);
 /* xstrnlen.c */
 size_t xstrnlen(const char *, size_t);
 

@@ -97,27 +97,28 @@ int do_mail(void)
     Node *n;
     FILE *output;
     Textlist tl, out;
+    RFCHeader *h;
+    int ret;
 
     ftnaddr_invalid(&xfrom);
     tl_init(&tl);
     tl_init(&out);
 
     /* Read message header and body from stdin */
-    header_delete();
-    header_read(stdin);
+    h = header_read(stdin);
     while (fgets(buffer, BUFFERSIZE, stdin)) {
         strip_crlf(buffer);
         tl_append(&tl, buffer);
     }
 
-    pfrom = header_get("From");
+    pfrom = header_get(h, "From");
     if (!pfrom)
         TMPS_RETURN(EX_UNAVAILABLE);
     debug(3, "From: %s", pfrom);
 
     /* Check From / X-FTN-From for FTN address */
     n = NULL;
-    if ((x_ftn_from = header_get("X-FTN-From"))) {
+    if ((x_ftn_from = header_get(h, "X-FTN-From"))) {
         debug(3, "X-FTN-From: %s", x_ftn_from);
         xfrom = ftnaddr_parse(x_ftn_from);
         n = &xfrom.node;
@@ -136,7 +137,7 @@ int do_mail(void)
     }
 
     /* Run Areafix */
-    subj = header_get("Subject");
+    subj = header_get(h, "Subject");
     areafix_do(&xfrom.node, subj, &tl, (r_flag ? NULL : &out));
 
     /* Address may have been changed using the PASSWD command */
@@ -150,13 +151,19 @@ int do_mail(void)
     /* Send output to mailer */
     if (!r_flag) {
         output = mailer_open(pfrom, FALSE, "", "");
-        if (!output)
-            TMPS_RETURN(EX_OSERR);
+        if (!output) {
+            ret = EX_OSERR;
+            goto out;
+        }
         tl_print_x(&out, output, "\n");
-        TMPS_RETURN(mailer_close(output));
+        ret = mailer_close(output);
+        goto out;
     }
+    ret = EX_OK;
 
-    TMPS_RETURN(EX_OK);
+out:
+    header_free(h);
+    TMPS_RETURN(ret);
 }
 
 /*
