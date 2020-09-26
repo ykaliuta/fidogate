@@ -41,6 +41,15 @@
  */
 #define POS_INTERVAL		50
 
+struct charset_info {
+    char *rfc;
+    /* iconv name for ftn charset */
+    char *ftn;
+    /* fsc name for ftn charset to put into pkt */
+    char *ftn_name;
+    int ftn_level;
+};
+
 /*
  * Prototypes
  */
@@ -754,48 +763,46 @@ static char *get_charset_from_header(RFCHeader *h)
  * separately.
  * Headers are recoded in the beginning to the internal charset.
  */
-static void determine_charsets(Area * parea, char **in, char **out,
-                               char **out_fsc, int *out_level,
-                               RFCHeader *h)
+static void determine_charsets(RFCHeader *h, Area *parea, struct charset_info *i)
 {
-    char *cs_in;
-    char *cs_out = NULL;
-    char *cs_out_fsc;
+    char *rfc;
+    char *ftn = NULL;
+    char *ftn_name;
     char *cs_save;
 
-    cs_in = INTERNAL_CHARSET;
-    cs_out = get_charset_from_header(h);
+    rfc = INTERNAL_CHARSET;
+    ftn = get_charset_from_header(h);
 
-    if (!cs_out && parea) {     /* News */
+    if (!ftn && parea) {     /* News */
         if (parea->charset) {
             /* TODO: leak */
             cs_save = s_copy(parea->charset);
             strtok(cs_save, ":");
-            cs_out = strtok(NULL, ":");
+            ftn = strtok(NULL, ":");
         }
     }
 
-    if (!cs_out && !parea)      /* Mail */
-        cs_out = netmail_charset_out;
+    if (!ftn && !parea)      /* Mail */
+        ftn = netmail_charset_out;
 
     /* defaults */
-    if (!cs_out)
-        cs_out = default_charset_out;
-    if (!cs_out || strieq(cs_in, CHARSET_STD7BIT))
-        cs_out = CHARSET_STD7BIT;
-    cs_out_fsc = charset_name_rfc2ftn(cs_out);
-    str_upper(cs_out_fsc);
+    if (!ftn)
+        ftn = default_charset_out;
+    if (!ftn || strieq(rfc, CHARSET_STD7BIT))
+        ftn = CHARSET_STD7BIT;
+    ftn_name = charset_name_rfc2ftn(ftn);
+    str_upper(ftn_name);
 
-    debug(6, "charset: msg %s FSC=%s", cs_out, cs_out_fsc);
+    debug(6, "charset: msg %s FSC=%s", ftn, ftn_name);
 
-    *in = cs_in;
-    *out = cs_out;
-    *out_fsc = cs_out_fsc;
+    i->rfc = rfc;
+    i->ftn = ftn;
+    i->ftn_name = ftn_name;
 
-    if (stricmp(cs_out, "UTF-8") == 0)
-        *out_level = 4;
+    if (stricmp(ftn, "UTF-8") == 0)
+        i->ftn_level = 4;
     else
-        *out_level = 2;
+        i->ftn_level = 2;
 }
 
 static void rfc2ftn_add_tzutc(FILE *f, char *tz)
@@ -860,9 +867,7 @@ static int snd_message(Message * msg, Area * parea,
 #ifndef FIDO_STYLE_MSGID
     int x_flags_m = FALSE;
 #endif
-    char *cs_in, *cs_out;       /* Charset in(=RFC), out(=FTN) */
-    char *cs_out_fsc;
-    int cs_out_fsc_level;
+    struct charset_info _ci, *ci = &_ci;
     char *cs_enc = "8bit";      /* all converted to 8 bit now */
     char *pt;
     Textlist *dec_body;
@@ -882,8 +887,10 @@ static int snd_message(Message * msg, Area * parea,
     if (parea && parea->rfc_lvl != -1)
         rfc_level = parea->rfc_lvl;
 
-    determine_charsets(parea, &cs_in, &cs_out, &cs_out_fsc, &cs_out_fsc_level, h);
-    charset_set_in_out(cs_in, cs_out);
+    determine_charsets(h, parea, ci);
+
+    /* use for xlat so for headers only */
+    charset_set_in_out(ci->rfc, ci->ftn);
 
     /*
      * Open output packet
@@ -927,7 +934,7 @@ static int snd_message(Message * msg, Area * parea,
     last_zone = cf_zone();
 
     /* Decode and recode (charset) the body */
-    dec_body = mime_body_dec(&body, h, cs_out);
+    dec_body = mime_body_dec(&body, h, ci->ftn);
     if (dec_body == NULL)
         return ERROR;
 
@@ -1067,7 +1074,7 @@ static int snd_message(Message * msg, Area * parea,
 
     /* charset */
     if (!no_chrs_kludge)
-        fprintf(sf, "\001CHRS: %s %d\r", cs_out_fsc, cs_out_fsc_level);
+        fprintf(sf, "\001CHRS: %s %d\r", ci->ftn_name, ci->ftn_level);
 
     if (!x_flags_n) {
         /* Add ^ARFC header lines */
