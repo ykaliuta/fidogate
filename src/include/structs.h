@@ -56,12 +56,12 @@ typedef struct st_textlist {
     unsigned long n;
 } Textlist;
 
-typedef struct st_tl_iterator {
+typedef struct st_tl_char_iterator {
     Textlist *list;
     Textline *cur;
     size_t len;                 /* length of current line */
     size_t pos;                 /* position in the current line */
-} TextlistIterator;
+} TextlistCharIterator;
 
 /*
  * Alias

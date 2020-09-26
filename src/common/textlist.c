@@ -272,7 +272,7 @@ int tl_for_each(Textlist * list, int (*func)(Textline *, void *), void *arg)
     return OK;
 }
 
-void tl_iterator_start(TextlistIterator * iter, Textlist * list)
+void tl_char_iterator_start(TextlistCharIterator * iter, Textlist * list)
 {
     iter->list = list;
     iter->cur = list->first;
@@ -280,7 +280,7 @@ void tl_iterator_start(TextlistIterator * iter, Textlist * list)
     iter->pos = 0;
 }
 
-size_t tl_iterator_next(TextlistIterator * iter, char *buf, size_t len)
+size_t tl_char_iterator_next(TextlistCharIterator * iter, char *buf, size_t len)
 {
     size_t left;                /* in current line */
     size_t moved;
