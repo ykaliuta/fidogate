@@ -789,86 +789,6 @@ int snd_mail(RFCAddr rfc_to, long size)
     if (flags)
         str_lower(flags);
 
-    if (private) {
-        /* Check message size limit */
-        limitsize = areas_get_limitmsgsize();
-        if (limitsize > 0 && size > limitsize) {
-            /* Too large, don't gate it */
-            fglog("message too big (%ldb, limit %ldb) for mail %s -> %s",
-                  size, limitsize, s_rfcaddr_to_asc(&rfc_from, TRUE),
-                  s_rfcaddr_to_asc(&rfc_to, TRUE));
-            sendback("Address %s:\n  message too big (%ldb, limit %ldb)",
-                     s_rfcaddr_to_asc(&rfc_to, TRUE), size, limitsize);
-            TMPS_RETURN(EX_UNAVAILABLE);
-        }
-
-        msg.attr |= MSG_PRIVATE;
-
-        from_is_local = addr_is_local(s_header_getcomplete("From"));
-
-        if (x_flags_policy > 0) {
-            char *hf = s_header_getcomplete("From");
-            char *hr = s_header_getcomplete("Reply-To");
-
-            if (x_flags_policy == 1) {
-                /* Allow only local users to use the X-Flags header */
-                if (from_is_local && header_hops() <= 1)
-                    debug(5, "true local address - o.k.");
-                else {
-                    if (flags)
-                        fglog("NON-LOCAL From: %s, Reply-To: %s, X-Flags: %s",
-                              hf ? hf : "<>", hr ? hr : "<>", flags);
-                    flags = p = NULL;
-                }
-            }
-            /* Let's at least log what's going on ... */
-            if (flags)
-                fglog("X-Flags: %s, From: %s", flags, hf ? hf : "<>");
-
-            p = flags;
-            if (p) {
-                while (*p)
-                    switch (*p++) {
-                    case 'c':
-                        msg.attr |= MSG_CRASH;
-                        break;
-                    case 'p':
-                        msg.attr |= MSG_PRIVATE;
-                        break;
-                    case 'h':
-                        msg.attr |= MSG_HOLD;
-                        break;
-                    case 'f':
-                        msg.attr |= MSG_FILE;
-                        break;
-                    case 'r':
-                        msg.attr |= MSG_RRREQ;
-                        break;
-                    case 'd':
-                        msg.attr |= MSG_DIRECT;
-                        break;
-                    case 'a':
-                        msg.attr |= MSG_AUDIT;
-                        break;
-                    }
-            }
-        } else {
-            char *hf = s_header_getcomplete("From");
-
-            /* Log what's going on ... */
-            if (flags)
-                fglog("FORBIDDEN X-Flags: %s, From: %s", flags, hf ? hf : "<>");
-            flags = NULL;
-        }
-
-        /*
-         * Return-Receipt-To -> RRREQ flag
-         */
-        if (!dont_process_return_receipt_to &&
-            (p = header_get("Return-Receipt-To")))
-            msg.attr |= MSG_RRREQ;
-    }
-
     if (newsmode) {
         Area *pa;
 
@@ -998,6 +918,84 @@ int snd_mail(RFCAddr rfc_to, long size)
         /*
          * NetMail message
          */
+        /* Check message size limit */
+        limitsize = areas_get_limitmsgsize();
+        if (limitsize > 0 && size > limitsize) {
+            /* Too large, don't gate it */
+            fglog("message too big (%ldb, limit %ldb) for mail %s -> %s",
+                  size, limitsize, s_rfcaddr_to_asc(&rfc_from, TRUE),
+                  s_rfcaddr_to_asc(&rfc_to, TRUE));
+            sendback("Address %s:\n  message too big (%ldb, limit %ldb)",
+                     s_rfcaddr_to_asc(&rfc_to, TRUE), size, limitsize);
+            TMPS_RETURN(EX_UNAVAILABLE);
+        }
+
+        msg.attr |= MSG_PRIVATE;
+
+        from_is_local = addr_is_local(s_header_getcomplete("From"));
+
+        if (x_flags_policy > 0) {
+            char *hf = s_header_getcomplete("From");
+            char *hr = s_header_getcomplete("Reply-To");
+
+            if (x_flags_policy == 1) {
+                /* Allow only local users to use the X-Flags header */
+                if (from_is_local && header_hops() <= 1)
+                    debug(5, "true local address - o.k.");
+                else {
+                    if (flags)
+                        fglog("NON-LOCAL From: %s, Reply-To: %s, X-Flags: %s",
+                              hf ? hf : "<>", hr ? hr : "<>", flags);
+                    flags = p = NULL;
+                }
+            }
+            /* Let's at least log what's going on ... */
+            if (flags)
+                fglog("X-Flags: %s, From: %s", flags, hf ? hf : "<>");
+
+            p = flags;
+            if (p) {
+                while (*p)
+                    switch (*p++) {
+                    case 'c':
+                        msg.attr |= MSG_CRASH;
+                        break;
+                    case 'p':
+                        msg.attr |= MSG_PRIVATE;
+                        break;
+                    case 'h':
+                        msg.attr |= MSG_HOLD;
+                        break;
+                    case 'f':
+                        msg.attr |= MSG_FILE;
+                        break;
+                    case 'r':
+                        msg.attr |= MSG_RRREQ;
+                        break;
+                    case 'd':
+                        msg.attr |= MSG_DIRECT;
+                        break;
+                    case 'a':
+                        msg.attr |= MSG_AUDIT;
+                        break;
+                    }
+            }
+        } else {
+            char *hf = s_header_getcomplete("From");
+
+            /* Log what's going on ... */
+            if (flags)
+                fglog("FORBIDDEN X-Flags: %s, From: %s", flags, hf ? hf : "<>");
+            flags = NULL;
+        }
+
+        /*
+         * Return-Receipt-To -> RRREQ flag
+         */
+        if (!dont_process_return_receipt_to &&
+            (p = header_get("Return-Receipt-To")))
+            msg.attr |= MSG_RRREQ;
+
         acl_ngrp(rfc_from, TYPE_NETMAIL);
         asc_node_to = znf1(&node_to);
 
