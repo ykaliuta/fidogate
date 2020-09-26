@@ -312,3 +312,21 @@ size_t tl_char_iterator_next(TextlistCharIterator * iter, char *buf, size_t len)
     }
     return moved;
 }
+
+void tl_iterator_start(TextlistIterator *iter, Textlist *list)
+{
+    iter->cur = list->first;
+}
+
+Textline *tl_iterator_next(TextlistIterator *iter)
+{
+    Textline *ret;
+
+    if (iter->cur == NULL)
+        return NULL;
+
+    ret = iter->cur;
+    iter->cur = ret->next;
+
+    return ret;
+}

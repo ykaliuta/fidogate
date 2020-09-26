@@ -63,6 +63,10 @@ typedef struct st_tl_char_iterator {
     size_t pos;                 /* position in the current line */
 } TextlistCharIterator;
 
+typedef struct st_tl_iterator {
+    Textline *cur;
+} TextlistIterator;
+
 /*
  * Alias
  */

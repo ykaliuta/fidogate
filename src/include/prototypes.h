@@ -653,6 +653,8 @@ int tl_copy(Textlist *, Textlist *);
 int tl_for_each(Textlist *, int (*)(Textline *, void *), void *);
 void tl_char_iterator_start(TextlistCharIterator *, Textlist *);
 size_t tl_char_iterator_next(TextlistCharIterator *, char *, size_t);
+void tl_iterator_start(TextlistIterator *, Textlist *);
+Textline *tl_iterator_next(TextlistIterator *);
 
 /* tick.c */
 int copy_file(char *, char *, char *);
