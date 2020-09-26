@@ -832,9 +832,10 @@ fallback:
 }
 
 static int snd_message(Message * msg, Area * parea,
-                RFCAddr rfc_from, RFCAddr rfc_to, char *subj,
-                long size, char *flags, int fido, MIMEInfo * mime,
-                Node * node_from, RFCHeader *h)
+                       RFCAddr rfc_from, RFCAddr rfc_to, char *subj,
+                       long size, char *flags, int fido, MIMEInfo * mime,
+                       Node * node_from, RFCHeader *h,
+                       struct charset_info *ci)
 /* msg       FTN nessage structure
  * parea     area/newsgroup description structure
  * rfc_from  Internet sender
@@ -846,6 +847,7 @@ static int snd_message(Message * msg, Area * parea,
  * mime      MIME stuff
  * node_from sender node from mail_sender()
  * h         headers of the rfc message
+ * ci	     charset info
  */
 {
     static int nmsg = 0;
@@ -867,7 +869,6 @@ static int snd_message(Message * msg, Area * parea,
 #ifndef FIDO_STYLE_MSGID
     int x_flags_m = FALSE;
 #endif
-    struct charset_info _ci, *ci = &_ci;
     char *cs_enc = "8bit";      /* all converted to 8 bit now */
     char *pt;
     Textlist *dec_body;
@@ -886,8 +887,6 @@ static int snd_message(Message * msg, Area * parea,
      */
     if (parea && parea->rfc_lvl != -1)
         rfc_level = parea->rfc_lvl;
-
-    determine_charsets(h, parea, ci);
 
     /* use for xlat so for headers only */
     charset_set_in_out(ci->rfc, ci->ftn);
@@ -1306,7 +1305,8 @@ static int snd_mail_prepare(RFCHeader *h,
                             RFCAddr *rfc_to, RFCAddr *rfc_from,
                             Node *node_to, Node *node_from,
                             Message *msg,
-                            int *is_fido, int *alias)
+                            int *is_fido, int *alias,
+                            Area *pa, struct charset_info *ci)
 {
     int rc;
     char *p;
@@ -1370,6 +1370,10 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
     Textlist tl;
     Textline *tp;
     int rc;
+    struct charset_info _ci, *ci = &_ci;
+    int ret;
+    RFCHeader *decoded = NULL;
+    RFCHeader *orig_h = h;
 
     node_clear(&node_from);
     node_clear(&node_to);
@@ -1408,7 +1412,8 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
          */
         if ((p = header_get(h, "Control"))) {
             debug(3, "Skipping Control: %s", p);
-            TMPS_RETURN(EX_OK);
+            ret = EX_OK;
+            goto out;
         }
 
         /*
@@ -1417,7 +1422,8 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
         p = header_get(h, "Newsgroups");
         if (!p) {
             sendback("No Newsgroups header in news message");
-            TMPS_RETURN(EX_DATAERR);
+            ret = EX_DATAERR;
+            goto out;
         }
         BUF_COPY(groups, p);
         debug(3, "RFC Newsgroups: %s", groups);
@@ -1437,12 +1443,20 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
             else {
                 AreasBBS *ab;
 
+                determine_charsets(orig_h, pa, ci);
+                decoded = header_decode(orig_h, ci->rfc);
+                /* should not free old header, belongs to main */
+                h = decoded;
+
                 rc = snd_mail_prepare(h, subj, sizeof(subj),
                                       &rfc_to, &rfc_from,
                                       &node_to, &node_from,
-                                      &msg, &fido, &alias_found);
-                if (rc != 0)
-                    TMPS_RETURN(rc);
+                                      &msg, &fido, &alias_found,
+                                      pa, ci);
+                if (rc != 0) {
+                    ret = rc;
+                    goto out;
+                }
 
                 acl_ngrp(rfc_from, TYPE_ECHOMAIL);
 
@@ -1479,11 +1493,11 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
                 /* Various checks */
                 if (check_areas_bbs && check_downlinks(pa->area) <= 0) {
                     debug(5, "area %s, not listed or no downlinks", pa->area);
-                    continue;
+                    goto end_of_loop;
                 }
                 if (xpost_flag && (pa->flags & AREA_NOXPOST)) {
                     debug(5, "No cross-postings allowed - skipped");
-                    continue;
+                    goto end_of_loop;
                 }
                 if (xpost_flag && (pa->flags & AREA_LOCALXPOST)) {
                     if (from_is_local) {
@@ -1491,7 +1505,7 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
                     } else {
                         debug(5,
                               "No non-local cross-postings allowed - skipped");
-                        continue;
+                        goto end_of_loop;
                     }
                 }
 
@@ -1508,7 +1522,7 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
                         fglog
                             ("BOUNCE: Postings from address `%s' to group `%s' not allowed - skipped",
                              s_rfcaddr_to_asc(&rfc_from, FALSE), pa->group);
-                    continue;
+                    goto end_of_loop;
                 }
 
                 /* Check message size limit */
@@ -1517,7 +1531,7 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
                     /* Too large, don't gate it */
                     fglog("message too big (%ldb, limit %ldb) for area %s",
                           size, limitsize, pa->area);
-                    continue;
+                    goto end_of_loop;
                 }
 
                 /* Create and send message */
@@ -1525,12 +1539,18 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
                 msg.node_from = cf_n_addr();
                 msg.node_to = cf_n_uplink();
                 status = snd_message(&msg, pa, rfc_from, rfc_to,
-                                     subj, size, flags, fido, mime, &node_from, h);
+                                     subj, size, flags, fido, mime, &node_from,
+                                     h, ci);
                 if (status) {
-                    tl_clear(&tl);
-                    TMPS_RETURN(status);
+                    ret = status;
+                    goto out;
                 }
-            }
+
+                /* Ugly workaround of the monolitic code (this goto) */
+            end_of_loop:
+                header_free(decoded);
+                decoded = NULL;
+            } /* else if (!pa) */
         }
 
         tl_clear(&tl);
@@ -1539,12 +1559,19 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
         /*
          * NetMail message
          */
+
+        /* it's done in snd_to_cc_bcc, but it's not passed */
+        determine_charsets(h, NULL, ci);
+
         rc = snd_mail_prepare(h, subj, sizeof(subj),
                               &rfc_to, &rfc_from,
                               &node_to, &node_from,
-                              &msg, &fido, &alias_found);
-        if (rc != 0)
-            TMPS_RETURN(rc);
+                              &msg, &fido, &alias_found,
+                              NULL, ci);
+        if (rc != 0) {
+            ret = rc;
+            goto out;
+        }
 
         /* Check message size limit */
         limitsize = areas_get_limitmsgsize();
@@ -1555,7 +1582,8 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
                   s_rfcaddr_to_asc(&rfc_to, TRUE));
             sendback("Address %s:\n  message too big (%ldb, limit %ldb)",
                      s_rfcaddr_to_asc(&rfc_to, TRUE), size, limitsize);
-            TMPS_RETURN(EX_UNAVAILABLE);
+            ret = EX_UNAVAILABLE;
+            goto out;
         }
 
         msg.attr |= MSG_PRIVATE;
@@ -1637,9 +1665,11 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
             msg.node_from = node_from;
             msg.node_to = node_to;
             status = snd_message(&msg, NULL, rfc_from, rfc_to,
-                                 subj, size, flags, fido, mime, &node_from, h);
+                                 subj, size, flags, fido, mime, &node_from,
+                                 h, ci);
             acl_ngrp_free();
-            TMPS_RETURN(status);
+            ret = status;
+            goto out;
         } else {
             if (pna_notify(s_rfcaddr_to_asc(&rfc_from, FALSE))) {
                 fglog
@@ -1653,11 +1683,17 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
             }
 
             acl_ngrp_free();
-            TMPS_RETURN(EX_OK);
+            ret = EX_OK;
+            goto out;
         }
     }
 
-    /** NOT REACHED**/
+    ret = EX_OK;
+
+out:
+    if (decoded != NULL)
+        header_free(decoded);
+    TMPS_RETURN(ret);
     return 0;
 }
 
@@ -1836,7 +1872,10 @@ static int snd_to_cc_bcc(long int size, RFCHeader *h)
     char *header, *p;
     int status = EX_OK, st;
     RFCAddr rfc_to;
+    struct charset_info _ci, *ci = &_ci;
 
+    determine_charsets(h, NULL, ci);
+    h = header_decode(h, ci->rfc);
     /*
      * To:
      */
@@ -1867,6 +1906,8 @@ static int snd_to_cc_bcc(long int size, RFCHeader *h)
                 status = st;
         }
 
+
+    header_free(h);
     return status;
 }
 
@@ -1880,20 +1921,6 @@ static void set_mailmode(void)
 {
     private = TRUE;
     newsmode = FALSE;
-}
-
-/*
- * wrapper to read the header and decode mime
- */
-static RFCHeader *rfc2ftn_header_read(FILE * fpart)
-{
-    RFCHeader *h, *decoded;
-
-    h = header_read(fpart);
-    decoded = header_decode(h, INTERNAL_CHARSET);
-
-    header_free(h);
-    return decoded;
 }
 
 /*
@@ -2308,7 +2335,7 @@ int main(int argc, char **argv)
 
         /* Read message header from fpart */
         /* read and decode mime */
-        header = rfc2ftn_header_read(fpart);
+        header = header_read(fpart);
 
         /* Get Organization header */
         if (use_organization_for_origin)
