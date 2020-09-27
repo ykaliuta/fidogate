@@ -657,7 +657,7 @@ void tl_iterator_start(TextlistIterator *, Textlist *);
 Textline *tl_iterator_next(TextlistIterator *);
 Textlist *tl_dup(Textlist *);
 void tl_free(Textlist *);
-
+void tl_addtl_move(Textlist *, Textlist *);
 
 /* tick.c */
 int copy_file(char *, char *, char *);

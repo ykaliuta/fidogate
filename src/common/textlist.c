@@ -219,7 +219,7 @@ long tl_size(Textlist * list)
     return n;
 }
 
-/***** tl_add() --- Add another textlist ******************************/
+/***** tl_addtl() --- Add another textlist ******************************/
 
 void tl_addtl(Textlist * d, Textlist * s)
 {
@@ -228,6 +228,18 @@ void tl_addtl(Textlist * d, Textlist * s)
     for (p = s->first; p; p = p->next)
         tl_append(d, p->line);
 }
+
+void tl_addtl_move(Textlist *d, Textlist *s)
+{
+    if (!d->first)
+        *d = *s;
+    else {
+        d->last->next = s->first;
+        d->n += s->n;
+    }
+    tl_init(s);
+}
+
 
 Textline *tl_get(Textlist * list, char *str, int len)
 {
