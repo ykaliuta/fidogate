@@ -119,6 +119,12 @@ void tl_clear(Textlist * list)
     list->n = 0;
 }
 
+void tl_free(Textlist *list)
+{
+    tl_clear(list);
+    free(list);
+}
+
 /***** tl_append() --- Append string to text line chain ****************/
 
 void tl_append(Textlist * list, char *s)
@@ -257,6 +263,15 @@ int tl_copy(Textlist * dst, Textlist * src)
     for (p = src->first; p != NULL; p = p->next)
         tl_append(dst, p->line);
     return OK;
+}
+
+Textlist *tl_dup(Textlist *src)
+{
+    Textlist *d = xmalloc(sizeof(*d));
+
+    tl_init(d);
+    tl_copy(d, src);
+    return d;
 }
 
 int tl_for_each(Textlist * list, int (*func)(Textline *, void *), void *arg)
