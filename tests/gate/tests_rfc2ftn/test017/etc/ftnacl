@@ -1,0 +1,15 @@
+#
+#
+
+Echo
+Readonly
+!*/*.0,*	*.SYSOP
+
+
+Fecho
+Readonly
+!*/*.0,*	BOOK,NODEDIFF
+
+Echo
+Mandatory
+#*		CORE.LOCAL

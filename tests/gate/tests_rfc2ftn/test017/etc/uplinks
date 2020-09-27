@@ -1,0 +1,6 @@
+# Robot type    Area pattern    Uplink          Robot name      Password
+# -----------   -------------   ----------      -----------     ---------
+
+
+af	 /fido/etc/echolist.1024	2:450/1024		AreaFix    passwd -k A
+
