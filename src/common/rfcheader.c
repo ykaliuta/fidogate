@@ -510,7 +510,7 @@ char *addr_token(char *line)
  * Decodes the mimed headers and recodes them to @to charset
  * (source charset is part of the mime encoding)
  */
-RFCHeader *header_decode(RFCHeader *header, char *to)
+RFCHeader *header_decode(RFCHeader *header, char *to, char *ch_fallback)
 {
     TextlistIterator iter;
     Textline *line;
@@ -524,7 +524,7 @@ RFCHeader *header_decode(RFCHeader *header, char *to)
     for (; line; line = tl_iterator_next(&iter)) {
 
         mime_header_dec(buffer, sizeof(buffer), line->line,
-                        to, header);
+                        to, ch_fallback, header);
         header_append(decoded, buffer);
     }
 

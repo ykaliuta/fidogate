@@ -369,7 +369,7 @@ enum mime_encodings {
 #define MIME_STRING_LIMIT 76
 
 char *mime_dequote(char *, size_t, char *);
-char *mime_header_dec(char *, size_t, char *, char *, RFCHeader *);
+char *mime_header_dec(char *, size_t, char *, char *, char *, RFCHeader *);
 Textlist *mime_body_dec(Textlist *, RFCHeader *, char *);  /* decode mime body */
 int mime_header_enc(char **, char *, char *, int);
 void mime_b64_encode_tl(Textlist * in, Textlist * out);
@@ -584,7 +584,7 @@ char *header_geth(RFCHeader *, char *, int);
 char *header_getnext(RFCHeader *);
 char *s_header_getcomplete(RFCHeader *, char *);
 char *addr_token(char *);
-RFCHeader *header_decode(RFCHeader *, char *);
+RFCHeader *header_decode(RFCHeader *, char *, char *);
 
 /* routing.c */
 extern Routing *routing_first;

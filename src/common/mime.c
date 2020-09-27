@@ -1117,9 +1117,9 @@ static int mime_handle_mimed_word(char *s, char **out, size_t *out_len,
 
 static int mime_handle_plain_word(char *s, char **out, size_t *out_len,
                                   char *charset, size_t ch_size, char *to,
-				  RFCHeader *header)
+				  char *ch_fallback, RFCHeader *header)
 {
-    char *plain_charset = CHARSET_STDRFC;
+    char *plain_charset = ch_fallback;
     char *mime_charset = NULL;
     char *p;
     size_t len;
@@ -1197,7 +1197,7 @@ static int mime_handle_brace(char *s, char **out, size_t *out_len,
  */
 static int mime_handle_word(char *s, char **out, size_t *out_len,
                             bool *is_mime, char *charset, size_t ch_size,
-                            char *to, RFCHeader *header)
+                            char *to, char *ch_fallback, RFCHeader *header)
 {
     /* mime word can be inside "comment" not separated by whitespace */
     if (strnieq(s,
@@ -1214,11 +1214,13 @@ static int mime_handle_word(char *s, char **out, size_t *out_len,
     }
 
     *is_mime = false;
-    return mime_handle_plain_word(s, out, out_len, charset, ch_size, to, header);
+    return mime_handle_plain_word(s, out, out_len,
+                                  charset, ch_size, to, ch_fallback, header);
 }
 
 /* source @s must be '\0'-terminated */
-char *mime_header_dec(char *d, size_t d_max, char *s, char *to, RFCHeader *header)
+char *mime_header_dec(char *d, size_t d_max, char *s, char *to,
+                      char *ch_fallback, RFCHeader *header)
 {
     char *save_d = d;
     bool is_mime = false;
@@ -1247,7 +1249,8 @@ char *mime_header_dec(char *d, size_t d_max, char *s, char *to, RFCHeader *heade
 
         /* it means mime "word" -- encoded or plain part */
         s_handled = mime_handle_word(s, &buf, &len, &is_mime,
-                                     charset, sizeof(charset), to, header);
+                                     charset, sizeof(charset), to, ch_fallback,
+                                     header);
 
         /* keep at least one space between mime and non-mime words */
         if (is_prev_mime

@@ -1423,7 +1423,7 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
                 AreasBBS *ab;
 
                 determine_charsets(orig_h, pa, ci);
-                decoded = header_decode(orig_h, ci->ftn);
+                decoded = header_decode(orig_h, ci->ftn, CHARSET_STDRFC);
                 /* should not free old header, belongs to main */
                 h = decoded;
 
@@ -1854,7 +1854,7 @@ static int snd_to_cc_bcc(long int size, RFCHeader *h)
     struct charset_info _ci, *ci = &_ci;
 
     determine_charsets(h, NULL, ci);
-    h = header_decode(h, ci->ftn);
+    h = header_decode(h, ci->ftn, CHARSET_STDRFC);
     /*
      * To:
      */
