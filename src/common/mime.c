@@ -99,8 +99,6 @@ char *mime_dequote(char *d, size_t n, char *s)
 /*
  * Decode MIME RFC1522 header
  *
- **FIXME: currently always assumes ISO-8859-1 char set
- **FIXME: optional flag for conversion to 7bit ASCII replacements
  */
 #define MIME_HEADER_CODE_START	"=?"
 #define MIME_HEADER_CODE_MIDDLE_QP	"?Q?"
@@ -1611,10 +1609,10 @@ static Textlist *mime_debody_base64(Textlist * body)
 }
 
 static Textlist *mime_debody_section(Textlist *body, RFCHeader* header,
-                                     char *to);
+                                     char *to, char *ch_fallback);
 
 static Textlist *mime_debody_multipart(Textlist * body, MIMEInfo * mime,
-                                       char *to)
+                                       char *to, char *ch_fallback)
 {
     RFCHeader *header;
     Textline *line;
@@ -1652,7 +1650,7 @@ static Textlist *mime_debody_multipart(Textlist * body, MIMEInfo * mime,
             header = header_read_list(&tmp_body);
             header_delete_from_body(&tmp_body);
 
-            ptr_body = mime_debody_section(&tmp_body, header, to);
+            ptr_body = mime_debody_section(&tmp_body, header, to, ch_fallback);
             if (ptr_body != NULL) {
                 tl_addtl(dec_body, ptr_body);
                 if (ptr_body != &tmp_body)
@@ -1708,14 +1706,15 @@ static int mime_decharset_section(Textlist * body, MIMEInfo * mime, char *to)
 }
 
 static Textlist *mime_debody_section(Textlist *body, RFCHeader *header,
-                                     char *to)
+                                     char *to, char *ch_fallback)
 {
 
     Textlist *dec_body;
     MIMEInfo *mime;
 
-    if ((mime = get_mime_from_header(header)) == NULL)
-        return NULL;
+    mime = get_mime_from_header(header);
+    if (mime->type_charset == NULL)
+        mime->type_charset = ch_fallback;
 
     if ((mime->type_type == NULL) || strieq(mime->type_type, "text/plain")
         || (mime->type == NULL)) {
@@ -1737,7 +1736,7 @@ static Textlist *mime_debody_section(Textlist *body, RFCHeader *header,
         mime_decharset_section(dec_body, mime, to);
     } else if(strnieq(mime->type_type,
 		      "multipart/", sizeof("multipart/") - 1)) {
-        dec_body = mime_debody_multipart(body, mime, to);
+        dec_body = mime_debody_multipart(body, mime, to, ch_fallback);
     } else {
         fglog("WARNING: Skipped unsupported mime type  %s", mime->type_type);
         dec_body = NULL;
@@ -1749,11 +1748,13 @@ static Textlist *mime_debody_section(Textlist *body, RFCHeader *header,
 
 }
 
-Textlist *mime_body_dec(Textlist *body, RFCHeader *header, char *to)
+Textlist *mime_body_dec(Textlist *body, RFCHeader *header,
+                        char *to, char *ch_fallback)
 {
     Textlist *dec_body;
 
-    if ((dec_body = mime_debody_section(body, header, to)) == NULL)
+    dec_body = mime_debody_section(body, header, to, ch_fallback);
+    if (dec_body == NULL)
         return NULL;
 
     if (dec_body->first == NULL) {

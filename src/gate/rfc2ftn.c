@@ -932,7 +932,7 @@ static int snd_message(Message * msg, Area * parea,
     last_zone = cf_zone();
 
     /* Decode and recode (charset) the body */
-    dec_body = mime_body_dec(&body, h, ci->ftn);
+    dec_body = mime_body_dec(&body, h, ci->ftn, CHARSET_STDRFC);
     if (dec_body == NULL)
         return ERROR;
 
