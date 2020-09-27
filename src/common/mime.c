@@ -1406,6 +1406,7 @@ static MIMEInfo *get_mime_disposition(char *ver, char *type, char *enc,
         if (tmp_line != NULL)
             tmp_str = mime_attr_value(tmp_line->line);
         mime->disposition_filename = s_copy(tmp_str);
+        xfree(tmp_str);
         tl_clear(&header_line);
     }
 
@@ -1652,7 +1653,7 @@ static Textlist *mime_debody_multipart(Textlist * body, MIMEInfo * mime,
 
             ptr_body = mime_debody_section(&tmp_body, header, to, ch_fallback);
             if (ptr_body != NULL) {
-                tl_addtl(dec_body, ptr_body);
+                tl_addtl_move(dec_body, ptr_body);
                 if (ptr_body != &tmp_body)
                     xfree(ptr_body);
             }
