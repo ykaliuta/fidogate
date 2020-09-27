@@ -370,7 +370,7 @@ enum mime_encodings {
 
 char *mime_dequote(char *, size_t, char *);
 char *mime_header_dec(char *, size_t, char *, char *, RFCHeader *);
-int mime_body_dec(Textlist *, RFCHeader *, char *);  /* decode mime body */
+Textlist *mime_body_dec(Textlist *, RFCHeader *, char *);  /* decode mime body */
 int mime_header_enc(char **, char *, char *, int);
 void mime_b64_encode_tl(Textlist * in, Textlist * out);
 void mime_qp_encode_tl(Textlist * in, Textlist * out);

@@ -1718,7 +1718,9 @@ static Textlist *mime_debody_section(Textlist *body, RFCHeader *header,
         || (mime->type == NULL)) {
         if ((mime->encoding == NULL) || strieq(mime->encoding, "8bit")
             || strieq(mime->encoding, "7bit")) {
-            dec_body = body;
+
+            dec_body = tl_dup(body);
+
         } else if (strieq(mime->encoding, "base64")) {
             dec_body = mime_debody_base64(body);
         } else if (strieq(mime->encoding, "quoted-printable")) {
@@ -1744,37 +1746,20 @@ static Textlist *mime_debody_section(Textlist *body, RFCHeader *header,
 
 }
 
-int mime_body_dec(Textlist *body, RFCHeader *header, char *to)
+Textlist *mime_body_dec(Textlist *body, RFCHeader *header, char *to)
 {
     Textlist *dec_body;
-    int len;
-    char *buf;
 
     if ((dec_body = mime_debody_section(body, header, to)) == NULL)
-        return ERROR;
+        return NULL;
 
     if (dec_body->first == NULL) {
         fglog("ERROR: could not decode mime body");
         xfree(dec_body);
-        return ERROR;
+        return NULL;
     }
 
-    if (dec_body != body) {
-        tl_clear(body);
-        *body = *dec_body;
-        xfree(dec_body);
-    }
-
-    len = snprintf(NULL, 0, "text/plain; charset=%s", to);
-    buf = xmalloc(len + 1);
-    sprintf(buf, "text/plain; charset=%s", to);
-
-    header_alter(header, "Content-Type", buf);
-    header_alter(header, "Content-Transfer-Encoding", INTERNAL_ENCODING);
-
-    free(buf);
-
-    return OK;
+    return dec_body;
 }
 
 void mime_free(void)

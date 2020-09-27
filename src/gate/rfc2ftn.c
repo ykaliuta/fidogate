@@ -1199,6 +1199,7 @@ static int snd_message(Message * msg, Area * parea,
     int cs_out_fsc_level;
     char *cs_enc = "8bit";      /* all converted to 8 bit now */
     char *pt;
+    Textlist *dec_body;
 
     /*
      * X-Flags settings
@@ -1260,7 +1261,8 @@ static int snd_message(Message * msg, Area * parea,
     last_zone = cf_zone();
 
     /* Decode and recode (charset) the body */
-    if (mime_body_dec(&body, h, cs_out) != OK)
+    dec_body = mime_body_dec(&body, h, cs_out);
+    if (dec_body == NULL)
         return ERROR;
 
     /*
@@ -1271,7 +1273,7 @@ static int snd_message(Message * msg, Area * parea,
     if (maxsize > 0) {
         split = 1;
         lsize = 0;
-        for (p = body.first; p; p = p->next) {
+        for (p = dec_body->first; p; p = p->next) {
             lsize += strlen(p->line);   /* Length incl. <LF> */
             if (BUF_LAST(p->line) == '\n')  /* <LF> ->           */
                 lsize++;        /* <CR><LF>          */
@@ -1295,7 +1297,7 @@ static int snd_message(Message * msg, Area * parea,
      * Set pointer to first line in message body
      * Must be set before `again` lable to keep splitting working.
      */
-    p = body.first;
+    p = dec_body->first;
 
  again:
 
@@ -1621,6 +1623,8 @@ static int snd_message(Message * msg, Area * parea,
         print_via(sf, node_from);
 
     pt = xlat_s(NULL, pt);
+
+    tl_free(dec_body);
 
     /* End of message */
     putc(0, sf);
