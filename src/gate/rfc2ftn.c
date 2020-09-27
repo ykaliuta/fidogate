@@ -108,7 +108,6 @@ static char *netmail_charset_out = NULL;
  * Use Organization header for * Origin line
  */
 static int use_organization_for_origin = FALSE;
-static char *organization = NULL;
 static int echogate_alias = FALSE;
 static int single_pkts;
 
@@ -859,7 +858,6 @@ static int snd_message(Message * msg, Area * parea,
     long lsize;
     Textline *p;
     char *p2;
-    char *p3;
     char *id = NULL;
     int flag, add_empty;
     time_t time_split = -1;
@@ -870,8 +868,9 @@ static int snd_message(Message * msg, Area * parea,
     int x_flags_m = FALSE;
 #endif
     char *cs_enc = "8bit";      /* all converted to 8 bit now */
-    char *pt;
+    char *pt = NULL;
     Textlist *dec_body;
+    char *organization = NULL;
 
     /*
      * X-Flags settings
@@ -888,7 +887,7 @@ static int snd_message(Message * msg, Area * parea,
     if (parea && parea->rfc_lvl != -1)
         rfc_level = parea->rfc_lvl;
 
-    /* use for xlat so for headers only */
+    /* used for xlat, now only for config values */
     charset_set_in_out(ci->rfc, ci->ftn);
 
     /*
@@ -973,24 +972,12 @@ static int snd_message(Message * msg, Area * parea,
 
  again:
 
-    pt = xlat_s(subj, NULL);
-
     /* Subject with split part indication */
     if (split && part > 1) {
 	    str_printf(msg->subject, sizeof(msg->subject), "%02d: ", part);
-	    BUF_APPEND(msg->subject, pt ? pt : subj);
+	    BUF_APPEND(msg->subject, subj);
     } else {
-	    BUF_COPY(msg->subject, pt ? pt : subj);
-    }
-
-    pt = xlat_s(msg->name_to, pt);
-    if (pt) {
-	    BUF_COPY(msg->name_to, pt);
-    }
-
-    pt = xlat_s(msg->name_from, pt);
-    if (pt) {
-	    BUF_COPY(msg->name_from, pt);
+	    BUF_COPY(msg->subject, subj);
     }
 
     /* Header */
@@ -1042,13 +1029,12 @@ static int snd_message(Message * msg, Area * parea,
     if (!no_fsc_0035)
         if (!x_flags_n && !(alias_found && no_fsc_0035_if_alias)) {
             /* Generate FSC-0035 ^AREPLYADDR, ^AREPLYTO */
-            pt = xlat_s(s_rfcaddr_to_asc(&rfc_from, FALSE), pt);
             if (replyaddr_ifmail_tx)
                 fprintf(sf, "\001REPLYADDR: %s <%s>\r", msg->name_from,
-                        pt ? pt : s_rfcaddr_to_asc(&rfc_from, FALSE));
+                        s_rfcaddr_to_asc(&rfc_from, FALSE));
             else
                 fprintf(sf, "\001REPLYADDR %s\r",
-                        pt ? pt : s_rfcaddr_to_asc(&rfc_from, TRUE));
+                        s_rfcaddr_to_asc(&rfc_from, TRUE));
 #ifdef AI_1
             if (verify_host_flag(node_from) || alias_extended)
                 fprintf(sf, "\001REPLYTO %s %s\r",
@@ -1110,16 +1096,13 @@ static int snd_message(Message * msg, Area * parea,
         fprintf(sf, "\001X-From: %s\r", s_rfcaddr_to_asc(&rfc_from, TRUE));
 
     /* Misc kludges */
-    p3 = NULL;
     for (p2 = header_geth(h, "X-FTN-Kludge", TRUE);
          p2; p2 = header_geth(h, "X-FTN-Kludge", FALSE)) {
         if (should_skip_kludge(p2))
             continue;
 
-        p3 = xlat_s(p2, p3);
-        fprintf(sf, "\001%s\r", p3);
+        fprintf(sf, "\001%s\r", p2);
     }
-    p3 = xlat_s(NULL, p3);
 
     if (tzutc_kludge)
 	rfc2ftn_add_tzutc(sf, msg->tz);
@@ -1139,8 +1122,7 @@ static int snd_message(Message * msg, Area * parea,
      * FIDO<->Internet gateway
      */
     if (cf_gateway().zone && rfc_to.user[0] && !fido) {
-        pt = xlat_s(s_rfcaddr_to_asc(&rfc_to, TRUE), pt);
-        fprintf(sf, "To: %s\r", pt ? pt : s_rfcaddr_to_asc(&rfc_to, TRUE));
+        fprintf(sf, "To: %s\r", s_rfcaddr_to_asc(&rfc_to, TRUE));
         add_empty = TRUE;
     }
 
@@ -1148,33 +1130,27 @@ static int snd_message(Message * msg, Area * parea,
         if (!no_from_line && !(alias_found && no_fsc_0035_if_alias)) {
             /* From, Reply-To */
             if ((header = s_header_getcomplete(h, "From"))) {
-                pt = xlat_s(header, pt);
-                fprintf(sf, "From: %s\r", pt ? pt : header);
+                fprintf(sf, "From: %s\r", header);
             }
             if ((header = s_header_getcomplete(h, "Reply-To"))) {
-                pt = xlat_s(header, pt);
-                fprintf(sf, "Reply-To: %s\r", pt ? pt : header);
+                fprintf(sf, "Reply-To: %s\r", header);
             }
 
             /* Sender, To, Cc (only for mail) */
             if (private) {
                 if ((header = s_header_getcomplete(h, "Sender"))) {
-                    pt = xlat_s(header, pt);
-                    fprintf(sf, "Sender: %s\r", pt ? pt : header);
+                    fprintf(sf, "Sender: %s\r", header);
                 } else if ((header = s_header_getcomplete(h, "Resent-From"))) {
-                    pt = xlat_s(header, pt);
-                    fprintf(sf, "Sender: %s\r", pt ? pt : header);
+                    fprintf(sf, "Sender: %s\r", header);
                 }
 
                 /* If Sender/Resent-From is present also include To, Cc */
                 if (header) {
                     if ((header = s_header_getcomplete(h, "To"))) {
-                        pt = xlat_s(header, pt);
-                        fprintf(sf, "Header-To: %s\r", pt ? pt : header);
+                        fprintf(sf, "Header-To: %s\r", header);
                     }
                     if ((header = s_header_getcomplete(h, "Cc"))) {
-                        pt = xlat_s(header, pt);
-                        fprintf(sf, "Header-Cc: %s\r", pt ? pt : header);
+                        fprintf(sf, "Header-Cc: %s\r", header);
                     }
                 }
             }
@@ -1220,6 +1196,10 @@ static int snd_message(Message * msg, Area * parea,
 
     /***** Message body *****************************************************/
 
+    /* Get Organization header */
+    if (use_organization_for_origin)
+            organization = s_header_getcomplete(h, "Organization");
+
     lsize = 0;
     while (p) {
         snprintf(buffer, sizeof(buffer), "%s", p->line);
@@ -1243,13 +1223,12 @@ static int snd_message(Message * msg, Area * parea,
 
                 if (parea && parea->origin)
                     origin = parea->origin;
-                else if (use_organization_for_origin && organization) {
-                    origin = organization;
-                    BUF_COPY(buffer, origin);
-                    pt = xlat_s(buffer, pt);
-                    print_origin(sf, pt ? pt : buffer, node_from, h);
-                } else {
+                else
                     origin = cf_p_origin();
+
+                if (organization) {
+                    print_origin(sf, organization, node_from, h);
+                } else {
                     pt = xlat_s(origin, pt);
                     print_origin(sf, pt ? pt : origin, node_from, h);
                 }
@@ -1276,19 +1255,19 @@ static int snd_message(Message * msg, Area * parea,
 
         if (parea && parea->origin)
             origin = parea->origin;
-        else if (use_organization_for_origin && organization) {
-            origin = organization;
-            BUF_COPY(buffer, origin);
-            pt = xlat_s(buffer, pt);
-            print_origin(sf, pt ? pt : buffer, node_from, h);
-        } else {
+        else
             origin = cf_p_origin();
+
+        if (organization) {
+            print_origin(sf, organization, node_from, h);
+        } else {
             pt = xlat_s(origin, pt);
             print_origin(sf, pt ? pt : origin, node_from, h);
         }
     } else
         print_via(sf, node_from);
 
+    /* free pt */
     pt = xlat_s(NULL, pt);
 
     tl_free(dec_body);
@@ -1444,7 +1423,7 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
                 AreasBBS *ab;
 
                 determine_charsets(orig_h, pa, ci);
-                decoded = header_decode(orig_h, ci->rfc);
+                decoded = header_decode(orig_h, ci->ftn);
                 /* should not free old header, belongs to main */
                 h = decoded;
 
@@ -1875,7 +1854,7 @@ static int snd_to_cc_bcc(long int size, RFCHeader *h)
     struct charset_info _ci, *ci = &_ci;
 
     determine_charsets(h, NULL, ci);
-    h = header_decode(h, ci->rfc);
+    h = header_decode(h, ci->ftn);
     /*
      * To:
      */
@@ -2336,10 +2315,6 @@ int main(int argc, char **argv)
         /* Read message header from fpart */
         /* read and decode mime */
         header = header_read(fpart);
-
-        /* Get Organization header */
-        if (use_organization_for_origin)
-            organization = s_header_getcomplete(header, "Organization");
 
         /*
          * Work in news mode if forced by switches
