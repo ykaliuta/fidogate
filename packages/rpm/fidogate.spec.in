@@ -5,7 +5,6 @@ Release: 1%{?dist}
 License: GPLv2+
 Group: Fidonet/Gate
 Source0: https://github.com/ykaliuta/fidogate/archive/%{name}-%{version}.tar.gz
-Source1: %{name}.service
 BuildRequires: autoconf automake
 
 %description
@@ -18,7 +17,7 @@ FIDOGATE Version 5
 
 %define user news
 
-%if 0%{?_unitdir} == 0
+%if "x%{?_unitdir}" == "x"
 %global _unitdir /usr/lib/systemd/system
 %endif
 
@@ -55,7 +54,8 @@ make V=1 %{?_smp_mflags}
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
-install -D -m 0644 %{SOURCE1} $RPM_BUILD_ROOT%{_unitdir}/%{name}.service
+install -D -m 0644 debian/%{name}.service \
+	$RPM_BUILD_ROOT%{_unitdir}/%{name}.service
 
 %pre
 getent group news >/dev/null || groupadd -g 13 -r news

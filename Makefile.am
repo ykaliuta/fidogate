@@ -85,7 +85,8 @@ EXTRA_DIST += debian/copyright \
             debian/fidogate-sendmail.install \
             debian/control \
             debian/fidogate.logrotate \
-            debian/fidogate-sendmail.dirs
+            debian/fidogate-sendmail.dirs \
+	    debian/fidogate.service
 
 noinst_HEADERS = version.h
 
