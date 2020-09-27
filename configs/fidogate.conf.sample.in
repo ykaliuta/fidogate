@@ -700,19 +700,23 @@ DontIgnoreSoftCR
 
 # Charset mapping
 #
-# Format	default:ftn:rfc
-#		            ^^^ charset in RFC message, when gating FTN->RFC
-#                               use RFC 2045 charset names!
-#		        ^^^---- charset in FTN message, when gating RFC->FTN
-#                               use FSC-0054 names!
-#		^^^^^^^-------- charset assumed for FTN message, if no
-#				^ACHRS kludge is present
+# Format
+#   default_ftn:ftn:rfc[:default_rfc]
+#                       ^^^^^^^^^^ charset assumed for RFC message when gating
+#                                  RFC->FTN if no mime info present.
+#				   Default: built-in CHARSET_STDRFC
+#	            ^^^----------- charset in RFC message, when gating FTN->RFC
+#                                  use RFC 2045 charset names!
+#               ^^^--------------- charset in FTN message, when gating RFC->FTN
+#                                  use FSC-0054 names!
+#    ^^^^^^^---------------------- charset assumed for FTN message, if no
+#		                   ^ACHRS kludge is present
 #
 # Default charset mapping, if NetMailCharset or -C is not set
-DefaultCharset	cp866:cp866:utf-8
+DefaultCharset	cp866:cp866:utf-8:koi8-r
 
 # Charset mapping for NetMail
-NetMailCharset	cp866:cp866:utf-8
+NetMailCharset	cp866:cp866:utf-8:koi8-r
 
 # Canonical name and the list of its aliases
 CharsetAliasesFSC CP866 CP-866 +7FIDO +7_FIDO FIDO7 FIDO_7

@@ -119,16 +119,15 @@ long areas_get_limitmsgsize(void)
  *     -l               only local xpostings allowed
  *     -x               no xpostings allowed
  *     -g               no messages from other gates FTN->Usenet
- *     -8               use ISO 8-bit umlauts
  *     -H               AREA/NEWSGROUP match entire hierarchy, names are
  *                      translated automatically
  *     -R LVL           ^ARFC header level
  *     -m MAXSIZE       set MaxMsgSize for this area (0 = infinity)
  *     -L LIMITSIZE     set LimitMsgSize for this area (0 = infinity)
  *     -X "Xtra: xyz"	add extra RFC header (multiple -X are allowed)
- *     -8               convert to 8bit iso-8859-1 characters
- *     -Q               convert to quoted-printable iso-8859-1 characters
- *     -C def:in:out    charset mapping setting
+ *     -8               do not encode (b64/qp) non-7 bit messages
+ *     -Q               convert to quoted-printable
+ *     -C def:in:out:def_rfc    charset mapping setting
  *     -b               convert to base64, enabled by default
  *     -nh              do not encode or wrap headers
  */

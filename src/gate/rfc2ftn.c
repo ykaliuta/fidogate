@@ -42,12 +42,25 @@
 #define POS_INTERVAL		50
 
 struct charset_info {
+    /* still used for xlat, should be locale charset */
     char *rfc;
+    char *default_rfc;
     /* iconv name for ftn charset */
     char *ftn;
     /* fsc name for ftn charset to put into pkt */
     char *ftn_name;
     int ftn_level;
+};
+
+struct charset_config {
+    /* charset assumed for FTN if no kludge present */
+    char *default_ftn;
+    /* charset in FTN for rfc2ftn */
+    char *ftn;
+    /* charset in RFC for ftn2rfc */
+    char *rfc;
+    /* charset in RFC if no mime info present */
+    char *default_rfc;
 };
 
 /*
@@ -100,9 +113,8 @@ static short dont_flush_dbc_history = FALSE;
 static int xpost_flag;          /* Crosspost flag */
 
 /* Charset stuff */
-static char *default_charset_in = NULL;
-static char *default_charset_out = NULL;
-static char *netmail_charset_out = NULL;
+static struct charset_config default_charset;
+static struct charset_config netmail_charset;
 
 /*
  * Use Organization header for * Origin line
@@ -756,6 +768,24 @@ static char *get_charset_from_header(RFCHeader *h)
     return charset_chrs_name(p);
 }
 
+static void charset_config_parse(struct charset_config *c, char *s)
+{
+    char *t, *p;
+
+    t = strtok_r(s, ":", &p);
+    c->default_ftn = t;
+
+
+    t = strtok_r(NULL, ":", &p);
+    c->ftn = t;
+
+    t = strtok_r(NULL, ":", &p);
+    c->rfc = t;
+
+    t = strtok_r(NULL, ":", &p);
+    c->default_rfc = t;
+}
+
 /*
  * determine input and output charsets.
  * Input charset will be used only for headers, since body is recoded
@@ -764,37 +794,49 @@ static char *get_charset_from_header(RFCHeader *h)
  */
 static void determine_charsets(RFCHeader *h, Area *parea, struct charset_info *i)
 {
-    char *rfc;
+    char *default_rfc = NULL;
     char *ftn = NULL;
     char *ftn_name;
-    char *cs_save;
+    char *cs_rw;
+    struct charset_config area_charset;
 
-    rfc = INTERNAL_CHARSET;
     ftn = get_charset_from_header(h);
 
     if (!ftn && parea) {     /* News */
         if (parea->charset) {
             /* TODO: leak */
-            cs_save = s_copy(parea->charset);
-            strtok(cs_save, ":");
-            ftn = strtok(NULL, ":");
+            cs_rw = s_copy(parea->charset);
+            charset_config_parse(&area_charset, cs_rw);
+            ftn = area_charset.ftn;
+            default_rfc = area_charset.default_rfc;
         }
     }
 
-    if (!ftn && !parea)      /* Mail */
-        ftn = netmail_charset_out;
+    if (!ftn && !parea) {      /* Mail */
+        ftn = netmail_charset.ftn;
+        default_rfc = netmail_charset.default_rfc;
+    }
 
     /* defaults */
     if (!ftn)
-        ftn = default_charset_out;
-    if (!ftn || strieq(rfc, CHARSET_STD7BIT))
+        ftn = default_charset.ftn;
+
+    if (!ftn)
         ftn = CHARSET_STD7BIT;
+
     ftn_name = charset_name_rfc2ftn(ftn);
     str_upper(ftn_name);
 
-    debug(6, "charset: msg %s FSC=%s", ftn, ftn_name);
+    if (!default_rfc)
+        default_rfc = default_charset.default_rfc;
+    if (!default_rfc)
+        default_rfc = CHARSET_STDRFC;
 
-    i->rfc = rfc;
+    debug(6, "charset: msg %s FSC=%s, default RFC=%s",
+          ftn, ftn_name, default_rfc);
+
+    i->rfc = INTERNAL_CHARSET;
+    i->default_rfc = default_rfc;
     i->ftn = ftn;
     i->ftn_name = ftn_name;
 
@@ -932,7 +974,7 @@ static int snd_message(Message * msg, Area * parea,
     last_zone = cf_zone();
 
     /* Decode and recode (charset) the body */
-    dec_body = mime_body_dec(&body, h, ci->ftn, CHARSET_STDRFC);
+    dec_body = mime_body_dec(&body, h, ci->ftn, ci->default_rfc);
     if (dec_body == NULL)
         return ERROR;
 
@@ -1423,7 +1465,7 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
                 AreasBBS *ab;
 
                 determine_charsets(orig_h, pa, ci);
-                decoded = header_decode(orig_h, ci->ftn, CHARSET_STDRFC);
+                decoded = header_decode(orig_h, ci->ftn, ci->default_rfc);
                 /* should not free old header, belongs to main */
                 h = decoded;
 
@@ -1854,7 +1896,7 @@ static int snd_to_cc_bcc(long int size, RFCHeader *h)
     struct charset_info _ci, *ci = &_ci;
 
     determine_charsets(h, NULL, ci);
-    h = header_decode(h, ci->ftn, CHARSET_STDRFC);
+    h = header_decode(h, ci->ftn, ci->default_rfc);
     /*
      * To:
      */
@@ -2194,13 +2236,10 @@ int main(int argc, char **argv)
         addr_is_local_xpost_init(p);
     }
     if ((p = cf_get_string("DefaultCharset", TRUE))) {
-        strtok(p, ":");
-        default_charset_out = strtok(NULL, ":");
-        default_charset_in = strtok(NULL, ":");
+        charset_config_parse(&default_charset, p);
     }
     if ((p = cf_get_string("NetMailCharset", TRUE))) {
-        strtok(p, ":");
-        netmail_charset_out = strtok(NULL, ":");
+        charset_config_parse(&netmail_charset, p);
     }
     if ((p = cf_get_string("DontProcessReturnReceiptTo", TRUE))) {
         dont_process_return_receipt_to = TRUE;
