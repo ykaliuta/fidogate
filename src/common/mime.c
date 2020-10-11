@@ -246,6 +246,21 @@ static size_t mime_b64_calc_len(char *t, size_t len)
     return res;
 }
 
+static void mime_inc_size(struct mime_word_enc_state *state, size_t inc)
+{
+    state->size += inc;
+    state->encoded_line = xrealloc(state->encoded_line, state->size);
+}
+
+static void mime_check_and_inc_size(struct mime_word_enc_state *state,
+                                    size_t inc)
+{
+    if (state->pos + inc <= state->size)
+        return;
+
+    mime_inc_size(state, inc);
+}
+
 static void mime_strcat(struct mime_word_enc_state *state, char *str)
 {
     size_t len;
@@ -264,6 +279,7 @@ static void mime_strlcpy(struct mime_word_enc_state *state,
     state->pos += len;
     state->vpos += len;
 
+    mime_check_and_inc_size(state, 1); 
     *(state->encoded_line + state->pos) = '\0';
 }
 
@@ -742,6 +758,7 @@ static void mime_header_enc_start(struct mime_word_enc_state *state,
 static char *mime_header_enc_end(struct mime_word_enc_state *state)
 {
     size_t len;
+    size_t extra_len; /* for \n and \0 */
 
     if (state->is_mime) {
         len = strlen(MIME_HEADER_CODE_END);
@@ -757,8 +774,15 @@ static char *mime_header_enc_end(struct mime_word_enc_state *state)
         mime_word_end(state);
     }
 
-    if (state->encoded_line[state->pos - 1] != '\n')
+    extra_len = strlen(MIME_HEADER_STR_DELIM) + 1;
+    mime_check_and_inc_size(state, extra_len);
+    
+    if (state->encoded_line[state->pos - 1] != '\n') {
         strcat(state->encoded_line, MIME_HEADER_STR_DELIM);
+        state->pos += strlen(MIME_HEADER_STR_DELIM);
+    }
+
+    state->encoded_line[state->pos++] = '\0';
 
     return state->encoded_line;
 }
