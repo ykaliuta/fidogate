@@ -8,7 +8,7 @@ WORKDIR=$(dirname $(realpath $0))
 
 FAIL=""
 CMP="$WORKDIR/../cmp-rfc.sh"
-COMMAND="$WORKDIR/../../src/gate/ftn2rfc -1 -n"
+COMMAND="$WORKDIR/../../src/gate/ftn2rfc -n"
 TEST_DIR=$WORKDIR/tests_ftn2rfc
 RESULT=$FIDOGATE_OUTRFC_NEWS/00000001.rfc
 
