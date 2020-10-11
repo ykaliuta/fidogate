@@ -91,6 +91,7 @@ static char *a_flag = NULL;     /* Exec script after tosting */
 static char *b_flag = NULL;     /* Exec script before tosting */
 static Runtoss toss[7];
 static char *site = "fidogate";
+static int max_archive_ratio = 10;
 
 /*
  * Search processed files and unpack archives
@@ -252,9 +253,10 @@ int run_unpack(char *cmd_list, char *cmd_unarc, char *archive, char *type)
 
         if ((s = xstrtok(line, " \t"))) {
             if (58 > *s && *s > 47) {
-                if (atol(s) / 10 > check_size(archive)) {
-                    fglog("WARNING: compression archive %s is biggest then 10",
-                          archive);
+                if (max_archive_ratio > 0 &&
+                    atol(s) / max_archive_ratio > check_size(archive)) {
+                    fglog("WARNING: compression archive %s is biggest then %d",
+                          archive, max_archive_ratio);
                     return FALSE;
                 }
             } else {
@@ -795,6 +797,7 @@ int main(int argc, char **argv)
     int option_index, c;
     short out_flag = FALSE;
     char *c_flag = NULL;
+    char *p;
 
     static struct option long_options[] = {
         {"config", 1, 0, 'c'},  /* Config file */
@@ -877,6 +880,9 @@ int main(int argc, char **argv)
         exit_free();
         exit(1);
     }
+
+    if ((p = cf_get_string("MaxArchiveRatio", TRUE)))
+        max_archive_ratio = atoi(p);
 
 #ifndef IGNORE_PARM_RUNINC
     if (argv[optind]) {
