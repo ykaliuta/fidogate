@@ -16,12 +16,10 @@ before_install:
 script:
   - ./autogen.sh
   - ./configure --without-news --with-sendmail=/usr/sbin/sendmail
-  - mkdir -p $HOME/rpmbuild/SOURCES
   # on travis' ubuntu there are no rpm dependencies
   - sed -i -e 's/^BuildRequires:.*//' packages/rpm/fidogate.spec
   - make dist
-  - cp *.tar.gz packages/rpm/*.service $HOME/rpmbuild/SOURCES
-  - rpmbuild -tb $HOME/rpmbuild/SOURCES/*.tar.gz
+  - rpmbuild -tb *.tar.gz
   - sudo dpkg-buildpackage -b --no-sign
 
 deploy:
