@@ -2,9 +2,9 @@ dnl Copyright (c) 2003-2008 Andrey Slusar <anrays@gmail.com>
 dnl Copyright (c) 2003-2004 Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 dnl Copyright (c) 2015-2020 Yauheni Kaliuta <y.kaliuta@gmail.com>
 dnl
-AC_REVISION([Revision: 1035])
+AC_REVISION([Revision: 1036])
 AC_PREREQ(2.53)
-AC_INIT([fidogate],[5.8],[y.kaliuta@gmail.com])
+AC_INIT([fidogate],[5.9],[y.kaliuta@gmail.com])
 AC_DISABLE_OPTION_CHECKING
 AM_CONFIG_HEADER([config.h])
 AC_CONFIG_SRCDIR([src/common/config.c])
