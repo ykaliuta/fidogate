@@ -1581,7 +1581,7 @@ static int snd_mail(RFCAddr rfc_to, long size, RFCHeader *h)
          * NetMail message
          */
 
-        /* it's done in snd_to_cc_bcc, but it's not passed */
+        /* it's done in main, but it's not passed */
         determine_charsets(h, NULL, ci);
 
         rc = snd_mail_prepare(h, subj, sizeof(subj),
@@ -1893,10 +1893,7 @@ static int snd_to_cc_bcc(long int size, RFCHeader *h)
     char *header, *p;
     int status = EX_OK, st;
     RFCAddr rfc_to;
-    struct charset_info _ci, *ci = &_ci;
 
-    determine_charsets(h, NULL, ci);
-    h = header_decode(h, ci->ftn, ci->default_rfc);
     /*
      * To:
      */
@@ -1927,8 +1924,6 @@ static int snd_to_cc_bcc(long int size, RFCHeader *h)
                 status = st;
         }
 
-
-    header_free(h);
     return status;
 }
 
@@ -2395,17 +2390,25 @@ int main(int argc, char **argv)
             /* Send mail to echo feed for news messages */
             status = snd_mail(rfc_to, size, header);
             tmps_freeall();
-        } else if (t_flag || optind >= argc) {  /* flag or no arguments */
-            /* Send mail to addresses from headers */
-            status = snd_to_cc_bcc(size, header);
-            tmps_freeall();
         } else {
-            /* Send mail to addresses from command line args */
-            for (i = optind; i < argc; i++) {
-                rfc_to = rfcaddr_from_rfc(argv[i]);
-                if ((st = snd_mail(rfc_to, size, header)) != EX_OK)
-                    status = st;
+            struct charset_info _ci, *ci = &_ci;
+
+            /* since snd_to_cc_bcc needs recoded header, do it here */
+            determine_charsets(header, NULL, ci);
+            header = header_decode(header, ci->ftn, ci->default_rfc);
+
+            if (t_flag || optind >= argc) {  /* flag or no arguments */
+                /* Send mail to addresses from headers */
+                status = snd_to_cc_bcc(size, header);
                 tmps_freeall();
+            } else {
+                /* Send mail to addresses from command line args */
+                for (i = optind; i < argc; i++) {
+                    rfc_to = rfcaddr_from_rfc(argv[i]);
+                    if ((st = snd_mail(rfc_to, size, header)) != EX_OK)
+                        status = st;
+                    tmps_freeall();
+                }
             }
         }
 
