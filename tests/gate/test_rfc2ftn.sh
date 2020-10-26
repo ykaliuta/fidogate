@@ -19,7 +19,9 @@ run_one()
     local input="$WORKDIR/$dir/input"
     local expected="$WORKDIR/$dir/expected"
 
-    cat $input | $command
+    [ -f "$WORKDIR/$dir/env" ] && . "$WORKDIR/$dir/env"
+
+    cat $input | $command $EXTRA_ARGS
 
     if $CMP $expected $RESULT; then
         echo "Test $dir PASSED"
