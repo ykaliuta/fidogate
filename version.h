@@ -10,7 +10,7 @@
 
 #include <config.h>
 #define VERSION_MAJOR	5
-#define VERSION_MINOR	9
+#define VERSION_MINOR	10
 
 #ifdef GIT_HASH_STR
 #define EXTRAVERSION	"-g" GIT_HASH_STR
