@@ -146,6 +146,8 @@ void acl_ngrp(RFCAddr rfc_from, int type)
 void acl_ngrp_free(void)
 {
     list_free(ngrp_pat_list);
+    /* will be reused with the next acl_ngrp calls */
+    ngrp_pat_list = NULL;
 }
 
 int acl_ngrp_lookup(char *list)
