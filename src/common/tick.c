@@ -323,10 +323,19 @@ int tick_send(Tick * tic, Node * node, char *name, mode_t mode)
             fglog("$ERROR: config: PassthroughtBoxesDir not defined");
             return ERROR;
         }
-
+#ifndef FILEBOX_FLAVOUR
         str_printf(buffer, sizeof(buffer), "%s/%d.%d.%d.%d",
                    pass_path, node->zone, node->net, node->node, node->point);
-
+#else
+        if (!strcmp(flav, "Hold"))
+            str_printf(buffer, sizeof(buffer), "%s/%d.%d.%d.%d.H",
+                       pass_path,
+                       node->zone, node->net, node->node, node->point);
+        else
+            str_printf(buffer, sizeof(buffer), "%s/%d.%d.%d.%d",
+                       pass_path,
+                       node->zone, node->net, node->node, node->point);
+#endif
         if (mkdir_r(buffer, DIR_MODE) == ERROR) {
             fglog("$WARNING: can't create dir %s", buffer);
             return ERROR;
@@ -395,9 +404,19 @@ int tick_send(Tick * tic, Node * node, char *name, mode_t mode)
         fglog("$ERROR: config: PassthroughtBoxesDir not defined");
         return ERROR;
     }
-
+#ifndef FILEBOX_FLAVOUR
     str_printf(buffer, sizeof(buffer), "%s/%d.%d.%d.%d",
                pass_path, node->zone, node->net, node->node, node->point);
+#else
+    if (!strcmp(flav, "Hold"))
+        str_printf(buffer, sizeof(buffer), "%s/%d.%d.%d.%d.H",
+                   pass_path,
+                   node->zone, node->net, node->node, node->point);
+    else
+        str_printf(buffer, sizeof(buffer), "%s/%d.%d.%d.%d",
+                   pass_path,
+                   node->zone, node->net, node->node, node->point);
+#endif
     if (mkdir_r(buffer, DIR_MODE) == ERROR) {
         fglog("$ERROR: can't create dir %s", buffer);
         return ERROR;
