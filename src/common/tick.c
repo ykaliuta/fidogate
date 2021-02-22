@@ -327,6 +327,12 @@ int tick_send(Tick * tic, Node * node, char *name, mode_t mode)
         str_printf(buffer, sizeof(buffer), "%s/%d.%d.%d.%d",
                    pass_path, node->zone, node->net, node->node, node->point);
 
+        /* 
+        * Check for BoxesWithFlavours support and add Hold flavour if needed
+        */
+        if (streq(flav, "Hold") && (cf_get_string("BoxesWithFlavours", TRUE) != NULL))
+            BUF_APPEND(buffer, ".H");
+
         if (mkdir_r(buffer, DIR_MODE) == ERROR) {
             fglog("$WARNING: can't create dir %s", buffer);
             return ERROR;
@@ -398,6 +404,13 @@ int tick_send(Tick * tic, Node * node, char *name, mode_t mode)
 
     str_printf(buffer, sizeof(buffer), "%s/%d.%d.%d.%d",
                pass_path, node->zone, node->net, node->node, node->point);
+
+    /* 
+     * Check for BoxesWithFlavours support and add Hold flavour if needed
+     */
+    if (streq(flav, "Hold") && (cf_get_string("BoxesWithFlavours", TRUE) != NULL))
+        BUF_APPEND(buffer, ".H");
+
     if (mkdir_r(buffer, DIR_MODE) == ERROR) {
         fglog("$ERROR: can't create dir %s", buffer);
         return ERROR;
