@@ -264,6 +264,30 @@ void tick_debug(Tick * tic, int lvl)
         debug(lvl, "App      : %s", pl->line);
 }
 
+static int make_dir_name(char *buf, size_t bufsize,
+			 char *pass_path, Node *node, char *flav)
+{
+    size_t len;
+
+    str_printf(buf, bufsize, "%s/%d.%d.%d.%d",
+               pass_path, node->zone, node->net, node->node, node->point);
+
+    len = strlen(buf); /* str_printf() does not return len */
+
+    /* A bit ugly reversed condition to avoid nested if */
+    if (!streq(flav, "Hold")
+	|| !(cf_get_string("PassthroughtBoxesFlavours", TRUE))) {
+	    return OK;
+    }
+
+    if (bufsize - len < sizeof(".H"))
+        return ERROR;
+
+    strcpy(buf + len, ".H");
+
+    return OK;
+}
+
 /*
  * Send file and TIC to node
  */
@@ -324,8 +348,11 @@ int tick_send(Tick * tic, Node * node, char *name, mode_t mode)
             return ERROR;
         }
 
-        str_printf(buffer, sizeof(buffer), "%s/%d.%d.%d.%d",
-                   pass_path, node->zone, node->net, node->node, node->point);
+
+	if (make_dir_name(buffer, sizeof(buffer), pass_path, node, flav) == ERROR) {
+            fglog("$ERROR: could not make fbox directory name");
+            return ERROR;
+        }
 
         if (mkdir_r(buffer, DIR_MODE) == ERROR) {
             fglog("$WARNING: can't create dir %s", buffer);
@@ -396,8 +423,11 @@ int tick_send(Tick * tic, Node * node, char *name, mode_t mode)
         return ERROR;
     }
 
-    str_printf(buffer, sizeof(buffer), "%s/%d.%d.%d.%d",
-               pass_path, node->zone, node->net, node->node, node->point);
+    if (make_dir_name(buffer, sizeof(buffer), pass_path, node, flav) == ERROR) {
+        fglog("$ERROR: could not make fbox directory name");
+        return ERROR;
+    }
+
     if (mkdir_r(buffer, DIR_MODE) == ERROR) {
         fglog("$ERROR: can't create dir %s", buffer);
         return ERROR;

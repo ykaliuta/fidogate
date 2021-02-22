@@ -1015,6 +1015,10 @@ AutoCreateFechoPath /home/ftp/fileecho
 # хардлинки.
 PassthroughtBoxesDir /var/spool/bt/fbox
 
+# Формировать имена каталогов транзитных файлбоксов с учетом flavour Hold
+# для совместимость с T-Mail или BinkD (добавлять ".H" в конце)
+PassthroughtBoxesFlavours
+
 # Время в часах, в течении которого ожидаем прихода файла для соотв. tic'а.
 TickWaitHour 168
 

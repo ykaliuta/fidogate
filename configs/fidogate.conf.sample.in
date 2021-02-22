@@ -434,6 +434,9 @@ AutoCreateFechoPath /home/ftp/fileecho
 # Filebox style directory. In it create hardlinks to our downlinks
 PassthroughtBoxesDir %B/fbox
 
+# Enable T-Mail compatible Hold flavour support in filebox directory name
+PassthroughtBoxesFlavours
+
 # Time in hour to wait file if it missing, if tick file was resived
 TickWaitHour 48
 
