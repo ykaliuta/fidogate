@@ -1730,7 +1730,8 @@ int print_tear_line(FILE *fp, RFCHeader *h)
             (p = header_get(h, "X-Mailer")) ||
             (p = header_get(h, "User-Agent")) ||
             (p = header_get(h, "X-Newsreader")) ||
-            (p = header_get(h, "X-GateSoftware"))) {
+            (p = header_get(h, "X-GateSoftware")) ||
+            (p = header_get(h, "X-HTTP-USER-AGENT"))) {
             BUF_COPY(buffer, p);
             /* TODO: no xlat when converted directly to FTN charset */
             pt = xlat_s(buffer, NULL);
