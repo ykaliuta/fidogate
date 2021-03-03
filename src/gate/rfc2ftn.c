@@ -1727,6 +1727,7 @@ int print_tear_line(FILE *fp, RFCHeader *h)
 
     if (use_x_for_tearline) {
         if ((p = header_get(h, "X-FTN-Tearline")) ||
+            (p = header_get(h, "X-HTTP-USER-AGENT")) ||
             (p = header_get(h, "X-Mailer")) ||
             (p = header_get(h, "User-Agent")) ||
             (p = header_get(h, "X-Newsreader")) ||

@@ -166,7 +166,8 @@
     "X-FTN-Tearline", \
     "X-FTN-Origin", \
     "X-FTN-Seen-By", \
-    "X-FTN-Path"
+    "X-FTN-Path", \
+    "X-HTTP-USER-AGENT"
 
 /*
  * Open modes for fopen(), binary for system requiring this.
