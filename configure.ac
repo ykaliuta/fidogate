@@ -562,20 +562,6 @@ if test $enable_use_filebox = yes; then
 	      [Enable if use fileboxes for fileecho])
 fi
 
-AC_ARG_ENABLE(filebox-flavour,
-[  --disable-filebox-flavour   use flavour in fileboxes names],dnl
-   [case "${enableval}" in
-    yes | no) enable_filebox_flavour="${enableval}" ;;
-      *) AC_MSG_ERROR(bad value ${enableval} for --disable-filebox-flavour) ;;
-    esac],dnl
-    enable_filebox_flavour=yes)
-
-if test $enable_filebox_flavour = yes; then
-    AC_DEFINE(FILEBOX_FLAVOUR,
-              1,
-	      [Enable flavour in fileboxes names])
-fi
-
 AC_ARG_ENABLE(tick-crc,
 [  --disable-tick-crc      ftntick CRC control],dnl
    [case "${enableval}" in
