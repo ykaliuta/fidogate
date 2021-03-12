@@ -255,7 +255,8 @@ static void mime_inc_size(struct mime_word_enc_state *state, size_t inc)
 static void mime_check_and_inc_size(struct mime_word_enc_state *state,
                                     size_t inc)
 {
-    if (state->pos + inc <= state->size)
+    /* Should care about preallocated space for final \0 */
+    if (state->pos + inc <= state->size - 1)
         return;
 
     mime_inc_size(state, inc);
