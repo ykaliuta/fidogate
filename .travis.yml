@@ -1,6 +1,6 @@
 language: c
 
-dist: bionic
+dist: focal
 
 branches:
   only:
@@ -10,8 +10,6 @@ branches:
 before_install:
   - sudo apt-get update
   - sudo apt-get install build-essential devscripts debhelper bison rpm  software-properties-common
-  - sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu eoan main'
-  - sudo apt-get install automake
 
 script:
   - ./autogen.sh
