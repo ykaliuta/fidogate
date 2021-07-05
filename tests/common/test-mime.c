@@ -24,9 +24,10 @@ int verbose;
 Ensure(hdr_enc_78_limit)
 {
 	char *src = "Subject: 75 лет назад: Четвертый Интернационал выдвигает революционные перспекти\n";
-	char *exp = "Subject: 75 =?utf-8?B?0LvQtdGCINC90LDQt9Cw0LQ6INCn0LXRgtCy0LXRgNGC0YvQuSDQmA==?=\n"
-		" =?utf-8?B?0L3RgtC10YDQvdCw0YbQuNC+0L3QsNC7INCy0YvQtNCy0LjQs9Cw0LXRgiDRgA==?=\n"
-		" =?utf-8?B?0LXQstC+0LvRjtGG0LjQvtC90L3Ri9C1INC/0LXRgNGB0L/QtdC60YLQuAo=?=\n";
+	char *exp = "Subject: 75 =?utf-8?B?0LvQtdGCINC90LDQt9Cw0LQ6INCn0LXRgtCy0LXRgNGC?=\n"
+		" =?utf-8?B?0YvQuSDQmNC90YLQtdGA0L3QsNGG0LjQvtC90LDQuyDQstGL0LTQsg==?=\n"
+		" =?utf-8?B?0LjQs9Cw0LXRgiDRgNC10LLQvtC70Y7RhtC40L7QvdC90YvQtSDQvw==?=\n"
+		" =?utf-8?B?0LXRgNGB0L/QtdC60YLQuAo=?=\n";
 	char *res = NULL;
 
 	mime_header_enc(&res, src, "utf-8", MIME_B64);
@@ -62,7 +63,8 @@ Ensure(hdr_enc_encodes_cyrillic2)
 Ensure(hdr_enc_does_not_break_utf8)
 {
 	char *src = "Subject: Это ваше ФИДО (переиздание)";
-	char *exp = "Subject: =?utf-8?B?0K3RgtC+INCy0LDRiNC1INCk0JjQlNCeICjQv9C10YDQtdC4?=\n =?utf-8?B?0LfQtNCw0L3QuNC1KQ==?=\n";
+	char *exp = "Subject: =?utf-8?B?0K3RgtC+INCy0LDRiNC1INCk0JjQlNCeICjQv9C10YDQtQ==?=\n"
+		" =?utf-8?B?0LjQt9C00LDQvdC40LUp?=\n";
 	char *res = NULL;
 
 	mime_header_enc(&res, src, "utf-8", MIME_B64);
@@ -74,7 +76,9 @@ Ensure(hdr_enc_does_not_break_utf8)
 Ensure(hdr_enc_encodes_long_line)
 {
 	char *src = "Field: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-	char *exp = "Field: =?windows-1251?B?YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFh?=\n =?windows-1251?B?YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFh?=\n =?windows-1251?B?YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYQ==?=\n";
+	char *exp = "Field: =?windows-1251?B?YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFh?=\n"
+		" =?windows-1251?B?YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFh?=\n"
+		" =?windows-1251?B?YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYQ==?=\n";
 	char *res = NULL;
 
 	mime_header_enc(&res, src, "windows-1251", MIME_B64);
@@ -99,7 +103,8 @@ Ensure(hdr_enc_b64_wraps_reminder)
 {
 	/* =?utf-8?Q?XXXXxxxx?= 20 chars */
 	char *src = "Subject: aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaa ббббб";
-	char *exp = "Subject: aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaa =?utf-8?B?0LHQsQ==?=\n =?utf-8?B?0LHQsdCx?=\n";
+	char *exp = "Subject: aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaa =?utf-8?B\??=\n"
+		" =?utf-8?B?0LHQsdCx0LHQsQ==?=\n";
 	char *res = NULL;
 
 	mime_header_enc(&res, src, "utf-8", MIME_B64);
