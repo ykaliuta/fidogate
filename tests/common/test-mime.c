@@ -20,6 +20,21 @@ void fglog(const char *fmt, ...)
 
 int verbose;
 
+/* check for writing beyond end of line. May not crash, but valgrind reports */
+Ensure(hdr_enc_78_limit)
+{
+	char *src = "Subject: 75 лет назад: Четвертый Интернационал выдвигает революционные перспекти\n";
+	char *exp = "Subject: 75 =?utf-8?B?0LvQtdGCINC90LDQt9Cw0LQ6INCn0LXRgtCy0LXRgNGC0YvQuSDQmA==?=\n"
+		" =?utf-8?B?0L3RgtC10YDQvdCw0YbQuNC+0L3QsNC7INCy0YvQtNCy0LjQs9Cw0LXRgiDRgA==?=\n"
+		" =?utf-8?B?0LXQstC+0LvRjtGG0LjQvtC90L3Ri9C1INC/0LXRgNGB0L/QtdC60YLQuAo=?=\n";
+	char *res = NULL;
+
+	mime_header_enc(&res, src, "utf-8", MIME_B64);
+
+	assert_that(res, is_equal_to_string(exp));
+	free(res);
+}
+
 Ensure(hdr_enc_encodes_cyrillic)
 {
 	char *src = "Subject: tеsт кириллица latinitsa";
@@ -228,6 +243,7 @@ static TestSuite *create_mime_suite(void)
 {
     TestSuite *suite = create_named_test_suite(
 	    "MIME suite");
+    add_test(suite, hdr_enc_78_limit);
     add_test(suite, hdr_enc_encodes_cyrillic);
     add_test(suite, hdr_enc_encodes_cyrillic2);
     add_test(suite, hdr_enc_does_not_break_utf8);
