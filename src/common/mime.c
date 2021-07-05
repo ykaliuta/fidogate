@@ -490,7 +490,8 @@ static size_t mime_word_enc_b64(struct mime_word_enc_state *state,
     size_t to_encode;
     bool end_of_line = false;
 
-    limit = state->limit - strlen(MIME_HEADER_CODE_END);
+    /* one chunk is encoded after end of line detection */
+    limit = state->limit - strlen(MIME_HEADER_CODE_END) - B64_NLET_PER_CHUNK;
 
     done = mime_add_reminder(state, &p, &len, limit);
 
