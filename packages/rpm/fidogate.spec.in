@@ -5,7 +5,7 @@ Release: 1%{?dist}
 License: GPLv2+
 Group: Fidonet/Gate
 Source0: https://github.com/ykaliuta/fidogate/archive/%{name}-%{version}.tar.gz
-BuildRequires: autoconf automake
+BuildRequires: autoconf automake byacc
 
 %description
 FIDOGATE Version 5
