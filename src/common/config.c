@@ -223,94 +223,116 @@ Node cf_n_uplink(void)
     return scf_c_uplink;
 }
 
-#ifdef BEST_AKA
 /*
  * Select best AKA
  */
+
+/* cf_get_best: find best aka
+ *
+ * @dest: destination node to find aka for.
+ *        Only zone, net and node fields are used
+ * @aka:  where to write the found aka
+ * @uplink: if not NULL, uplink for the aka
+ * @idx:  if not NULL, index of the configured aka
+ *
+ * returns: -1 no addresses configured
+ *           0 found best
+ *           1 best not found, returns default
+ *
+ * Small compromise between old code and new needs:
+ * returns index to leave setting the global one in the old
+ * code.
+ */
+int cf_get_best(Node *dest, Node *aka, Node *uplink, int *idx)
+{
+    int zone = dest->zone;
+    int net = dest->net;
+    int node = dest->node;
+    int i;
+    int ret = 0;
+
+    if (scf_naddr == 0)
+        return -1;
+
+/* Z:N/F.x */
+    for (i = 0; i < scf_naddr; i++) {
+        if ((zone == scf_addr[i].zone) && (net == scf_addr[i].addr.net)
+            && (node == scf_addr[i].addr.node))
+            goto found;
+    }
+
+/* Z:N/x.x */
+    for (i = 0; i < scf_naddr; i++) {
+        if ((zone == scf_addr[i].zone) && (net == scf_addr[i].addr.net))
+            goto found;
+    }
+
+/* Z:x/x.x */
+    for (i = 0; i < scf_naddr; i++) {
+        if ((zone == scf_addr[i].zone))
+            goto found;
+    }
+
+/* not found */
+    i = 0;
+    ret = 1;
+
+found:
+    *aka = scf_addr[i].addr;
+    if (idx != NULL)
+        *idx = i;
+    if (uplink != NULL)
+        *uplink = scf_addr[i].uplink;
+    return ret;
+}
+
 void cf_set_best(int zone, int net, int node)
 {
-    int i;
+    int rc;
+    char *aka_flavour = "best";
+    /* Zxx\0 */
+    char zone_str[4];
+    Node dest = {
+        .zone = zone,
+        .net = net,
+        .node = node,
+    };
 
-    if (scf_naddr == 0) {
+/* Leave this conditional compilation for now in a hackish way.
+ * Affects search criteria and debug output */
+#ifndef BEST_AKA
+    /* only zone */
+    dest.net = -1;
+    dest.node = -1;
+#endif
+
+    if ((dest.net == -1) && (dest.node == -1)) {
+        snprintf(zone_str, sizeof(zone_str), "Z%d", zone);
+        aka_flavour = zone_str;
+    }
+
+    rc = cf_get_best(&dest,
+                     &scf_c_addr, &scf_c_uplink, &scf_index);
+    if (rc < 0) {
         fprintf(stderr, "No FTN addresses configured.\n");
         exit(1);
     }
 
     scf_zone = zone;
-/* Z:N/F.x */
-    for (i = 0; i < scf_naddr; i++)
-        if ((zone == scf_addr[i].zone) && (net == scf_addr[i].addr.net)
-            && (node == scf_addr[i].addr.node)) {
-            scf_index = i;
-            scf_c_addr = scf_addr[i].addr;
-            scf_c_uplink = scf_addr[i].uplink;
-            debug(9, "Select best AKA: %s  Uplink: %s",
-                  znfp1(&scf_addr[i].addr), znfp2(&scf_addr[i].uplink));
-            return;
-        }
-/* Z:N/x.x */
-    for (i = 0; i < scf_naddr; i++)
-        if ((zone == scf_addr[i].zone) && (net == scf_addr[i].addr.net)) {
-            scf_index = i;
-            scf_c_addr = scf_addr[i].addr;
-            scf_c_uplink = scf_addr[i].uplink;
-            debug(9, "Select best AKA: %s  Uplink: %s",
-                  znfp1(&scf_addr[i].addr), znfp2(&scf_addr[i].uplink));
-            return;
-        }
-/* Z:x/x.x */
-    for (i = 0; i < scf_naddr; i++)
-        if ((zone == scf_addr[i].zone)) {
-            scf_index = i;
-            scf_c_addr = scf_addr[i].addr;
-            scf_c_uplink = scf_addr[i].uplink;
-            debug(9, "Select best AKA: %s  Uplink: %s",
-                  znfp1(&scf_addr[i].addr), znfp2(&scf_addr[i].uplink));
-            return;
-        }
 
-    scf_index = i = 0;
-    scf_c_addr = scf_addr[i].addr;
-    scf_c_uplink = scf_addr[i].uplink;
-    debug(9, "Select default AKA: %s  Uplink: %s",
-          znfp1(&scf_addr[i].addr), znfp2(&scf_addr[i].uplink));
+    if (rc > 0)
+        aka_flavour = "default";
+
+    debug(9, "Select %s AKA: %s  Uplink: %s",
+          aka_flavour, znfp1(&scf_c_addr), znfp2(&scf_c_uplink));
 }
-#else
-void cf_set_best(int zone, int net, int node)
-{
-    cf_set_zone(zone);
-}
-#endif                          /* BEST_AKA */
 
 /*
  * Set current zone
  */
 void cf_set_zone(int zone)
 {
-    int i;
-
-    if (scf_naddr == 0) {
-        fprintf(stderr, "No FTN addresses configured.\n");
-        exit(1);
-    }
-
-    scf_zone = zone;
-    for (i = 0; i < scf_naddr; i++)
-        if (zone == scf_addr[i].zone) {
-            scf_index = i;
-            scf_c_addr = scf_addr[i].addr;
-            scf_c_uplink = scf_addr[i].uplink;
-            debug(9, "Select Z%d AKA: %s  Uplink: %s",
-                  scf_addr[i].zone,
-                  znfp1(&scf_addr[i].addr), znfp2(&scf_addr[i].uplink));
-            return;
-        }
-
-    scf_index = i = 0;
-    scf_c_addr = scf_addr[i].addr;
-    scf_c_uplink = scf_addr[i].uplink;
-    debug(9, "Select default AKA: %s  Uplink: %s",
-          znfp1(&scf_addr[i].addr), znfp2(&scf_addr[i].uplink));
+    cf_set_best(zone, -1, -1);
 }
 
 /*

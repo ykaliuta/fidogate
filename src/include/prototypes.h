@@ -191,6 +191,7 @@ Node cf_n_uplink(void);
 void cf_set_curr(Node *);
 void cf_set_zone(int);
 void cf_set_best(int, int, int);
+int cf_get_best(Node *, Node *, Node *, int *);
 int cf_zone();
 int cf_defzone();
 long cf_lineno_get(void);
