@@ -142,6 +142,7 @@ char autocreate_ng = FALSE;     /* config: AutoCreateNG */
 #ifdef DO_NOT_TOSS_NETMAIL
 char no_rewrite = FALSE;        /* config: NoRewrite */
 #endif                          /* DO_NOT_TOSS_NETMAIL */
+char support_ping = FALSE;	/* config SupportPing */
 
 short check_point_origin_addr = FALSE;
 /* Values checking for old messages */
@@ -1328,6 +1329,85 @@ int check_empty(MsgBody * body)
     return TRUE;
 }
 
+static void ping_prepare_reply(Message *msg, MsgBody *body, Textlist *reply)
+{
+    Textlist *vias = &body->via;
+    char *msgid = kludge_get(&body->kludge, "MSGID", NULL);
+    TextlistIterator i;
+    Textline *via;
+    char *from_str = znfp1(&msg->node_from);
+    char *to_str = znfp2(&msg->node_to);
+    char *s;
+
+    tl_appendf(reply, "Received ping from %s to %s with MSGID %s at %s\n\n",
+	       from_str, to_str, msgid, date(DATE_FTS_0001, NULL));
+    tl_appendf(reply, "Via lines:\n");
+    tl_appendf(reply, "\n");
+
+    tl_iterator_start(&i, vias);
+    for (via = tl_iterator_next(&i);
+         via != NULL;
+         via = tl_iterator_next(&i)) {
+        /* have to copy to keep original untouched */
+        /* + 1 to skip initial ^A */
+        s = strsave(via->line + 1);
+        strip_crlf(s);
+        tl_appendf(reply, "@%s", s);
+        xfree(s);
+    }
+}
+
+/*
+ * Generate reply for PING/TRACE messages.
+ * See http://ftsc.org/docs/fts-5001.006 (5.10. Robot flags)
+ */
+static void ping_generate_reply(Message *msg, MsgBody *body)
+{
+    Message rmsg = { 0 };
+    Textlist rbody;
+    int rc;
+    char *default_origin = NULL;
+    char *default_tearline = NULL;
+    char *saved_outdir;
+
+    tl_init(&rbody);
+
+    rmsg.date = time(NULL);
+
+    rmsg.node_to = msg->node_from;
+    BUF_COPY(rmsg.name_to, msg->name_from);
+
+    /*
+     * if it's trace, send from our best aka,
+     * otherwise from our aka which was pinged
+     *
+     * Keep the condition check on the same indent level,
+     * should not hit performance a lot.
+     */
+    rc = cf_get_best(&rmsg.node_to, &rmsg.node_from, NULL, NULL);
+    if (rc < 0) {
+        fprintf(stderr, "No FTN addresses configured.\n");
+        exit(1);
+    }
+    if (is_local_addr(&msg->node_to, FALSE))
+        rmsg.node_from = msg->node_to;
+
+    BUF_COPY(rmsg.name_from, "Ping Robot");
+    BUF_COPY(rmsg.subject, "Pong");
+
+    ping_prepare_reply(msg, body, &rbody);
+
+    saved_outdir = strsave(pkt_get_outdir());
+    pkt_outdir(cf_p_outpkt(), NULL);
+
+    outpkt_netmail(&rmsg, &rbody, PROGRAM, default_origin, default_tearline);
+
+    pkt_outdir(saved_outdir, NULL);
+    xfree(saved_outdir);
+
+    tl_clear(&rbody);
+}
+
 /*
  * Process NetMail message
  */
@@ -1339,6 +1419,14 @@ int do_netmail(Packet * pkt, Message * msg, MsgBody * body, int forwarded)
 {
     FILE *fp;
     char flav;
+    bool is_ping;
+
+    /*
+     * special handling for ping messages:
+     * - generate the reply
+     * - accept the message even if it's empty
+     */
+    is_ping = strieq(msg->name_to, "ping");
 
     if (log_netmail)
 #ifndef SPYES
@@ -1358,6 +1446,12 @@ int do_netmail(Packet * pkt, Message * msg, MsgBody * body, int forwarded)
     }
 #endif                          /* !SPYES */
 
+    if (is_ping && support_ping) {
+        fglog("Processing PING: %s @ %s -> %s",
+              msg->name_from, znfp1(&msg->node_from), znfp2(&msg->node_to));
+        ping_generate_reply(msg, body);
+    }
+
     /*
      * Check for file attach
      */
@@ -1368,7 +1462,7 @@ int do_netmail(Packet * pkt, Message * msg, MsgBody * body, int forwarded)
     /*
      * Check for empty NetMail message addressed to one of our AKAs
      */
-    if (kill_empty && check_empty(body)) {
+    if (!is_ping && kill_empty && check_empty(body)) {
         if (is_local_addr(&msg->node_to, FALSE)) {
             fglog("killing empty msg from %s @ %s",
                   msg->name_from, znfp1(&msg->node_from));
@@ -1979,6 +2073,7 @@ int main(int argc, char **argv)
     }
 #endif                          /* DO_NOT_TOSS_NETMAIL */
     strict = (cf_get_string("FTNStrictPktCheck", TRUE) != NULL);
+    support_ping = (cf_get_string("SupportPing", TRUE) != NULL);
 
     zonegate_init();
     addtoseenby_init();
