@@ -16,11 +16,12 @@ export FIDOGATE_SEQ_SPLIT=$ROOT/seq/news
 export FIDOGATE_LIBEXECDIR=$ROOT/lib
 export FIDOGATE_VARDIR=$ROOT/var
 export FIDOGATE_INBOUND=$ROOT/in
-
+export FIDOGATE_LOCKDIR=$ROOT/var/lock
+export FIDOGATE_SPOOLDIR=$ROOT/spool
 
 DIRS="$FIDOGATE_OUTPKT_NEWS $FIDOGATE_OUTPKT_MAIL \
       $FIDOGATE_OUTRFC_NEWS $FIDOGATE_OUTRFC_MAIL \
-      $ROOT/log $ROOT/seq $ROOT/lib $ROOT/var \
+      $ROOT/{log,seq,lib,var/lock,spool/toss} \
       $FIDOGATE_INBOUND"
 
 create_dirs()
