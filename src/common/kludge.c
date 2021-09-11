@@ -81,27 +81,49 @@ void kludge_pt_intl(MsgBody * body, Message * msg, short int del)
 }
 
 /*
+ * Gives kludge's value if Textline contains the kludge
+ *
+ * @tl -- full textline
+ * @kname -- kludge name
+ *
+ * returns pointer to the (const) kludge value inside @tl,
+ * or NULL if wrong kludge.
+ */
+static char *kludge_from_tline(Textline *tl, char *kname)
+{
+    char *s = tl->line;
+    int len = strlen(kname);
+
+    /* borrow the code from the original, just reuse s.
+     * So, not reverted condition */
+    if (s[0] == '\001' &&
+        !strnicmp(s + 1, kname, len) &&
+        (s[len + 1] == ' ' || s[len + 1] == ':')) {    /* Found it */
+
+        s = s + 1 + len;
+        /* Skip ':' and white space */
+        if (*s == ':')
+            s++;
+        while (is_space(*s))
+            s++;
+        return s;
+    }
+    return NULL;
+}
+
+/*
  * Get first next kludge line
  */
 char *kludge_get(Textlist * tl, char *name, Textline ** ptline)
 {
     static Textline *last_kludge;
-    char *s, *r;
-    int len;
-
-    len = strlen(name);
+    char *r;
 
     last_kludge = tl->first;
 
     while (last_kludge) {
-        s = last_kludge->line;
-        if (s[0] == '\001' && !strnicmp(s + 1, name, len) && (s[len + 1] == ' ' || s[len + 1] == ':')) {    /* Found it */
-            r = s + 1 + len;
-            /* Skip ':' and white space */
-            if (*r == ':')
-                r++;
-            while (is_space(*r))
-                r++;
+        r = kludge_from_tline(last_kludge, name);
+        if (r != NULL) {
             if (ptline)
                 *ptline = last_kludge;
             last_kludge = last_kludge->next;
