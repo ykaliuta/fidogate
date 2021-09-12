@@ -387,6 +387,11 @@ CheckMsgHdrAddr
 # defined)
 #UplinkCanBeReadonly
 
+# Support PING/TRACE. Generate replies for netmail (including transit)
+# addressed to 'PING' (case insensitive).
+# See http://ftsc.org/docs/fts-5001.006 (5.10. Robot flags)
+SupportPing
+
 ##############################################################################
 # T I C K E R   C O N F I G U R A T I O N                                    #
 ##############################################################################
