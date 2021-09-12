@@ -1,0 +1,38 @@
+name: Commit check
+on: [push]
+jobs:
+  build:
+    name: Make Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install build-essential devscripts debhelper bison rpm software-properties-common wget
+          wget https://github.com/cgreen-devs/cgreen/releases/download/1.4.0/cgreen_1.4.0_amd64.deb
+          sudo dpkg -i cgreen*deb
+          echo /usr/local/lib > /tmp/local.conf
+          sudo mv /tmp/local.conf /etc/ld.so.conf.d
+          sudo ldconfig
+
+      - name: Configure
+        run: |
+          ./autogen.sh
+          ./configure --without-news --with-sendmail=/usr/sbin/sendmail --disable-extraversion
+      - name: Build
+        run: make
+
+      - name: Check
+        run: make check
+
+      - name: Archive logs
+        run: tar zcf /tmp/logs.tar.gz $(find ./ -name '*log')
+
+      - name: Store log
+        uses: actions/upload-artifact@v2
+        with:
+          path: /tmp/logs.tar.gz
+          name: logs
