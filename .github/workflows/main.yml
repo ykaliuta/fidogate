@@ -1,0 +1,28 @@
+name: Packaging
+on: [workflow_dispatch]
+jobs:
+  build:
+    name: Build packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: |
+          apt-get update
+          apt-get install build-essential devscripts debhelper bison rpm software-properties-common
+
+      - name: Configure
+        run: |
+          ./autogen.sh
+          ./configure --without-news --with-sendmail=/usr/sbin/sendmail
+
+      - name: Build RPM
+        run: |
+          sed -i -e 's/^BuildRequires:.*//' packages/rpm/fidogate.spec
+          make dist
+          rpmbuild -tb *.tar.gz
+
+      - name: Build DEB
+        run: dpkg-buildpackage -rfakeroot -b --no-sign
