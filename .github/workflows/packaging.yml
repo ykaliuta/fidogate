@@ -1,0 +1,49 @@
+name: Packaging
+on:
+  push:
+    tags:
+      - 'v*'
+#  release:
+#    types: [created]
+jobs:
+  build:
+    name: Build packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install build-essential devscripts debhelper bison rpm software-properties-common
+
+      - name: Configure
+        run: |
+          ./autogen.sh
+          ./configure --without-news --with-sendmail=/usr/sbin/sendmail
+
+      - name: Build RPM
+        run: |
+          sed -i -e 's/^BuildRequires:.*//' packages/rpm/fidogate.spec
+          make dist
+          rpmbuild -tb *.tar.gz
+
+      - name: Build DEB
+        run: dpkg-buildpackage -rfakeroot -b --no-sign
+
+      - name: Upload RPM
+        uses: svenstaro/upload-release-action@v2
+        with:
+          tag: ${{ github.ref }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: /home/runner/rpmbuild/RPMS/*/*.rpm
+          file_glob: true
+
+      - name: Upload DEB
+        uses: svenstaro/upload-release-action@v2
+        with:
+          tag: ${{ github.ref }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ../*.deb
+          file_glob: true
