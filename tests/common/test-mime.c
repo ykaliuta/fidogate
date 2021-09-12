@@ -102,9 +102,8 @@ Ensure(hdr_enc_qp_encodes_cyrillic)
 Ensure(hdr_enc_b64_wraps_reminder)
 {
 	/* =?utf-8?Q?XXXXxxxx?= 20 chars */
-	char *src = "Subject: aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaa ббббб";
-	char *exp = "Subject: aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaa =?utf-8?B\??=\n"
-		" =?utf-8?B?0LHQsdCx0LHQsQ==?=\n";
+	char *src = "Subject: aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaa ббббб";
+	char *exp = "Subject: aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaa =?utf-8?B?0LHQsQ==?=\n =?utf-8?B?0LHQsdCx?=\n";
 	char *res = NULL;
 
 	mime_header_enc(&res, src, "utf-8", MIME_B64);
