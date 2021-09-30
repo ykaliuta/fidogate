@@ -23,10 +23,10 @@ jobs:
           ./autogen.sh
           ./configure --without-news --with-sendmail=/usr/sbin/sendmail --disable-extraversion
       - name: Build
-        run: make
+        run: make V=1
 
       - name: Check
-        run: make check
+        run: make V=1 check
 
       - name: Archive logs
         run: tar zcf /tmp/logs.tar.gz $(find ./ -name '*log')

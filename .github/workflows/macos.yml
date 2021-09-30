@@ -17,4 +17,4 @@ jobs:
           ./autogen.sh
           ./configure --without-news --with-sendmail=/usr/sbin/sendmail --disable-extraversion
       - name: Build
-        run: make
+        run: make V=1
