@@ -21,7 +21,7 @@ export FIDOGATE_SPOOLDIR=$ROOT/spool
 
 DIRS="$FIDOGATE_OUTPKT_NEWS $FIDOGATE_OUTPKT_MAIL \
       $FIDOGATE_OUTRFC_NEWS $FIDOGATE_OUTRFC_MAIL \
-      $ROOT/{log,seq,lib,var/lock,spool/toss} \
+      $ROOT/log $ROOT/seq $ROOT/lib $ROOT/var/lock $ROOT/spool/toss \
       $FIDOGATE_INBOUND"
 
 create_dirs()
