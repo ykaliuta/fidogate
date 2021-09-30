@@ -100,6 +100,12 @@ static void packet_free(struct packet *pkt)
 	    OUT(val_name);						\
     } while(0);
 
+
+static bool strstarts(const char *str, const char *prefix)
+{
+    return strncmp(str, prefix, strlen(prefix)) == 0;
+}
+
 static bool same_prefix(char **prefixes, char *l1, char *l2)
 {
     size_t len;
@@ -181,7 +187,8 @@ static int message_body_cmp(struct message *m1, struct message *m2)
     KLUDGES_CMP(kludge);
     TL_CMP(rfc);
     TL_CMP(body);
-    STRING_CMP(tear);
+    if (!strstarts(h1->tear, "--- FIDOGATE"))
+        STRING_CMP(tear);
     STRING_CMP(origin);
     TL_CMP(seenby);
     TL_CMP(path);
