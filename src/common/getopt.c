@@ -72,7 +72,9 @@ char *alloca();
    contain conflicting prototypes for getopt.  */
 #include <stdlib.h>
 #else                           /* Not GNU C library.  */
+#ifndef __alloca                /* MacOS defines is */
 #define	__alloca	alloca
+#endif
 #endif                          /* GNU C library.  */
 
 /* If GETOPT_COMPAT is defined, `+' as well as `--' can introduce a
