@@ -1,0 +1,20 @@
+name: MacOS Build
+on: [push]
+jobs:
+  build:
+    name: MacOS Build
+    runs-on: macOS-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: |
+          brew install automake bison
+
+      - name: Configure
+        run: |
+          ./autogen.sh
+          ./configure --without-news --with-sendmail=/usr/sbin/sendmail --disable-extraversion
+      - name: Build
+        run: make
