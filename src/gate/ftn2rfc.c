@@ -1455,6 +1455,7 @@ int unpack(FILE * pkt_file, Packet * pkt)
             if (carbon_group != NULL) {
                 tl_appendf(&theader, "Newsgroups: %s,%s\n", area->group,
                            carbon_group);
+                tl_appendf(&theader, "Followup-To: %s\n", area->group);
                 carbon_group = NULL;
             } else
                 tl_appendf(&theader, "Newsgroups: %s\n", area->group);
