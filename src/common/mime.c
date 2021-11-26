@@ -1759,8 +1759,8 @@ static Textlist *mime_debody_section(Textlist *body, RFCHeader *header,
         } else if (strieq(mime->encoding, "quoted-printable")) {
             dec_body = mime_debody_qp(body);
         } else {
-            fglog("WARNING: Skipped unsupported transfer encoding %s",
-                  mime->encoding);
+            fglog("WARNING: Skipped unsupported transfer encoding %s, msg %s",
+                  mime->encoding, s_header_getcomplete(header, "Message-ID"));
             dec_body = NULL;
             goto exit;
         }
@@ -1769,7 +1769,8 @@ static Textlist *mime_debody_section(Textlist *body, RFCHeader *header,
 		      "multipart/", sizeof("multipart/") - 1)) {
         dec_body = mime_debody_multipart(body, mime, to, ch_fallback);
     } else {
-        fglog("WARNING: Skipped unsupported mime type  %s", mime->type_type);
+        fglog("WARNING: Skipped unsupported mime type %s, msg %s",
+              mime->type_type, s_header_getcomplete(header, "Message-ID"));
         dec_body = NULL;
         goto exit;
     }
