@@ -535,15 +535,28 @@ void pkt_put_string(FILE * fp, char *s)
 }
 
 /*
- * Write line to packet, replacing \n with \r
+ * Write line to packet, replacing \n and \r\n with \r
  */
 void pkt_put_line(FILE * fp, char *s)
 {
+    bool met_cr = false;
+
     for (; *s; s++) {
-        if (*s == '\n')
-	    putc('\r', fp);
-	else
-	    putc(*s, fp);
+
+        if (*s == '\r') {
+            met_cr = true;
+            putc('\r', fp);
+            continue;
+        }
+
+        if (*s == '\n') {
+            if (!met_cr)
+                putc('\r', fp);
+            continue;
+        }
+
+        met_cr = false;
+        putc(*s, fp);
     }
 
     return;
