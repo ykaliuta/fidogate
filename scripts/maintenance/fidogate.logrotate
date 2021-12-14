@@ -1,0 +1,30 @@
+/var/log/fidogate/log {
+    daily
+    rotate 7
+}
+
+/var/log/fidogate/log-ffx {
+    daily
+    rotate 14
+}
+
+/var/log/fidogate/log-in {
+    daily
+    rotate 7
+}
+
+/var/log/fidogate/log-out {
+    daily
+    rotate 7
+}
+
+/var/log/fidogate/log-mail {
+    daily
+    rotate 7
+}
+
+/var/log/fidogate/log-news {
+    daily
+    rotate 2
+}
+

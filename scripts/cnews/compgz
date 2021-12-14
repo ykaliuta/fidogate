@@ -1,0 +1,7 @@
+#! /bin/sh
+# Invoke gzip
+
+echo "#! gunzip"
+gzip -9
+status=$?
+exit $status

@@ -1,0 +1,328 @@
+#:ts=8
+#
+# $Id: areas,v 1.3 2002/08/04 02:22:52 dyff Exp $
+#
+# Echomail area <-> News newsgroup conversion
+#
+# Options:
+#     -a Z:N/F.P         Alternate address for this area
+#     -z ZONE            Alternate zone AKA for this area
+#     -d DISTRIBUTION    Distribution header for this newsgroups
+#     -o ORIGIN          * Origin line for this area
+#     -g                 No gated messages
+#     -l                 Only local crosspostings
+#     -x                 No crosspostings
+#     -8                 Messages with 8bit ISO-8859-1 charset
+#     -H                 Names match entire hierarchy, names are translated
+#     -!                 Don't gate area/newsgroup [hierarchy]
+#     -R LVL             ^ARFC header level
+#     -m MAXSIZE         MaxMsgSize for this area (0 = infinity)
+#     -X "Xtra: xyz"     Add extra RFC headers (multiple -X allowed)
+#
+# All fields may be quoted in "...", order is import, first area/newsgroup
+# found matches!
+#
+# Format:
+#
+# area                        newsgroup                     [-option]
+# ------------------------    --------------------------    ---------
+
+2.				fido.2.				-8 -R 1 -l -H
+23.				fido.23.			-8 -R 1 -l -H
+204.				fido.204.			-8 -R 1 -l -H
+316.				fido.316.			-8 -R 1 -l -H
+400.				fido.400.			-8 -R 1 -l -H
+1381.				fido.1381.			-8 -R 1 -l -H
+4DOS				fido.4dos			-8 -R 1 -l
+80XXX				fido.80xxx			-8 -R 1 -l
+8BIT.FR				fido.8bit.fr			-8 -R 1 -l
+$CRACK$				fido.$crack$			-8 -R 1 -l
+$CRACK$.TALKS			fido.$crack$.talks		-8 -R 1 -l
+$HACKING$			fido.$hacking$			-8 -R 1 -l
+ALT.				alt.				-8 -R 1 -H
+AD&D				fido.ad&d			-8 -R 1 -l
+ADAPTEK				fido.adaptek			-8 -R 1 -l
+ADEPTSOFT			fido.adeptsoft			-8 -R 1 -l
+ADEPT_SYSOP			fido.adept_sysop		-8 -R 1 -l
+ADHD				fido.adhd			-8 -R 1 -l
+ADINF.				fido.adinf.			-8 -R 1 -l -H
+ADLIB				fido.adlib			-8 -R 1 -l
+ADOPTEES			fido.adoptees			-8 -R 1 -l
+ADS_ANNOUNCE			fido.ads_announce		-8 -R 1 -l
+AIDS-HIV			fido.aids-hiv			-8 -R 1 -l
+AIDS.				fido.aids.			-8 -R 1 -l -H
+AIRGUN				fido.airgun			-8 -R 1 -l
+ALLFIX_HELP			fido.allfix_help		-8 -R 1 -l
+ALTMED				fido.altmed			-8 -R 1 -l
+AMATEUR_RADIO			fido.amateur_radio		-8 -R 1 -l
+AMM.				fido.amm.			-8 -R 1 -l -H
+AMY_COMMS			fido.amy_comms			-8 -R 1 -l
+AMY_POINT			fido.amy_point			-8 -R 1 -l
+AMY_TECH			fido.amy_tech			-8 -R 1 -l
+ANEWS				fido.anews			-8 -R 1 -l
+ANIMAL_DOC			fido.animal_doc			-8 -R 1 -l
+ANIMED				fido.animed			-8 -R 1 -l
+APOGEE				fido.apogee			-8 -R 1 -l
+ARCADE				fido.arcade			-8 -R 1 -l
+ARCHERY				fido.archery			-8 -R 1 -l
+AREXX				fido.arexx			-8 -R 1 -l
+ARJ				fido.arj			-8 -R 1 -l
+ARROWBRIDGE			fido.arrowbridge		-8 -R 1 -l
+ARTWARE				fido.artware			-8 -R 1 -l
+ASKACOP				fido.askacop			-8 -R 1 -l
+ASKACOP2			fido.askacop2			-8 -R 1 -l
+ASK_A_NURSE			fido.ask_a_nurse		-8 -R 1 -l
+ASL				fido.asl			-8 -R 1 -l
+ASP				fido.asp			-8 -R 1 -l
+ASTRONET			fido.astronet			-8 -R 1 -l
+ASTRONOMY			fido.astronomy			-8 -R 1 -l
+AT&T				fido.at&t			-8 -R 1 -l
+AUDIO				fido.audio			-8 -R 1 -l
+AUTOMOTIVE			fido.automotive			-8 -R 1 -l
+AUTORACE			fido.autorace			-8 -R 1 -l
+AVIATION			fido.aviation			-8 -R 1 -l
+AVP.				fido.avp.			-8 -R 1 -l -H
+A_CAD				fido.a_cad			-8 -R 1 -l
+BASIC7				fido.basic7			-8 -R 1 -l
+BATPOWER			fido.batpower			-8 -R 1 -l
+BB-CARDS			fido.bb-cards			-8 -R 1 -l
+BBSCON				fido.bbscon			-8 -R 1 -l
+BBSLAW				fido.bbslaw			-8 -R 1 -l
+BBSLIST.			fido.bbslist.			-8 -R 1 -l -H
+BBS_ADS				fido.bbs_ads			-8 -R 1 -l
+BBS_CARNIVAL			fido.bbs_carnival		-8 -R 1 -l
+BGFAX				fido.bgfax			-8 -R 1 -l
+BIG_SMOKE			fido.big_smoke			-8 -R 1 -l
+BINK.				fido.bink.			-8 -R 1 -l -H
+BINKLEY				fido.binkley			-8 -R 1 -l
+BINKLEY.			fido.binkley.			-8 -R 1 -l -H
+BIRTHMOTHERS			fido.birthmothers		-8 -R 1 -l
+BK.				fido.bk.			-8 -R 1 -l -H
+BLUEWAVE			fido.bluewave			-8 -R 1 -l
+BNU				fido.bnu			-8 -R 1 -l
+BOCHAROFF.			fido.bocharoff.			-8 -R 1 -l -H
+BOCHAROV.			fido.bocharov.			-8 -R 1 -l -H
+BONG				fido.bong			-8 -R 1 -l
+BRAKE'S.MAILER.SUPPORT		fido.brake's.mailer.support	-8 -R 1 -l
+BUBULLE				fido.bubulle			-8 -R 1 -l
+CANOPUS.			fido.canopus.			-8 -R 1 -l -H
+CARDINAL.			fido.cardinal.			-8 -R 1 -l -H
+CASTLE.				fido.castle.			-8 -R 1 -l -H
+CB.				fido.cb.			-8 -R 1 -l -H
+CDROM				fido.cdrom			-8 -R 1 -l
+CDROM_SALE			fido.cdrom_sale			-8 -R 1 -l
+CELLULAR			fido.cellular			-8 -R 1 -l
+CFORSALE			fido.cforsale			-8 -R 1 -l
+CHANNELS			fido.channels			-8 -R 1 -l
+CHESS				fido.chess			-8 -R 1 -l
+CHESS_TOURNEY			fido.chess_tourney		-8 -R 1 -l
+CHRISTIANOS			fido.christianos		-8 -R 1 -l
+CLARION				fido.clarion			-8 -R 1 -l
+CLIPPER				fido.clipper			-8 -R 1 -l
+CLIPPER.			fido.clipper.			-8 -R 1 -l -H
+COINS				fido.coins			-8 -R 1 -l
+COMM				fido.comm			-8 -R 1 -l
+COMMONPLACE			fido.commonplace		-8 -R 1 -l
+COMP.				comp.				-8 -R 1 -H
+COMPRESS			fido.compress			-8 -R 1 -l
+COMPUSALE			fido.compusale			-8 -R 1 -l
+CONNECT.			fido.connect.			-8 -R 1 -l -H
+CONSPRCY			fido.consprcy			-8 -R 1 -l
+CONSTITUTIONAL			fido.constitutional		-8 -R 1 -l
+COOKING				fido.cooking			-8 -R 1 -l
+CORELDRAW			fido.coreldraw			-8 -R 1 -l
+CRAZY_LOVERS			fido.crazy_lovers		-8 -R 1 -l
+CRIMEA.				fido.crimea.			-8 -R 1 -l -H
+CTPAHHOE.			fido.ctpahhoe.			-8 -R 1 -l -H
+C_ADVOCAT			fido.c_advocat			-8 -R 1 -l
+C_ECHO				fido.c_echo			-8 -R 1 -l
+C_PLUSPLUS			fido.c_plusplus			-8 -R 1 -l
+DARK.				fido.dark.			-8 -R 1 -l -H
+DBASE				fido.dbase			-8 -R 1 -l
+DBRIDGE				fido.dbridge			-8 -R 1 -l
+DELPHI				fido.delphi			-8 -R 1 -l
+DEMO.				fido.demo.			-8 -R 1 -l -H
+DESQVIEW			fido.desqview			-8 -R 1 -l
+DISASTERS			fido.disasters			-8 -R 1 -l
+DNZ.				fido.dnz.			-8 -R 1 -l -H
+DOOM				fido.doom			-8 -R 1 -l
+DOORGAMES			fido.doorgames			-8 -R 1 -l
+DR_DEBUG			fido.dr_debug			-8 -R 1 -l
+DR.				fido.dr.			-8 -R 1 -l -H
+ECHOLIST			fido.echolist			-8 -R 1 -l
+ECHO_REQ			fido.echo_req			-8 -R 1 -l
+ECOLOGY				fido.ecology			-8 -R 1 -l
+ECPROG				fido.ecprog			-8 -R 1 -l
+EC_SUPPORT			fido.ec_support			-8 -R 1 -l
+EDGECITY			fido.edgecity			-8 -R 1 -l
+ENET.				fido.enet.			-8 -R 1 -l -H
+ESPERANTO.			fido.esperanto.			-8 -R 1 -l -H
+FAQ.				fido.faq.			-8 -R 1 -l -H
+FDECHO				fido.fdecho			-8 -R 1 -l
+FE.				fido.fe.			-8 -R 1 -l -H
+FERNWOS2			fido.fernwos2			-8 -R 1 -l
+FE_HELP				fido.fe_help			-8 -R 1 -l
+FFORMAT.			fido.fformat.			-8 -R 1 -l -H
+FICTION.FR			fido.fiction.fr			-8 -R 1 -l
+FIDO.ANYWHERE			fido.fido.anywhere		-8 -R 1 -l
+FIDO7.				fido.fido7.			-8 -R 1 -l -H
+FIDONET.			fido.fidonet.			-8 -R 1 -l -H
+FILE_MOVERS			fido.file_movers		-8 -R 1 -l
+FILE_REQ			fido.file_req			-8 -R 1 -l
+FILGEN.				fido.filgen.			-8 -R 1 -l -H
+FILM				fido.film			-8 -R 1 -l
+FLAME				fido.flame			-8 -R 1 -l
+FOR-SALE			fido.for-sale			-8 -R 1 -l
+FOXPRO				fido.foxpro			-8 -R 1 -l
+FRANCENET			fido.francenet			-8 -R 1 -l
+FRANCOPHONE.			fido.francophone.		-8 -R 1 -l -H
+GAMING				fido.gaming			-8 -R 1 -l
+GECHO_HELP			fido.gecho_help			-8 -R 1 -l
+GERMAN.				fido.german.			-8 -R 1 -l -H
+GOLDED				fido.golded			-8 -R 1 -l
+GOLDED.				fido.golded.			-8 -R 1 -l -H
+GROUP				fido.group			-8 -R 1 -l
+GROUP.				fido.group.			-8 -R 1 -l -H
+GSS.				fido.gss.			-8 -R 1 -l -H
+GUITAR.				fido.guitar.			-8 -R 1 -l -H
+HACKING				fido.hacking			-8 -R 1 -l
+HAM				fido.ham			-8 -R 1 -l
+HAM-SALE			fido.ham-sale			-8 -R 1 -l
+HAYES				fido.hayes			-8 -R 1 -l
+HDCONF				fido.hdconf			-8 -R 1 -l
+HDSALE				fido.hdsale			-8 -R 1 -l
+HELP!				fido.help			-8 -R 1 -l
+HIPPY.				fido.hippy.			-8 -R 1 -l -H
+HISTORY				fido.history			-8 -R 1 -l
+HOCKEY				fido.hockey			-8 -R 1 -l
+HS_MODEMS			fido.hs_modems			-8 -R 1 -l
+HUMOR.FILTERED			fido.humor.filtered		-8 -R 1 -l
+IFMAIL				fido.ifmail			-8 -R 1 -l
+INTERCOOK			fido.intercook			-8 -R 1 -l
+INTERNET			fido.internet			-8 -R 1 -l
+INTERUSER			fido.interuser			-8 -R 1 -l
+IP_CONNECT			fido.ip_connect			-8 -R 1 -l
+IRC.				fido.irc.			-8 -R 1 -l -H
+ISDN				fido.isdn			-8 -R 1 -l
+ISKRA.				fido.iskra.			-8 -R 1 -l -H
+ISRA.				fido.isra.			-8 -R 1 -l -H
+ITRACK				fido.itrack			-8 -R 1 -l
+ITRACK.				fido.itrack.			-8 -R 1 -l -H
+IV.				fido.iv.			-8 -R 1 -l -H
+JET.				fido.jet.			-8 -R 1 -l -H
+JDR.FR				fido.jdr.fr			-8 -R 1 -l
+JEUX.FR				fido.jeux.fr			-8 -R 1 -l
+KHABAROVSK.			fido.khabarovsk.		-8 -R 1 -l -H
+LIST.				list.				-8 -R 1 -l -H
+LOCAL.				fido.local.			-8 -R 1 -l -H
+LOTSMAN.			fido.lotsman.			-8 -R 1 -l -H
+MFE.				fido.mfe.			-8 -R 1 -l -H
+MISTRESS.			fido.mistress.			-8 -R 1 -l -H
+MO.				fido.mo.			-8 -R 1 -l -H
+MOLDOVA.			fido.moldova.			-8 -R 1 -l -H
+MPR.				fido.mpr.			-8 -R 1 -l -H
+MU.				fido.mu.			-8 -R 1 -l -H
+N5020.				fido.n5020.			-8 -R 1 -l -H
+N5025.				fido.n5025.			-8 -R 1 -l -H
+N5036.				fido.n5036.			-8 -R 1 -l -H
+NICE.				fido.nice.			-8 -R 1 -l -H
+OBEC.				fido.obec.			-8 -R 1 -l -H
+OS2				fido.os2			-8 -R 1 -l
+OS2_Z3				fido.os2_z3			-8 -R 1 -l
+OS2BBS				fido.os2bbs			-8 -R 1 -l
+OS2BEGIN			fido.os2begin			-8 -R 1 -l
+OS2CDROM			fido.os2cdrom			-8 -R 1 -l
+OS2COMM				fido.os2comm			-8 -R 1 -l
+OS2DB				fido.os2db			-8 -R 1 -l
+OS2DOS				fido.os2dos			-8 -R 1 -l
+OS2DOSBBS			fido.os2dosbbs			-8 -R 1 -l
+OS2GAMES			fido.os2games			-8 -R 1 -l
+OS2HW				fido.os2hw			-8 -R 1 -l
+OS2LAN				fido.os2lan			-8 -R 1 -l
+OS2PROG				fido.os2prog			-8 -R 1 -l
+OS2REXX				fido.os2rexx			-8 -R 1 -l
+OS2VIDEO			fido.os2video			-8 -R 1 -l
+OS2WPS				fido.os2wps			-8 -R 1 -l
+PACKET				fido.packet			-8 -R 1 -l
+PARIS-NET			fido.paris-net			-8 -R 1 -l
+PASCAL				fido.pascal			-8 -R 1 -l
+PCBNET				fido.pcbnet			-8 -R 1 -l
+PCBOARD				fido.pcboard			-8 -R 1 -l
+PDNECHO				fido.pdnecho			-8 -R 1 -l
+PENPAL				fido.penpal			-8 -R 1 -l
+PEPSI				fido.pepsi			-8 -R 1 -l
+PK.				fido.pk.			-8 -R 1 -l -H
+PKEY_DROP			fido.pkey_drop			-8 -R 1 -l
+POWERPC				fido.powerpc			-8 -R 1 -l
+PREFCLUB			fido.prefclub			-8 -R 1 -l
+PRESSE_INFO.FR			fido.presse_info.fr		-8 -R 1 -l
+PRISON				fido.prison			-8 -R 1 -l
+PROBOARD			fido.proboard			-8 -R 1 -l
+PROVINCE.			fido.province.			-8 -R 1 -l -H
+PVT.				fido.pvt.			-8 -R 1 -l -H
+PSKOV.				fido.pskov.			-8 -R 1 -l -H
+PUBLIC_KEYS			fido.public_keys		-8 -R 1 -l
+QEDIT				fido.qedit			-8 -R 1 -l
+R50.				fido.r50.			-8 -R 1 -l -H
+RAR.				fido.rar.			-8 -R 1 -l -H
+REAL.				fido.real.			-8 -R 1 -l -H
+REL.				relcom.				-8 -R 1 -H
+RIDDLE.				fido.riddle.			-8 -R 1 -l -H
+RU.PL/I				fido.ru.pli			-8 -R 1 -l
+RU.STARS!			fido.ru.stars			-8 -R 1 -l
+RU.				fido.ru.			-8 -R 1 -l -H
+RUS.				fido.rus.			-8 -R 1 -l -H
+RUSSIAN.			fido.russian.			-8 -R 1 -l -H
+SAKHALIN.			fido.sakhalin.			-8 -R 1 -l -H
+SB-E/N/L			fido.sb-e_n_l			-8 -R 1 -l
+SB-NASA_NEWS			fido.sb-nasa_news		-8 -R 1 -l
+SB-NASA_TECH			fido.sb-nasa_tech		-8 -R 1 -l
+SB-QUESTIONS			fido.sb-questions		-8 -R 1 -l
+SB-SAT_TRACK			fido.sb-sat_track		-8 -R 1 -l
+SB-SOLAR_RPT			fido.sb-solar_rpt		-8 -R 1 -l
+SCIENCE				fido.science			-8 -R 1 -l
+SFFAN				fido.sffan			-8 -R 1 -l
+SHAREWRE			fido.sharewre			-8 -R 1 -l
+SHORTWAVE			fido.shortwave			-8 -R 1 -l
+SIMBIRSK.			fido.simbirsk.			-8 -R 1 -l -H
+SL.				fido.sl.			-8 -R 1 -l -H
+SN.				fido.sn.			-8 -R 1 -l -H -z 21
+SPB.POINT			fido.spb.point			-8 -R 0 -l
+SPB.				fido.spb.			-8 -R 1 -l -H
+SU.				fido.su.			-8 -R 1 -l -H
+SURVIVAL.			fido.survival.			-8 -R 1 -l -H
+STOP_SMOKING			fido.stop_smoking		-8 -R 1 -l
+SYS4SALE			fido.sys4sale			-8 -R 1 -l
+SYSOP				fido.sysop			-8 -R 1 -l
+T-MAIL.				fido.t-mail.			-8 -R 1 -l -H
+T-SERIES.RU			fido.t-series.ru		-8 -R 1 -l
+TALKS.				fido.talks.			-8 -R 1 -l -H
+TEACH.				fido.teach.			-8 -R 1 -l -H
+TEAMOS2				fido.teamos2			-8 -R 1 -l
+TELEBOOK.			fido.telebook.			-8 -R 1 -l -H
+TESTING				fido.testing			-8 -R 1 -l
+TVER.				fido.tver.			-8 -R 1 -l -H
+TUB				fido.tub			-8 -R 1 -l
+UFGATE				fido.ufgate			-8 -R 1 -l
+UNIX				fido.unix			-8 -R 1 -l
+USL.				fido.usl.			-8 -R 1 -l -H
+USR_MODEMS			fido.usr_modems			-8 -R 1 -l
+UU2				fido.uu2			-8 -R 1 -l
+VGA.				fido.vga.			-8 -R 1 -l -H
+VIRUS				fido.virus			-8 -R 1 -l
+VIRUS_INFO			fido.virus_info			-8 -R 1 -l
+VIRUS_NFO			fido.virus_nfo			-8 -R 1 -l
+VISUAL_BASIC			fido.visual_basic		-8 -R 1 -l
+VRN.				fido.vrn.			-8 -R 1 -l -H
+VSU.				vsu.				-8 -R 1 -H
+WATCOM.				fido.watcom.			-8 -R 1 -l -H
+WIN32				fido.win32			-8 -R 1 -l
+WINDOWS.			fido.windows.			-8 -R 1 -l -H
+WS.				fido.ws.			-8 -R 1 -l -H
+XSU.				fido.xsu.			-8 -R 1 -l -H
+XENIA				fido.xenia			-8 -R 1 -l
+ZEC				fido.zec			-8 -R 1 -l
+ZMODEM				fido.zmodem			-8 -R 1 -l
+ZONE7				fido.zone7			-8 -R 1 -l
+ZX.				fido.zx.			-8 -R 1 -l -H
+ZYXEL				fido.zyxel			-8 -R 1 -l

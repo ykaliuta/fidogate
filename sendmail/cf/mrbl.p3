@@ -1,0 +1,168 @@
+diff -cr ./feature/rbl.m4 /home/ca/smi/sendmail/cf/feature/rbl.m4
+*** ./feature/rbl.m4	Tue Dec 29 09:42:13 1998
+--- /home/ca/smi/sendmail/cf/feature/rbl.m4	Sat Feb 20 13:58:31 1999
+***************
+*** 1,6 ****
+  divert(-1)
+  #
+! # Copyright (c) 1998 Sendmail, Inc.  All rights reserved.
+  #
+  # By using this file, you agree to the terms and conditions set
+  # forth in the LICENSE file which can be found at the top level of
+--- 1,7 ----
+  divert(-1)
+  #
+! # Copyright (c) 1998, 1999 Sendmail, Inc. and its suppliers.
+! #	All rights reserved.
+  #
+  # By using this file, you agree to the terms and conditions set
+  # forth in the LICENSE file which can be found at the top level of
+***************
+*** 9,15 ****
+  #
+  
+  divert(0)
+! VERSIONID(`@(#)rbl.m4	8.8 (Berkeley) 5/19/1998')
+  divert(-1)
+! 
+! define(`_RBL_', ifelse(_ARG_, `', `rbl.maps.vix.com', `_ARG_'))dnl
+--- 10,24 ----
+  #
+  
+  divert(0)
+! ifdef(`_RBL_R_',`dnl',`dnl
+! VERSIONID(`$Id: mrbl.p3,v 4.3 2002/08/04 02:27:32 dyff Exp $')')
+  divert(-1)
+! define(`_RBL_SRV_',ifelse(_ARG_,`',`maps.vix.com',_ARG_))dnl
+! define(`_RBL_MSG_',ifelse(_ARG2_,`',`"Mail from " $`'&{client_addr} " refused by blackhole site '_RBL_SRV_`"',_ARG2_))dnl
+! define(`_RBL_R_',defn(`_RBL_R_')
+! `
+! # DNS based IP address spam list '_RBL_SRV_`
+! R$`'*			$`': $`'&{client_addr}
+! R$`'-.$`'-.$`'-.$`'-		$`': <?> $`'(host $`'4.$`'3.$`'2.$`'1.'_RBL_SRV_`. $`': OK $`')
+! R<?>OK			$`': OKSOFAR
+! R<?>$`'+			$`'#error $`'@ 5.7.1 $`': '_RBL_MSG_)
+diff -cr ./m4/cfhead.m4 /home/ca/smi/sendmail/cf/m4/cfhead.m4
+*** ./m4/cfhead.m4	Tue Dec 29 09:42:08 1998
+--- /home/ca/smi/sendmail/cf/m4/cfhead.m4	Sat Feb 20 13:58:32 1999
+***************
+*** 1,5 ****
+  #
+! # Copyright (c) 1998 Sendmail, Inc.  All rights reserved.
+  # Copyright (c) 1983, 1995 Eric P. Allman.  All rights reserved.
+  # Copyright (c) 1988, 1993
+  #	The Regents of the University of California.  All rights reserved.
+--- 1,6 ----
+  #
+! # Copyright (c) 1998, 1999 Sendmail, Inc. and its suppliers.
+! #	All rights reserved.
+  # Copyright (c) 1983, 1995 Eric P. Allman.  All rights reserved.
+  # Copyright (c) 1988, 1993
+  #	The Regents of the University of California.  All rights reserved.
+***************
+*** 40,51 ****
+  	define(`__OSTYPE__', $1)
+  	define(`_ARG_', $2)
+  	include(_CF_DIR_`'ostype/$1.m4)POPDIVERT`'')
+  define(`MAILER',
+  `ifdef(`_MAILER_$1_', `dnl`'',
+  `define(`_MAILER_$1_', `')PUSHDIVERT(7)include(_CF_DIR_`'mailer/$1.m4)POPDIVERT`'')')
+! define(`DOMAIN', `PUSHDIVERT(-1)define(`_ARG_', $2)include(_CF_DIR_`'domain/$1.m4)POPDIVERT`'')
+! define(`FEATURE', `PUSHDIVERT(-1)define(`_ARG_', $2)include(_CF_DIR_`'feature/$1.m4)POPDIVERT`'')
+! define(`HACK', `PUSHDIVERT(-1)define(`_ARG_', $2)include(_CF_DIR_`'hack/$1.m4)POPDIVERT`'')
+  define(`VERSIONID', ``#####  $1  #####'')
+  define(`LOCAL_RULE_0', `divert(3)')
+  define(`LOCAL_RULE_1',
+--- 41,73 ----
+  	define(`__OSTYPE__', $1)
+  	define(`_ARG_', $2)
+  	include(_CF_DIR_`'ostype/$1.m4)POPDIVERT`'')
++ ## new FEATUREs
++ define(`_RBL_R_',`')
++ ## access to further arguments in FEATURE/HACK
++ define(`_ACC_ARG_1_',`$1')
++ define(`_ACC_ARG_2_',`$2')
++ define(`_ACC_ARG_3_',`$3')
++ define(`_ACC_ARG_4_',`$4')
++ define(`_ACC_ARG_5_',`$5')
++ define(`_ACC_ARG_6_',`$6')
++ define(`_ACC_ARG_7_',`$7')
++ define(`_ACC_ARG_8_',`$8')
++ define(`_ACC_ARG_9_',`$9')
++ define(`_ARG1_',`_ACC_ARG_1_(_ARGS_)')
++ define(`_ARG2_',`_ACC_ARG_2_(_ARGS_)')
++ define(`_ARG3_',`_ACC_ARG_3_(_ARGS_)')
++ define(`_ARG4_',`_ACC_ARG_4_(_ARGS_)')
++ define(`_ARG5_',`_ACC_ARG_5_(_ARGS_)')
++ define(`_ARG6_',`_ACC_ARG_6_(_ARGS_)')
++ define(`_ARG7_',`_ACC_ARG_7_(_ARGS_)')
++ define(`_ARG8_',`_ACC_ARG_8_(_ARGS_)')
++ define(`_ARG9_',`_ACC_ARG_9_(_ARGS_)')
+  define(`MAILER',
+  `ifdef(`_MAILER_$1_', `dnl`'',
+  `define(`_MAILER_$1_', `')PUSHDIVERT(7)include(_CF_DIR_`'mailer/$1.m4)POPDIVERT`'')')
+! define(`DOMAIN', `PUSHDIVERT(-1)define(`_ARG_', `$2')include(_CF_DIR_`'domain/$1.m4)POPDIVERT`'')
+! define(`FEATURE', `PUSHDIVERT(-1)define(`_ARG_', `$2')define(`_ARGS_', `shift($@)')include(_CF_DIR_`'feature/$1.m4)POPDIVERT`'')
+! define(`HACK', `PUSHDIVERT(-1)define(`_ARG_', `$2')define(`_ARGS_', `shift($@)')include(_CF_DIR_`'hack/$1.m4)POPDIVERT`'')
+  define(`VERSIONID', ``#####  $1  #####'')
+  define(`LOCAL_RULE_0', `divert(3)')
+  define(`LOCAL_RULE_1',
+diff -cr ./m4/proto.m4 /home/ca/smi/sendmail/cf/m4/proto.m4
+*** ./m4/proto.m4	Tue Feb  2 15:21:30 1999
+--- /home/ca/smi/sendmail/cf/m4/proto.m4	Sat Feb 20 13:58:33 1999
+***************
+*** 1,6 ****
+  divert(-1)
+  #
+! # Copyright (c) 1998 Sendmail, Inc.  All rights reserved.
+  # Copyright (c) 1983, 1995 Eric P. Allman.  All rights reserved.
+  # Copyright (c) 1988, 1993
+  #	The Regents of the University of California.  All rights reserved.
+--- 1,7 ----
+  divert(-1)
+  #
+! # Copyright (c) 1998, 1999 Sendmail, Inc. and its suppliers.
+! #	All rights reserved.
+  # Copyright (c) 1983, 1995 Eric P. Allman.  All rights reserved.
+  # Copyright (c) 1988, 1993
+  #	The Regents of the University of California.  All rights reserved.
+***************
+*** 12,18 ****
+  #
+  divert(0)
+  
+! VERSIONID(`@(#)proto.m4	8.243 (Berkeley) 2/2/1999')
+  
+  MAILER(local)dnl
+  
+--- 13,19 ----
+  #
+  divert(0)
+  
+! VERSIONID(`$Id: mrbl.p3,v 4.3 2002/08/04 02:27:32 dyff Exp $')
+  
+  MAILER(local)dnl
+  
+***************
+*** 1108,1120 ****
+  R<DISCARD> $*		$#discard $: discard
+  R<$+> $*		$#error $@ 5.7.1 $: $1', `dnl')
+  
+! ifdef(`_RBL_', `dnl
+! # DNS based IP address spam lists
+! R$*			$: $&{client_addr}
+! R$-.$-.$-.$-		$: $(host $4.$3.$2.$1._RBL_. $: OK $)
+! ROK			$@ OK
+! R$+			$#error $@ 5.7.1 $: "Mail from " $&{client_addr} " refused by blackhole site _RBL_"',
+! `dnl')
+  
+  ######################################################################
+  ###  check_mail -- check SMTP ``MAIL FROM:'' command argument
+--- 1109,1115 ----
+  R<DISCARD> $*		$#discard $: discard
+  R<$+> $*		$#error $@ 5.7.1 $: $1', `dnl')
+  
+! _RBL_R_
+  
+  ######################################################################
+  ###  check_mail -- check SMTP ``MAIL FROM:'' command argument

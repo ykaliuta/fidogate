@@ -1,0 +1,329 @@
+#:ts=8
+#
+# FIDOGATE config file gateway programs
+#
+# Fido.DE domain gateway
+#
+# Format:  keyword arg ...
+#          keyword and args may be put in double quotes "..."
+#
+
+#
+# Include common stuff (%L = LIBDIR)
+#
+include		%L/config.common
+
+
+#
+# FTN addresses - there must be a corresponding `uplink' statement 
+# for each `address' statement
+#
+#               real
+#               ----
+Address		2:5025/128
+Address		2:50/128
+Address		21:9025/128
+
+Uplink		2:5025/8
+Uplink		2:5025/8
+Uplink		21:9025/8
+
+#
+# Default origin line for EchoMail messages
+#
+#Origin		"VSU Station gateway"
+
+
+#
+# Organization header for News
+#
+#Organization	"VSU Station gateway"
+
+
+#
+# Use text from * Origin line for Organization header
+#
+UseOriginForOrganization
+
+
+#
+# Use text from Organization header for * Origin line
+#
+UseOrganizationForOrigin
+
+
+#
+# This allows generation of `Tearline' field in .pkt files from field
+# `X-Mailer:', `User-Agent:' or `X-Newsreader:' contained in RFC message
+# (like `X-FTN-Tearline:' header). Priority is: `X-FTN-Tearline:',
+# `User-Agent:', `X-Newsreader:' for news messages and `X-FTN-Tearline:',
+# `X-Mailer' for mail messages. If these variables are not present
+# in config.gate, we do not process the corresponding fields in 
+# RFC message.
+#
+UseXMailerForTearline
+UseUseragentForTearline
+UseXNewsreaderForTearline
+
+#
+# Use FTN to address for mail addressed to the gateway without a To
+# line, e.g. mail to
+#     Max Mueller @ 2:2452/110.2
+# with a HOSTS entry
+#     2:2452/110.2  orodruin-ftn.fido.de
+# is converted to
+#     To: Max_Mueller@orodruin-ftn.fido.de
+#
+# Without this option the standard local HOST.DOMAIN is used
+#     To: Max_Mueller@orodruin.fido.de
+#
+UseFTNToAddress
+
+
+#
+# Type of 4D EchoMail control lines.
+#
+# With this enabled FIDOGATE generates SEEN-BY and ^APATH like:
+#     SEEN-BY: 2452/110.2
+#     ^APATH: 2452/110.2
+# Else (undef'ed) only the boss node's address is used:
+#     SEEN-BY: 2452/110
+#     ^APATH: 2452/110
+# There seems to be no standard for 4D EchoMail addressing. If you run
+# into problems with this kind of EchoMail message, please change the
+# code in rfc2ftn.c:print_origin().
+#
+EchoMail4D
+
+
+#
+# FTN - Internet gateway. If set, Internet mail will be routed via FTN
+# and this gateway.
+#
+#Gateway		2:50/128
+
+
+#
+# Generate `User.Name@do.main' instead of `User_Name@do.main'
+#
+#DotNames
+
+
+#
+# Don't gate messages with unknown zone in ^AMSGID (known zones are defined
+# in config.common).
+#
+#KillUnknownMSGIDZone
+
+#
+# Don't gate messages without a valid ^AMSGID (or similar)
+#
+#KillNoMSGID
+
+
+#
+# X-FTN header:
+#
+#     f    X-FTN-From
+#     t    X-FTN-To
+#     T    X-FTN-Tearline
+#     O    X-FTN-Origin
+#     V    X-FTN-Via
+#     D    X-FTN-Domain
+#     S    X-FTN-Seen-By
+#     P    X-FTN-Path
+#
+X-FTN		ftTOVDSP
+
+
+#
+# Maximum size of FTN messages (default value)
+#
+MaxMsgSize		15000
+#MaxMsgSize		32000
+
+#
+# Limit message size for gateway, bigger messages will be bounced/not gated
+#
+LimitMsgSize		800000
+
+
+#
+# MAUS gateway support:
+#
+# If set, convert addresses for `User_Name@XY.MAUSDomain' to
+# `User Name % XY @ MAUSGate' for the Fido-MAUS gateway.
+#
+#MAUSDomain		.maus.de
+#MAUSGate		2:2452/101.6
+
+
+#
+# CC of bounced messages
+#
+BounceCCMail		fidoadm@vsu.ru
+
+
+#
+# Send mail from message trackers to
+#
+TrackerMail		fidoadm@vsu.ru
+
+
+#
+# Restrict gateway usage to FTN nodes registered in HOSTS
+#
+HostsRestricted
+
+
+#
+# Newsgroup for unknown FTN areas
+#
+FTNJunkGroup		fido.junk
+
+
+#
+# Errors-To header
+#
+#Errors-To		fidoadm@vsu.ru
+
+
+#
+# Translation of chars for automatic areas <-> newsgroup conversion
+# (-H hierarchy option in AREAS)
+#
+#                       area chars	newsgroup chars
+#			----------	---------------
+AreasXlate		_		_
+
+
+#
+# NOTE 1: real gateways should *not* disable FSC0035/47 kludges, the
+#         From: line is obsoleted by both ^ARFC-Xxxx kludges and
+#         FSC0035 and not necessarily needed.
+#
+# NOTE 2: points without Internet connectivity (using FIDOGATE for
+#         Fido only) should set
+#             RFCLevel 0
+#             NoFromLine
+#             NoFSC0035
+#
+#
+# Default ^ARFC level
+#     0  -  no ^ARFC-Xxxx kludges
+#     1  -  ^ARFC-Xxxx kludges for some headers (config.h, RFC_LVL_1_HEADERS)
+#     2  -  ^ARFC-Xxxx kludges for all headers
+#
+RFCLevel		1
+
+#
+# Don't generate From: line at beginning of text body.
+#
+NoFromLine
+
+#
+# Don't generate FSC-0035 kludges (^AREPLYADDR, ^AREPLYTO)
+#
+#NoFSC0035
+
+#
+# Don't generate FSC-0047 kludges (^ASPLIT)
+#
+#NoFSC0047
+
+
+#
+# Parameters for ftnin/ftninpost/ftninrecomb
+#
+# sendmail program path and parameters
+#
+#    %s is replaced with the envelope sender
+#
+FTNInSendmail	/usr/sbin/sendmail -odq -oee -oi -f%s -oMrFTN -t
+
+#
+# rnews program path
+#
+FTNInRnews	/usr/bin/rnews
+
+#
+# run ftninrecomb
+#
+#FTNInRecombine
+
+
+#
+# Use 8bit ISO-8859-1 characters when gating from FTN to RFC
+#
+NetMail8bit
+
+#
+# Use MIME quoted-printable ISO-8859-1 characters when gating from FTN to RFC
+#
+#NetMailQuotedPrintable
+
+#
+# X-Flags policy
+#
+#    n, N, 0    -    No X-Flags processing at all
+#    s, S, 1    -    X-Flags processing for local sender
+#    a, A, 2    -    X-Flags processing for all
+#
+XFlagsPolicy a
+
+#
+# Don't try to get sender real name from Reply-To header
+#
+DontUseReplyTo
+
+#
+# Mode for RFC address generated by FIDOGATE
+#
+#    (), p, 0   -    user@do.main (Real Name)
+#    <>, a, 1   -    Real Name <user@do.main>
+#
+RFCAddrMode <>
+
+#
+# Force ^AREPLYADDR to only contain ^AREPLYADDR <user@do.main>
+# to be compatible with ifmail-TX
+#
+#ReplyAddrIfmailTX
+
+###############################################################################
+# Unicode stuff
+###############################################################################
+
+# Where to find unicode files
+
+UnicodeDir		/usr/local/lib/fidogate/unicode
+
+# This table maps the CHRS kludge value of incoming FTN message into the
+# corresponding Unicode file name. Wildcards * and ? are OK. Any sequence 
+# of whitespace characters in kludge and pattern are treated as a single space.
+# If there is no CHRS kludge, this value assumed to be empty string (""). If
+# multiple strings are matched, the first one is used.
+
+FTNInputEncoding	"*"		cp866-fido
+
+# FTN output encoding. First paramether - what to write into the CHRS kludge
+# (empty string suppresses this kludge), second paramether - what Unicode
+# table to use
+
+FTNOutputEncoding	"CP866"		cp866-fido
+
+# RFC input encoding. First paramether should multiplex input incodings 
+# exactly as in FTNInputEncoding, but currently it's not implemented and
+# this paramether is silently ignored. The second paramether is a
+# Unicode map describing encoding for all the incoming RFC messages
+
+RFCInputEncoding	"*"		koi8
+
+# RFC output encoding, see FTNOutputEncoding for paramether description
+
+RFCOutputEncoding	"koi8-r"	koi8
+
+# How to map character, if there is no corresponding one in the output
+# charset
+
+UnicodeDefChar		" "

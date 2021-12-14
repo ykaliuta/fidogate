@@ -1,0 +1,50 @@
+ftnbsy.o: ftnbsy.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+ftnconfig.o: ftnconfig.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+ftnfattach.o: ftnfattach.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+ftnflo.o: ftnflo.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+ftnlock.o: ftnlock.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+ftnlog.o: ftnlog.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+ftnoutpkt.o: ftnoutpkt.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+ftnseq.o: ftnseq.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+pktdebug.o: pktdebug.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+sumcrc.o: sumcrc.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h

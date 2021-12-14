@@ -1,0 +1,48 @@
+FSC-0018
+
+     
+                         FidoNet(tm) Standards Committee
+                       Status of Current FidoNet Standards
+                                 March 30, 1988
+     
+     
+
+   1. FSC-0001 (was FSC001-9) is the basic falback standard for use on
+      FidoNet.  All mailers must be able to perform this protocol should
+      other negotiations fail.
+
+      FSC-0001 describes transmitted data structures, record and message
+      formats, as well as the actual transmission protocols used.
+
+   2. FSC-0006 describes a capability exchange protocol (YooHoo/2U2),
+      which allows two FidoNet systems to dynamically negotiate (at the
+      start of a session) which of a list of protocols is to be used.
+
+      FSC-0006 is used as the base for protocol experimentation on
+      FidoNet.
+
+   3. FSC-0010 describes the transmitted form of EchoMail.  Lack of other
+      detailed specifications led us to extract this document from the
+      documentation of a FidoNet utility, with the kind permission of its
+      author, Bob Hartman.
+
+      FSC-0010 describes echo history, topologies, and message formats.
+
+   4. ARCmail is as specified in the System Enhancement Associates
+      documentation for ARCmail version 0.6.
+
+      It consists of ARCed files named
+          nnnnmmmm.dd#
+      where nnnn is (orignet-destnet) in hex, mmmm is (orignode-destnode)
+      in hex, dd is a day of the week in the form MO, TU, WE,TH, FR, SA,
+      or SU, and # is a decimal digit.
+
+      These ARCmail files consist of multiple FSC-0001 mail packets of
+      multiple EchoMail messages with AREA:<areaname> lines etc.  These
+      packets are named
+          ddhhmmssxx.PKT
+      where dd is the day of the month in decimal, hhmmss is the hour
+      minute and second in decimal, and xx is hundreths of a second in
+      decimal.
+
+-30-

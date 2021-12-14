@@ -1,0 +1,334 @@
+Dies ist fidogate.info, hergestellt von Makeinfo Version 4.1 aus
+fidogate.texi.
+
+   This file documents the installation and usage of FIDOGATE version
+4.4
+
+   Copyright (C) 1994-2000, Martin Junius
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided that the
+entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+   Permission is granted to copy and distribute translations of this
+manual into other languages, under the above conditions for modified
+versions.
+
+
+File: fidogate.info,  Node: Example Node,  Next: Usage,  Prev: Example Point 2,  Up: Basic
+
+Example Leaf Node configuration
+===============================
+
+Let's assume the following addresses:
+
+   Fido main address 2:2499/999
+
+   Uplink (NetMail and EchoMail) 2:2499/900
+
+   Gateway point address 2:2499/999.1
+
+   Two points, Max Mueller @ 2:2499/999.10, Sabine Meier @ 2:2499/999.11
+
+Address configuration `fidogate.conf':
+
+     Address     2:2499/999
+     GateAddress 2:2499/999.1
+
+Routing configuration `routing': NetMail for the two points will be
+remapped to their point addresses, everything else to the gateway (where
+you will be reading your mail). NetMail for all points is `send' onto
+hold, everything else `route'd to your uplink. EchoMail is alway put
+onto hold.
+
+     remap    2:2499/999.0 2:2499/999.10 "Max Mueller"
+     remap    2:2499/999.0 2:2499/999.11 "Sabine Meier"
+     remap    2:2499/999.0 2:2499/999.1  "*"
+     
+     NetMail
+     send     hold   2:2499/999.*
+     route    normal 2:2499/900 1:* 2:* 3:* 4:* 5:* 6:*
+     
+     EchoMail
+     sendmove hold   2:2499/999.*
+     sendmove normal *
+
+Packer configuration `packing': `noarc' packing for the gateway
+address, `zip' is the default archiver for everything else.
+
+     arc      zip    "/usr/bin/zip -9gkjq %s %s"
+     
+     pack     noarc  2:2499/999.1
+     pack     zip    *
+
+Next, the EchoMail areas must be listed in the `areas.bbs' file. Do not
+put your node address into `areas.bbs'! Example with two areas, both
+subscribed by the gateway and your points (the directory `X' is not
+used for EchoMail areas):
+
+     Your system name!sysop name
+     #X LINUX.GER 2:2499/900 999.1 .10 .11
+     #X UNIX.GER  2:2499/900 999.1 .11
+
+   `#' denotes a passthrough area, i.e. no packets for the own address
+(2:2499/999) are created. All EchoMail will be send to the gateway (.1).
+
+   In the gateway configuration, these areas must be listed in the
+`areas' config file:
+
+     LINUX.GER fido.ger.linux -8
+     UNIX.GER  fido.ger.unix  -8
+
+   For regular processing, the following scripts should be run from cron
+every 20 min or so:
+`rungate'
+     Inbound gateway (Fido -> Internet and FTN -> FTN) processing
+
+`runin'
+     Inbound tosser and ticker processing
+
+`runmail'
+     Outbound gateway for mail (Internet -> Fido) processing.
+
+`runnews'
+     Outbound gateway for news (Internet -> Fido) processing.
+
+`runout'
+     Outbound packet processing (various sources).
+
+   To use the areafix, the gateway and the mail system must be working.
+You can then install suitable aliases in `/etc/aliases':
+
+     # Areafix/Filefix - FIDOGATE ftnaf
+     areafix: "|/usr/lib/fidogate/ftnafmail"
+     areamgr: areafix
+     filefix: "|/usr/lib/fidogate/ftnafmail -F"
+     filemgr: filefix
+
+   That's it. I hope that this short chapter on basic configuration
+clarifies some of the darker point of the FIDOGATE configuration.
+Anyway, please help to improve the FIDOGATE documentation.
+
+
+File: fidogate.info,  Node: Usage,  Next: RFC Headers,  Prev: Example Node,  Up: Top
+
+FIDOGATE Usage
+**************
+
+* Menu:
+
+* RFC Headers:: RFC Headers in FTN Messages
+* X Headers::   X Headers in RFC Messages
+
+
+File: fidogate.info,  Node: RFC Headers,  Next: X Headers,  Prev: Usage,  Up: Usage
+
+RFC Headers in FTN Messages
+===========================
+
+FIDOGATE's `ftn2rfc' supports the following RFC headers at the start of
+an FTN message. RFC headers must be the first text lines, max. 3 empty
+lines before the RFC headers are allowed. Only one header line of each
+type is allowed.
+
+`From: address'
+     Sets From header line. If set and the `areas' flag `-g' is on,
+     messages will not be gated, because they are considered comming
+     from another FTN-RFC gateway.
+
+`Reply-To: address'
+     Sets Reply-To header line.
+
+`To: address'
+     Sets To header line.
+
+`Cc: address'
+     Sets Cc header line.
+
+`Bcc: address'
+     Sets Bcc header line.
+
+`Newsgroups: groups'
+     Sets Newsgroups header line. NOT YET IMPLEMENTED.
+
+`Sender: address'
+     Sets Sender header line. NOT YET IMPLEMENTED.
+
+`Content-Transfer-Encoding: 7bit | 8bit | quoted-printable'
+     Sets content encoding type, overriding the default configured in
+     `fidogate.conf' (`NetMail8bit', `NetMailQuotedPrintable') or
+     `areas' (`-8', `-Q').
+
+   `ftn2rfc' sends mail to all addresses listed in To, Cc, and Bcc. It
+support the RFC1036 standard address formats:
+
+     user@do.main
+     user@do.main (Real Name)
+     Real Name <user@do.main>
+
+   Multiple addresses can be separated by a `,'.
+
+
+File: fidogate.info,  Node: X Headers,  Next: Index,  Prev: RFC Headers,  Up: Usage
+
+X Headers in RFC Messages
+=========================
+
+FIDOGATE's `rfc2ftn' supports the following X headers in RFC messages:
+
+`X-Comment-To: name'
+     Use for the recipient's name in news articles.
+
+`X-Flags: flags'
+
+    `c'
+          Message is crash.
+
+    `p'
+          Message is private (default for mail).
+
+    `h'
+          Message is hold.
+
+    `f'
+          Subject contains file attachment name.
+
+    `r'
+          Sets return receipt request.
+
+    `m'
+          Generates a FTN style `^MSGID', i.e. `^AMSGID: 'Z:N/F.P
+          1234abcd. In addition, no `^AREPLY' kludge is generated. THIS
+          FLAG IS NOT RECOMMENDED FOR NORMAL OPERATION!!!
+
+    `n'
+          Do not generate a From line, and the `^AREPLYADDR', `REPLYTO'
+          kludges.
+
+
+File: fidogate.info,  Node: Index,  Prev: X Headers,  Up: Top
+
+Index
+*****
+
+* Menu:
+
+* Aliases:                               Aliases.
+* ArcMail:                               ftnpack.
+* Areafix <1>:                           ftnafmail.
+* Areafix:                               ftnaf.
+* Areas:                                 Areas.
+* areas.bbs:                             Areas.bbs.
+* Bounce messages:                       Bounce.
+* Busy files:                            ftnbsy.
+* Checksum:                              sumcrc.
+* Compiling:                             Compiling.
+* Config <1>:                            Config.
+* Config:                                ftnconfig.
+* Config files:                          Config files.
+* Configuration <1>:                     Example Node.
+* Configuration <2>:                     Example Point 2.
+* Configuration <3>:                     Example Point.
+* Configuration <4>:                     Sendmail.
+* Configuration:                         Basic.
+* Connecting:                            Connecting.
+* CRC:                                   sumcrc.
+* EchoMail:                              Areas.bbs.
+* Example <1>:                           Example Node.
+* Example <2>:                           Example Point 2.
+* Example:                               Example Point.
+* ffx:                                   ffx.
+* ffxmail <1>:                           ffxnews.
+* ffxmail:                               ffxmail.
+* ffxqt <1>:                             runffx.
+* ffxqt <2>:                             ffxrmail.
+* ffxqt:                                 ffxqt.
+* ffxrmail:                              ffxrmail.
+* fidogate.conf:                         Config.
+* FIDONET:                               Connecting.
+* File attach:                           ftnfattach.
+* ftn2ftn:                               ftn2ftn.
+* ftn2rfc <1>:                           ftnin.
+* ftn2rfc:                               ftn2rfc.
+* ftnaf <1>:                             ftnafmail.
+* ftnaf:                                 ftnaf.
+* ftnafpkt:                              ftnafpkt.
+* ftnafutil:                             ftnafutil.
+* ftnbsy:                                ftnbsy.
+* ftnconfig:                             ftnconfig.
+* ftnexpire:                             ftnexpire.
+* ftnfattach:                            ftnfattach.
+* ftnflo:                                ftnflo.
+* ftnhatch:                              ftnhatch.
+* ftnin:                                 ftnin.
+* ftninpost:                             ftninpost.
+* ftninrecomb:                           ftninrecomb.
+* ftnlock:                               ftnlock.
+* ftnlog:                                ftnlog.
+* ftnmail:                               ftnmail.
+* ftnoutpkt:                             ftnoutpkt.
+* ftnpack:                               ftnpack.
+* ftnroute:                              ftnroute.
+* ftnseq:                                ftnseq.
+* ftntick:                               ftntick.
+* ftntickpost:                           ftntickpost.
+* ftntoss:                               ftntoss.
+* Gateway <1>:                           ftn2ftn.
+* Gateway <2>:                           rfc2ftn.
+* Gateway:                               ftn2rfc.
+* Header <1>:                            X Headers.
+* Header:                                RFC Headers.
+* Hosts:                                 Hosts.
+* Installation <1>:                      Compiling.
+* Installation:                          Installation.
+* Integration:                           Integration.
+* Introduction <1>:                      Introduction.
+* Introduction:                          Top.
+* Lock files:                            ftnlock.
+* Log file:                              ftnlog.
+* Logging:                               ftnlog.
+* Mail <1>:                              ffxnews.
+* Mail:                                  ffxmail.
+* Node:                                  Example Node.
+* Packing:                               Packing.
+* Password:                              Passwd.
+* pktdebug:                              pktdebug.
+* pktmore:                               pktmore.
+* Point <1>:                             Example Point 2.
+* Point:                                 Example Point.
+* Programs:                              Programs.
+* Remote Execution:                      ffxqt.
+* Remote execution:                      ffx.
+* RFC header:                            RFC Headers.
+* rfc2ftn:                               rfc2ftn.
+* Routing <1>:                           Routing.
+* Routing:                               ftnroute.
+* runffx:                                runffx.
+* rungate:                               rungate.
+* runin:                                 runin.
+* runmail:                               runmail.
+* runnews:                               runnews.
+* runout:                                runout.
+* runtoss:                               runtoss.
+* rununpack:                             rununpack.
+* send-ffx:                              send-ffx.
+* send-fidogate:                         send-fidogate.
+* sendmail:                              Sendmail.
+* sumcrc:                                sumcrc.
+* Testing:                               Testing.
+* Tossing <1>:                           rununpack.
+* Tossing <2>:                           runtoss.
+* Tossing <3>:                           runout.
+* Tossing <4>:                           runnews.
+* Tossing <5>:                           runmail.
+* Tossing <6>:                           runin.
+* Tossing:                               ftntoss.
+* Usage:                                 Usage.
+* X header:                              X Headers.
+
+

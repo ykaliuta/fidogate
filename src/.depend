@@ -1,0 +1,130 @@
+address.o: address.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h shuffle.h
+aliases.o: aliases.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+areas.o: areas.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+areasbbs.o: areasbbs.c fidogate.h ../config.h paths.h sysexits.h declare.h \
+  node.h packet.h structs.h prototypes.h
+binkley.o: binkley.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+bounce.o: bounce.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+bufstring.o: bufstring.c fidogate.h ../config.h paths.h sysexits.h declare.h \
+  node.h packet.h structs.h prototypes.h shuffle.h
+charset.o: charset.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h charset.h
+config.o: config.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+crc16.o: crc16.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+crc32.o: crc32.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+date.o: date.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+dir.o: dir.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h packet.h \
+  structs.h prototypes.h
+exit.o: exit.c
+ffx.o: ffx.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h packet.h \
+  structs.h prototypes.h getopt.h
+ffxbatch.o: ffxbatch.c fidogate.h ../config.h paths.h sysexits.h declare.h \
+  node.h packet.h structs.h prototypes.h getopt.h
+ffxqt.o: ffxqt.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h getopt.h
+fopen.o: fopen.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+ftn2ftn.o: ftn2ftn.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h getopt.h
+ftn2rfc.o: ftn2rfc.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h getopt.h
+ftnaf.o: ftnaf.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h getopt.h
+ftnbounce.o: ftnbounce.c fidogate.h ../config.h paths.h sysexits.h declare.h \
+  node.h packet.h structs.h prototypes.h getopt.h
+ftnbsy.o: ftnbsy.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h getopt.h
+ftnhatch.o: ftnhatch.c fidogate.h ../config.h paths.h sysexits.h declare.h \
+  node.h packet.h structs.h prototypes.h getopt.h
+ftnin.o: ftnin.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h getopt.h
+ftnlock.o: ftnlock.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h getopt.h
+ftnlog.o: ftnlog.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h getopt.h
+ftnpack.o: ftnpack.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h getopt.h
+ftnroute.o: ftnroute.c fidogate.h ../config.h paths.h sysexits.h declare.h \
+  node.h packet.h structs.h prototypes.h getopt.h
+ftnseq.o: ftnseq.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h getopt.h
+ftntick.o: ftntick.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h getopt.h
+ftntoss.o: ftntoss.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h getopt.h
+getopt.o: getopt.c
+getopt1.o: getopt1.c getopt.h
+gettime.o: gettime.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+hosts.o: hosts.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+kludge.o: kludge.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+lock.o: lock.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+log.o: log.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h packet.h \
+  structs.h prototypes.h
+mail.o: mail.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+mail2news.o: mail2news.c fidogate.h ../config.h paths.h sysexits.h declare.h \
+  node.h packet.h structs.h prototypes.h
+maus.o: maus.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+message.o: message.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+mime.o: mime.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+misc.o: misc.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+msgid.o: msgid.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h shuffle.h
+node.o: node.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h shuffle.h
+out-attach.o: out-attach.c fidogate.h ../config.h paths.h sysexits.h declare.h \
+  node.h packet.h structs.h prototypes.h getopt.h
+outpkt.o: outpkt.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+packet.o: packet.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+parsedate.o: parsedate.c fidogate.h ../config.h paths.h sysexits.h declare.h \
+  node.h packet.h structs.h prototypes.h
+passwd.o: passwd.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+pktdebug.o: pktdebug.c fidogate.h ../config.h paths.h sysexits.h declare.h \
+  node.h packet.h structs.h prototypes.h getopt.h
+read.o: read.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+rfc2ftn.o: rfc2ftn.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h getopt.h
+rfcaddr.o: rfcaddr.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h shuffle.h
+rfcheader.o: rfcheader.c fidogate.h ../config.h paths.h sysexits.h declare.h \
+  node.h packet.h structs.h prototypes.h shuffle.h
+routing.o: routing.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+sequencer.o: sequencer.c fidogate.h ../config.h paths.h sysexits.h declare.h \
+  node.h packet.h structs.h prototypes.h
+sumcrc.o: sumcrc.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h getopt.h
+testxx.o: testxx.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+textlist.o: textlist.c fidogate.h ../config.h paths.h sysexits.h declare.h \
+  node.h packet.h structs.h prototypes.h
+tick.o: tick.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+version.o: version.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h version.h patchlevel.h
+wildmat.o: wildmat.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+xalloc.o: xalloc.c fidogate.h ../config.h paths.h sysexits.h declare.h node.h \
+  packet.h structs.h prototypes.h
+xstrtok.o: xstrtok.c

@@ -1,0 +1,50 @@
+#
+# $Id: routing,v 4.4 2002/08/05 23:50:35 dyff Exp $
+#
+# FIDOGATE ftntoss/ftnroute routing/remap/rewrite config file
+#
+# REMAP and REWRITE are performed by ftntoss, all other command by ftnroute
+#
+# Commands:
+#
+#     remap     SOURCEPAT TARGETPAT NAMEPAT
+#     rewrite   SOURCEPAT TARGETPAT
+#
+#     send      FLAVOR NODES
+#     sendmove  FLAVOR NODES
+#     route     FLAVOR TARGET NODES
+#     hostroute FLAVOR NODES
+#     hubroute  FLAVOR NODES
+#     change    FLAVOLD FLAVNEW NODES
+#
+# `sendmove' requires that SPOOLDIR/toss/tmp and .../out are on the
+# same file system / disk drive!!!
+#
+
+#     
+# Settings for 2:2452/110.2
+#          aka 242:1000/5
+#
+
+######## N E T M A I L #######################################################
+NetMail
+
+# Ourselves
+route		hold		2:2452/110.2
+route		hold		242:1000/5
+
+# Uplink
+route		normal		2:2452/110 1:* 2:* 3:* 4:* 5:* 6:*
+route		normal		242:1000/1 242:*
+
+# Crash mail via boss
+bossroute	crash		*
+
+
+######## E C H O M A I L #####################################################
+EchoMail
+
+sendmove	hold		2:2452/110.2
+sendmove	hold		242:1000/5
+
+sendmove	normal		*

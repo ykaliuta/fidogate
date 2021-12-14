@@ -1,0 +1,562 @@
+#!/usr/bin/wish
+#
+# Xoutfix
+# v .1
+# allows manipulation of the outbound files for the node given on the 
+# command line or one chosen once running 
+#
+# by Len Ovens Nov 97 (len@studio.cbbs.org)
+
+
+#
+#	global variables
+#
+global node
+global nodehex
+global args
+global outbound
+global inbound
+global filename
+global flavour
+global program
+
+set flavour "Hold"
+set outbound "/var/spool/bt/"
+set inbound "/var/spool/bt/pin"
+set program "/usr/local/lib/fidogate/"
+set node ""
+
+if { $argc > 0} {
+	if { $argc < 2 } {
+	        set node [lindex $argv 0]
+		}
+	if { $argc > 1 } {
+		set node [lindex $argv 1]
+		}
+}
+
+
+
+# exec_cmd fuction to run a program
+proc exec_cmd {command } {
+	#execute the program in background ... this is for X
+	eval exec $command &
+}
+
+proc makehex {node} {
+
+	regsub {.*:} $node {} buff
+	regsub {/.*} $buff {} net
+	regsub {.*/} $buff {} onode
+	set hexnet [format "%04x" $net]
+	set hexnode [format "%04x" $onode]
+	return ${hexnet}${hexnode}
+}
+
+proc normal { } {
+
+	set file [ .frame.left.file.list get active ]
+	if {! [regexp -nocase {\.[cdfh]lo} $file ] && \
+		! [regexp -nocase {\.[cdho]ut} $file ] } {
+		tk_dialog .xouterror "Error" \
+ 		"Not a flo or out file" \
+		"" 0 continue
+		return
+	}
+	if { [regexp -nocase {\.[cdh]lo} $file ] } {
+		regsub -nocase {\.[cdh]lo} $file {.flo} fileout
+		eval exec "mv $file $fileout"
+		refresh
+		return
+	}
+	if { [regexp -nocase {\.[cdh]ut} $file ] } {
+		regsub -nocase {\.[cdh]ut} $file {.out} fileout
+		eval exec "mv $file $fileout"
+		refresh
+	}
+}
+
+proc hold { } {
+
+	set file [ .frame.left.file.list get active ]
+	if {! [regexp -nocase {\.[cdfh]lo} $file ] && \
+		! [regexp -nocase {\.[cdho]ut} $file ] } {
+		tk_dialog .xouterror "Error" \
+ 		"Not a flo or out file" \
+		"" 0 continue
+		return
+	}
+	if { [regexp -nocase {\.[cdf]lo} $file ] } {
+		regsub -nocase {\.[cdf]lo} $file {.hlo} fileout
+		eval exec "mv $file $fileout"
+		refresh
+		return
+	}
+	if { [regexp -nocase {\.[cdo]ut} $file ] } {
+		regsub -nocase {\.[cdo]ut} $file {.hut} fileout
+		eval exec "mv $file $fileout"
+		refresh
+	}
+}
+
+
+proc crash { } {
+
+	set file [ .frame.left.file.list get active ]
+	if {! [regexp -nocase {\.[cdfh]lo} $file ] && \
+		! [regexp -nocase {\.[cdho]ut} $file ] } {
+		tk_dialog .xouterror "Error" \
+ 		"Not a flo or out file" \
+		"" 0 continue
+		return
+	}
+	if { [regexp -nocase {\.[dfh]lo} $file ] } {
+		regsub -nocase {\.[dfh]lo} $file {.clo} fileout
+		eval exec "mv $file $fileout"
+		refresh
+		return
+	}
+	if { [regexp -nocase {\.[dho]ut} $file ] } {
+		regsub -nocase {\.[dho]ut} $file {.cut} fileout
+		eval exec "mv $file $fileout"
+		refresh
+	}
+}
+
+proc direct { } {
+
+	set file [ .frame.left.file.list get active ]
+	if {! [regexp -nocase {\.[cdfh]lo} $file ] && \
+		! [regexp -nocase {\.[cdho]ut} $file ] } {
+		tk_dialog .xouterror "Error" \
+ 		"Not a flo or out file" \
+		"" 0 continue
+		return
+	}
+	if { [regexp -nocase {\.[cfh]lo} $file ] } {
+		regsub -nocase {\.[cfh]lo} $file {.dlo} fileout
+		eval exec "mv $file $fileout"
+		refresh
+		return
+	}
+	if { [regexp -nocase {\.[cho]ut} $file ] } {
+		regsub -nocase {\.[cho]ut} $file {.dut} fileout
+		eval exec "mv $file $fileout"
+		refresh
+	}
+}
+
+proc delfile { } {
+
+	set rawfile [ .frame.left.file.list get active ]
+	if {! [regexp -nocase {\.[cdfh]lo} $rawfile ] && \
+		! [regexp -nocase {\.[cdho]ut} $rawfile ] } {
+		if { [regexp -nocase {\#/} $rawfile ] } {
+			regsub {\#/} $rawfile {/} file
+			set f [open $file w]
+			close $f
+		}
+		if { [regexp -nocase {\^/} $rawfile ] } {
+			regsub {\^/} $rawfile {/} file
+			eval exec "rm $file"
+		}
+		if {![regexp -nocase {\#/} $rawfile ] && \
+		![regexp -nocase {\^/} $rawfile ] } {
+			tk_dialog .xoutinfo "Info" \
+ 			"File not deleted... removed from flo only." \
+			"" 0 continue
+		}
+			
+		reflo $rawfile
+		refresh
+		return
+	}
+	if { [regexp -nocase {\.[cdfh]lo} $rawfile ] } {
+		if { [file size $rawfile ] != 0 } {
+			tk_dialog .xouterror "Error" \
+			"Flo file not empty" \
+			"" 0 continue
+			return
+		}
+	}
+	eval exec "rm $rawfile"
+	refresh
+}
+
+
+proc toinb { } {
+global inbound
+
+	set rawfile [ .frame.left.file.list get active ]
+	if {! [regexp -nocase {\.[cdfh]lo} $rawfile ] && \
+		! [regexp -nocase {\.[cdho]ut} $rawfile ] } {
+		if { [regexp -nocase {\#/} $rawfile ] } {
+			regsub {\#/} $rawfile {/} file
+			eval exec "mv $file $inbound"
+			set f [open $file w]
+			close $f
+		}
+		if { [regexp -nocase {\^/} $rawfile ] } {
+			regsub {\^/} $rawfile {/} file
+			eval exec "mv $file $inbound"
+		}
+		if {![regexp -nocase {\#/} $rawfile ] && \
+		![regexp -nocase {\^/} $rawfile ] } {
+			tk_dialog .faxerror "Info" \
+ 			"File not deleted... removed from flo only." \
+			"" 0 continue
+			eval exec "mv $rawfile $inbound"
+		}
+			
+		reflo $rawfile
+		refresh
+		return
+	}
+	if { [regexp -nocase {\.[cdfh]lo} $rawfile ] } {
+			tk_dialog .xouterror "Error" \
+			"Cannot move a Flo file to inbound" \
+			"" 0 continue
+			return
+	}
+	if { [regexp -nocase {\.[cdho]ut} $rawfile ] } {
+		regsub {\.[cdho]ut} $rawfile {.pkt} file
+		eval exec "mv $rawfile $file"
+		eval exec "mv $file $inbound"
+		reflo $rawfile
+		refresh
+	}
+}
+
+
+proc refresh { } {
+
+	global nodehex
+	global outbound
+	global node
+
+	.frame.left.listlabel configure -text "Files for node ${node}"
+	# make base file name from node name
+	set nodehex [makehex $node]
+
+	eval .frame.left.file.list delete 0 end
+	# add ?ut files first
+	foreach i [glob -nocomplain ${outbound}*/${nodehex}.?ut ] {
+		.frame.left.file.list insert end $i
+	}
+	foreach i [glob -nocomplain ${outbound}*/${nodehex}.?lo ] {
+		.frame.left.file.list insert end $i
+		# Now get the files from inside the flo
+		foreach f [flolist $i ] {
+			.frame.left.file.list insert end $f
+		}
+	}
+}
+
+proc reflo {delfile } {
+
+	global nodehex
+	global outbound
+	global node
+	set temp "${outbound}/.xoutfix.tmp"
+
+	# make base file name from node name
+	set nodehex [makehex $node]
+	# get the files for the current node
+	foreach i [glob -nocomplain ${outbound}*/${nodehex}.?lo ] {
+		# open a tmp file to build new flo in.
+		set tmp [open $temp w ]
+		# Now get the files from inside the flo
+		foreach f [flolist $i ] {
+		if { [regexp -nocase {\#/} $f ] } {
+			regsub {\#/} $f {/} file
+			if {[glob -nocomplain $file ] != "" } {
+				if { [ file size $file ] != 0 } {
+					puts $tmp $f
+				}
+			}		
+		}
+		if { [regexp -nocase {\^/} $f ] } {
+			regsub {\^/} $f {/} file
+			if {[glob -nocomplain $file ] != "" } {
+				puts $tmp $f
+			}		
+		}
+		if {![regexp -nocase {\#/} $f ] && \
+		![regexp -nocase {\^/} $f ] } {
+			if {[glob -nocomplain $f ] != "" } {
+				if { $f != $delfile } {
+					puts $tmp $f
+				}
+			}		
+		}
+		}
+		close $tmp
+		eval exec "chmod ugo+rw $temp"
+		eval exec "rm $i"
+		eval exec "mv $temp $i"
+	}
+	refresh
+}
+
+
+proc flolist {flofile} {
+	set fd [open $flofile r]
+	set list [read -nonewline $fd ]
+	close $fd
+	return $list
+}
+
+proc sendfile {} {
+
+global filename
+
+pack forget .frame
+pack .send 
+focus .send.file
+
+}
+
+proc senddo {filename} {
+
+global flavour
+global node
+global program
+
+if {$filename != ""} {
+eval exec "${program}ftnfattach -F $flavour $node $filename"
+}
+pack forget .send
+pack .frame
+focus .frame
+refresh
+
+}
+
+#wm geometry         .    +210+100
+wm title  . "Outbound Manager"
+wm resizable . 0 0
+
+# make frame to hold everything
+set back #908090
+set but #80b080
+
+# main frame to put everything in
+frame .frame -relief raised -bd 2 -bg $back
+.frame config -cursor top_left_arrow
+
+###########################################
+# Set up the left side of things
+###########################################
+
+# frame for the left side
+frame .frame.left -relief flat -bg $back
+
+#################################################
+# frame for the node and it's label
+frame .frame.left.node -relief flat -bg $back
+
+label .frame.left.node.label -text "Node: " \
+	-relief flat -padx 8 -pady 5 -bg $back
+
+entry .frame.left.node.node -width 20 \
+  -textvariable node -bg #c0c0a0
+
+bind .frame.left.node.node <Return> {
+	refresh
+	}
+
+pack .frame.left.node.label .frame.left.node.node -side left -fill y
+# end of node
+######################################
+
+#
+# label for list box
+label .frame.left.listlabel -text "Files for node ${node}" \
+	-relief flat -padx 8 -pady 5 -bg $back
+
+#########################################
+# List box and scroll bar
+#
+frame .frame.left.file -relief flat -bg $back
+
+listbox .frame.left.file.list -height 15 -selectmode browse \
+	-width 50 -bg #c0c0a0 -yscroll ".frame.left.file.scroll set"
+
+# get stuff in box
+refresh
+
+scrollbar .frame.left.file.scroll -command ".frame.left.file.list yview" \
+	-bg $back -activebackground #b0a0b0
+
+pack .frame.left.file.scroll -side right -fill y
+pack .frame.left.file.list -side left -fill both
+# End of List box
+#############################################
+
+pack .frame.left.node .frame.left.listlabel .frame.left.file \
+	-padx 20 -pady 5 -side top -fill y
+# end of left side
+###########################################
+
+
+
+
+##############################################
+# This is for the center buttons
+###########################################
+
+frame .frame.center -relief flat -bg $back
+
+label .frame.center.label -text "Set Flavour" \
+	-relief flat -padx 8 -pady 5 -bg $back
+
+button .frame.center.normal -text "Normal" \
+	-command { normal } \
+	-padx 8 -bg $but
+
+button .frame.center.hold -text " Hold " \
+	-command { hold } \
+	-padx 8 -bg $but
+
+button .frame.center.crash -text "Crash " \
+	-command { crash } \
+	-padx 8 -bg $but
+
+button .frame.center.direct -text "Direct" \
+	-command { direct } \
+	-padx 8 -bg $but
+
+label .frame.center.sendlabel -text "Send a file" \
+	-relief flat -padx 8 -pady 5 -bg $back
+
+button .frame.center.send -text " Send " \
+	-command { sendfile } \
+	-padx 8 -bg $but
+
+pack .frame.center.label .frame.center.normal .frame.center.hold \
+	.frame.center.crash .frame.center.direct \
+	.frame.center.sendlabel .frame.center.send \
+	-padx 20 -pady 11 -side top -fill y
+#
+# end of center buttons
+###################################
+
+
+
+
+##############################################
+# This is for the right side buttons
+###########################################
+
+frame .frame.right -relief flat -bg $back
+
+label .frame.right.label -text "Utilities" \
+	-relief flat -padx 8 -pady 5 -bg $back
+
+button .frame.right.ref -text "Refresh display" \
+	-command { refresh } \
+	-padx 8 -bg $but
+
+button .frame.right.reflo -text "Rewrite flo file" \
+	-command { reflo  "" } \
+	-padx 8 -bg $but
+
+button .frame.right.toinb -text " mv to inbound  " \
+	-command { toinb } \
+	-padx 8 -bg $but
+
+button .frame.right.del -text "   delete file   " \
+	-command { delfile } \
+	-padx 8 -bg $but
+
+
+button .frame.right.exit -text "Exit" \
+  -command { exit } \
+  -padx 16 -bg #b08080
+
+pack .frame.right.label .frame.right.ref .frame.right.reflo \
+	.frame.right.toinb .frame.right.del \
+	-padx 20 -pady 11 -side top -fill y
+
+pack .frame.right.exit -padx 20 -pady 26 -side top -fill y
+#
+# end of right side buttons
+###################################
+
+
+#########################################
+# put two sides together
+#
+pack .frame.left .frame.center .frame.right -side left -fill y
+
+pack .frame
+
+
+
+
+
+########################################
+# set up send file dialog all but final
+#	packing
+########################################
+
+	# send frame for send file dialog
+	frame .send -relief raised -bd 2 -bg $back
+	.send config -cursor top_left_arrow
+
+#################################################
+# tell people what to do and a place to do it :-)
+label .send.label -text "File to send (full path): " \
+	-relief flat -padx 8 -pady 5 -bg $back
+
+entry .send.file -width 40 \
+  -textvariable filename -bg #c0c0a0
+
+##############################################
+# radio buttons for the flo flavour
+frame .send.flavour -relief flat -bg $back
+
+radiobutton .send.flavour.normal -text "Normal" -variable flavour \
+        -relief flat -value "Normal" -bg $back \
+        -activebackground $back -padx 8
+
+radiobutton .send.flavour.hold -text "Hold" -variable flavour \
+        -relief flat -value "Hold" -state active -bg $back \
+        -activebackground $back -padx 8
+
+radiobutton .send.flavour.crash -text "Crash" -variable flavour \
+        -relief flat -value "Crash" -bg $back \
+        -activebackground $back -padx 8
+
+radiobutton .send.flavour.direct -text "Direct" -variable flavour \
+        -relief flat -value "Direct" -bg $back \
+        -activebackground $back -padx 8
+
+pack .send.flavour.normal .send.flavour.hold \
+	.send.flavour.crash .send.flavour.direct \
+	-padx 20 -pady 5 -side left -fill y
+
+##########################################
+# Send it or back out
+frame .send.buttons -relief flat -bg $back
+
+button .send.buttons.send -text "Send it" \
+  -command { senddo $filename } \
+  -padx 16 -bg $but
+
+button .send.buttons.cancel -text "Cancel" \
+  -command { senddo "" } \
+  -padx 16 -bg $but
+
+pack .send.buttons.send .send.buttons.cancel \
+	-padx 20 -pady 5 -side left -fill y
+
+###########################################
+# pack the three parts
+pack .send.label .send.file .send.flavour .send.buttons \
+	-padx 20 -pady 5 -side top -fill y
+
+##########################################
+# don't pack .send till we want it to show
+##########################################
+# end (in case you weren't sure)

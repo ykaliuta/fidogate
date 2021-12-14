@@ -1,0 +1,138 @@
+#:ts=8
+#
+# FIDOGATE ftntoss/ftnroute routing/remap/rewrite config file
+#
+# REMAP and REWRITE are performed by ftntoss, all other command by ftnroute
+#
+# Commands:
+#
+#     remap     SOURCEPAT TARGETPAT NAMEPAT
+#     rewrite   SOURCEPAT TARGETPAT
+#
+#     send      FLAVOR NODES
+#     sendmove  FLAVOR NODES
+#     route     FLAVOR TARGET NODES
+#     hostroute FLAVOR NODES
+#     hubroute  FLAVOR NODES
+#     change    FLAVOLD FLAVNEW NODES
+#
+# `sendmove' requires that SPOOLDIR/toss/tmp and .../out are on the
+# same file system / disk drive!!!
+#
+
+######## N E T M A I L #######################################################
+NetMail
+
+route	normal	2:5025/128 2:50/128 2:5025/8.0 .22 .33 .34 .73 .128 44 49 127
+send	hold	2:5025/8.*
+
+route	direct	2:5025/2 7 10 11 12 30 33 34 36 50 52 70 90 777 
+route	direct	2:5025/3
+route	hold	2:5025/5 22 27 97 
+route	direct	2:5025/17
+route	direct	2:5025/18 21 31 41 6 14 16 19 25 26 28 29 35 45 38 39 40 43 46 55 57 60 77 88
+route	hold	2:5025/20
+route	direct	2:5025/23 13
+route	hold	2:5025/37
+route	hold	2:5025/73
+route	hold	2:5025/74
+route	hold	2:5025/78
+route	hold	2:5025/666
+route	direct	2:5025/18 2:5025/* 2:5020/851
+
+route	direct	2:450/102    2:450/*			# Минск
+route	direct	2:5025/18    2:461/*			# Харьков
+route	direct	2:5025/18    2:463/*			# Киев
+route	direct	2:5025/18    2:4631/*			# Луцк
+route	direct	2:5025/18    2:4635/*			# Черкассы
+route	direct	2:5025/18    2:464/*			# Днепропетровск
+route	direct	2:5000/44    2:5000/*			# Новосибирск
+route	direct	2:5003/19    2:5003/*			# Сыктывкар
+route	direct	2:5070/29    2:5004/*			# -Омск
+route	direct	2:5005/14    2:5005/*			# Томск
+route	direct	2:5007/1     2:5007/*			# Абакан
+route	direct	2:5008/1     2:5008/*			# Улан-Уде
+route	direct	2:5009/4     2:5009/*			# Тамбов ->
+route	direct	2:5010/58    56 156 999			# Челябинск /58
+route	direct	2:5010/77    2:5010/*			# Челябинск
+route	direct	2:5025/18    2:5012/*			# Курган
+route	direct	2:5015/4     2:5015/*			# Нижний Новгород
+route	direct	2:5020/180  				# Москва /180
+route	direct	2:5020/400   				# Москва /400
+route	direct	2:5020/441   				# Москва /441
+route	direct	2:5020/1381   				# Москва /1381
+route	direct	2:5020/1507   				# Москва /1507
+route	direct	2:5020/204   2:5020/*			# Москва
+route	direct	2:5021/11    2:5021/*			# Тверь
+route	direct	2:5023/1     2:5023/*			# Калуга
+route	direct	2:5070/29    2:5024/*			# -Владимир
+route	direct	2:5026/10    2:5026/*			# Иваново
+###########route	direct	2:5028/53    2:5028/*			# -Ярославль
+route	direct	2:5029/5     2:5029/*			# Рязань
+route	direct	2:5030/115				# Санкт-Питербург /115
+route	direct	2:5030/639   239			# Санкт-Питербург /639
+route	direct	2:5030/124   2:5030/*			# Санкт-Питербург
+#route	direct	2:5025/18    2:5030/*			# Санкт-Питербург
+###########route	direct	2:5032/5     2:5032/*			# -Новгород
+route	direct	2:5033/2     2:5033/*			# Псков
+route	direct	2:5034/1     2:5034/*			# Кострома
+route	hold	2:5035/12    2:5035/*			# Курск
+route	normal	2:5036/1     2:5036/*			# Липецк
+route	hold	2:5040/65				# Хабаровск /65
+route	direct	2:5040/6     2:5040/*			# Хабаровск
+route	direct	2:5043/1     2:5043/*			# Южно-Сахалинск
+route	direct	2:5043/1     2:5045/*			# -Владивосток
+route	direct	2:5047/17    2:5047/*			# Магадан
+route	direct	2:5049/12    2:5049/*			# Казань
+#route	direct	2:5049/64    2:5049/*			# Казань
+route	direct	2:5051/16    2:5051/*			# Симбирск
+route	direct	2:5053/16    2:5053/*			# Саратов
+route	direct	2:5054/3     2:5054/*			# Пермь
+route	direct	2:5055/15    2:5055/*			# Волгоград
+route	direct	2:5020/204   2:5056/*			# Вятка
+###########route	direct	2:5056/18    2:5056/*			# Вятка
+route	direct	2:5058/9     2:5058/*			# Оренбург
+route	direct	2:5060/88    2:5060/*			# Таганрог
+route	direct	2:5061/7     2:5061/*			# Ростов-на-Дону
+route	direct	2:5062/2     2:5062/*			# Волгодонск
+route	direct	2:5064/5     2:5064/*			# -Ставрополь
+route	direct	2:5065/10    2:5065/*			# Сочи
+route	direct	2:5025/18    2:5067/*			# Майкоп
+route	direct	2:5070/29    2:5070/*			# Иркутск
+###########route	hold	2:5075/16    2:5075/*			# Тольяти
+route	direct	2:5020/204   2:5075/*			# Тольяти
+route	direct	2:5078/20    2:5078/*			# Нижний Тагил
+route	direct	2:5080/80    2:5080/*			# Екатеринбург
+###########route	hold	2:5083/17    2:5083/*			# -Алма-Ата
+route	direct	2:5090/2     2:5090/*			# Красноярск
+route	direct	2:5100/8     2:5100/* 2:51/*		# Рига
+
+route	direct	2:5020/204   1:* 2:*
+route	direct	2:5025/18    7:*
+route	direct	2:5100/8     3:* 4:* 5:* 6:*
+
+
+######## E C H O M A I L #####################################################
+EchoMail
+
+sendmove	hold	2:5025/8.*
+
+sendmove	hold	2:5025/5
+sendmove	hold	2:5025/20
+sendmove	hold	2:5025/73
+sendmove	hold	2:5025/74
+sendmove	hold	2:5025/78
+sendmove	hold	2:5025/97
+sendmove	hold	2:5025/666
+
+sendmove	hold	2:5011/75
+sendmove	hold	2:5035/12
+sendmove	hold	2:5040/65
+sendmove	hold	2:5045/45
+sendmove	hold	2:5061/48
+sendmove	hold	2:5083/17
+
+sendmove	normal	*
+
+
+include /usr/local/lib/fidogate/etc/routing.schoolnet

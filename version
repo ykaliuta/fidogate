@@ -1,0 +1,48 @@
+#!/usr/bin/perl
+#
+# $Id: version,v 4.1 2001/12/27 19:51:20 mj Exp $
+#
+# Print FIDOGATE version number from version.h
+#
+
+use strict;
+
+my $PROGRAM = 'version';
+my $VERSION = '$Revision: 4.1 $'; #'
+
+
+use vars qw($opt_v $opt_h $opt_l);
+use Getopt::Std;
+
+getopts('vhl');
+
+if($opt_h || $#ARGV>0) {
+    print STDERR
+      "usage:   $PROGRAM [-l] [VERSION.H]\n",
+      "";
+    exit 1;
+}
+
+
+
+my $H = $ARGV[0] ? $ARGV[0] : "version.h";
+
+
+my ($maj, $min, $pl, $state);
+
+open(F, "<$H")
+  || die "$PROGRAM: can't open $H: $!\n";
+while(<F>) {
+    chop;
+    $maj   = $1 if(/VERSION_MAJOR\s*(\d+)/);
+    $min   = $1 if(/VERSION_MINOR\s*(\d+)/);
+    $pl    = $1 if(/PATCHLEVEL\s*(\d+)/);
+    $state = $1 if(/STATE\s*\"(\w+)\"/);
+}
+close(F);
+
+print "$maj.$min.$pl";
+print "-$state" if($opt_l);
+print "\n";
+
+exit 0;

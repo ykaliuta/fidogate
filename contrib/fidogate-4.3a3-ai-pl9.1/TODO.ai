@@ -1,0 +1,24 @@
+ai-pl9.0, Fidogate 4.2.9, 12 Jun 1998, Andy Igoshin <ai@vsu.ru>
+
+Source is available at:
+ftp://ftp.vsu.ru/pub/linux/system/fido/fidogate-4.2.9-ai-pl9.0.tar.gz
+
+
+ 1. Convince Martin Junius to include AI extensions. :)
+
+ 2. Merge AI extensions with FidoGate 4.3.x.
+
+ 3. Think about more complete/correct/transparent MIME support
+    (maybe, incorporate MIME support from ifmail-TX).
+
+ 4. At present, Fidogate's configuration files are rather big. For example,
+    `hosts' file, especially if we include world nodelist into it (to support
+    hub routing).
+    May be, translate some Fidogate's config files (which consist of tables:
+    aliases, areas[.bbs], fareas.bbs, hosts, routing, etc...) to the db format.
+    Probably, one should simply write `compilers' of these files to .db and
+    change accordingly the work with these files in Fidogate.
+    However, I hope that this will be done by Martin. :)
+
+
+				    Andy Igoshin  <ai@vsu.ru>

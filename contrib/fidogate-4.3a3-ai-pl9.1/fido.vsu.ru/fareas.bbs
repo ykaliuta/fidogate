@@ -1,0 +1,18 @@
+VSU Station!Andy Igoshin
+/home/ftp/fido/fileecho/aftnbinkd AFTNBINKD -z 2 -d "" 2:5025/18 666
+/home/ftp/fido/fileecho/filelist FILELIST -z 2 -d "+7 BBS File Lists" 2:5025/18
+/home/ftp/fido/fileecho/mobil MOBIL -z 2 -d "MBL: mobil newsletter" 2:5025/18
+/home/ftp/fido/fileecho/n5025_file N5025_FILE -z 2 -d "" 2:5025/8.51 18 666
+/home/ftp/fido/fileecho/net5025 NET5025 -z 2 -d "N5025 Nodelist" 2:5025/18 666
+/home/ftp/fido/fileecho/nodediff NODEDIFF -z 2 -d "FidoNet: Weekly NodeList Updates" 2:5025/18 8.51
+/home/ftp/fido/fileecho/pntlist PNTLIST -z 2 -d "+7 Point Lists" 2:5025/18 8.51
+/home/ftp/fido/fileecho/r50-list R50-LIST -z 2 -d "R50 Nodelist Segment" 2:5025/18
+/home/ftp/fido/fileecho/r50route R50ROUTE -z 2 -d "R50 Routing Scheme" 2:5025/18
+/home/ftp/fido/fileecho/rpg.releases RPG.RELEASES -z 2 -d "" 2:5025/18 78 5083/17
+/home/ftp/fido/fileecho/snet.file SNET.FILE -z 21 -d "" 21:9025/2 8.25 9
+/home/ftp/fido/fileecho/snet.list SNET.LIST -z 21 -d "" 21:9025/2 8.25 9
+/home/ftp/fido/fileecho/vrnbusiness VRNBUSINESS -z 2 -d "" 2:5025/18 666
+/home/ftp/fido/fileecho/vrnphoto VRNPHOTO -z 2 -d "" 2:5025/18 8.32 666
+/home/ftp/fido/fileecho/xofcelist XOFCELIST -z 2 -d "Echo list" 2:5025/18 78 21:9025/9
+/home/ftp/fido/fileecho/xpntr50diff XPNTR50DIFF -z 2 -d "" 2:5025/18 5083/17
+/home/ftp/fido/fileecho/z2-diff Z2-DIFF -z 2 -d "Zone 2 Nodediffs" 2:5025/18 666

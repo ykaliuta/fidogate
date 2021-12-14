@@ -1,0 +1,83 @@
+#!/usr/bin/wish
+#
+# Xmonout
+# v .1
+# A simple tool in Tcl to display the output of monout.
+#
+# by Len Ovens Nov 97 (len@studio.cbbs.org)
+
+global program
+
+set program "/usr/local/lib/fidogate/"
+
+# exec_cmd fuction to run a program
+#
+proc exec_cmd {command } {
+	#execute the program in background ... this is for X
+
+	eval exec $command &
+
+}
+
+proc bigrefresh { } {
+
+	refresh
+	after 300000 bigrefresh
+
+}
+
+
+proc refresh { } {
+global program
+	
+	eval .frame.list delete 0 end
+	eval .frame.list insert 0 [split [ exec ${program}monout ] ";"] 
+
+}
+
+#
+#	main program
+#
+
+
+wm geometry         .    +0+61
+wm title  . "OutBound Monitor"
+wm resizable . 0 0
+
+# make frame to hold everything
+set back #908090
+set but #80b080
+
+#frame .frame -relief raised -bd 2 -bg $back
+frame .frame -relief raised -bd 2 -bg $back
+.frame config -cursor top_left_arrow
+
+# widgets
+
+# line for put some list boxes in here
+
+
+listbox .frame.list -height 4 -selectmode browse \
+	-width 30 -bg #c0c0a0 -yscroll ".frame.scroll set"
+
+bind .frame.list <Double-1> {
+    set node [selection get]
+    exec_cmd "${program}xoutfix $node"
+}
+
+bind .frame.list <Button-3> {
+    refresh
+}
+
+bigrefresh
+
+scrollbar .frame.scroll -command ".frame.list yview" \
+	-bg $back -activebackground #b0a0b0
+
+pack .frame.scroll -side right -fill y
+pack .frame.list -side left -fill both
+
+pack .frame
+
+
+# the end

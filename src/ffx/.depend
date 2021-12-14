@@ -1,0 +1,10 @@
+ffx.o: ffx.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+ffxqt.o: ffxqt.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h

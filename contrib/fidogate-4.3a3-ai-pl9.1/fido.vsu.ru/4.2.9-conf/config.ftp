@@ -1,0 +1,38 @@
+#:ts=8
+#
+# $Id: config.ftp,v 1.3 2002/08/04 02:22:52 dyff Exp $
+#
+# FIDOGATE config file FTP hub
+#
+# orodruin.fido.de
+#
+# Format:  keyword arg ...
+#          keyword and args may be put in double quotes "..."
+#
+
+#
+# Include common stuff (%L = LIBDIR)
+#
+include		%L/config.common
+
+
+#
+# FTN addresses
+#
+Address		2:5025/8
+
+
+#
+# FTP hub user
+#
+FTPUser		news
+
+#
+# FTP hub chroot (CURRENTLY NOT USED)
+#
+FTPchroot	/var/spool/fido
+
+#
+# FTP hub inbound
+#
+FTPInbound	/var/spool/fido/in

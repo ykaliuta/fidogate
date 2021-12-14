@@ -1,0 +1,4794 @@
+\input texinfo  @c -*-texinfo-*-
+@c
+@c FIDOGATE documentation for 4.4
+@c
+@c $Id: fidogate.texi,v 4.55 2004/08/26 20:56:16 n0ll Exp $
+@c
+
+@setfilename fidogate.info
+
+@iftex
+@c A4 paper
+@afourpaper
+@finalout
+@end iftex
+
+
+@ifinfo
+This file documents the installation and usage of FIDOGATE version 4.4
+
+Copyright (C) 1994-2000, Martin Junius
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+@ignore
+Permission is granted to process this file through TeX and print the
+results, provided the printed document carries copying permission
+notice identical to this one except for the removal of this paragraph
+(this paragraph not being relevant to the printed manual).
+
+@end ignore
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the
+entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into other languages, under the above conditions for modified versions.
+@end ifinfo
+
+@c @setchapternewpage odd
+@settitle FIDOGATE 
+
+@titlepage
+@title FIDOGATE
+@subtitle Fido-Internet Gateway
+@subtitle Fido FTN-FTN Gateway
+@subtitle Fido Mail Processor
+@subtitle Fido File Processor
+@subtitle Fido Areafix/Filefix
+@subtitle Version 4.4
+@author by Martin Junius
+
+@page
+
+Copyright @copyright{} 1990-2002 Martin Junius
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the
+entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into other languages, under the above conditions for modified versions.
+
+@end titlepage
+@page
+
+
+@node Top, Introduction, , (DIR)
+@top Introduction
+@cindex Introduction
+
+@noindent
+This manual documents how to install and use FIDOGATE. It is the first
+step toward a concise documentation. Alas, writing documentation is a
+somewhat tedious business, so this manual is far from complete.
+
+@menu
+* Introduction::Introduction to FIDOGATE
+* Installation::Compiling and installing FIDOGATE
+* Programs::    FIDOGATE programs and scripts
+* Config files::FIDOGATE config files
+* Basic::       Basic configuration
+* Usage::       FIDOGATE usage
+
+* Index::       Index
+
+ --- The Detailed Node Listing ---
+
+Compiling and installing FIDOGATE
+
+* config.h::    The config.h header file
+* config.make:: The config.make Makefile configuration
+* Compiling::   Compiling and installing FIDOGATE
+* Integration:: Integrating FIDOGATE and the mail/news system
+* Testing::     Testing FIDOGATE operation
+* Connecting::  Connecting to FIDONET
+
+Utilities
+
+* ftnaf::       Areafix mail processor
+* ftnafmail::   Areafix mail setuid frontend
+* ftnafpkt::    Areafix packet processor
+* ftnafutil::   Areafix utility
+
+Character set translation table compiler:
+* charsetc::    Character set translation table compiler
+
+FFX programs and scripts:
+* ffx::         Remote execution via Fido mailer
+* ffxmail::     @code{ffx} frontend for sending mail
+* ffxnews::     @code{ffx} frontend for sending news
+* ffxqt::       Execute @code{ffx} requests
+* ffxrmail::    @code{rmail} command for @code{ffxqt}
+* runffx::      Script for running FFX programs
+* send-ffx::    Script for processing news via FFX
+
+Gateway programs and scripts:
+* ftn2rfc::     Fido-Internet gateway program
+* ftnin::       Frontend for @code{ftn2rfc}
+* ftninpost::   @code{ftnin} post-processing script
+* ftninrecomb:: @code{ftnin} recombining script
+* ftnmail::     @code{rfc2ftn} setuid frontend
+* rfc2ftn::     Internet-Fido gateway program
+* rungate::     Script for running gateway programs
+* send-fidogate::Script for processing news via FIDOGATE
+
+Ticker programs:
+* ftnhatch::    Hatch new file into file area
+* ftntick::     Process incoming TIC files
+* ftntickpost:: @code{ftntick} post-processing script
+
+Tosser programs and scripts:
+* ftn2ftn::     FTN-FTN NetMail gateway
+* ftnexpire::   Utility to expire MSGID history database
+* ftnpack::     Pack (ArcMail) Fido mail packets
+* ftnroute::    Route Fido mail packets
+* ftntoss::     Toss/remap/rewrite Fido mail packets
+* runin::       Script for processing inbound packets
+* runmail::     Script for processing gateway mail output packets
+* runnews::     Script for processing gateway news output packets
+* runout::      Script for processing miscellaneous output packets
+* runtoss::     Script for running the tosser programs
+* rununpack::   Script for unpacking inbound arcmail archives
+
+Utilties:
+* ftnbsy::      Create/delete Binkley busy files
+* ftnconfig::   Retrieve information from FIDOGATE config files
+* ftnfattach::  Binkley outbound file attach utility
+* ftnflo::      Process Binkley outbound FLO files and attachments
+* ftnlock::     Create/delete lock files
+* ftnlog::      Write message to log file
+* ftnoutpkt::   Create output Fido message packets
+* ftnseq::      Access sequencer file
+* pktdebug::    FTN mail packet debugger
+* pktmore::     Pager frontend for @code{pktdebug}
+* sumcrc::      CRC checksum utility
+
+FIDOGATE Config Files
+
+* Config::      Main configuration file
+* Hosts::       hosts FTN address to host name conversion
+* Aliases::     aliases user aliases
+* Areas::       areas FTN area to newsgroup conversion
+* Bounce::      Bounce messages of @code{ftn2rfc}
+* Passwd::      passwd password config file
+* Routing::     routing file for @code{ftntoss} and @code{ftnroute}
+* Packing::     packing file for @code{ftnpack}
+* Areas.bbs::   areas.bbs EchoMail distribution
+
+Basic Configuration
+
+* Sendmail::	       Sendmail configuration
+* Example Point::      Example point configuration
+* Example Point 2::    Example configuration with 2 point addresses
+* Example Node::       Example leaf node configuration
+
+FIDOGATE Usage
+
+* RFC Headers:: RFC Headers in FTN Messages
+* X Headers::   X Headers in RFC Messages
+@end menu
+
+@c ***************************************************************************
+@page
+@node Introduction, Installation, Top, Top
+@chapter Introduction to FIDOGATE
+
+@cindex Introduction
+
+
+@noindent
+FIDOGATE is a Fido-Internet gateway and a Fido tosser.  It is placed
+under the GNU General Public License, see COPYING for details.
+
+The gateway converts between the worlds of Fido NetMail/EchoMail (or
+FTNs, Fido Technology Networks in general) and the UNIX mail/news
+system. FIDOGATE will convert Fido mail packets to RFC822/1036-style
+messages and vice versa.
+
+FIDOGATE also includes a complete FIDO mail processor (NetMail/EchoMail
+tosser), an FTN-FTN gateway (NetMail only), a file processor (TIC file
+areas) and an Areafix/Filefix.
+
+
+@section How to Get FIDOGATE
+
+@noindent
+The latest version of FIDOGATE is available at the locations.
+
+@noindent
+Internet WWW FIDOGATE home page:
+@example
+http://www.fido.de/fidogate/
+@end example
+
+@noindent
+Internet anonymous ftp:
+@example
+ftp://ftp.fido.de/pub/fidogate/
+@end example
+
+@noindent
+BBS and FIDO frequest:
+@example
+@r{2:2452/110 111  242:1000/1 2  +49-241-876604  (V.34, ISDN V.110, X.75)}
+@r{Magic name }FIDOGATE
+@end example
+
+
+@section Requirements for FIDOGATE:
+
+@itemize @bullet
+
+@item
+Something that gets you FIDONET mail. If you want a Unix-based Fido
+mailer, I recommend using ifcico or BinkD.
+
+@item
+Installed news system (INN prefered)
+
+@item
+Mail transport agent (sendmail prefered)
+
+@item
+Perl (version 5 strictly required)
+
+@item
+M4 for compiling the sendmail config files
+
+@end itemize
+
+
+@section FIDOGATE Mailing List
+
+@noindent
+There is a @i{NEW} mailing list for FIDOGATE discussions and
+announcements:
+
+@example
+fidogate@@fido.de
+@end example
+
+To @i{subscribe} to this mailing list, send a message to
+
+@example
+majordomo@@fido.de
+@end example
+
+@noindent
+with the command 
+
+@example
+subscribe fidogate
+@end example
+
+@noindent
+in the message @i{body} (not subject!). This will not immediately put
+your email address into the mailing list. A confirmation mail with an
+authentication code will be send to you, which must be returned to
+majordomo to finally enable your subscription.
+
+To @i{unsubscribe} from this mailing list, send the command
+
+@example
+unsubscribe fidogate
+@end example
+
+
+
+@section Credits
+Most C code has been solely hacked by me, but there are also some source
+files taken from other free software packages (GNU, INN). See the
+various source files for details. In addition, many FIDOGATE users
+provided bug fixes and patches, which found their way into the
+distribution.
+
+The ancestor of both FIDOGATE and ifmail was a Usenet posting to
+alt.sources called @code{rfmail} ages ago. None of this original code
+survived the massive rewrite and new code which makes FIDOGATE.
+
+
+
+@c ***************************************************************************
+@node Installation, config.h, Introduction, Top
+
+@chapter Compiling and installing FIDOGATE
+
+@cindex Installation
+
+@menu
+* config.h::    The config.h header file
+* config.make:: The config.make Makefile configuration
+* Compiling::   Compiling and installing FIDOGATE
+* Integration:: Integrating FIDOGATE and the mail/news system
+* Testing::     Testing FIDOGATE operation
+* Connecting::  Connecting to FIDONET
+@end menu
+
+@noindent
+This chapter describes the FIDOGATE configuration and installation.  You
+must also create and edit the config files to be installed in the
+CONFIGDIR directory, @code{fidogate.conf}, @code{areas}, @code{hosts},
+@code{passwd}, @code{routing}, @code{packing}, @code{aliases} according
+to your setup (see the examples subdirectory).
+
+The chapter on config files describes them in detail.
+
+
+
+@c ***************************************************************************
+@node config.h, config.make, Installation, Installation
+
+@section The @code{config.h} Header File
+
+@noindent
+Normally, if you want to compile a standard version of FIDOGATE on one
+of the supported platforms, it is @i{not} necessary to change anything
+in this file. Most things can be configured or overridden in
+@code{config.make} (compile-time) or @code{fidogate.conf} (run-time).
+
+@noindent
+If you really want to edit @code{config.h}, here are the gory details:
+
+@table @code
+
+@item LOCAL_FTN_ADDRESSES
+Generate ``local'' FTN addresses: @i{User_Name%p.f.n.z@@hostname.domain}
+instead of @i{User_name@@p.f.n.z.domain}.
+
+@item DO_BSY_FILES
+Create Binkley-style busy files while accessing the Binkley outbound.
+
+@item NFS_SAFE_LOCK_FILES
+Create lock / bsy files in an NFS-safe way.
+
+@item AMIGADOS_4D_OUTBOUND
+Use AmigaDOS-style outbound file names.
+
+@item MAXMSGSIZE
+Maximum size of FIDO messages generated by @code{rfc2ftn}, larger
+messages will be split. Alas, less than 16K seems to be the only safe
+setting. This is the default value.
+
+@item FTN_INVALID_DOMAIN
+Domain address to be used for invalid FTN addresses.
+
+@item FACILITY
+syslog facility used if @code{Logfile} is set to "syslog".
+
+@item CHARSET_STDFTN
+Default charset for Fido messages.
+
+@item CHARSET_STD7BIT
+Default charset for RFC messages with 7bit encoding.
+
+@item ALIASES_ARE_LOCAL
+Addresses found in the @code{aliases} config file are rewritten so
+that the sender's address is the gateway.
+
+@item PASSTHRU_NETMAIL
+Passthru operation for NetMail: if the sender of the message is an FTN
+address, the origin address of the resulting FTN message will be that
+FTN address. WARNING: enabled only if you really know what you're doing!
+
+@item PASSTHRU_ECHOMAIL
+Passthru operation for EchoMail: X-FTN-Tearline, X-FTN-Origin,
+X-FTN-Seen-By, X-FTN-Path headers will be used for tear line, * Origin,
+SEEN-BY, ^APATH, when gating from Internet to FTN. WARNING: enabled only
+if you really know what you're doing!
+
+@item AI_1
+@item AI_3
+@item AI_5
+@item AI_6
+@item AI_8
+Configuration for Andy Igoshin's patches, see
+@code{contrib/fidogate-4.3a3-ai-pl9.1/README.ai} for
+details. @code{AI_2,4,7} are now fully integrated.
+
+@end table
+
+@noindent
+System dependent configuration:
+
+This configuration contains several groups of #define/#undef. First, the
+definitions for a standard POSIX UNIX, followed by #ifdef'ed definitions
+for SunOS, Linux, FreeBSD, Interactive UNIX, MSDOS DJGPP, NextStep,
+GNU-WIN32.
+
+If you want to port FIDOGATE to a new system, please add a #ifdef'ed
+section similar to the already existing ones.
+
+The gory details:
+
+@table @code
+
+@item HAS_FCNTL_LOCK
+Define, if the system support fcntl() file locking.
+
+@item HAS_GETTIMEOFDAY
+Define, if the system has the gettimeofday() function.
+
+@item HAS_TM_GMTOFF
+Define, if the system has a tm_gmtoff field in struct tm.
+
+@item HAS_SYSEXITS_H
+Define, if the system support the @code{sysexits.h} header file.
+
+@item HAS_TM_ZONE
+Define, if the system has a tm_zone field in struct tm.
+
+@item HAS_STRFTIME
+Define, if the system has the Standard-C strftime() function.
+
+@item HAS_TZNAME    
+Define, if the system has @code{extern char *tzname[2]}.
+
+@item HAS_STRCASECMP
+Define, if the system has the @code{strcasecmp()} and
+@code{strncasecmp()} functions.
+
+@item HAS_STRICMP
+Define, if the system has the @code{stricmp()} and
+@code{strnicmp()} functions.
+
+@item HAS_STERROR
+Define, if the system has the @code{strerror()} function.
+
+@item DO_BINARY
+Define, if files must be opened in binary mode.
+
+@item DO_DOSIFY
+Define, if filenames must be converted to DOS, OS2-style @code{\}.
+
+@item RECEIVED_BY_MAILER
+Define, if extra Received lines are inserted by the mail system,
+currently only used for NeXT.
+
+@item HAS_SYSLOG
+Define, if syslogd and the library function @code{syslog()},
+@code{vsyslog()} are suppored.
+
+@item HAS_SNPRINTF
+Define, if @code{snprintf()} and @code{vsnprintf()} are supported.
+
+@item HAS_HARDLINKS
+Define, if the system supports file systems with hard links and the
+library function @code{link()}.
+
+@item HAS_POSIX_REGEX
+Define, if the system supports the POSIX regex functions regcomp(),
+regexec() etc.
+
+@end table
+
+Define only one of @code{HAS_TM_ZONE}, @code{HAS_STRFTIME},
+@code{HAS_TZNAME}, and also only one of @code{HAS_STRCASECMP},
+@code{HAS_STRICMP}.
+
+
+
+@noindent
+@i{THE FOLLOWING DEFINES SHOULD REALLY BE LEFT AS IS!!!}
+
+@table @code
+
+@item MSGID_FIDONET_DOMAIN
+Default domain for standard FIDO addresses (zone 1--6). Used for
+Message-IDs only, so DO NOT CHANGE.
+
+@item PACKET_MODE
+@item BSY_MODE
+@item FLO_MODE
+@item DATA_MODE
+@item DIR_MODE
+@item CONF_MODE
+Permissions for files processed by FIDOGATE.
+
+@item FTN_RFC_HEADERS
+RFC headers recognized at the beginning of FTN messages.
+
+@item RFC_LVL_1_HEADERS
+RFC headers put into FTN messages for RFC level 1.
+
+@item R_MODE
+@item W_MODE
+@item A_MODE
+@item RP_MODE
+@item WP_MODE
+@item AP_MODE
+Modes (@code{fopen()}) for opening files.
+
+@item DATE_LOG
+@item DATE_DEFAULT
+@item DATE_NEWS
+@item DATE_MAIL
+@item DATE_FROM
+@item DATE_FTS_0002
+@item DATE_TICK_PATH
+@item DATE_VIA
+@item DATE_SPLIT
+Date format strings.
+
+@item PRODUCT_CODE
+FIDO product code used by @code{rfc2ftn}.
+
+@item MAXADDRESS
+Maximum number of @code{Address} and @code{Zone} statements in
+@code{config} file.
+
+@item MAXDOSDRIVE
+Maximum number of @code{DosDrive} statements in @code{config} file.
+
+@item MAXPATH
+Maximum length of a pathname in FIDOGATE.
+
+@item MAXINETADDR
+Maximum length of the address part of an Internet address in FIDOGATE.
+
+@item MAXUSERNAME
+Maximum length of the user name part of an Internet address in FIDOGATE.
+
+@item MAXOPENFILES
+Maximum number of packet files concurrently opened by tosser
+programs. The maximum possible value is operating system and
+configuration dependent, see UNIX ulimits.
+
+@end table
+
+
+
+@c ***************************************************************************
+@node config.make, Compiling, config.h, Installation
+
+@section The @code{config.make} Makefile Configuration
+
+@noindent
+This file is included in all FIDOGATE Makefiles.
+
+A special convention is used for defining FIDOGATE configuration macros: 
+macro name starting with @code{DEFAULT_} are used by the compilation
+process to automatically generate C code.
+
+@table @code
+
+@item DEFAULT_V_@i{option}
+Creates a Makefile macro definition, substitutes @i{<option>} in shell
+and perl scripts, creates a compile-time C @code{#define
+DEFAULT_}@i{option} in @code{paths.h}, a run-time configuration option
+@i{option} in @code{fidogate.conf}, and makes FIDOGATE evaluate the
+environment variable @code{FIDOGATE_}@i{option}.
+
+@item DEFAULT_F_@i{option}
+Creates a Makefile macro definition, substitutes @i{<option>} in shell
+and perl scripts, creates a compile-time C @code{#define
+DEFAULT_}@i{option} in @code{paths.h}. No run-time override!
+
+@item DEFAULT_A_@i{option} 
+Creates a @i{%X} abbreviation (can be used at the start of file names)
+for @i{option}.
+
+@end table
+
+Be very carefull not to @b{remove} any of the FIDOGATE standard macros
+and don't touch the standard abbreviations in this file!!!
+
+
+@table @code
+
+@item DEFAULT_V_CONFIGDIR
+Directory for config files.
+
+@item DEFAULT_V_LIBDIR
+Directory for FIDOGATE's internal programs.
+
+@item DEFAULT_V_BINDIR
+Directory for user programs and scripts.
+
+@item DEFAULT_V_LOGDIR
+Directory for log files.
+
+@item DEFAULT_V_VARDIR
+Directory for @code{areas.bbs}, @code{history}.
+
+@item DEFAULT_V_LOCKDIR
+Directory for lock files.
+
+@item DEFAULT_V_SPOOLDIR
+Internal spool directory (temporary files).
+
+@item DEFAULT_V_BTBASEDIR
+BinkleyTerm-style outbound base directory. This is the base directory,
+not the actual zone outbound directory.
+
+@item DEFAULT_V_INBOUND
+BinkleyTerm-style inbound directory.
+
+@item DEFAULT_V_PINBOUND
+BinkleyTerm-style protected inbound directory.
+
+@item DEFAULT_V_UUINBOUND
+BinkleyTerm-style inbound directory for the @code{recvuu} script.
+
+@item DEFAULT_V_FTPINBOUND
+BinkleyTerm-style FTP inbound directory.
+
+
+@item DEFAULT_V_ACL
+Access control list for AI patches (not used for standard FIDOGATE 
+distribution).
+
+@item DEFAULT_V_ALIASES
+Configuration file for aliases.
+
+@item DEFAULT_V_AREAS
+Configuration file for areas/newsgroups gateway.
+
+@item DEFAULT_V_HOSTS
+Configuration file for registered hosts.
+
+@item DEFAULT_V_PASSWD
+Configuration file for passwords.
+
+@item DEFAULT_V_PACKING
+Configuration file for ArcMail packer (@code{ftnpack}).
+
+@item DEFAULT_V_ROUTING
+Configuration file for NetMail/EchoMail routing (@code{ftntoss},
+@code{ftnroute}). 
+
+@item DEFAULT_V_HISTORY
+MSGID history file for dupe check.
+
+@item DEFAULT_V_LOGFILE
+Default log file.
+
+@item DEFAULT_V_CHARSETMAP
+Character set mapping table.
+
+
+@item DEFAULT_F_NEWSETCDIR
+INN directory: config files
+
+@item DEFAULT_F_NEWSVARDIR
+INN directory: active, history files.
+
+@item DEFAULT_F_NEWSLIBDIR
+INN directory: scripts.
+
+@item DEFAULT_F_NEWSSPOOLDIR
+INN directory: news spool.
+
+@item DEFAULT_F_IFMAILDIR
+Ifcico/ifmail directory.
+
+
+@item DEFAULT_F_CONFIG_GATE
+@item DEFAULT_F_CONFIG_MAIN
+@item DEFAULT_F_CONFIG_FFX
+FIDOGATE main configuration file @code{fidogate.conf}.
+
+
+@item DEFAULT_F_SEQ_MAIL
+@item DEFAULT_F_SEQ_NEWS
+@item DEFAULT_F_SEQ_MSGID
+@item DEFAULT_F_SEQ_PKT
+@item DEFAULT_F_SEQ_SPLIT
+@item DEFAULT_F_SEQ_FF
+@item DEFAULT_F_SEQ_TOSS
+@item DEFAULT_F_SEQ_PACK
+@item DEFAULT_F_SEQ_TICK
+Sequencer files.
+
+@item DEFAULT_F_LOCK_HISTORY
+Lock file for history access.
+
+@item DEFAULT_F_OUTRFC_MAIL
+@item DEFAULT_F_OUTRFC_NEWS
+@item DEFAULT_F_OUTPKT
+@item DEFAULT_F_OUTPKT_MAIL
+@item DEFAULT_F_TOSS_TOSS
+@item DEFAULT_F_TOSS_ROUTE
+@item DEFAULT_F_TOSS_PACK
+@item DEFAULT_F_TOSS_BAD
+@item DEFAULT_F_OUTPKT_NEWS
+Internal spool directories (temporary files).  If these directories are
+different from the default ones, the commands for the
+@code{install-dirs} target of @code{Makefile} must be changed as well.
+
+@item DEFAULT_F_TICK_HOLD	= %B/tick
+Outbound hold directory for TIC files.
+
+
+@item DEFAULT_A_CONFIGDIR
+@item DEFAULT_A_LIBDIR
+@item DEFAULT_A_BINDIR
+@item DEFAULT_A_LOGDIR
+@item DEFAULT_A_VARDIR
+@item DEFAULT_A_LOCKDIR
+@item DEFAULT_A_SPOOLDIR
+@item DEFAULT_A_BTBASEDIR
+@item DEFAULT_A_INBOUND
+@item DEFAULT_A_PINBOUND
+@item DEFAULT_A_UUINBOUND
+Abbreviations for configured directories.
+
+
+@item PERL
+Full path name of perl executable.
+
+@item SENDMAIL_CF_DIR
+Directory where the sendmail m4 configuration files are installed
+(@code{/usr/lib/sendmail-cf} on RedHat Linux systems).
+
+@item INFODIR
+Directory for installing info documentation files.
+
+@item HTMLDIR
+Directory for installing HTML documentation files.
+
+@item HTMLLOGDIR
+Directory for installing CGI files.
+
+
+@end table
+
+
+
+@table @code
+
+@item M4
+m4 macro processor (for compiling sendmail cf files).
+
+@item OWNER
+Owner of FIDOGATE files.
+
+@item GROUP
+Group of FIDOGATE files.
+
+@item PERM_PROG
+Permissions for installing programs.
+
+@item PERM_DATA
+Permissions for installing data files.
+
+@item PERM_SETUID
+Permissions for installing setuid @code{OWNER} programs.
+
+@item PERM_DIR
+Permissions for installing directories.
+
+@item CC
+C compiler.
+
+@item YACC
+@code{yacc} or a clone like @code{bison -y}.
+
+@item AR
+@code{ar} monkey ... (@@!#$%&... ouch!) ... librarian.
+
+@item RANLIB
+Library utitility, if needed.
+
+@item DEBUG
+Optimize or debugging flags for compiling.
+
+@item INCLUDE
+C include (-I) options.
+
+@item CFLAGS
+Flags for compiling FIDOGATE.
+
+@item LFLAGS
+Flags for linking FIDOGATE.
+
+@item LIBS
+Libraries for linking FIDOGATE, including the FIDOGATE library
+@code{libfidogate.a}.
+
+@item INSTALL
+Install program.
+
+@item
+Set to @code{.exe} for MSDOS, OS2, Win32.
+
+@item INSTALL_PROG
+Install command for installing programs.
+
+@item INSTALL_DATA
+Install command for installing data files.
+
+@item INSTALL_SETUID
+Install command for installing setuid programs.
+
+@item INSTALL_DIR
+Install command for installing directories.
+
+@item PREFIX
+Extra prefix directory for @code{make install}.
+
+@item LIB
+Name of the FIDOGATE library.
+
+@end table
+
+
+
+@c ***************************************************************************
+@node Compiling, Integration, config.make, Installation
+
+@section Compiling and Installing FIDOGATE
+@cindex Compiling
+@cindex Installation
+
+@noindent
+Compile the beast by entering
+@example
+make depend
+make
+@end example
+
+Alternatively an optimized version can be compiled with
+@example
+make DEBUG=-O2
+@end example
+
+
+If everything works, you must create the necessary directories:
+@example
+make install-dirs
+@end example
+Then install all FIDOGATE programs:
+@example
+make install
+@end example
+
+Next you must create the configuration files in (default)
+@code{/etc/fidogate}. Have a look at the various configuration in
+directory @code{examples/} and use them to build your own configuration.
+
+
+
+@c ***************************************************************************
+@node Integration, Testing, Compiling, Installation
+
+@section Integrating FIDOGATE and the Mail/News System
+@cindex Integration
+
+@table @code
+
+@item scripts/inn
+Scripts for INN.
+
+@item scripts/cnews
+Scripts for CNews.
+
+@item sendmail/cf
+Sendmail V8 configuration files (m4) and example .mc files for
+FIDOGATE: Fido.DE domain gateway morannon, orodruin, point setup.
+
+@end table
+
+Much more concise instructions should be here!!! ;-)
+
+
+
+@c ***************************************************************************
+@node Testing, Connecting, Integration, Installation
+
+@section Testing the FIDOGATE Installation
+@cindex Testing
+
+@subsection @code{Tosser}
+
+...
+
+
+@subsection @code{Gateway}
+
+...
+
+
+
+@c ***************************************************************************
+@node Connecting, Programs, Testing, Installation
+
+@section Connecting to FIDONET
+@cindex Connecting
+@cindex FIDONET
+
+@noindent
+FIDOGATE does NOT include a FIDO mailer, so you have to transfer FIDO
+mail to and from the UNIX system by some other means.
+
+If you want everything running on the UNIX system, you need a FIDO
+mailer for UNIX. Currently, this choice is limited to
+@itemize @bullet
+@item BinkleyTerm
+@item ifcico
+@item BinkD
+@end itemize
+
+I don't know what the current state of BinkleyTerm for Unix/Linux is,
+but ifcico and BinkD are working very well for me. See the FIDOGATE home 
+page at @code{http://www.fido.de/fidogate/} for links.
+
+Another solution is a separate PC running DOS or OS/2 and BinkleyTerm as
+a mailer. The Fido.DE gateway currently comprises a LINUX PC for the
+gateway/tosser and Samba server, and an OS/2 PC running BinkleyTerm for
+the analog phone and ISDN lines. The BinkleyTerm outbound is kept on the
+LINUX server, so the OS/2 PC and the gateway have access to it.
+
+
+
+@c ***************************************************************************
+@node Programs, ftnaf, Connecting, Top
+
+@chapter FIDOGATE Programs
+@cindex Programs
+
+
+@iftex
+
+@section Overview
+
+@subsection Areafix programs and scripts
+
+@table @code
+@item ftnaf
+Areafix mail processor
+@item ftnafmail
+Areafix mail setuid frontend
+@item ftnafpkt
+Areafix packet processor
+@item ftnafutil
+Areafix utilitiy
+@end table
+
+@subsection Character set utilities
+
+@table @code
+@item charsetc
+Character set translation table compiler
+@end table
+
+@subsection FFX programs and scripts
+
+@table @code
+@item ffx
+Remote execution via Fido mailer
+@item ffxmail
+@code{ffx} frontend for sending mail
+@item ffxnews
+@code{ffx} frontend for sending news
+@item ffxqt
+Execute @code{ffx} requests
+@item ffxrmail
+@code{rmail} command for @code{ffxqt}
+@item runffx
+Script for running FFX programs
+@item send-ffx
+Script for processing news via FFX
+@end table
+
+@subsection Gateway programs and scripts
+
+@table @code
+@item ftn2rfc
+Fido-Internet gateway program
+@item ftnin
+Frontend for @code{ftn2rfc}
+@item ftninpost
+@code{ftnin} post-processing script
+@item ftninrecomb
+@code{ftnin} recombining script
+@item ftnmail
+@code{rfc2ftn} setuid frontend
+@item rfc2ftn
+Internet-FTN gateway program
+@item rungate
+Script for running gateway programs
+@item send-fidogate
+Script for processing news via FIDOGATE
+@end table
+
+@subsection Ticker programs and scripts
+
+@table @code
+@item ftnhatch
+Hatch new file into file echo
+@item ftntick
+Process incoming TIC files
+@end table
+
+
+@subsection Tosser programs and scripts
+
+@table @code
+@item ftn2ftn
+FTN-FTN NetMail gateway program
+@item ftnexpire
+Utility to expire MSGID history database
+@item ftnpack
+Pack (ArcMail) Fido mail packets
+@item ftnroute
+Route Fido mail packets
+@item ftntoss
+Toss/remap/rewrite Fido mail packets
+@item runin
+Script for processing inbound packets
+@item runmail
+Script for processing gateway mail output packets
+@item runnews
+Script for processing gateway news output packets
+@item runout
+Script for processing miscellaneous output packets
+@item runtoss
+Script for running the tosser programs
+@item rununpack
+Script for unpacking inbound arcmail archives
+@end table
+
+@subsection Utilities
+
+@table @code
+@item ftnbsy
+Create/delete Binkley busy files
+@item ftnconfig
+Retrieve information from FIDOGATE config files
+@item ftnfattach
+Binkley outbound file attach utility
+@item ftnflo
+Process Binkley outbound FLO files and attachments
+@item ftnlock
+Create/delete lock files
+@item ftnlog
+Write message to log file
+@item ftnoutpkt
+Create output Fido message packets
+@item ftnseq
+Access sequencer file
+@item pktdebug
+Fido mail packet debugger
+@item pktmore
+Pager frontend for @code{pktdebug}
+@item sumcrc
+CRC checksum utility
+@end table
+
+@end iftex
+
+
+@menu
+Areafix programs and scripts:
+* ftnaf::       Areafix mail processor
+* ftnafmail::   Areafix mail setuid frontend
+* ftnafpkt::    Areafix packet processor
+* ftnafutil::   Areafix utility
+
+Character set translation table compiler:
+* charsetc::    Character set translation table compiler
+
+FFX programs and scripts:
+* ffx::         Remote execution via Fido mailer
+* ffxmail::     @code{ffx} frontend for sending mail
+* ffxnews::     @code{ffx} frontend for sending news
+* ffxqt::       Execute @code{ffx} requests
+* ffxrmail::    @code{rmail} command for @code{ffxqt}
+* runffx::      Script for running FFX programs
+* send-ffx::    Script for processing news via FFX
+
+Gateway programs and scripts:
+* ftn2rfc::     Fido-Internet gateway program
+* ftnin::       Frontend for @code{ftn2rfc}
+* ftninpost::   @code{ftnin} post-processing script
+* ftninrecomb:: @code{ftnin} recombining script
+* ftnmail::     @code{rfc2ftn} setuid frontend
+* rfc2ftn::     Internet-Fido gateway program
+* rungate::     Script for running gateway programs
+* send-fidogate::Script for processing news via FIDOGATE
+
+Ticker programs:
+* ftnhatch::    Hatch new file into file area
+* ftntick::     Process incoming TIC files
+* ftntickpost:: @code{ftntick} post-processing script
+
+Tosser programs and scripts:
+* ftn2ftn::     FTN-FTN NetMail gateway
+* ftnexpire::   Utility to expire MSGID history database
+* ftnpack::     Pack (ArcMail) Fido mail packets
+* ftnroute::    Route Fido mail packets
+* ftntoss::     Toss/remap/rewrite Fido mail packets
+* runin::       Script for processing inbound packets
+* runmail::     Script for processing gateway mail output packets
+* runnews::     Script for processing gateway news output packets
+* runout::      Script for processing miscellaneous output packets
+* runtoss::     Script for running the tosser programs
+* rununpack::   Script for unpacking inbound arcmail archives
+
+Utilties:
+* ftnbsy::      Create/delete Binkley busy files
+* ftnconfig::   Retrieve information from FIDOGATE config files
+* ftnfattach::  Binkley outbound file attach utility
+* ftnflo::      Process Binkley outbound FLO files and attachments
+* ftnlock::     Create/delete lock files
+* ftnlog::      Write message to log file
+* ftnoutpkt::   Create output Fido message packets
+* ftnseq::      Access sequencer file
+* pktdebug::    FTN mail packet debugger
+* pktmore::     Pager frontend for @code{pktdebug}
+* sumcrc::      CRC checksum utility
+@end menu
+
+
+
+Almost all FIDOGATE programs support the following standard options,
+which therefore aren't listed in the sections describing the individual
+programs:
+
+@table @code
+
+@item -v --verbose
+Increase the verbosity/debug level.
+
+@item -h --help
+Help on usage and options.
+
+@item -c --config @i{name}
+Read an alternate config file. @code{""} means none. @i{name} may
+start with @i{%X/}, see below.
+
+@item -a --addr @i{Z:N/F.P}
+Set the main address of this program.
+
+@item -u --uplink-addr @i{Z:N/F.P}
+Set the uplink address (boss node) of this program (only useful for
+gateway programs).
+
+@end table
+
+
+The option @code{-a} and @code{-u} also support Internet-style FTN
+addresses, e.g. @code{p10.f110.n2452.z2}. If any of these options is
+specified, all addresses from the config file are disabled.
+
+All options and config statements which take file or directory names
+accept the following @code{%} abbreviations:
+
+@table @code
+@item %C
+CONFIGDIR
+@item %L
+LIBDIR
+@item %N
+BINDIR
+@item %G
+LOGDIR
+@item %V
+VARDIR
+@item %K
+LOCKDIR
+@item %S
+SPOOLDIR
+@item %B
+BTBASEDIR
+@item %I
+INBOUND
+@item %P
+PINBOUND
+@item %U
+UUINBOUND
+@end table
+
+
+
+@c ***************************************************************************
+@node ftnaf, ftnafmail, Programs, Programs
+
+@section ftnaf --- Areafix
+@cindex ftnaf
+@cindex Areafix
+
+@noindent Usage:
+
+@example
+ftnaf  @r{[}@i{-options}@r{]}  @r{[}@i{Z:N/F.P}  @i{command} @r{]}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -m --mail
+Process Areafix mail message (RFC) on stdin.
+
+@item -r --no-reply
+Don't send reply via mail, write to stdout.
+
+@item -n --no-rewrite
+Don't rewrite AREAS.BBS.
+
+@item -b --areas-bbs @i{NAME}
+Use alternate AREAS.BBS.
+
+@item -F --filefix
+Run as Filefix program, using FAREAS.BBS.
+
+@end table
+
+
+@noindent Commands:
+
+@table @code
+
+  listall                      list all available areas
+  list                         list areas available to node
+  query                        list subscribed areas
+  unlinked                     list unsubscribed areas
+  from Z:N/F.P PASSWORD        set address and password
+  passwd Z:N/F.P PASSWORD
+  password Z:N/F.P PASSWORD
+  +AREA                        subscribe to AREA
+  AREA    
+  subscribe AREA
+  sub AREA
+  -AREA                        unsubscribe from AREA
+  unsubscribe AREA
+  unsub AREA
+  vacation AREA                set vacation flag for AREA
+  &AREA [-options]             create new AREA
+  new AREA [-options]
+  create AREA [-options]
+  ~AREA                        delete AREA
+  delete AREA
+  comment TEXT                 arbitrary comment (ignored)
+  help                         this help
+
+AREA names are not case-sensitive and support shell-style wildcards
+  * ? [a-z] [abc], e.g. COMP.OS.*, [A-D]*.GER
+@item listall
+List all areas.
+
+@item list
+List areas available to node.
+
+@item query
+List subscribed areas.
+
+@item unlinked
+List unsubscribed areas available to node.
+
+@item from @i{Z:N/F.P} @i{PASSWORD}
+@item passwd @i{Z:N/F.P} @i{PASSWORD}
+@item password @i{Z:N/F.P} @i{PASSWORD}
+Set address and password.
+
+@item +@i{AREA}
+@item @i{AREA}
+@item subscribe @i{AREA}
+@item sub @i{AREA}
+Subscribe to @i{AREA}.
+
+@item -@i{AREA}
+@item unsubscribe @i{AREA}
+@item unsub @i{AREA}
+Unsubscribe from @i{AREA}.
+
+@item vacation @i{AREA}
+Set vacation flag for @i{AREA}. NOT YET IMPLEMENTED!!!
+
+@item &@i{AREA}  @r{[}@i{-options} @r{]}
+@item new @i{AREA}  @r{[}@i{-options} @r{]}
+@item create @i{AREA}  @r{[}@i{-options} @r{]}
+Create new area. Nodes allowed to create an area must have the @code{&}
+key in their @code{passwd} entry. Allowed @code{areas.bbs} @i{options}:
+@code{-#}, @code{-p}, @code{-r}, @code{-l }@i{lvl}, @code{-k }@i{key},
+@code{-d }@i{desc}, and @code{-z }@i{zone}.
+
+@item ~@i{AREA}
+@item delete @i{AREA}
+Delete @i{AREA}. Nodes allowed to deleted an area must have the @code{~}
+key in their @code{passwd} entry.
+
+@item comment  @i{text}
+Arbitrary comment, completely ignored.
+
+@item help
+Help on Areafix commands.
+
+@end table
+
+All command keywords may be prefixed by @code{%}. @code{ftnaf} also
+recognizes the @code{-q} (= query) and @code{-l} (= list) options
+following the password in the subject header.
+
+For proper operation @code{ftnaf} requires the @code{X-FTN-From} header
+generated by @code{ftn2rfc}, thus the @code{X-FTN} configuration must
+include the @code{f} flag.
+
+
+
+@c ***************************************************************************
+@node ftnafmail, ftnafpkt, ftnaf, Programs
+
+@section ftnafmail --- Areafix Mail Frontend
+@cindex ftnaf
+@cindex Areafix
+
+@noindent Usage:
+
+@example
+ftnafmail  @r{[}@i{-options}@r{]}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -F --filefix
+Run @code{ftnaf} as Filefix program.
+
+@end table
+
+This is the setuid mail frontend for @code{ftnaf} to be run from the
+sendmail aliases. DO NOT use @code{ftnaf} directly, as this will result
+in security problems.
+
+@example
+# Areafix/Filefix - FIDOGATE ftnaf
+areafix: "|/usr/lib/fidogate/ftnafmail"
+areamgr: areafix
+filefix: "|/usr/lib/fidogate/ftnafmail -F"
+filemgr: filefix
+@end example
+
+
+
+@c ***************************************************************************
+@node ftnafpkt, ftnafutil, ftnafmail, Programs
+
+@section ftnafpkt --- Areafix packet processor
+@cindex ftnafpkt
+
+@noindent Usage:
+
+@example
+ftnafpkt  @r{[}@i{-options}@r{]}  @r{[}@i{packet} @r{... ]}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -I --in-dir @i{name}
+Set input directory. Default: PINBOUND
+
+@item -O --out-dir @i{name}
+Set output directory. Default: SPOOLDIR/outpkt
+
+@item -l --lock-file
+Create lock file while processing.
+
+@item -r --no-reply
+Don't send reply via NetMail.
+
+@item -n --no-rewrite
+Don't rewrite AREAS.BBS.
+
+@item -b --areas-bbs @i{NAME}
+Use alternate AREAS.BBS.
+
+@item -F --filefix
+Run as Filefix program, using FAREAS.BBS.
+
+@end table
+
+This is the packet processor frontend for the FIDOGATE Areafix, which
+doesn't require the Unix mail system for Areafix operation. The best way
+to use @code{ftnafpkt} is via the tosser.
+
+@code{routing} example:
+@example
+Remap  2:2499/999.*  2:2499/999.101  "Area*"
+#      ^^^^^^^^^^^^  ^^^^^^^^^^^^^^
+#      node addr     pseudo point
+#                    for Areafix
+
+NetMail
+Send  hold  2:2499/999.*
+@end example
+
+@code{packing} example:
+
+@example
+progn  areafix  "/usr/lib/fidogate/ftnafpkt %s"
+pack   areaifx  2:2499/999.101
+@end example
+
+@code{runout} must be run regularly to process messages generated by
+@code{ftnafpkt}.
+
+
+
+@c ***************************************************************************
+@node ftnafutil, charsetc, ftnafpkt, Programs
+
+@section ftnafutil --- Areafix utility
+@cindex ftnafutil
+
+@noindent Usage:
+
+@example
+ftnafutil  @r{[}@i{-options}@r{]}  @r{[}@i{command} @r{... ]}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -n --no-rewrite
+Don't rewrite AREAS.BBS.
+
+@item -b --areas-bbs @i{NAME}
+Use alternate AREAS.BBS.
+
+@item -F --filefix
+Run as Filefix program, using FAREAS.BBS.
+
+@item -O --out-dir @i{name}
+Set output directory. Default: SPOOLDIR/outpkt
+
+@end table
+
+@noindent Commands:
+
+@table @code
+
+@item delete
+Delete dead areas from @code{areas.bbs} (no uplink and no downlinks).
+
+@item subscribe
+Subscribe to area at uplink, if at least one downlink has subscribed to
+this area (uses the @code{-s S/U} option in @code{areas.bbs}).
+
+@item unsubscribe
+Unsubscribe from area at uplink, if no more downlinks are subscribed to
+this area (uses the @code{-s S/U} option in @code{areas.bbs}).
+
+@end table
+
+Auto-subscribe/unsubscribe will only be used for areas marked with the
+state option. State @code{-s U} means that the area is not currently
+subscribed at the uplink, @code{-s S} means that the are is subscribed
+at the uplink.
+
+
+
+
+@c ***************************************************************************
+@node charsetc, ffx, ftnafutil, Programs
+
+@section charsetc --- Character set translation table compiler
+
+@noindent Usage:
+
+@example
+charsetc  @r{[}@i{-options}@r{]}  @i{charset.map}  @i{charset.bin}
+@end example
+
+
+
+
+@c ***************************************************************************
+@node ffx, ffxmail, charsetc, Programs
+
+@section ffx --- Remote Execution via Fido Mailer
+@cindex ffx
+@cindex Remote execution
+
+@noindent Usage:
+
+@example
+ffx  @r{[}@i{-options}@r{]}  @i{Z:N/F.P}  @i{command}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -b --batch-dir @i{dir}
+Operate in batch mode, using @i{dir}. Control and data files are not
+immediately appended to the node's FLO file, but rather written to a
+separate batch directory SPOOLDIR/out.ZZZ/@i{dir}. Implies @code{-n}.
+
+@item -B --binkley @i{name}
+Set Binkley outbound directory.
+
+@item -F --flavor @i{flavor}
+Set flavor of outbound FLO file: @code{Hold}, @code{Normal},
+@code{Direct}, or @code{Crash}.
+
+@item -g --grade @i{grade}
+Set grade of control and data files to @i{grade} (single letter [a-z0-9]).
+
+@item -n --nocompression
+Don't compress data files.
+
+@end table
+
+
+
+@c ***************************************************************************
+@node ffxmail, ffxnews, ffx, Programs
+
+@section ffxmail --- ffx Frontend for Sending Mail
+@cindex ffxmail
+@cindex Mail
+
+@noindent Usage:
+
+@example
+ffxmail  @i{Z:N/F.P}  @i{address} @r{...}
+@end example
+
+@noindent No options.
+
+@code{ffxmail} calls @code{ffx} in batch mode (@code{-b}), selecting the
+batch directory for the node address. Modify the script
+(@code{src/ffx/ffxmail.sh}) for other addresses/batch directories.
+
+
+
+@c ***************************************************************************
+@node ffxnews, ffxqt, ffxmail, Programs
+
+@section ffxnews --- ffx Frontend for Sending News
+@cindex ffxmail
+@cindex Mail
+
+@noindent Usage:
+
+@example
+ffxnews  @i{Z:N/F.P}
+@end example
+
+@noindent No options.
+
+@code{ffxnews} calls @code{ffx} in batch mode (@code{-b}), selecting the
+batch directory for the node address. Modify the script
+(@code{src/ffx/ffxnews.sh}) for other addresses/batch directories.
+
+
+
+@c ***************************************************************************
+@node ffxqt, ffxrmail, ffxnews, Programs
+
+@section ffxqt --- Execute ffx Requests
+@cindex ffxqt
+@cindex Remote Execution
+
+@noindent Usage:
+
+@example
+ffxqt  @r{[}@i{-options}@r{]}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -g  --grade @i{grade}
+Process ffx jobs with @i{grade} only. @i{grade} must be a single letter.
+
+@item -I --inbound @i{name}
+Select the input directory where the @code{f???????.ffx} control files
+are read from. Default: PINBOUND
+
+@item -t --insecure
+Process ffx files without password. Default: ffx file must contain a
+password.
+
+@end table
+
+
+
+@c ***************************************************************************
+@node ffxrmail, runffx, ffxqt, Programs
+
+@section ffxrmail --- Rmail Command for FFX
+@cindex ffxrmail
+@cindex ffxqt
+
+@noindent Usage:
+
+@example
+ffxrmail  @i{address} @r{...}
+@end example
+
+Perl script to be called by @code{ffxqt} for @code{rmail} commands to
+receive Internet mail. This replaces @code{/bin/rmail} (UUCP), calling
+@code{/usr/lib/sendmail} directly with appropiate options.
+
+
+
+@c ***************************************************************************
+@node runffx, send-ffx, ffxrmail, Programs
+
+@section runffx --- Script for Running FFX Programs
+@cindex runffx
+@cindex ffxqt
+
+@noindent Usage:
+
+@example
+runffx
+@end example
+
+
+
+@c ***************************************************************************
+@node send-ffx, ftn2rfc, runffx, Programs
+
+@section send-ffx --- Script for Processing News via FFX
+@cindex send-ffx
+
+@noindent Usage:
+
+@example
+ffxqt  @r{[}@i{hostname}@r{]}
+@end example
+
+Processes INN news batch file
+@code{/var/spool/news/out.going/}@i{hostname}.
+
+
+
+
+@c ***************************************************************************
+@node ftn2rfc, ftnin, send-ffx, Programs
+
+@section ftn2rfc --- FTN-Internet Gateway Program
+@cindex ftn2rfc
+@cindex Gateway
+
+@noindent Usage:
+
+@example
+ftn2rfc  @r{[}@i{-options}@r{]}  @r{[}@i{packet} @r{... ]}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -1 --single-articles
+Write single articles to output files (in @code{tmpnews}), not news
+batches containing several articles (batch is default).
+
+@item -I --inbound-dir @i{NAME}
+Set the input directory for FTN packets. Default: PINBOUND
+
+@item -i --ignore-hosts
+Don't bounce unknown hosts (unknown = not registered in @code{hosts})
+
+@item -l --lock-file
+Create lock file while processing.
+
+@item -n --no-remove
+Don't remove or rename input packet files, return exit code 1 if
+processing fails.
+
+@item -t --insecure
+Operate in insecure mode. All messages containing a To line for gateway
+addressing will be bounced.
+
+@item -x --exec-program @i{SCRIPT}
+Run @i{SCRIPT} after processing all FTN packets. Typically this is
+@code{%L/ftninpost}.
+
+@end table
+
+@code{ftn2rfc} reads packet files from the input directory or the
+command line and converts the FTN packets to Internet RFC mail and news,
+written as mail and news RFC message files to the directories
+SPOOLDIR/outrfc/mail and SPOOLDIR/outrfc/news, respectively.
+
+
+
+@c ***************************************************************************
+@node ftnin, ftninpost, ftn2rfc, Programs
+
+@section ftnin --- Frontend for @code{ftn2rfc}
+@cindex ftnin
+@cindex ftn2rfc
+
+@noindent Usage:
+
+@example
+ftnin  @r{[}@i{-options}@r{]}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -n --no-toss
+Don't call @code{ftn2rfc} for processing.
+
+@item -x --exec-program @i{SCRIPT}
+Execute @i{SCRIPT} after @code{ftn2rfc} processing, typically
+@code{%L/ftninpost}.
+
+@end table
+
+All standard options are passed to the called @code{ftn2rfc}.
+
+@code{ftnin} looks for mail packets addressed to the gateway addresses
+(all @code{Address}/@code{GateAddress} statements in
+@code{fidogate.conf}) and calls @code{ftn2rfc} for each packet.
+
+
+
+@c ***************************************************************************
+@node ftninpost, ftninrecomb, ftnin, Programs
+
+@section ftninpost --- @code{ftnin} Post-processing Script
+@cindex ftninpost
+
+@noindent Usage:
+
+@example
+ftninpost  @r{[}@i{-options}@r{]}
+@end example
+
+This script is run by @code{ftn2rfc} or @code{ftnin}, feeding the output
+in SPOOLDIR/outrfc/mail and SPOOLDIR/outrfc/news to @code{sendmail} and
+@code{rnews}, respectively.
+
+
+
+@c ***************************************************************************
+@node ftninrecomb, ftnmail, ftninpost, Programs
+
+@section ftninrecomb --- @code{ftnin} Recombining Script
+@cindex ftninrecomb
+
+@noindent Usage:
+
+@example
+ftninrecomb  @r{[}@i{-options}@r{]}
+@end example
+
+If @code{FTNInRecombine} is enabled in @code{fidogate.conf}, this script
+wil be run by @code{ftninpost} to recombine split messages. NOT TESTED
+FOR RELEASE 4.4!!!
+
+
+
+@c ***************************************************************************
+@node ftnmail, rfc2ftn, ftninrecomb, Programs
+
+@section ftnmail --- @code{rfc2ftn} Setuid Frontend
+@cindex ftnmail
+
+@noindent Usage:
+
+@example
+ftnmail  @r{[}@i{-options}@r{]}  @r{[}@i{address} @r{...]}
+@end example
+
+Setuid frontend for @code{rfc2ftn}, passes the options
+
+@table @code
+
+@item -a --addr ADDR
+Passed to @code{rfc2ftn} as @code{-a ADDR -u ADDR}.
+
+@item -i --ignore-hosts
+Passed to @code{rfc2ftn} as @code{-i}.
+
+@item -O --out-dir DIR
+Passed to @code{rfc2ftn} as @code{-O %S/DIR}.
+
+@end table
+
+@code{ftnmail} should be used for sendmail mailers. DO NOT use
+@code{rfc2ftn} directly to avoid security problems.
+
+
+
+@c ***************************************************************************
+@node rfc2ftn, rungate, ftnmail, Programs
+
+@section rfc2ftn --- Internet-Fido Gateway Program
+@cindex rfc2ftn
+@cindex Gateway
+
+
+@noindent Usage:
+
+@example
+rfc2ftn  @r{[}@i{-options}@r{]}  @r{[}@i{address} @r{...]}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -b --news-batch
+Process news batch (implies @code{-n}).
+
+@item -B --binkley @i{name}
+Set Binkley outbound directory.
+
+@item -i --ignore-registration
+Do not bounce mail to nodes not registered in HOSTS (if
+@code{HostsRestricted} in @code{fidogate.conf} is enabled).
+
+@item -m --max-msg  @i{n}
+Create new output packet after @i{n} messages.
+
+@item -n --news-mode
+Process news message in stdin. Default: mail
+
+@item -o --out-packet-file  @i{name}
+Write output to FTN packet file @i{name}.
+
+@item -O --out-packet-dir  @i{name}
+Set output directory for FTN packets. Default: SPOOLDIR/outpkt/mail or
+.../news
+
+@item -t --to
+Get recipient addresses from To, Cc, Bcc headers instead of command line.
+
+@item -w --write-outbound  @i{flav}
+Write output directly to Binkley .?UT packets in outbound.
+
+@item -W --write-crash
+Write only crash mail directly to Binkley .CUT file.
+
+@end table
+
+
+
+@c ***************************************************************************
+@node rungate, send-fidogate, rfc2ftn, Programs
+
+@section rungate --- Script for Running Gateway Programs
+@cindex rungate
+
+@noindent Usage:
+
+@example
+rungate
+@end example
+
+
+
+@c ***************************************************************************
+@node send-fidogate, ftnhatch, rungate, Programs
+
+@section send-fidogate --- Script for Processing News via FIDOGATE
+@cindex send-fidogate
+
+
+@noindent Usage:
+
+@example
+send-fidogate  @r{[}@i{hostname}@r{]}
+@end example
+
+Processes INN news batch file
+@code{/var/spool/news/out.going/}@i{hostname}. If @i{hostname} is
+omitted the default @code{fidogate} is used.
+
+
+
+
+@c ***************************************************************************
+@node ftnhatch, ftntick, send-fidogate, Programs
+
+@section ftnhatch --- Hatch new file into file area
+@cindex ftnhatch
+
+@noindent Usage:
+
+@example
+ftnhatch  @r{[}@i{-options}@r{]}  @i{area}  @i{file}  "@i{description}"
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -b --fareas-bbs @i{NAME}
+Use alternate FAREAS.BBS.
+
+@item -r --replaces @i{FILE}
+Adds @code{Replaces }@i{FILE} header to generated tic file.
+
+@end table
+
+Please note that the @i{file} must already reside in the directory for
+the file @i{area}. Copying and hatching a new file to a file area is not
+yet implemented.
+
+
+
+@c ***************************************************************************
+@node ftntick, ftntickpost, ftnhatch, Programs
+
+@section ftntick --- Process incoming TIC files
+@cindex ftntick
+
+@noindent Usage:
+
+@example
+ftntick  @r{[}@i{-options}@r{]}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -b --fareas-bbs @i{file}
+Use alternate FAREAS.BBS.
+
+@item -I --inbound @i{dir}
+Use alternate inbound directory.
+
+@item -t --insecure
+Insecure processing, allow TIC files without password.
+
+@item -x --exec @i{script}
+Run @i{script} after sucessfully processing the TIC file. The one and
+only argument to @i{script} is the full path name of the TIC file.
+
+@end table
+
+
+
+@c ***************************************************************************
+@node ftntickpost, ftn2ftn, ftntick, Programs
+
+@section ftntickpost --- ftntick Post-processing Script
+@cindex ftntickpost
+
+
+@noindent Usage:
+
+@example
+ftntickpost  @r{[}@i{-options}@r{]}  @i{file.tic}
+@end example
+
+@noindent Options:
+
+@table @code
+
+
+@end table
+
+NOT YET COMPLETELY IMPLEMENTED! Currently the script is only a skeleton
+with features such as announcement postings and mails to be added in the 
+future.
+
+
+
+@c ***************************************************************************
+@node ftn2ftn, ftnexpire, ftntickpost, Programs
+
+@section ftn2ftn --- FTN-FTN NetMail Gateway Program
+@cindex ftn2ftn
+@cindex Gateway
+
+@noindent Usage:
+
+@example
+ftn2ftn  @r{[}@i{-options}@r{]}  @r{[}@i{packet} @r{... ]}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -A --address-a @i{Z:N/F.P}
+Set FTN address in network A.
+
+@item -B --address-b @i{Z:N/F.P}
+Set FTN address in network B.
+
+@item -o --out-packet-file @i{NAME}
+Set output packet file name.
+
+@item -O --out-packet-dir @i{NAME}
+Set output packet directory.
+
+@end table
+
+This program provides a NetMail gateway between different FTNs, using
+the (somewhat) standard "User Name%Z:N/F.P" addressing in the FTN from
+and to fields.
+
+If no @i{packet} is given on the command line, @code{ftn2ftn} looks for
+packets addressed to the gateway addresses (A and B) in the Binkley
+outbound. Both gateway addresses must be specified with the @code{-A} and
+@code{-B} options.
+
+If a @i{packet} name is passed on the command line, @code{ftn2ftn} will
+gate this to the other network A. The gateway address (sender of the mails
+in network A) is set with @code{-A} option.
+
+
+
+@c ***************************************************************************
+@node ftnexpire, ftnpack, ftn2ftn, Programs
+
+@section ftnexpire --- Utility for expiring MSGID history database
+@cindex ftnexpire
+
+@noindent Usage:
+
+@example
+ftnexpire  @r{[}@i{-options}@r{]}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -m --maxhistory @i{days}
+Set the maximum number of days for entries in the history database. The
+@i{days} argument supports decimal fractions.
+
+@item -w --wait
+Wait for history database lock file to be released. Default: exit, if
+history database is locked.
+
+@end table
+
+This utility expires and rebuilds the MSGID history database, similar to
+expire for the INN news system.
+
+If the MSGID history database dupe check is used, @code{ftnexpire} must
+be run regularly to keep the history database optimized (if not,
+accessing the history database will become very slow!). A daily cron
+job is just the right thing.
+
+
+
+@c ***************************************************************************
+@node ftnpack, ftnroute, ftnexpire, Programs
+
+@section ftnpack --- Pack Fido ArcMail Packets
+@cindex ftnpack
+@cindex ArcMail
+
+@noindent Usage:
+
+@example
+ftnpack  @r{[}@i{-options}@r{]}  @r{[}@i{packet} @r{... ]}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -B --binkley @i{dir}
+Set Binkley outbound directory.
+
+@item -f --ffx @i{Z:N/F.P}
+Pack ffx control and data files for FTN address @i{Z:N/F.P}. You must
+also set the appropiate input directory with the @code{-I} option.
+
+@item -F --file-dir @i{dir}
+Set directory where @code{ftnpack} looks for file attachments. Should
+be the appropiate inbound directory, see also the @code{runtoss}
+script. If this option is not specified, no file attachments are
+processed.
+
+If @code{-F /} is specified, @code{ftnpack} accepts a complete path name
+in the subject and doesn't search the directory. Warning: this option
+compromises security to some degree, because it allows @b{any} user to
+send @b{any} file readable by the user id running the tosser and
+mailer!!!
+
+@item -g --grade @i{grade}
+Only process packets with @i{grade} (single letter).
+
+@item -I --in-dir @i{dir}
+Set input directory. Default: %S/toss/route
+
+@item -O --out-dir @i{dir}
+Set directory for temporary packets. Default: %S/toss/pack. This
+is the directory, where packets to be put into arcmail archives will be
+created.
+
+@item -l --lock-file
+Create lock file while processing.
+
+@item -m --maxarc @i{size}
+Set maximum size of an archive to @i{size} KByte. If an existing
+ArcMail archive exceeds this size, @code{ftnpack} creates a new one.
+
+@item -p --packing-file @i{name}
+Read alternate @code{packing} config file. Default: %C/packing
+
+@item -P --pkt
+Process *.pkt files in the input directory. Default: output files of
+@code{ftnroute}.
+
+@end table
+
+
+
+@c ***************************************************************************
+@node ftnroute, ftntoss, ftnpack, Programs
+
+@section ftnroute --- Route Fido Mail Packets
+@cindex ftnroute
+@cindex Routing
+
+@noindent Usage:
+
+@example
+ftnroute  @r{[}@i{-options}@r{]}  @r{[}@i{packet} @r{... ]}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -g --grade @i{grade}
+Only process packets with @i{grade} (single letter).
+
+@item -I --in-dir @i{name}
+Set input directory. Default: %S/toss/toss
+
+@item -O --out-dir @i{name}
+Set output directory. Default: %S/toss/route
+
+@item -l --lock-file
+Create lock file while processing.
+
+@item -r --routing-file @i{name}
+Read alternate @code{routing} config file. Default: %C/routing
+
+@item -M --maxopen @i{n}
+Set maximum number of concurrently open packet filess to
+@i{n}. Default: @code{MaxOpenFiles} config
+
+@end table
+
+
+
+@c ***************************************************************************
+@node ftntoss, runin, ftnroute, Programs
+
+@section ftntoss --- Toss Fido Mail Packets
+@cindex ftntoss
+@cindex Tossing
+
+@noindent Usage:
+
+@example
+ftntoss  @r{[}@i{-options}@r{]}  @r{[}@i{packet} @r{... ]}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -d --no-dupecheck
+Disabled dupe check (if @code{DupeCheck} is enabled in
+@code{config.main}).
+
+@item -g --grade @i{grade}
+Only process packets with @i{grade} (single letter).
+
+@item -I --in-dir @i{name}
+Set input directory. Default: PINBOUND
+
+@item -O --out-dir @i{name}
+Set output directory. Default: %S/toss/toss
+
+@item -l --lock-file
+Create lock file while processing.
+
+@item -t --insecure
+Insecure EchoMail tossing, don't check sender against nodes listed in
+AREAS.BBS.
+
+@item -n --toss-all
+Toss all EchoMail, even messages not addressed to one of our own AKAs
+(most probably routed EchoMail).
+
+@item -p --passthru
+Make all areas passthru (see also @code{#} in areas.bbs).
+
+@item -r --routing-file @i{name}
+Read alternate @code{routing} config file. Default: %C/routing
+
+@item -s --strip-attribute
+Strip Hold and Crash attribute from incoming NetMails.
+
+@item -m --maxmsg @i{n}
+Flush/close all output packet files after reading @i{n} messages.
+
+@item -x --maxmsg-exit @i{n}
+Flush/close all output packet files after reading @i{n} messages and
+processing the current input packet, then exit.
+
+@item -M --maxopen @i{n}
+Set maximum number of concurrently open packet filess to
+@i{n}. Default: @code{MaxOpenFiles} config
+
+@item -b --fareas-bbs @i{file}
+Use alternate areas.bbs.
+
+@end table
+
+
+
+@c ***************************************************************************
+@node runin, runmail, ftntoss, Programs
+
+@section runin --- Script for Processing Inbound Packets
+@cindex runin
+@cindex Tossing
+
+@noindent Usage:
+
+@example
+runin
+@end example
+
+@noindent No options.
+
+Runs the tosser (unpack, toss, tick) for the inbound directories:
+
+@itemize @bullet
+
+@item
+Insecure inbound
+@item
+Secure inbound
+@item
+UUEncoded mail inbound
+@item
+FTP inbound
+
+@end itemize
+
+All log messages are written to %G/log-in.
+
+Edit the script @code{src/toss/runin.sh} to meet your local
+requirements.
+
+
+
+@c ***************************************************************************
+@node runmail, runnews, runin, Programs
+
+@section runmail --- Script for Processing Gateway Mail Output Packets
+@cindex runmail
+@cindex Tossing
+
+@noindent Usage:
+
+@example
+runmail
+@end example
+
+@noindent No options.
+
+Runs the tosser for the gateway mail output directory %S/outpkt/mail,
+all log messages are written to %G/log-out.
+
+Edit the script @code{src/toss/runmail.sh} to meet your local
+requirements.
+
+
+
+@c ***************************************************************************
+@node runnews, runout, runmail, Programs
+
+@section runnews --- Script for Processing Gateway News Output Packets
+@cindex runnews
+@cindex Tossing
+
+@noindent Usage:
+
+@example
+runnews
+@end example
+
+@noindent No options.
+
+Runs the tosser for the gateway news output directory %S/outpkt/news,
+all log messages are written to %G/log-out.
+
+Edit the script @code{src/toss/runout.sh} to meet your local
+requirements.
+
+
+
+@c ***************************************************************************
+@node runout, runtoss, runnews, Programs
+
+@section runout --- Script for Processing Miscellaneous Output Packets
+@cindex runout
+@cindex Tossing
+
+@noindent Usage:
+
+@example
+runout
+@end example
+
+@noindent No options.
+
+Runs the tosser for the miscellaneous (ftnafpkt, ftnafutil, ftnoutpkt)
+output directory %S/outpkt, all log messages are written to %G/log-out.
+
+Edit the script @code{src/toss/runout.sh} to meet your local
+requirements.
+
+
+
+@c ***************************************************************************
+@node runtoss, rununpack, runout, Programs
+
+@section runtoss --- Script for Running the Tosser Programs
+@cindex runtoss
+@cindex Tossing
+
+
+@noindent Usage:
+
+@example
+runtoss  @i{type}
+@end example
+
+@noindent No options.
+
+@noindent Types:
+
+Please the the script source code @code{src/toss/runtoss.sh} for
+available @i{type} parameters and feel free to adapt it to your
+requirements.
+
+
+
+@c ***************************************************************************
+@node rununpack, ftnbsy, runtoss, Programs
+
+@section rununpack --- Script for Unpacking Inbound ArcMail Archives
+@cindex rununpack
+@cindex Tossing
+
+@noindent Usage:
+
+@example
+rununpack  @i{type}
+@end example
+
+@noindent No options.
+
+@noindent Types:
+
+Please see the script source code @code{src/toss/rununpack.sh} for
+available @i{type} parameters and feel free to adapt it to your
+requirements.
+
+Edit the script if necessary to change unpacker program names. The
+required programs are @code{unzip}, @code{unarj}, @code{lha},
+@code{zoo}, @code{arc}, @code{rar}.
+
+
+
+
+@c ***************************************************************************
+@node ftnbsy, ftnconfig, rununpack, Programs
+
+@section ftnbsy --- Create/delete Binkley Busy Filess
+@cindex ftnbsy
+@cindex Busy files
+
+@noindent Usage:
+
+@example
+ftnbsy  @r{[}@i{-options}@r{]}  @i{Z:N/F.P} @r{...}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -t --test
+Test for existing busy file.
+
+@item -l --lock
+Create busy file, fail if it already exists.
+
+@item -u --unlock
+Remove busy file.
+
+@item -w --wait
+Wait for busy file to be released (when @code{-l} option is given).
+
+@end table
+
+
+
+@c ***************************************************************************
+@node ftnconfig, ftnfattach, ftnbsy, Programs
+
+@section ftnconfig --- Retrieve information from FIDOGATE config files
+@cindex ftnconfig
+@cindex Config
+
+@noindent Usage:
+
+@example
+ftnconfig  @r{[}@i{-options}@r{]}  @i{parameter}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -l --no-newline
+No output of newline after the parameter value.
+
+@item -n --no-output
+No output, exit code only.
+
+@item -t --test-only
+Output @code{1} if the parameter is present, @code{0} if not.
+
+@end table
+
+@noindent Special parameters:
+
+@table @code
+
+@item =fqdn
+Fully qualified domain name.
+
+@item =hostname
+Hostname.
+
+@item =domainname
+Domainname.
+
+@item =hostsdomain
+Domain for entries in @code{hosts} config files.
+
+@end table
+
+
+
+@c ***************************************************************************
+@node ftnfattach, ftnflo, ftnconfig, Programs
+
+@section ftnfattach --- Outbound file attaches
+@cindex ftnfattach
+@cindex File attach
+
+@noindent Usage:
+
+@example
+ftnfattach  @r{[}@i{-options}@r{]}  @i{Z:N/F.P}  @i{file} @r{...}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -B --binkley @i{name}
+Set Binkley outbound directory.
+
+@item -F --flavor @i{name}
+Set flavor of outbound FLO file to @i{name}: @code{Hold},
+@code{Normal}, @code{Direct}, or @code{Crash}.
+
+@end table
+
+The file name may start with @code{^} or @code{#}, indicating that
+the file should be deleted or truncated, respectively, after sending.
+
+
+
+@c ***************************************************************************
+@node ftnflo, ftnlock, ftnfattach, Programs
+
+@section ftnflo --- Process Binkley Outbound FLO Files and Attachments
+@cindex ftnflo
+
+@noindent Usage:
+
+@example
+ftnflo  @r{[}@i{-options}@r{]}  @i{Z:N/F.P}  @r{...}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -B --binkley @i{name}
+Set Binkley outbound directory.
+
+@item -l --list
+List entries in FLO file.
+
+@item -n --no-delete
+Don't delete FLO entries after processing.
+
+@item -x --exec @i{command}
+Execute @i{command} for every FLO entry, delete entry after successful
+processing. @code{%s} in @i{command} is replaced with the filename of
+the FLO entry.
+
+@end table
+
+The file name may start with @code{^} or @code{#}, indicating that
+the file should be deleted or truncated, respectively, after sending.
+
+
+
+@c ***************************************************************************
+@node ftnlock, ftnlog, ftnflo, Programs
+
+@section ftnlock --- Create/Remove Lock Files
+@cindex ftnlock
+@cindex Lock files
+
+@noindent Usage:
+
+@example
+ftnlock  @r{[}@i{-options}@r{]}  @r{[}@i{NAME}@r{]}  @r{[}@i{ID}@r{]}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -l --lock
+Create lock file @i{NAME}, fail if it already exists (exit code=2). If
+@i{NAME} is not specified, the default @code{ftnlock} is used. The
+optional parameter @i{ID} specifies the contents of the lock file, the
+default is @code{-none-}.
+
+@item -u --unlock
+Remove lock file @i{NAME}.
+
+@item -w --wait
+Wait while creating lock file. Default: immediately return, if the lock
+file can't be created because it already exists.
+
+@end table
+
+Lock files are created as %K/@i{NAME}.
+
+
+
+@c ***************************************************************************
+@node ftnlog, ftnoutpkt, ftnlock, Programs
+
+@section ftnlog --- Write Message to Log File
+@cindex ftnlog
+@cindex Log file
+@cindex Logging
+
+@noindent Usage:
+
+@example
+ftnlog  @r{[}@i{-options}@r{]}  @i{message text}
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -p --program @i{NAME}
+Set program name for logging.
+
+@end table
+
+This program is used to write a log message from a shell script. The log
+file name may be specified with the @code{FIDOGATE_LOGFILE} environment
+variable.
+
+
+
+@c ***************************************************************************
+@node ftnoutpkt, ftnseq, ftnlog, Programs
+
+@section ftnoutpkt --- Create Fido Message Packets
+@cindex ftnoutpkt
+
+@noindent Usage:
+
+@example
+ftnoutpkt  @r{[}@i{-options}@r{]}  "@i{user name} @@ @i{z:n/f.p}"  "@r{...}"
+@end example
+
+@noindent Options:
+
+@table @code
+
+@item -f --from "@i{user name} @@ @i{z:n/f.p}"
+Set sender Fido address.
+
+@item -s --subject "@i{subject}"
+Set message subject.
+
+@item -O --out-dir @i{dir}
+Set output directory. Default: %S/outpkt
+
+@end table
+
+This utility can be used to create native Fido messages. The message
+body text is read from stdin.
+
+
+
+@c ***************************************************************************
+@node ftnseq, pktdebug, ftnoutpkt, Programs
+
+@section ftnseq --- Command Line Interface to Sequencer Files
+@cindex ftnseq
+
+@noindent Usage:
+
+@example
+ftnseq  @r{[}@i{-options}@r{]}  @i{sequencer}
+@end example
+
+This utilitity increments the named @i{sequencer} file and prints the
+resulting value to stdout. Useful for accessing FIDOGATE sequencer files
+from perl and shell scripts.
+
+
+
+@c ***************************************************************************
+@node pktdebug, pktmore, ftnseq, Programs
+
+@section pktdebug --- FTN mail packet debugger
+@cindex pktdebug
+
+@noindent Usage:
+
+@example
+pktdebug  @r{[}@i{-options}@r{]}  @i{file} @r{...}
+@end example
+
+@noindent Options (standard options not supported):
+
+@table @code
+
+@item -m --msg-header
+Print message header.
+
+@item -t --msg-text
+Print message text. Implies @code{-m}.
+
+@item -s --short
+Print contents in short format: packet from/to address and number of
+NetMail and EchoMail messages.
+
+@item -v --verbose
+Increase verbose/debug level.
+
+@item -h --help
+Help on @code{pktdebug} usage.
+
+@end table
+
+This utility displays the packet header and optionally the message
+header and message body contents.
+
+See also the @code{util/pktmore} utitility, which pipes the output of
+@code{pktdebug} to @code{$PAGER}.
+
+
+
+@c ***************************************************************************
+@node pktmore, sumcrc, pktdebug, Programs
+
+@section pktmore --- Pager frontend for @code{pktdebug}
+@cindex pktmore
+
+@noindent Usage:
+
+@example
+pktmore  @i{file} @r{...}
+@end example
+
+@code{pktmore} uses the environment variable @code{PAGER} for the pager
+program. Default: @code{more}
+
+
+
+@c ***************************************************************************
+@node sumcrc, Config files, pktmore, Programs
+
+@section sumcrc --- CRC Checksum Utility
+@cindex sumcrc
+@cindex CRC
+@cindex Checksum
+
+
+@noindent Usage:
+
+@example
+sumcrc  @r{[}@i{-options}@r{]}  @i{file} @r{...}
+@end example
+
+@noindent Options (standard options not supported):
+
+@table @code
+
+@item -1 --skip-first-line
+Skip first line in @i{file}. Useful for computing nodelist CRC.
+
+@item -3 --crc32
+Compute 32 bit CRC checksum, using the standard 32 bit polynomial (same as
+in ZModem, ZIP). Default: 16 bit CRC CCITT polynomial.
+
+@item -6 --crc16
+Use alternate 16 bit CRC16 polynomial.
+
+@item -x --hex
+Output CRC value in hex. Default: decimal
+
+@item -z --eof-at-ctrl-z
+The Ctrl-Z character (@code{^Z}) indicates end-of-file (MSDOS kludge).
+
+@item -v --verbose
+Increase verbose/debug level.
+
+@item -h --help
+Help on @code{sumcrc} usage.
+
+@end table
+
+Use @code{sumcrc -1z} to compute the checksum for a standard Fido
+nodelist. See also the nodelist processing scripts in
+@code{scripts/nodelist/nl-*}.
+
+
+
+
+@c ***************************************************************************
+@node Config files, Config, sumcrc, Top
+
+@chapter FIDOGATE Config Files
+@cindex Config files
+
+@noindent
+FIDOGATE uses the following config files:
+
+@iftex
+
+@table @code
+
+@item fidogate.conf
+Main configuration file
+
+@item aliases
+User aliases
+
+@item areas
+FTN area to newsgroup conversion
+
+@item bounce.*
+Bounce messages of @code{ftn2rfc}
+
+@item hosts
+FTN address to host name conversion
+
+@item passwd
+Password config file
+
+@item permissions
+Permissions config file
+
+@item routing
+Routing file for @code{ftntoss} and @code{ftnroute}
+
+@item packing
+Packing file for @code{ftnpack}
+
+@item areas.bbs
+@item fareas.bbs
+EchoMail / file echo distribution
+
+@end table
+
+
+FIDOGATE tries to find @code{fidogate.conf} in @code{CONFIGDIR}
+(compiled-in default), the location and name of all other directories
+and files can be specified in this main configuration file.
+
+In addition, FIDOGATE 4.2.7 and newer support the environment variable
+@code{FIDOGATE}, which tells where to find
+@code{fidogate.conf}. FIDOGATE 4.3.0 and newer also support
+@code{FIDOGATE_CONFIGDIR} for the very same purpose.
+
+
+@end iftex
+
+@menu
+* Config::      Main configuration file
+* Hosts::       hosts FTN address to host name conversion
+* Aliases::     aliases user aliases
+* Areas::       areas FTN area to newsgroup conversion
+* Bounce::      Bounce messages of @code{ftn2rfc}
+* Passwd::      passwd password config file
+* Routing::     routing file for @code{ftntoss} and @code{ftnroute}
+* Packing::     packing file for @code{ftnpack}
+* Areas.bbs::   areas.bbs EchoMail distribution
+@end menu
+
+
+For all config files, a line starting with (some white space and)
+@code{#} character is a comment and as well as an empty line completely
+ignored.
+
+All config files (with the execption of @code{areas.bbs} support an
+@code{include} command for reading in other config files. @code{include}
+must be the first keyword on the line, the filename is the next
+argument.
+
+All options and config statements which take file or directory names as
+arguments accept the following @code{%} abbreviations:
+
+@table @code
+@item %C
+CONFIGDIR
+@item %L
+LIBDIR
+@item %N
+BINDIR
+@item %G
+LOGDIR
+@item %V
+VARDIR
+@item %K
+LOCKDIR
+@item %S
+SPOOLDIR
+@item %B
+BTBASEDIR
+@item %I
+INBOUND
+@item %P
+PINBOUND
+@item %U
+UUINBOUND
+@end table
+
+
+
+@c ***************************************************************************
+@node Config, Hosts, Config files, Config files
+
+@section Main Configuration File
+@cindex Config
+@cindex fidogate.conf
+
+
+@noindent
+@code{fidogate.conf} is the main configuration file for all FIDOGATE
+programs.
+
+NOTE: the new single configuration file replaces the different
+configuration files @code{config.*} and @code{*.conf} of versions prior
+to 4.3.0.
+
+The format of @code{fidogate.conf} is:
+
+@example
+@i{keyword} @r{[} @i{arg ...} @r{]}
+@end example
+
+Keywords and arguments may be quoted in @code{""}, keywords are
+case-insensitive.
+
+See @code{examples/orodruin/fidogate.conf} for an up-to-date commented
+version of the new config file.
+
+
+
+@c ---------------------------------------------------------------------------
+@noindent
+Common configuration:
+
+@table @code
+
+@item include @i{file}
+Include another config file, may be nested.
+
+
+@item ConfigDir @i{directory}
+Directory for configuration files (default specified in
+@code{config.make}).
+
+@item LibDir @i{directory}
+Directory for FIDOGATE-internal binaries and support files (default
+specified in @code{config.make}).
+
+@item BinDir @i{directory}
+Directory for FIDOGATE user binaries and scripts (default specified in
+@code{config.make}).
+
+@item LogDir @i{directory}
+Directory for log files (default specified in @code{config.make}).
+
+@item VarDir @i{directory}
+Directory for variable state files such as @code{areas.bbs},
+@code{fareas.bbs}, @code{history} (default specified in
+@code{config.make}).
+
+@item LockDir @i{directory}
+Directory for lock files (default specified in @code{config.make}).
+
+@item SpoolDir @i{directory}
+Internal spool directory for temporary files (default specified in
+@code{config.make}).
+
+@item BTBaseDir @i{directory}
+The BinkleyTerm-style outbound @b{base} directory, to be specified
+without the actual @code{out.}@i{nnn} zone directories (default
+specified in @code{config.make}).
+
+@item Inbound @i{directory}
+The BinkleyTerm-style unprotected inbound directory (default specified
+in @code{config.make}).
+
+@item PInbound @i{directory}
+The BinkleyTerm-style protected inbound directory (default specified in
+@code{config.make}).
+
+@item UUInbound @i{directory}
+The BinkleyTerm-style inbound directory for UUENCODEd packets (default
+specified in @code{config.make}).
+
+@item FTPInbound @i{directory}
+The BinkleyTerm-style inbound directory for FTP'ed packets (default
+specified in @code{config.make}).
+
+
+@item Aliases @i{file}
+Aliases configuration file (default specified in @code{config.make}).
+
+@item Areas @i{file}
+Areas configuration file (default specified in @code{config.make}).
+
+@item Hosts @i{file}
+Registered hosts configuration file (default specified in
+@code{config.make}).
+
+@item Passwd @i{file}
+Password configuration file (default specified in @code{config.make}).
+
+@item Packing @i{file}
+Packing configuration file (default specified in @code{config.make}).
+
+@item Routing @i{file}
+Routing configuration file (default specified in @code{config.make}).
+
+@item History @i{file}
+Dupe check history database file (default specified in @code{config.make}).
+
+@item Logfile @i{file}
+Standard log file (default specified in @code{config.make}).
+
+@item CharsetMap @i{file}
+Charset mapping table file (default specified in @code{config.make}).
+
+
+@item LogFacility @i{facility}
+@item LogLevel @i{level}
+Facility and level when using syslog for logging (@code{LogFile
+syslog}). NOT YET SUPPORTED: C programs use definition from
+@code{config.h}, syslog support in Perl scripts (which use these
+settings) is currently commented out.
+
+
+@item DosDrive @i{drive} @i{directory}
+OPTIONAL: specify translation of a DOS @i{drive} (e.g. @code{H:}) to a
+directory. This is useful, if you keep your outbound on a UNIX server
+and run BinkleyTerm on a DOS client. If one or more @code{DosDrive}
+statements are specified, FIDOGATE will automatically translate file
+attaches to the file names seen by the DOS client. Up to 16
+@code{DosDrive} entries may be specified (@code{MAXDOSDRIVE} from
+@code{config.h}).
+
+
+@item AreasBBS @i{name}
+Specifies the @code{areas.bbs} EchoMail distribution file.
+
+@item FAreasBBS @i{name}
+Specifies the @code{fareas.bbs} file echo distribution file.
+
+
+@end table
+
+
+@c ---------------------------------------------------------------------------
+@noindent
+Internet address configuration:
+
+@table @code
+
+@item Hostname @i{name}
+The host name part of your Internet address.
+
+@item Domain @i{name}
+The domain part of your Internet address.
+
+@item HostsDomain @i{name}
+The domain used for entries in the @code{hosts} config file. Default is
+the same as @code{Domain}.
+
+@end table
+
+
+@c ---------------------------------------------------------------------------
+@noindent
+Fidonet address configuration:
+
+@table @code
+
+@item Address @i{node}
+The main Fidonet/FTN address (Z:N/F.P). There may be up to 32 @code{Address}
+statements (@code{MAXADDRESS} from @code{config.h}).
+
+@item GateAddress @i{node}
+OPTIONAL: the Fidonet/FTN address of your gate, must be in the same
+order as the corresponding @code{Address} statements. There may be up to
+32 @code{GateAddress} statements.
+
+If you're operating a Fido node, you may want to use a point addresse
+for your gateway to avoid name problems with local users and the
+gateway. If you're operating an official gateway in Fidonet or an
+Othernet, you normally have a separate node address for the gateway.
+
+
+@item Zone @i{zone} @i{domain} @i{ftndomain} @i{out}
+Specifies Internet domain @i{domain}, FTN domain @i{ftndomain},
+and outbound directory @i{out} (relative to @code{BTBaseDir}) for the
+FTN zone @i{zone}. @i{zone} may be @code{default}, then this is the
+default entry for not explicitely specified zones. Up to 32 @code{Zone}
+entries may be specified (@code{MAXADDRESS} from @code{config.h}).
+
+The gateway will only process mails from/to zones which are explicitly
+specified here.
+
+@end table
+
+
+@c ---------------------------------------------------------------------------
+@noindent
+Areafix configuration:
+
+@table @code
+
+@item AreaFixMailer @i{command}
+Mailer program used by @code{ftnaf} to send replies.
+
+@item AreaFixCC @i{user@@domain}
+CC address added to replies sent by @code{ftnaf}.
+
+@item AreaFixHelp @i{file}
+Help file for Areafix programs (@code{%help}) command.
+
+@end table
+
+
+@c ---------------------------------------------------------------------------
+@noindent
+Tosser configuration:
+
+@table @code
+
+@item MaxMsg @i{n}
+Set maximum number of messages in output files to @i{n}, restricting the
+maximum size of packets. See also @code{-m} option.
+
+@item MaxOpenFiles @i{n}
+Set maximum number of concurrently open packet files to @i{n}. Default: 10
+(@code{MAXOPENFILES} from @code{config.h}), see also @code{-M} option.
+
+@item MaxArc @i{Kbyte}
+Maximum size of ArcMail archives created by @code{ftnpack}. See also
+@code{-m} option.
+
+
+@item MinDiskFree @i{Kbyte}
+Minimum free disk space required by the @code{runtoss}
+script. @code{runtoss} will terminate if there is less than @i{Kbyte}
+free disk space in SPOOLDIR.
+
+@item DiskFreeMethod @i{text}
+Method to determine free disk space: @code{prog} uses program specified
+with @code{DiskFreeProg}, @code{none} doesn't do any disk space
+checking.
+
+@item DiskFreeProg @i{command}
+Command to determine free disk space, parameter @code{%p} is replace
+with path name of the directory to be checked.
+
+
+@item KillEmpty
+@item KillBlank
+Kill empty (blank) messages addressed to one of our AKAs. These are
+typically file attach and file request messages.
+
+@item KillUnknown
+Kill messages for unknown EchoMail areas (not listed in
+areas.bbs).
+
+@item KillRouted
+Kill routed EchoMail messages (not addressed to one of our
+AKAs).
+
+@item KillInsecure
+Kill insecure EchoMail messages (sender not listed in @code{areas.bbs}).
+
+@item LogNetMail
+@item Track
+Log all NetMail messages in log file.
+
+@item CheckPath
+Enable EchoMail circular path check (see @code{KillCircular}).
+
+@item KillCircular
+Kill EchoMail with circular path (own address already in @code{^APATH}).
+
+@item DupeCheck
+Enable dupe check (using @code{History} database).
+
+@item MaxHistory @i{days}
+Maximum length of history database. Keep entries for @i{days} days
+(decimal fraction allowed).
+
+@item KillOld
+Kill messages with @i{date} < @i{now} - @code{MaxHistory}, i.e. treat as
+dupes.
+
+@item KillDupe
+@item KillDupes
+Kill duplicate EchoMail messages if @code{DupeCheck} is enabled.
+
+@item KillNoMSGID
+Kill EchoMail messages without a @code{^AMSGID}, i.e. treat as dupes.
+
+
+@item ZoneGate @i{node} @i{seenby}
+Zone gate operation: strip SEEN-BYs for EchoMail addressed to @i{node}
+and replace with listed @i{seenby} nodes. @i{seenby} must include both
+the link's and our address. Example:
+
+@example
+ZoneGate  1:105/42  105/42 2452/110
+@end example
+
+
+@item AddToSeenBy @i{area} @i{nodes}
+Add the listed @i{nodes} to the SEEN-BYs for EchoMail tossed in
+@i{area}. @i{area} may be specified using shell-style wildcards
+@code{*?[a-z]}.
+
+
+@item TossEchoMail4D
+Generate 4D EchoMail control lines, i.e. SEEN-BY and PATH will include
+point addresses.
+
+@item NoEmptyPath
+Do not generate an empty PATH line.
+
+@end table
+
+
+@c ---------------------------------------------------------------------------
+@noindent
+Ticker configuration:
+
+@table @code
+
+@item TickFlav @i{flavour}
+Flavour of file attaches generated by @code{ftntick}.
+
+@item FAttachFlav @i{flavour}
+Flavour of file attaches generated by @code{ftnfattach}.
+
+@item TickReplacedDir @i{directory}
+Directory for old files replaced by @code{ftntick}.
+
+@item UnknownTickArea @i{area}
+File area to be used to TIC files with an unknown area. Incoming files
+with an unknown area will be moved to this unknown area's directory.
+
+@end table
+
+
+@c ---------------------------------------------------------------------------
+@noindent
+Gateway configuration:
+
+@table @code
+
+@item Origin @i{text}
+FTN default EchoMail origin line, the text used for the origins line
+generated by @code{rfc2ftn}. Quote @i{text} in @code{""} if it contains
+spaces. Individual origin lines may be specified in the @code{areas}
+file using the @code{-o} option.
+
+@item Organization @i{text}
+Organization header for mail and news generated by
+@code{ftn2rfc}. Quote @i{text} in @code{""} if it contains spaces.
+
+@item UseOriginForOrganization
+Put the text from the * Origin line (excluding the @i{(z:n/f.p)}
+address) into the Organization header.
+
+@item UseOrganizationForOrigin
+Put the text from the Organization header into the * Origin line.
+
+@item UseXHeaderForTearline
+Use text from @code{X-FTN-Tearline}, @code{X-Mailer}, @code{User-Agent},
+or @code{X-Newsreader} for the --- tearline.
+
+
+@item UseFTNToAddress
+Use FTN to address for mail addressed to the gateway without a To line,
+e.g. mail to
+@example
+Max Mueller @ 2:2452/110.2
+@end example
+with a HOSTS entry
+@example
+2:2452/110.2  orodruin-ftn.fido.de
+@end example
+is converted to
+@example
+To: Max_Mueller@@orodruin-ftn.fido.de
+@end example
+Without this option the standard local HOST.DOMAIN is used, e.g.
+@example
+To: Max_Mueller@@orodruin.fido.de
+@end example
+
+
+@item EchoMail4D
+Generate 4D EchoMail control lines, when the gateway operates at a point
+address. @b{This is required when using the gateway and the tosser for a
+Fido point!}
+
+
+@item Gateway @i{node}
+Specifies an FTN-Internet gateway for routing Internet mail to. If
+enabled, FIDOGATE can be used as the default delivery agent for all
+Internet mail.
+
+
+@item DotNames
+Generate @i{User.Name@@host.do.main} instead of
+@i{User_Name@@host.do.main}. @code{rfc2ftn} recognizes both address
+types.
+
+
+@item KillUnknownMSGIDZone
+Kill messages that contain a @code{^AMSGID} from an unknown zone (not
+listed in @code{Zone} statements).
+
+@item KillNoMSGID
+Kill messages that don't contain a @code{^AMSGID} kludge.
+
+@item KillSplit
+Kill messages that contain a @code{^ASPLIT} kludge.
+
+
+@item X-FTN @i{header}
+Include the various X-FTN header in the output of @code{ftn2rfc}:
+@table @code
+@item f
+@code{X-FTN-From}
+@item t
+@code{X-FTN-To}
+@item T
+@code{X-FTN-Tearline}
+@item O
+@code{X-FTN-Origin}
+@item V
+@code{X-FTN-Via}
+@item D
+@code{X-FTN-Domain}
+@item S
+@code{X-FTN-Seen-By}
+@item P
+@code{X-FTN-Path}
+@end table
+@code{X-FTN-From} is required for the proper operation of @code{ftnaf}.
+
+
+@item MaxMsgSize @i{bytes}
+Maximum size of FTN messages (default value), larger messages will be split.
+
+@item LimitMsgSize @i{bytes}
+Maximum limit for messages (default value), larger messages will be
+bounced (mail) and simply not gated (news).
+
+
+@item NoAddressInToField
+Do not allow @code{@@ ! %} chars in the FTN to field, thus preventing
+users from putting Internet addresses in the to field.
+
+
+@item BounceCCMail @i{user@@do.main}
+Send CC of bounced messages to this address.
+
+@item TrackerMail @i{user@@do.main}
+Forward mail from message trackers to this address.
+
+@item HostsRestricted
+Restrict usage of the gateway to FTN addresses listed in @code{hosts}.
+
+@item FTNJunkGroup @i{name}
+@i{name} of the FTN junk newsgroup (newsgroup for unknown FTN areas).
+
+@item ErrorsTo @i{user@@do.main}
+Insert additional Errors-To header into Internet mails, sending bounced
+mails from gateway users to @i{user@@do.main}.
+
+
+@item AreasXlate @i{area-chars} @i{newsgroup-chars}
+Automatic translation (-H option in @code{areas} file) of characters for
+Fido area <-> Internet newsgroup name conversion.
+
+
+@item RFCLevel @i{n}
+Set the default RFC level. See also @code{-R} option in @code{areas}.
+
+@item NoFromLine
+Don't generate @code{From:} header and FSC-0035 kludges. Must be set for
+a non-gateway, point FIDOGATE configuration.
+
+@item NoFSC0035
+Don't generate FSC-0035 @code{^AREPLYADDR}, @code{^AREPLYTO}.
+
+@item NoFSC0047
+Don't generate FSC-0047 @code{^ASPLIT}, use old @code{ * Large message
+split by } ... text line.
+
+
+@item FTNInSendmail @i{command ...}
+Sendmail program to be run by @code{ftninpost} with options. The option
+@code{-fsender} will be automatically added by @code{ftninpost}. For
+compatibility with old FIDOGATE configurations, any @code{-f%s} option
+will be removed.
+
+@item FTNInRnews @i{command ...}
+Rnews program to be run by @code{ftninpost}.
+
+@item FTNInRecombine
+Automatically run @code{ftninrecomb} to recombine split messages.
+
+
+@item NetMail8bit
+Use the ISO-8859-1 MIME 8BIT character set when gating Fido NetMail.
+
+@item NetMailQuotedPrintable
+@item NetMailQP
+Use the ISO-8859-1 MIME QUOTED-PRINTABLE character set when gating Fido
+NetMail. @code{NetMailQuotedPrintable} overrides @code{NetMail8bit} if
+both are specified.
+
+
+@item XFlagsPolicy
+Controls policy for X-Flags processing (default is 0, no processing):
+@table @code
+@item n   N   0
+No X-Flags processing at all.
+@item s   S   1
+X-Flags processing for local sender (check From and Received
+headers). This is not really secure!!! If your system is directly
+connected to the Internet and runs an SMTP daemon such as sendmail, mail
+can easily be faked to look like local!!!
+@item a   A   2
+X-Flags processing for all. Totally open, totally insecure!!!
+@end table
+
+@item DontUseReplyTo
+Don't try to get real name from Reply-To header. Particularly useful for
+mailing lists which set the Reply-To header to the mailing list.
+
+@item RFCAddrMode @i{mode}
+Mode for RFC address generated by FIDOGATE:
+@table @code
+@item ()  p  0
+@i{user@@do.main (Real Name)}-type addresses
+@item <>  a  1
+@i{Real Name <user@@do.main>}-type addresses
+@end table
+
+@item ReplyAddrIfMailTX
+Force @code{^AREPLYADDR} (if @code{FSC0035} is enabled) to only contains
+@code{^AREPLYADDR <user@@do.main>} for compatibility with ifmail-TX.
+
+
+@item CheckAreasBBS
+Check @code{areas.bbs} when gating newsgroups, message for areas without
+downlinks will be skipped.
+
+
+@item DefaultCharset @i{default}:@i{ftn}:@i{rfc}
+Default character set mapping for the gateway: @i{default} is the
+charset assumed for FTN messages, if no @code{^ACHRS} kludge is present
+in the message. @i{ftn} is the charset to be used in the FTN messages
+when gating from RFC to FTN (use FSC-0054 names here), @i{rfc} likewise
+when gating from FTN to RFC (use RFC 2045 names here). See also the
+@code{-C} option in the @code{areas} config file.
+
+@item NetMailCharset @i{default}:@i{ftn}:@i{rfc}
+Like @code{DefaultCharset}, but only for NetMail (mail) messages.
+
+@item NetMailCharsetUse1st
+If set and no matching in/out character set is found, @code{ftn2rfc}
+will use the first character set translation pair from
+@code{charset.map} with in charset = Fido @code{^ACHRS} and set the
+output character set accordingly. NOT YET IMPLEMENTED.
+
+
+@item NewsPathTail @i{string}
+String added to news Path header generated by @code{ftn2rfc}, the
+de-facto standard is @code{not-for-mail}. Alternatively you can set this
+to @code{fidogate!not-for-mail} making the INN @code{newsfeeds} much
+easier and less error-prone, particularly for point systems.
+
+
+@item SingleArticles
+Write single articles to output RFC files generated by @code{ftn2rfc},
+not news batches containing several articles (batch is default).
+
+
+@item Regex1stLine @i{pattern}
+Regular expression patterns for finding addresses in the first line of
+the messages body. The first (...) sub-expression will be used for the
+address (like \1 in sed, $1 in perl). POSIX *extended* regular
+expressions are used.  The OS @b{must} support @code{HAS_POSIX_REGEX} in
+@code{config.h}!
+
+As of FIDOGATE 4.3.4, the compiled-in pattern matching code is no longer 
+availabe. See @code{examples/orodruin/fidogate.conf} for a suitable list 
+of regular expressions.
+
+
+@item MessageLineLength @i{number}
+Line length for formatting long paragraphs (no explicit line break) from 
+Fido messages. This replaces the old @code{MAX_LINELEN} from
+@code{config.h}. The default value is 72.
+
+
+@item DontIgnore0x8d
+@item DontIgnoreSoftCR
+Normally, soft CR characters (hex 0x8d) in FTN messages are
+ignored. When this option is turned on, they are treated as normal
+characters. Useful e.g. for the cyrillic cp866 charset.
+
+
+@item RegisteredHostsOnly
+The opposite of the @i{-i} @i{--ignore-hosts} command line option,
+always requiring that a node is registered in the @code{hosts} list. NOT
+YET IMPLEMENTED.
+
+
+@item RegisteredAliasesOnly
+Allow only those addresses listed in @code{aliases}, either
+@i{alias}@@@i{host.do.main} or @i{Full_Name}@@@i{host.do.main}, as valid
+recipients (also including @i{postmaster}) for @code{rfc2ftn}.
+
+With this option, the gateway can be restricted to registered users,
+which is also very useful for fighting Spam.
+
+
+@item SilentBounces
+Causes EX_NOHOST, EX_NOUSER errors to return OK without any message.
+Useful in the never ending fight against spam, when your gateway
+is flooded with messages to unknown adresses, such as Fido.DE :-(
+
+
+@end table
+
+
+@c ---------------------------------------------------------------------------
+@noindent
+FFX configuration:
+
+(FFX is a part of FIDOGATE, an uux-like mechanism for remote execution,
+using a Fido mailer instead of UUCP for transport. This is a special
+hack for my own purposes, most likely you don't want to know anything
+about it. Simply ignore or remove this section from the config file.)
+
+@table @code
+
+@item FFXDataFlav @i{flavour}
+Flavour to be used for file attachments created by the @code{ffx} program.
+
+@item FFXDataCompr @i{command ...}
+Program to be used for creating compressed @code{ffx} data files.
+
+@item FFXDataExt @i{parameter}
+File name extension to be used for compressed @code{ffx} data files.
+
+@item FFXDataDecompr @i{parameter}
+Uncompressor name for compressed @code{ffx} data files (will be run by
+@code{ffxqt}).
+
+@item FFXDataComprN @i{parameter}
+Program to be used for creating uncompress @code{ffx} data files (option
+@code{-n}).
+
+@item FFXDataExtN @i{parameter}
+File name extension to be used for uncompressed @code{ffx} data files
+(option @code{-n}).
+
+@item FFXDataDecomprN @i{parameter}
+Uncompressor name for uncompressed @code{ffx} data files (option
+@code{-n}, will be run by @code{ffxqt}).
+
+@item FFXCommand @i{name} @i{command ...}
+List of command names and corresponding commands to be used by
+@code{ffxqt}. Only the commands listed can be executed. This replaces
+the old LIBDIR/ffxqt-dir/@i{name} structure of previous FIDOGATE
+versions.
+
+@item FFXUncompress @i{name} @i{command ...}
+List of uncompressor names and corresponding commands to be used by
+@code{ffxqt}.
+
+@end table
+
+
+
+@c ***************************************************************************
+@node Hosts, Aliases, Config, Config files
+
+@section @code{hosts} FTN Address to Host Name Conversion
+@cindex Hosts
+
+@noindent
+This file contains the FTN addresses and host names for registered FTN
+nodes. If @code{HostsRestricted} is defined in @code{config.gate}, this
+file controls the access to the gateway.
+
+@noindent The format of this file is
+
+@example
+@i{node}  @i{hostname}  @r{[} @i{options} @r{]}
+@end example
+
+@noindent Fields:
+
+@table @i
+
+@item node
+FTN address. An address for a node will match all points of this node,
+see example below.
+
+@item hostname
+Host name, one of
+
+@table @i
+@item local host name
+A name without a trailing @code{.} is a hostname in the local
+domain (specified by @code{HostsDomain} or default @code{Domain}
+in @code{config}).
+@item fully qualified domain name
+A name with a trailing @code{.} is a fully qualified domain name
+for this node.
+@item @code{-}
+A @code{-} specifies a listed node, but without a host name
+translation, using the standard @i{p.f.n.z} address.
+@end table
+
+@item options
+
+@table @code
+@item -p
+Generate addresses with point part, e.g. @code{p99.hippo.fido.de}.
+Default is omitting the point part.
+@item -d
+Mark the node as down, mail to this address will be bounced with
+an appropiate error message.
+@end table
+
+@end table
+
+The @code{hosts} file is read into memory during startup of FIDOGATE.
+The first entry found matches, so a host name for a point must be
+specified @i{before} the boss node, if there are entries for both.
+
+Example:
+
+@noindent @code{config}:
+
+@example
+HostsDomain   .Fido.DE
+@end example
+
+@noindent @code{hosts}:
+
+@example
+2:2452/110    hippo
+2:2452/990    test     -p
+2:2452/991    test.wusel.org.
+2:2452/999    -
+@end example
+
+@noindent
+Resulting data base read into memory:
+
+@example
+Node:     2:2452/110.0
+Hostname: hippo.Fido.DE
+Flags:    
+
+Node:     2:2452/990.0
+Hostname: test.Fido.DE
+Flags:    POINT
+
+Node:     2:2452/991.0
+Hostname: test.wusel.org
+Flags:
+
+Node:     2:2452/999.0
+Hostname:
+Flags:
+@end example
+
+@noindent This results in the following conversion of addresses from FTN
+to Internet:
+
+@example
+2:2452/110     ->  hippo.Fido.DE
+2:2452/110.99  ->  hippo.Fido.DE
+2:2452/990.99  ->  p99.test.Fido.DE
+2:2452/991.1   ->  test.wusel.org
+2:2452/999.2   ->  p2.f999.n2452.z2.Fido.DE
+@end example
+
+
+
+@c ***************************************************************************
+@node Aliases, Areas, Hosts, Config files
+
+@section @code{aliases} User Aliases
+@cindex Aliases
+
+@noindent
+This file contains user aliases, the FTN address, and the full name of
+the user.
+
+@noindent The format of this file is
+
+@example
+@i{alias}  @i{node}  "@i{full name}"
+@end example
+
+@noindent Fields:
+
+@table @i
+
+@item alias
+Alias for the user, can be a local @code{user} or a complete Internet
+address @code{user@@do.main}.
+
+@item node
+FTN address of the user.
+
+@item full name
+Full name of the user.
+
+@end table
+
+The FTN address @i{node} may be a point address. In this case mail
+addressed to the user at the boss node address will be readdressed to
+this point, see example below.
+
+Example:
+
+@noindent @code{aliases}:
+
+@example
+mvr         2:2452/110.6    "Marc van.Rey"
+@end example
+
+Using the definitions from the section on @code{hosts}, this results in
+the following address conversion:
+
+@example
+Marc van.Rey @@ 2:2452/110.6  <->  mvr@@hippo.Fido.DE
+@end example
+
+
+
+@c ***************************************************************************
+@node Areas, Bounce, Aliases, Config files
+
+@section @code{areas} FTN Area to Newsgroup Conversion
+@cindex Areas
+
+@noindent
+This file contains FTN areas with corresponding newsgroups and options.
+
+@noindent The format of this file is
+
+@example
+@i{area}  @i{newsgroup}  @r{[} @i{options} @r{]}
+@end example
+
+@noindent Fields:
+
+@table @i
+
+@item area
+FTN area.
+
+@item newsgroup
+Usenet newsgroup.
+
+@item options
+IMPORTANT: there must be spaces between the option and its argument!
+
+@table @code
+
+@item -a @i{address}
+Select alternate FTN address for this area/newsgroup.
+
+@item -z @i{zone}
+Select zone AKA @i{zone} for this area/newsgroup.
+
+@item -d @i{distribution}
+Use Usenet @code{distribution} for this newsgroup when gating from FTN
+to Internet.
+
+@item -o "@i{origin}"
+Use an alternate origin line for this area when gating from Internet to
+FTN.  (Default specified in @code{config}.)
+
+@item -g
+Don't send messages from another SomeNet-FTN gateway across the gateway.
+
+@item -l
+Only local crosspostings are allowed in this newsgroup/area.
+
+@item -x
+No crosspostings are allowed in this newsgroup/area.
+
+@item -8
+Use the ISO-8859-1 MIME 8BIT character set when gating to this
+newsgroup.
+
+@item -Q
+Use the ISO-8859-1 MIME quoted-printable character set when gating to
+this newsgroup.
+
+@item -H
+Area/newsgroup matches entire hierarchy. Names are converted
+automatically, using upper case for area names and lower case for
+newsgroups.
+
+Example:
+@example
+GNU.    gnu.    -z 242  -H
+@end example
+@code{gnu.announce} will be converted to @code{GNU.ANNOUNCE},
+@code{gnu.bug.gcc} to @code{GNU.BUG.GCC}, similar for all other.
+
+@item -!
+Don't gate this area/newsgroup or hierarchy (if combined with
+@code{-H}). Usefull to exclude certain newsgroups from a hierarchy for
+gating.
+
+Example:
+@example
+ALT.BINARIES.    alt.binaries.    -z 242  -H -!
+ALT.             alt.             -z 242  -H
+@end example
+This is roughly equivalent to INN's @code{alt.*,!alt.binaries.*}. Please
+note that the first @code{areas} entry matches, so any @code{-!} must be
+placed before the @code{-H} hierarchy definition.
+
+@item -R @i{level}
+Select level of @code{^ARFC-}Header put into FIDO messages for this
+area. Level:
+@table @r
+@item 0
+No @code{^ARFC-}header at all.
+@item 1
+Only important @code{^ARFC-}header.
+@item 2
+All @code{^ARFC-}header.
+@end table
+
+@item -m @i{bytes}
+Sets @code{MaxMsgSize} for this area (0 = no limit).
+
+@item -M @i{bytes}
+Sets @code{LimitMsgSize} for this area (0 = no limit).
+
+@item -X "@i{RFC-Header: text}"
+Add extra RFC header to output of @code{ftn2rfc}. Multiple @code{-X}
+options are possible.
+
+@item -C @i{default}:@i{ftn}:@i{rfc}
+Set character set mapping table for this area, see @code{DefaultCharset}
+config option for details.
+
+@end table
+
+@end table
+
+Only newsgroups listed in this file will be gated from Internet to FTN.
+FTN area not listed in this file will be gated into the
+@code{FTNJunkGroup} newsgroup specified in @code{fidogate.conf}.
+
+
+
+@c ***************************************************************************
+@node Bounce, Passwd, Areas, Config files
+
+@section Bounce Messages of @code{ftn2rfc}
+@cindex Bounce messages
+
+@noindent
+@code{ftn2rfc} uses the following files for messages sent to the FTN
+user when bouncing mail for some reason:
+
+@table @code
+
+@item bounce.noto
+Message addressed to user @code{UUCP} or @code{GATEWAY} without a
+@code{To} line at the very beginning of the message.
+
+@item bounce.down
+Message addressed from/to node currently marked as @i{down} in
+@code{hosts} (@code{-d} flag).
+
+@item bounce.restricted
+Messages from nodes not listed in @code{hosts}, gateway running in
+restricted mode.
+
+@item bounce.insecure
+Messages came via an insecure (i.e. not password protected) link and
+contain a @code{To} line. This requires the @code{-t} option to
+@code{ftn2rfc}.
+
+@end table
+
+Within a bounce message, the following substitutions can be used:
+
+@table @code
+
+@item %F
+FTN address of message sender.
+@item %T
+FTN address of message recipient (the gateway, that is).
+@item %O
+FTN address of message origin.
+@item %d
+Date/time of message.
+@item %t
+Name of message recipient.
+@item %f
+Name of message sender.
+@item %s
+Message subject.
+@item %R
+@code{To} line, Internet address.
+@item %M
+The entire message body.
+
+@end table
+
+
+
+@c ***************************************************************************
+@node Passwd, Routing, Bounce, Config files
+
+@section @code{passwd} Password Config File
+@cindex Password
+
+@noindent
+This file contains passwords used by @code{ftnaf}, @code{ffx}, and the
+tosser programs.
+
+@noindent The format of this file is:
+
+@example
+@i{context}  @i{node}  @i{password}  @i{options}
+@end example
+
+@noindent Contexts:
+
+@table @code
+
+@item packet
+FTN packet passwords, checked by @code{ftntoss}, inserted by all
+FIDOGATE programs which create FTN packets. Password checking for
+incoming packets is NOT YET IMPLEMENTED.
+
+@item af
+Areafix passwords for requests.
+
+@item ff
+Filefix passwords for requests and password for sending/receiving TIC
+files.
+
+@item ffx
+@code{ffx} command passwords, checked by @code{ffxqt}, inserted by
+@code{ffx} into the @code{.ffx} command files.
+
+@item uplink
+Passwords for forwarding areafix/filefix request to uplink.
+
+@end table
+
+Optional stuff (@i{options}) is used for @code{af} and @code{ff}
+permission settings:
+
+@example
+@i{lvl}  @i{key}  "@i{Sysop Name}"
+@end example
+
+@i{lvl} is the access level, which must be greater or equal than the one
+in @code{areas.bbs}. @i{key} is the access key, which must be a super
+set of the one in @code{areas.bbs}.
+
+Optional stuff (@i{options}) is used for @code{uplink}:
+
+@example
+"@i{name}"
+@end example
+
+@i{name} is the user name (normally @code{Areafix} or @code{Areamgr}) at
+@i{node} address, where areafix requests must be forwarded to. Used by
+@code{ftnafutil}.
+
+
+Example:
+
+@example
+uplink      2:2499/99       XXXXXXXX    AreaMgr
+packet      2:1234/5678     WUERG
+ffx         242:1111/99     BLAHBLUB
+af          2:1234/5678     WUSEL       1   F     "Test Sysop"
+ff          242:1234/5678   WUSEL       4   UQ    "Yet Another Sysop"
+@end example
+
+
+
+@c ***************************************************************************
+@node Routing, Packing, Passwd, Config files
+
+@section @code{routing} Config File
+@cindex Routing
+
+@noindent
+This file contains the routing commands performed by @code{ftntoss}
+(commands @code{remap} and @code{rewrite}) and @code{ftnroute}
+(everything else). The first routing command found matches.
+
+The syntax of the @code{routing} commands is very similar to the routing
+file used by the well-known FIDO tossers QMail and SQUISH.
+
+@noindent The format of this file is:
+
+@example
+remap      @i{src-node}  @i{dest-node}  @i{name}
+remapto    @i{src-node}  @i{dest-node}  @i{name}
+remapx     @i{src-node}  @i{prog}       @i{name}
+remapfrom  @i{src-node}  @i{dest-node}  @i{name}
+rewrite    @i{src-node}  @i{dest-node}
+
+echomail
+netmail
+
+send       @i{flavor}    @i{nodes}
+route      @i{flavor}    @i{dest-node} @i{nodes}
+hostroute  @i{flavor}    @i{nodes}
+hubroute   @i{flavor}    @i{nodes}
+xroute     @i{flavor}    @i{dest-node} @i{from-node} @i{to-node}
+bossroute  @i{flavor}    @i{nodes}
+
+change     @i{old-flavor}  @i{new-flavor}  @i{nodes}
+
+sendmove   @i{flavor}    @i{nodes}
+@end example
+
+@noindent Commands:
+
+@table @code
+
+@item remap
+@item remapto
+Remaps NetMail addressed to @i{name} at @i{src-node} to the new address
+@i{dest-node}. Most useful for remapping to points based on their name.
+@i{name} supports shell-style wildcard patterns. Remapping to 0:0/0.0
+means killing the message.
+
+@item remapx
+Remaps NetMail addressed to @i{name} at @i{src-node} to special
+processing with @i{prog} (actually writing it to a packet in
+@code{%S/remapx/}@i{prog}. Most useful for processing areafix
+messages. @i{name} supports shell-style wildcard patterns.
+NOT YET IMPLEMENTED.
+
+@item remapfrom
+Remaps NetMail from @i{name} at @i{src-node} to the new address
+@i{dest-node}. @i{name} supports shell-style wildcard
+patterns. Remapping to 0:0/0.0 means killing the message.
+
+@item rewrite
+Rewrites NetMail from and to addresses. A node address matching
+@i{src-node} will be changed to @i{dest-node}.
+
+@item echomail
+Starts routing commands for EchoMail.
+
+@item netmail
+Starts routing commands for NetMail.
+
+@item allmail
+Starts routing commands for both EchoMail and NetMail. NOT YET
+IMPLEMENTED.
+
+@item send
+Send normal mail addressed to @i{nodes} with @i{flavor}.
+
+WARNING: e.g. @code{send hold 2:2452/110} actually is the same as
+@code{route hold 2:2452/110.0 2452/110.*}. So @code{send hold 2:2452/110
+110.*} will @b{not} have the desired effect, use @code{send hold
+2:2452/110.*} only instead!!!
+
+@item route
+Route normal mail addressed to @i{nodes} via @i{dest-node}, using
+@i{flavor}.
+
+@item hostroute
+Route normal mail addressed to @i{nodes} via their host (i.e. Z:N/0),
+using @i{flavor}.
+
+@item hubroute
+Route normal mail addressed to @i{nodes} via their hub,
+using @i{flavor}. NOT YET IMPLEMENTED.
+
+@item xroute
+Route normal mail from @i{from-node} to @i{to-node} via @i{dest-node},
+using @i{flavor}. NOT YET IMPLEMENTED.
+
+@item bossroute
+Route @i{flavor} mail addressed to @i{nodes} via their boss node, not
+changing the flavor.
+
+@item change
+Change flavor of mail packet from @i{old-flavor} to @i{new-flavor}.
+
+@item sendmove
+Like @code{send}, but @code{ftnroute} doesn't copy the mail packets,
+they are moved instead. This requires that SPOOLDIR/toss/tmp and
+SPOOLDIR/toss/out are on the same file system/disk drive.
+
+@end table
+
+Node addresses @i{nodes}, @i{src-node}, @i{dest-node} support wildcards
+using @code{*} and @code{all}, which can be used for the zone, net,
+node, and point component of an address. @code{*} alone matches all
+addresses. @code{rewrite} wildcards in the destination address are
+replaced with the corresponding component of the source address.
+
+@noindent The outbound flavor string @i{flavor} can be any of
+@code{normal}, @code{hold}, @code{crash}, @code{direct}, @code{out},
+@code{hut}, @code{cut}, @code{dut}.
+
+Example:
+
+@example
+Remap     2:2452/110.0 2:2452/110.7  "Martin Koser"
+Rewrite   242:241/*    2:241/*
+
+NetMail
+send      hold         242:1000/1.all
+change    crash  hold  242:1000/1.all 2.all
+send      hold         242:1000/3
+route     hold         242:1000/50 51 52 53 54 55 56 57 58 59
+@end example
+
+
+
+@c ***************************************************************************
+@node Packing, Areas.bbs, Routing, Config files
+
+@section @code{packing} Config File
+@cindex Packing
+
+@noindent
+This file contains the packer (archiver) definitions and packing
+commands for @code{ftnpack}.
+
+@noindent The format of this file is:
+
+@example
+arc        @i{name}  @code{"}@i{archiver}@code{"}
+prog       @i{name}  @code{"}@i{program}@code{"}
+progn      @i{name}  @code{"}@i{program}@code{"}
+
+pack       @i{name}  @i{nodes}
+rpack      @i{name}  @i{dest-node}  @i{nodes}
+fpack      @i{name}  @i{dest-node}  @i{nodes}
+dirpack    @i{dir}  @i{name}  @i{nodes}
+@end example
+
+@noindent Packer/program definitions:
+
+@table @code
+
+@item arc
+Defines the archiver @i{name} as program @i{archiver}. The @i{archiver}
+string must contain two @code{%s}, the first one is replaced with the
+archive name, the second one with the packet name.
+
+@item prog
+@item progn
+Defines the program @i{name} as @i{program}. The @i{program} string must
+contain a @code{%s}, which is replaced with the name of the packet to be
+processed. @code{prog} deletes the packet after successfully running
+@code{program}, @code{progn} doesn't.
+
+@end table
+
+
+@noindent Packing definitions:
+
+@table @code
+
+@item pack
+Pack all mail addressed to @i{nodes} using the archiver defined as
+@i{name}. The archiver name @code{noarc} indicates that the mail packet
+should not be packed, but copied to the OUT file of the node.
+
+@item rpack
+Same as @code{pack}, but pack all mail addressed to @i{nodes} to the
+archive for @i{dest-node}.
+
+@item fpack
+Similar to @code{rpack}, but the packet is archived for the normal
+arcmail packet for each node. This archive is then attached to the FLO
+file of @i{dest-node}.
+
+@item dirpack
+Archive packets for @i{nodes} in special directory @i{dir}, not the
+standard outbound.
+
+@end table
+
+Example:
+
+@example
+arc     zip     "/usr/local/bin/zip -gkj %s %s"
+progn   gate    "/usr/lib/fidogate/ftn2rfc %s"
+progn   areafix "/usr/lib/fidogate/ftnafpkt %s"
+
+rpack   zip     2:242/41 2:242/42 242:2000/* 254:*/*
+pack    noarc   2:2452/110.1 242:4900/99 254:2410/6.1
+pack    zip     *
+@end example
+
+
+
+@c ***************************************************************************
+@node Areas.bbs, Basic, Packing, Config files
+
+@section @code{areas.bbs} EchoMail Distribution
+@cindex EchoMail
+@cindex areas.bbs
+
+@noindent
+This file contains the EchoMail areas and linked nodes. The file
+@code{fareas.bbs} is used for file echos.
+
+The format of this file is as follows, the first line being ignored for
+compatibility with the standard DOS AREAS.BBS. Individual fields can be
+enclosed in "..." to allow spaces, in particular for the area
+description. 
+
+@example
+@r{[}#@r{]}@i{directory}  @i{area}  @r{[}@i{options}@r{]}  @i{nodes}
+@end example
+
+@table @i
+
+@item @t{#}
+Marks area as pass-through, i.e. no packets for the own address (zone
+AKA or set by @code{-a}) will be created.
+
+@item directory
+The directory where the message base/file base for this area is located.
+Currently FIDOGATE uses the directory for file areas only.
+
+@item area
+The area name.
+
+@item options
+Options for this area:
+@table @code
+@item -a @i{address}
+Set alternate FTN AKA for this area.
+@item -z @i{zone}
+Set alternate zone AKA for  this area. If not  set, the zone information
+is taken from  the first node in the  @i{nodes} list.  @code{ftnaf} will
+automatically rewrite @code{areas.bbs}, inserting the @code{-z} option.
+@item -l @i{lvl}
+Set Areafix/Filefix access level for this area.
+@item -k @i{key}
+Set Areafix/Filefix access key for this area.
+@item -d "@i{description}"
+Description for this area. Enclose in @code{"..."} to allow spaces in
+description text.
+@item -#
+Set pass-through flag for this area (same as @i{directory} starting with
+@code{#}).
+@item -r
+Set read-only flag for this area. New downlink will have a read-only
+status. NOT YET IMPLEMENTED.
+@end table
+
+@item nodes
+The list of downlink nodes. This is a sorted short list of nodes as in
+FIDO EchoMail SEEN-BYs and PATH. The first node in @i{nodes} is the
+uplink and stays at this place, though. Do @i{not} put your own main
+address into the @i{nodes} list. (If the gateway has a different
+address, then it must be included in @code{nodes}!)
+
+@end table
+
+
+
+
+@c ***************************************************************************
+@page
+@node Basic, Sendmail, Areas.bbs, Top
+@chapter Basic Configuration
+
+@cindex Configuration
+
+There seems to be some confusion about the basic configuration of the
+mail/news system, the gateway, and the tosser, so I added this
+chapter. Hopefully this will help ...
+
+@menu
+* Sendmail::	       Sendmail configuration
+* Example Point::      Example point configuration
+* Example Point 2::    Example configuration with 2 point addresses
+* Example Node::       Example leaf node configuration
+@end menu
+
+
+
+@c ***************************************************************************
+@node Sendmail, Example Point, Basic, Basic
+
+@section Sendmail Configuration
+@cindex Configuration
+@cindex sendmail
+
+@noindent
+This section describes the FIDOGATE additions to the sendmail V8 m4
+configuration.
+
+FIDOGATE adds two new mailer files, @code{ftn.m4} and @code{ffx.m4}. Use
+@code{MAILER(ftn)} and/or @code{Mailer(ffx)} to include these mailer
+definitions. (See the comment above for what ffx is good for. Most
+likely you won't need it.)
+
+Please note that the new FIDOGATE mailers are based on the SMTP mailer
+sender/recipient rewrite rules, so including @code{MAILER(smtp)} is
+mandatory!
+
+@noindent
+FIDOGATE ftn mailers (using the @code{ftnmail} wrapper for
+@code{rfc2ftn}):
+
+@table @code
+
+@item ftn
+Mailer for sending to systems registered in the @code{hosts} config
+file. @code{ftn} will bounce mails if the receiving host is not
+registered or marked as down.
+
+@item ftni
+Mailer for sending to a typical p.f.n.z domain,
+e.g. @code{.fidonet.org}. @code{ftni} will send the mail to any system,
+regardless of the registration in @code{hosts}.
+
+@item ftna
+Like @code{ftni}, but the @code{ftna} mailer also sets the address and
+uplink of the gateway to the relay host passed to this mailer.
+
+@item ftno
+Like @code{ftna}. In addition, this mailer sets the directory for
+packets created by @code{rfc2ftn} to SPOOLDIR/outpkt/@i{relayhost}.
+
+@end table
+
+@noindent
+FIDOGATE ffx mailer (using the @code{ffxmail} utitility):
+
+@table @code
+
+@item ffx
+Mailer for sending via the FIDOGATE ffx sub-system.
+
+@end table
+
+
+
+@c ***************************************************************************
+@node Example Point, Example Point 2, Sendmail, Basic
+
+@section Example Point Configuration
+@cindex Configuration
+@cindex Example
+@cindex Point
+
+@noindent
+@b{Please note that this point configuration uses the FIDOGATE
+tosser. Thus, it's different from the point configuration described in
+Roland Rosenfeld's old Point HOWTO!!! The Point HOWTO configuration will 
+definitely NOT work with FIDOGATE version 4!!!}
+
+Actually, this point configuration is very similar to the node
+configuration described in the next section.
+
+Let's assume the following addresses:
+
+Fido point address 2:2499/999.9
+
+Boss node (NetMail and EchoMail) 2:2499/999
+
+
+@noindent
+Address configuration @code{fidogate.conf} (gateway and point address
+are the same!), gateway configuration @code{EchoMail4D} is stricly
+reqired:
+
+@example
+...
+Address 2:2499/999.9
+...
+EchoMail4D
+...
+@end example
+
+@noindent
+Routing configuration @code{routing}: mail for the local address on
+hold, everything else is send to the boss node.
+
+@example
+NetMail
+route    hold   2:2499/999.9
+route    normal 2:2499/999 1:* 2:* 3:* 4:* 5:* 6:*
+
+EchoMail
+sendmove hold   2:2499/999.9
+sendmove normal *
+@end example
+
+
+@noindent
+Packer configuration @code{packing}: no packing (noarc, this is very
+important) for own address, @code{zip} is the default archiver for
+everything else.
+
+@example
+arc  zip    "/usr/bin/zip -9gkjq %s %s"
+
+pack noarc  2:2499/999.9
+pack zip    *
+@end example
+
+@noindent
+Next, the EchoMail areas must be listed in the @code{areas.bbs} file. Do
+@i{not} put your point address into @code{areas.bbs}! Example with two
+areas (the directory @code{X} is not used for EchoMail areas), which
+must be non-passthrough:
+
+@example
+Example Point!User Name
+X LINUX.GER 2:2499/999
+X UNIX.GER  2:2499/999
+@end example
+
+In the gateway configuration, these areas must be listed in the
+@code{areas} config file:
+
+@example
+LINUX.GER fido.ger.linux -8
+UNIX.GER  fido.ger.unix  -8
+@end example
+
+
+The example configuration files for this configuration can be found in
+@code{examples/point/}. See also @code{scripts/run/runpoll} for a
+suitable poll script, which does everything necessary for a FIDOGATE
+point.
+
+
+
+@c ***************************************************************************
+@node Example Point 2, Example Node, Example Point, Basic
+
+@section Example Configuration with 2 Point Addresses
+@cindex Configuration
+@cindex Example
+@cindex Point
+
+@noindent
+This section describes a point setup with 2 different point addresses
+and 2 different boss nodes. Thanks to Stephan Zellerhoff
+<stephan@@poi.westfalen.de> for contributing some stuff.
+
+Let's assume the following addresses:
+
+Primary point address 2:2499/999.9, boss node 2:2499/999
+
+Secondary point address 2:2498/888.8, boss node 2:2498/888
+
+@noindent
+Setup with FIDOGATE:
+
+@table @b
+
+@item Addresses
+Put the following address statements in @code{fidogate.conf}
+@example
+Address 2:2499/999.9
+Address 2:2498/888.8
+@end example
+Please note that the primary point address must be the @i{first} entry!
+
+@item Sendmail
+Use the sendmail @code{mailertable} feature and create the following
+entries for routing Fidonet mail:
+@example
+# Mail to 2:2498/*, secondary address
+.n2498.z2.fidonet.org    ftna:p8.f888.n2498.z2.fidonet.org
+# Everything else 2:*/*, primary address
+.z2.fidonet.org          ftna:p9.f999.n2499.z2.fidonet.org
+@end example
+Please note that in this setup, the relay host specified with the
+@code{ftna} mailer is your @i{own} address, not your boss node!!!
+
+@item Areas
+Areas send to the primary boss don't require anything special in the
+@code{areas} config file, areas send to the secondary boss must have the
+@code{-a 2:2498/888.8} option, e.g.
+@example
+LINUX.GER    fido.ger.linux    -a 2:2498/888.8 -8
+@end example
+
+@item Areas.BBS
+Likewise, areas send to the secondary boss must have the @code{-a
+2:2498/888.8} option in @code{areas.bbs} and the secondary boss as the
+uplink, e.g.
+@example
+X LINUX.GER    -a 2:2498/888.8    2:2498/888
+@end example
+
+@item Routing
+The netmail routing must be adapted to send mail to the secondary boss,
+e.g. everything for net 2498:
+@example
+NetMail
+route    hold     2:2499/999.9
+route    hold     2:2498/888.8
+
+route    normal   2:2498/888 2:2498/*.*
+route    normal   2:2499/999 2:*
+
+EchoMail
+sendmove hold     2:2499/999.9 2498/888.8
+sendmove normal   *
+@end example
+
+@item Packing
+Packer configuration @code{packing}: no packing (noarc, this is very
+important) for all of our own addressess, @code{zip} is the default
+archiver for everything else.
+
+@example
+arc  zip    "/usr/bin/zip -9gkjq %s %s"
+
+pack noarc  2:2499/999.9 2498/888.8
+pack zip    *
+@end example
+
+@end table
+
+Otherwise see the standard point configuration with a single address.
+
+
+
+@c ***************************************************************************
+@node Example Node, Usage, Example Point 2, Basic
+
+@section Example Leaf Node configuration
+@cindex Configuration
+@cindex Example
+@cindex Node
+
+
+@noindent
+Let's assume the following addresses:
+
+Fido main address 2:2499/999
+
+Uplink (NetMail and EchoMail) 2:2499/900
+
+Gateway point address 2:2499/999.1
+
+Two points, Max Mueller @@ 2:2499/999.10, Sabine Meier @@ 2:2499/999.11
+
+
+@noindent
+Address configuration @code{fidogate.conf}:
+
+@example
+Address     2:2499/999
+GateAddress 2:2499/999.1
+@end example
+
+@noindent
+Routing configuration @code{routing}: NetMail for the two points will be
+remapped to their point addresses, everything else to the gateway (where
+you will be reading your mail). NetMail for all points is @code{send}
+onto hold, everything else @code{route}d to your uplink. EchoMail is
+alway put onto hold.
+
+@example
+remap    2:2499/999.0 2:2499/999.10 "Max Mueller"
+remap    2:2499/999.0 2:2499/999.11 "Sabine Meier"
+remap    2:2499/999.0 2:2499/999.1  "*"
+
+NetMail
+send     hold   2:2499/999.*
+route    normal 2:2499/900 1:* 2:* 3:* 4:* 5:* 6:*
+
+EchoMail
+sendmove hold   2:2499/999.*
+sendmove normal *
+@end example
+
+
+@noindent
+Packer configuration @code{packing}: @code{noarc} packing for the
+gateway address, @code{zip} is the default archiver for everything else.
+
+@example
+arc      zip    "/usr/bin/zip -9gkjq %s %s"
+
+pack     noarc  2:2499/999.1
+pack     zip    *
+@end example
+
+@noindent
+Next, the EchoMail areas must be listed in the @code{areas.bbs} file. Do
+@i{not} put your node address into @code{areas.bbs}! Example with two
+areas, both subscribed by the gateway and your points (the directory
+@code{X} is not used for EchoMail areas):
+
+@example
+Your system name!sysop name
+#X LINUX.GER 2:2499/900 999.1 .10 .11
+#X UNIX.GER  2:2499/900 999.1 .11
+@end example
+
+@code{#} denotes a @i{passthrough} area, i.e. no packets for the own
+address (2:2499/999) are created. All EchoMail will be send to the
+gateway (.1).
+
+In the gateway configuration, these areas must be listed in the
+@code{areas} config file:
+
+@example
+LINUX.GER fido.ger.linux -8
+UNIX.GER  fido.ger.unix  -8
+@end example
+
+For regular processing, the following scripts should be run from cron
+every 20 min or so:
+@table @code
+
+@item rungate
+Inbound gateway (Fido -> Internet and FTN -> FTN) processing
+
+@item runin
+Inbound tosser and ticker processing
+
+@item runmail
+Outbound gateway for mail (Internet -> Fido) processing.
+
+@item runnews
+Outbound gateway for news (Internet -> Fido) processing.
+
+@item runout
+Outbound packet processing (various sources).
+
+@end table
+
+To use the areafix, the gateway and the mail system must be working. You
+can then install suitable aliases in @code{/etc/aliases}:
+
+@example
+# Areafix/Filefix - FIDOGATE ftnaf
+areafix: "|/usr/lib/fidogate/ftnafmail"
+areamgr: areafix
+filefix: "|/usr/lib/fidogate/ftnafmail -F"
+filemgr: filefix
+@end example
+
+That's it. I hope that this short chapter on basic configuration clarifies
+some of the darker point of the FIDOGATE configuration. Anyway, please
+help to improve the FIDOGATE documentation.
+
+
+
+
+@c ***************************************************************************
+@page
+@node Usage, RFC Headers, Example Node, Top
+@chapter FIDOGATE Usage
+
+@cindex Usage
+
+@menu
+* RFC Headers:: RFC Headers in FTN Messages
+* X Headers::   X Headers in RFC Messages
+@end menu
+
+
+@c ***************************************************************************
+@page
+@node RFC Headers, X Headers, Usage, Usage
+@section RFC Headers in FTN Messages
+
+@cindex RFC header
+@cindex Header
+
+@noindent
+FIDOGATE's @code{ftn2rfc} supports the following RFC headers at the
+start of an FTN message. RFC headers must be the first text lines,
+max. 3 empty lines before the RFC headers are allowed. Only one header
+line of each type is allowed.
+
+@table @code
+
+@item From: @i{address}
+Sets From header line. If set and the @code{areas} flag @code{-g} is on,
+messages will not be gated, because they are considered comming from
+another FTN-RFC gateway.
+
+@item Reply-To: @i{address}
+Sets Reply-To header line.
+
+@item To: @i{address}
+Sets To header line.
+
+@item Cc: @i{address}
+Sets Cc header line.
+
+@item Bcc: @i{address}
+Sets Bcc header line.
+
+@item Newsgroups: @i{groups}
+Sets Newsgroups header line. NOT YET IMPLEMENTED.
+
+@item Sender: @i{address}
+Sets Sender header line. NOT YET IMPLEMENTED.
+
+@item Content-Transfer-Encoding: 7bit @r{|} 8bit @r{|} quoted-printable
+Sets content encoding type, overriding the default configured in
+@code{fidogate.conf} (@code{NetMail8bit}, @code{NetMailQuotedPrintable})
+or @code{areas} (@code{-8}, @code{-Q}).
+
+@end table
+
+@code{ftn2rfc} sends mail to all addresses listed in To, Cc, and Bcc. It
+support the RFC1036 standard address formats:
+
+@example
+user@@do.main
+user@@do.main (Real Name)
+Real Name <user@@do.main>
+@end example
+
+Multiple addresses can be separated by a @code{,}.
+
+
+
+@c ***************************************************************************
+@page
+@node X Headers, Index, RFC Headers, Usage
+@section X Headers in RFC Messages
+
+@cindex X header
+@cindex Header
+
+@noindent
+FIDOGATE's @code{rfc2ftn} supports the following X headers in RFC
+messages:
+
+@table @code
+
+@item X-Comment-To: @i{name}
+Use for the recipient's name in news articles.
+
+@item X-Flags: @i{flags}
+@table @code
+@item c
+Message is crash.
+@item p
+Message is private (default for mail).
+@item h
+Message is hold.
+@item f
+Subject contains file attachment name.
+@item r
+Sets return receipt request.
+@item m
+Generates a FTN style @code{^MSGID}, i.e. @code{^AMSGID: }@i{Z:N/F.P
+1234abcd}. In addition, no @code{^AREPLY} kludge is generated. THIS FLAG
+IS NOT RECOMMENDED FOR NORMAL OPERATION!!!
+@item n
+Do not generate a From line, and the @code{^AREPLYADDR}, @code{REPLYTO}
+kludges.
+@end table
+
+@end table
+
+
+
+@c ***************************************************************************
+@page
+@node Index, , X Headers, Top
+@unnumbered Index
+
+@printindex cp
+
+
+@c @summarycontents
+@contents
+
+@bye

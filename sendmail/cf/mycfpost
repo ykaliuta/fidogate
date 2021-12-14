@@ -1,0 +1,62 @@
+#!/usr/bin/perl
+##############################################################################
+#
+# $Id: mycfpost,v 4.2 2003/06/18 18:54:00 n0ll Exp $
+#
+# FIDOGATE
+#
+# mycfpost --- sendmail .cf post processor
+#
+##############################################################################
+
+use strict;
+
+my $PROGRAM = 'mycfpost';
+my $VERSION = '$Revision: 4.2 $ ';
+
+
+use Getopt::Std;
+
+
+my $MATCH1  = '< @ $* $={VirtHost} . >';
+
+
+
+
+##### options ################################################################
+use vars qw($opt_v $opt_h $opt_x);
+getopts('vhx:');
+
+if($opt_h) {
+    print STDERR
+      "\n",
+      "$PROGRAM --- sendmail .cf post processor\n",
+      "\n",
+      "Usage:   $PROGRAM [-vh] [-x SUB] FILE ...\n",
+      "\n",
+      "Options:           -v        verbose\n",
+      "                   -h        this help\n",
+      "                   -x SUB    sub domain for VirtHost rule\n",
+      "\n";
+    exit 1;
+}
+
+my $SUB = $opt_x ? $opt_x : 'x';
+
+my $SUBST1 =
+'R<!> $+ < @ $* ' . $SUB . 
+' . $={VirtHost} . > 	$: < $(virtuser $1 @ ' . $SUB . 
+' . $3 $@ $1 $: @ $) > $1 < @ $2 $3 . >';
+
+
+
+##### main ###################################################################
+
+while(<>) {
+    if(/\Q$MATCH1\E/) {
+	print $SUBST1, "\n";
+    }
+    print;
+}
+
+exit 0;

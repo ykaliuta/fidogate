@@ -1,0 +1,63 @@
+#!/bin/sh
+#
+# Test WIN32 configuration, assuming everything lives under c:/fidogate
+#
+
+# clean-up
+rm -rf /fidogate/lock/* /fidogate/log/* /fidogate/var/history* \
+       /fidogate/bt/out* /fidogate/spool/out*/*/*.*
+
+#V=-vvv
+LIB=/fidogate/lib
+BIN=/fidogate/bin
+
+# Generate a mail from a local user
+$LIB/rfc2ftn $V -i test.user@f99.n2499.z2.fidonet.org <<EOF
+From: Test WIN32 <test@test.unknown.org>
+To: Test User <test.user@f99.n2499.z2.fidonet.org>
+Subject: TEST Mail
+Message-Id: <win32-test1@test.unknown.org>
+
+This is a TEST
+          TEST
+          TEST !!!
+
+Yours, Test WIN32
+EOF
+
+# Generate a news posting from a local user
+$LIB/rfc2ftn $V -n <<EOF
+From: Test WIN32 <test@test.unknown.org>
+Newsgroups: test
+Subject: TEST News
+Message-Id: <win32-test2@test.unknown.org>
+
+This is a TEST
+          TEST
+          TEST !!!
+
+Yours, Test WIN32
+EOF
+
+# Run the tosser
+$BIN/runout  $V
+$BIN/runmail $V
+$BIN/runnews $V
+
+
+
+# NetMail for inbound
+$LIB/rfc2ftn $V -i -o./test.pkt -a2:2400/9 -u2:2499/111.2 test@2:2499/111.2 <<EOF
+From: Test User <test@test.unknown.org>
+Subject: Test NetMail
+X-Flags: nm
+
+Test NetMail
+Test NetMail
+Test NetMail
+EOF
+
+# Run tosser, gateway
+mv ./test.pkt /fidogate/bt/pin
+$BIN/runin $V
+$LIB/ftnin $V

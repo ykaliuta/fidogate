@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# Remove BSY files in outbound, older than 4 hours
+#
+# Needs GNU find!
+#
+
+OUT="/var/spool/fido/out"
+
+if [ $# == 0 ]; then
+    find $OUT -follow -name '*.bsy' -mmin +240 -print -exec rm -f {} \; 2>/dev/null
+elif [ $1 == "now" ]; then
+    rm -f `find $OUT -follow -name *.bsy`
+fi

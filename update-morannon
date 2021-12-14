@@ -1,0 +1,43 @@
+#!/bin/sh
+#
+# Upload FIDOGATE release to morannon.fido.de
+#
+
+REL=$(./version)
+TAG=`echo $REL | tr -d .`
+
+cp -av \
+    /usr/src/redhat/SOURCES/fidogate-$REL.tar.gz \
+    /usr/src/redhat/SRPMS/fidogate-$REL-*.src.rpm \
+    /usr/src/redhat/RPMS/i386/fidogate-$REL-*.i386.rpm \
+    /u2/archive/fidogate
+
+cp -av \
+    README ANNOUNCE ChangeLog doc/html/*.html \
+    /html/fidogate
+
+# morannon
+scp \
+    /usr/src/redhat/SOURCES/fidogate-$REL.tar.gz \
+    /usr/src/redhat/SRPMS/fidogate-$REL-*.src.rpm \
+    /usr/src/redhat/RPMS/i386/fidogate-$REL-*.i386.rpm \
+    morannon:/pub/fidogate
+
+scp fidogate.lsm morannon:/pub/fidogate/fidogate-$REL.lsm
+
+ssh morannon \
+    "(cd /pub/fidogate; ln -s fidogate-$REL.tar.gz fgate$TAG.tgz)"
+
+
+# lftp
+src=$(ls -1 /usr/src/redhat/SOURCES/fidogate-$REL.tar.gz)
+brpm=$(ls -1 /usr/src/redhat/RPMS/i386/fidogate-$REL-*.i386.rpm)
+srpm=$(ls -1 /usr/src/redhat/SRPMS/fidogate-$REL-*.src.rpm)
+
+put="put $src; put $srpm; put $brpm; put fidogate.lsm -o fidogate-$REL.lsm"
+
+# sf.net
+lftp -c "open ftp://upload.sourceforge.net/incoming; $put"
+
+# metalab.unc.edu
+lftp -c "open ftp://metalab.unc.edu/incoming/linux; $put"

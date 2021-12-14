@@ -1,0 +1,339 @@
+Document: FSC-0057
+Version:  002
+Date:     30-Nov-1991
+
+
+
+
+               Echo Area Managers - Specifications for Requests
+
+
+                                Fabiano Fabris
+                              2:230/41.22@FidoNet
+
+
+                                  Revision: 2
+
+
+
+
+    Status of this document:
+
+    This FSC suggests a proposed protocol for the FidoNet(r) community,
+    and requests discussion and suggestions for improvements.
+    Distribution of this document is unlimited.
+
+
+
+
+    Fido and FidoNet are registered marks of Tom Jennings and Fido
+    Software.
+    TosScan is copyright Joaquim H. Homrighausen.
+    IMAIL is copyright Fabiano Fabris.
+
+
+
+
+
+    1  Purpose
+
+       This document will explore the methods implemented by various
+       echo area managers which process requests (in net mail form) for
+       changes to the echo mail links on the system on which they are in
+       use.
+
+       Until now, it would appear that no real standard exists, so most
+       software authors have either tried to emulate another program, or
+       to create a new method of their own, or both.
+
+       Here, an attempt will be made to create a standard, one which tries
+       to maintain compatibility with methods already in use, while also
+       extending them to provide new functions.
+
+
+
+    2  Format of the request
+
+       A request to an echo area manager is generally made in a net mail
+       message containing specific information in some of the fields. In
+       particular, the addressee is the name of the echo area manager
+       itself, and the subject of the message is a password assigned by
+       the sysop of the system running the program.
+
+       For example:
+
+          From:     John Doe, on 1:234/56
+          To:       Program,  on 1:987/65
+          Subject:  password
+
+       Here the first problem is encountered. Each of the existing
+       programs recognizes a different addresee. For this reason it is
+       proposed that all such programs recognize requests made to a
+       single, "standard" addressee, besides any other they may wish to
+       implement. The term "AreaMgr" has been arbitrarily chosen.
+
+       The text of the message itself contains the request proper, and is
+       the subject of the following paragraphs.
+
+
+
+    3  Linking and Unlinking of echo areas.
+
+       The current methods for requesting that an echo area be linked are
+       basically two:
+
+          +ECHONAME
+          ECHONAME
+
+       For reasons of uniformity, it is proposed that all echo area
+       manager programs recognize the first method.
+
+
+
+
+                                     - 1 -
+
+
+
+
+       Requests that an echo area be unlinked are given by:
+
+          -ECHONAME
+
+       As an extension to this, it should be possible for a system to
+       request that all available echo areas be linked or unlinked. This
+       could be accomplished as follows:
+
+          %+ALL
+          %-ALL
+
+       The first would link all the areas available to the system, while
+       the second would unlink all those areas which were linked to it.
+
+       Since the requests are processed top-down, a request of the form
+
+          +ECHONAME
+          %-ALL
+
+       would be redundant, since the echo area manager would link ECHONAME
+       from the first line, and then immediately unlink it again because
+       of the second line.
+
+
+
+    4  Information Requests
+
+       Requests for information have until now taken two forms. In one
+       case, they are given as switches after the password on the subject
+       line, while in the second they are given as "commands" within the
+       body of the message text. It is proposed that the second method be
+       chosen as standard, in that it is considerably more flexible.
+
+       Below are listed the proposed commands:
+
+         %HELP                    Sends a (pre-defined) help text to the
+                                  requesting system, explaining how the
+                                  area manager is to be used.
+
+         %LIST                    Lists the echo areas currently available
+                                  to the requesting system, on the basis
+                                  of a method internal to the echo area
+                                  manager itself. This list included the
+                                  areas which are already linked.
+
+         %QUERY                   Lists the echo areas currently linked to
+                                  the requesting system.
+
+         %UNLINKED                Lists the echo areas which are available
+                                  to the requesting system, but not
+                                  currently linked. This is the logical
+                                  difference between a %LIST and a %QUERY.
+
+
+
+
+                                     - 2 -
+
+
+
+
+    5 Rescanning Echo Mail
+
+      Many echo mail managers currently allow a system to request than an 
+      area be "rescanned". In other words, the system receiving the 
+      request will export all mail in one or more areas to the requesting 
+      system.
+
+      This may be accomplished by specifying the %REQUEST command in the 
+      body of the request.
+
+      Rescanning has one serious drawback: dupes! It is very possible for 
+      the requesting system to have already set up the area with several 
+      downlinks. Thus, when the rescanned mail is received, it could be 
+      exported to other systems. In a tree-based topology, this is 
+      harmless, but in circular topologies this would create dupes.
+
+      Thus, it is proposed that system receiving the rescan request add a 
+      kludge to the messages, so that they can be recognized by the 
+      requesting system and not re-exported.
+
+      The proposed kludge is:
+
+        ^ARESCANNED
+
+      This kludge has already been implemented in IMAIL.
+
+
+
+    6  Remote Maintainance
+
+       Besides these simple functions, it is becoming more and more
+       interesting to make handling of the echo mail flow even more
+       automatic. For this reason, for example, it might be useful to
+       allow another sysop control over your own system, adding and
+       removing echos as need requires. Thus a hub or coordinator could
+       automatically have a new area added to their echo lists, or
+       discontinued ones removed.
+
+       Naturally, the echo area manager must be able to distinguish which
+       system has the ability to make such changes, but that is beyond the
+       scope of this document.
+
+       It is proposed that an echo area manager be able to automatically
+       add a new echo area to the system's list if/when it is detected.
+       Thus no special commands would be required. The manager should be
+       able to determine a default list of down-links for the new area,
+       and also the "group" of systems which could then request it.
+
+       However, should it be desired to explicitly create a new echo area
+       via remote, this could be done by including a line such as the
+       following in the message text:
+
+          &ECHONAME
+
+
+
+                                     - 3 -
+
+
+
+
+       In order to remote delete an area, the requesting sysop should
+       include a line like this in the body of the message text:
+
+          ~ECHONAME
+
+       Thus, if the system has remote privileges, the echo would be
+       deleted.
+
+       Similarly, it would also be possible to allow a system to change
+       the tag of an echo. This would be accomplished by a line such as:
+
+          # OLD_NAME : NEW_NAME
+
+       (where the spaces are optional, but allowed).
+
+       It might also be desirable to allow a sysop to make changes on
+       behalf of another system. This could be done by inserting a special
+       command at the beginning of the request itself. For example:
+
+          From:     John Doe, on 1:234/1
+          To:       Program,  on 1:987/65
+          Subject:  password
+          Text:
+          %FROM: 1:234/56
+          +ECHONAME
+
+       The %FROM command would make the echo area manager carry out the
+       changes as if the system 1:432/56 had requested them. The password
+       should nonetheless be the one assigned to 1:234/1.
+
+
+
+    6  Further Automation
+
+       In order to make the system more powerful, and to reduce the
+       necessity for human intervention, several extensions are feasible.
+
+       For example, if an echo area manager receives a remote request to
+       delete an area, it could very easily "forward" that request to all
+       its downlinks by producing a similar request. In that way, a single
+       request originating from, for example, a Region Coordinator, would
+       result in the echo being deleted from all systems "below" him.
+
+       Similarly, remote requests for echo tag changes could also be
+       passed on to downlinks.
+
+       An echo area manager should also be able to automatically request
+       an area from an uplink. This would become necessary if, for
+       example, it processed a request for an area not currently available
+       on the system. In this case, it would scan a series of echo lists
+       for the requested area, and if found, would send a request for that
+       area.
+
+
+
+
+                                     - 4 -
+
+
+
+
+    7  Comments in the request
+
+       It should be possible for a sysop to insert a comment in the
+       request made to an echo area manager. These comments, natuarlly,
+       would be destined to the sysop of the system, and not to the area
+       manager itself. Such comments should be placed at the end of the
+       message, following a %COMMENT command.
+
+       In all cases except the above, the request can be deleted by the
+       area manager once processed, but messages containing comments
+       should be retained.
+
+       Note: the current method used is to supply comments after a
+       tear-line. This practice is somewhat "messy", but it might be wise
+       to support it until such time as all echo area managers have
+       implemented the %COMMENT command.
+
+
+
+    8  Final Note
+
+       This document is to be considered as a suggestion for software
+       developers to make their programs compatible with one another, so
+       as to make life easier for the average sysop when dealing with echo
+       area managers.
+
+       Feedback would be appreciated and can be sent to me at the
+       addresses specified on the title page. Please send feedback via
+       netmail only.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                     - 5 -
+

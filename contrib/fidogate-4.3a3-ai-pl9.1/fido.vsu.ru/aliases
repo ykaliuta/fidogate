@@ -1,0 +1,52 @@
+#:ts=8
+#
+#   $Id: aliases,v 1.3 2002/08/04 02:22:52 dyff Exp $
+#
+# User name aliases
+#
+# username	FTN address		Full name
+# --------	-----------		---------
+fidoadm		2:5025/8		"Super User"
+fidoadm		2:5025/8.128		"Super User"
+fidoadm		2:5025/128		"Super User"
+fidoadm		2:50/128		"Super User"
+
+fidoadm		2:5025/8		"Mail Delivery Subsystem"
+fidoadm		2:5025/8.128		"Mail Delivery Subsystem"
+fidoadm		2:5025/128		"Mail Delivery Subsystem"
+fidoadm		2:50/128		"Mail Delivery Subsystem"
+
+fidoadm		2:5025/8		"FidoAdm"
+fidoadm		2:5025/8.128		"FidoAdm"
+fidoadm		2:5025/128		"FidoAdm"
+fidoadm		2:50/128		"FidoAdm"
+
+areafix		2:5025/8		"Areafix"
+areamgr		2:5025/8		"Areamgr"
+sqafix		2:5025/8		"Sqafix"
+filefix		2:5025/8		"Filefix"
+filemgr		2:5025/8		"Filemgr"
+
+# Andy Igoshin
+ai		2:5025/8		"Andy Igoshin"
+ai		2:5025/8		"Sysop"
+ai		2:5025/8		"NEC"
+ai		2:5025/8		"N5025EC"
+ai		2:5025/127		"Andy Igoshin"
+ai		2:5025/127		"Sysop"
+ai		2:5025/128		"Andy Igoshin"
+ai		2:5025/128		"Sysop"
+ai		2:50/128		"Andy Igoshin"
+ai		2:50/128		"Sysop"
+ai		21:9025/8		"Andy Igoshin"
+ai		21:9025/8		"Sysop"
+
+include /usr/local/lib/fidogate/etc/aliases.5025.008
+include /usr/local/lib/fidogate/etc/aliases.5025.037
+include /usr/local/lib/fidogate/etc/aliases.5025.049
+include /usr/local/lib/fidogate/etc/aliases.5025.127
+
+#=================================================================
+# Other
+Stan		2:5003/5		"Ivan Iostman"
+utvk		2:5003/5		"Ivan Iostman"

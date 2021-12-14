@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<TITLE>Linux Fido-Node HOWTO: Fehlersuche</TITLE>
+</HEAD>
+<BODY>
+<A HREF="FidoNode-8.html">Weiter</A>
+<A HREF="FidoNode-6.html">Zurück</A>
+<A HREF="FidoNode.html#toc7">Inhalt</A>
+<HR>
+<H2><A NAME="s7">7. Fehlersuche</A></H2>
+
+<P>
+<P>Sollte Das alles trotz meiner Anleitung noch nicht auf Anhieb
+funktionieren, so gibt es noch diverse Moeglichkeiten, einen Fehler
+aufzuspueren.
+<P>Wichtigstes Tool hierzu ist das Programm <CODE>ifstat</CODE>, welches anzeigt,
+welche Pakete fuer welche Adresse bereit liegen.
+<P>
+<P>
+<H2><A NAME="ss7.1">7.1 Mail wird nicht verarbeitet</A>
+</H2>
+
+<P>
+<P>
+<P>
+<DL>
+<DT><B>fidogate</B><DD><P><CODE>/var/log/fido/log-in</CODE>
+<CODE>/var/log/fido/log</CODE>
+<DT><B>ifcico</B><DD><P><CODE>/var/log/fido/log/ifdebug</CODE>
+<DT><B>mgetty</B><DD><P><CODE>/var/log/fido/log_mg.ttyI0</CODE>
+<CODE>/var/log/fido/log_mg.ttyI1</CODE>
+<CODE>/var/log/fido/log_mg.ttyS1</CODE>
+</DL>
+<P>Um die Korrektheit erstellter Pakete zu erkunden oder Probleme in
+bestehenden Paketen zu finden, enthaelt FidoGate das Programm
+<CODE>pktdebug</CODE>. Braucht man mehr Informationen, so sollte man sich das
+DOS-Programm Inspect besorgen, welches problemlos in der Dosemu laeuft
+und wenn man die Verzeichnisse entsprechend freigibt und die Dosemu
+dann als User <CODE>uucp</CODE> startet, dann kann man die <CODE>.pkt</CODE>-Files und
+Archive sogar veraendern.
+<P>
+<P>
+<HR>
+<A HREF="FidoNode-8.html">Weiter</A>
+<A HREF="FidoNode-6.html">Zurück</A>
+<A HREF="FidoNode.html#toc7">Inhalt</A>
+</BODY>
+</HTML>

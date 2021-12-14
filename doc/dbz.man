@@ -1,0 +1,396 @@
+
+
+
+DBZ(3Z)                                                   DBZ(3Z)
+
+
+NNAAMMEE
+       dbminit,  fetch, store, dbmclose - somewhat dbm-compatible
+       database routines
+       dbzfresh, dbzagain, dbzfetch, dbzstore - database routines
+       dbzsync,   dbzsize,   dbzincore,   dbzcancel,  dbzdebug  -
+       database routines
+
+SSYYNNOOPPSSIISS
+       ##iinncclluuddee <<ddbbzz..hh>>
+
+       ddbbmmiinniitt((bbaassee))
+       cchhaarr **bbaassee;;
+
+       ddaattuumm
+       ffeettcchh((kkeeyy))
+       ddaattuumm kkeeyy;;
+
+       ssttoorree((kkeeyy,, vvaalluuee))
+       ddaattuumm kkeeyy;;
+       ddaattuumm vvaalluuee;;
+
+       ddbbmmcclloossee(())
+
+       ddbbzzffrreesshh((bbaassee,, ssiizzee,, ffiieellddsseepp,, ccmmaapp,, ttaaggmmaasskk))
+       cchhaarr **bbaassee;;
+       lloonngg ssiizzee;;
+       iinntt ffiieellddsseepp;;
+       iinntt ccmmaapp;;
+       lloonngg ttaaggmmaasskk;;
+
+       ddbbzzaaggaaiinn((bbaassee,, oollddbbaassee))
+       cchhaarr **bbaassee;;
+       cchhaarr **oollddbbaassee;;
+
+       ddaattuumm
+       ddbbzzffeettcchh((kkeeyy))
+       ddaattuumm kkeeyy;;
+
+       ddbbzzssttoorree((kkeeyy,, vvaalluuee))
+       ddaattuumm kkeeyy;;
+       ddaattuumm vvaalluuee;;
+
+       ddbbzzssyynncc(())
+
+       lloonngg
+       ddbbzzssiizzee((nneennttrriieess))
+       lloonngg nneennttrriieess;;
+
+       ddbbzziinnccoorree((nneewwvvaalluuee))
+
+       ddbbzzccaanncceell(())
+
+       ddbbzzddeebbuugg((nneewwvvaalluuee))
+
+
+
+
+                            3 Feb 1991                          1
+
+
+
+
+
+DBZ(3Z)                                                   DBZ(3Z)
+
+
+DDEESSCCRRIIPPTTIIOONN
+       These functions provide an indexing system for rapid  ran-
+       dom  access  to  a  text file (the _b_a_s_e _f_i_l_e).  Subject to
+       certain constraints, they are call-compatible with _d_b_m(3),
+       although  they  also  provide some extensions.  (Note that
+       they are _n_o_t  file-compatible  with  _d_b_m  or  any  variant
+       thereof.)
+
+       In  principle,  _d_b_z stores key-value pairs, where both key
+       and value are arbitrary sequences of bytes,  specified  to
+       the  functions  by  values of type _d_a_t_u_m, typedefed in the
+       header file to be a structure with members _d_p_t_r  (a  value
+       of  type  _c_h_a_r _* pointing to the bytes) and _d_s_i_z_e (a value
+       of type _i_n_t indicating how long the byte sequence is).
+
+       In practice, _d_b_z is  more  restricted  than  _d_b_m.   A  _d_b_z
+       database  must  be  an  index  into  a base file, with the
+       database _v_a_l_u_es being _f_s_e_e_k(3) offsets into the base file.
+       Each such _v_a_l_u_e must ``point to'' a place in the base file
+       where the corresponding _k_e_y sequence is found.  A key  can
+       be  no  longer  than  DBZMAXKEY (a constant defined in the
+       header file) bytes.  No key can be an initial  subsequence
+       of  another, which in most applications requires that keys
+       be either bracketed or terminated in  some  way  (see  the
+       discussion  of  the _f_i_e_l_d_s_e_p parameter of _d_b_z_f_r_e_s_h, below,
+       for a fine point on terminators).
+
+       _D_b_m_i_n_i_t opens a database, an  index  into  the  base  file
+       _b_a_s_e, consisting of files _b_a_s_e..ddiirr and _b_a_s_e..ppaagg which must
+       already exist.  (If the database is new,  they  should  be
+       zero-length   files.)   Subsequent  accesses  go  to  that
+       database until _d_b_m_c_l_o_s_e is called to close  the  database.
+       The  base  file need not exist at the time of the _d_b_m_i_n_i_t,
+       but it must exist before accesses are attempted.
+
+       _F_e_t_c_h searches the database for the specified _k_e_y, return-
+       ing the corresponding _v_a_l_u_e if any.  _S_t_o_r_e stores the _k_e_y-
+       _v_a_l_u_e pair in the database.  _S_t_o_r_e will  fail  unless  the
+       database  files  are writeable.  See below for a complica-
+       tion arising from case mapping.
+
+       _D_b_z_f_r_e_s_h is a  variant  of  _d_b_m_i_n_i_t  for  creating  a  new
+       database  with  more  control  over  details.   Unlike for
+       _d_b_m_i_n_i_t, the database files need not exist: they  will  be
+       created if necessary, and truncated in any case.
+
+       _D_b_z_f_r_e_s_h's  _s_i_z_e parameter specifies the size of the first
+       hash table within the database, in key-value pairs.   Per-
+       formance  will  be  best if _s_i_z_e is a prime number and the
+       number of key-value pairs stored in the database does  not
+       exceed  about  2/3  of _s_i_z_e.  (The _d_b_z_s_i_z_e function, given
+       the expected number of key-value  pairs,  will  suggest  a
+       database  size  that meets these criteria.)  Assuming that
+       an _f_s_e_e_k offset is 4 bytes, the ..ppaagg file will  be  4*_s_i_z_e
+
+
+
+                            3 Feb 1991                          2
+
+
+
+
+
+DBZ(3Z)                                                   DBZ(3Z)
+
+
+       bytes (the ..ddiirr file is tiny and roughly constant in size)
+       until the number of key-value pairs exceeds about  80%  of
+       _s_i_z_e.   (Nothing  awful  will happen if the database grows
+       beyond 100% of _s_i_z_e, but accesses will slow down  somewhat
+       and the ..ppaagg file will grow somewhat.)
+
+       _D_b_z_f_r_e_s_h's  _f_i_e_l_d_s_e_p parameter specifies the field separa-
+       tor in the base file.  If this is not  NUL  (0),  and  the
+       last character of a _k_e_y argument is NUL, that NUL compares
+       equal to either a NUL or a  _f_i_e_l_d_s_e_p  in  the  base  file.
+       This  permits  use of NUL to terminate key strings without
+       requiring that NULs appear in the base file.  The _f_i_e_l_d_s_e_p
+       of  a  database created with _d_b_m_i_n_i_t is the horizontal-tab
+       character.
+
+       For use in news systems, various  forms  of  case  mapping
+       (e.g.  uppercase to lowercase) in keys are available.  The
+       _c_m_a_p parameter to _d_b_z_f_r_e_s_h is a single character  specify-
+       ing which of several mapping algorithms to use.  Available
+       algorithms are:
+
+              00      case-sensitive:  no case mapping
+
+              BB      same as 00
+
+              NNUULL    same as 00
+
+              ==      case-insensitive:  uppercase  and  lowercase
+                     equivalent
+
+              bb      same as ==
+
+              CC      RFC822   message-ID   rules,  case-sensitive
+                     before `@'  (with  certain  exceptions)  and
+                     case-insensitive after
+
+              ??      whatever the local default is, normally CC
+
+       Mapping algorithm 00 (no mapping) is faster than the others
+       and is overwhelmingly the correct choice for most applica-
+       tions.   Unless compatibility constraints interfere, it is
+       more efficient to pre-map the keys, storing mapped keys in
+       the  base  file,  than to have _d_b_z do the mapping on every
+       search.
+
+       For historical reasons, _f_e_t_c_h and _s_t_o_r_e expect  their  _k_e_y
+       arguments  to  be  pre-mapped, but expect unmapped keys in
+       the base file.  _D_b_z_f_e_t_c_h and _d_b_z_s_t_o_r_e do the same jobs but
+       handle  all  case mapping internally, so the customer need
+       not worry about it.
+
+       _D_b_z stores only the database _v_a_l_u_es in its files,  relying
+       on  reference  to the base file to confirm a hit on a key.
+       References to the base  file  can  be  minimized,  greatly
+
+
+
+                            3 Feb 1991                          3
+
+
+
+
+
+DBZ(3Z)                                                   DBZ(3Z)
+
+
+       speeding up searches, if a little bit of information about
+       the keys can be stored in the _d_b_z files.  This is ``free''
+       if  there are some unused bits in an _f_s_e_e_k offset, so that
+       the offset can be _t_a_g_g_e_d with some information  about  the
+       key.   The _t_a_g_m_a_s_k parameter of _d_b_z_f_r_e_s_h allows specifying
+       the location of unused bits.  _T_a_g_m_a_s_k  should  be  a  mask
+       with one group of contiguous 11 bits.  The bits in the mask
+       should be unused (0) in _m_o_s_t offsets.  The bit immediately
+       above  the mask (the _f_l_a_g bit) should be unused (0) in _a_l_l
+       offsets; _(_d_b_z_)_s_t_o_r_e will reject attempts to store  a  key-
+       value  pair in which the _v_a_l_u_e has the flag bit on.  Apart
+       from this restriction, tagging is invisible to  the  user.
+       As  a  special  case, a _t_a_g_m_a_s_k of 1 means ``no tagging'',
+       for use with  enormous  base  files  or  on  systems  with
+       unusual offset representations.
+
+       A _s_i_z_e of 0 given to _d_b_z_f_r_e_s_h is synonymous with the local
+       default; the normal default  is  suitable  for  tables  of
+       90-100,000  key-value pairs.  A _c_m_a_p of 0 (NUL) is synony-
+       mous with the character  00,  signifying  no  case  mapping
+       (note  that  the  character ??  specifies the local default
+       mapping, normally CC).  A _t_a_g_m_a_s_k of 0 is  synonymous  with
+       the  local default tag mask, normally 0x7f000000 (specify-
+       ing the top bit in a 32-bit offset as the  flag  bit,  and
+       the  next  7  bits as the mask, which is suitable for base
+       files up to circa 24MB).  Calling _d_b_m_i_n_i_t_(_n_a_m_e_)  with  the
+       database    files   empty   is   equivalent   to   calling
+       _d_b_z_f_r_e_s_h_(_n_a_m_e_,_0_,_'_\_t_'_,_'_?_'_,_0_).
+
+       When databases are regenerated periodically, as  in  news,
+       it  is  simplest to pick the parameters for a new database
+       based on the old one.  This also permits  some  memory  of
+       past  sizes  of  the  old database, so that a new database
+       size can be chosen to cover expected fluctuations.   _D_b_z_a_-
+       _g_a_i_n  is  a variant of _d_b_m_i_n_i_t for creating a new database
+       as a new generation of  an  old  database.   The  database
+       files  for  _o_l_d_b_a_s_e must exist.  _D_b_z_a_g_a_i_n is equivalent to
+       calling _d_b_z_f_r_e_s_h with the same field separator, case  map-
+       ping,  and  tag mask as the old database, and a _s_i_z_e equal
+       to the result of applying _d_b_z_s_i_z_e to the largest number of
+       entries in the _o_l_d_b_a_s_e database and its previous 10 gener-
+       ations.
+
+       When many accesses are being done by the same program, _d_b_z
+       is  massively faster if its first hash table is in memory.
+       If an internal flag is 1, an attempt is made to  read  the
+       table  in when the database is opened, and _d_b_m_c_l_o_s_e writes
+       it out to disk again (if it was read successfully and  has
+       been  modified).   _D_b_z_i_n_c_o_r_e  sets  the  flag  to _n_e_w_v_a_l_u_e
+       (which should be 0 or 1) and returns the  previous  value;
+       this  does  not  affect  the status of a database that has
+       already been opened.  The default is 0.   The  attempt  to
+       read the table in may fail due to memory shortage; in this
+       case _d_b_z quietly  falls  back  on  its  default  behavior.
+
+
+
+                            3 Feb 1991                          4
+
+
+
+
+
+DBZ(3Z)                                                   DBZ(3Z)
+
+
+       _S_t_o_r_es to an in-memory database are not (in general) writ-
+       ten out to the file  until  _d_b_m_c_l_o_s_e  or  _d_b_z_s_y_n_c,  so  if
+       robustness  in  the  presence  of  crashes  or  concurrent
+       accesses is crucial, in-memory databases  should  probably
+       be avoided.
+
+       _D_b_z_s_y_n_c  causes  all buffers etc. to be flushed out to the
+       files.  It is  typically  used  as  a  precaution  against
+       crashes  or  concurrent  accesses when a _d_b_z-using process
+       will be running for a long time.  It is a somewhat  expen-
+       sive operation, especially for an in-memory database.
+
+       _D_b_z_c_a_n_c_e_l  cancels  any pending writes from buffers.  This
+       is typically useful  only  for  in-core  databases,  since
+       writes  are  otherwise done immediately.  Its main purpose
+       is to let a child process, in the wake of  a  _f_o_r_k,  do  a
+       _d_b_m_c_l_o_s_e without writing its parent's data to disk.
+
+       If  _d_b_z has been compiled with debugging facilities avail-
+       able (which makes it bigger and a  bit  slower),  _d_b_z_d_e_b_u_g
+       alters  the  value  (and returns the previous value) of an
+       internal flag which (when 1; default is 0) causes  verbose
+       and cryptic debugging output on standard output.
+
+       Concurrent  reading of databases is fairly safe, but there
+       is no (inter)locking, so concurrent updating is not.
+
+       The database files include a record of the byte  order  of
+       the  processor creating the database, and accesses by pro-
+       cessors with different byte order will work, although they
+       will be slightly slower.  Byte order is preserved by _d_b_z_a_-
+       _g_a_i_n.  However, agreement on the size and internal  struc-
+       ture  of  an _f_s_e_e_k offset is necessary, as is consensus on
+       the character set.
+
+       An open database occupies three _s_t_d_i_o  streams  and  their
+       corresponding  file descriptors; a fourth is needed for an
+       in-memory  database.   Memory  consumption  is  negligible
+       (except for _s_t_d_i_o buffers) except for in-memory databases.
+
+SSEEEE AALLSSOO
+       dbz(1), dbm(3)
+
+DDIIAAGGNNOOSSTTIICCSS
+       Functions returning _i_n_t values return 0  for  success,  -1
+       for  failure.   Functions  returning _d_a_t_u_m values return a
+       value with _d_p_t_r set to NULL for failure.  _D_b_m_i_n_i_t attempts
+       to  have _e_r_r_n_o set plausibly on return, but otherwise this
+       is not guaranteed.  An _e_r_r_n_o of EEDDOOMM  from  _d_b_m_i_n_i_t  indi-
+       cates  that  the database did not appear to be in _d_b_z for-
+       mat.
+
+HHIISSTTOORRYY
+       The original  _d_b_z  was  written  by  Jon  Zeeff  (zeeff@b-
+
+
+
+                            3 Feb 1991                          5
+
+
+
+
+
+DBZ(3Z)                                                   DBZ(3Z)
+
+
+       tech.ann-arbor.mi.us).   Later contributions by David But-
+       ler and Mark Moraes.  Extensive reworking, including  this
+       documentation, by Henry Spencer (henry@zoo.toronto.edu) as
+       part of the C News project.   Hashing  function  by  Peter
+       Honeyman.
+
+BBUUGGSS
+       The  _d_p_t_r members of returned _d_a_t_u_m values point to static
+       storage which is overwritten by later calls.
+
+       Unlike _d_b_m, _d_b_z will misbehave if  an  existing  key-value
+       pair  is  `overwritten'  by a new _(_d_b_z_)_s_t_o_r_e with the same
+       key.  The user is responsible for avoiding this  by  using
+       _(_d_b_z_)_f_e_t_c_h  first  to  check  for  duplicates; an internal
+       optimization remembers the result of the first  search  so
+       there is minimal overhead in this.
+
+       Waiting  until  after  _d_b_m_i_n_i_t to bring the base file into
+       existence will fail if _c_h_d_i_r(2) has been used meanwhile.
+
+       The RFC822 case mapper implements only a first  approxima-
+       tion to the hideously-complex RFC822 case rules.
+
+       The prime finder in _d_b_z_s_i_z_e is not particularly quick.
+
+       Should  implement  the _d_b_m functions _d_e_l_e_t_e, _f_i_r_s_t_k_e_y, and
+       _n_e_x_t_k_e_y.
+
+       On C implementations which trap integer overflow, _d_b_z will
+       refuse to _(_d_b_z_)_s_t_o_r_e an _f_s_e_e_k offset equal to the greatest
+       representable positive number, as this would  cause  over-
+       flow in the biased representation used.
+
+       _D_b_z_a_g_a_i_n  perhaps ought to notice when many offsets in the
+       old database were too big for tagging, and shrink the  tag
+       mask to match.
+
+       Marking  _d_b_z's  file  descriptors close-on-_e_x_e_c would be a
+       better approach to the problem _d_b_z_c_a_n_c_e_l tries to address,
+       but that's harder to do portably.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            3 Feb 1991                          6
+
+

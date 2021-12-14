@@ -1,0 +1,211 @@
+X-Emacs-Mode: -*- indented-text -*-
+Subject: FIDOGATE 4.4.10 - Fido-Internet Gateway and Tosser
+Keywords: fido ftn netmail echomail tosser areafix mail news gateway
+Followup-To: comp.os.linux.misc
+
+  =================================================================
+    FIDOGATE 4.4.10, a stable version of the new FIDOGATE release
+  =================================================================
+
+			   FIDOGATE Version 4
+		      ===========================
+		       * Fido Internet Gateway
+		       * Fido Zone Gateway
+		       * Fido Tosser
+		       * Fido Ticker
+		       * Fido Areafix and Filefix
+		      ===========================
+
+
+  Internet:
+  =========
+    http://www.fidogate.org/
+
+
+  Download:
+  =========
+    http://sourceforge.net/project/showfiles.php?group_id=10739
+
+    ftp://ftp.fidogate.org/pub/fidogate/
+    http://www.fidogate.org/pub/fidogate/
+
+    ftp://metalab.unc.edu/pub/Linux/system/fido/
+    http://metalab.unc.edu/pub/Linux/system/fido/
+    (maybe still in .../pub/Linux/Incoming)
+
+    fidogate-4.4.10.lsm			   1 Kbyte
+    fidogate-4.4.10.tar.gz		1170 Kbyte
+    fidogate-4.4.10-1.fc2.src.rpm	1170 Kbyte
+    fidogate-4.4.10-1.fc2.i386.rpm	1100 Kbyte
+
+
+
+======================================================================
+
+Changes in 4.4.10:
+
+* SECURITY BUG in all setuid news programs fixed (environment
+  variables FIDOGATE_LOGFILE, LOGFILE allowed local append to
+  all files writable by news).
+
+* rfc2ftn: new config option SilentBounces, causes EX_NOHOST,
+  EX_NOUSER errors to return OK without any message.  Useful in the
+  never ending fight against spam, when your gateway is flooded with
+  messages to unknown adresses, such as Fido.DE :-(
+
+* rfc2ftn: "Sysop" is always a valid name.
+
+* logsendmail2: new log analysis script.
+
+* send-fidogate: added optimized handling for INN 2.4, must be enabled
+  by modifying this script.
+
+* Compile time conflict with Standard-C function log() solved.
+
+* ftn2rfc: if the UseOriginForOrganization option is set, don't
+  convert empty * Origin lines to Organization header, use default
+  instead.
+
+Thanks to Viktor Kafke and Niels Heinen for their input, which
+triggered this release ... ;-)
+
+
+
+Changes in 4.4.9:
+
+* send-fidogate: fixed INN interface (using batcher) for INN 2.3.
+
+* RPMs build for RedHat 9 (release rh9x).
+
+
+
+Changes in 4.4.8:
+
+* Minor changes, new sendmail mc configuration files for building
+  FIDOGATE on RedHat 9. New RPMs for RedHat 9.
+
+
+
+Changes in 4.4.7:
+
+* rfc2ftn: new options RegisteredHostsOnly (not yet implemented!),
+  kinda reverse function to -i --ignore-hosts, and
+  RegisteredAliasesOnly, allowing only mail to recipient addresses
+  registered via the ALIASES file, both alias@host.do.main and
+  User_Name@host.do.main; bounced mails (host, user) are now logged,
+  logging of messages now more sendmail-like.
+  
+  The RegisteredAliasesOnly option is quite useful for bouncing spam
+  to non-existing addresses right at the gateway (used that way at
+  Fido.DE).
+
+
+
+Changes in 4.4.6:
+
+* ftn2rfc: new DontIgnore0x8d aka DontIgnoreSoftCR config option.
+
+* ftnhatch: new -r --replaces FILE command line option.
+
+* ffxqt: increased number of possible command args to 256.
+
+
+
+Changes in 4.4.5:
+
+* sendmail related scripts and sendmail config files updated for
+  version 8.11
+
+* first version at sourceforge.net
+
+
+
+Changes in 4.4.4:
+
+* rfc2ftn: fixed severe bug in handling of long header lines,
+  e.g. References, which caused missing or incorrect ^AREPLYs. Thanks
+  to Stephan Heitbrink <heitbrink@gmx.net> for reporting the bug and
+  providing the test input news article files.
+
+* hosts2dns: default MX changed
+
+
+
+Changes in 4.4.3:
+
+* runpoll-binkd: updated for binkd 0.9.4
+
+* out-ls: updated, uses fidogate.conf
+
+* i386 RPM: fixed missing /var/lib/fidogate/seq/
+
+* ftnafutil: new "listdownlinks" for areassucksync
+
+* areassucksync: new script for sync'ing areas.bbs and sucknewsrc
+
+* runafutil: new run script for ftnafutil
+
+* outb: new wrapper script for out-ls
+
+* outb-kill: new script, remove outbound stuff for a node
+
+* rfc2ftn: new config options DontChangeContentTypeCharset,
+  DontProcessReturnReceiptTo
+
+
+
+Changes in 4.4.2:
+
+* Some changes to the various scripts.
+
+* Code clean-up, got rid of all insecure strcpy(), strcat(), sprintf() 
+  functions.
+
+* ffx, ffxqt: support for job compression removed (ftnpack does this
+  anyway), several changes to improve security.
+
+
+
+Changes in 4.4.1:
+
+* ftn2rfc: fixed bug in handling of invalid ^ACHRS for input charset.
+
+* rfc2ftn: fixed memory leak.
+
+* ftn2rfc: fixed memory leak.
+
+
+
+Changes in 4.4.0:
+
+* NEW STABLE RELEASE based on 4.3.6.
+
+* charset.map: translation tables completed.
+
+* ftn2rfc: line formatting changes (filling to MessageLineLength only
+  for lines >= 80 chars).
+
+* Distribution now as i386 and src RPM for RedHat 6.0 (should work
+  with other glibc-based distributions as well). Binary RPM installs
+  new sample config files for FIDOGATE point.
+
+* Some minor bugfixes to scripts and C source.
+
+
+
+======================================================================
+
+Needed:
+
+* GNU CC or ANSI C compiler
+* GNU make
+* GNU flex/bison or lex/yacc
+* Perl5
+* sendmail m4 configuration files
+* GNU m4 for the sendmail m4 configuration
+
+======================================================================
+
+$Date: 2004/08/26 20:56:00 $
+Martin Junius
+mailto:mj@fido.de

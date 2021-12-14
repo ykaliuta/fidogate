@@ -1,0 +1,497 @@
+<HTML>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- Created on August, 26  2004 by texi2html 1.64 -->
+<!-- 
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Olaf Bachmann <obachman@mathematik.uni-kl.de>
+Send bugs and suggestions to <texi2html@mathematik.uni-kl.de>
+ 
+-->
+<HEAD>
+<TITLE>FIDOGATE: Basic</TITLE>
+
+<META NAME="description" CONTENT="FIDOGATE: Basic">
+<META NAME="keywords" CONTENT="FIDOGATE: Basic">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META NAME="Generator" CONTENT="texi2html 1.64">
+
+</HEAD>
+
+<BODY LANG="" BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#FF0000">
+
+<A NAME="SEC71"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC70"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC72"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC70"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC72"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H1> 5. Basic Configuration </H1>
+<!--docid::SEC71::-->
+<P>
+
+<A NAME="IDX4"></A>
+</P><P>
+
+There seems to be some confusion about the basic configuration of the
+mail/news system, the gateway, and the tosser, so I added this
+chapter. Hopefully this will help ...
+</P><P>
+
+<BLOCKQUOTE><TABLE BORDER=0 CELLSPACING=0> 
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_5.html#SEC72">5.1 Sendmail Configuration</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Sendmail configuration</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_5.html#SEC73">5.2 Example Point Configuration</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Example point configuration</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_5.html#SEC74">5.3 Example Configuration with 2 Point Addresses</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Example configuration with 2 point addresses</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_5.html#SEC75">5.4 Example Leaf Node configuration</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Example leaf node configuration</TD></TR>
+</TABLE></BLOCKQUOTE>
+<P>
+
+<A NAME="Sendmail"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC72"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC71"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC73"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC71"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC71"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC72"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 5.1 Sendmail Configuration </H2>
+<!--docid::SEC72::-->
+<P>
+
+This section describes the FIDOGATE additions to the sendmail V8 m4
+configuration.
+</P><P>
+
+FIDOGATE adds two new mailer files, <CODE>ftn.m4</CODE> and <CODE>ffx.m4</CODE>. Use
+<CODE>MAILER(ftn)</CODE> and/or <CODE>Mailer(ffx)</CODE> to include these mailer
+definitions. (See the comment above for what ffx is good for. Most
+likely you won't need it.)
+</P><P>
+
+Please note that the new FIDOGATE mailers are based on the SMTP mailer
+sender/recipient rewrite rules, so including <CODE>MAILER(smtp)</CODE> is
+mandatory!
+</P><P>
+
+FIDOGATE ftn mailers (using the <CODE>ftnmail</CODE> wrapper for
+<CODE>rfc2ftn</CODE>):
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>ftn</CODE>
+<DD>Mailer for sending to systems registered in the <CODE>hosts</CODE> config
+file. <CODE>ftn</CODE> will bounce mails if the receiving host is not
+registered or marked as down.
+<P>
+
+<DT><CODE>ftni</CODE>
+<DD>Mailer for sending to a typical p.f.n.z domain,
+e.g. <CODE>.fidonet.org</CODE>. <CODE>ftni</CODE> will send the mail to any system,
+regardless of the registration in <CODE>hosts</CODE>.
+<P>
+
+<DT><CODE>ftna</CODE>
+<DD>Like <CODE>ftni</CODE>, but the <CODE>ftna</CODE> mailer also sets the address and
+uplink of the gateway to the relay host passed to this mailer.
+<P>
+
+<DT><CODE>ftno</CODE>
+<DD>Like <CODE>ftna</CODE>. In addition, this mailer sets the directory for
+packets created by <CODE>rfc2ftn</CODE> to SPOOLDIR/outpkt/<I>relayhost</I>.
+<P>
+
+</DL>
+<P>
+
+FIDOGATE ffx mailer (using the <CODE>ffxmail</CODE> utitility):
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>ffx</CODE>
+<DD>Mailer for sending via the FIDOGATE ffx sub-system.
+<P>
+
+</DL>
+<P>
+
+<A NAME="Example Point"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC73"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC72"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC74"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC71"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC71"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC72"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 5.2 Example Point Configuration </H2>
+<!--docid::SEC73::-->
+<P>
+
+<B>Please note that this point configuration uses the FIDOGATE
+tosser. Thus, it's different from the point configuration described in
+Roland Rosenfeld's old Point HOWTO!!! The Point HOWTO configuration will 
+definitely NOT work with FIDOGATE version 4!!!</B>
+</P><P>
+
+Actually, this point configuration is very similar to the node
+configuration described in the next section.
+</P><P>
+
+Let's assume the following addresses:
+</P><P>
+
+Fido point address 2:2499/999.9
+</P><P>
+
+Boss node (NetMail and EchoMail) 2:2499/999
+</P><P>
+
+Address configuration <CODE>fidogate.conf</CODE> (gateway and point address
+are the same!), gateway configuration <CODE>EchoMail4D</CODE> is stricly
+reqired:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>...
+Address 2:2499/999.9
+...
+EchoMail4D
+...
+</pre></td></tr></table></P><P>
+
+Routing configuration <CODE>routing</CODE>: mail for the local address on
+hold, everything else is send to the boss node.
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>NetMail
+route    hold   2:2499/999.9
+route    normal 2:2499/999 1:* 2:* 3:* 4:* 5:* 6:*
+
+EchoMail
+sendmove hold   2:2499/999.9
+sendmove normal *
+</pre></td></tr></table></P><P>
+
+Packer configuration <CODE>packing</CODE>: no packing (noarc, this is very
+important) for own address, <CODE>zip</CODE> is the default archiver for
+everything else.
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>arc  zip    "/usr/bin/zip -9gkjq %s %s"
+
+pack noarc  2:2499/999.9
+pack zip    *
+</pre></td></tr></table></P><P>
+
+Next, the EchoMail areas must be listed in the <CODE>areas.bbs</CODE> file. Do
+<I>not</I> put your point address into <CODE>areas.bbs</CODE>! Example with two
+areas (the directory <CODE>X</CODE> is not used for EchoMail areas), which
+must be non-passthrough:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>Example Point!User Name
+X LINUX.GER 2:2499/999
+X UNIX.GER  2:2499/999
+</pre></td></tr></table></P><P>
+
+In the gateway configuration, these areas must be listed in the
+<CODE>areas</CODE> config file:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>LINUX.GER fido.ger.linux -8
+UNIX.GER  fido.ger.unix  -8
+</pre></td></tr></table></P><P>
+
+The example configuration files for this configuration can be found in
+<CODE>examples/point/</CODE>. See also <CODE>scripts/run/runpoll</CODE> for a
+suitable poll script, which does everything necessary for a FIDOGATE
+point.
+</P><P>
+
+<A NAME="Example Point 2"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC74"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC73"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC75"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC71"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC71"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC72"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 5.3 Example Configuration with 2 Point Addresses </H2>
+<!--docid::SEC74::-->
+<P>
+
+This section describes a point setup with 2 different point addresses
+and 2 different boss nodes. Thanks to Stephan Zellerhoff
+&#60;stephan@poi.westfalen.de&#62; for contributing some stuff.
+</P><P>
+
+Let's assume the following addresses:
+</P><P>
+
+Primary point address 2:2499/999.9, boss node 2:2499/999
+</P><P>
+
+Secondary point address 2:2498/888.8, boss node 2:2498/888
+</P><P>
+
+Setup with FIDOGATE:
+</P><P>
+
+<DL COMPACT>
+
+<DT><B>Addresses</B>
+<DD>Put the following address statements in <CODE>fidogate.conf</CODE>
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>Address 2:2499/999.9
+Address 2:2498/888.8
+</pre></td></tr></table>Please note that the primary point address must be the <I>first</I> entry!
+<P>
+
+<DT><B>Sendmail</B>
+<DD>Use the sendmail <CODE>mailertable</CODE> feature and create the following
+entries for routing Fidonet mail:
+<TABLE><tr><td>&nbsp;</td><td class=example><pre># Mail to 2:2498/*, secondary address
+.n2498.z2.fidonet.org    ftna:p8.f888.n2498.z2.fidonet.org
+# Everything else 2:*/*, primary address
+.z2.fidonet.org          ftna:p9.f999.n2499.z2.fidonet.org
+</pre></td></tr></table>Please note that in this setup, the relay host specified with the
+<CODE>ftna</CODE> mailer is your <I>own</I> address, not your boss node!!!
+<P>
+
+<DT><B>Areas</B>
+<DD>Areas send to the primary boss don't require anything special in the
+<CODE>areas</CODE> config file, areas send to the secondary boss must have the
+<CODE>-a 2:2498/888.8</CODE> option, e.g.
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>LINUX.GER    fido.ger.linux    -a 2:2498/888.8 -8
+</pre></td></tr></table><P>
+
+<DT><B>Areas.BBS</B>
+<DD>Likewise, areas send to the secondary boss must have the <CODE>-a
+2:2498/888.8</CODE> option in <CODE>areas.bbs</CODE> and the secondary boss as the
+uplink, e.g.
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>X LINUX.GER    -a 2:2498/888.8    2:2498/888
+</pre></td></tr></table><P>
+
+<DT><B>Routing</B>
+<DD>The netmail routing must be adapted to send mail to the secondary boss,
+e.g. everything for net 2498:
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>NetMail
+route    hold     2:2499/999.9
+route    hold     2:2498/888.8
+
+route    normal   2:2498/888 2:2498/*.*
+route    normal   2:2499/999 2:*
+
+EchoMail
+sendmove hold     2:2499/999.9 2498/888.8
+sendmove normal   *
+</pre></td></tr></table><P>
+
+<DT><B>Packing</B>
+<DD>Packer configuration <CODE>packing</CODE>: no packing (noarc, this is very
+important) for all of our own addressess, <CODE>zip</CODE> is the default
+archiver for everything else.
+<P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>arc  zip    "/usr/bin/zip -9gkjq %s %s"
+
+pack noarc  2:2499/999.9 2498/888.8
+pack zip    *
+</pre></td></tr></table></P><P>
+
+</DL>
+<P>
+
+Otherwise see the standard point configuration with a single address.
+</P><P>
+
+<A NAME="Example Node"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC75"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC74"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_6.html#SEC76"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC71"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC71"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC72"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 5.4 Example Leaf Node configuration </H2>
+<!--docid::SEC75::-->
+<P>
+
+Let's assume the following addresses:
+</P><P>
+
+Fido main address 2:2499/999
+</P><P>
+
+Uplink (NetMail and EchoMail) 2:2499/900
+</P><P>
+
+Gateway point address 2:2499/999.1
+</P><P>
+
+Two points, Max Mueller @ 2:2499/999.10, Sabine Meier @ 2:2499/999.11
+</P><P>
+
+Address configuration <CODE>fidogate.conf</CODE>:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>Address     2:2499/999
+GateAddress 2:2499/999.1
+</pre></td></tr></table></P><P>
+
+Routing configuration <CODE>routing</CODE>: NetMail for the two points will be
+remapped to their point addresses, everything else to the gateway (where
+you will be reading your mail). NetMail for all points is <CODE>send</CODE>
+onto hold, everything else <CODE>route</CODE>d to your uplink. EchoMail is
+alway put onto hold.
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>remap    2:2499/999.0 2:2499/999.10 "Max Mueller"
+remap    2:2499/999.0 2:2499/999.11 "Sabine Meier"
+remap    2:2499/999.0 2:2499/999.1  "*"
+
+NetMail
+send     hold   2:2499/999.*
+route    normal 2:2499/900 1:* 2:* 3:* 4:* 5:* 6:*
+
+EchoMail
+sendmove hold   2:2499/999.*
+sendmove normal *
+</pre></td></tr></table></P><P>
+
+Packer configuration <CODE>packing</CODE>: <CODE>noarc</CODE> packing for the
+gateway address, <CODE>zip</CODE> is the default archiver for everything else.
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>arc      zip    "/usr/bin/zip -9gkjq %s %s"
+
+pack     noarc  2:2499/999.1
+pack     zip    *
+</pre></td></tr></table></P><P>
+
+Next, the EchoMail areas must be listed in the <CODE>areas.bbs</CODE> file. Do
+<I>not</I> put your node address into <CODE>areas.bbs</CODE>! Example with two
+areas, both subscribed by the gateway and your points (the directory
+<CODE>X</CODE> is not used for EchoMail areas):
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>Your system name!sysop name
+#X LINUX.GER 2:2499/900 999.1 .10 .11
+#X UNIX.GER  2:2499/900 999.1 .11
+</pre></td></tr></table></P><P>
+
+<CODE>#</CODE> denotes a <I>passthrough</I> area, i.e. no packets for the own
+address (2:2499/999) are created. All EchoMail will be send to the
+gateway (.1).
+</P><P>
+
+In the gateway configuration, these areas must be listed in the
+<CODE>areas</CODE> config file:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>LINUX.GER fido.ger.linux -8
+UNIX.GER  fido.ger.unix  -8
+</pre></td></tr></table></P><P>
+
+For regular processing, the following scripts should be run from cron
+every 20 min or so:
+<DL COMPACT>
+
+<DT><CODE>rungate</CODE>
+<DD>Inbound gateway (Fido -&#62; Internet and FTN -&#62; FTN) processing
+<P>
+
+<DT><CODE>runin</CODE>
+<DD>Inbound tosser and ticker processing
+<P>
+
+<DT><CODE>runmail</CODE>
+<DD>Outbound gateway for mail (Internet -&#62; Fido) processing.
+<P>
+
+<DT><CODE>runnews</CODE>
+<DD>Outbound gateway for news (Internet -&#62; Fido) processing.
+<P>
+
+<DT><CODE>runout</CODE>
+<DD>Outbound packet processing (various sources).
+<P>
+
+</DL>
+<P>
+
+To use the areafix, the gateway and the mail system must be working. You
+can then install suitable aliases in <CODE>/etc/aliases</CODE>:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre># Areafix/Filefix - FIDOGATE ftnaf
+areafix: "|/usr/lib/fidogate/ftnafmail"
+areamgr: areafix
+filefix: "|/usr/lib/fidogate/ftnafmail -F"
+filemgr: filefix
+</pre></td></tr></table></P><P>
+
+That's it. I hope that this short chapter on basic configuration clarifies
+some of the darker point of the FIDOGATE configuration. Anyway, please
+help to improve the FIDOGATE documentation.
+</P><P>
+
+<A NAME="Usage"></A>
+<HR SIZE="6">
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC71"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC72"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<BR>  
+<FONT SIZE="-1">
+This document was generated
+by <I>Martin Junius</I> on <I>August, 26  2004</I>
+using <A HREF="http://www.mathematik.uni-kl.de/~obachman/Texi2html
+"><I>texi2html</I></A>
+
+</BODY>
+</HTML>

@@ -1,0 +1,234 @@
+acl.o: acl.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+address.o: address.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+aliases.o: aliases.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+areas.o: areas.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+areasbbs.o: areasbbs.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+binkley.o: binkley.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+bounce.o: bounce.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+cf_abbrev.o: cf_abbrev.c
+cf_env.o: cf_env.c
+cf_funcs.o: cf_funcs.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+config.o: config.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h cf_env.c
+crc16.o: crc16.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+crc32.o: crc32.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+date.o: date.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+dir.o: dir.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+file.o: file.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+flo.o: flo.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+fopen.o: fopen.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+ftnaddr.o: ftnaddr.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+getopt.o: getopt.c
+getopt1.o: getopt1.c ../../src/include/getopt.h
+gettime.o: gettime.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+hosts.o: hosts.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+kludge.o: kludge.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+lock.o: lock.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+log.o: log.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+mail.o: mail.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+message.o: message.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+mime.o: mime.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+misc.o: misc.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h cf_abbrev.c
+msgid.o: msgid.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+node.o: node.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+outpkt.o: outpkt.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+packet.o: packet.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+parsedate.o: parsedate.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+parsenode.o: parsenode.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+passwd.o: passwd.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+read.o: read.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+rematch.o: rematch.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+rfcaddr.o: rfcaddr.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+rfcheader.o: rfcheader.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+routing.o: routing.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+sequencer.o: sequencer.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+strtok_r.o: strtok_r.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+textlist.o: textlist.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+tick.o: tick.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+tmps.o: tmps.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+version.o: version.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h ../../version.h
+wildmat.o: wildmat.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+xalloc.o: xalloc.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h

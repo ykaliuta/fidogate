@@ -1,0 +1,10 @@
+#:ts=8
+# site		size	queue	builder	muncher	sender
+# ----		----	-----	-------	-------	------
+/default/	100000	20	batcher	compcun	viauux
+#
+zruty		250000	200	batcher	nocomp  viaffx
+#
+# FIDOGATE processing
+#
+fidogate	250000	200	batcher	nocomp	viafidogate

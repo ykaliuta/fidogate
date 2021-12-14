@@ -1,0 +1,314 @@
+From: Michael_Holzt@p112.f4020.n2444.z2.fido.sub.org (Michael Holzt)
+Date: Thu, 27 Jul 1995 15:35:00 +0200
+Newsgroups: de.comm.gateways
+Subject: Gatebau'94-Protokoll ueberarbeitete Version
+
+Hallo All,
+
+ich habe mich als Autor des Gatebau'94-Protokolls mal hingesetzt, und mein
+Protokoll ergaenzt, und vor allem mit aktuellen Anmerkungen versehen (z.B.
+wegen der neuen Gateway-Identifikationszeile, die sich dann ja doch nicht
+durchgesetzt hat).
+
+
+     Gatebau '94
+
+     Das Protokoll mit nachtraeglichen Anmerkungen
+
+   -------------------------------------------------------------------------
+
+     Auf der Gatebau '94 trafen sich Programmierer von Gateways von und
+     nach Fido. Das Treffen fand statt am 23. Juli 1994 bei Joerg Stattaus
+     in Aachen.
+
+     Anwesenheitsliste:
+
+     Joerg Stattaus, Aachen, Programmierer Maus<->Fido
+       Joerg_Stattaus@ac.maus.de
+
+     Martin Junius, Aachen, Programmierer RFC<->Fido
+       2:2453/110.1, mj@morannon.fido.de
+
+     Albi Rebmann, Weinstadt, Programmierer RFC<->Fido
+       2:2471/77
+
+     Michael Holzt, Kierspe, Programmierer ZC<->Fidso
+       2:2444/4020,112, mh@florian.mark.sub.de
+
+   ------------------------------------------------------------------------
+
+      1. MsgId auf Fidoseite nach Gatebau 94
+
+      Zur Erinnerung: Alter Standard war, das in den Adressteil der
+      Fido-MSGID die Adresse aus der RFC/ZC-MessageID gesetzt wurde,
+      und in die HexId eine CRC32, also z.B. MSGID: xyz.do.main 1234abcd
+
+      Nach dem alten Standard wurde die originalle RFC/ZC-ID als
+      ^aORIGID transportiert. Leider unterstuetzt (ausser Yuppie) keine
+      Software die eigentlich vorgesehene Methode hierraus beim Reply
+      ein ^aORIGREF zu bilden. Dies hat zur Folge, das die Replys aus
+      dem Fido nach Wandlung nach ZC/RFC keinen vernuenftigen / richtigen
+      Bezug gesetzt haben.
+
+      Darum wurde von den Anwesenden ein neues Verfahren erdacht, welches
+      sich mittlerweile (Juli 1995) schon in der Praxis gut bewaehrt hat.
+
+
+      Die Original-RFC/ZC-ID wird genommen (die ZC-ID wird noch in
+      < > eingeklammert) und so komplett in den 'Adressteil' der
+      Fido-MSGID eingesetzt. Als HexId wird eine crc32 ueber die
+      MessageID (inklusive < >) und dem jeweiligen Fido-Brettnamen
+      (in Grossbuchstaben) errechnet. Der Brettname wird eingerechnet,
+      um auch fuer Crosspostings MSGIDs erzeugen zu koennen.
+
+      Hier ein aktuelles Beispiel aus der GATEWAYS.GER:
+
+      ^aMSGID: <wEnpiMD41Banz7@eaa.escape.shnet.org> bbd2a6fe
+
+
+      Sollten in der Original-RFC/ZC-ID Leerzeichen auftreten
+      (UNERWUeNSCHT!), wird die gesamte ID in Anfuehrungszeichen
+      gesetzt.
+
+      Beispiel:
+
+      ^aMSGID: "<so was aber auch@box.do.main>" 1234abcd
+
+
+
+      Wird die Nachricht in mehrere Teile gesplittet, wird in den
+      folgenden Teilen die HexId jeweils um 1 erhoeht.
+
+      Leider ist es, wie es neuerdings die Praxis zeigt, nicht ganz
+      unproblematisch ueberhaupt an mehreren Gateways zu splitten,
+      da eine sehr weit verbreitete Software, die selber auch splitten
+      kann (PktSort), die MsgId in den fortgesetzten Teilen wieder
+      entfernt.
+
+      Bisher wurde aus Kompatibilitaetsgruenden zu alter Software
+      weiterhin die ^aORIGID-Kludge erzeugt. Mittlerweile (Juli 1995)
+      ist diese Erzeugung ueberfluessig, und kann ruhig abgestellt werden.
+
+      Beim Zurueckgaten ist die Rang-Reihenfolge der MSGIDs folgende:
+
+      1. hoechste:     Gatebau'94 MSGID
+                      auf <*@*> bzw. "<*@*>" pruefen, und die CRC
+                      nachrechnen. Wenn CRC falsch, dann weiter, ansonsten
+                      die ID aus der MSGID rausschaelen
+      2.              ^aORIGID
+      3.              'normale' Fido-MsgId
+      *NEU*           (nach Mime-MsgId-Verfahren siehe MSGID:DOC von
+                      Martin Junius!)
+
+
+
+      2. Splitting
+
+      Beim Splitten wird, wie weiter oben erwaehnt die HexId um je eins
+      erhoeht. Beispiel Teil 1: 0927276a, Teil 2: 0927276b usw..
+
+      Es wird eine Split-Kludge nach FSC47 erzeugt. Anmerkung: Es steht
+      zu ueberlegen eine eigene Split-Kludge zu definieren. (Aktuelle
+      Anmerkung: Was sich durch die Probleme mit PktSort ja auch
+      als besser zu bestaetigen scheint).
+
+      Die von jag und Fidogate erzeugten ' * Split / Splitted by xxxx ...'
+      Zeilen fallen weg.
+
+      Zwischen der letzen Zeile des gesplitteten Textteiles und der
+      Tearline wird exakt EINE Leerzeile eingefuegt. Eine sonstige
+      Veraenderung des Nachrichtentextes (zum Beispiel Einfuegen von
+      Texten wie '<continued in next message>') ist untersagt!
+
+      Der Betreff des ersten Teiles wird unveraendert uebernommen.
+      Bei den weiteren Teilen wird die Teilnummer in der Form
+      nn: davorgesetzt. Achtung! Maximale Betrefflaenge beachten,
+      ggf. cutten.
+
+
+      Eine gesplittete Mail darf nur dann zurueckgegated werden,
+      wenn a.) alle Teile aufzufinden sind, und die Nachricht vorher
+      ungesplittet wird.
+
+
+      3. Multi-Replys
+
+      Hier steht zu beobachten, wie verschiedene Programme darauf
+      reagieren. Vorerst ist das Erzeugen von mehreren Replys nicht
+      gatebau-konform.
+
+
+      4. Pseudo-Domain fidonet.org
+
+      Martin Junius wird versuchen eine Domain ftn.net fuer uns zu
+      erreichen, damit MsgIds nicht mehr auch fuer nicht-Fido (aber
+      Fido kompatible) Netze auf fidonet.org gebildet werden.
+
+      (Aktuelle Anmerkung: Wie die bisherige Erfahrung gezeigt hat,
+      wird eine entsprechende Domain wohl nicht akzeptiert werden,
+      was natuerlich Probleme aufwirft, wenn z.B. fuer ein Fremdnetz
+      mit z.B. Zone 99 eine andere Domain verwendet wird, aber nun
+      jemand mit Zone 99 in ein Fido-Echo schreibt. Denn dann wird
+      diese Nachricht eventuell zum einen auf einen Gate stossen,
+      der Zone 99 mit einer entsprechenden Domain kennt, weil er
+      das andere Fremdnetz kennt, aber dann zu einem anderen Gate,
+      der nur Fido kennt, und dann als Default @fidonet.org einsetzt.
+      Die einzige Loesung waere es, unbekannte Zonen nicht zu gaten,
+      wobei man unbekannte Zonen eigentlich je nach Echo einstellen muesste,
+      also z.B. fuer Fido-Bretter alles ausser Zone 1-6 unbekannt, und
+      fuer GerNet alles ausser Zone 21 unbekannt usw. Befriedigend sind
+      diese Loesungen aber meiner Meinung nach alle nicht).
+
+
+
+      5. Uebertragen von zusaetzlichen Informationen
+
+      Unbekannte Header-Zeilen aus dem RFC werden mit dem Vorsatz
+      RFC- eins zu eins ins Fido uebernommen. Ausnahme sind natuerlich
+      Zeilen, die ihren Ursprung aus dem Fido haben (s.u.)
+
+      Beispiel:
+
+      RFC-Headerzeile  zzzz: ahjsaj
+      auf Fido: ^aRFC-zzzz: ahjsaj
+
+      Aber: RFC-Headerzeile  x-ftn-wuerg: hahs
+      wird auf Fido: ^awuerg: hahs
+
+      Unbekannte Zconnect-Zeilen erhalten den Vorsatz ZC-.
+
+      Beim Gaten aus dem Fidonet heraus erhalten unbekannte
+      Fido-Kludges im RFC den Vorsatz X-FTN-, und im ZConnect
+      den Vorsatz F-.
+
+      Achtung: Wenn von Fido z.B. nach RFC gewandelt wird, duerfen
+      Kludges die mit ^aZC beginnen, natuerlich nicht nach X-FTN-ZC-
+      sondern nur nach X-ZC gewandelt werden. Genauso darf ein
+      Fido->ZC Gate aus ^aRFC nicht F-RFC sondern nur U- erzeugen.
+
+
+      Zusammenfassung
+
+      Headerzeilen aus ...  Vorsatz im ... Fido    ZConnect   RFC
+
+        Fido                               ---        F-       X-FTN-
+        ZConnect                           ZC-       ---       X-ZC-
+        RFC                                RFC-       U-       ---
+
+      Anmerkung: Es sollten nicht unbedingt in unbegrenzten Masse
+      unbekannte Header-Zeilen gegatet werden. Im Ermessen des Programmierers.
+      Auf das Gaten von SeenBys sollte man zum Beispiel besser verzichten,
+      und auch der RFC-Path auf Fido wird oft nur negativ angesehen.
+
+
+      RFC-Gates erzeugen folgende zusaetzliche Header (optional (?) ):
+
+      X-FTN-Origin:
+      X-FTN-Seen-By:
+      X-FTN-Tearline:
+      X-Comment-To:    Brettempfaenger aus Fido
+      X-FTN-From:      optional die komplette Fido-Adresse in NORMALForm
+                       Beispiel: X-FTN-From: Michael Holzt @ 2:2444/1168.112
+                       DIESE INFORMATION IST SEHR SEHR VORSICHTIG ZU
+                       BENUTZEN (WENN UEBERHAUPT). Auf jeden Fall pruefen,
+                       ob die Adresse aus dem Ziel-FTN-Netz ueberhaupt
+                       zu erreichen ist.
+
+      Die ZConnect Zeilen sind
+
+      F-Origin:
+      F-Seen-By:
+      F-Tearline:
+      F-To:            Brettempfaenger aus Fido
+      F-From:          siehe X-FTN-From.
+
+
+      6. Empfaenger
+
+      Leerzeichen in Empfaengernamen werden generell in Unterstriche
+      gewandelt.
+
+
+      7. Gateway-Identifikation
+
+      Auf der Gatebau 94 wurde eine neue Gateway-Identifikation
+      erdacht. In der Praxis hat sich diese aber nicht durchgesetzt.
+      Damit bleibt momentan nur die aus ZConnect entstammende Spezifikation
+      fuer ZC-Gate:
+
+      GATE: vonformat id adresse [software]
+
+      z.B. fuer ein ZConnect-Fido-Gateway
+
+      GATE: ZCONNECT H0 ftn.mark.sub.de [ZFGate 1.00]
+
+
+      Die GateId wurde frueher fuer einzelne Gateways vergeben, und
+      mittlerweile fuer eine einzelne Software, ist aber nach neuesten
+      Bestimmungen auch optional. Die Id wird von der ZConnect-GateKoo
+      vergeben.
+
+      Bei einer bereits bestehenden Gate-Zeile, haengt sich der neue
+      Gateway *vorne* ein.
+
+      Leider hat sich diese Gatekennung auf RFC nicht durchgesetzt.
+
+      Einige Gateways haben obwohl die Diskussion in der Gateways
+      gegen unser neues Format liefen, dennoch die neu beschlossene
+      Kennung implementiert (z.B. FidoZerb). Dies ist aergerlich, liegt
+      aber wohl daran, dass so mancher Autor nicht mitliest ;-(
+
+      Darum hier auch noch mal die neue Spezifikation. Wenn ein Gateway
+      auf diese treffen sollte, ist er angehalten, die einzelnen Zeilen
+      einfach durch Komma getrennt in eine GATE-Zeile zu verwandeln, und
+      sich einfach nach obigen Schema davorzusetzen.
+
+      - - - -
+
+      Jeder Gateway erzeugt beim Gaten eine Headerzeile / Kludge.
+      Diese lautet auf allen Netzen / Techniken uebereinstimmend
+      X-Gateway.
+
+      Aufbau:
+
+      X-Gateway: name(max 15 Zeichen) Programm Version Datum/Zeit
+
+      Fuer Datum und Zeit konnte kein einheitlicher Konsens gefunden
+      werden. Zeitangaben aber immer in UTC.
+
+      Vorschlag fuer Datum und Zeit: TTMMJJ.SSMM
+
+      Beispiel:
+      X-Gateway: fido.de fidogate 3.7 230794.1812
+      X-Gateway: mausac linkit x.0 110894.1023
+
+      Zeilen von anderen Gateways werden NICHT entfernt, der neue
+      Gateway schreibt sich in die Zeile nach einer eventuellen
+      alten X-Gateway. Vorschlag: X-Gateway generell am Ende der
+      Header-Zeilen.
+
+
+      8. Lebenszeichen Gatebau
+
+      Das momentane Lebenszeichen scheint selber nicht mehr zu leben.
+
+      Es soll ab sofort aus jedem Netz eines einmal die Woche geschickt
+      werden.
+
+      Es war zuerst ueberlegt worden, einen einheitlichen Namen dafuer
+      zu geben, aber das scheitert wohl an der Realnamenpflicht im Fido.
+      Aber eventuell kann man vor den Realnamen einen einheitlichen
+      Vorsatz senden.
+
+      Netz     wer?           username            betreff
+      RFC      Martin Junius   ???                Lebenszeichen <datum> rfc
+      Fido     Michael Holzt  ping/Michael Holzt  Lebenszeichen <datum> fido
+
+
+      Eine automatische Auswertung wird ueberlegt.
+
+   -------------------------------------------------------------------------
+
+
+Gruss Michael
+

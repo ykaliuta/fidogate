@@ -1,0 +1,15 @@
+# Only the ME line is mandatory; the others are just samples of how to do
+# things.  Virtually everything will need modifying for your local feeds
+# and newsgroups.
+
+# line indicating what we are willing to receive; note local groups near end
+ME:bit,comp,news,sci,rec,misc,soc,talk,fido,fidonet,rwth,alt,gnu,de
+
+# Export to UUCP feed
+zruty/zruty.dfv.rwth-aachen.de,dfv.rwth-aachen.de:\
+bit,comp,news,sci,rec,misc,soc,talk,rwth,alt,gnu,de\
+/all,!local:f:
+
+# FIDOGATE processing via batches
+fidogate/p1.hippo.fido.de,sungate-ftn.fido.de,hippo.fido.de:\
+all/all:f:

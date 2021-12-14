@@ -1,0 +1,18 @@
+#:ts=8
+#
+#   $Id: aliases,v 4.2 2002/08/05 23:50:35 dyff Exp $
+#
+# User name aliases
+#
+# username	FTN address		Full name
+# --------	-----------		---------
+root		2:2452/110.1		"Super User"
+root		242:4900/99		"Super User"
+
+postmaster	2:2452/110.1		"Mail Delivery Subsystem"
+postmaster	242:4900/99		"Mail Delivery Subsystem"
+
+mj		2:2452/110.2		"Martin Junius"
+mj		2:2452/110.2		"Sysop"
+mj		242:1000/5		"Martin Junius"
+mj		242:1000/5		"Sysop"

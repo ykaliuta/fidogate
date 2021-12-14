@@ -1,0 +1,7 @@
+#!/bin/sh
+#
+# CVS update, prune empty dirs, build dirs, recursive
+#
+
+# Run CVS
+cvs update -d -P -R $*

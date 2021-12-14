@@ -1,0 +1,2552 @@
+<HTML>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- Created on August, 26  2004 by texi2html 1.64 -->
+<!-- 
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Olaf Bachmann <obachman@mathematik.uni-kl.de>
+Send bugs and suggestions to <texi2html@mathematik.uni-kl.de>
+ 
+-->
+<HEAD>
+<TITLE>FIDOGATE: Programs</TITLE>
+
+<META NAME="description" CONTENT="FIDOGATE: Programs">
+<META NAME="keywords" CONTENT="FIDOGATE: Programs">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META NAME="Generator" CONTENT="texi2html 1.64">
+
+</HEAD>
+
+<BODY LANG="" BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#FF0000">
+
+<A NAME="SEC15"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC14"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_2.html#SEC14"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H1> 3. FIDOGATE Programs </H1>
+<!--docid::SEC15::-->
+<P>
+
+<BLOCKQUOTE><TABLE BORDER=0 CELLSPACING=0> 
+</TABLE>
+Areafix&nbsp;programs&nbsp;and&nbsp;scripts:
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC16">3.1 ftnaf -- Areafix</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Areafix mail processor</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC17">3.2 ftnafmail -- Areafix Mail Frontend</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Areafix mail setuid frontend</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC18">3.3 ftnafpkt -- Areafix packet processor</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Areafix packet processor</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC19">3.4 ftnafutil -- Areafix utility</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Areafix utility</TD></TR>
+</TABLE>
+
+<br>
+Character&nbsp;set&nbsp;translation&nbsp;table&nbsp;compiler:
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC20">3.5 charsetc -- Character set translation table compiler</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Character set translation table compiler</TD></TR>
+</TABLE>
+
+<br>
+FFX&nbsp;programs&nbsp;and&nbsp;scripts:
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC21">3.6 ffx -- Remote Execution via Fido Mailer</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Remote execution via Fido mailer</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC22">3.7 ffxmail -- ffx Frontend for Sending Mail</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"><CODE>ffx</CODE> frontend for sending mail</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC23">3.8 ffxnews -- ffx Frontend for Sending News</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"><CODE>ffx</CODE> frontend for sending news</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC24">3.9 ffxqt -- Execute ffx Requests</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Execute <CODE>ffx</CODE> requests</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC25">3.10 ffxrmail -- Rmail Command for FFX</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"><CODE>rmail</CODE> command for <CODE>ffxqt</CODE></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC26">3.11 runffx -- Script for Running FFX Programs</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for running FFX programs</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC27">3.12 send-ffx -- Script for Processing News via FFX</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for processing news via FFX</TD></TR>
+</TABLE>
+
+<br>
+Gateway&nbsp;programs&nbsp;and&nbsp;scripts:
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC28">3.13 ftn2rfc -- FTN-Internet Gateway Program</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Fido-Internet gateway program</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC29">3.14 ftnin -- Frontend for <CODE>ftn2rfc</CODE></A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Frontend for <CODE>ftn2rfc</CODE></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC30">3.15 ftninpost -- <CODE>ftnin</CODE> Post-processing Script</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"><CODE>ftnin</CODE> post-processing script</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC31">3.16 ftninrecomb -- <CODE>ftnin</CODE> Recombining Script</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"><CODE>ftnin</CODE> recombining script</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC32">3.17 ftnmail -- <CODE>rfc2ftn</CODE> Setuid Frontend</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"><CODE>rfc2ftn</CODE> setuid frontend</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC33">3.18 rfc2ftn -- Internet-Fido Gateway Program</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Internet-Fido gateway program</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC34">3.19 rungate -- Script for Running Gateway Programs</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for running gateway programs</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC35">3.20 send-fidogate -- Script for Processing News via FIDOGATE</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for processing news via FIDOGATE</TD></TR>
+</TABLE>
+
+<br>
+Ticker&nbsp;programs:
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC36">3.21 ftnhatch -- Hatch new file into file area</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Hatch new file into file area</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC37">3.22 ftntick -- Process incoming TIC files</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Process incoming TIC files</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC38">3.23 ftntickpost -- ftntick Post-processing Script</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP"><CODE>ftntick</CODE> post-processing script</TD></TR>
+</TABLE>
+
+<br>
+Tosser&nbsp;programs&nbsp;and&nbsp;scripts:
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC39">3.24 ftn2ftn -- FTN-FTN NetMail Gateway Program</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">FTN-FTN NetMail gateway</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC40">3.25 ftnexpire -- Utility for expiring MSGID history database</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Utility to expire MSGID history database</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC41">3.26 ftnpack -- Pack Fido ArcMail Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Pack (ArcMail) Fido mail packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC42">3.27 ftnroute -- Route Fido Mail Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Route Fido mail packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC43">3.28 ftntoss -- Toss Fido Mail Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Toss/remap/rewrite Fido mail packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC44">3.29 runin -- Script for Processing Inbound Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for processing inbound packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC45">3.30 runmail -- Script for Processing Gateway Mail Output Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for processing gateway mail output packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC46">3.31 runnews -- Script for Processing Gateway News Output Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for processing gateway news output packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC47">3.32 runout -- Script for Processing Miscellaneous Output Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for processing miscellaneous output packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC48">3.33 runtoss -- Script for Running the Tosser Programs</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for running the tosser programs</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC49">3.34 rununpack -- Script for Unpacking Inbound ArcMail Archives</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Script for unpacking inbound arcmail archives</TD></TR>
+</TABLE>
+
+<br>
+Utilties:
+<br>
+<TABLE BORDER=0 CELLSPACING=0>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC50">3.35 ftnbsy -- Create/delete Binkley Busy Filess</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Create/delete Binkley busy files</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC51">3.36 ftnconfig -- Retrieve information from FIDOGATE config files</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Retrieve information from FIDOGATE config files</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC52">3.37 ftnfattach -- Outbound file attaches</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Binkley outbound file attach utility</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC53">3.38 ftnflo -- Process Binkley Outbound FLO Files and Attachments</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Process Binkley outbound FLO files and attachments</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC54">3.39 ftnlock -- Create/Remove Lock Files</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Create/delete lock files</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC55">3.40 ftnlog -- Write Message to Log File</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Write message to log file</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC56">3.41 ftnoutpkt -- Create Fido Message Packets</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Create output Fido message packets</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC57">3.42 ftnseq -- Command Line Interface to Sequencer Files</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Access sequencer file</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC58">3.43 pktdebug -- FTN mail packet debugger</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">FTN mail packet debugger</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC59">3.44 pktmore -- Pager frontend for <CODE>pktdebug</CODE></A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Pager frontend for <CODE>pktdebug</CODE></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_3.html#SEC60">3.45 sumcrc -- CRC Checksum Utility</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">CRC checksum utility</TD></TR>
+</TABLE></BLOCKQUOTE>
+<P>
+
+Almost all FIDOGATE programs support the following standard options,
+which therefore aren't listed in the sections describing the individual
+programs:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-v --verbose</CODE>
+<DD>Increase the verbosity/debug level.
+<P>
+
+<DT><CODE>-h --help</CODE>
+<DD>Help on usage and options.
+<P>
+
+<DT><CODE>-c --config <I>name</I></CODE>
+<DD>Read an alternate config file. <CODE>""</CODE> means none. <I>name</I> may
+start with <I>%X/</I>, see below.
+<P>
+
+<DT><CODE>-a --addr <I>Z:N/F.P</I></CODE>
+<DD>Set the main address of this program.
+<P>
+
+<DT><CODE>-u --uplink-addr <I>Z:N/F.P</I></CODE>
+<DD>Set the uplink address (boss node) of this program (only useful for
+gateway programs).
+<P>
+
+</DL>
+<P>
+
+The option <CODE>-a</CODE> and <CODE>-u</CODE> also support Internet-style FTN
+addresses, e.g. <CODE>p10.f110.n2452.z2</CODE>. If any of these options is
+specified, all addresses from the config file are disabled.
+</P><P>
+
+All options and config statements which take file or directory names
+accept the following <CODE>%</CODE> abbreviations:
+</P><P>
+
+<DL COMPACT>
+<DT><CODE>%C</CODE>
+<DD>CONFIGDIR
+<DT><CODE>%L</CODE>
+<DD>LIBDIR
+<DT><CODE>%N</CODE>
+<DD>BINDIR
+<DT><CODE>%G</CODE>
+<DD>LOGDIR
+<DT><CODE>%V</CODE>
+<DD>VARDIR
+<DT><CODE>%K</CODE>
+<DD>LOCKDIR
+<DT><CODE>%S</CODE>
+<DD>SPOOLDIR
+<DT><CODE>%B</CODE>
+<DD>BTBASEDIR
+<DT><CODE>%I</CODE>
+<DD>INBOUND
+<DT><CODE>%P</CODE>
+<DD>PINBOUND
+<DT><CODE>%U</CODE>
+<DD>UUINBOUND
+</DL>
+<P>
+
+<A NAME="ftnaf"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC16"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC17"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.1 ftnaf -- Areafix </H2>
+<!--docid::SEC16::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnaf  [<I>-options</I>]  [<I>Z:N/F.P</I>  <I>command</I> ]
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-m --mail</CODE>
+<DD>Process Areafix mail message (RFC) on stdin.
+<P>
+
+<DT><CODE>-r --no-reply</CODE>
+<DD>Don't send reply via mail, write to stdout.
+<P>
+
+<DT><CODE>-n --no-rewrite</CODE>
+<DD>Don't rewrite AREAS.BBS.
+<P>
+
+<DT><CODE>-b --areas-bbs <I>NAME</I></CODE>
+<DD>Use alternate AREAS.BBS.
+<P>
+
+<DT><CODE>-F --filefix</CODE>
+<DD>Run as Filefix program, using FAREAS.BBS.
+<P>
+
+</DL>
+<P>
+
+Commands:
+</P><P>
+
+<DL COMPACT>
+
+  listall                      list all available areas
+  list                         list areas available to node
+  query                        list subscribed areas
+  unlinked                     list unsubscribed areas
+  from Z:N/F.P PASSWORD        set address and password
+  passwd Z:N/F.P PASSWORD
+  password Z:N/F.P PASSWORD
+  +AREA                        subscribe to AREA
+  AREA    
+  subscribe AREA
+  sub AREA
+  -AREA                        unsubscribe from AREA
+  unsubscribe AREA
+  unsub AREA
+  vacation AREA                set vacation flag for AREA
+  &#38;AREA [-options]             create new AREA
+  new AREA [-options]
+  create AREA [-options]
+  ~AREA                        delete AREA
+  delete AREA
+  comment TEXT                 arbitrary comment (ignored)
+  help                         this help
+
+AREA names are not case-sensitive and support shell-style wildcards
+  * ? [a-z] [abc], e.g. COMP.OS.*, [A-D]*.GER
+<DT><CODE>listall</CODE>
+<DD>List all areas.
+<P>
+
+<DT><CODE>list</CODE>
+<DD>List areas available to node.
+<P>
+
+<DT><CODE>query</CODE>
+<DD>List subscribed areas.
+<P>
+
+<DT><CODE>unlinked</CODE>
+<DD>List unsubscribed areas available to node.
+<P>
+
+<DT><CODE>from <I>Z:N/F.P</I> <I>PASSWORD</I></CODE>
+<DD><DT><CODE>passwd <I>Z:N/F.P</I> <I>PASSWORD</I></CODE>
+<DD><DT><CODE>password <I>Z:N/F.P</I> <I>PASSWORD</I></CODE>
+<DD>Set address and password.
+<P>
+
+<DT><CODE>+<I>AREA</I></CODE>
+<DD><DT><CODE><I>AREA</I></CODE>
+<DD><DT><CODE>subscribe <I>AREA</I></CODE>
+<DD><DT><CODE>sub <I>AREA</I></CODE>
+<DD>Subscribe to <I>AREA</I>.
+<P>
+
+<DT><CODE>-<I>AREA</I></CODE>
+<DD><DT><CODE>unsubscribe <I>AREA</I></CODE>
+<DD><DT><CODE>unsub <I>AREA</I></CODE>
+<DD>Unsubscribe from <I>AREA</I>.
+<P>
+
+<DT><CODE>vacation <I>AREA</I></CODE>
+<DD>Set vacation flag for <I>AREA</I>. NOT YET IMPLEMENTED!!!
+<P>
+
+<DT><CODE>&#38;<I>AREA</I>  [<I>-options</I> ]</CODE>
+<DD><DT><CODE>new <I>AREA</I>  [<I>-options</I> ]</CODE>
+<DD><DT><CODE>create <I>AREA</I>  [<I>-options</I> ]</CODE>
+<DD>Create new area. Nodes allowed to create an area must have the <CODE>&#38;</CODE>
+key in their <CODE>passwd</CODE> entry. Allowed <CODE>areas.bbs</CODE> <I>options</I>:
+<CODE>-#</CODE>, <CODE>-p</CODE>, <CODE>-r</CODE>, <CODE>-l </CODE><I>lvl</I>, <CODE>-k </CODE><I>key</I>,
+<CODE>-d </CODE><I>desc</I>, and <CODE>-z </CODE><I>zone</I>.
+<P>
+
+<DT><CODE>~<I>AREA</I></CODE>
+<DD><DT><CODE>delete <I>AREA</I></CODE>
+<DD>Delete <I>AREA</I>. Nodes allowed to deleted an area must have the <CODE>~</CODE>
+key in their <CODE>passwd</CODE> entry.
+<P>
+
+<DT><CODE>comment  <I>text</I></CODE>
+<DD>Arbitrary comment, completely ignored.
+<P>
+
+<DT><CODE>help</CODE>
+<DD>Help on Areafix commands.
+<P>
+
+</DL>
+<P>
+
+All command keywords may be prefixed by <CODE>%</CODE>. <CODE>ftnaf</CODE> also
+recognizes the <CODE>-q</CODE> (= query) and <CODE>-l</CODE> (= list) options
+following the password in the subject header.
+</P><P>
+
+For proper operation <CODE>ftnaf</CODE> requires the <CODE>X-FTN-From</CODE> header
+generated by <CODE>ftn2rfc</CODE>, thus the <CODE>X-FTN</CODE> configuration must
+include the <CODE>f</CODE> flag.
+</P><P>
+
+<A NAME="ftnafmail"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC17"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC18"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.2 ftnafmail -- Areafix Mail Frontend </H2>
+<!--docid::SEC17::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnafmail  [<I>-options</I>]
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-F --filefix</CODE>
+<DD>Run <CODE>ftnaf</CODE> as Filefix program.
+<P>
+
+</DL>
+<P>
+
+This is the setuid mail frontend for <CODE>ftnaf</CODE> to be run from the
+sendmail aliases. DO NOT use <CODE>ftnaf</CODE> directly, as this will result
+in security problems.
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre># Areafix/Filefix - FIDOGATE ftnaf
+areafix: "|/usr/lib/fidogate/ftnafmail"
+areamgr: areafix
+filefix: "|/usr/lib/fidogate/ftnafmail -F"
+filemgr: filefix
+</pre></td></tr></table></P><P>
+
+<A NAME="ftnafpkt"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC18"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC17"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC19"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.3 ftnafpkt -- Areafix packet processor </H2>
+<!--docid::SEC18::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnafpkt  [<I>-options</I>]  [<I>packet</I> ... ]
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-I --in-dir <I>name</I></CODE>
+<DD>Set input directory. Default: PINBOUND
+<P>
+
+<DT><CODE>-O --out-dir <I>name</I></CODE>
+<DD>Set output directory. Default: SPOOLDIR/outpkt
+<P>
+
+<DT><CODE>-l --lock-file</CODE>
+<DD>Create lock file while processing.
+<P>
+
+<DT><CODE>-r --no-reply</CODE>
+<DD>Don't send reply via NetMail.
+<P>
+
+<DT><CODE>-n --no-rewrite</CODE>
+<DD>Don't rewrite AREAS.BBS.
+<P>
+
+<DT><CODE>-b --areas-bbs <I>NAME</I></CODE>
+<DD>Use alternate AREAS.BBS.
+<P>
+
+<DT><CODE>-F --filefix</CODE>
+<DD>Run as Filefix program, using FAREAS.BBS.
+<P>
+
+</DL>
+<P>
+
+This is the packet processor frontend for the FIDOGATE Areafix, which
+doesn't require the Unix mail system for Areafix operation. The best way
+to use <CODE>ftnafpkt</CODE> is via the tosser.
+</P><P>
+
+<CODE>routing</CODE> example:
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>Remap  2:2499/999.*  2:2499/999.101  "Area*"
+#      ^^^^^^^^^^^^  ^^^^^^^^^^^^^^
+#      node addr     pseudo point
+#                    for Areafix
+
+NetMail
+Send  hold  2:2499/999.*
+</pre></td></tr></table></P><P>
+
+<CODE>packing</CODE> example:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>progn  areafix  "/usr/lib/fidogate/ftnafpkt %s"
+pack   areaifx  2:2499/999.101
+</pre></td></tr></table></P><P>
+
+<CODE>runout</CODE> must be run regularly to process messages generated by
+<CODE>ftnafpkt</CODE>.
+</P><P>
+
+<A NAME="ftnafutil"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC19"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC18"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC20"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.4 ftnafutil -- Areafix utility </H2>
+<!--docid::SEC19::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnafutil  [<I>-options</I>]  [<I>command</I> ... ]
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-n --no-rewrite</CODE>
+<DD>Don't rewrite AREAS.BBS.
+<P>
+
+<DT><CODE>-b --areas-bbs <I>NAME</I></CODE>
+<DD>Use alternate AREAS.BBS.
+<P>
+
+<DT><CODE>-F --filefix</CODE>
+<DD>Run as Filefix program, using FAREAS.BBS.
+<P>
+
+<DT><CODE>-O --out-dir <I>name</I></CODE>
+<DD>Set output directory. Default: SPOOLDIR/outpkt
+<P>
+
+</DL>
+<P>
+
+Commands:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>delete</CODE>
+<DD>Delete dead areas from <CODE>areas.bbs</CODE> (no uplink and no downlinks).
+<P>
+
+<DT><CODE>subscribe</CODE>
+<DD>Subscribe to area at uplink, if at least one downlink has subscribed to
+this area (uses the <CODE>-s S/U</CODE> option in <CODE>areas.bbs</CODE>).
+<P>
+
+<DT><CODE>unsubscribe</CODE>
+<DD>Unsubscribe from area at uplink, if no more downlinks are subscribed to
+this area (uses the <CODE>-s S/U</CODE> option in <CODE>areas.bbs</CODE>).
+<P>
+
+</DL>
+<P>
+
+Auto-subscribe/unsubscribe will only be used for areas marked with the
+state option. State <CODE>-s U</CODE> means that the area is not currently
+subscribed at the uplink, <CODE>-s S</CODE> means that the are is subscribed
+at the uplink.
+</P><P>
+
+<A NAME="charsetc"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC20"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC19"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC21"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.5 charsetc -- Character set translation table compiler </H2>
+<!--docid::SEC20::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>charsetc  [<I>-options</I>]  <I>charset.map</I>  <I>charset.bin</I>
+</pre></td></tr></table></P><P>
+
+<A NAME="ffx"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC21"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC20"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC22"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.6 ffx -- Remote Execution via Fido Mailer </H2>
+<!--docid::SEC21::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ffx  [<I>-options</I>]  <I>Z:N/F.P</I>  <I>command</I>
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-b --batch-dir <I>dir</I></CODE>
+<DD>Operate in batch mode, using <I>dir</I>. Control and data files are not
+immediately appended to the node's FLO file, but rather written to a
+separate batch directory SPOOLDIR/out.ZZZ/<I>dir</I>. Implies <CODE>-n</CODE>.
+<P>
+
+<DT><CODE>-B --binkley <I>name</I></CODE>
+<DD>Set Binkley outbound directory.
+<P>
+
+<DT><CODE>-F --flavor <I>flavor</I></CODE>
+<DD>Set flavor of outbound FLO file: <CODE>Hold</CODE>, <CODE>Normal</CODE>,
+<CODE>Direct</CODE>, or <CODE>Crash</CODE>.
+<P>
+
+<DT><CODE>-g --grade <I>grade</I></CODE>
+<DD>Set grade of control and data files to <I>grade</I> (single letter [a-z0-9]).
+<P>
+
+<DT><CODE>-n --nocompression</CODE>
+<DD>Don't compress data files.
+<P>
+
+</DL>
+<P>
+
+<A NAME="ffxmail"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC22"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC21"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC23"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.7 ffxmail -- ffx Frontend for Sending Mail </H2>
+<!--docid::SEC22::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ffxmail  <I>Z:N/F.P</I>  <I>address</I> ...
+</pre></td></tr></table></P><P>
+
+No options.
+</P><P>
+
+<CODE>ffxmail</CODE> calls <CODE>ffx</CODE> in batch mode (<CODE>-b</CODE>), selecting the
+batch directory for the node address. Modify the script
+(<CODE>src/ffx/ffxmail.sh</CODE>) for other addresses/batch directories.
+</P><P>
+
+<A NAME="ffxnews"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC23"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC22"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC24"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.8 ffxnews -- ffx Frontend for Sending News </H2>
+<!--docid::SEC23::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ffxnews  <I>Z:N/F.P</I>
+</pre></td></tr></table></P><P>
+
+No options.
+</P><P>
+
+<CODE>ffxnews</CODE> calls <CODE>ffx</CODE> in batch mode (<CODE>-b</CODE>), selecting the
+batch directory for the node address. Modify the script
+(<CODE>src/ffx/ffxnews.sh</CODE>) for other addresses/batch directories.
+</P><P>
+
+<A NAME="ffxqt"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC24"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC23"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC25"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.9 ffxqt -- Execute ffx Requests </H2>
+<!--docid::SEC24::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ffxqt  [<I>-options</I>]
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-g  --grade <I>grade</I></CODE>
+<DD>Process ffx jobs with <I>grade</I> only. <I>grade</I> must be a single letter.
+<P>
+
+<DT><CODE>-I --inbound <I>name</I></CODE>
+<DD>Select the input directory where the <CODE>f???????.ffx</CODE> control files
+are read from. Default: PINBOUND
+<P>
+
+<DT><CODE>-t --insecure</CODE>
+<DD>Process ffx files without password. Default: ffx file must contain a
+password.
+<P>
+
+</DL>
+<P>
+
+<A NAME="ffxrmail"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC25"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC24"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC26"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.10 ffxrmail -- Rmail Command for FFX </H2>
+<!--docid::SEC25::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ffxrmail  <I>address</I> ...
+</pre></td></tr></table></P><P>
+
+Perl script to be called by <CODE>ffxqt</CODE> for <CODE>rmail</CODE> commands to
+receive Internet mail. This replaces <CODE>/bin/rmail</CODE> (UUCP), calling
+<CODE>/usr/lib/sendmail</CODE> directly with appropiate options.
+</P><P>
+
+<A NAME="runffx"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC26"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC25"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC27"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.11 runffx -- Script for Running FFX Programs </H2>
+<!--docid::SEC26::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>runffx
+</pre></td></tr></table></P><P>
+
+<A NAME="send-ffx"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC27"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC26"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC28"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.12 send-ffx -- Script for Processing News via FFX </H2>
+<!--docid::SEC27::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ffxqt  [<I>hostname</I>]
+</pre></td></tr></table></P><P>
+
+Processes INN news batch file
+<CODE>/var/spool/news/out.going/</CODE><I>hostname</I>.
+</P><P>
+
+<A NAME="ftn2rfc"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC28"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC27"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC29"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.13 ftn2rfc -- FTN-Internet Gateway Program </H2>
+<!--docid::SEC28::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftn2rfc  [<I>-options</I>]  [<I>packet</I> ... ]
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-1 --single-articles</CODE>
+<DD>Write single articles to output files (in <CODE>tmpnews</CODE>), not news
+batches containing several articles (batch is default).
+<P>
+
+<DT><CODE>-I --inbound-dir <I>NAME</I></CODE>
+<DD>Set the input directory for FTN packets. Default: PINBOUND
+<P>
+
+<DT><CODE>-i --ignore-hosts</CODE>
+<DD>Don't bounce unknown hosts (unknown = not registered in <CODE>hosts</CODE>)
+<P>
+
+<DT><CODE>-l --lock-file</CODE>
+<DD>Create lock file while processing.
+<P>
+
+<DT><CODE>-n --no-remove</CODE>
+<DD>Don't remove or rename input packet files, return exit code 1 if
+processing fails.
+<P>
+
+<DT><CODE>-t --insecure</CODE>
+<DD>Operate in insecure mode. All messages containing a To line for gateway
+addressing will be bounced.
+<P>
+
+<DT><CODE>-x --exec-program <I>SCRIPT</I></CODE>
+<DD>Run <I>SCRIPT</I> after processing all FTN packets. Typically this is
+<CODE>%L/ftninpost</CODE>.
+<P>
+
+</DL>
+<P>
+
+<CODE>ftn2rfc</CODE> reads packet files from the input directory or the
+command line and converts the FTN packets to Internet RFC mail and news,
+written as mail and news RFC message files to the directories
+SPOOLDIR/outrfc/mail and SPOOLDIR/outrfc/news, respectively.
+</P><P>
+
+<A NAME="ftnin"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC29"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC28"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC30"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.14 ftnin -- Frontend for <CODE>ftn2rfc</CODE> </H2>
+<!--docid::SEC29::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnin  [<I>-options</I>]
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-n --no-toss</CODE>
+<DD>Don't call <CODE>ftn2rfc</CODE> for processing.
+<P>
+
+<DT><CODE>-x --exec-program <I>SCRIPT</I></CODE>
+<DD>Execute <I>SCRIPT</I> after <CODE>ftn2rfc</CODE> processing, typically
+<CODE>%L/ftninpost</CODE>.
+<P>
+
+</DL>
+<P>
+
+All standard options are passed to the called <CODE>ftn2rfc</CODE>.
+</P><P>
+
+<CODE>ftnin</CODE> looks for mail packets addressed to the gateway addresses
+(all <CODE>Address</CODE>/<CODE>GateAddress</CODE> statements in
+<CODE>fidogate.conf</CODE>) and calls <CODE>ftn2rfc</CODE> for each packet.
+</P><P>
+
+<A NAME="ftninpost"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC30"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC29"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC31"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.15 ftninpost -- <CODE>ftnin</CODE> Post-processing Script </H2>
+<!--docid::SEC30::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftninpost  [<I>-options</I>]
+</pre></td></tr></table></P><P>
+
+This script is run by <CODE>ftn2rfc</CODE> or <CODE>ftnin</CODE>, feeding the output
+in SPOOLDIR/outrfc/mail and SPOOLDIR/outrfc/news to <CODE>sendmail</CODE> and
+<CODE>rnews</CODE>, respectively.
+</P><P>
+
+<A NAME="ftninrecomb"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC31"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC30"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC32"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.16 ftninrecomb -- <CODE>ftnin</CODE> Recombining Script </H2>
+<!--docid::SEC31::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftninrecomb  [<I>-options</I>]
+</pre></td></tr></table></P><P>
+
+If <CODE>FTNInRecombine</CODE> is enabled in <CODE>fidogate.conf</CODE>, this script
+wil be run by <CODE>ftninpost</CODE> to recombine split messages. NOT TESTED
+FOR RELEASE 4.4!!!
+</P><P>
+
+<A NAME="ftnmail"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC32"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC31"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC33"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.17 ftnmail -- <CODE>rfc2ftn</CODE> Setuid Frontend </H2>
+<!--docid::SEC32::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnmail  [<I>-options</I>]  [<I>address</I> ...]
+</pre></td></tr></table></P><P>
+
+Setuid frontend for <CODE>rfc2ftn</CODE>, passes the options
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-a --addr ADDR</CODE>
+<DD>Passed to <CODE>rfc2ftn</CODE> as <CODE>-a ADDR -u ADDR</CODE>.
+<P>
+
+<DT><CODE>-i --ignore-hosts</CODE>
+<DD>Passed to <CODE>rfc2ftn</CODE> as <CODE>-i</CODE>.
+<P>
+
+<DT><CODE>-O --out-dir DIR</CODE>
+<DD>Passed to <CODE>rfc2ftn</CODE> as <CODE>-O %S/DIR</CODE>.
+<P>
+
+</DL>
+<P>
+
+<CODE>ftnmail</CODE> should be used for sendmail mailers. DO NOT use
+<CODE>rfc2ftn</CODE> directly to avoid security problems.
+</P><P>
+
+<A NAME="rfc2ftn"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC33"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC32"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC34"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.18 rfc2ftn -- Internet-Fido Gateway Program </H2>
+<!--docid::SEC33::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>rfc2ftn  [<I>-options</I>]  [<I>address</I> ...]
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-b --news-batch</CODE>
+<DD>Process news batch (implies <CODE>-n</CODE>).
+<P>
+
+<DT><CODE>-B --binkley <I>name</I></CODE>
+<DD>Set Binkley outbound directory.
+<P>
+
+<DT><CODE>-i --ignore-registration</CODE>
+<DD>Do not bounce mail to nodes not registered in HOSTS (if
+<CODE>HostsRestricted</CODE> in <CODE>fidogate.conf</CODE> is enabled).
+<P>
+
+<DT><CODE>-m --max-msg  <I>n</I></CODE>
+<DD>Create new output packet after <I>n</I> messages.
+<P>
+
+<DT><CODE>-n --news-mode</CODE>
+<DD>Process news message in stdin. Default: mail
+<P>
+
+<DT><CODE>-o --out-packet-file  <I>name</I></CODE>
+<DD>Write output to FTN packet file <I>name</I>.
+<P>
+
+<DT><CODE>-O --out-packet-dir  <I>name</I></CODE>
+<DD>Set output directory for FTN packets. Default: SPOOLDIR/outpkt/mail or
+.../news
+<P>
+
+<DT><CODE>-t --to</CODE>
+<DD>Get recipient addresses from To, Cc, Bcc headers instead of command line.
+<P>
+
+<DT><CODE>-w --write-outbound  <I>flav</I></CODE>
+<DD>Write output directly to Binkley .?UT packets in outbound.
+<P>
+
+<DT><CODE>-W --write-crash</CODE>
+<DD>Write only crash mail directly to Binkley .CUT file.
+<P>
+
+</DL>
+<P>
+
+<A NAME="rungate"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC34"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC33"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC35"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.19 rungate -- Script for Running Gateway Programs </H2>
+<!--docid::SEC34::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>rungate
+</pre></td></tr></table></P><P>
+
+<A NAME="send-fidogate"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC35"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC34"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC36"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.20 send-fidogate -- Script for Processing News via FIDOGATE </H2>
+<!--docid::SEC35::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>send-fidogate  [<I>hostname</I>]
+</pre></td></tr></table></P><P>
+
+Processes INN news batch file
+<CODE>/var/spool/news/out.going/</CODE><I>hostname</I>. If <I>hostname</I> is
+omitted the default <CODE>fidogate</CODE> is used.
+</P><P>
+
+<A NAME="ftnhatch"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC36"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC35"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC37"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.21 ftnhatch -- Hatch new file into file area </H2>
+<!--docid::SEC36::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnhatch  [<I>-options</I>]  <I>area</I>  <I>file</I>  "<I>description</I>"
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-b --fareas-bbs <I>NAME</I></CODE>
+<DD>Use alternate FAREAS.BBS.
+<P>
+
+<DT><CODE>-r --replaces <I>FILE</I></CODE>
+<DD>Adds <CODE>Replaces </CODE><I>FILE</I> header to generated tic file.
+<P>
+
+</DL>
+<P>
+
+Please note that the <I>file</I> must already reside in the directory for
+the file <I>area</I>. Copying and hatching a new file to a file area is not
+yet implemented.
+</P><P>
+
+<A NAME="ftntick"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC37"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC36"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC38"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.22 ftntick -- Process incoming TIC files </H2>
+<!--docid::SEC37::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftntick  [<I>-options</I>]
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-b --fareas-bbs <I>file</I></CODE>
+<DD>Use alternate FAREAS.BBS.
+<P>
+
+<DT><CODE>-I --inbound <I>dir</I></CODE>
+<DD>Use alternate inbound directory.
+<P>
+
+<DT><CODE>-t --insecure</CODE>
+<DD>Insecure processing, allow TIC files without password.
+<P>
+
+<DT><CODE>-x --exec <I>script</I></CODE>
+<DD>Run <I>script</I> after sucessfully processing the TIC file. The one and
+only argument to <I>script</I> is the full path name of the TIC file.
+<P>
+
+</DL>
+<P>
+
+<A NAME="ftntickpost"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC38"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC37"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC39"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.23 ftntickpost -- ftntick Post-processing Script </H2>
+<!--docid::SEC38::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftntickpost  [<I>-options</I>]  <I>file.tic</I>
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+</DL>
+<P>
+
+NOT YET COMPLETELY IMPLEMENTED! Currently the script is only a skeleton
+with features such as announcement postings and mails to be added in the 
+future.
+</P><P>
+
+<A NAME="ftn2ftn"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC39"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC38"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC40"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.24 ftn2ftn -- FTN-FTN NetMail Gateway Program </H2>
+<!--docid::SEC39::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftn2ftn  [<I>-options</I>]  [<I>packet</I> ... ]
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-A --address-a <I>Z:N/F.P</I></CODE>
+<DD>Set FTN address in network A.
+<P>
+
+<DT><CODE>-B --address-b <I>Z:N/F.P</I></CODE>
+<DD>Set FTN address in network B.
+<P>
+
+<DT><CODE>-o --out-packet-file <I>NAME</I></CODE>
+<DD>Set output packet file name.
+<P>
+
+<DT><CODE>-O --out-packet-dir <I>NAME</I></CODE>
+<DD>Set output packet directory.
+<P>
+
+</DL>
+<P>
+
+This program provides a NetMail gateway between different FTNs, using
+the (somewhat) standard "User Name%Z:N/F.P" addressing in the FTN from
+and to fields.
+</P><P>
+
+If no <I>packet</I> is given on the command line, <CODE>ftn2ftn</CODE> looks for
+packets addressed to the gateway addresses (A and B) in the Binkley
+outbound. Both gateway addresses must be specified with the <CODE>-A</CODE> and
+<CODE>-B</CODE> options.
+</P><P>
+
+If a <I>packet</I> name is passed on the command line, <CODE>ftn2ftn</CODE> will
+gate this to the other network A. The gateway address (sender of the mails
+in network A) is set with <CODE>-A</CODE> option.
+</P><P>
+
+<A NAME="ftnexpire"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC40"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC39"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC41"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.25 ftnexpire -- Utility for expiring MSGID history database </H2>
+<!--docid::SEC40::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnexpire  [<I>-options</I>]
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-m --maxhistory <I>days</I></CODE>
+<DD>Set the maximum number of days for entries in the history database. The
+<I>days</I> argument supports decimal fractions.
+<P>
+
+<DT><CODE>-w --wait</CODE>
+<DD>Wait for history database lock file to be released. Default: exit, if
+history database is locked.
+<P>
+
+</DL>
+<P>
+
+This utility expires and rebuilds the MSGID history database, similar to
+expire for the INN news system.
+</P><P>
+
+If the MSGID history database dupe check is used, <CODE>ftnexpire</CODE> must
+be run regularly to keep the history database optimized (if not,
+accessing the history database will become very slow!). A daily cron
+job is just the right thing.
+</P><P>
+
+<A NAME="ftnpack"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC41"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC40"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC42"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.26 ftnpack -- Pack Fido ArcMail Packets </H2>
+<!--docid::SEC41::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnpack  [<I>-options</I>]  [<I>packet</I> ... ]
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-B --binkley <I>dir</I></CODE>
+<DD>Set Binkley outbound directory.
+<P>
+
+<DT><CODE>-f --ffx <I>Z:N/F.P</I></CODE>
+<DD>Pack ffx control and data files for FTN address <I>Z:N/F.P</I>. You must
+also set the appropiate input directory with the <CODE>-I</CODE> option.
+<P>
+
+<DT><CODE>-F --file-dir <I>dir</I></CODE>
+<DD>Set directory where <CODE>ftnpack</CODE> looks for file attachments. Should
+be the appropiate inbound directory, see also the <CODE>runtoss</CODE>
+script. If this option is not specified, no file attachments are
+processed.
+<P>
+
+If <CODE>-F /</CODE> is specified, <CODE>ftnpack</CODE> accepts a complete path name
+in the subject and doesn't search the directory. Warning: this option
+compromises security to some degree, because it allows <B>any</B> user to
+send <B>any</B> file readable by the user id running the tosser and
+mailer!!!
+</P><P>
+
+<DT><CODE>-g --grade <I>grade</I></CODE>
+<DD>Only process packets with <I>grade</I> (single letter).
+<P>
+
+<DT><CODE>-I --in-dir <I>dir</I></CODE>
+<DD>Set input directory. Default: %S/toss/route
+<P>
+
+<DT><CODE>-O --out-dir <I>dir</I></CODE>
+<DD>Set directory for temporary packets. Default: %S/toss/pack. This
+is the directory, where packets to be put into arcmail archives will be
+created.
+<P>
+
+<DT><CODE>-l --lock-file</CODE>
+<DD>Create lock file while processing.
+<P>
+
+<DT><CODE>-m --maxarc <I>size</I></CODE>
+<DD>Set maximum size of an archive to <I>size</I> KByte. If an existing
+ArcMail archive exceeds this size, <CODE>ftnpack</CODE> creates a new one.
+<P>
+
+<DT><CODE>-p --packing-file <I>name</I></CODE>
+<DD>Read alternate <CODE>packing</CODE> config file. Default: %C/packing
+<P>
+
+<DT><CODE>-P --pkt</CODE>
+<DD>Process *.pkt files in the input directory. Default: output files of
+<CODE>ftnroute</CODE>.
+<P>
+
+</DL>
+<P>
+
+<A NAME="ftnroute"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC42"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC41"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC43"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.27 ftnroute -- Route Fido Mail Packets </H2>
+<!--docid::SEC42::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnroute  [<I>-options</I>]  [<I>packet</I> ... ]
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-g --grade <I>grade</I></CODE>
+<DD>Only process packets with <I>grade</I> (single letter).
+<P>
+
+<DT><CODE>-I --in-dir <I>name</I></CODE>
+<DD>Set input directory. Default: %S/toss/toss
+<P>
+
+<DT><CODE>-O --out-dir <I>name</I></CODE>
+<DD>Set output directory. Default: %S/toss/route
+<P>
+
+<DT><CODE>-l --lock-file</CODE>
+<DD>Create lock file while processing.
+<P>
+
+<DT><CODE>-r --routing-file <I>name</I></CODE>
+<DD>Read alternate <CODE>routing</CODE> config file. Default: %C/routing
+<P>
+
+<DT><CODE>-M --maxopen <I>n</I></CODE>
+<DD>Set maximum number of concurrently open packet filess to
+<I>n</I>. Default: <CODE>MaxOpenFiles</CODE> config
+<P>
+
+</DL>
+<P>
+
+<A NAME="ftntoss"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC43"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC42"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC44"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.28 ftntoss -- Toss Fido Mail Packets </H2>
+<!--docid::SEC43::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftntoss  [<I>-options</I>]  [<I>packet</I> ... ]
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-d --no-dupecheck</CODE>
+<DD>Disabled dupe check (if <CODE>DupeCheck</CODE> is enabled in
+<CODE>config.main</CODE>).
+<P>
+
+<DT><CODE>-g --grade <I>grade</I></CODE>
+<DD>Only process packets with <I>grade</I> (single letter).
+<P>
+
+<DT><CODE>-I --in-dir <I>name</I></CODE>
+<DD>Set input directory. Default: PINBOUND
+<P>
+
+<DT><CODE>-O --out-dir <I>name</I></CODE>
+<DD>Set output directory. Default: %S/toss/toss
+<P>
+
+<DT><CODE>-l --lock-file</CODE>
+<DD>Create lock file while processing.
+<P>
+
+<DT><CODE>-t --insecure</CODE>
+<DD>Insecure EchoMail tossing, don't check sender against nodes listed in
+AREAS.BBS.
+<P>
+
+<DT><CODE>-n --toss-all</CODE>
+<DD>Toss all EchoMail, even messages not addressed to one of our own AKAs
+(most probably routed EchoMail).
+<P>
+
+<DT><CODE>-p --passthru</CODE>
+<DD>Make all areas passthru (see also <CODE>#</CODE> in areas.bbs).
+<P>
+
+<DT><CODE>-r --routing-file <I>name</I></CODE>
+<DD>Read alternate <CODE>routing</CODE> config file. Default: %C/routing
+<P>
+
+<DT><CODE>-s --strip-attribute</CODE>
+<DD>Strip Hold and Crash attribute from incoming NetMails.
+<P>
+
+<DT><CODE>-m --maxmsg <I>n</I></CODE>
+<DD>Flush/close all output packet files after reading <I>n</I> messages.
+<P>
+
+<DT><CODE>-x --maxmsg-exit <I>n</I></CODE>
+<DD>Flush/close all output packet files after reading <I>n</I> messages and
+processing the current input packet, then exit.
+<P>
+
+<DT><CODE>-M --maxopen <I>n</I></CODE>
+<DD>Set maximum number of concurrently open packet filess to
+<I>n</I>. Default: <CODE>MaxOpenFiles</CODE> config
+<P>
+
+<DT><CODE>-b --fareas-bbs <I>file</I></CODE>
+<DD>Use alternate areas.bbs.
+<P>
+
+</DL>
+<P>
+
+<A NAME="runin"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC44"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC43"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC45"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.29 runin -- Script for Processing Inbound Packets </H2>
+<!--docid::SEC44::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>runin
+</pre></td></tr></table></P><P>
+
+No options.
+</P><P>
+
+Runs the tosser (unpack, toss, tick) for the inbound directories:
+</P><P>
+
+<UL>
+
+<LI>
+Insecure inbound
+<LI>
+Secure inbound
+<LI>
+UUEncoded mail inbound
+<LI>
+FTP inbound
+<P>
+
+</UL>
+<P>
+
+All log messages are written to %G/log-in.
+</P><P>
+
+Edit the script <CODE>src/toss/runin.sh</CODE> to meet your local
+requirements.
+</P><P>
+
+<A NAME="runmail"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC45"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC44"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC46"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.30 runmail -- Script for Processing Gateway Mail Output Packets </H2>
+<!--docid::SEC45::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>runmail
+</pre></td></tr></table></P><P>
+
+No options.
+</P><P>
+
+Runs the tosser for the gateway mail output directory %S/outpkt/mail,
+all log messages are written to %G/log-out.
+</P><P>
+
+Edit the script <CODE>src/toss/runmail.sh</CODE> to meet your local
+requirements.
+</P><P>
+
+<A NAME="runnews"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC46"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC45"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC47"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.31 runnews -- Script for Processing Gateway News Output Packets </H2>
+<!--docid::SEC46::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>runnews
+</pre></td></tr></table></P><P>
+
+No options.
+</P><P>
+
+Runs the tosser for the gateway news output directory %S/outpkt/news,
+all log messages are written to %G/log-out.
+</P><P>
+
+Edit the script <CODE>src/toss/runout.sh</CODE> to meet your local
+requirements.
+</P><P>
+
+<A NAME="runout"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC47"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC46"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC48"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.32 runout -- Script for Processing Miscellaneous Output Packets </H2>
+<!--docid::SEC47::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>runout
+</pre></td></tr></table></P><P>
+
+No options.
+</P><P>
+
+Runs the tosser for the miscellaneous (ftnafpkt, ftnafutil, ftnoutpkt)
+output directory %S/outpkt, all log messages are written to %G/log-out.
+</P><P>
+
+Edit the script <CODE>src/toss/runout.sh</CODE> to meet your local
+requirements.
+</P><P>
+
+<A NAME="runtoss"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC48"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC47"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC49"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.33 runtoss -- Script for Running the Tosser Programs </H2>
+<!--docid::SEC48::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>runtoss  <I>type</I>
+</pre></td></tr></table></P><P>
+
+No options.
+</P><P>
+
+Types:
+</P><P>
+
+Please the the script source code <CODE>src/toss/runtoss.sh</CODE> for
+available <I>type</I> parameters and feel free to adapt it to your
+requirements.
+</P><P>
+
+<A NAME="rununpack"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC49"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC48"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC50"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.34 rununpack -- Script for Unpacking Inbound ArcMail Archives </H2>
+<!--docid::SEC49::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>rununpack  <I>type</I>
+</pre></td></tr></table></P><P>
+
+No options.
+</P><P>
+
+Types:
+</P><P>
+
+Please see the script source code <CODE>src/toss/rununpack.sh</CODE> for
+available <I>type</I> parameters and feel free to adapt it to your
+requirements.
+</P><P>
+
+Edit the script if necessary to change unpacker program names. The
+required programs are <CODE>unzip</CODE>, <CODE>unarj</CODE>, <CODE>lha</CODE>,
+<CODE>zoo</CODE>, <CODE>arc</CODE>, <CODE>rar</CODE>.
+</P><P>
+
+<A NAME="ftnbsy"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC50"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC49"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC51"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.35 ftnbsy -- Create/delete Binkley Busy Filess </H2>
+<!--docid::SEC50::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnbsy  [<I>-options</I>]  <I>Z:N/F.P</I> ...
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-t --test</CODE>
+<DD>Test for existing busy file.
+<P>
+
+<DT><CODE>-l --lock</CODE>
+<DD>Create busy file, fail if it already exists.
+<P>
+
+<DT><CODE>-u --unlock</CODE>
+<DD>Remove busy file.
+<P>
+
+<DT><CODE>-w --wait</CODE>
+<DD>Wait for busy file to be released (when <CODE>-l</CODE> option is given).
+<P>
+
+</DL>
+<P>
+
+<A NAME="ftnconfig"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC51"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC50"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC52"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.36 ftnconfig -- Retrieve information from FIDOGATE config files </H2>
+<!--docid::SEC51::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnconfig  [<I>-options</I>]  <I>parameter</I>
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-l --no-newline</CODE>
+<DD>No output of newline after the parameter value.
+<P>
+
+<DT><CODE>-n --no-output</CODE>
+<DD>No output, exit code only.
+<P>
+
+<DT><CODE>-t --test-only</CODE>
+<DD>Output <CODE>1</CODE> if the parameter is present, <CODE>0</CODE> if not.
+<P>
+
+</DL>
+<P>
+
+Special parameters:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>=fqdn</CODE>
+<DD>Fully qualified domain name.
+<P>
+
+<DT><CODE>=hostname</CODE>
+<DD>Hostname.
+<P>
+
+<DT><CODE>=domainname</CODE>
+<DD>Domainname.
+<P>
+
+<DT><CODE>=hostsdomain</CODE>
+<DD>Domain for entries in <CODE>hosts</CODE> config files.
+<P>
+
+</DL>
+<P>
+
+<A NAME="ftnfattach"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC52"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC51"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC53"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.37 ftnfattach -- Outbound file attaches </H2>
+<!--docid::SEC52::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnfattach  [<I>-options</I>]  <I>Z:N/F.P</I>  <I>file</I> ...
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-B --binkley <I>name</I></CODE>
+<DD>Set Binkley outbound directory.
+<P>
+
+<DT><CODE>-F --flavor <I>name</I></CODE>
+<DD>Set flavor of outbound FLO file to <I>name</I>: <CODE>Hold</CODE>,
+<CODE>Normal</CODE>, <CODE>Direct</CODE>, or <CODE>Crash</CODE>.
+<P>
+
+</DL>
+<P>
+
+The file name may start with <CODE>^</CODE> or <CODE>#</CODE>, indicating that
+the file should be deleted or truncated, respectively, after sending.
+</P><P>
+
+<A NAME="ftnflo"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC53"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC52"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC54"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.38 ftnflo -- Process Binkley Outbound FLO Files and Attachments </H2>
+<!--docid::SEC53::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnflo  [<I>-options</I>]  <I>Z:N/F.P</I>  ...
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-B --binkley <I>name</I></CODE>
+<DD>Set Binkley outbound directory.
+<P>
+
+<DT><CODE>-l --list</CODE>
+<DD>List entries in FLO file.
+<P>
+
+<DT><CODE>-n --no-delete</CODE>
+<DD>Don't delete FLO entries after processing.
+<P>
+
+<DT><CODE>-x --exec <I>command</I></CODE>
+<DD>Execute <I>command</I> for every FLO entry, delete entry after successful
+processing. <CODE>%s</CODE> in <I>command</I> is replaced with the filename of
+the FLO entry.
+<P>
+
+</DL>
+<P>
+
+The file name may start with <CODE>^</CODE> or <CODE>#</CODE>, indicating that
+the file should be deleted or truncated, respectively, after sending.
+</P><P>
+
+<A NAME="ftnlock"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC54"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC53"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC55"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.39 ftnlock -- Create/Remove Lock Files </H2>
+<!--docid::SEC54::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnlock  [<I>-options</I>]  [<I>NAME</I>]  [<I>ID</I>]
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-l --lock</CODE>
+<DD>Create lock file <I>NAME</I>, fail if it already exists (exit code=2). If
+<I>NAME</I> is not specified, the default <CODE>ftnlock</CODE> is used. The
+optional parameter <I>ID</I> specifies the contents of the lock file, the
+default is <CODE>-none-</CODE>.
+<P>
+
+<DT><CODE>-u --unlock</CODE>
+<DD>Remove lock file <I>NAME</I>.
+<P>
+
+<DT><CODE>-w --wait</CODE>
+<DD>Wait while creating lock file. Default: immediately return, if the lock
+file can't be created because it already exists.
+<P>
+
+</DL>
+<P>
+
+Lock files are created as %K/<I>NAME</I>.
+</P><P>
+
+<A NAME="ftnlog"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC55"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC54"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC56"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.40 ftnlog -- Write Message to Log File </H2>
+<!--docid::SEC55::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnlog  [<I>-options</I>]  <I>message text</I>
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-p --program <I>NAME</I></CODE>
+<DD>Set program name for logging.
+<P>
+
+</DL>
+<P>
+
+This program is used to write a log message from a shell script. The log
+file name may be specified with the <CODE>FIDOGATE_LOGFILE</CODE> environment
+variable.
+</P><P>
+
+<A NAME="ftnoutpkt"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC56"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC55"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC57"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.41 ftnoutpkt -- Create Fido Message Packets </H2>
+<!--docid::SEC56::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnoutpkt  [<I>-options</I>]  "<I>user name</I> @ <I>z:n/f.p</I>"  "..."
+</pre></td></tr></table></P><P>
+
+Options:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-f --from "<I>user name</I> @ <I>z:n/f.p</I>"</CODE>
+<DD>Set sender Fido address.
+<P>
+
+<DT><CODE>-s --subject "<I>subject</I>"</CODE>
+<DD>Set message subject.
+<P>
+
+<DT><CODE>-O --out-dir <I>dir</I></CODE>
+<DD>Set output directory. Default: %S/outpkt
+<P>
+
+</DL>
+<P>
+
+This utility can be used to create native Fido messages. The message
+body text is read from stdin.
+</P><P>
+
+<A NAME="ftnseq"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC57"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC56"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC58"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.42 ftnseq -- Command Line Interface to Sequencer Files </H2>
+<!--docid::SEC57::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ftnseq  [<I>-options</I>]  <I>sequencer</I>
+</pre></td></tr></table></P><P>
+
+This utilitity increments the named <I>sequencer</I> file and prints the
+resulting value to stdout. Useful for accessing FIDOGATE sequencer files
+from perl and shell scripts.
+</P><P>
+
+<A NAME="pktdebug"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC58"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC57"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC59"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.43 pktdebug -- FTN mail packet debugger </H2>
+<!--docid::SEC58::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>pktdebug  [<I>-options</I>]  <I>file</I> ...
+</pre></td></tr></table></P><P>
+
+Options (standard options not supported):
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-m --msg-header</CODE>
+<DD>Print message header.
+<P>
+
+<DT><CODE>-t --msg-text</CODE>
+<DD>Print message text. Implies <CODE>-m</CODE>.
+<P>
+
+<DT><CODE>-s --short</CODE>
+<DD>Print contents in short format: packet from/to address and number of
+NetMail and EchoMail messages.
+<P>
+
+<DT><CODE>-v --verbose</CODE>
+<DD>Increase verbose/debug level.
+<P>
+
+<DT><CODE>-h --help</CODE>
+<DD>Help on <CODE>pktdebug</CODE> usage.
+<P>
+
+</DL>
+<P>
+
+This utility displays the packet header and optionally the message
+header and message body contents.
+</P><P>
+
+See also the <CODE>util/pktmore</CODE> utitility, which pipes the output of
+<CODE>pktdebug</CODE> to <CODE>$PAGER</CODE>.
+</P><P>
+
+<A NAME="pktmore"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC59"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC58"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC60"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.44 pktmore -- Pager frontend for <CODE>pktdebug</CODE> </H2>
+<!--docid::SEC59::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>pktmore  <I>file</I> ...
+</pre></td></tr></table></P><P>
+
+<CODE>pktmore</CODE> uses the environment variable <CODE>PAGER</CODE> for the pager
+program. Default: <CODE>more</CODE>
+</P><P>
+
+<A NAME="sumcrc"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC60"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC59"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 3.45 sumcrc -- CRC Checksum Utility </H2>
+<!--docid::SEC60::-->
+<P>
+
+Usage:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>sumcrc  [<I>-options</I>]  <I>file</I> ...
+</pre></td></tr></table></P><P>
+
+Options (standard options not supported):
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>-1 --skip-first-line</CODE>
+<DD>Skip first line in <I>file</I>. Useful for computing nodelist CRC.
+<P>
+
+<DT><CODE>-3 --crc32</CODE>
+<DD>Compute 32 bit CRC checksum, using the standard 32 bit polynomial (same as
+in ZModem, ZIP). Default: 16 bit CRC CCITT polynomial.
+<P>
+
+<DT><CODE>-6 --crc16</CODE>
+<DD>Use alternate 16 bit CRC16 polynomial.
+<P>
+
+<DT><CODE>-x --hex</CODE>
+<DD>Output CRC value in hex. Default: decimal
+<P>
+
+<DT><CODE>-z --eof-at-ctrl-z</CODE>
+<DD>The Ctrl-Z character (<CODE>^Z</CODE>) indicates end-of-file (MSDOS kludge).
+<P>
+
+<DT><CODE>-v --verbose</CODE>
+<DD>Increase verbose/debug level.
+<P>
+
+<DT><CODE>-h --help</CODE>
+<DD>Help on <CODE>sumcrc</CODE> usage.
+<P>
+
+</DL>
+<P>
+
+Use <CODE>sumcrc -1z</CODE> to compute the checksum for a standard Fido
+nodelist. See also the nodelist processing scripts in
+<CODE>scripts/nodelist/nl-*</CODE>.
+</P><P>
+
+<A NAME="Config files"></A>
+</P><P>
+
+<HR SIZE="6">
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC15"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC16"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<BR>  
+<FONT SIZE="-1">
+This document was generated
+by <I>Martin Junius</I> on <I>August, 26  2004</I>
+using <A HREF="http://www.mathematik.uni-kl.de/~obachman/Texi2html
+"><I>texi2html</I></A>
+
+</BODY>
+</HTML>

@@ -1,0 +1,40 @@
+-*- Indented-Text-Mode -*-
+
+(Future ;-) FIDOGATE debug() level standard:
+
+
+0	* no debug messages
+
+1	* log() messages
+	* interactive messages
+
+2	* packet grade, type, flavor, node
+
+3	* packet header
+	* matching routing/packing commands
+
+4	* detailed packet processing
+	* detailed processing of packet and archive files
+	* commands executed
+	* MSGID history expire parameters
+	* areas.bbs file processing
+
+5	* messages processed (interesting information)
+
+6	* message header
+
+7	* detailed message processing
+	* MSGID records in history
+	* lock files
+
+8	* configuration
+	  - standard config stuff
+	  - optional config statements in various programs	  
+
+9	* internal processing
+
+14	* config files being read
+
+15	* stuff being read from config files (parsed)
+
+16	* lines read from config files

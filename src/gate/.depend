@@ -1,0 +1,20 @@
+ftn2rfc.o: ftn2rfc.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+ftnin.o: ftnin.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+ftnmail.o: ftnmail.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h
+rfc2ftn.o: rfc2ftn.c ../../src/include/fidogate.h ../../config.h \
+ ../../src/include/paths.h ../../src/include/declare.h \
+ ../../src/include/node.h ../../src/include/packet.h \
+ ../../src/include/structs.h ../../src/include/prototypes.h \
+ ../../src/include/cf_funcs.h

@@ -1,0 +1,67 @@
+ai-pl9.0, Fidogate 4.2.9, 12 Jun 1998, Andy Igoshin <ai@vsu.ru>
+
+Source is available at:
+ftp://ftp.vsu.ru/pub/linux/system/fido/fidogate-4.2.9-ai-pl9.0.tar.gz
+
+
+    Extended aliases are supported. This means that it is not necessary from
+now to map a node or point address _all_ internet domain. A transparent mapping
+of Fidonet <-> Internet addresses is performed.
+
+    The presence of full domain name `user@do.main' in the LHS in `aliases' file
+means that this rule will be processed by the `extended' aliasing algorithm.
+First, an `original' aliasing algorithm is executed; if it fails, then `extended'
+aliasing algorithm is used. One exception from this rule is in the case when
+one particular domain is present in both `aliases' file (as extended alias) and
+in `hosts' file. In this case, rules in `aliases' have higher priority, if, of
+course, the search using extended aliases succeeds.
+
+    For example, if we have the following rule in the `aliases' file,
+
+aliases:
+vk@crk.vgts.ru	2:5025/8.32		"Vladislav Kuleshenko"
+
+and there will be nothing about these addresses in the `hosts' file, then it
+will mean that in messages from `vk@crk.vgts.ru' to Fidonet, this address
+will be substituted with `Vladislav Kuleshenko @ 2:5025/8.32'. And vice versa,
+for messages from Fidonet to Internet.
+It is allowed to specify several rules:
+
+aliases:
+vk@crk.vgts.ru	2:5025/8.32		"Vladislav Kuleshenko"
+vk@crk.vgts.ru	2:5025/8.32		"Sysop"
+
+I.e., we mapped this point address _only_ to a _user_ of `crk.vgts.ru' domain,
+but not to the whole domain, as it has been if we have used `hosts' file. If
+there are no more rules for these addresses, then all the rest addresses of
+`crk.vgts.ru' domain will be mapped to the address of the default gate.
+
+    One can add arbitrary number of such rules to the `aliases' file.
+
+    The following example is very interesting, because it demonstrates the
+reasons of extensions to Fidogate's aliases. :)
+
+aliases:
+vk@crk.vgts.ru	2:5025/8.32		"Vladislav Kuleshenko"
+vk@crk.vgts.ru	2:5025/8.32		"Sysop"
+reb@ctrl.vsu.ru	2:5025/8.32		"Eugene Ryzhkov"
+pk		2:5025/74		"Paul Koltakov"
+
+hosts:
+2:5025/74	crk.vgts.ru.		-a
+2:5025/127	ctrl.vsu.ru.		-a
+
+In this case, if a message will be from any user under `@crk.vgts.ru' domain,
+except `vk', then it's address after gating to Fidonet will be set to `2:5025/74';
+but `vk@crk.vgts.ru' will be transformed to `2:5025/8.32'. Naturally, nothing stops
+one to add more lines to the `aliases' file, which describe rules for other users
+of domen/node crk.vgts.ru - 2:5025/74. For domen/node ctrl.vsu.ru - 2:5025/127
+in the above example, all is analogous. Let's repeat once again that Fidonet ->
+Internet transformation also uses these these algorithms. Note: the description
+of the `-a' option is in the first n. in the README.ai.
+
+    I'd like to stress that nothing stops one to use an `original' and `extended'
+models of aliasing together, as it is shown, in particular, in the above example.
+
+
+				    Andy Igoshin  <ai@vsu.ru>

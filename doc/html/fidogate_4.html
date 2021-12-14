@@ -1,0 +1,1767 @@
+<HTML>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- Created on August, 26  2004 by texi2html 1.64 -->
+<!-- 
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Olaf Bachmann <obachman@mathematik.uni-kl.de>
+Send bugs and suggestions to <texi2html@mathematik.uni-kl.de>
+ 
+-->
+<HEAD>
+<TITLE>FIDOGATE: Config files</TITLE>
+
+<META NAME="description" CONTENT="FIDOGATE: Config files">
+<META NAME="keywords" CONTENT="FIDOGATE: Config files">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<META NAME="Generator" CONTENT="texi2html 1.64">
+
+</HEAD>
+
+<BODY LANG="" BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#0000FF" VLINK="#800080" ALINK="#FF0000">
+
+<A NAME="SEC61"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC60"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC62"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_3.html#SEC60"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC62"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H1> 4. FIDOGATE Config Files </H1>
+<!--docid::SEC61::-->
+<P>
+
+FIDOGATE uses the following config files:
+</P><P>
+
+<BLOCKQUOTE><TABLE BORDER=0 CELLSPACING=0> 
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC62">4.1 Main Configuration File</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Main configuration file</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC63">4.2 <CODE>hosts</CODE> FTN Address to Host Name Conversion</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">hosts FTN address to host name conversion</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC64">4.3 <CODE>aliases</CODE> User Aliases</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">aliases user aliases</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC65">4.4 <CODE>areas</CODE> FTN Area to Newsgroup Conversion</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">areas FTN area to newsgroup conversion</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC66">4.5 Bounce Messages of <CODE>ftn2rfc</CODE></A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Bounce messages of <CODE>ftn2rfc</CODE></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC67">4.6 <CODE>passwd</CODE> Password Config File</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">passwd password config file</TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC68">4.7 <CODE>routing</CODE> Config File</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">routing file for <CODE>ftntoss</CODE> and <CODE>ftnroute</CODE></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC69">4.8 <CODE>packing</CODE> Config File</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">packing file for <CODE>ftnpack</CODE></TD></TR>
+<TR><TD ALIGN="left" VALIGN="TOP"><A HREF="fidogate_4.html#SEC70">4.9 <CODE>areas.bbs</CODE> EchoMail Distribution</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">areas.bbs EchoMail distribution</TD></TR>
+</TABLE></BLOCKQUOTE>
+<P>
+
+For all config files, a line starting with (some white space and)
+<CODE>#</CODE> character is a comment and as well as an empty line completely
+ignored.
+</P><P>
+
+All config files (with the execption of <CODE>areas.bbs</CODE> support an
+<CODE>include</CODE> command for reading in other config files. <CODE>include</CODE>
+must be the first keyword on the line, the filename is the next
+argument.
+</P><P>
+
+All options and config statements which take file or directory names as
+arguments accept the following <CODE>%</CODE> abbreviations:
+</P><P>
+
+<DL COMPACT>
+<DT><CODE>%C</CODE>
+<DD>CONFIGDIR
+<DT><CODE>%L</CODE>
+<DD>LIBDIR
+<DT><CODE>%N</CODE>
+<DD>BINDIR
+<DT><CODE>%G</CODE>
+<DD>LOGDIR
+<DT><CODE>%V</CODE>
+<DD>VARDIR
+<DT><CODE>%K</CODE>
+<DD>LOCKDIR
+<DT><CODE>%S</CODE>
+<DD>SPOOLDIR
+<DT><CODE>%B</CODE>
+<DD>BTBASEDIR
+<DT><CODE>%I</CODE>
+<DD>INBOUND
+<DT><CODE>%P</CODE>
+<DD>PINBOUND
+<DT><CODE>%U</CODE>
+<DD>UUINBOUND
+</DL>
+<P>
+
+<A NAME="Config"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC62"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC63"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC62"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 4.1 Main Configuration File </H2>
+<!--docid::SEC62::-->
+<P>
+
+<CODE>fidogate.conf</CODE> is the main configuration file for all FIDOGATE
+programs.
+</P><P>
+
+NOTE: the new single configuration file replaces the different
+configuration files <CODE>config.*</CODE> and <CODE>*.conf</CODE> of versions prior
+to 4.3.0.
+</P><P>
+
+The format of <CODE>fidogate.conf</CODE> is:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre><I>keyword</I> [ <I>arg ...</I> ]
+</pre></td></tr></table></P><P>
+
+Keywords and arguments may be quoted in <CODE>""</CODE>, keywords are
+case-insensitive.
+</P><P>
+
+See <CODE>examples/orodruin/fidogate.conf</CODE> for an up-to-date commented
+version of the new config file.
+</P><P>
+
+Common configuration:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>include <I>file</I></CODE>
+<DD>Include another config file, may be nested.
+<P>
+
+<DT><CODE>ConfigDir <I>directory</I></CODE>
+<DD>Directory for configuration files (default specified in
+<CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>LibDir <I>directory</I></CODE>
+<DD>Directory for FIDOGATE-internal binaries and support files (default
+specified in <CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>BinDir <I>directory</I></CODE>
+<DD>Directory for FIDOGATE user binaries and scripts (default specified in
+<CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>LogDir <I>directory</I></CODE>
+<DD>Directory for log files (default specified in <CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>VarDir <I>directory</I></CODE>
+<DD>Directory for variable state files such as <CODE>areas.bbs</CODE>,
+<CODE>fareas.bbs</CODE>, <CODE>history</CODE> (default specified in
+<CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>LockDir <I>directory</I></CODE>
+<DD>Directory for lock files (default specified in <CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>SpoolDir <I>directory</I></CODE>
+<DD>Internal spool directory for temporary files (default specified in
+<CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>BTBaseDir <I>directory</I></CODE>
+<DD>The BinkleyTerm-style outbound <B>base</B> directory, to be specified
+without the actual <CODE>out.</CODE><I>nnn</I> zone directories (default
+specified in <CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>Inbound <I>directory</I></CODE>
+<DD>The BinkleyTerm-style unprotected inbound directory (default specified
+in <CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>PInbound <I>directory</I></CODE>
+<DD>The BinkleyTerm-style protected inbound directory (default specified in
+<CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>UUInbound <I>directory</I></CODE>
+<DD>The BinkleyTerm-style inbound directory for UUENCODEd packets (default
+specified in <CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>FTPInbound <I>directory</I></CODE>
+<DD>The BinkleyTerm-style inbound directory for FTP'ed packets (default
+specified in <CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>Aliases <I>file</I></CODE>
+<DD>Aliases configuration file (default specified in <CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>Areas <I>file</I></CODE>
+<DD>Areas configuration file (default specified in <CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>Hosts <I>file</I></CODE>
+<DD>Registered hosts configuration file (default specified in
+<CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>Passwd <I>file</I></CODE>
+<DD>Password configuration file (default specified in <CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>Packing <I>file</I></CODE>
+<DD>Packing configuration file (default specified in <CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>Routing <I>file</I></CODE>
+<DD>Routing configuration file (default specified in <CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>History <I>file</I></CODE>
+<DD>Dupe check history database file (default specified in <CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>Logfile <I>file</I></CODE>
+<DD>Standard log file (default specified in <CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>CharsetMap <I>file</I></CODE>
+<DD>Charset mapping table file (default specified in <CODE>config.make</CODE>).
+<P>
+
+<DT><CODE>LogFacility <I>facility</I></CODE>
+<DD><DT><CODE>LogLevel <I>level</I></CODE>
+<DD>Facility and level when using syslog for logging (<CODE>LogFile
+syslog</CODE>). NOT YET SUPPORTED: C programs use definition from
+<CODE>config.h</CODE>, syslog support in Perl scripts (which use these
+settings) is currently commented out.
+<P>
+
+<DT><CODE>DosDrive <I>drive</I> <I>directory</I></CODE>
+<DD>OPTIONAL: specify translation of a DOS <I>drive</I> (e.g. <CODE>H:</CODE>) to a
+directory. This is useful, if you keep your outbound on a UNIX server
+and run BinkleyTerm on a DOS client. If one or more <CODE>DosDrive</CODE>
+statements are specified, FIDOGATE will automatically translate file
+attaches to the file names seen by the DOS client. Up to 16
+<CODE>DosDrive</CODE> entries may be specified (<CODE>MAXDOSDRIVE</CODE> from
+<CODE>config.h</CODE>).
+<P>
+
+<DT><CODE>AreasBBS <I>name</I></CODE>
+<DD>Specifies the <CODE>areas.bbs</CODE> EchoMail distribution file.
+<P>
+
+<DT><CODE>FAreasBBS <I>name</I></CODE>
+<DD>Specifies the <CODE>fareas.bbs</CODE> file echo distribution file.
+<P>
+
+</DL>
+<P>
+
+Internet address configuration:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>Hostname <I>name</I></CODE>
+<DD>The host name part of your Internet address.
+<P>
+
+<DT><CODE>Domain <I>name</I></CODE>
+<DD>The domain part of your Internet address.
+<P>
+
+<DT><CODE>HostsDomain <I>name</I></CODE>
+<DD>The domain used for entries in the <CODE>hosts</CODE> config file. Default is
+the same as <CODE>Domain</CODE>.
+<P>
+
+</DL>
+<P>
+
+Fidonet address configuration:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>Address <I>node</I></CODE>
+<DD>The main Fidonet/FTN address (Z:N/F.P). There may be up to 32 <CODE>Address</CODE>
+statements (<CODE>MAXADDRESS</CODE> from <CODE>config.h</CODE>).
+<P>
+
+<DT><CODE>GateAddress <I>node</I></CODE>
+<DD>OPTIONAL: the Fidonet/FTN address of your gate, must be in the same
+order as the corresponding <CODE>Address</CODE> statements. There may be up to
+32 <CODE>GateAddress</CODE> statements.
+<P>
+
+If you're operating a Fido node, you may want to use a point addresse
+for your gateway to avoid name problems with local users and the
+gateway. If you're operating an official gateway in Fidonet or an
+Othernet, you normally have a separate node address for the gateway.
+</P><P>
+
+<DT><CODE>Zone <I>zone</I> <I>domain</I> <I>ftndomain</I> <I>out</I></CODE>
+<DD>Specifies Internet domain <I>domain</I>, FTN domain <I>ftndomain</I>,
+and outbound directory <I>out</I> (relative to <CODE>BTBaseDir</CODE>) for the
+FTN zone <I>zone</I>. <I>zone</I> may be <CODE>default</CODE>, then this is the
+default entry for not explicitely specified zones. Up to 32 <CODE>Zone</CODE>
+entries may be specified (<CODE>MAXADDRESS</CODE> from <CODE>config.h</CODE>).
+<P>
+
+The gateway will only process mails from/to zones which are explicitly
+specified here.
+</P><P>
+
+</DL>
+<P>
+
+Areafix configuration:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>AreaFixMailer <I>command</I></CODE>
+<DD>Mailer program used by <CODE>ftnaf</CODE> to send replies.
+<P>
+
+<DT><CODE>AreaFixCC <I>user@domain</I></CODE>
+<DD>CC address added to replies sent by <CODE>ftnaf</CODE>.
+<P>
+
+<DT><CODE>AreaFixHelp <I>file</I></CODE>
+<DD>Help file for Areafix programs (<CODE>%help</CODE>) command.
+<P>
+
+</DL>
+<P>
+
+Tosser configuration:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>MaxMsg <I>n</I></CODE>
+<DD>Set maximum number of messages in output files to <I>n</I>, restricting the
+maximum size of packets. See also <CODE>-m</CODE> option.
+<P>
+
+<DT><CODE>MaxOpenFiles <I>n</I></CODE>
+<DD>Set maximum number of concurrently open packet files to <I>n</I>. Default: 10
+(<CODE>MAXOPENFILES</CODE> from <CODE>config.h</CODE>), see also <CODE>-M</CODE> option.
+<P>
+
+<DT><CODE>MaxArc <I>Kbyte</I></CODE>
+<DD>Maximum size of ArcMail archives created by <CODE>ftnpack</CODE>. See also
+<CODE>-m</CODE> option.
+<P>
+
+<DT><CODE>MinDiskFree <I>Kbyte</I></CODE>
+<DD>Minimum free disk space required by the <CODE>runtoss</CODE>
+script. <CODE>runtoss</CODE> will terminate if there is less than <I>Kbyte</I>
+free disk space in SPOOLDIR.
+<P>
+
+<DT><CODE>DiskFreeMethod <I>text</I></CODE>
+<DD>Method to determine free disk space: <CODE>prog</CODE> uses program specified
+with <CODE>DiskFreeProg</CODE>, <CODE>none</CODE> doesn't do any disk space
+checking.
+<P>
+
+<DT><CODE>DiskFreeProg <I>command</I></CODE>
+<DD>Command to determine free disk space, parameter <CODE>%p</CODE> is replace
+with path name of the directory to be checked.
+<P>
+
+<DT><CODE>KillEmpty</CODE>
+<DD><DT><CODE>KillBlank</CODE>
+<DD>Kill empty (blank) messages addressed to one of our AKAs. These are
+typically file attach and file request messages.
+<P>
+
+<DT><CODE>KillUnknown</CODE>
+<DD>Kill messages for unknown EchoMail areas (not listed in
+areas.bbs).
+<P>
+
+<DT><CODE>KillRouted</CODE>
+<DD>Kill routed EchoMail messages (not addressed to one of our
+AKAs).
+<P>
+
+<DT><CODE>KillInsecure</CODE>
+<DD>Kill insecure EchoMail messages (sender not listed in <CODE>areas.bbs</CODE>).
+<P>
+
+<DT><CODE>LogNetMail</CODE>
+<DD><DT><CODE>Track</CODE>
+<DD>Log all NetMail messages in log file.
+<P>
+
+<DT><CODE>CheckPath</CODE>
+<DD>Enable EchoMail circular path check (see <CODE>KillCircular</CODE>).
+<P>
+
+<DT><CODE>KillCircular</CODE>
+<DD>Kill EchoMail with circular path (own address already in <CODE>^APATH</CODE>).
+<P>
+
+<DT><CODE>DupeCheck</CODE>
+<DD>Enable dupe check (using <CODE>History</CODE> database).
+<P>
+
+<DT><CODE>MaxHistory <I>days</I></CODE>
+<DD>Maximum length of history database. Keep entries for <I>days</I> days
+(decimal fraction allowed).
+<P>
+
+<DT><CODE>KillOld</CODE>
+<DD>Kill messages with <I>date</I> &#60; <I>now</I> - <CODE>MaxHistory</CODE>, i.e. treat as
+dupes.
+<P>
+
+<DT><CODE>KillDupe</CODE>
+<DD><DT><CODE>KillDupes</CODE>
+<DD>Kill duplicate EchoMail messages if <CODE>DupeCheck</CODE> is enabled.
+<P>
+
+<DT><CODE>KillNoMSGID</CODE>
+<DD>Kill EchoMail messages without a <CODE>^AMSGID</CODE>, i.e. treat as dupes.
+<P>
+
+<DT><CODE>ZoneGate <I>node</I> <I>seenby</I></CODE>
+<DD>Zone gate operation: strip SEEN-BYs for EchoMail addressed to <I>node</I>
+and replace with listed <I>seenby</I> nodes. <I>seenby</I> must include both
+the link's and our address. Example:
+<P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ZoneGate  1:105/42  105/42 2452/110
+</pre></td></tr></table></P><P>
+
+<DT><CODE>AddToSeenBy <I>area</I> <I>nodes</I></CODE>
+<DD>Add the listed <I>nodes</I> to the SEEN-BYs for EchoMail tossed in
+<I>area</I>. <I>area</I> may be specified using shell-style wildcards
+<CODE>*?[a-z]</CODE>.
+<P>
+
+<DT><CODE>TossEchoMail4D</CODE>
+<DD>Generate 4D EchoMail control lines, i.e. SEEN-BY and PATH will include
+point addresses.
+<P>
+
+<DT><CODE>NoEmptyPath</CODE>
+<DD>Do not generate an empty PATH line.
+<P>
+
+</DL>
+<P>
+
+Ticker configuration:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>TickFlav <I>flavour</I></CODE>
+<DD>Flavour of file attaches generated by <CODE>ftntick</CODE>.
+<P>
+
+<DT><CODE>FAttachFlav <I>flavour</I></CODE>
+<DD>Flavour of file attaches generated by <CODE>ftnfattach</CODE>.
+<P>
+
+<DT><CODE>TickReplacedDir <I>directory</I></CODE>
+<DD>Directory for old files replaced by <CODE>ftntick</CODE>.
+<P>
+
+<DT><CODE>UnknownTickArea <I>area</I></CODE>
+<DD>File area to be used to TIC files with an unknown area. Incoming files
+with an unknown area will be moved to this unknown area's directory.
+<P>
+
+</DL>
+<P>
+
+Gateway configuration:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>Origin <I>text</I></CODE>
+<DD>FTN default EchoMail origin line, the text used for the origins line
+generated by <CODE>rfc2ftn</CODE>. Quote <I>text</I> in <CODE>""</CODE> if it contains
+spaces. Individual origin lines may be specified in the <CODE>areas</CODE>
+file using the <CODE>-o</CODE> option.
+<P>
+
+<DT><CODE>Organization <I>text</I></CODE>
+<DD>Organization header for mail and news generated by
+<CODE>ftn2rfc</CODE>. Quote <I>text</I> in <CODE>""</CODE> if it contains spaces.
+<P>
+
+<DT><CODE>UseOriginForOrganization</CODE>
+<DD>Put the text from the * Origin line (excluding the <I>(z:n/f.p)</I>
+address) into the Organization header.
+<P>
+
+<DT><CODE>UseOrganizationForOrigin</CODE>
+<DD>Put the text from the Organization header into the * Origin line.
+<P>
+
+<DT><CODE>UseXHeaderForTearline</CODE>
+<DD>Use text from <CODE>X-FTN-Tearline</CODE>, <CODE>X-Mailer</CODE>, <CODE>User-Agent</CODE>,
+or <CODE>X-Newsreader</CODE> for the -- tearline.
+<P>
+
+<DT><CODE>UseFTNToAddress</CODE>
+<DD>Use FTN to address for mail addressed to the gateway without a To line,
+e.g. mail to
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>Max Mueller  2:2452/110.2
+</pre></td></tr></table>with a HOSTS entry
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>2:2452/110.2  orodruin-ftn.fido.de
+</pre></td></tr></table>is converted to
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>To: Max_Mueller@orodruin-ftn.fido.de
+</pre></td></tr></table>Without this option the standard local HOST.DOMAIN is used, e.g.
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>To: Max_Mueller@orodruin.fido.de
+</pre></td></tr></table><P>
+
+<DT><CODE>EchoMail4D</CODE>
+<DD>Generate 4D EchoMail control lines, when the gateway operates at a point
+address. <B>This is required when using the gateway and the tosser for a
+Fido point!</B>
+<P>
+
+<DT><CODE>Gateway <I>node</I></CODE>
+<DD>Specifies an FTN-Internet gateway for routing Internet mail to. If
+enabled, FIDOGATE can be used as the default delivery agent for all
+Internet mail.
+<P>
+
+<DT><CODE>DotNames</CODE>
+<DD>Generate <I>User.Name@host.do.main</I> instead of
+<I>User_Name@host.do.main</I>. <CODE>rfc2ftn</CODE> recognizes both address
+types.
+<P>
+
+<DT><CODE>KillUnknownMSGIDZone</CODE>
+<DD>Kill messages that contain a <CODE>^AMSGID</CODE> from an unknown zone (not
+listed in <CODE>Zone</CODE> statements).
+<P>
+
+<DT><CODE>KillNoMSGID</CODE>
+<DD>Kill messages that don't contain a <CODE>^AMSGID</CODE> kludge.
+<P>
+
+<DT><CODE>KillSplit</CODE>
+<DD>Kill messages that contain a <CODE>^ASPLIT</CODE> kludge.
+<P>
+
+<DT><CODE>X-FTN <I>header</I></CODE>
+<DD>Include the various X-FTN header in the output of <CODE>ftn2rfc</CODE>:
+<DL COMPACT>
+<DT><CODE>f</CODE>
+<DD><CODE>X-FTN-From</CODE>
+<DT><CODE>t</CODE>
+<DD><CODE>X-FTN-To</CODE>
+<DT><CODE>T</CODE>
+<DD><CODE>X-FTN-Tearline</CODE>
+<DT><CODE>O</CODE>
+<DD><CODE>X-FTN-Origin</CODE>
+<DT><CODE>V</CODE>
+<DD><CODE>X-FTN-Via</CODE>
+<DT><CODE>D</CODE>
+<DD><CODE>X-FTN-Domain</CODE>
+<DT><CODE>S</CODE>
+<DD><CODE>X-FTN-Seen-By</CODE>
+<DT><CODE>P</CODE>
+<DD><CODE>X-FTN-Path</CODE>
+</DL>
+<CODE>X-FTN-From</CODE> is required for the proper operation of <CODE>ftnaf</CODE>.
+<P>
+
+<DT><CODE>MaxMsgSize <I>bytes</I></CODE>
+<DD>Maximum size of FTN messages (default value), larger messages will be split.
+<P>
+
+<DT><CODE>LimitMsgSize <I>bytes</I></CODE>
+<DD>Maximum limit for messages (default value), larger messages will be
+bounced (mail) and simply not gated (news).
+<P>
+
+<DT><CODE>NoAddressInToField</CODE>
+<DD>Do not allow <CODE>@ ! %</CODE> chars in the FTN to field, thus preventing
+users from putting Internet addresses in the to field.
+<P>
+
+<DT><CODE>BounceCCMail <I>user@do.main</I></CODE>
+<DD>Send CC of bounced messages to this address.
+<P>
+
+<DT><CODE>TrackerMail <I>user@do.main</I></CODE>
+<DD>Forward mail from message trackers to this address.
+<P>
+
+<DT><CODE>HostsRestricted</CODE>
+<DD>Restrict usage of the gateway to FTN addresses listed in <CODE>hosts</CODE>.
+<P>
+
+<DT><CODE>FTNJunkGroup <I>name</I></CODE>
+<DD><I>name</I> of the FTN junk newsgroup (newsgroup for unknown FTN areas).
+<P>
+
+<DT><CODE>ErrorsTo <I>user@do.main</I></CODE>
+<DD>Insert additional Errors-To header into Internet mails, sending bounced
+mails from gateway users to <I>user@do.main</I>.
+<P>
+
+<DT><CODE>AreasXlate <I>area-chars</I> <I>newsgroup-chars</I></CODE>
+<DD>Automatic translation (-H option in <CODE>areas</CODE> file) of characters for
+Fido area &#60;-&#62; Internet newsgroup name conversion.
+<P>
+
+<DT><CODE>RFCLevel <I>n</I></CODE>
+<DD>Set the default RFC level. See also <CODE>-R</CODE> option in <CODE>areas</CODE>.
+<P>
+
+<DT><CODE>NoFromLine</CODE>
+<DD>Don't generate <CODE>From:</CODE> header and FSC-0035 kludges. Must be set for
+a non-gateway, point FIDOGATE configuration.
+<P>
+
+<DT><CODE>NoFSC0035</CODE>
+<DD>Don't generate FSC-0035 <CODE>^AREPLYADDR</CODE>, <CODE>^AREPLYTO</CODE>.
+<P>
+
+<DT><CODE>NoFSC0047</CODE>
+<DD>Don't generate FSC-0047 <CODE>^ASPLIT</CODE>, use old <CODE> * Large message
+split by </CODE> ... text line.
+<P>
+
+<DT><CODE>FTNInSendmail <I>command ...</I></CODE>
+<DD>Sendmail program to be run by <CODE>ftninpost</CODE> with options. The option
+<CODE>-fsender</CODE> will be automatically added by <CODE>ftninpost</CODE>. For
+compatibility with old FIDOGATE configurations, any <CODE>-f%s</CODE> option
+will be removed.
+<P>
+
+<DT><CODE>FTNInRnews <I>command ...</I></CODE>
+<DD>Rnews program to be run by <CODE>ftninpost</CODE>.
+<P>
+
+<DT><CODE>FTNInRecombine</CODE>
+<DD>Automatically run <CODE>ftninrecomb</CODE> to recombine split messages.
+<P>
+
+<DT><CODE>NetMail8bit</CODE>
+<DD>Use the ISO-8859-1 MIME 8BIT character set when gating Fido NetMail.
+<P>
+
+<DT><CODE>NetMailQuotedPrintable</CODE>
+<DD><DT><CODE>NetMailQP</CODE>
+<DD>Use the ISO-8859-1 MIME QUOTED-PRINTABLE character set when gating Fido
+NetMail. <CODE>NetMailQuotedPrintable</CODE> overrides <CODE>NetMail8bit</CODE> if
+both are specified.
+<P>
+
+<DT><CODE>XFlagsPolicy</CODE>
+<DD>Controls policy for X-Flags processing (default is 0, no processing):
+<DL COMPACT>
+<DT><CODE>n   N   0</CODE>
+<DD>No X-Flags processing at all.
+<DT><CODE>s   S   1</CODE>
+<DD>X-Flags processing for local sender (check From and Received
+headers). This is not really secure!!! If your system is directly
+connected to the Internet and runs an SMTP daemon such as sendmail, mail
+can easily be faked to look like local!!!
+<DT><CODE>a   A   2</CODE>
+<DD>X-Flags processing for all. Totally open, totally insecure!!!
+</DL>
+<P>
+
+<DT><CODE>DontUseReplyTo</CODE>
+<DD>Don't try to get real name from Reply-To header. Particularly useful for
+mailing lists which set the Reply-To header to the mailing list.
+<P>
+
+<DT><CODE>RFCAddrMode <I>mode</I></CODE>
+<DD>Mode for RFC address generated by FIDOGATE:
+<DL COMPACT>
+<DT><CODE>()  p  0</CODE>
+<DD><I>user@do.main (Real Name)</I>-type addresses
+<DT><CODE>&#60;&#62;  a  1</CODE>
+<DD><I>Real Name &#60;user@do.main&#62;</I>-type addresses
+</DL>
+<P>
+
+<DT><CODE>ReplyAddrIfMailTX</CODE>
+<DD>Force <CODE>^AREPLYADDR</CODE> (if <CODE>FSC0035</CODE> is enabled) to only contains
+<CODE>^AREPLYADDR &#60;user@do.main&#62;</CODE> for compatibility with ifmail-TX.
+<P>
+
+<DT><CODE>CheckAreasBBS</CODE>
+<DD>Check <CODE>areas.bbs</CODE> when gating newsgroups, message for areas without
+downlinks will be skipped.
+<P>
+
+<DT><CODE>DefaultCharset <I>default</I>:<I>ftn</I>:<I>rfc</I></CODE>
+<DD>Default character set mapping for the gateway: <I>default</I> is the
+charset assumed for FTN messages, if no <CODE>^ACHRS</CODE> kludge is present
+in the message. <I>ftn</I> is the charset to be used in the FTN messages
+when gating from RFC to FTN (use FSC-0054 names here), <I>rfc</I> likewise
+when gating from FTN to RFC (use RFC 2045 names here). See also the
+<CODE>-C</CODE> option in the <CODE>areas</CODE> config file.
+<P>
+
+<DT><CODE>NetMailCharset <I>default</I>:<I>ftn</I>:<I>rfc</I></CODE>
+<DD>Like <CODE>DefaultCharset</CODE>, but only for NetMail (mail) messages.
+<P>
+
+<DT><CODE>NetMailCharsetUse1st</CODE>
+<DD>If set and no matching in/out character set is found, <CODE>ftn2rfc</CODE>
+will use the first character set translation pair from
+<CODE>charset.map</CODE> with in charset = Fido <CODE>^ACHRS</CODE> and set the
+output character set accordingly. NOT YET IMPLEMENTED.
+<P>
+
+<DT><CODE>NewsPathTail <I>string</I></CODE>
+<DD>String added to news Path header generated by <CODE>ftn2rfc</CODE>, the
+de-facto standard is <CODE>not-for-mail</CODE>. Alternatively you can set this
+to <CODE>fidogate!not-for-mail</CODE> making the INN <CODE>newsfeeds</CODE> much
+easier and less error-prone, particularly for point systems.
+<P>
+
+<DT><CODE>SingleArticles</CODE>
+<DD>Write single articles to output RFC files generated by <CODE>ftn2rfc</CODE>,
+not news batches containing several articles (batch is default).
+<P>
+
+<DT><CODE>Regex1stLine <I>pattern</I></CODE>
+<DD>Regular expression patterns for finding addresses in the first line of
+the messages body. The first (...) sub-expression will be used for the
+address (like \1 in sed, $1 in perl). POSIX *extended* regular
+expressions are used.  The OS <B>must</B> support <CODE>HAS_POSIX_REGEX</CODE> in
+<CODE>config.h</CODE>!
+<P>
+
+As of FIDOGATE 4.3.4, the compiled-in pattern matching code is no longer 
+availabe. See <CODE>examples/orodruin/fidogate.conf</CODE> for a suitable list 
+of regular expressions.
+</P><P>
+
+<DT><CODE>MessageLineLength <I>number</I></CODE>
+<DD>Line length for formatting long paragraphs (no explicit line break) from 
+Fido messages. This replaces the old <CODE>MAX_LINELEN</CODE> from
+<CODE>config.h</CODE>. The default value is 72.
+<P>
+
+<DT><CODE>DontIgnore0x8d</CODE>
+<DD><DT><CODE>DontIgnoreSoftCR</CODE>
+<DD>Normally, soft CR characters (hex 0x8d) in FTN messages are
+ignored. When this option is turned on, they are treated as normal
+characters. Useful e.g. for the cyrillic cp866 charset.
+<P>
+
+<DT><CODE>RegisteredHostsOnly</CODE>
+<DD>The opposite of the <I>-i</I> <I>--ignore-hosts</I> command line option,
+always requiring that a node is registered in the <CODE>hosts</CODE> list. NOT
+YET IMPLEMENTED.
+<P>
+
+<DT><CODE>RegisteredAliasesOnly</CODE>
+<DD>Allow only those addresses listed in <CODE>aliases</CODE>, either
+<I>alias</I>@<I>host.do.main</I> or <I>Full_Name</I>@<I>host.do.main</I>, as valid
+recipients (also including <I>postmaster</I>) for <CODE>rfc2ftn</CODE>.
+<P>
+
+With this option, the gateway can be restricted to registered users,
+which is also very useful for fighting Spam.
+</P><P>
+
+<DT><CODE>SilentBounces</CODE>
+<DD>Causes EX_NOHOST, EX_NOUSER errors to return OK without any message.
+Useful in the never ending fight against spam, when your gateway
+is flooded with messages to unknown adresses, such as Fido.DE :-(
+<P>
+
+</DL>
+<P>
+
+FFX configuration:
+</P><P>
+
+(FFX is a part of FIDOGATE, an uux-like mechanism for remote execution,
+using a Fido mailer instead of UUCP for transport. This is a special
+hack for my own purposes, most likely you don't want to know anything
+about it. Simply ignore or remove this section from the config file.)
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>FFXDataFlav <I>flavour</I></CODE>
+<DD>Flavour to be used for file attachments created by the <CODE>ffx</CODE> program.
+<P>
+
+<DT><CODE>FFXDataCompr <I>command ...</I></CODE>
+<DD>Program to be used for creating compressed <CODE>ffx</CODE> data files.
+<P>
+
+<DT><CODE>FFXDataExt <I>parameter</I></CODE>
+<DD>File name extension to be used for compressed <CODE>ffx</CODE> data files.
+<P>
+
+<DT><CODE>FFXDataDecompr <I>parameter</I></CODE>
+<DD>Uncompressor name for compressed <CODE>ffx</CODE> data files (will be run by
+<CODE>ffxqt</CODE>).
+<P>
+
+<DT><CODE>FFXDataComprN <I>parameter</I></CODE>
+<DD>Program to be used for creating uncompress <CODE>ffx</CODE> data files (option
+<CODE>-n</CODE>).
+<P>
+
+<DT><CODE>FFXDataExtN <I>parameter</I></CODE>
+<DD>File name extension to be used for uncompressed <CODE>ffx</CODE> data files
+(option <CODE>-n</CODE>).
+<P>
+
+<DT><CODE>FFXDataDecomprN <I>parameter</I></CODE>
+<DD>Uncompressor name for uncompressed <CODE>ffx</CODE> data files (option
+<CODE>-n</CODE>, will be run by <CODE>ffxqt</CODE>).
+<P>
+
+<DT><CODE>FFXCommand <I>name</I> <I>command ...</I></CODE>
+<DD>List of command names and corresponding commands to be used by
+<CODE>ffxqt</CODE>. Only the commands listed can be executed. This replaces
+the old LIBDIR/ffxqt-dir/<I>name</I> structure of previous FIDOGATE
+versions.
+<P>
+
+<DT><CODE>FFXUncompress <I>name</I> <I>command ...</I></CODE>
+<DD>List of uncompressor names and corresponding commands to be used by
+<CODE>ffxqt</CODE>.
+<P>
+
+</DL>
+<P>
+
+<A NAME="Hosts"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC63"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC62"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC64"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC62"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 4.2 <CODE>hosts</CODE> FTN Address to Host Name Conversion </H2>
+<!--docid::SEC63::-->
+<P>
+
+This file contains the FTN addresses and host names for registered FTN
+nodes. If <CODE>HostsRestricted</CODE> is defined in <CODE>config.gate</CODE>, this
+file controls the access to the gateway.
+</P><P>
+
+The format of this file is
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre><I>node</I>  <I>hostname</I>  [ <I>options</I> ]
+</pre></td></tr></table></P><P>
+
+Fields:
+</P><P>
+
+<DL COMPACT>
+
+<DT><I>node</I>
+<DD>FTN address. An address for a node will match all points of this node,
+see example below.
+<P>
+
+<DT><I>hostname</I>
+<DD>Host name, one of
+<P>
+
+<DL COMPACT>
+<DT><I>local host name</I>
+<DD>A name without a trailing <CODE>.</CODE> is a hostname in the local
+domain (specified by <CODE>HostsDomain</CODE> or default <CODE>Domain</CODE>
+in <CODE>config</CODE>).
+<DT><I>fully qualified domain name</I>
+<DD>A name with a trailing <CODE>.</CODE> is a fully qualified domain name
+for this node.
+<DT><I><CODE>-</CODE></I>
+<DD>A <CODE>-</CODE> specifies a listed node, but without a host name
+translation, using the standard <I>p.f.n.z</I> address.
+</DL>
+<P>
+
+<DT><I>options</I>
+<DD><P>
+
+<DL COMPACT>
+<DT><CODE>-p</CODE>
+<DD>Generate addresses with point part, e.g. <CODE>p99.hippo.fido.de</CODE>.
+Default is omitting the point part.
+<DT><CODE>-d</CODE>
+<DD>Mark the node as down, mail to this address will be bounced with
+an appropiate error message.
+</DL>
+<P>
+
+</DL>
+<P>
+
+The <CODE>hosts</CODE> file is read into memory during startup of FIDOGATE.
+The first entry found matches, so a host name for a point must be
+specified <I>before</I> the boss node, if there are entries for both.
+</P><P>
+
+Example:
+</P><P>
+
+<CODE>config</CODE>:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>HostsDomain   .Fido.DE
+</pre></td></tr></table></P><P>
+
+<CODE>hosts</CODE>:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>2:2452/110    hippo
+2:2452/990    test     -p
+2:2452/991    test.wusel.org.
+2:2452/999    -
+</pre></td></tr></table></P><P>
+
+Resulting data base read into memory:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>Node:     2:2452/110.0
+Hostname: hippo.Fido.DE
+Flags:    
+
+Node:     2:2452/990.0
+Hostname: test.Fido.DE
+Flags:    POINT
+
+Node:     2:2452/991.0
+Hostname: test.wusel.org
+Flags:
+
+Node:     2:2452/999.0
+Hostname:
+Flags:
+</pre></td></tr></table></P><P>
+
+This results in the following conversion of addresses from FTN
+to Internet:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>2:2452/110     -&#62;  hippo.Fido.DE
+2:2452/110.99  -&#62;  hippo.Fido.DE
+2:2452/990.99  -&#62;  p99.test.Fido.DE
+2:2452/991.1   -&#62;  test.wusel.org
+2:2452/999.2   -&#62;  p2.f999.n2452.z2.Fido.DE
+</pre></td></tr></table></P><P>
+
+<A NAME="Aliases"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC64"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC63"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC65"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC62"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 4.3 <CODE>aliases</CODE> User Aliases </H2>
+<!--docid::SEC64::-->
+<P>
+
+This file contains user aliases, the FTN address, and the full name of
+the user.
+</P><P>
+
+The format of this file is
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre><I>alias</I>  <I>node</I>  "<I>full name</I>"
+</pre></td></tr></table></P><P>
+
+Fields:
+</P><P>
+
+<DL COMPACT>
+
+<DT><I>alias</I>
+<DD>Alias for the user, can be a local <CODE>user</CODE> or a complete Internet
+address <CODE>user@do.main</CODE>.
+<P>
+
+<DT><I>node</I>
+<DD>FTN address of the user.
+<P>
+
+<DT><I>full name</I>
+<DD>Full name of the user.
+<P>
+
+</DL>
+<P>
+
+The FTN address <I>node</I> may be a point address. In this case mail
+addressed to the user at the boss node address will be readdressed to
+this point, see example below.
+</P><P>
+
+Example:
+</P><P>
+
+<CODE>aliases</CODE>:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>mvr         2:2452/110.6    "Marc van.Rey"
+</pre></td></tr></table></P><P>
+
+Using the definitions from the section on <CODE>hosts</CODE>, this results in
+the following address conversion:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>Marc van.Rey @ 2:2452/110.6  &#60;-&#62;  mvr@hippo.Fido.DE
+</pre></td></tr></table></P><P>
+
+<A NAME="Areas"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC65"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC64"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC66"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC62"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 4.4 <CODE>areas</CODE> FTN Area to Newsgroup Conversion </H2>
+<!--docid::SEC65::-->
+<P>
+
+This file contains FTN areas with corresponding newsgroups and options.
+</P><P>
+
+The format of this file is
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre><I>area</I>  <I>newsgroup</I>  [ <I>options</I> ]
+</pre></td></tr></table></P><P>
+
+Fields:
+</P><P>
+
+<DL COMPACT>
+
+<DT><I>area</I>
+<DD>FTN area.
+<P>
+
+<DT><I>newsgroup</I>
+<DD>Usenet newsgroup.
+<P>
+
+<DT><I>options</I>
+<DD>IMPORTANT: there must be spaces between the option and its argument!
+<P>
+
+<DL COMPACT>
+
+<DT><CODE>-a <I>address</I></CODE>
+<DD>Select alternate FTN address for this area/newsgroup.
+<P>
+
+<DT><CODE>-z <I>zone</I></CODE>
+<DD>Select zone AKA <I>zone</I> for this area/newsgroup.
+<P>
+
+<DT><CODE>-d <I>distribution</I></CODE>
+<DD>Use Usenet <CODE>distribution</CODE> for this newsgroup when gating from FTN
+to Internet.
+<P>
+
+<DT><CODE>-o "<I>origin</I>"</CODE>
+<DD>Use an alternate origin line for this area when gating from Internet to
+FTN.  (Default specified in <CODE>config</CODE>.)
+<P>
+
+<DT><CODE>-g</CODE>
+<DD>Don't send messages from another SomeNet-FTN gateway across the gateway.
+<P>
+
+<DT><CODE>-l</CODE>
+<DD>Only local crosspostings are allowed in this newsgroup/area.
+<P>
+
+<DT><CODE>-x</CODE>
+<DD>No crosspostings are allowed in this newsgroup/area.
+<P>
+
+<DT><CODE>-8</CODE>
+<DD>Use the ISO-8859-1 MIME 8BIT character set when gating to this
+newsgroup.
+<P>
+
+<DT><CODE>-Q</CODE>
+<DD>Use the ISO-8859-1 MIME quoted-printable character set when gating to
+this newsgroup.
+<P>
+
+<DT><CODE>-H</CODE>
+<DD>Area/newsgroup matches entire hierarchy. Names are converted
+automatically, using upper case for area names and lower case for
+newsgroups.
+<P>
+
+Example:
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>GNU.    gnu.    -z 242  -H
+</pre></td></tr></table><CODE>gnu.announce</CODE> will be converted to <CODE>GNU.ANNOUNCE</CODE>,
+<CODE>gnu.bug.gcc</CODE> to <CODE>GNU.BUG.GCC</CODE>, similar for all other.
+</P><P>
+
+<DT><CODE>-!</CODE>
+<DD>Don't gate this area/newsgroup or hierarchy (if combined with
+<CODE>-H</CODE>). Usefull to exclude certain newsgroups from a hierarchy for
+gating.
+<P>
+
+Example:
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>ALT.BINARIES.    alt.binaries.    -z 242  -H -!
+ALT.             alt.             -z 242  -H
+</pre></td></tr></table>This is roughly equivalent to INN's <CODE>alt.*,!alt.binaries.*</CODE>. Please
+note that the first <CODE>areas</CODE> entry matches, so any <CODE>-!</CODE> must be
+placed before the <CODE>-H</CODE> hierarchy definition.
+</P><P>
+
+<DT><CODE>-R <I>level</I></CODE>
+<DD>Select level of <CODE>^ARFC-</CODE>Header put into FIDO messages for this
+area. Level:
+<DL COMPACT>
+<DT>0
+<DD>No <CODE>^ARFC-</CODE>header at all.
+<DT>1
+<DD>Only important <CODE>^ARFC-</CODE>header.
+<DT>2
+<DD>All <CODE>^ARFC-</CODE>header.
+</DL>
+<P>
+
+<DT><CODE>-m <I>bytes</I></CODE>
+<DD>Sets <CODE>MaxMsgSize</CODE> for this area (0 = no limit).
+<P>
+
+<DT><CODE>-M <I>bytes</I></CODE>
+<DD>Sets <CODE>LimitMsgSize</CODE> for this area (0 = no limit).
+<P>
+
+<DT><CODE>-X "<I>RFC-Header: text</I>"</CODE>
+<DD>Add extra RFC header to output of <CODE>ftn2rfc</CODE>. Multiple <CODE>-X</CODE>
+options are possible.
+<P>
+
+<DT><CODE>-C <I>default</I>:<I>ftn</I>:<I>rfc</I></CODE>
+<DD>Set character set mapping table for this area, see <CODE>DefaultCharset</CODE>
+config option for details.
+<P>
+
+</DL>
+<P>
+
+</DL>
+<P>
+
+Only newsgroups listed in this file will be gated from Internet to FTN.
+FTN area not listed in this file will be gated into the
+<CODE>FTNJunkGroup</CODE> newsgroup specified in <CODE>fidogate.conf</CODE>.
+</P><P>
+
+<A NAME="Bounce"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC66"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC65"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC67"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC62"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 4.5 Bounce Messages of <CODE>ftn2rfc</CODE> </H2>
+<!--docid::SEC66::-->
+<P>
+
+<CODE>ftn2rfc</CODE> uses the following files for messages sent to the FTN
+user when bouncing mail for some reason:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>bounce.noto</CODE>
+<DD>Message addressed to user <CODE>UUCP</CODE> or <CODE>GATEWAY</CODE> without a
+<CODE>To</CODE> line at the very beginning of the message.
+<P>
+
+<DT><CODE>bounce.down</CODE>
+<DD>Message addressed from/to node currently marked as <I>down</I> in
+<CODE>hosts</CODE> (<CODE>-d</CODE> flag).
+<P>
+
+<DT><CODE>bounce.restricted</CODE>
+<DD>Messages from nodes not listed in <CODE>hosts</CODE>, gateway running in
+restricted mode.
+<P>
+
+<DT><CODE>bounce.insecure</CODE>
+<DD>Messages came via an insecure (i.e. not password protected) link and
+contain a <CODE>To</CODE> line. This requires the <CODE>-t</CODE> option to
+<CODE>ftn2rfc</CODE>.
+<P>
+
+</DL>
+<P>
+
+Within a bounce message, the following substitutions can be used:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>%F</CODE>
+<DD>FTN address of message sender.
+<DT><CODE>%T</CODE>
+<DD>FTN address of message recipient (the gateway, that is).
+<DT><CODE>%O</CODE>
+<DD>FTN address of message origin.
+<DT><CODE>%d</CODE>
+<DD>Date/time of message.
+<DT><CODE>%t</CODE>
+<DD>Name of message recipient.
+<DT><CODE>%f</CODE>
+<DD>Name of message sender.
+<DT><CODE>%s</CODE>
+<DD>Message subject.
+<DT><CODE>%R</CODE>
+<DD><CODE>To</CODE> line, Internet address.
+<DT><CODE>%M</CODE>
+<DD>The entire message body.
+<P>
+
+</DL>
+<P>
+
+<A NAME="Passwd"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC67"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC66"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC68"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC62"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 4.6 <CODE>passwd</CODE> Password Config File </H2>
+<!--docid::SEC67::-->
+<P>
+
+This file contains passwords used by <CODE>ftnaf</CODE>, <CODE>ffx</CODE>, and the
+tosser programs.
+</P><P>
+
+The format of this file is:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre><I>context</I>  <I>node</I>  <I>password</I>  <I>options</I>
+</pre></td></tr></table></P><P>
+
+Contexts:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>packet</CODE>
+<DD>FTN packet passwords, checked by <CODE>ftntoss</CODE>, inserted by all
+FIDOGATE programs which create FTN packets. Password checking for
+incoming packets is NOT YET IMPLEMENTED.
+<P>
+
+<DT><CODE>af</CODE>
+<DD>Areafix passwords for requests.
+<P>
+
+<DT><CODE>ff</CODE>
+<DD>Filefix passwords for requests and password for sending/receiving TIC
+files.
+<P>
+
+<DT><CODE>ffx</CODE>
+<DD><CODE>ffx</CODE> command passwords, checked by <CODE>ffxqt</CODE>, inserted by
+<CODE>ffx</CODE> into the <CODE>.ffx</CODE> command files.
+<P>
+
+<DT><CODE>uplink</CODE>
+<DD>Passwords for forwarding areafix/filefix request to uplink.
+<P>
+
+</DL>
+<P>
+
+Optional stuff (<I>options</I>) is used for <CODE>af</CODE> and <CODE>ff</CODE>
+permission settings:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre><I>lvl</I>  <I>key</I>  "<I>Sysop Name</I>"
+</pre></td></tr></table></P><P>
+
+<I>lvl</I> is the access level, which must be greater or equal than the one
+in <CODE>areas.bbs</CODE>. <I>key</I> is the access key, which must be a super
+set of the one in <CODE>areas.bbs</CODE>.
+</P><P>
+
+Optional stuff (<I>options</I>) is used for <CODE>uplink</CODE>:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>"<I>name</I>"
+</pre></td></tr></table></P><P>
+
+<I>name</I> is the user name (normally <CODE>Areafix</CODE> or <CODE>Areamgr</CODE>) at
+<I>node</I> address, where areafix requests must be forwarded to. Used by
+<CODE>ftnafutil</CODE>.
+</P><P>
+
+Example:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>uplink      2:2499/99       XXXXXXXX    AreaMgr
+packet      2:1234/5678     WUERG
+ffx         242:1111/99     BLAHBLUB
+af          2:1234/5678     WUSEL       1   F     "Test Sysop"
+ff          242:1234/5678   WUSEL       4   UQ    "Yet Another Sysop"
+</pre></td></tr></table></P><P>
+
+<A NAME="Routing"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC68"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC67"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC69"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC62"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 4.7 <CODE>routing</CODE> Config File </H2>
+<!--docid::SEC68::-->
+<P>
+
+This file contains the routing commands performed by <CODE>ftntoss</CODE>
+(commands <CODE>remap</CODE> and <CODE>rewrite</CODE>) and <CODE>ftnroute</CODE>
+(everything else). The first routing command found matches.
+</P><P>
+
+The syntax of the <CODE>routing</CODE> commands is very similar to the routing
+file used by the well-known FIDO tossers QMail and SQUISH.
+</P><P>
+
+The format of this file is:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>remap      <I>src-node</I>  <I>dest-node</I>  <I>name</I>
+remapto    <I>src-node</I>  <I>dest-node</I>  <I>name</I>
+remapx     <I>src-node</I>  <I>prog</I>       <I>name</I>
+remapfrom  <I>src-node</I>  <I>dest-node</I>  <I>name</I>
+rewrite    <I>src-node</I>  <I>dest-node</I>
+
+echomail
+netmail
+
+send       <I>flavor</I>    <I>nodes</I>
+route      <I>flavor</I>    <I>dest-node</I> <I>nodes</I>
+hostroute  <I>flavor</I>    <I>nodes</I>
+hubroute   <I>flavor</I>    <I>nodes</I>
+xroute     <I>flavor</I>    <I>dest-node</I> <I>from-node</I> <I>to-node</I>
+bossroute  <I>flavor</I>    <I>nodes</I>
+
+change     <I>old-flavor</I>  <I>new-flavor</I>  <I>nodes</I>
+
+sendmove   <I>flavor</I>    <I>nodes</I>
+</pre></td></tr></table></P><P>
+
+Commands:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>remap</CODE>
+<DD><DT><CODE>remapto</CODE>
+<DD>Remaps NetMail addressed to <I>name</I> at <I>src-node</I> to the new address
+<I>dest-node</I>. Most useful for remapping to points based on their name.
+<I>name</I> supports shell-style wildcard patterns. Remapping to 0:0/0.0
+means killing the message.
+<P>
+
+<DT><CODE>remapx</CODE>
+<DD>Remaps NetMail addressed to <I>name</I> at <I>src-node</I> to special
+processing with <I>prog</I> (actually writing it to a packet in
+<CODE>%S/remapx/</CODE><I>prog</I>. Most useful for processing areafix
+messages. <I>name</I> supports shell-style wildcard patterns.
+NOT YET IMPLEMENTED.
+<P>
+
+<DT><CODE>remapfrom</CODE>
+<DD>Remaps NetMail from <I>name</I> at <I>src-node</I> to the new address
+<I>dest-node</I>. <I>name</I> supports shell-style wildcard
+patterns. Remapping to 0:0/0.0 means killing the message.
+<P>
+
+<DT><CODE>rewrite</CODE>
+<DD>Rewrites NetMail from and to addresses. A node address matching
+<I>src-node</I> will be changed to <I>dest-node</I>.
+<P>
+
+<DT><CODE>echomail</CODE>
+<DD>Starts routing commands for EchoMail.
+<P>
+
+<DT><CODE>netmail</CODE>
+<DD>Starts routing commands for NetMail.
+<P>
+
+<DT><CODE>allmail</CODE>
+<DD>Starts routing commands for both EchoMail and NetMail. NOT YET
+IMPLEMENTED.
+<P>
+
+<DT><CODE>send</CODE>
+<DD>Send normal mail addressed to <I>nodes</I> with <I>flavor</I>.
+<P>
+
+WARNING: e.g. <CODE>send hold 2:2452/110</CODE> actually is the same as
+<CODE>route hold 2:2452/110.0 2452/110.*</CODE>. So <CODE>send hold 2:2452/110
+110.*</CODE> will <B>not</B> have the desired effect, use <CODE>send hold
+2:2452/110.*</CODE> only instead!!!
+</P><P>
+
+<DT><CODE>route</CODE>
+<DD>Route normal mail addressed to <I>nodes</I> via <I>dest-node</I>, using
+<I>flavor</I>.
+<P>
+
+<DT><CODE>hostroute</CODE>
+<DD>Route normal mail addressed to <I>nodes</I> via their host (i.e. Z:N/0),
+using <I>flavor</I>.
+<P>
+
+<DT><CODE>hubroute</CODE>
+<DD>Route normal mail addressed to <I>nodes</I> via their hub,
+using <I>flavor</I>. NOT YET IMPLEMENTED.
+<P>
+
+<DT><CODE>xroute</CODE>
+<DD>Route normal mail from <I>from-node</I> to <I>to-node</I> via <I>dest-node</I>,
+using <I>flavor</I>. NOT YET IMPLEMENTED.
+<P>
+
+<DT><CODE>bossroute</CODE>
+<DD>Route <I>flavor</I> mail addressed to <I>nodes</I> via their boss node, not
+changing the flavor.
+<P>
+
+<DT><CODE>change</CODE>
+<DD>Change flavor of mail packet from <I>old-flavor</I> to <I>new-flavor</I>.
+<P>
+
+<DT><CODE>sendmove</CODE>
+<DD>Like <CODE>send</CODE>, but <CODE>ftnroute</CODE> doesn't copy the mail packets,
+they are moved instead. This requires that SPOOLDIR/toss/tmp and
+SPOOLDIR/toss/out are on the same file system/disk drive.
+<P>
+
+</DL>
+<P>
+
+Node addresses <I>nodes</I>, <I>src-node</I>, <I>dest-node</I> support wildcards
+using <CODE>*</CODE> and <CODE>all</CODE>, which can be used for the zone, net,
+node, and point component of an address. <CODE>*</CODE> alone matches all
+addresses. <CODE>rewrite</CODE> wildcards in the destination address are
+replaced with the corresponding component of the source address.
+</P><P>
+
+The outbound flavor string <I>flavor</I> can be any of
+<CODE>normal</CODE>, <CODE>hold</CODE>, <CODE>crash</CODE>, <CODE>direct</CODE>, <CODE>out</CODE>,
+<CODE>hut</CODE>, <CODE>cut</CODE>, <CODE>dut</CODE>.
+</P><P>
+
+Example:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>Remap     2:2452/110.0 2:2452/110.7  "Martin Koser"
+Rewrite   242:241/*    2:241/*
+
+NetMail
+send      hold         242:1000/1.all
+change    crash  hold  242:1000/1.all 2.all
+send      hold         242:1000/3
+route     hold         242:1000/50 51 52 53 54 55 56 57 58 59
+</pre></td></tr></table></P><P>
+
+<A NAME="Packing"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC69"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC68"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC70"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC62"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 4.8 <CODE>packing</CODE> Config File </H2>
+<!--docid::SEC69::-->
+<P>
+
+This file contains the packer (archiver) definitions and packing
+commands for <CODE>ftnpack</CODE>.
+</P><P>
+
+The format of this file is:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>arc        <I>name</I>  <CODE>"</CODE><I>archiver</I><CODE>"</CODE>
+prog       <I>name</I>  <CODE>"</CODE><I>program</I><CODE>"</CODE>
+progn      <I>name</I>  <CODE>"</CODE><I>program</I><CODE>"</CODE>
+
+pack       <I>name</I>  <I>nodes</I>
+rpack      <I>name</I>  <I>dest-node</I>  <I>nodes</I>
+fpack      <I>name</I>  <I>dest-node</I>  <I>nodes</I>
+dirpack    <I>dir</I>  <I>name</I>  <I>nodes</I>
+</pre></td></tr></table></P><P>
+
+Packer/program definitions:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>arc</CODE>
+<DD>Defines the archiver <I>name</I> as program <I>archiver</I>. The <I>archiver</I>
+string must contain two <CODE>%s</CODE>, the first one is replaced with the
+archive name, the second one with the packet name.
+<P>
+
+<DT><CODE>prog</CODE>
+<DD><DT><CODE>progn</CODE>
+<DD>Defines the program <I>name</I> as <I>program</I>. The <I>program</I> string must
+contain a <CODE>%s</CODE>, which is replaced with the name of the packet to be
+processed. <CODE>prog</CODE> deletes the packet after successfully running
+<CODE>program</CODE>, <CODE>progn</CODE> doesn't.
+<P>
+
+</DL>
+<P>
+
+Packing definitions:
+</P><P>
+
+<DL COMPACT>
+
+<DT><CODE>pack</CODE>
+<DD>Pack all mail addressed to <I>nodes</I> using the archiver defined as
+<I>name</I>. The archiver name <CODE>noarc</CODE> indicates that the mail packet
+should not be packed, but copied to the OUT file of the node.
+<P>
+
+<DT><CODE>rpack</CODE>
+<DD>Same as <CODE>pack</CODE>, but pack all mail addressed to <I>nodes</I> to the
+archive for <I>dest-node</I>.
+<P>
+
+<DT><CODE>fpack</CODE>
+<DD>Similar to <CODE>rpack</CODE>, but the packet is archived for the normal
+arcmail packet for each node. This archive is then attached to the FLO
+file of <I>dest-node</I>.
+<P>
+
+<DT><CODE>dirpack</CODE>
+<DD>Archive packets for <I>nodes</I> in special directory <I>dir</I>, not the
+standard outbound.
+<P>
+
+</DL>
+<P>
+
+Example:
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>arc     zip     "/usr/local/bin/zip -gkj %s %s"
+progn   gate    "/usr/lib/fidogate/ftn2rfc %s"
+progn   areafix "/usr/lib/fidogate/ftnafpkt %s"
+
+rpack   zip     2:242/41 2:242/42 242:2000/* 254:*/*
+pack    noarc   2:2452/110.1 242:4900/99 254:2410/6.1
+pack    zip     *
+</pre></td></tr></table></P><P>
+
+<A NAME="Areas.bbs"></A>
+</P><P>
+
+<HR SIZE="6">
+<A NAME="SEC70"></A>
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC69"> &lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_5.html#SEC71"> &gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> Up </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC62"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<H2> 4.9 <CODE>areas.bbs</CODE> EchoMail Distribution </H2>
+<!--docid::SEC70::-->
+<P>
+
+This file contains the EchoMail areas and linked nodes. The file
+<CODE>fareas.bbs</CODE> is used for file echos.
+</P><P>
+
+The format of this file is as follows, the first line being ignored for
+compatibility with the standard DOS AREAS.BBS. Individual fields can be
+enclosed in "..." to allow spaces, in particular for the area
+description. 
+</P><P>
+
+<TABLE><tr><td>&nbsp;</td><td class=example><pre>[#]<I>directory</I>  <I>area</I>  [<I>options</I>]  <I>nodes</I>
+</pre></td></tr></table></P><P>
+
+<DL COMPACT>
+
+<DT><I><TT>#</TT></I>
+<DD>Marks area as pass-through, i.e. no packets for the own address (zone
+AKA or set by <CODE>-a</CODE>) will be created.
+<P>
+
+<DT><I>directory</I>
+<DD>The directory where the message base/file base for this area is located.
+Currently FIDOGATE uses the directory for file areas only.
+<P>
+
+<DT><I>area</I>
+<DD>The area name.
+<P>
+
+<DT><I>options</I>
+<DD>Options for this area:
+<DL COMPACT>
+<DT><CODE>-a <I>address</I></CODE>
+<DD>Set alternate FTN AKA for this area.
+<DT><CODE>-z <I>zone</I></CODE>
+<DD>Set alternate zone AKA for  this area. If not  set, the zone information
+is taken from  the first node in the  <I>nodes</I> list.  <CODE>ftnaf</CODE> will
+automatically rewrite <CODE>areas.bbs</CODE>, inserting the <CODE>-z</CODE> option.
+<DT><CODE>-l <I>lvl</I></CODE>
+<DD>Set Areafix/Filefix access level for this area.
+<DT><CODE>-k <I>key</I></CODE>
+<DD>Set Areafix/Filefix access key for this area.
+<DT><CODE>-d "<I>description</I>"</CODE>
+<DD>Description for this area. Enclose in <CODE>"..."</CODE> to allow spaces in
+description text.
+<DT><CODE>-#</CODE>
+<DD>Set pass-through flag for this area (same as <I>directory</I> starting with
+<CODE>#</CODE>).
+<DT><CODE>-r</CODE>
+<DD>Set read-only flag for this area. New downlink will have a read-only
+status. NOT YET IMPLEMENTED.
+</DL>
+<P>
+
+<DT><I>nodes</I>
+<DD>The list of downlink nodes. This is a sorted short list of nodes as in
+FIDO EchoMail SEEN-BYs and PATH. The first node in <I>nodes</I> is the
+uplink and stays at this place, though. Do <I>not</I> put your own main
+address into the <I>nodes</I> list. (If the gateway has a different
+address, then it must be included in <CODE>nodes</CODE>!)
+<P>
+
+</DL>
+<P>
+
+<A NAME="Basic"></A>
+<HR SIZE="6">
+<TABLE CELLPADDING=1 CELLSPACING=1 BORDER=0>
+<TR><TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC61"> &lt;&lt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_4.html#SEC62"> &gt;&gt; </A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT"> &nbsp; <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate.html#SEC_Top">Top</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_toc.html#SEC_Contents">Contents</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_7.html#SEC79">Index</A>]</TD>
+<TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="fidogate_abt.html#SEC_About"> ? </A>]</TD>
+</TR></TABLE>
+<BR>  
+<FONT SIZE="-1">
+This document was generated
+by <I>Martin Junius</I> on <I>August, 26  2004</I>
+using <A HREF="http://www.mathematik.uni-kl.de/~obachman/Texi2html
+"><I>texi2html</I></A>
+
+</BODY>
+</HTML>

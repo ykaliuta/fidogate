@@ -1,0 +1,66 @@
+Date: Sat, 26 Apr 1997 18:57:05 +0200
+From: frank@sazza.ping.de (Frank Wagner)
+Subject: Re: fidogate mit qmail ?
+Message-ID: <5jtc51$she$1@nick.sazza.ping.de>
+References: <MSGID_2=3A244=2F6301.18=40fidonet.org_cfbbe8f3@fidonet.org>
+Newsgroups: fido.ger.linux
+Organization: Martin Junius' orodruin.fido.de
+
+Frank Drolshagen schrieb:
+
+> Gibt es hier jemanden, der fidogate zusammen mit qmail betreibt ?
+
+
+Hallo,
+
+
+das klappt hier schon seit einiger Zeit problemlos.
+
+In /var/qmail/control/virtualdomains steht der Eintag fuer fido Mail's:
+.fido.sub.de:alias-fido
+
+Dafuer muss dann noch ein alias definiert werden.
+cat /var/qmail/alias/.qmail-fido-default
+|preline -df /usr/local/lib/fidogate/rfc2ftn -w normal "$EXT2@$HOST" 
+
+Das ist auch schon alles.
+Vielleicht koennte man das ja mal mit in die Fidogate Dokumentation
+aufnehmen. 
+
+
+Frank
+
+
+ 
+-- 
+:wq
+You might have mail
+frank@nick:/home/frank >
+
+
+Date: Tue, 26 Aug 1997 14:11:33 +0200
+From: Frank Drolshagen <Frank_Drolshagen@p1.f6369.n244.z2.fidonet.org>
+To: mj@orodruin.fido.de
+Subject: fidogate-Doku Korrektur/Ergänzung
+
+Hallo Martin !
+
+[...]
+
+In /var/qmail/control/virtualdomains steht der Eintag fuer fido Mail's:
+.fido.sub.de:alias-fido
+.fido.de:alias-fido
+.fidonet.org:alias-fido
+
+Das heißt, für jede Domain, die übers Fido weitergeleitet werden soll, muß
+eine Zeile mit dem Verweis auf den alias da sein.
+
+
+Dafuer muss dann noch ein alias definiert werden.
+cat /var/qmail/alias/.qmail-fido-default
+|preline -df /usr/local/lib/fidogate/rfc2ftn -w normal "$EXT2@$HOST" 
+# -------------------------------------------^^^^^^^^^
+# Das klappt so nur für Points. Für Nodes muß das raus.
+
+Bye
+f.d.g.

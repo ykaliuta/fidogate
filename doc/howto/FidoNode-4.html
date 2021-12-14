@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<TITLE>Linux Fido-Node HOWTO: Datein im Verzeichniss vom Admin-user</TITLE>
+</HEAD>
+<BODY>
+<A HREF="FidoNode-5.html">Weiter</A>
+<A HREF="FidoNode-3.html">Zurück</A>
+<A HREF="FidoNode.html#toc4">Inhalt</A>
+<HR>
+<H2><A NAME="s4">4. Datein im Verzeichniss vom Admin-user</A></H2>
+
+<P>
+<P>Die Dateien die beim Admin-User im Verzeichniss liegen sind groessten Teils
+nur Vereinfachungen. 
+<P>Also ich habe folgende Dateien ins Verzeichniss gelinkt.
+<HR>
+<PRE>
+cd /home/fido
+ln -s /usr/local/lib/fidogate/areas.bbs
+ln -s /usr/local/lib/fidogate/fareas.bbs
+ln -s /usr/local/lib/fidogate/packing
+ln -s /usr/local/lib/fidogate/passwd
+ln -s /usr/local/lib/fidogate/routing
+ln -s /usr/local/lib/fidogate/ftn2rfc
+ln -s /usr/local/lib/fidogate/ftnaf
+ln -s /usr/local/lib/fidogate/ftnfattach
+ln -s /usr/local/lib/fidogate/ftnhatch
+ln -s /usr/local/lib/fidogate/ftntick
+ln -s /usr/local/lib/fidogate/rfc2ftn
+ln -s /usr/local/lib/fidogate/runin
+
+ln -s /etc/ifcico/config
+ln -s /etc/ifcico/passworts
+ln -s /usr/local/bin/ifcico/ifcico
+ln -s /usr/local/bin/ifcico/ifindex
+ln -s /usr/local/bin/ifcico/ifstat
+</PRE>
+<HR>
+<P>Um bei meinem Hub meine Mails zu holen verwende ich das Skript 
+<CODE>ifmail/misc/contrib/ifpoll</CODE> in STARK gekuerzter Fassung.
+Es liegt in beim admin-user im Verzeichniss und wird per CRON um 04:50
+ausgefuehrt. (Gekuerzt habe ich es deshalb weil die Ausgaben in 
+<CODE>/fido/log/ifdebug</CODE> bzw auf <CODE>tty7</CODE> voellig ausreichend sind.)
+<HR>
+<PRE>
+#!/bin/sh
+#
+# /home/fido/ifpollhub
+#
+# gekuerzte Fassung von Matthias Schniedermeyer
+#
+# fuer Cry in the Darkness
+#
+
+# how often should i try to call NODE?
+MaxTry=20
+
+Node="f602.n2432.z2"
+
+# delay between outgoing calls in seconds
+DELAY=60
+
+# loop until ifcico could connect the node or MaxTry is encountered
+#
+i=1; errlv=1
+while let 'i &lt;= MaxTry' &amp;&amp; let 'errlv != 0'
+do
+        #
+        # start ifcico in master mode ..
+        #
+        ~/ifcico -r 1 $Node
+        errlv=$?
+        if [ $errlv != "0" ]; then
+                if [ $i != $MaxTry ]; then
+                        sleep $DELAY
+                fi
+                let i=i+1
+        fi
+done
+</PRE>
+<HR>
+<P>Von diesem Script habe ich noch eine 2 Fassung.
+<HR>
+<PRE>
+#!/bin/sh
+#
+# /home/fido/ifpollhub2
+#
+# gekuerzte Fassung von Matthias Schniedermeyer
+#
+# fuer Cry in the Darkness
+#
+
+if [ -f /var/spool/fnet/outbound/00000005.* ]; then
+
+  # how often should i try to call NODE?
+  MaxTry=20
+
+  Node="f602.n2432.z2"
+
+  # delay between outgoing calls in seconds
+  DELAY=60
+
+  # loop until ifcico could connect the node or MaxTry is encountered
+  #
+  i=1; errlv=1
+  while let 'i &lt;= MaxTry' &amp;&amp; let 'errlv != 0'
+  do
+          #
+          # start ifcico in master mode ..
+          #
+          ~/ifcico -r 1 $NODE
+          errlv=$?
+          if [ $errlv != "0" ]; then
+                  if [ $i != $MaxTry ]; then
+                          sleep $DELAY
+                  fi
+                  let i=i+1
+          fi
+  done
+
+fi
+</PRE>
+<HR>
+
+Dies Script liegt auch beim admin-user im  Verzeichniss und wird per CRON 
+um 00:00 aufgerufen und pollt nur dann beim Hub wenn auch wirklich ein Packet 
+fuer ihn vorhanden ist. (Um den richtigen Dateinamen herrauszubekommen muss 
+man aber warten bis ein Packet fuer den "Chef" im outbound liegt und sich den
+Dateinamen merken. Es ist naemlich IMMER der gleiche. (Mit Aussnahme der 
+Extension, die ist Wochentags abhaengig))
+<P>Jetzt muessen aber auch Packete die von Points hochgeladen wurden eingetosst
+werden. Dafuer habe ich folgendes Script geschrieben das auch beim admin-user
+im Verzeichniss liegt und per CRON alle 5 Minuten aufgerufen wird.
+<HR>
+<PRE>
+#!/bin/sh
+#--------------------------------------------
+ls /var/spool/fnet/in/*.mo* &amp;>/dev/null &amp;&amp; ~/runin
+ls /var/spool/fnet/in/*.tu* &amp;>/dev/null &amp;&amp; ~/runin
+ls /var/spool/fnet/in/*.we* &amp;>/dev/null &amp;&amp; ~/runin
+ls /var/spool/fnet/in/*.th* &amp;>/dev/null &amp;&amp; ~/runin
+ls /var/spool/fnet/in/*.fr* &amp;>/dev/null &amp;&amp; ~/runin
+ls /var/spool/fnet/in/*.sa* &amp;>/dev/null &amp;&amp; ~/runin
+ls /var/spool/fnet/in/*.su* &amp;>/dev/null &amp;&amp; ~/runin
+ls /var/spool/fnet/in/*.pkt &amp;>/dev/null &amp;&amp; ~/runin
+
+ls /var/spool/fnet/in/*.MO* &amp;>/dev/null &amp;&amp; ~/runin
+ls /var/spool/fnet/in/*.TU* &amp;>/dev/null &amp;&amp; ~/runin
+ls /var/spool/fnet/in/*.WE* &amp;>/dev/null &amp;&amp; ~/runin
+ls /var/spool/fnet/in/*.TH* &amp;>/dev/null &amp;&amp; ~/runin
+ls /var/spool/fnet/in/*.FR* &amp;>/dev/null &amp;&amp; ~/runin
+ls /var/spool/fnet/in/*.SA* &amp;>/dev/null &amp;&amp; ~/runin
+ls /var/spool/fnet/in/*.SU* &amp;>/dev/null &amp;&amp; ~/runin
+ls /var/spool/fnet/in/*.PKT &amp;>/dev/null &amp;&amp; ~/runin
+#-------------------------------------------------
+
+# Ticker -------------------------------------------
+ls /var/spool/fnet/in/*.tic &amp;>/dev/null &amp;&amp; ~/ftntick
+#---------------------------------------------------
+
+
+#E-Mail -----------------------------------------------------
+if [ -f /fido/fnet/outbound/0980025d.pnt/00000063.hut ]; then
+    ~/ftnin
+    ~/ftninpost
+fi
+#------------------------------------------------------------
+
+
+#-----------------------------------------------------------------
+if [ -f /var/spool/fnet/outbound/0980025d.pnt/00000062.hut ]; then
+    ./areafix.pl
+    runin
+fi
+#-----------------------------------------------------------------
+</PRE>
+<HR>
+<P>Dies Script ist jetzt aber starker Tobac als werde ich versuche es zu 
+erklaeren. 
+<P>Im ersten Abschnitt wird geprueft ob ein Packet im inbound liegt
+und wenn ja dann wird <CODE>runin</CODE> gestarted. (runin entpackt die Packete
+und started dann den tosser.)
+<P>Der zweite Abschnitt prueft ob Tic-Files vorhanden sind und started 
+gegebenfalls den File-ticker.
+<P>Der dritte Abschnitt sorgt dafuer das NMs an den Gateway-Point ins Internet
+verschickt werden.
+<P>Der vierte Abschnitt ruft meinen Areafix auf.
+(Einen Filefix fuer File-Areas habe ich noch nicht fertig, wird aber noch
+kommen.)
+<P>So das wars was bei meinem Admin-User im Verzeichniss liegt.
+<P>
+<P>
+<P>
+<HR>
+<A HREF="FidoNode-5.html">Weiter</A>
+<A HREF="FidoNode-3.html">Zurück</A>
+<A HREF="FidoNode.html#toc4">Inhalt</A>
+</BODY>
+</HTML>

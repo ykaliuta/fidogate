@@ -1,0 +1,29 @@
+-*- Indented-Text -*-
+
+This is a quick'n'dirty binary release of FIDOGATE for the WIN32
+environment (Windows 95 / 98 / NT). You'll need both the Cygwin
+(GNU-Win32) development environment and Perl for WIN32 installed under
+c:/usr, e.g. c:/usr/bin/perl.exe must be available for the scripts.
+
+In addition, the Cygwin bash.exe must be copied to c:/bin/sh.exe!
+
+======================================================================
+
+GNU-WIN32 information can be found at
+    http://www.cygnus.com/misc/gnu-win32/
+
+Perl for WIN32 information can be found at
+    http://www.activestate.com/
+
+======================================================================
+
+USE THIS RELEASE ONLY, IF YOU´RE ABSOLUTELY SURE WHAT YOU´RE DOING!
+
+For more information see the files in the doc/ subdirectory and the
+FIDOGATE source distribution. Please note that the documentation is
+not yet up-to-date for FIDOGATE version 4.3.x!
+
+
+$Date: 2002/08/05 23:53:47 $
+Martin Junius
+mailto:mj@fido.de

@@ -1,0 +1,30 @@
+#!/usr/bin/perl -U
+#
+# out-attach <H|N|D|C> <node> <file>
+#
+
+$binpath = "/usr/local/lib/fidogate";
+$outpath = "/var/spool/fido/out";
+#------------------------------------------------------------------------------
+use File::Basename;
+
+( $fl, $node, $file ) = @ARGV;
+
+if($fl eq "" or $node eq "" or $file eq "" ) {
+    print "usage: out-attach <Hold | Normal | Direct | Crash> <node> <file>\n";
+    exit 10;
+}
+
+if(! -f $file) {
+    print "out-attach: file $file not found\n";
+    exit 9;
+}
+
+$file = basename($file);
+$< = $>;
+
+system "cp $file $outpath/$file";
+system "$binpath/ftnfattach -F$fl $node $outpath/$file";
+system "chown uucp.uucp $outpath/$file";
+
+exit 0;

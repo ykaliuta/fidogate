@@ -1,0 +1,64 @@
+# Config File for Programms which use "fido.pli"
+
+# Main AKA
+mainaka 2:2432/605
+
+# Other AKAs
+aka 44:4932/100
+aka 998:200/605
+
+# AKA from Sysop. (Needed for the "From" Command)
+sysop 2:2432/605.1
+
+# Uplinks
+uplink 2:2432/600
+uplink 44:4932/0
+uplink 998:200/0
+
+# Passwords for Areafix (For Uplink)
+passwd 2:2432/600  GEHEIM
+passwd 44:4932/0   GEHEIM
+passwd 998:200/0   GEHEIM
+
+# Passwortfile von Fidogate
+passwdfile /fido/fidogate/passwd
+
+# Wo ist die areas.bbs & fareasbbs von Fidogate?
+areasbbs /fido/fidogate/areas.bbs
+fareasbbs /fido/fidogate/fareas.bbs
+
+# Wo ist die config.common von Fidogate?
+configcommon /fido/fidogate/config.common
+
+# Wo ist die Datei die bei "%help" gesendet werden soll?
+helpfile /fido/data/hilfe.txt
+
+# Wo ist die packing von Fidogate?
+packing /fido/fidogate/packing
+
+# Welche Packete sollen abgearbeitet werden
+# 1. Areafix
+toparsea 2:2432/605.98
+toparsea 44:4932/100.98
+toparsea 998:200/605.98
+
+# 2. Filefix
+toparsef 2:2432/605.97
+toparsef 44:4932/100.97
+toparsef 998:200/605.97
+
+# Wo soll das Sende-Packet hingeschoben werden?
+tosendfile /fido/fnet/in/areafix.pkt
+
+# Wo ist das Anfangsverzeichniss des Outbounds?
+outbegin /fido/fnet
+
+# Tearline for Messages
+tearlinea Areafix .7.1beta
+tearlinef Filefix .7.1beta
+
+# Um das Sequenzer File fuer die MsgID zu speichern
+datadir /fido/data
+
+#Testmode
+test 0
