@@ -288,14 +288,14 @@ void hubroute_write(void)
 
         if (s->mode == MODE_HUB || s->mode == MODE_HOST || s->mode == MODE_ZONE) {
             uplink = link;
-            sprintf(buffer, "%d$%s", s->mode, old.zone ? znfp1(&old) :
+            snprintf(buffer, sizeof(buffer), "%d$%s", s->mode, old.zone ? znfp1(&old) :
                     znfp2(&link));
             hi_write_avail(znfp2(&link), buffer);
 
             if (s->mode == MODE_HOST || s->mode == MODE_ZONE)
                 old = link;
         } else {
-            sprintf(buffer, "%d$%s", s->mode, znfp2(&uplink));
+            snprintf(buffer, sizeof(buffer), "%d$%s", s->mode, znfp2(&uplink));
             hi_write_avail(znfp1(&link), buffer);
         }
     }
@@ -760,7 +760,7 @@ int do_repack(char *dir, char *wildcard, int repack_time)
             continue;
 #endif                          /* DO_BSY_FILES */
 
-        sprintf(buf, "%s/toss/route/m%c%c%05lx.pkt", cf_p_spooldir(),
+        snprintf(buf, sizeof(buf), "%s/toss/route/m%c%c%05lx.pkt", cf_p_spooldir(),
                 TYPE_NETMAIL, FLAV_NORMAL, outpkt_sequencer());
 
         debug(5, "rename %s -> %s", pkt_name, buf);

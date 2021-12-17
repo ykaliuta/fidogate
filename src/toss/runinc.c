@@ -435,7 +435,7 @@ int toss_init(void)
     toss[0].name = "pin";
     BUF_EXPAND(pathbuffer, cf_p_pinbound());
     toss[0].inbound = strsave(pathbuffer);
-    sprintf(buffer, "-F%s", toss[0].inbound);
+    snprintf(buffer, sizeof(buffer), "-F%s", toss[0].inbound);
     toss[0].fadir = strsave(buffer);
     toss[0].grade = "-gp";
     toss[0].flags = "-s";
@@ -443,7 +443,7 @@ int toss_init(void)
     toss[1].name = "in";
     BUF_EXPAND(pathbuffer, cf_p_inbound());
     toss[1].inbound = strsave(pathbuffer);
-    sprintf(buffer, "-F%s", toss[1].inbound);
+    snprintf(buffer, sizeof(buffer), "-F%s", toss[1].inbound);
     toss[1].fadir = strsave(buffer);
     toss[1].grade = "-gi";
     toss[1].flags = "-s";
@@ -568,7 +568,8 @@ void run_toss(Runtoss * a)
     }
 #endif
     /* Runing scripts */
-    sprintf(ftntoss, "%s/ftntoss -l -m 400 -x -I %s %s %s %s", libexecdir,
+    snprintf(ftntoss, sizeof(ftntoss), "%s/ftntoss -l -m 400 -x -I %s %s %s %s",
+            libexecdir,
             a->inbound, a->grade, a->flags, verbose_flag);
     while (1) {
         ret = system_run(ftntoss);
@@ -580,7 +581,7 @@ void run_toss(Runtoss * a)
             exit_free();
             exit(1);
         }
-        sprintf(buffer, "%s/ftnroute %s %s", libexecdir, a->grade,
+        snprintf(buffer, sizeof(buffer), "%s/ftnroute %s %s", libexecdir, a->grade,
                 verbose_flag);
         state = system_run(buffer);
         if (state != 0 && state != 11) {
@@ -590,7 +591,7 @@ void run_toss(Runtoss * a)
             exit(1);
         }
 
-        sprintf(buffer, "%s/ftnpack %s %s %s", libexecdir,
+        snprintf(buffer, sizeof(buffer), "%s/ftnpack %s %s %s", libexecdir,
                 a->fadir ? a->fadir : "", a->grade, verbose_flag);
         if ((state = system_run(buffer)) != 0) {
             fglog("$WARNING: ftnpack returned %d", state);
@@ -855,7 +856,7 @@ int main(int argc, char **argv)
      */
     cf_read_config_file(c_flag ? c_flag : DEFAULT_CONFIG_MAIN);
 
-    sprintf(buffer, "%s/log-in", cf_p_logdir());
+    snprintf(buffer, sizeof(buffer), "%s/log-in", cf_p_logdir());
     log_file(buffer);
 
     /* More verbose for runing subprograms */
@@ -886,7 +887,7 @@ int main(int argc, char **argv)
 
 #ifndef IGNORE_PARM_RUNINC
     if (argv[optind]) {
-        strcpy(input, argv[optind]);
+        snprintf(input, sizeof(input), "%s", argv[optind]);
         debug(5, "do_dir(): %s", input);
         do_dir(input);
     } else

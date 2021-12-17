@@ -720,12 +720,12 @@ short int pkt_get_body_parse(FILE * fp, MsgBody * body, Node * from, Node * to)
         }
         if (body->seenby.n == 0) {
             debug(9, "WARNING: parsing echomail message: no SEEN-BY line!");
-            sprintf(buffer, "SEEN-BY: %d/%d", to->net, to->node);
+            snprintf(buffer, sizeof(buffer), "SEEN-BY: %d/%d", to->net, to->node);
             tl_append(&body->seenby, buffer);
         }
         if (body->path.n == 0) {
             debug(9, "WARNING: parsing echomail message: no ^APATH line!");
-            sprintf(buffer, "\001PATH: %d/%d", to->net, to->node);
+            snprintf(buffer, sizeof(buffer), "\001PATH: %d/%d", to->net, to->node);
             tl_append(&body->path, buffer);
         }
     }

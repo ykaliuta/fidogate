@@ -63,15 +63,15 @@ int main(int argc, char *argv[])
 	    case 's':
 		i++;
 		if (i < argc)
-		    strcpy(subject, argv[i]);
+                    snprintf(subject, sizeof(subject), "%s", argv[i]);
 		break;
 	    case 'd':
-		strcpy(subject, diagtime());
+		snprintf(subject, sizeof(subject), "%s", diagtime());
 		break;
 	    case 'n':
 		i++;
 		if (i < argc)
-		    strcpy(newsgroups, argv[i]);
+		    snprintf(newsgroups, sizeof(newsgroups), "%s", argv[i]);
 		break;
 	    case 'p':
 		i++;

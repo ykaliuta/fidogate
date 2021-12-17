@@ -853,8 +853,9 @@ int cmd_new(Node * node, char *line, char *dwnl, int inter)
                     ("CONFIG: AutoCreateFechoPath not defined and filearea not passthru");
                 p->dir = strsave("-");
             }
-            sprintf(full_farea_dir, "%s/%s", autocreate_fecho_path,
-                    str_lower(name));
+            snprintf(full_farea_dir, sizeof(full_farea_dir), "%s/%s",
+		     autocreate_fecho_path,
+		     str_lower(name));
             p->dir = strsave(full_farea_dir);
             if (check_access(full_farea_dir, CHECK_DIR) == ERROR) {
                 if (check_access(autocreate_fecho_path, CHECK_DIR) == ERROR) {
@@ -921,9 +922,9 @@ int cmd_new(Node * node, char *line, char *dwnl, int inter)
 
     if ((autocreate_script_cmd = cf_get_string("AutoCreateCmd", TRUE))) {
 #ifndef FTN_ACL
-        sprintf(buffer, "%s %s %s %s %s %d %s %s %d %s %s",
+        snprintf(buffer, sizeof(buffer), "%s %s %s %s %s %d %s %s %d %s %s",
 #else
-        sprintf(buffer, "%s %s %s %s %s %d %s %s %d %s",
+        snprintf(buffer, sizeof(buffer), "%s %s %s %s %s %d %s %s %d %s",
 #endif                          /* !FTN_ACL */
                 autocreate_script_cmd,
                 p->area,
@@ -1065,22 +1066,21 @@ int cmd_listall(Node * node)
 
         if (p->desc)
 #ifndef FTN_ACL
-            sprintf(buffer, "%s Z%-3d %-39s: %s",
+            snprintf(buffer, sizeof(buffer), "%s Z%-3d %-39s: %s",
                     mark, p->zone, p->area, p->desc);
 #else
-            sprintf(buffer, "%s %s %s Z%-3d %-35s: %s",
+            snprintf(buffer, sizeof(buffer), "%s %s %s Z%-3d %-35s: %s",
                     mark, mark_r, mark_m, p->zone, p->area, p->desc);
 #endif                          /* !FTN_ACL */
         else
 #ifndef FTN_ACL
-            sprintf(buffer, "%s Z%-3d %s", mark, p->zone, p->area);
+            snprintf(buffer, sizeof(buffer), "%s Z%-3d %s", mark, p->zone, p->area);
 #else
-            sprintf(buffer, "%s %s %s Z%-3d %s",
+            snprintf(buffer, sizeof(buffer), "%s %s %s Z%-3d %s",
                     mark, mark_r, mark_m, p->zone, p->area);
 #endif                          /* !FTN_ACL */
 #ifdef AFSEND_ECHO_STATUS
-        sprintf(tmp, "   '%s' %s", p->state, ctime(&p->time));
-        tmp[strlen(tmp) - 1] = 0;
+        snprintf(tmp, sizeof(tmp), "   '%s' %s", p->state, ctime(&p->time));
         BUF_APPEND(buffer, tmp);
 #endif                          /* AFSEND_ECHO_STATUS */
         areafix_printf("%s", buffer);
@@ -1118,19 +1118,19 @@ int cmd_listall(Node * node)
                             if (f1) {
                                 hi_write_avail(f2, f1);
 #ifndef FTN_ACL
-                                sprintf(buffer, "  Z%-3d %-39s: %s",
+                                snprintf(buffer, sizeof(buffer), "  Z%-3d %-39s: %s",
                                         (a->uplink).zone, f2, f1);
 #else
-                                sprintf(buffer, "      Z%-3d %-35s: %s",
+                                snprintf(buffer, sizeof(buffer), "      Z%-3d %-35s: %s",
                                         (a->uplink).zone, f2, f1);
 #endif                          /* !FTN_ACL */
                             } else {
                                 hi_write_avail(f2, "");
 #ifndef FTN_ACL
-                                sprintf(buffer, "  Z%-3d %s",
+                                snprintf(buffer, sizeof(buffer), "  Z%-3d %s",
                                         (a->uplink).zone, f2);
 #else
-                                sprintf(buffer, "      Z%-3d %s",
+                                snprintf(buffer, sizeof(buffer), "      Z%-3d %s",
                                         (a->uplink).zone, f2);
 #endif                          /* !FTN_ACL */
                             }
@@ -1285,16 +1285,16 @@ int cmd_list(Node * node, int flag) /* FALSE -> %avail; TRUE -> %list */
 #endif                          /* FTN_ACL */
             if (p->desc)
 #ifndef FTN_ACL
-                sprintf(buffer, "%s %-39s: %s", mark, p->area, p->desc);
+                snprintf(buffer, sizeof(buffer), "%s %-39s: %s", mark, p->area, p->desc);
 #else
-                sprintf(buffer, "%s %s %s %-35s: %s", mark, mark_r, mark_m,
+                snprintf(buffer, sizeof(buffer), "%s %s %s %-35s: %s", mark, mark_r, mark_m,
                         p->area, p->desc);
 #endif                          /* !FTN_ACL */
             else
 #ifndef FTN_ACL
-                sprintf(buffer, "%s %s", mark, p->area);
+                snprintf(buffer, sizeof(buffer), "%s %s", mark, p->area);
 #else
-                sprintf(buffer, "%s %s %s %s", mark, mark_r, mark_m, p->area);
+                snprintf(buffer, sizeof(buffer), "%s %s %s %s", mark, mark_r, mark_m, p->area);
 #endif                          /* !FTN_ACL */
 #ifdef AFSEND_ECHO_STATUS
             sprintf(tmp, "   '%s' %s", p->state, ctime(&p->time));
@@ -1627,7 +1627,7 @@ int cmd_sub(Node * node, char *area_in, Textlist * upl)
                 lon_add(l, node);
                 areasbbs_changed();
 
-                sprintf(buffer, "%-41s: ", p->area);
+                snprintf(buffer, sizeof(buffer), "%-41s: ", p->area);
 #ifndef ANSWER_OK
                 BUF_APPEND(buffer, "subscribed");
 #else
