@@ -1,0 +1,42 @@
+#
+#
+# FIDOGATE ftnpack config file
+#
+# Commands:
+#
+#     arc    NAME  "/PATH/PROG %s %s"
+#     prog   NAME  "/PATH/PROG %s"
+#
+#     pack   NAME  NODES
+#     rpack  NAME  TARGET NODES
+#     fpack  NAME  TARGET NODES
+#
+LastArcmailChars	17
+
+progn	gate	"/fido/libexec/ftn2rfc -i -x /fido/libexec/ftninpost -l %s"
+progn	areafix	"/fido/libexec/ftnafpkt -l %s"
+progn	filefix	"/fido/libexec/ftnafpkt -l -F %s"
+
+arc	zip	"/usr/bin/zip -9gkjq %s %s"
+arc	arc	"no an %s %s"
+arc	lha	"no -aiq %s %s"
+arc	rar	"no a -m5 -y -md1024 -inul -o+ %s %s"
+
+unarc	ZIP	"PK0x030x04"	"/usr/bin/unzip -ojL %s"	"/usr/bin/unzip -l %s"
+unarc	RAR	"Rar!"		"no e -inul -o+ %s"	"no l %s"
+unarc	ARJ	"0x600xEA"	"unarj e %s"	"unarj l %s"
+unarc	ARC	"0x26"		"no eo %s"		"no l %s"
+unarc	LZH	"-lh"		"lha eif %s"	"lha l %s"
+unarc	ZOO	"ZOO"		"zoo e: %s"	"zoo l %s"
+
+######## P A C K I N G #######################################################
+
+EchoMail
+pack	gate	  2:4500/1.0
+pack    zip       *
+
+NetMail
+pack    gate   	  2:4500/1.0
+pack    areafix   2:4500/1.9000
+pack    filefix   2:4500/1.9001
+pack    noarc     *
