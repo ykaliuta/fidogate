@@ -41,14 +41,12 @@
 #endif                          /* FTN_ACL */
 
 #define MY_NAME_FF	"Filefix Daemon"
-#define MY_CONTEXT_FF	"ff"
 #define MY_AREASBBS_FF	"FAreasBBS"
 #ifdef FTN_ACL
 #define MY_TYPE_FF	TYPE_FECHO
 #endif                          /* FTN_ACL */
 
 #define MY_NAME		my_name
-#define MY_CONTEXT	my_context
 #ifdef FTN_ACL
 #define MY_TYPE	my_type
 #endif                          /* FTN_ACL */
@@ -91,7 +89,7 @@ static int areafix = TRUE;
 
 /* Program name, context, config areas.bbs name */
 static char *my_name = MY_NAME_AF;
-static char *my_context = MY_CONTEXT_AF;
+static const char *my_context = MY_CONTEXT_AF;
 static char *my_areasbbs = MY_AREASBBS_AF;
 #ifdef FTN_ACL
 static char my_type = MY_TYPE_AF;
@@ -178,27 +176,30 @@ void areafix_stdprintf(const char *fmt, ...)
 /*
  * Common Areafix init
  */
-void areafix_init(int mode)
+void areafix_init(const char *context)
 {
-    areafix = mode;
-
-    if (mode) {
+    if (streq(context, "af")) {
         /* Areafix */
+        areafix = TRUE;
         my_name = MY_NAME_AF;
-        my_context = MY_CONTEXT_AF;
         my_areasbbs = MY_AREASBBS_AF;
 #ifdef FTN_ACL
         my_type = TYPE_ECHO;
 #endif                          /* FTN_ACL */
-    } else {
+    } else if (streq(context, "ff") ||
+	       streq(context, "tic")) {
         /* Filefix */
+        areafix = FALSE;
         my_name = MY_NAME_FF;
-        my_context = MY_CONTEXT_FF;
         my_areasbbs = MY_AREASBBS_FF;
 #ifdef FTN_ACL
         my_type = TYPE_FECHO;
 #endif                          /* FTN_ACL */
+    } else {
+        fprintf(stderr, "Wrong mode: %s, expected af, ff, tic\n", context);
+        exit(EX_USAGE);
     }
+    my_context = context;
 
     /* Get name of areas.bbs file from config file */
     if (!areas_bbs) {
@@ -299,7 +300,7 @@ int areafix_auth_check(Node * node, char *passwd, int checkpass)
 
     /* Check password */
     debug(3, "Node %s, passwd %s", znfp1(node), passwd);
-    pwd = passwd_lookup(MY_CONTEXT, node);
+    pwd = passwd_lookup(my_context, node);
     debug(3, "passwd entry: %s", pwd ? pwd->passwd : "-NONE-");
 
     if (checkpass == FALSE) {
@@ -842,7 +843,7 @@ int cmd_new(Node * node, char *line, char *dwnl, int inter)
     if (p->state == NULL)
         p->state = strsave("S");
     /* if mode filefix */
-    if (!strcmp(my_context, "ff")) {
+    if (!areafix) {
         if (p->flags & AREASBBS_PASSTHRU)   /* -# */
             p->dir = strsave("-");
         else {
@@ -946,7 +947,7 @@ int cmd_new(Node * node, char *line, char *dwnl, int inter)
     } else
         areasbbs_changed();
 
-    if (!strcmp(my_context, "ff")) {
+    if (!areafix) {
 
         for (s1 = cf_get_string("AutoCreateSubscribeFileechoNodes", TRUE);
              s1 && *s1;

@@ -83,7 +83,6 @@ void usage(void);
 extern int authorized_new;
 static char *areas_bbs = NULL;
 
-void areafix_init(int);
 int areafix_auth_check(Node *, char *, char);
 int cmd_new_int(Node *, char *, char *);
 int areafix_check_forbidden_area(char *);
@@ -795,7 +794,7 @@ int do_echomail(Packet * pkt, Message * msg, MsgBody * body)
 
         AreaUplink *a;
 
-        areafix_init(TRUE);
+        areafix_init("af");
 
         areafix_auth_check(&msg->node_from, NULL, FALSE);
 

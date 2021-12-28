@@ -84,7 +84,6 @@ void usage(void);
 short check_pass(Tick *, short);
 int filefix_check_forbidden_area(char *);
 int cmd_new_int(Node *, char *, char *);
-void areafix_init(int);
 int areafix_auth_check(Node *, char *, char);
 char *areafix_name(void);
 
@@ -318,7 +317,7 @@ int process_tic(Tick * tic)
                 if (!check_pass(tic, TRUE))
                     return ERROR;
 
-            areafix_init(FALSE);
+            areafix_init(MY_CONTEXT);
             areafix_auth_check(&tic->from, tic->pw, TRUE);
 
             if (!authorized_new) {
@@ -530,7 +529,7 @@ int process_tic(Tick * tic)
 
             tl_init(&req);
 
-            areafix_init(FALSE);
+            areafix_init(MY_CONTEXT);
 
             if (!authorized_new)
                 areafix_auth_check(&from_node, tic->pw, TRUE);

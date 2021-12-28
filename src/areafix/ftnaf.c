@@ -46,7 +46,6 @@ extern char *areas_bbs;
 /*
  * Prototypes
  */
-void areafix_init(int);
 int areafix_auth_check(Node *, char *, int);
 void areafix_auth_cmd(void);
 char *areafix_areasbbs(void);
@@ -204,7 +203,7 @@ int main(int argc, char **argv)
     int n_flag = FALSE;
     char *c_flag = NULL;
     char *a_flag = NULL, *u_flag = NULL;
-    int areafix = TRUE;
+    const char *areafix = "af";
     int w_flag = FALSE;
     Node node;
     int ret;
@@ -255,7 +254,7 @@ int main(int argc, char **argv)
             areafix_set_areasbbs(optarg);
             break;
         case 'F':
-            areafix = FALSE;
+            areafix = "ff";
             break;
 
     /***** Common options *****/

@@ -118,7 +118,7 @@ void passwd_init(void)
 /*
  * Lookup password in list
  */
-Passwd *passwd_lookup(char *context, Node * node)
+Passwd *passwd_lookup(const char *context, Node * node)
 {
     Passwd *p;
 

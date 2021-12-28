@@ -38,7 +38,6 @@
 /*
  * Prototypes
  */
-void areafix_init(int);
 void areafix_auth_cmd(void);
 char *areafix_areasbbs(void);
 void areafix_set_areasbbs(char *name);
@@ -555,7 +554,7 @@ int main(int argc, char **argv)
     pkt_outdir(O_flag ? O_flag : cf_p_outpkt(), NULL);
 
     /* Common init */
-    areafix_init(areafix);
+    areafix_init(areafix ? "af" : "ff");
 
     /* Read UPLINKS */
     uplinks_init();

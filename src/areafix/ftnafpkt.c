@@ -40,7 +40,6 @@
 /* Prototypes */
 
 /* areafix.c */
-void areafix_init(int);
 void areafix_auth_cmd(void);
 char *areafix_areasbbs(void);
 void areafix_set_areasbbs(char *name);
@@ -374,7 +373,7 @@ int main(int argc, char **argv)
     char *pkt_name;
     int w_flag = FALSE;
     char *cs_in = NULL, *cs_out = NULL, *p;
-    int areafix = TRUE;
+    const char *areafix = "af";
     char bbslock[MAXPATH];
 
     int option_index;
@@ -426,7 +425,7 @@ int main(int argc, char **argv)
             areafix_set_areasbbs(optarg);
             break;
         case 'F':
-            areafix = FALSE;
+            areafix = "ff";
             break;
         case 's':
             s_flag = TRUE;

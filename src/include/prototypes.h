@@ -547,7 +547,7 @@ char *nf1(Node *);
 int wild_compare_node(Node *, Node *);
 /* passwd.c */
 void passwd_init(void);
-Passwd *passwd_lookup(char *, Node *);
+Passwd *passwd_lookup(const char *, Node *);
 void passwd_free(void);
 
 /* read.c */
@@ -725,5 +725,7 @@ MIMEInfo *get_mime(char *, char *, char *);
 MIMEInfo *get_mime_from_header(RFCHeader *);
 /* xstrnlen.c */
 size_t xstrnlen(const char *, size_t);
+
+void areafix_init(const char *);
 
 #endif
