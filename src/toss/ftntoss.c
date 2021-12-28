@@ -1420,6 +1420,7 @@ int do_netmail(Packet * pkt, Message * msg, MsgBody * body, int forwarded)
     FILE *fp;
     char flav;
     bool is_ping;
+    char *msgid;
 
     /*
      * special handling for ping messages:
@@ -1428,23 +1429,35 @@ int do_netmail(Packet * pkt, Message * msg, MsgBody * body, int forwarded)
      */
     is_ping = strieq(msg->name_to, "ping");
 
+    /* if SPYES it is not under log_netmail branch */
+    msgid = kludge_get(&body->kludge, "MSGID", NULL);
+    if (msgid) {
+	    msgid = strsave(msgid);
+	    strip_crlf(msgid);
+    }
+
     if (log_netmail)
 #ifndef SPYES
-        fglog("MAIL: %s @ %s -> %s @ %s",
+        fglog("MAIL: %s @ %s -> %s @ %s (%s)",
               msg->name_from, znfp1(&msg->node_from),
-              msg->name_to, znfp2(&msg->node_to));
+              msg->name_to, znfp2(&msg->node_to),
+              msgid);
 #else
     {
         if (forwarded)
-            fglog("FORWARDED MAIL: %s @ %s -> %s @ %s",
+            fglog("FORWARDED MAIL: %s @ %s -> %s @ %s (%s)",
                   msg->name_from, znfp1(&msg->node_from),
-                  msg->name_to, znfp2(&msg->node_to));
+                  msg->name_to, znfp2(&msg->node_to),
+                  msgid);
         else
-            fglog("MAIL: %s @ %s -> %s @ %s",
+            fglog("MAIL: %s @ %s -> %s @ %s (%s)",
                   msg->name_from, znfp1(&msg->node_from),
-                  msg->name_to, znfp2(&msg->node_to));
+                  msg->name_to, znfp2(&msg->node_to),
+                  msgid);
     }
 #endif                          /* !SPYES */
+
+    xfree(msgid);
 
     if (is_ping && support_ping) {
         fglog("Processing PING: %s @ %s -> %s",
