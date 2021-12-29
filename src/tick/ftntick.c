@@ -37,14 +37,9 @@
 #define CONFIG		DEFAULT_CONFIG_MAIN
 
 #define MY_AREASBBS	"FAreasBBS"
-#ifdef TIC_PASSWORD
-#define MY_CONTEXT	"tic"
-#else
-#define MY_CONTEXT	"ff"
-#endif                          /* TIC_PASSWORD */
-
 #define MY_FILESBBS	"files.bbs"
 
+static const char *my_context = "ff";
 static char *unknown_tick_area = NULL;  /* config.main: UnknownTickArea */
 
 static char in_dir[MAXPATH];    /* Input directory */
@@ -317,7 +312,7 @@ int process_tic(Tick * tic)
                 if (!check_pass(tic, TRUE))
                     return ERROR;
 
-            areafix_init(MY_CONTEXT);
+            areafix_init(my_context);
             areafix_auth_check(&tic->from, tic->pw, TRUE);
 
             if (!authorized_new) {
@@ -529,7 +524,7 @@ int process_tic(Tick * tic)
 
             tl_init(&req);
 
-            areafix_init(MY_CONTEXT);
+            areafix_init(my_context);
 
             if (!authorized_new)
                 areafix_auth_check(&from_node, tic->pw, TRUE);
@@ -650,7 +645,7 @@ short check_pass(Tick * tic, short mode)
     /*
      * Get password for from node
      */
-    if ((pwd = passwd_lookup(MY_CONTEXT, &tic->from)))
+    if ((pwd = passwd_lookup(my_context, &tic->from)))
         passwd = pwd->passwd;
     else
         passwd = NULL;
@@ -1075,6 +1070,10 @@ int main(int argc, char **argv)
     }
     if (cf_get_string("DontIgnore0x8d", TRUE)) {
         ignore_soft_cr = FALSE;
+    }
+
+    if (cf_get_string("EnableTickPassword", TRUE)) {
+        my_context = "tic";
     }
 
     /*

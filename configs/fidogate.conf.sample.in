@@ -458,6 +458,10 @@ TickFileAction UNIXFTN *.bz2 /usr/lib/fidogate/bin/scriptfilearea %s
 # (decimal fraction allowed)
 MaxTicHistory
 
+# Add "tic" context to packet/af/ff in passwd
+# Use when filefix and tic passwords can be different.
+#EnableTickPassword
+
 ##############################################################################
 # G A T E W A Y   C O N F I G U R A T I O N                                  #
 ##############################################################################

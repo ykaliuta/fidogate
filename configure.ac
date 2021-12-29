@@ -2,7 +2,7 @@ dnl Copyright (c) 2003-2008 Andrey Slusar <anrays@gmail.com>
 dnl Copyright (c) 2003-2004 Alexandr Dobroslavskiy <dsas@users.sourceforge.net>
 dnl Copyright (c) 2015-2020 Yauheni Kaliuta <y.kaliuta@gmail.com>
 dnl
-AC_REVISION([Revision: 1039])
+AC_REVISION([Revision: 1040])
 AC_PREREQ(2.53)
 AC_INIT([fidogate],[5.12],[y.kaliuta@gmail.com])
 AC_DISABLE_OPTION_CHECKING
@@ -576,36 +576,6 @@ if test $enable_tick_crc = yes; then
 	      [Enable if no ftntick CRC control])
 fi
 
-AC_ARG_ENABLE(tick-history,
-[  --disable-tick-history  tick dupe check],dnl
-   [case "${enableval}" in
-    yes) enable_tick_history=yes ;;
-     no) enable_tick_history=no ;;
-      *) AC_MSG_ERROR(bad value ${enableval} for --disable-tick-history) ;;
-    esac],dnl
-    enable_tick_history=yes)
-
-if test $enable_tick_history = yes; then
-    AC_DEFINE(TIC_HISTORY,
-              1,
-	      [Enable tic dupe check])
-fi
-
-AC_ARG_ENABLE(tick-password,
-[  --enable-tick-password  enable separate tic password in passwd file],dnl
-   [case "${enableval}" in
-    yes) enable_tick_password=yes ;;
-     no) enable_tick_password=no ;;
-      *) AC_MSG_ERROR(bad value ${enableval} for --enable-tick-password) ;;
-    esac],dnl
-    enable_tick_password=no)
-
-if test $enable_tick_password = yes; then
-    AC_DEFINE(TIC_PASSWORD,
-              1,
-	      [Enable separate tic password in passwd file])
-fi
-
 AC_ARG_ENABLE(no-organization,
 [  --enable-no-organization enable if no insert Origin line if it absence],dnl
    [case "${enableval}" in
@@ -719,6 +689,21 @@ if test $enable_pid2rd_tid2gtv = yes; then
               1,
 	      [Enable paste ^PID (mail or news reader name)
 	      and ^TID (fidogate version) kludge])
+fi
+
+AC_ARG_ENABLE(tick-history,
+[  --disable-tick-history  tick dupe check],dnl
+   [case "${enableval}" in
+    yes) enable_tick_history=yes ;;
+     no) enable_tick_history=no ;;
+      *) AC_MSG_ERROR(bad value ${enableval} for --disable-tick-history) ;;
+    esac],dnl
+    enable_tick_history=yes)
+
+if test $enable_tick_history = yes; then
+    AC_DEFINE(TIC_HISTORY,
+              1,
+	      [Enable tic dupe check])
 fi
 
 AC_ARG_ENABLE(dnt-netmail,

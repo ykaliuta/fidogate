@@ -38,11 +38,6 @@
 #define CREATOR		"by FIDOGATE/ftnhatch"
 
 #define MY_AREASBBS	"FAreasBBS"
-#ifdef TIC_PASSWORD
-#define MY_CONTEXT	"tic"
-#else
-#define MY_CONTEXT	"ff"
-#endif                          /* TIC_PASSWORD */
 
 /*
  * Prototypes
