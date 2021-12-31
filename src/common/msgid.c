@@ -405,23 +405,24 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
     str_printf(tmps->s + strlen(tmps->s), tmps->len - strlen(tmps->s),
                "%08lx", crc32);
 #endif                          /* !FIDO_STYLE_MSGID */
-    xfree(savep);
     if (origid_flag)
         *origid_flag = TRUE;
 #if defined(DBC_HISTORY) && defined(FIDO_STYLE_MSGID)
     if (area) {
         if (lock_program(cf_p_lock_history(), FALSE) == ERROR) {
-            return tmps->s;
+            goto out;
         }
         if (hi_init_dbc() == ERROR) {
             fglog("can't open dbc file");
         }
-        if (hi_write_dbc(message_id, tmps->s, dont_flush) == ERROR)
+        if (hi_write_dbc(id, tmps->s, dont_flush) == ERROR)
             fglog("can't write to dbc file");
         hi_close();
         unlock_program(cf_p_lock_history());
     }
 #endif                          /* DBC_HISTORY && FIDO_STYLE_MSGID */
+out:
+    xfree(savep);
     return tmps->s;
 }
 
