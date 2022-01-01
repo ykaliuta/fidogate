@@ -35,7 +35,6 @@ FIDOGATE Version 5
 	--with-newsbindir=%{_libexecdir}/news\
 	--with-owner=%{user} --with-group=news \
 	--with-sendmail=%{_sbindir}/sendmail \
-	--enable-dbc-history \
 	--disable-desc-dir \
 	--enable-aliases-local \
 	--disable-fecho-pass \

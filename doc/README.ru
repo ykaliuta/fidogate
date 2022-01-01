@@ -272,7 +272,7 @@ configure скрипт. В исключительных случаях треб�
 `ANSWER_OK'(--enable-af-ansok)
     При создании эхоконференции отвечаем "Ok", вместо "subscribe".
 
-`FIDO_STYLE_MSGID'(--disable-fs-msgid)
+`FIDO_STYLE_MSGID'(Deprecated, moved to runtime NoFidoStyleMsgid)
     Приведение ^AMSGID в соответствие с FTS, т.е вместо:
 	Message-ID: <1991Aug9.034239.10837@bisun.nbg.sub.org>
 	FTN Area: DE.COMM.GATEWAYS
@@ -282,7 +282,7 @@ configure скрипт. В исключительных случаях треб�
 	^AMSGID: Z:N/F.P 9dc743f7
     По умолчанию включено.
 
-`DBC_HISTORY'(--enable-dbc-history)
+`DBC_HISTORY'(Deprecated, moved to runtime NoDBCHistory)
     Созданавать базу соответствий fido и rfc msgid. Т.е. при написании
     письма с гейта в фидо генерируется fido msgid и сохраняется вместе с
     исходным RFC-Message-ID в базу соответствий, а при получении ответа
@@ -1377,6 +1377,10 @@ AutoCreateRmgroupCmd /usr/lib/news/bin/ctlinnd rmgroup %s
 # Лог с анонсами проходящего по файлэхам.
 AreaFixCreateAnnounceFile /var/log/fidogate/newareas
 
+# Не вести базу данных соответствий fido->rfc MSGID
+#NoDBCHistory
+
+#NoFidoStyleMsgid
 
 ===============================================================================
 

@@ -618,34 +618,6 @@ if test $enable_af_ansok = yes; then
 	      [Change areafix answer when subscibing to area from `subscribe' to `ok'.])
 fi
 
-AC_ARG_ENABLE(fs-msgid,
-[  --disable-fs-msgid      set gate msgid into outgoing messages],
-   [case "${enableval}" in
-    yes | no) enable_fs_msgid="${enableval}" ;;
-      *) AC_MSG_ERROR(bad value ${enableval} for --disable-fs-msgid) ;;
-    esac],dnl
-    enable_fs_msgid=yes)
-
-if test $enable_fs_msgid = yes; then
-    AC_DEFINE(FIDO_STYLE_MSGID,
-              1,
-	      [Set fido-style msgid])
-fi
-
-AC_ARG_ENABLE(dbc-history,
-[  --enable-dbc-history    use msgid correspond data base],dnl
-   [case "${enableval}" in
-    yes | no) enable_dbc_history="${enableval}" ;;
-      *) AC_MSG_ERROR(bad value ${enableval} for --enable-dbc-history) ;;
-    esac],dnl
-    enable_dbc_history=no)
-
-if test $enable_dbc_history = yes; then
-    AC_DEFINE(DBC_HISTORY,
-              1,
-	      [Set msgid correspond data base])
-fi
-
 AC_ARG_ENABLE(afses,
 [  --enable-afses          areafix send echo status],dnl
    [case "${enableval}" in

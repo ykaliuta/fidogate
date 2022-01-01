@@ -39,16 +39,13 @@
 /*
  * Prototypes
  */
-#ifndef FIDO_STYLE_MSGID
 static void msgid_fts9_quote(char *, char *, int);
-#endif                          /* FIDO_STYLE_MSGID */
 static void msgid_mime_quote(char *, char *, int);
 static char *msgid_domain(int);
 
 /*
  * Quote string containing <SPACE> according to FTS-0009
  */
-#ifndef FIDO_STYLE_MSGID
 static void msgid_fts9_quote(char *d, char *s, int n)
 {
     int i = 0;
@@ -67,7 +64,6 @@ static void msgid_fts9_quote(char *d, char *s, int n)
         d[i++] = '\"';          /* " */
     d[i] = 0;
 }
-#endif                          /* FIDO_STYLE_MSGID */
 
 /*
  * Quote ^AMSGID string using MIME-style quoted-printable =XX
@@ -107,7 +103,8 @@ static char *msgid_domain(int zone)
 /*
  * Convert FIDO ^AMSGID/REPLY to RFC Message-ID/References
  */
-char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail, char *ref_line)
+char *s_msgid_fido_to_rfc(char *msgid, int *pzone, bool mail, char *ref_line,
+                          bool no_dbc_history, bool no_fido_style_msgid)
 {
     char *save;
     char *origaddr, *serialno;
@@ -162,9 +159,13 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail, char *ref_line)
     for (p = serialno; *p && !is_space(*p); p++) ;
     *p = 0;
 
-#if defined(DBC_HISTORY) && defined(FIDO_STYLE_MSGID)
     /***** Parse dbc for msgid ******/
-    if (!pzone && mail && strchr(msgid, ' ')) {
+    if (!no_dbc_history
+	&& !no_fido_style_msgid
+	&& !pzone
+	&& mail
+	&& strchr(msgid, ' '))
+    {
         if (lock_program(cf_p_lock_history(), FALSE) == ERROR)
             return NULL;
         if (hi_init_dbc() == ERROR)
@@ -175,13 +176,10 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, short mail, char *ref_line)
         if (s) {
             return s;
         } else {
-#endif                          /* DBC_HISTORY && FIDO_STYLE_MSGID */
             if (ref_line)
                 return ref_line;
-#if defined(DBC_HISTORY) && defined(FIDO_STYLE_MSGID)
         }
     }
-#endif
     /***** New-style converted RFC Message-ID *****/
     if (wildmat(origaddr, "<*@*>")) {
         tmps = tmps_copy(origaddr);
@@ -250,15 +248,14 @@ char *s_msgid_default(Message * msg)
 /*
  * Convert RFC Message-ID/References to FIDO ^AMSGID/^AREPLY
  */
-#ifdef FIDO_STYLE_MSGID
 char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
-                          int part, int split, char *area, short int dont_flush,
-                          int for_reply)
-#else
-char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
-                          int part, int split, char *area, short int x_flags_m,
-                          int for_reply)
-#endif
+                          int part, char *area,
+                          bool dont_flush,
+                          bool for_reply,
+                          bool split,
+                          bool x_flags_m,
+                          bool no_dbc_history,
+                          bool no_fido_style_msgid)
 /* origid_flag - Flag for ^AORIGID       */
 /* message_id  - Original RFC-ID         */
 /* part        - part number             */
@@ -388,27 +385,23 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
         crc32 += part - 1;
 
     tmps = tmps_alloc(strlen(id) + 1 + /**Extra**/ 20);
-#ifndef FIDO_STYLE_MSGID
-    if (!x_flags_m) {
+
+    if (no_fido_style_msgid && !x_flags_m) {
         msgid_fts9_quote(tmps->s, id, tmps->len);
-        str_printf(tmps->s + strlen(tmps->s), tmps->len - strlen(tmps->s),
-                   " %08lx", crc32);
     } else {
         if (for_reply)
             str_printf(tmps->s, strlen(tmps->s) + strlen(id) + 2, "%s ", id);
-        str_printf(tmps->s + strlen(tmps->s), tmps->len - strlen(tmps->s),
-                   "%08lx", crc32);
     }
-#else
-    if (for_reply)
-        str_printf(tmps->s, strlen(tmps->s) + strlen(id) + 2, "%s ", id);
     str_printf(tmps->s + strlen(tmps->s), tmps->len - strlen(tmps->s),
                "%08lx", crc32);
-#endif                          /* !FIDO_STYLE_MSGID */
+
     if (origid_flag)
         *origid_flag = TRUE;
-#if defined(DBC_HISTORY) && defined(FIDO_STYLE_MSGID)
-    if (area) {
+
+    if (!no_dbc_history
+        && !no_fido_style_msgid
+        && area)
+    {
         if (lock_program(cf_p_lock_history(), FALSE) == ERROR) {
             goto out;
         }
@@ -420,7 +413,6 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
         hi_close();
         unlock_program(cf_p_lock_history());
     }
-#endif                          /* DBC_HISTORY && FIDO_STYLE_MSGID */
 out:
     xfree(savep);
     return tmps->s;

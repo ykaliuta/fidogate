@@ -129,6 +129,9 @@ int private = TRUE;
 /* News-article */
 int newsmode = FALSE;
 
+static bool no_dbc_history;
+static bool no_fido_style_msgid;
+
 /*
  * Global Textlist to save message body
  */
@@ -906,9 +909,7 @@ static int snd_message(Message * msg, Area * parea,
     long seq = 0;
     int rfc_level = default_rfc_level;
     int x_flags_n = FALSE, x_flags_f = FALSE;
-#ifndef FIDO_STYLE_MSGID
     int x_flags_m = FALSE;
-#endif
     char *cs_enc = "8bit";      /* all converted to 8 bit now */
     char *pt = NULL;
     Textlist *dec_body;
@@ -918,9 +919,7 @@ static int snd_message(Message * msg, Area * parea,
      * X-Flags settings
      */
     x_flags_f = flags && strchr(flags, 'f');
-#ifndef FIDO_STYLE_MSGID
     x_flags_m = flags && strchr(flags, 'm');
-#endif
     x_flags_n = flags && strchr(flags, 'n');
 
     /*
@@ -1030,41 +1029,41 @@ static int snd_message(Message * msg, Area * parea,
 
     /* Add kludges for MSGID / REPLY */
     if ((header = s_header_getcomplete(h, "Message-ID"))) {
-#ifdef FIDO_STYLE_MSGID
-        if ((id =
-             s_msgid_rfc_to_fido(&flag, header, part, split != 0, msg->area,
-                                 dont_flush_dbc_history, 0))) {
-            if (!echogate_alias)
-                fprintf(sf, "\001MSGID: %s %s\r", znfp1(&msg->node_from), id);
-            else
-                fprintf(sf, "\001MSGID: %s %s\r", znf1(node_from), id);
-        }
-#else
-        if ((id =
-             s_msgid_rfc_to_fido(&flag, header, part, split != 0, msg->area,
-                                 x_flags_m, 0))) {
-            if (!x_flags_m)     /* X-Flags: m */
+        id = s_msgid_rfc_to_fido(&flag, header, part,
+                                 msg->area,
+                                 dont_flush_dbc_history,
+                                 false, /* for_reply */
+                                 split != 0,
+                                 x_flags_m,
+                                 no_dbc_history,
+                                 no_fido_style_msgid);
+        if (id) {
+            if (no_fido_style_msgid && !x_flags_m)     /* X-Flags: m */
                 fprintf(sf, "\001MSGID: %s\r", id);
             else {
                 if (!echogate_alias)
-                    fprintf(sf, "\001MSGID: %s %s\r", znfp1(&msg->node_from),
-                            id);
+                    fprintf(sf, "\001MSGID: %s %s\r", znfp1(&msg->node_from), id);
                 else
                     fprintf(sf, "\001MSGID: %s %s\r", znf1(node_from), id);
             }
         }
-#endif
     } else
         print_local_msgid(sf, node_from);
 
     if ((header = s_header_getcomplete(h, "References")) ||
         (header = s_header_getcomplete(h, "In-Reply-To"))) {
-#ifdef FIDO_STYLE_MSGID
-        if ((id = s_msgid_rfc_to_fido(&flag, header, 0, 0, msg->area, 0, 1)))
-#else
-        if ((id = s_msgid_rfc_to_fido(&flag, header, 0, 0, msg->area,
-                                      x_flags_m, 1)))
-#endif
+
+        id = s_msgid_rfc_to_fido(&flag, header,
+                                 0, /* part */
+                                 msg->area,
+                                 false, /* dont_flush */
+                                 true, /* for_reply */
+                                 false, /* split */
+                                 x_flags_m,
+                                 no_dbc_history,
+                                 no_fido_style_msgid);
+
+        if (id)
             fprintf(sf, "\001REPLY: %s\r", id);
     }
 
@@ -2152,11 +2151,9 @@ int main(int argc, char **argv)
     if (cf_get_string("EchoMail4D", TRUE)) {
         echomail4d = TRUE;
     }
-#ifndef FIDO_STYLE_MSGID
     if ((p = cf_get_string("RFCLevel", TRUE))) {
         default_rfc_level = atoi(p);
     }
-#endif
     if (cf_get_string("UseOrganizationForOrigin", TRUE)) {
         use_organization_for_origin = TRUE;
     }
@@ -2253,6 +2250,8 @@ int main(int argc, char **argv)
         echogate_alias = TRUE;
     }
     single_pkts = (cf_get_string("SinglePKTs", TRUE) != NULL);
+    no_dbc_history = (cf_get_string("NoDBCHistory", TRUE) != NULL);
+    no_fido_style_msgid = (cf_get_string("NoFidoStyleMsgid", TRUE) != NULL);
 
     /*
      * Init various modules

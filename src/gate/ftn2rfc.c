@@ -133,6 +133,8 @@ static short int ignore_chrs = FALSE;
 static short int ignore_soft_cr = FALSE;
 static short int ignore_mime_type = TRUE;
 static bool strict;
+static bool no_dbc_history;
+static bool no_fido_style_msgid;
 
 /*
  * Get header for
@@ -1255,7 +1257,8 @@ int unpack(FILE * pkt_file, Packet * pkt)
                     msg_body_clear(&body);
                     continue;
                 }
-                id_line = s_msgid_fido_to_rfc(p, &id_zone, FALSE, NULL);
+                id_line = s_msgid_fido_to_rfc(p, &id_zone, FALSE, NULL,
+					      no_dbc_history, no_fido_style_msgid);
                 if (no_unknown_msgid_zones)
                     if (id_zone >= -1 && !cf_zones_check(id_zone)) {
                         fglog("MSGID %s: malformed or unknown zone, not gated",
@@ -1296,7 +1299,8 @@ int unpack(FILE * pkt_file, Packet * pkt)
                     ref_line = p;
             }
             if ((p = kludge_get(&body.kludge, "REPLY", NULL)))
-                ref_line = s_msgid_fido_to_rfc(p, NULL, area != NULL, ref_line);
+                ref_line = s_msgid_fido_to_rfc(p, NULL, area != NULL, ref_line,
+                    no_dbc_history, no_fido_style_msgid);
         }
 
         /* ^AGATEWAY */
@@ -2026,6 +2030,8 @@ int main(int argc, char **argv)
         gate_rfc_kludge = TRUE;
     }
     strict = (cf_get_string("FTNStrictPktCheck", TRUE) != NULL);
+    no_dbc_history = (cf_get_string("NoDBCHistory", TRUE) != NULL);
+    no_fido_style_msgid = (cf_get_string("NoFidoStyleMsgid", TRUE) != NULL);
 
     /* Init various modules */
     areas_init();

@@ -41,7 +41,6 @@ short int hi_init(char *);
 /*
  * Get base name
  */
-#if defined(DBC_HISTORY) && defined(FIDO_STYLE_MSGID)
 short int hi_init_dbc()
 {
     char db_name[MAXPATH];
@@ -53,7 +52,6 @@ short int hi_init_dbc()
     }
     return OK;
 }
-#endif                          /* DBC_HISTORY && FIDO_STYLE_MSGID */
 
 #ifdef TIC_HISTORY
 void hi_init_tic_history(void)
@@ -146,7 +144,6 @@ void hi_close(void)
 /*
  * Write record to DBC MSGID history
  */
-#if defined(DBC_HISTORY) && defined(FIDO_STYLE_MSGID)
 short int hi_write_dbc(char *rfc_msgid, char *fido_msgid, short int dont_flush)
 {
     long offset;
@@ -192,7 +189,6 @@ short int hi_write_dbc(char *rfc_msgid, char *fido_msgid, short int dont_flush)
 
     return OK;
 }
-#endif                          /* DBC_HISTORY && FIDO_STYLE_MSGID */
 
 /*
  * Write record to MSGID history

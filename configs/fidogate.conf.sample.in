@@ -794,3 +794,8 @@ AutoCreateRmgroupCmd  <NEWSBINDIR>/ctlinnd rmgroup %s
 
 # Announce newsgroup file
 AreaFixCreateAnnounceFile %G/newareas
+
+# Disable fido->rfc MSGID database
+#NoDBCHistory
+
+#NoFidoStyleMsgid

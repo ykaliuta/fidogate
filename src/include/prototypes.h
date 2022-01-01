@@ -446,9 +446,9 @@ int list_match(char **, char **);
 void list_free(char **);
 
 /* msgid.c */
-char *s_msgid_fido_to_rfc(char *, int *, short, char *);
+char *s_msgid_fido_to_rfc(char *, int *, bool, char *, bool, bool);
 char *s_msgid_default(Message *);
-char *s_msgid_rfc_to_fido(int *, char *, int, int, char *, short int, int);
+char *s_msgid_rfc_to_fido(int *, char *, int, char *, bool, bool, bool, bool, bool, bool);
 char *s_msgid_convert_origid(char *);
 
 /* node.c */

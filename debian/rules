@@ -16,7 +16,6 @@ configure_options := \
 	--with-newsbindir=/usr/lib/news/bin\
 	--with-owner=ftn --with-group=news \
 	--with-sendmail=/usr/sbin/sendmail \
-	--enable-dbc-history \
 	--disable-desc-dir \
 	--enable-aliases-local \
 	--disable-fecho-pass \
