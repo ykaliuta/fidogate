@@ -87,6 +87,64 @@ short int int_uplinks = FALSE;
 short int kill_dupe = FALSE;
 short int ignore_soft_cr = FALSE;
 
+static bool no_tic_history;
+
+static bool ftntick_is_dupe(Tick *tic, bool w_flag)
+{
+    bool ret = false;
+
+    if (lock_program(cf_p_lock_history(), w_flag ? w_flag : NOWAIT) ==
+        ERROR) {
+        fglog("$ERROR: can't create lock file %s/%s", cf_p_lockdir(),
+              cf_p_lock_history());
+        exit_free();
+        exit(EXIT_BUSY);
+    }
+
+    hi_init_tic_history();
+    sprintf(buffer, "%s %s %s %lx", tic->area, znfp1(&tic->origin), tic->file,
+            tic->crc);
+    if (hi_test(buffer)
+        && (!tic->replaces || stricmp(tic->file, tic->replaces) != 0)) {
+
+        ret = true;
+
+        fglog("dupe from %s, crc=%lx, file=%s, area=%s, size=%lub",
+              znfp1(&tic->origin), tic->crc, tic->file, tic->area, tic->size);
+
+    }
+
+    hi_close();
+    unlock_program(cf_p_lock_history());
+
+    return ret;
+}
+
+static int ftntick_write_history(Tick *tic, bool w_flag)
+{
+    int ret = 0;
+
+    if (lock_program(cf_p_lock_history(), w_flag ? w_flag : WAIT) ==
+        ERROR) {
+        fglog("$ERROR: can't create lock file %s/%s", cf_p_lockdir(),
+              cf_p_lock_history());
+        exit_free();
+        exit(EXIT_BUSY);
+    }
+
+    hi_init_tic_history();
+    sprintf(buffer, "%s %s %s %lx", tic->area, znfp1(&tic->origin),
+            tic->file, tic->crc);
+
+    if (hi_write(tic->date, buffer) == ERROR)
+        ret = ERROR;
+
+    hi_close();
+    unlock_program(cf_p_lock_history());
+
+    return ret;
+}
+
 /*
  * Processs *.tic files in Binkley inbound directory
  */
@@ -166,41 +224,19 @@ int do_tic(int w_flag)
         /*
          * Check dupe
          */
-#ifdef TIC_HISTORY
-        if (lock_program(cf_p_lock_history(), w_flag ? w_flag : NOWAIT) ==
-            ERROR) {
-            fglog("$ERROR: can't create lock file %s/%s", cf_p_lockdir(),
-                  cf_p_lock_history());
-            exit_free();
-            exit(EXIT_BUSY);
-        }
-
-        hi_init_tic_history();
-        sprintf(buffer, "%s %s %s %lx", tic.area, znfp1(&tic.origin), tic.file,
-                tic.crc);
-        if (hi_test(buffer)
-            && (!tic.replaces || stricmp(tic.file, tic.replaces) != 0)) {
-            hi_close();
-            unlock_program(cf_p_lock_history());
-            fglog("dupe from %s, crc=%lx, file=%s, area=%s, size=%lub",
-                  znfp1(&tic.origin), tic.crc, tic.file, tic.area, tic.size);
-
+        if (!no_tic_history && ftntick_is_dupe(&tic, w_flag)) {
             if (!kill_dupe)
                 goto rename_to_bad;
-            else {
-                BUF_COPY(buffer, in_dir);
-                BUF_APPEND(buffer, "/");
-                BUF_APPEND(buffer, tic.file);
-                unlink(buffer);
-                p = strrchr(name, '/');
-                fglog("delete %s, %s", tic.file, ++p);
-                unlink(name);
-                goto no_action;
-            }
+
+            BUF_COPY(buffer, in_dir);
+            BUF_APPEND(buffer, "/");
+            BUF_APPEND(buffer, tic.file);
+            unlink(buffer);
+            p = strrchr(name, '/');
+            fglog("delete %s, %s", tic.file, ++p);
+            unlink(name);
+            goto no_action;
         }
-        hi_close();
-        unlock_program(cf_p_lock_history());
-#endif                          /* TIC_HISTORY */
 
         BUF_COPY2(bbslock, areas_bbs, ".lock");
         if (lock_path(bbslock, w_flag ? w_flag : WAIT) == ERROR) {
@@ -223,23 +259,10 @@ int do_tic(int w_flag)
 /*
  * Write history information to database
  */
-#ifdef TIC_HISTORY
-            if (lock_program(cf_p_lock_history(), w_flag ? w_flag : WAIT) ==
-                ERROR) {
-                fglog("$ERROR: can't create lock file %s/%s", cf_p_lockdir(),
-                      cf_p_lock_history());
-                exit_free();
-                exit(EXIT_BUSY);
+            if (!no_tic_history) {
+                if (ftntick_write_history(&tic, w_flag) != 0)
+                    return ERROR;
             }
-
-            hi_init_tic_history();
-            sprintf(buffer, "%s %s %s %lx", tic.area, znfp1(&tic.origin),
-                    tic.file, tic.crc);
-            if (hi_write(tic.date, buffer) == ERROR)
-                return ERROR;
-            hi_close();
-            unlock_program(cf_p_lock_history());
-#endif                          /* TIC_HISTORY */
 
             areasbbs_rewrite();
             unlock_path(bbslock);
@@ -1075,6 +1098,8 @@ int main(int argc, char **argv)
     if (cf_get_string("EnableTickPassword", TRUE)) {
         my_context = "tic";
     }
+
+    no_tic_history = (cf_get_string("NoTicHistory", TRUE) != NULL);
 
     /*
      * Get name of fareas.bbs file from config file

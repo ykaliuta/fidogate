@@ -53,7 +53,6 @@ short int hi_init_dbc()
     return OK;
 }
 
-#ifdef TIC_HISTORY
 void hi_init_tic_history(void)
 {
     char db_name[MAXPATH];
@@ -65,7 +64,6 @@ void hi_init_tic_history(void)
     }
     return;
 }
-#endif                          /* TIC_HISTORY */
 
 void hi_init_history(void)
 {

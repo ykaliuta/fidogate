@@ -462,6 +462,9 @@ MaxTicHistory
 # Use when filefix and tic passwords can be different.
 #EnableTickPassword
 
+# Disable tic dupe detection
+#NoTicHistory
+
 ##############################################################################
 # G A T E W A Y   C O N F I G U R A T I O N                                  #
 ##############################################################################
