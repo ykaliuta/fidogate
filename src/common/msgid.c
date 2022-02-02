@@ -100,6 +100,49 @@ static char *msgid_domain(int zone)
     return d;
 }
 
+static char *msgid_dbc_fetch(char *msgid)
+{
+    char *s;
+
+    if (lock_program(cf_p_lock_history(), FALSE) == ERROR)
+        return NULL;
+    if (hi_init_dbc() == ERROR)
+        goto out;
+
+    s = hi_fetch(msgid, 0);
+
+    hi_close();
+out:
+    unlock_program(cf_p_lock_history());
+    return s;
+}
+
+static int msgid_dbc_save(char *rfc, char *crc, bool dont_flush)
+{
+    int ret = ERROR;
+
+    if (lock_program(cf_p_lock_history(), FALSE) == ERROR)
+        goto out;
+
+    if (hi_init_dbc() == ERROR) {
+        fglog("can't open dbc file");
+        goto unlock;
+    }
+
+    if (hi_write_dbc(rfc, crc, dont_flush) == ERROR) {
+        fglog("can't write to dbc file");
+        goto close;
+    }
+    ret = OK;
+
+close:
+    hi_close();
+unlock:
+    unlock_program(cf_p_lock_history());
+out:
+    return ret;
+}
+
 /*
  * Convert FIDO ^AMSGID/REPLY to RFC Message-ID/References
  */
@@ -166,13 +209,8 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, bool mail, char *ref_line,
 	&& mail
 	&& strchr(msgid, ' '))
     {
-        if (lock_program(cf_p_lock_history(), FALSE) == ERROR)
-            return NULL;
-        if (hi_init_dbc() == ERROR)
-            return NULL;
-        s = hi_fetch(msgid, 0);
-        hi_close();
-        unlock_program(cf_p_lock_history());
+        s = msgid_dbc_fetch(msgid);
+
         if (s) {
             return s;
         } else {
@@ -402,18 +440,9 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
         && !no_fido_style_msgid
         && area)
     {
-        if (lock_program(cf_p_lock_history(), FALSE) == ERROR) {
-            goto out;
-        }
-        if (hi_init_dbc() == ERROR) {
-            fglog("can't open dbc file");
-        }
-        if (hi_write_dbc(id, tmps->s, dont_flush) == ERROR)
-            fglog("can't write to dbc file");
-        hi_close();
-        unlock_program(cf_p_lock_history());
+        msgid_dbc_save(id, tmps->s, dont_flush);
     }
-out:
+
     xfree(savep);
     return tmps->s;
 }
