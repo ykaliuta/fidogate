@@ -1386,6 +1386,11 @@ AreaFixCreateAnnounceFile /var/log/fidogate/newareas
 
 #NoFidoStyleMsgid
 
+# Если включено DBC History, сохранять не только настоящие RFC
+# message-id, но и сгенерированные (ftn2rfc) из фидошных.
+# Обход проблемы Intersquish, добавляющего в REPLY @fidonet.org
+#SaveFidoMsgid
+
 ===============================================================================
 
 2.5	FTNACL

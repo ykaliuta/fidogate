@@ -147,7 +147,8 @@ out:
  * Convert FIDO ^AMSGID/REPLY to RFC Message-ID/References
  */
 char *s_msgid_fido_to_rfc(char *msgid, int *pzone, bool mail, char *ref_line,
-                          bool no_dbc_history, bool no_fido_style_msgid)
+                          bool no_dbc_history, bool no_fido_style_msgid,
+                          bool save_fido_msgid)
 {
     char *save;
     char *origaddr, *serialno;
@@ -155,6 +156,7 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, bool mail, char *ref_line,
     Node idnode;
     int zone;
     TmpS *tmps;
+    char *ret;
 
     save = strsave(msgid);
 
@@ -214,17 +216,19 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, bool mail, char *ref_line,
         if (s) {
             return s;
         } else {
-            if (ref_line)
-                return ref_line;
+            if (ref_line) {
+                ret = ref_line;
+                goto out;
+            }
         }
     }
     /***** New-style converted RFC Message-ID *****/
     if (wildmat(origaddr, "<*@*>")) {
         tmps = tmps_copy(origaddr);
-        xfree(save);
         if (pzone)
             *pzone = -2;
-        return tmps->s;
+        ret = tmps->s;
+        goto out;
     }
 
        /***** FTN-style *****/
@@ -258,8 +262,15 @@ char *s_msgid_fido_to_rfc(char *msgid, int *pzone, bool mail, char *ref_line,
     str_append(tmps->s, tmps->len, msgid_domain(zone));
     str_append(tmps->s, tmps->len, ">");
 
+    ret = tmps->s;
+
+out:
+    if (!no_dbc_history && save_fido_msgid)
+        msgid_dbc_save(ret, serialno, 0);
+
     xfree(save);
-    return tmps->s;
+
+    return ret;
 }
 
 /*

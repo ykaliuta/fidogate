@@ -802,3 +802,8 @@ AreaFixCreateAnnounceFile %G/newareas
 #NoDBCHistory
 
 #NoFidoStyleMsgid
+
+# if DBC history is enabled, save not only pure RFC msgid,
+# but also generated Fido ones.
+# Workaroud for Intersquish, which adds @fidonet.org to REPLY
+#SaveFidoMsgid
