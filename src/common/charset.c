@@ -301,12 +301,19 @@ static int _charset_recode_iconv(char **res, size_t *res_len,
     char *cur;
     size_t cur_size;
     size_t dst_len;             /* successfuly converted to dst */
+    char *translit;
 
     debug(6, "Using ICONV");
 
-    size = strlen(_to) + sizeof("//TRANSLIT");
+    /* LATIN-1//TRANSLIT is incorrect encoding for iconv */
+    if (streq(_to, "LATIN-1"))
+        translit = "";
+    else
+        translit = "//TRANSLIT";
+
+    size = strlen(_to) + strlen(translit) + 1;
     to = xmalloc(size);
-    sprintf(to, "%s//TRANSLIT", _to);
+    sprintf(to, "%s%s", _to, translit);
 
     desc = iconv_open(to, from);
     if (desc == (iconv_t) - 1) {
@@ -399,6 +406,8 @@ static int charset_recode_iconv(char **dst, size_t *dstlen,
 int charset_recode_buf(char **dst, size_t *dstlen,
                        char *src, size_t srclen, char *from, char *to)
 {
+    int rc;
+
     if (src == NULL || dst == NULL)
         return ERROR;
 
@@ -407,14 +416,17 @@ int charset_recode_buf(char **dst, size_t *dstlen,
 
     debug(6, "mime charset: recoding from %s to %s", from, to);
 
-    if (strieq(from, to)) {
+    rc = !OK;
+    if (!strieq(from, to))
+        rc = charset_recode_iconv(dst, dstlen, src, srclen, from, to);
+
+    if (rc != OK) { /* both the same encoding or recoding failed */
+        /* leave it as is */
         *dst = xmalloc(srclen);
         memcpy(*dst, src, srclen);
         *dstlen = srclen;
-        return OK;
     }
-
-    return charset_recode_iconv(dst, dstlen, src, srclen, from, to);
+    return OK;
 }
 
 int charset_is_7bit(char *buffer, size_t len)
