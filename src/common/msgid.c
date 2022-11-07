@@ -437,6 +437,8 @@ char *s_msgid_rfc_to_fido(int *origid_flag, char *message_id,
 
     if (no_fido_style_msgid && !x_flags_m) {
         msgid_fts9_quote(tmps->s, id, tmps->len);
+        if (tmps->s[0] != '\0')
+            strcat(tmps->s, " ");
     } else {
         if (for_reply)
             str_printf(tmps->s, strlen(tmps->s) + strlen(id) + 2, "%s ", id);
