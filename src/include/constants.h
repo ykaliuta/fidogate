@@ -247,7 +247,7 @@
 #define MAXDOSDRIVE	16          /* Max. # of DOS drives in CONFIG */
 
 #ifndef MAXPATH                 /* Already defined by DJGPP */
-#define MAXPATH	128             /* Max. size of path names */
+#define MAXPATH	PATH_MAX             /* Max. size of path names */
 #endif
 
 #define MAXINETADDR	128         /* Max. size of an Internet address */
