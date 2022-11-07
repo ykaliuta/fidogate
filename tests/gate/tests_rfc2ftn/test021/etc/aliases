@@ -1,0 +1,19 @@
+#:ts=8
+#
+#
+# User name aliases
+#
+# username	FTN address		Full name
+# --------	-----------		---------
+
+root		2:4500/1		"*"
+
+rfc2ftn
+
+root		2:4500/1		"SysOp"
+sysop		2:4500/1		"Zhenja Kaliuta"
+
+
+ftn2rfc
+
+sysop		2:4500/1		"*"
