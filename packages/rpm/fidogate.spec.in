@@ -5,7 +5,7 @@ Release: 1%{?dist}
 License: GPLv2+
 Group: Fidonet/Gate
 Source0: https://github.com/ykaliuta/fidogate/archive/%{name}-%{version}.tar.gz
-BuildRequires: autoconf automake byacc
+BuildRequires: autoconf automake byacc glibc-gconv-extra
 
 %description
 FIDOGATE Version 5
@@ -42,6 +42,7 @@ FIDOGATE Version 5
 	--enable-afses \
 	--enable-pid2rd-tid2gtv \
 	--enable-best-aka \
+	--enable-xct \
 	--with-inndir=/usr \
 	--with-innetcdir=/etc/news \
 	--with-inndbdir=/var/lib/news \
