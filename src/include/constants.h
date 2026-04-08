@@ -32,6 +32,7 @@
 #ifndef FIDOGATE_CONSTANTS_H
 #define FIDOGATE_CONSTANTS_H
 
+#include <limits.h>
 #include "config.h"
 
 #ifdef HAVE_SYSEXITS_H
