@@ -5,25 +5,25 @@ typedef struct {
 } datum;
 
 /* standard dbm functions */
-extern int dbminit();
-extern datum fetch();
-extern int store();
-extern int delete();            /* not in dbz */
-extern datum firstkey();        /* not in dbz */
-extern datum nextkey();         /* not in dbz */
-extern int dbmclose();          /* in dbz, but not in old dbm */
+extern int dbminit(char *name);
+extern datum fetch(datum key);
+extern int store(datum key, datum data);
+extern int delete(datum key);           /* not in dbz */
+extern datum firstkey(void);            /* not in dbz */
+extern datum nextkey(datum key);        /* not in dbz */
+extern int dbmclose(void);              /* in dbz, but not in old dbm */
 
 /* new stuff for dbz */
-extern int dbzfresh();
-extern int dbzagain();
-extern datum dbzfetch();
-extern datum dbcfetch();
-extern int dbzstore();
-extern int dbzsync();
-extern long dbzsize();
-extern int dbzincore();
-extern int dbzcancel();
-extern int dbzdebug();
+extern int dbzfresh(char *name, long size, int fs, int cmap, long tagmask);
+extern int dbzagain(char *name, char *oldname);
+extern datum dbzfetch(datum key);
+extern datum dbcfetch(datum key);
+extern int dbzstore(datum key, datum data);
+extern int dbzsync(void);
+extern long dbzsize(long contents);
+extern int dbzincore(int value);
+extern int dbzcancel(void);
+extern int dbzdebug(int value);
 
 /*
  * In principle we could handle unlimited-length keys by operating a chunk

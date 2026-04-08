@@ -191,11 +191,11 @@ struct dbzconfig {
     int tagshift;               /* shift count for tagmask and tagenb */
 };
 static struct dbzconfig conf;
-static int getconf();
-static long getno();
-static int putconf();
-static void mybytemap();
-static of_t bytemap();
+static int getconf(FILE *df, FILE *pf, struct dbzconfig *cp);
+static long getno(FILE *f, int *ep);
+static int putconf(FILE *f, struct dbzconfig *cp);
+static void mybytemap(int map[]);
+static of_t bytemap(of_t ino, int *map1, int *map2);
 
 /*
  * For a program that makes many, many references to the database, it
@@ -264,12 +264,12 @@ struct searcher {
     int seen;                   /* have we examined current location? */
     int aborted;                /* has i/o error aborted search? */
 };
-static void start();
+static void start(struct searcher *sp, datum *kp, struct searcher *osp);
 #define	FRESH	((struct searcher *)NULL)
-static of_t search();
+static of_t search(struct searcher *sp);
 #define	NOTFOUND	((of_t)-1)
-static int okayvalue();
-static int set();
+static int okayvalue(of_t value);
+static int set(struct searcher *sp, of_t value);
 
 /*
  * Arguably the searcher struct for a given routine ought to be local to
@@ -299,18 +299,13 @@ static int debug;               /* controlled by dbzdebug() */
 #define	DEBUG(args)	;
 #endif
 
-/* externals used */
-extern void free();             /* ANSI C; some old implementations say int */
-extern int atoi();
-extern long atol();
-
 /* misc. forwards */
-static long hash();
-static void crcinit();
-static char *cipoint();
-static char *mapcase();
-static int isprime();
-static FILE *latebase();
+static long hash(char *name, int size);
+static void crcinit(void);
+static char *cipoint(char *s, size_t siz);
+static char *mapcase(char *dst, char *src, size_t siz);
+static int isprime(long x);
+static FILE *latebase(void);
 
 /* file-naming stuff */
 static char dir[] = ".dir";
@@ -326,8 +321,8 @@ static of_t pagpos;             /* posn in pagf; only search may set != -1 */
 static int pagronly;            /* pagf open read-only? */
 static of_t *corepag;           /* incore version of .pag file, if any */
 static FILE *bufpagf;           /* well-buffered pagf, for incore rewrite */
-static of_t *getcore();
-static int putcore();
+static of_t *getcore(FILE *f);
+static int putcore(of_t *tab, FILE *f);
 static int written;             /* has a store() been done? */
 
 /*
