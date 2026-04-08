@@ -243,6 +243,118 @@ Ensure(hdr_dec_decodes_email2)
 	assert_that(dres, is_equal_to_string(exp));
 }
 
+#define J "\xe9" /* Cyrillic й cp1251 */
+Ensure(hdr_dec_decodes_qp_header)
+{
+	/* =D0=B9 is UTF-8 for й (Cyrillic) */
+	char *src = "=?UTF-8?Q?=D0=B9=D0=B9=D0=B9=D0=B9=D0=B9?=";
+	char *exp = J J J J J; /* 5 × й in cp1251 */
+
+	mime_header_dec(dres, sizeof(dres), src, "windows-1251",
+			CHARSET_STDRFC, NULL);
+
+	assert_that(dres, is_equal_to_string(exp));
+}
+#undef J
+
+Ensure(body_enc_qp_encodes_cyrillic)
+{
+	Textlist src;
+	Textlist res;
+	/* "tеsт кириллица" in UTF-8 quoted-printable body encoding */
+	char *exp = "t=D0=B5s=D1=82=20=D0=BA=D0=B8=D1=80=D0=B8=D0=BB=D0=BB=D0=B8=D1=86=D0=B0\n";
+
+	tl_init(&src);
+	tl_init(&res);
+	tl_append(&src, "tеsт кириллица");
+
+	mime_qp_encode_tl(&src, &res);
+
+	assert_that(res.first->line, is_equal_to_string(exp));
+
+	tl_clear(&src);
+	tl_clear(&res);
+}
+
+Ensure(dequote_handles_qp_and_underscores)
+{
+	char dst[32];
+	/* =D0=B5 is UTF-8 for е, underscore decodes to space */
+	char *src = "t=D0=B5s_test";
+	char *exp = "t\xD0\xB5s test";
+
+	mime_dequote(dst, sizeof(dst), src);
+
+	assert_that(dst, is_equal_to_string(exp));
+}
+
+/*
+ * RFC 2047 §2: "Both 'encoding' and 'charset' names are case-independent."
+ * Lowercase 'b' must be treated the same as 'B'.
+ */
+#define J "\xe9" /* Cyrillic й cp1251 */
+Ensure(hdr_dec_b_encoding_case_insensitive)
+{
+	/* lowercase ?b? instead of ?B? */
+	char *src = "=?UTF-8?b?0LnQudC50LnQuQ==?=";
+	char *exp = J J J J J; /* 5 й */
+
+	mime_header_dec(dres, sizeof(dres), src, "windows-1251",
+			CHARSET_STDRFC, NULL);
+
+	assert_that(dres, is_equal_to_string(exp));
+}
+
+/*
+ * RFC 2047 §2: case-independence applies to Q encoding as well.
+ * Lowercase 'q' must be treated the same as 'Q'.
+ */
+Ensure(hdr_dec_q_encoding_case_insensitive)
+{
+	/* lowercase ?q? instead of ?Q? */
+	char *src = "=?UTF-8?q?=D0=B9=D0=B9=D0=B9=D0=B9=D0=B9?=";
+	char *exp = J J J J J; /* 5 й */
+
+	mime_header_dec(dres, sizeof(dres), src, "windows-1251",
+			CHARSET_STDRFC, NULL);
+
+	assert_that(dres, is_equal_to_string(exp));
+}
+#undef J
+
+/*
+ * RFC 2047 §4.2 rule 2: "The 8-bit hexadecimal value 20 ... may be
+ * represented as '_' (underscore)."
+ * Underscore in a Q-encoded header word must decode to SPACE.
+ */
+Ensure(hdr_dec_q_underscore_is_space)
+{
+	char *src = "=?US-ASCII?Q?hello_world?=";
+	char *exp = "hello world";
+
+	mime_header_dec(dres, sizeof(dres), src, "UTF-8",
+			CHARSET_STDRFC, NULL);
+
+	assert_that(dres, is_equal_to_string(exp));
+}
+
+/*
+ * RFC 2047 §6.2: "any 'linear-white-space' that separates a pair of
+ * adjacent 'encoded-word's is ignored."
+ * A SPACE between two encoded-words must not appear in the decoded output.
+ */
+Ensure(hdr_dec_whitespace_between_encoded_words_ignored)
+{
+	/* single SPACE separating two encoded-words on the same line */
+	char *src = "=?US-ASCII?Q?hello?= =?US-ASCII?Q?world?=";
+	char *exp = "helloworld";
+
+	mime_header_dec(dres, sizeof(dres), src, "UTF-8",
+			CHARSET_STDRFC, NULL);
+
+	assert_that(dres, is_equal_to_string(exp));
+}
+
 static TestSuite *create_mime_suite(void)
 {
     TestSuite *suite = create_named_test_suite(
@@ -264,6 +376,13 @@ static TestSuite *create_mime_suite(void)
     add_test(suite, hdr_dec_skips_long_charset_decoding);
     add_test(suite, hdr_dec_decodes_email1);
     add_test(suite, hdr_dec_decodes_email2);
+    add_test(suite, hdr_dec_decodes_qp_header);
+    add_test(suite, body_enc_qp_encodes_cyrillic);
+    add_test(suite, dequote_handles_qp_and_underscores);
+    add_test(suite, hdr_dec_b_encoding_case_insensitive);
+    add_test(suite, hdr_dec_q_encoding_case_insensitive);
+    add_test(suite, hdr_dec_q_underscore_is_space);
+    add_test(suite, hdr_dec_whitespace_between_encoded_words_ignored);
     return suite;
 }
 
