@@ -10,10 +10,14 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          brew install automake bison gettext
+          brew install automake bison gettext libiconv
 
       - name: Configure
         run: |
+          ICONV_PREFIX="$(brew --prefix libiconv)"
+          export CPPFLAGS="-I${ICONV_PREFIX}/include"
+          export LDFLAGS="-L${ICONV_PREFIX}/lib"
+          export LIBS="-liconv"
           AUTOPOINT="autopoint --force" ./autogen.sh
           ./configure --without-news --with-sendmail=/usr/sbin/sendmail --disable-extraversion
       - name: Build
