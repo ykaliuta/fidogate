@@ -527,7 +527,15 @@ static size_t mime_word_enc_b64(struct mime_word_enc_state *state,
 
     *(state->encoded_line + state->pos) = '\0';
 
-    if (left < B64_ENC_CHUNK)
+    /* Only save a trailing partial chunk as reminder when we stopped because
+     * we ran out of input (end_of_line=false).  When we stopped because the
+     * line is full (end_of_line=true) and we just emitted a padded chunk,
+     * do NOT save the remainder: the caller must see left>0, call
+     * mime_line_break to close ?=, and re-feed those bytes in a fresh
+     * encoded-word.  Saving them here would cause mime_switch_to_plain to
+     * flush them inside the already-padded encoded-word, producing invalid
+     * base64 of the form "==0LI=" inside a single =?utf-8?B?...?= token. */
+    if (!end_of_line && left < B64_ENC_CHUNK)
         done += mime_save_reminder(state, p, left);
 
     return done;

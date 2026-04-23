@@ -112,6 +112,25 @@ Ensure(hdr_enc_b64_wraps_reminder)
 	free(res);
 }
 
+/*
+ * Regression: on line-break inside a word where the current chunk has a
+ * 1- or 2-byte remainder, the encoder must close `?=` and open a fresh
+ * `=?utf-8?B?` on the next line. It must NOT emit `==` padding in the
+ * middle of an encoded-word.
+ */
+Ensure(hdr_enc_b64_no_mid_word_padding)
+{
+	char *src = "Subject: Re: ааааааааа ааааааа - аааааааааааааааааааааааааа\n";
+	char *res = NULL;
+
+	mime_header_enc(&res, src, "utf-8", MIME_B64);
+
+	/* should never contain `==` followed by more base64 in the same word */
+	assert_that(strstr(res, "==0"), is_equal_to(NULL));
+	assert_that(strstr(res, "==d"), is_equal_to(NULL));
+	free(res);
+}
+
 Ensure(hdr_enc_b64_only_splits_plain)
 {
 	char *src = "Subject: aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaa aaaaaa aaaaa aaaaaa aaaaaa";
@@ -366,6 +385,7 @@ static TestSuite *create_mime_suite(void)
     add_test(suite, hdr_enc_encodes_long_line);
     add_test(suite, hdr_enc_qp_encodes_cyrillic);
     add_test(suite, hdr_enc_b64_wraps_reminder);
+    add_test(suite, hdr_enc_b64_no_mid_word_padding);
     add_test(suite, hdr_enc_b64_only_splits_plain);
     add_test(suite, body_enc_b64_encodes_cyrillic);
     add_test(suite, hdr_dec_decodes_le28chars_line);
