@@ -10,11 +10,11 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          brew install automake bison
+          brew install automake bison gettext
 
       - name: Configure
         run: |
-          ./autogen.sh
+          AUTOPOINT="autopoint --force" ./autogen.sh
           ./configure --without-news --with-sendmail=/usr/sbin/sendmail --disable-extraversion
       - name: Build
         run: make V=1

@@ -32,7 +32,7 @@ jobs:
         run: tar zcf /tmp/logs.tar.gz $(find ./ -name '*log')
 
       - name: Store log
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           path: /tmp/logs.tar.gz
           name: logs
