@@ -230,8 +230,7 @@ static int last_nonopt;
    `first_nonopt' and `last_nonopt' are relocated so that they describe
    the new indices of the non-options in ARGV after they are moved.  */
 
-static void exchange(argv)
-char **argv;
+static void exchange(char **argv)
 {
     int nonopts_size = (last_nonopt - first_nonopt) * sizeof(char *);
     char **temp = (char **)__alloca(nonopts_size);
@@ -306,13 +305,8 @@ char **argv;
    If LONG_ONLY is nonzero, '-' as well as '--' can introduce
    long-named options.  */
 
-int _getopt_internal(argc, argv, optstring, longopts, longind, long_only)
-int argc;
-char *const *argv;
-const char *optstring;
-const struct option *longopts;
-int *longind;
-int long_only;
+int _getopt_internal(int argc, char *const *argv, const char *optstring,
+                     const struct option *longopts, int *longind, int long_only)
 {
     int option_index;
 
@@ -602,10 +596,7 @@ int long_only;
     }
 }
 
-int getopt(argc, argv, optstring)
-int argc;
-char *const *argv;
-const char *optstring;
+int getopt(int argc, char *const *argv, const char *optstring)
 {
     return _getopt_internal(argc, argv, optstring,
                             (const struct option *)0, (int *)0, 0);
@@ -618,9 +609,7 @@ const char *optstring;
 /* Compile with -DTEST to make an executable for use in testing
    the above definition of `getopt'.  */
 
-int main(argc, argv)
-int argc;
-char **argv;
+int main(int argc, char **argv)
 {
     int c;
     int digit_optind = 0;
