@@ -327,13 +327,15 @@ static int written;             /* has a store() been done? */
 
 /*
  - dbzfresh - set up a new database, no historical info
+ *
+ * name: base name; .dir and .pag must exist
+ * size: table size (0 means default)
+ * fs: field-separator character in base file
+ * cmap: case-map algorithm (0 means default)
+ * tagmask: 0 default, 1 no tags
  */
-int /* 0 success, -1 failure */ dbzfresh(name, size, fs, cmap, tagmask)
-char *name;                     /* base name; .dir and .pag must exist */
-long size;                      /* table size (0 means default) */
-int fs;                         /* field-separator character in base file */
-int cmap;                       /* case-map algorithm (0 means default) */
-of_t tagmask;                   /* 0 default, 1 no tags */
+int /* 0 success, -1 failure */ dbzfresh(char *name, long size,
+                                         int fs, int cmap, of_t tagmask)
 {
     register char *fn;
     struct dbzconfig c;
@@ -435,9 +437,10 @@ of_t tagmask;                   /* 0 default, 1 no tags */
 
 /*
  - dbzsize - what's a good table size to hold this many entries?
+ *
+ * contents: 0 means "what's the default"
  */
-long dbzsize(contents)
-long contents;                  /* 0 means what's the default */
+long dbzsize(long contents)
 {
     register long n;
 
@@ -461,8 +464,7 @@ long contents;                  /* 0 means what's the default */
  *
  * This is not a terribly efficient approach.
  */
-static int /* predicate */ isprime(x)
-register long x;
+static int /* predicate */ isprime(long x)
 {
     static int quick[] = { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 0 };
     register int *ip;
@@ -492,10 +494,11 @@ register long x;
 
 /*
  - dbzagain - set up a new database to be a rebuild of an old one
+ *
+ * name: base name; .dir and .pag must exist
+ * oldname: base name; all must exist
  */
-int /* 0 success, -1 failure */ dbzagain(name, oldname)
-char *name;                     /* base name; .dir and .pag must exist */
-char *oldname;                  /* base name; all must exist */
+int /* 0 success, -1 failure */ dbzagain(char *name, char *oldname)
 {
     register char *fn;
     struct dbzconfig c;
@@ -586,8 +589,7 @@ char *oldname;                  /* base name; all must exist */
  * We try to leave errno set plausibly, to the extent that underlying
  * functions permit this, since many people consult it if dbminit() fails.
  */
-int /* 0 success, -1 failure */ dbminit(name)
-char *name;
+int /* 0 success, -1 failure */ dbminit(char *name)
 {
     register int i;
     register size_t s;
@@ -802,8 +804,7 @@ int dbzcancel()
 /*
  - dbzfetch - fetch() with case mapping built in
  */
-datum dbzfetch(key)
-datum key;
+datum dbzfetch(datum key)
 {
     char buffer[DBZMAXKEY + 1];
     datum mappedkey;
@@ -833,8 +834,7 @@ datum key;
  * part of the comparison against the stored keys.
  */
 datum                           /* dptr NULL, dsize 0 means failure */
-fetch(key)
-datum key;
+fetch(datum key)
 {
     char buffer[DBZMAXKEY + 1];
     static of_t key_ptr;        /* return value points here */
@@ -908,8 +908,7 @@ datum key;
 /*
  *
  */
-datum dbcfetch(key)
-datum key;
+datum dbcfetch(datum key)
 {
     datum out;
     char *s;
@@ -953,9 +952,7 @@ static FILE *latebase()
 /*
  - dbzstore - store() with case mapping built in
  */
-int dbzstore(key, data)
-datum key;
-datum data;
+int dbzstore(datum key, datum data)
 {
     char buffer[DBZMAXKEY + 1];
     datum mappedkey;
@@ -980,9 +977,7 @@ datum data;
 /*
  - store - add an entry to the database
  */
-int /* 0 success, -1 failure */ store(key, data)
-datum key;
-datum data;
+int /* 0 success, -1 failure */ store(datum key, datum data)
 {
     of_t value;
 
@@ -1030,8 +1025,7 @@ datum data;
 /*
  - dbzincore - control attempts to keep .pag file in core
  */
-int /* old setting */ dbzincore(value)
-int value;
+int /* old setting */ dbzincore(int value)
 {
     register int old = incore;
 
@@ -1041,11 +1035,13 @@ int value;
 
 /*
  - getconf - get configuration from .dir file
+ *
+ * df: NULL means just give me the default
+ * pf: NULL means don't care about .pag
+ * cp: destination config structure
  */
-static int /* 0 success, -1 failure */ getconf(df, pf, cp)
-register FILE *df;              /* NULL means just give me the default */
-register FILE *pf;              /* NULL means don't care about .pag */
-register struct dbzconfig *cp;
+static int /* 0 success, -1 failure */ getconf(FILE *df, FILE *pf,
+                                               struct dbzconfig *cp)
 {
     register int c;
     register int i;
@@ -1120,9 +1116,7 @@ register struct dbzconfig *cp;
 /*
  - getno - get a long
  */
-static long getno(f, ep)
-FILE *f;
-int *ep;
+static long getno(FILE *f, int *ep)
 {
     register char *p;
 #	define	MAXN	50
@@ -1158,9 +1152,8 @@ int *ep;
 /*
  - putconf - write configuration to .dir file
  */
-static int /* 0 success, -1 failure */ putconf(f, cp)
-register FILE *f;
-register struct dbzconfig *cp;
+static int /* 0 success, -1 failure */ putconf(FILE *f,
+                                               struct dbzconfig *cp)
 {
     register int i;
     register int ret = 0;
@@ -1190,8 +1183,7 @@ register struct dbzconfig *cp;
  - getcore - try to set up an in-core copy of .pag file
  */
 static of_t *                   /* pointer to copy, or NULL */
-getcore(f)
-FILE *f;
+getcore(FILE *f)
 {
     register of_t *p;
     register size_t i;
@@ -1221,9 +1213,7 @@ FILE *f;
 /*
  - putcore - try to rewrite an in-core table
  */
-static int /* 0 okay, -1 fail */ putcore(tab, f)
-of_t *tab;
-FILE *f;
+static int /* 0 okay, -1 fail */ putcore(of_t *tab, FILE *f)
 {
     if (fseek(f, (of_t) 0, SEEK_SET) != 0) {
         DEBUG(("fseek failure in putcore\n"));
@@ -1237,10 +1227,8 @@ FILE *f;
 /*
  - start - set up to start or restart a search
  */
-static void start(sp, kp, osp)
-register struct searcher *sp;
-register datum *kp;
-register struct searcher *osp;  /* may be FRESH, i.e. NULL */
+static void start(struct searcher *sp, datum *kp,
+                  struct searcher *osp)  /* may be FRESH, i.e. NULL */
 {
     register long h;
 
@@ -1265,8 +1253,7 @@ register struct searcher *osp;  /* may be FRESH, i.e. NULL */
  - search - conduct part of a search
  */
 static of_t                     /* NOTFOUND if we hit VACANT or error */
-search(sp)
-register struct searcher *sp;
+search(struct searcher *sp)
 {
     register of_t dest;
     register of_t value;
@@ -1348,8 +1335,7 @@ register struct searcher *sp;
 /*
  - okayvalue - check that a value can be stored
  */
-static int /* predicate */ okayvalue(value)
-of_t value;
+static int /* predicate */ okayvalue(of_t value)
 {
     if (HASTAG(value))
         return (0);
@@ -1363,9 +1349,7 @@ of_t value;
 /*
  - set - store a value into a location previously found by search
  */
-static int /* 0 success, -1 failure */ set(sp, value)
-register struct searcher *sp;
-of_t value;
+static int /* 0 success, -1 failure */ set(struct searcher *sp, of_t value)
 {
     register of_t place = sp->place;
     register of_t v = value;
@@ -1423,8 +1407,7 @@ of_t value;
  * A byte map is an array of ints, sizeof(of_t) of them.  The 0th int
  * is the byte number of the high-order byte in my of_t, and so forth.
  */
-static void mybytemap(map)
-int map[];                      /* -> int[SOF] */
+static void mybytemap(int map[])        /* -> int[SOF] */
 {
     union {
         of_t o;
@@ -1457,10 +1440,7 @@ int map[];                      /* -> int[SOF] */
  - bytemap - transform an of_t from byte ordering map1 to map2
  */
 static of_t                     /* transformed result */
-bytemap(ino, map1, map2)
-of_t ino;
-int *map1;
-int *map2;
+bytemap(of_t ino, int *map1, int *map2)
 {
     union oc {
         of_t o;
@@ -1525,9 +1505,7 @@ static void crcinit()
 /*
  - hash - Honeyman's nice hashing function
  */
-static long hash(name, size)
-register char *name;
-register int size;
+static long hash(char *name, int size)
 {
     register long sum = 0L;
 
@@ -1593,10 +1571,7 @@ static void mapprime()
 /*
  - casencmp - case-independent strncmp
  */
-static int /* < == > 0 */ casencmp(s1, s2, len)
-char *s1;
-char *s2;
-int len;
+static int /* < == > 0 */ casencmp(char *s1, char *s2, int len)
 {
     register char *p1;
     register char *p2;
@@ -1632,12 +1607,13 @@ int len;
 
 /*
  - mapcase - do case-mapped copy
+ *
+ * dst: destination, used only if mapping needed
+ * src: source; src == dst is legal
+ * siz: number of bytes to process
  */
 static char *                   /* returns src or dst */
-mapcase(dst, src, siz)
-char *dst;                      /* destination, used only if mapping needed */
-char *src;                      /* source; src == dst is legal */
-size_t siz;
+mapcase(char *dst, char *src, size_t siz)
 {
     register char *s;
     register char *d;
@@ -1675,9 +1651,7 @@ size_t siz;
  * Forget it; none of them would come near it.)
  */
 static char *                   /* pointer into s, or NULL for "nowhere" */
-cipoint(s, siz)
-char *s;
-size_t siz;
+cipoint(char *s, size_t siz)
 {
     register char *p;
     static char post[] = "postmaster";
@@ -1709,8 +1683,7 @@ size_t siz;
 /*
  - dbzdebug - control dbz debugging at run time
  */
-int /* old value */ dbzdebug(value)
-int value;
+int /* old value */ dbzdebug(int value)
 {
 #ifdef DBZDEBUG
     register int old = debug;
