@@ -829,16 +829,17 @@ int mime_header_enc(char **dst, char *src, char *charset, int enc)
 
         token = token_end;
 
-        /* first skip spaces */
-        /* NB: test the scan pointer token_end, not token. With "*token == '\n'"
-         * a newline at token_end was not treated as whitespace, so a trailing
-         * (or embedded) '\n' in the header value got swallowed into the word and
-         * MIME-encoded — producing a multi-line encoded-word like
-         * "=?utf-8?B?...0L4K?=" (the trailing "...\n" base64-encoded), which is an
-         * illegal multi-line header. Headers are single-line; '\n' is whitespace. */
-        while ((*token_end == ' ' || *token_end == '\t' || *token_end == '\n')
-               && *token_end != '\0')
+        /*
+         * First skip spaces. CR/LF is header syntax, not payload: advance
+         * token past it so it cannot be MIME-encoded into an encoded-word.
+         */
+        while ((*token_end == ' ' || *token_end == '\t' ||
+                *token_end == '\r' || *token_end == '\n')
+               && *token_end != '\0') {
+            if (*token_end == '\r' || *token_end == '\n')
+                token = token_end + 1;
             token_end++;
+        }
 
         if (*token_end == '\0') {
             token = NULL;
@@ -846,7 +847,8 @@ int mime_header_enc(char **dst, char *src, char *charset, int enc)
         }
 
         /* then find next space or EOL */
-        while (*token_end != ' ' && *token_end != '\t' && *token_end != '\n'
+        while (*token_end != ' ' && *token_end != '\t'
+               && *token_end != '\r' && *token_end != '\n'
                && *token_end != '\0')
             token_end++;
     }

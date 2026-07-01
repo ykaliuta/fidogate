@@ -27,7 +27,31 @@ Ensure(hdr_enc_78_limit)
 	char *exp = "Subject: 75 =?utf-8?B?0LvQtdGCINC90LDQt9Cw0LQ6INCn0LXRgtCy0LXRgNGC?=\n"
 		" =?utf-8?B?0YvQuSDQmNC90YLQtdGA0L3QsNGG0LjQvtC90LDQuyDQstGL0LTQsg==?=\n"
 		" =?utf-8?B?0LjQs9Cw0LXRgiDRgNC10LLQvtC70Y7RhtC40L7QvdC90YvQtSDQvw==?=\n"
-		" =?utf-8?B?0LXRgNGB0L/QtdC60YLQuAo=?=\n";
+		" =?utf-8?B?0LXRgNGB0L/QtdC60YLQuA==?=\n";
+	char *res = NULL;
+
+	mime_header_enc(&res, src, "utf-8", MIME_B64);
+
+	assert_that(res, is_equal_to_string(exp));
+	free(res);
+}
+
+Ensure(hdr_enc_treats_embedded_newline_as_space)
+{
+	char *src = "Subject: привет\n мир";
+	char *exp = "Subject: =?utf-8?B?0L/RgNC40LLQtdGCINC80LjRgA==?=\n";
+	char *res = NULL;
+
+	mime_header_enc(&res, src, "utf-8", MIME_B64);
+
+	assert_that(res, is_equal_to_string(exp));
+	free(res);
+}
+
+Ensure(hdr_enc_treats_embedded_crlf_as_space)
+{
+	char *src = "Subject: привет\r\n мир";
+	char *exp = "Subject: =?utf-8?B?0L/RgNC40LLQtdGCINC80LjRgA==?=\n";
 	char *res = NULL;
 
 	mime_header_enc(&res, src, "utf-8", MIME_B64);
@@ -379,6 +403,8 @@ static TestSuite *create_mime_suite(void)
     TestSuite *suite = create_named_test_suite(
 	    "MIME suite");
     add_test(suite, hdr_enc_78_limit);
+    add_test(suite, hdr_enc_treats_embedded_newline_as_space);
+    add_test(suite, hdr_enc_treats_embedded_crlf_as_space);
     add_test(suite, hdr_enc_encodes_cyrillic);
     add_test(suite, hdr_enc_encodes_cyrillic2);
     add_test(suite, hdr_enc_does_not_break_utf8);
