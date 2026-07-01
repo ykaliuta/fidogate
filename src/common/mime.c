@@ -798,6 +798,42 @@ static char *mime_header_enc_end(struct mime_word_enc_state *state)
 }
 
 /*
+ * RFC 5322 calls removing header line breaks "unfolding".  Do it before
+ * tokenizing words so CR/LF syntax, including our trailing line delimiter,
+ * cannot become MIME-encoded payload.
+ */
+static char *mime_header_unfold(char *src)
+{
+    char *unfolded;
+    char *s;
+    char *d;
+
+    unfolded = xmalloc(strlen(src) + 1);
+    s = src;
+    d = unfolded;
+
+    while (*s != '\0') {
+        if (*s != '\r' && *s != '\n') {
+            *d++ = *s++;
+            continue;
+        }
+
+        while (*s == '\r' || *s == '\n')
+            s++;
+
+        if (*s == '\0')
+            break;
+
+        if (*s != ' ' && *s != '\t'
+            && d > unfolded && d[-1] != ' ' && d[-1] != '\t')
+            *d++ = ' ';
+    }
+
+    *d = '\0';
+    return unfolded;
+}
+
+/*
  * Mime encodes 8bit header, splitting lines when necessary.
  * src must be NUL-terminated
  *
@@ -813,33 +849,29 @@ int mime_header_enc(char **dst, char *src, char *charset, int enc)
 
     debug(6, "MIME: %s: to encode (%s): %s", __func__, charset, src);
 
-    mime_header_enc_start(&state, charset, enc);
-
     /* strtok does not work on RO strings */
+
+    src = mime_header_unfold(src);
 
     token = src;
     token_end = strchr(src, ' ');
     if (token_end == NULL) {
         fglog("ERROR: misformatted header: %s\n", src);
+        xfree(src);
         return ERROR;
     }
+
+    mime_header_enc_start(&state, charset, enc);
 
     while (token != NULL) {
         mime_word_enc(&state, token, token_end - token);
 
         token = token_end;
 
-        /*
-         * First skip spaces. CR/LF is header syntax, not payload: advance
-         * token past it so it cannot be MIME-encoded into an encoded-word.
-         */
-        while ((*token_end == ' ' || *token_end == '\t' ||
-                *token_end == '\r' || *token_end == '\n')
-               && *token_end != '\0') {
-            if (*token_end == '\r' || *token_end == '\n')
-                token = token_end + 1;
+        /* first skip spaces */
+        while ((*token_end == ' ' || *token_end == '\t')
+               && *token_end != '\0')
             token_end++;
-        }
 
         if (*token_end == '\0') {
             token = NULL;
@@ -848,13 +880,13 @@ int mime_header_enc(char **dst, char *src, char *charset, int enc)
 
         /* then find next space or EOL */
         while (*token_end != ' ' && *token_end != '\t'
-               && *token_end != '\r' && *token_end != '\n'
                && *token_end != '\0')
             token_end++;
     }
 
     mime_header_enc_end(&state);
     *dst = state.encoded_line;
+    xfree(src);
 
     debug(6, "MIME: %s: encoded: %s", __func__, *dst);
 
